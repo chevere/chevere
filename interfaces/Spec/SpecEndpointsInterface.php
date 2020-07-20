@@ -33,7 +33,7 @@ interface SpecEndpointsInterface extends DsMapInterface
     /**
      * Indicates whether the instance has a route endpoint identified by its `$methodName`.
      */
-    public function hasKey(string $methodName): bool;
+    public function has(string $methodName): bool;
 
     /**
      * Returns the group spec identified by its `$methodName`.

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteEndpointsInterface;
@@ -42,7 +43,10 @@ final class RouteEndpoints implements RouteEndpointsInterface
             /** @var RouteEndpointInterface $return */
             $return = $this->map->get($key);
         } catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(null, $e->getCode(), $e);
+            throw new OutOfBoundsException(
+                (new Message('Key %key% not found'))
+                    ->code('%key%', $key)
+            );
         }
 
         return $return;

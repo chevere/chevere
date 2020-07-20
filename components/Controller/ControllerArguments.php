@@ -62,7 +62,10 @@ final class ControllerArguments implements ControllerArgumentsInterface
         try {
             return $this->arguments[$name];
         } catch (Throwable $e) {
-            throw new OutOfBoundsException;
+            throw new OutOfBoundsException(
+                (new Message('Name %name% not found'))
+                    ->code('%name%', $name)
+            );
         }
     }
 
@@ -70,7 +73,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
     {
         if ($this->parameters->hasParameterName($name) === false) {
             throw new OutOfBoundsException(
-                (new Message('Unknown parameter %parameter%'))
+                (new Message('Parameter %parameter% not found'))
                     ->code('%parameter%', $name)
             );
         }

@@ -15,6 +15,7 @@ namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugin\PlugsQueue;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
@@ -26,7 +27,6 @@ use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Ds\Map;
 use Ds\Set;
 use Generator;
-use Throwable;
 
 final class PlugsMap implements PlugsMapInterface
 {
@@ -60,8 +60,13 @@ final class PlugsMap implements PlugsMapInterface
             $assert = new AssertPlug($plug);
         }
         // @codeCoverageIgnoreStart
-        catch (Throwable $e) {
-            throw new InvalidArgumentException(null, 0, $e);
+        catch (Exception $e) {
+            throw new InvalidArgumentException(
+                (new Message('Invalid argument %argument% provided'))
+                    ->code('%argument%', '$plug'),
+                0,
+                $e
+            );
         }
         // @codeCoverageIgnoreEnd
         if (!($assert->plugType() instanceof $this->type)) {
@@ -106,7 +111,10 @@ final class PlugsMap implements PlugsMapInterface
         }
         // @codeCoverageIgnoreStart
         catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(null, 0, $e);
+            throw new OutOfBoundsException(
+                (new Message('Pluggable %pluggable% not found'))
+                    ->code('%pluggable%', $pluggable)
+            );
         }
         // @codeCoverageIgnoreEnd
     }

@@ -18,6 +18,7 @@ use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Writer\WriterInterface;
 use Chevere\Interfaces\Writer\WritersInterface;
 use Laminas\Diactoros\Exception\InvalidArgumentException;
+use LogicException;
 
 final class Writers implements WritersInterface
 {
@@ -37,7 +38,11 @@ final class Writers implements WritersInterface
         }
         // @codeCoverageIgnoreStart
         catch (InvalidArgumentException $e) {
-            throw new RuntimeException(null, 0, $e);
+            throw new LogicException(
+                new Message('Unable to create default streams'),
+                0,
+                $e
+            );
         }
         // @codeCoverageIgnoreEnd
         $this->debug = new NullWriter;

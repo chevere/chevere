@@ -27,8 +27,9 @@ interface SpecPathInterface extends ToStringInterface
     public function __construct(string $path);
 
     /**
-     * Returns a child instance for the given `$child`.
+     * Returns a child instance for the given `$childPath`.
+     *
      * @throws InvalidArgumentException
      */
-    public function getChild(string $child): SpecPathInterface;
+    public function getChild(string $childPath): SpecPathInterface;
 }

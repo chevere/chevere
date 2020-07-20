@@ -66,7 +66,10 @@ final class Regex implements RegexInterface
     {
         try {
             if (@preg_match($this->string, '') === false) {
-                throw new Exception; // @codeCoverageIgnore
+                throw new Exception(
+                    (new Message('Detected %function% error'))
+                        ->code('%function%', 'preg_match')
+                ); // @codeCoverageIgnore
             }
         } catch (Exception $e) {
             throw new RegexInvalidException(

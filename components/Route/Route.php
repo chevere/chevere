@@ -128,7 +128,7 @@ final class Route implements RouteInterface
         if (array_key_exists($wildcard->toString(), $endpoint->parameters()) === false) {
             $parameters = array_keys($endpoint->parameters());
             throw new OutOfBoundsException(
-                (new Message('Wildcard parameter %wildcard% must bind to a one of the known %controller% parameters: %parameters%'))
+                (new Message('Wildcard parameter %wildcard% must bind to one of the known %controller% parameters: %parameters%'))
                     ->code('%wildcard%', $wildcard->toString())
                     ->code('%controller%', get_class($endpoint->controller()))
                     ->code('%parameters%', implode(', ', $parameters))

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
@@ -40,14 +41,14 @@ final class RouteEndpointSpecs implements RouteEndpointSpecsInterface
 
     public function get(string $methodName): RouteEndpointSpecInterface
     {
-        /**
-         * @var \Ds\TKey $methodName
-         * @var RouteEndpointSpec $return
-         */
+        /** @var RouteEndpointSpec $return */
         try {
             $return = $this->map->get($methodName);
         } catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(null, 0, $e);
+            throw new OutOfBoundsException(
+                (new Message('Method name %methodName% not found'))
+                    ->code('%methodName%', $methodName)
+            );
         }
 
         return $return;

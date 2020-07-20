@@ -15,7 +15,6 @@ namespace Chevere\Components\Writer;
 
 use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FilesystemException;
@@ -23,6 +22,7 @@ use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 use Chevere\Interfaces\Writer\WritersInterface;
 use Laminas\Diactoros\Stream;
+use LogicException;
 use Psr\Http\Message\StreamInterface;
 use Throwable;
 use function Safe\fopen;
@@ -47,7 +47,13 @@ function streamFor(string $stream, string $mode): StreamInterface
     try {
         return new Stream(...func_get_args());
     } catch (Throwable $e) {
-        throw new InvalidArgumentException(null, 0, $e);
+        throw new InvalidArgumentException(
+            (new Message('Unable to create a stream for %stream% %mode%'))
+                ->code('%stream%', $stream)
+                ->code('%mode%', $mode),
+            0,
+            $e
+        );
     }
 }
 
@@ -65,7 +71,12 @@ function streamForString(string $content = ''): StreamInterface
         fwrite($resource, $content);
         rewind($resource);
     } catch (Throwable $e) {
-        throw new RuntimeException(null, 0, $e);
+        throw new RuntimeException(
+            (new Message('Unable to handle %stream% as stream resource'))
+                ->code('%stream%', $stream),
+            0,
+            $e
+        );
     }
     if (!is_resource($resource)) {
         throw new RuntimeException(
@@ -88,8 +99,7 @@ function streamForString(string $content = ''): StreamInterface
  * @codeCoverageIgnore
  *
  * @throws FilesystemException
- * @throws InvalidArgumentException
- * @throws RuntimeException
+ * @throws LogicException
  */
 function writerForFile(FileInterface $file, string $mode): WriterInterface
 {
@@ -98,13 +108,18 @@ function writerForFile(FileInterface $file, string $mode): WriterInterface
             $file->create();
         }
         $file->assertExists();
-    } catch (Exception $e) {
-        throw new FilesystemException(null, $e->getCode(), $e);
-    }
-    if (!$file->path()->isWritable()) {
-        throw new InvalidArgumentException(
-            (new Message('File %filename% is not writable'))
-                ->code('%filename%', $file->path()->absolute())
+        if (!$file->path()->isWritable()) {
+            throw new InvalidArgumentException(
+                (new Message('File %filename% is not writable'))
+                    ->code('%filename%', $file->path()->absolute())
+            );
+        }
+    } catch (Throwable $e) {
+        throw new FilesystemException(
+            (new Message('Unable to handle %filename% for writing'))
+                ->code('%filename%', $file->path()->absolute()),
+            0,
+            $e
         );
     }
     try {
@@ -112,6 +127,11 @@ function writerForFile(FileInterface $file, string $mode): WriterInterface
             new Stream($file->path()->absolute(), $mode)
         );
     } catch (Throwable $e) {
-        throw new RuntimeException(null, $e->getCode(), $e);
+        throw new LogicException(
+            (new Message('Unable to create a stream writer for %filename%'))
+                ->code('%filename%', $file->path()->absolute()),
+            0,
+            $e
+        );
     }
 }

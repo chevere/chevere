@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RoutablesInterface;
@@ -48,7 +49,10 @@ final class Routables implements RoutablesInterface
         }
         // @codeCoverageIgnoreStart
         catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(null, 0, $e);
+            throw new OutOfBoundsException(
+                (new Message('Name %name% not found'))
+                    ->code('%name%', $name)
+            );
         }
         // @codeCoverageIgnoreEnd
         return $return;

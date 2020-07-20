@@ -119,7 +119,12 @@ final class SpecMaker implements SpecMakerInterface
             }
             $this->dir->removeContents();
         } catch (Throwable $e) {
-            throw new FilesystemException(null, 0, $e);
+            throw new FilesystemException(
+                (new Message('Unable to use %dirname%'))
+                    ->code('%dirname%', $this->dir->path()->absolute()),
+                0,
+                $e
+            );
         }
     }
 
@@ -137,7 +142,6 @@ final class SpecMaker implements SpecMakerInterface
     {
         $filePath = $this->getPathFor($spec->jsonPath());
         $this->files[$spec->jsonPath()] = $filePath;
-
         try {
             $file = new File($filePath);
             if ($file->exists()) {
@@ -148,7 +152,12 @@ final class SpecMaker implements SpecMakerInterface
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
-            throw new FilesystemException(null, 0, $e);
+            throw new FilesystemException(
+                (new Message('Unable to make file %filename%'))
+                    ->code('%filename%', $filePath->absolute()),
+                0,
+                $e
+            );
         }
         // @codeCoverageIgnoreEnd
     }
@@ -158,15 +167,20 @@ final class SpecMaker implements SpecMakerInterface
         try {
             $dirPath = $this->dir->path();
             $child = (new Str($jsonPath))
-            ->withReplaceFirst($this->specPath->toString(), '')
-            ->toString();
+                ->withReplaceFirst($this->specPath->toString(), '')
+                ->toString();
             $child = ltrim($child, '/');
 
             return $dirPath->getChild($child);
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
-            throw new FilesystemException(null, 0, $e);
+            throw new FilesystemException(
+                (new Message('Unable to retrieve path for %argument%'))
+                    ->code('%argument%', $jsonPath),
+                0,
+                $e
+            );
         }
         // @codeCoverageIgnoreEnd
     }

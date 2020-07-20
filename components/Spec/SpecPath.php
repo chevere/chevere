@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
+use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Spec\SpecPathInterface;
@@ -25,10 +26,23 @@ final class SpecPath implements SpecPathInterface
     public function __construct(string $path)
     {
         $this->path = $path;
-        try {
-            $this->assertPub();
-        } catch (Throwable $e) {
-            throw new InvalidArgumentException(null, 0, $e);
+        if ($this->path !== '/') {
+            try {
+                (new StrAssert($this->path))
+                    ->notEmpty()
+                    ->notContains(' ')
+                    ->startsWith('/')
+                    ->notContains('//')
+                    ->notContains('\\')
+                    ->notEndsWith('/');
+            } catch (Throwable $e) {
+                throw new InvalidArgumentException(
+                    (new Message('Invalid argument %argument% provided'))
+                        ->code('%argument%', $path),
+                    0,
+                    $e
+                );
+            }
         }
     }
 
@@ -37,10 +51,10 @@ final class SpecPath implements SpecPathInterface
         return $this->path;
     }
 
-    public function getChild(string $child): SpecPathInterface
+    public function getChild(string $childPath): SpecPathInterface
     {
         try {
-            (new StrAssert($child))
+            (new StrAssert($childPath))
                 ->notEmpty()
                 ->notContains(' ')
                 ->notStartsWith('/')
@@ -48,22 +62,14 @@ final class SpecPath implements SpecPathInterface
                 ->notContains('\\')
                 ->notEndsWith('/');
         } catch (Throwable $e) {
-            throw new InvalidArgumentException(null, 0, $e);
+            throw new InvalidArgumentException(
+                (new Message('Invalid argument %argument% provided'))
+                    ->code('%argument%', $childPath),
+                0,
+                $e
+            );
         }
 
-        return new self(rtrim($this->path, '/') . '/' . $child);
-    }
-
-    private function assertPub(): void
-    {
-        if ($this->path !== '/') {
-            (new StrAssert($this->path))
-                ->notEmpty()
-                ->notContains(' ')
-                ->startsWith('/')
-                ->notContains('//')
-                ->notContains('\\')
-                ->notEndsWith('/');
-        }
+        return new self(rtrim($this->path, '/') . '/' . $childPath);
     }
 }

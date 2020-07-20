@@ -50,7 +50,12 @@ final class RouterIndex implements RouterIndexInterface
         }
         // @codeCoverageIgnoreStart
         catch (Exception $e) {
-            throw new InvalidArgumentException(null, 0, $e);
+            throw new InvalidArgumentException(
+                (new Message('Invalid argument %argument% provided'))
+                    ->code('%argument%', $group),
+                0,
+                $e
+            );
         }
         // @codeCoverageIgnoreEnd
         $new = clone $this;
@@ -102,7 +107,10 @@ final class RouterIndex implements RouterIndexInterface
         }
         // @codeCoverageIgnoreStart
         catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(null, 0, $e);
+            throw new OutOfBoundsException(
+                (new Message('Route name %routeName% not found'))
+                    ->code('%routeName%', $routeName)
+            );
         }
         // @codeCoverageIgnoreEnd
 
@@ -126,22 +134,28 @@ final class RouterIndex implements RouterIndexInterface
         }
         // @codeCoverageIgnoreStart
         catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(null, 0, $e);
+            throw new OutOfBoundsException(
+                (new Message('Group %group% not found'))
+                    ->code('%group%', $group)
+            );
         }
         // @codeCoverageIgnoreEnd
 
         return $return;
     }
 
-    public function getRouteGroup(string $name): string
+    public function getRouteGroup(string $group): string
     {
         /** @var string $return */
         try {
-            $return = $this->groupsIndex->get($name);
+            $return = $this->groupsIndex->get($group);
         }
         // @codeCoverageIgnoreStart
         catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(null, 0, $e);
+            throw new OutOfBoundsException(
+                (new Message('Group %group% not found'))
+                    ->code('%group%', $group)
+            );
         }
         // @codeCoverageIgnoreEnd
 

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerExecuted;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
 use Error;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +35,7 @@ final class ControllerExecutedTest extends TestCase
     public function testWithThrowable(): void
     {
         $executed = new ControllerExecuted([]);
-        $throwable = new Exception;
+        $throwable = new Exception(new Message('Uy'));
         $executed = $executed->withThrowable($throwable, 1);
         $this->assertTrue($executed->hasThrowable());
         $this->assertSame($throwable, $executed->throwable());

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
@@ -39,14 +40,14 @@ final class RoutableSpecs implements RoutableSpecsInterface
 
     public function get(string $routeName): RoutableSpecInterface
     {
-        /**
-         * @var \Ds\TKey $routeName
-         * @var RoutableSpecInterface $return
-         */
+        /** @var RoutableSpecInterface $return */
         try {
             $return = $this->map->get($routeName);
         } catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(null, 0, $e);
+            throw new OutOfBoundsException(
+                (new Message('Route name %routeName% not found'))
+                    ->code('%routeName%', $routeName)
+            );
         }
 
         return $return;

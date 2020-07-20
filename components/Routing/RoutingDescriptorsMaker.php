@@ -15,6 +15,7 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteDecorator;
@@ -58,7 +59,12 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                 )
             );
         } catch (Throwable $e) {
-            throw new LogicException(null, 0, $e);
+            throw new LogicException(
+                (new Message('Unable to iterate %dirname%'))
+                    ->code('%dirname%', $dir->path()->absolute()),
+                0,
+                $e
+            );
         }
     }
 
@@ -87,16 +93,9 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                 $routeEndpoint->parameters()
             );
             $route = new Route(new RouteName('name'), new RoutePath($path));
-            try {
-                foreach ($generator as $routeEndpoint) {
-                    $route = $route->withAddedEndpoint($routeEndpoint);
-                }
+            foreach ($generator as $routeEndpoint) {
+                $route = $route->withAddedEndpoint($routeEndpoint);
             }
-            // @codeCoverageIgnoreStart
-            catch (Exception $e) {
-                throw new LogicException(null, 0, $e);
-            }
-            // @codeCoverageIgnoreEnd
             $this->descriptors = $this->descriptors
                     ->withAdded(
                         new RoutingDescriptor(

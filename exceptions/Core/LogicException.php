@@ -28,9 +28,9 @@ class LogicException extends \LogicException
     /**
      * @codeCoverageIgnore
      */
-    public function __construct(MessageInterface $message = null, int $code = 0, Throwable $previous = null)
+    public function __construct(MessageInterface $message, int $code = 0, Throwable $previous = null)
     {
-        $this->_message = $message ?? new Message('');
+        $this->_message = $message;
         parent::__construct($this->_message->toString(), $code, $previous);
     }
 }

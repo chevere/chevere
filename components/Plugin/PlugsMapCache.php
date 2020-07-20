@@ -74,9 +74,16 @@ final class PlugsMapCache implements PlugsMapCacheInterface
                     $new->classMapKey,
                     new VarExportable($new->classMap)
                 );
-        } catch (Throwable $e) { // @codeCoverageIgnoreStart
-            throw new RuntimeException(null, 0, $e);
-        }  // @codeCoverageIgnoreEnd
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
+            throw new RuntimeException(
+                (new Message('Unable to put provided plugs map')),
+                0,
+                $e
+            );
+        }
+        // @codeCoverageIgnoreEnd
 
         return $new;
     }
@@ -99,7 +106,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         $classMap = $this->getClassMapFromCache();
         if (!$classMap->has($className)) {
             throw new OutOfBoundsException(
-                (new Message('Class name %className% is not mapped'))
+                (new Message('Class name %className% not found'))
                     ->code('%className%', $className),
                 3
             );
@@ -109,9 +116,17 @@ final class PlugsMapCache implements PlugsMapCacheInterface
 
             return filePhpReturnFromString($path)
                 ->withStrict(false)->var();
-        } catch (Exception $e) { // @codeCoverageIgnoreStart
-            throw new OutOfBoundsException(null, 0, $e);
-        } // @codeCoverageIgnoreEnd
+        }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
+            throw new RuntimeException(
+                (new Message('Unable to retrieve cached variable for cache path %path%'))
+                    ->code('%path%', $path),
+                0,
+                $e
+            );
+        }
+        // @codeCoverageIgnoreEnd
     }
 
     private function getClassMapFromCache(): ClassMapInterface
@@ -120,16 +135,24 @@ final class PlugsMapCache implements PlugsMapCacheInterface
             $var = $this->cache->get($this->classMapKey);
 
             return $var->var();
-        } catch (Exception $e) { // @codeCoverageIgnoreStart
-            throw new OutOfBoundsException(null, 0, $e);
-        } // @codeCoverageIgnoreEnd
+        }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
+            throw new RuntimeException(
+                (new Message('Unable to retrieve cache for key %key%'))
+                    ->code('%key%', $this->classMapKey->toString()),
+                0,
+                $e
+            );
+        }
+        // @codeCoverageIgnoreEnd
     }
 
     private function assertClassMap(): void
     {
         if (!$this->cache->exists($this->classMapKey)) {
             throw new OutOfBoundsException(
-                (new Message('No cache exists at %key% cache key'))
+                (new Message('No cache exists at cache key %key%'))
                     ->code('%key%', $this->classMapKey->toString()),
                 1
             );

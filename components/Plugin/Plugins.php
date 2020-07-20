@@ -60,7 +60,11 @@ final class Plugins implements PluginsInterface
              */
             $var = $fileReturn->var();
         } catch (Throwable $e) {
-            throw new RuntimeException(null, 0, $e);
+            throw new RuntimeException(
+                new Message('Runtime file system error'),
+                0,
+                $e
+            );
         }
         try {
             return $var;
@@ -78,7 +82,7 @@ final class Plugins implements PluginsInterface
         try {
             $this->plugsPath = $this->classMap->get($pluggableName);
         } catch (ClassNotMappedException $e) {
-            throw new PluggableNotRegisteredException(null, 0, $e);
+            throw new PluggableNotRegisteredException($e->message());
         }
     }
 

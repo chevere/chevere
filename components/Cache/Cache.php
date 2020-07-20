@@ -19,11 +19,8 @@ use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Exceptions\Core\Exception;
-use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
-use Chevere\Exceptions\Filesystem\PathInvalidException;
-use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
@@ -144,14 +141,17 @@ final class Cache implements CacheInterface
 
     private function getPath(string $name): PathInterface
     {
+        $child = $name . '.php';
         try {
-            return $this->dir->path()->getChild($name . '.php');
+            return $this->dir->path()->getChild($child);
         }
         // @codeCoverageIgnoreStart
-        catch (PathIsDirException | PathInvalidException $e) {
-            throw new OutOfBoundsException(
-                $e->message(),
-                $e->getCode(),
+        catch (Exception $e) {
+            throw new RuntimeException(
+                (new Message('Unable to get cache for child %child% at path %path%'))
+                    ->code('%child%', $child)
+                    ->code('%path%', $this->dir->path()->absolute()),
+                0,
                 $e
             );
         }

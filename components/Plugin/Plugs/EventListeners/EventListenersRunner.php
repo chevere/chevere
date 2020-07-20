@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin\Plugs\EventListeners;
 
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenerInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersQueueInterface;
@@ -51,7 +52,12 @@ final class EventListenersRunner implements EventListenersRunnerInterface
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
-            throw new RuntimeException(null, 0, $e);
+            throw new RuntimeException(
+                (new Message('Unable to run event listeners for anchor %anchor% provided.'))
+                    ->code('%anchor%', $anchor),
+                0,
+                $e
+            );
         }
         // @codeCoverageIgnoreEnd
     }

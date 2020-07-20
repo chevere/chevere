@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
@@ -53,7 +54,10 @@ final class ControllerParameters implements ControllerParametersInterface
 
             return $return;
         } catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException;
+            throw new OutOfBoundsException(
+                (new Message('Name %name% not found'))
+                    ->code('%name%', $name)
+            );
         }
     }
 }

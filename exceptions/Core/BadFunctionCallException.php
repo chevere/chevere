@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Exceptions\Core;
 
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Traits\ExceptionTrait;
 use Chevere\Interfaces\Message\MessageInterface;
-use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
@@ -28,9 +28,9 @@ class BadFunctionCallException extends \BadFunctionCallException
     /**
      * @codeCoverageIgnore
      */
-    public function __construct(MessageInterface $message = null, int $code = 0, Throwable $previous = null)
+    public function __construct(MessageInterface $message, int $code = 0, Throwable $previous = null)
     {
-        $this->_message = $message ?? new Message('');
+        $this->_message = $message;
         parent::__construct($this->_message->toString(), $code, $previous);
     }
 }

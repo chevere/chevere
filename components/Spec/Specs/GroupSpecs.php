@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecsInterface;
@@ -37,13 +38,14 @@ final class GroupSpecs implements GroupSpecsInterface
 
     public function get(string $groupName): GroupSpecInterface
     {
-        /**
-         * @var GroupSpecInterface $return
-         */
+        /** @var GroupSpecInterface $return */
         try {
             $return = $this->map->get($groupName);
         } catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(null, 0, $e);
+            throw new OutOfBoundsException(
+                (new Message('Group name %groupName% not found'))
+                    ->code('%groupName%', $groupName)
+            );
         }
 
         return $return;

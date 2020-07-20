@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Writer;
 
-use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Core\LogicException;
 
 interface WritersInterface
 {
     /**
-     * @throws RuntimeException
+     * @throws LogicException
      */
     public function __construct();
 

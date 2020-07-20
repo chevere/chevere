@@ -89,7 +89,7 @@ final class PlugsMapCacheTest extends TestCase
         $plugsMapCache = new PlugsMapCache($cache);
         $hookableClassName = (new TestHook)->at();
         $this->assertTrue($plugsMapCache->hasPlugsQueueTypedFor($hookableClassName));
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(RuntimeException::class);
         $plugsMapCache->getPlugsQueueTypedFor($hookableClassName);
     }
 
