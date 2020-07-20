@@ -47,13 +47,12 @@ final class RouterIndex implements RouterIndexInterface
     {
         try {
             (new StrAssert($group))->notEmpty()->notCtypeSpace();
-        } catch (Exception $e) {
-            throw new InvalidArgumentException(
-                null,
-                $e->getCode(),
-                $e
-            );
         }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
+            throw new InvalidArgumentException(null, 0, $e);
+        }
+        // @codeCoverageIgnoreEnd
         $new = clone $this;
         $routeName = $routable->route()->name()->toString();
         /** @var \Ds\TKey $routeKey */
@@ -97,28 +96,22 @@ final class RouterIndex implements RouterIndexInterface
 
     public function getRouteIdentifier(string $routeName): RouteIdentifierInterface
     {
-        /**
-         * @var \Ds\TKey $routeName
-         * @var RouteIdentifierInterface $return
-         */
+        /** @var RouteIdentifierInterface $return */
         try {
             $return = $this->identifiersMap->get($routeName);
-        } catch (\OutOfBoundsException $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(null, 0, $e);
         }
+        // @codeCoverageIgnoreEnd
 
         return $return;
     }
 
     public function hasGroup(string $group): bool
     {
-        /**
-         * @var \Ds\TKey $group
-         * @var bool $return
-         */
-        $return = $this->groupsMap->hasKey($group);
-
-        return $return;
+        return $this->groupsMap->hasKey($group);
     }
 
     /**
@@ -127,30 +120,30 @@ final class RouterIndex implements RouterIndexInterface
      */
     public function getGroupRouteNames(string $group): array
     {
-        /**
-         * @var \Ds\TKey $group
-         * @var array $return
-         */
+        /** @var array $return */
         try {
             $return = $this->groupsMap->get($group);
-        } catch (\OutOfBoundsException $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(null, 0, $e);
         }
+        // @codeCoverageIgnoreEnd
 
         return $return;
     }
 
     public function getRouteGroup(string $name): string
     {
-        /**
-         * @var \Ds\TKey $routeName
-         * @var string $return
-         */
+        /** @var string $return */
         try {
             $return = $this->groupsIndex->get($name);
-        } catch (\OutOfBoundsException $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(null, 0, $e);
         }
+        // @codeCoverageIgnoreEnd
 
         return $return;
     }

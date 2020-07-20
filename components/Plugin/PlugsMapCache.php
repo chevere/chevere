@@ -74,9 +74,9 @@ final class PlugsMapCache implements PlugsMapCacheInterface
                     $new->classMapKey,
                     new VarExportable($new->classMap)
                 );
-        } catch (Throwable $e) {
+        } catch (Throwable $e) { // @codeCoverageIgnoreStart
             throw new RuntimeException(null, 0, $e);
-        }
+        }  // @codeCoverageIgnoreEnd
 
         return $new;
     }
@@ -109,12 +109,9 @@ final class PlugsMapCache implements PlugsMapCacheInterface
 
             return filePhpReturnFromString($path)
                 ->withStrict(false)->var();
-        }
-        // @codeCoverageIgnoreStart
-        catch (Exception $e) {
+        } catch (Exception $e) { // @codeCoverageIgnoreStart
             throw new OutOfBoundsException(null, 0, $e);
-        }
-        // @codeCoverageIgnoreEnd
+        } // @codeCoverageIgnoreEnd
     }
 
     private function getClassMapFromCache(): ClassMapInterface
@@ -123,16 +120,9 @@ final class PlugsMapCache implements PlugsMapCacheInterface
             $var = $this->cache->get($this->classMapKey);
 
             return $var->var();
-        }
-        // @codeCoverageIgnoreStart
-        catch (Exception $e) {
-            throw new OutOfBoundsException(
-                $e->message(),
-                $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        } catch (Exception $e) { // @codeCoverageIgnoreStart
+            throw new OutOfBoundsException(null, 0, $e);
+        } // @codeCoverageIgnoreEnd
     }
 
     private function assertClassMap(): void

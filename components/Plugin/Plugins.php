@@ -16,6 +16,7 @@ namespace Chevere\Components\Plugin;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Exceptions\Plugin\PlugsFileNotExistsException;
@@ -76,8 +77,6 @@ final class Plugins implements PluginsInterface
     {
         try {
             $this->plugsPath = $this->classMap->get($pluggableName);
-        } catch (\OutOfBoundsException $e) {
-            throw new RuntimeException(null, 0, $e);
         } catch (ClassNotMappedException $e) {
             throw new PluggableNotRegisteredException(null, 0, $e);
         }

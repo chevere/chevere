@@ -15,7 +15,6 @@ namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugin\PlugsQueue;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
@@ -59,9 +58,12 @@ final class PlugsMap implements PlugsMapInterface
     {
         try {
             $assert = new AssertPlug($plug);
-        } catch (Throwable $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
             throw new InvalidArgumentException(null, 0, $e);
         }
+        // @codeCoverageIgnoreEnd
         if (!($assert->plugType() instanceof $this->type)) {
             throw new InvalidArgumentException(
                 (new Message('Argument passed must be an instance of type %type%'))
@@ -101,9 +103,12 @@ final class PlugsMap implements PlugsMapInterface
     {
         try {
             return $this->map->get($pluggable, new PlugsQueue($this->type));
-        } catch (\OutOfBoundsException $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(null, 0, $e);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     public function getGenerator(): Generator

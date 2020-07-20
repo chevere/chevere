@@ -16,7 +16,7 @@ namespace Chevere\Components\Writer;
 use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
-use Chevere\Exceptions\Core\LogicException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FilesystemException;
 use Chevere\Interfaces\Filesystem\FileInterface;
@@ -38,18 +38,22 @@ function writers(): WritersInterface
 }
 
 /**
- * @throws LogicException
+ * @codeCoverageIgnore
+ *
+ * @throws InvalidArgumentException
  */
 function streamFor(string $stream, string $mode): StreamInterface
 {
     try {
         return new Stream(...func_get_args());
     } catch (Throwable $e) {
-        throw new LogicException(null, 0, $e);
+        throw new InvalidArgumentException(null, 0, $e);
     }
 }
 
 /**
+ * @codeCoverageIgnore
+ *
  * @throws RuntimeException
  */
 function streamForString(string $content = ''): StreamInterface
@@ -61,11 +65,7 @@ function streamForString(string $content = ''): StreamInterface
         fwrite($resource, $content);
         rewind($resource);
     } catch (Throwable $e) {
-        throw new RuntimeException(
-            null,
-            $e->getCode(),
-            $e
-        );
+        throw new RuntimeException(null, 0, $e);
     }
     if (!is_resource($resource)) {
         throw new RuntimeException(
@@ -85,8 +85,11 @@ function streamForString(string $content = ''): StreamInterface
 }
 
 /**
+ * @codeCoverageIgnore
+ *
  * @throws FilesystemException
- * @throws LogicException
+ * @throws InvalidArgumentException
+ * @throws RuntimeException
  */
 function writerForFile(FileInterface $file, string $mode): WriterInterface
 {
@@ -99,7 +102,7 @@ function writerForFile(FileInterface $file, string $mode): WriterInterface
         throw new FilesystemException(null, $e->getCode(), $e);
     }
     if (!$file->path()->isWritable()) {
-        throw new LogicException(
+        throw new InvalidArgumentException(
             (new Message('File %filename% is not writable'))
                 ->code('%filename%', $file->path()->absolute())
         );

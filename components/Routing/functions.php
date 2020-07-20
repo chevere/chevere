@@ -27,6 +27,10 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
+use Chevere\Exceptions\Filesystem\PathDotSlashException;
+use Chevere\Exceptions\Filesystem\PathDoubleDotsDashException;
+use Chevere\Exceptions\Filesystem\PathExtraSlashesException;
+use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
 use Chevere\Exceptions\Route\RouteEndpointConflictException;
 use Chevere\Exceptions\Route\RouteWildcardConflictException;
 use Chevere\Exceptions\Routing\ExpectingControllerException;
@@ -38,6 +42,7 @@ use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 
 /**
+ * @codeCoverageIgnore
  *
  * @throws OutOfRangeException
  * @throws OverflowException
@@ -69,6 +74,15 @@ function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, s
     return $router;
 }
 
+/**
+ * @codeCoverageIgnore
+ *
+ * @throws PathDotSlashException
+ * @throws PathDoubleDotsDashException
+ * @throws PathExtraSlashesException
+ * @throws PathNotAbsoluteException
+ * @throws ExpectingControllerException
+ */
 function routeEndpointsForDir(DirInterface $dir): RouteEndpointsInterface
 {
     $routeEndpoints = new RouteEndpoints;

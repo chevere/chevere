@@ -36,13 +36,12 @@ final class ThrowableHandler implements ThrowableHandlerInterface
         try {
             $timezone = new DateTimeZone('UTC');
             $this->dateTimeUtc = new DateTimeImmutable('now', $timezone);
-        } catch (Exception $e) {
-            throw new RuntimeException(
-                null,
-                $e->getCode(),
-                $e
-            );
         }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
+            throw new RuntimeException(null, 0, $e);
+        }
+        // @codeCoverageIgnoreEnd
         $this->throwableRead = $throwableRead;
         $this->id = uniqid('', true);
     }

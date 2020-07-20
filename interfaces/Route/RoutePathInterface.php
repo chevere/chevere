@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Route;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Interfaces\To\ToStringInterface;
 
@@ -24,6 +25,7 @@ interface RoutePathInterface extends ToStringInterface
 {
     /**
      * @throws InvalidArgumentException
+     * @throws LogicException
      */
     public function __construct(string $path);
 

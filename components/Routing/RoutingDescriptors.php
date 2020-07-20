@@ -73,6 +73,8 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return Generator<int, RoutingDescriptorInterface>
      */
     public function getGenerator(): Generator

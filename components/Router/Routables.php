@@ -42,16 +42,15 @@ final class Routables implements RoutablesInterface
 
     public function get(string $name): RoutableInterface
     {
-        /**
-         * @var RoutableInterface $return
-         * @var \Ds\TKey $name
-         */
+        /** @var RoutableInterface $return */
         try {
             $return = $this->map->get($name);
-        } catch (\OutOfBoundsException $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(null, 0, $e);
         }
-
+        // @codeCoverageIgnoreEnd
         return $return;
     }
 }

@@ -40,16 +40,14 @@ final class SpecEndpoints implements SpecEndpointsInterface
 
     public function get(string $methodName): string
     {
-        /**
-         * @var \Ds\TKey $methodName
-         * @var string $return
-         */
         try {
             $return = $this->map->get($methodName);
-        } catch (\OutOfBoundsException $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(null, 0, $e);
         }
-
+        // @codeCoverageIgnoreEnd
         return $return;
     }
 }

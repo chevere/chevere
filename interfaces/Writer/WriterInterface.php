@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Writer;
 
-use Chevere\Exceptions\Core\LogicException;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\To\ToStringInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Describes the component in charge of writing strings.
@@ -24,7 +25,7 @@ interface WriterInterface extends ToStringInterface
     /**
      * Writes the given string.
      *
-     * @throws LogicException
+     * @throws RuntimeException
      */
     public function write(string $string): void;
 

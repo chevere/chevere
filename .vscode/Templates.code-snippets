@@ -298,5 +298,26 @@
             " * Describes the component in charge of ${1:doing}.",
             " */"
         ]
-    }
+    },
+    "coverage-ignore": {
+        "description": "Insert a code coverage ignore tag",
+        "prefix": "cov-ignore",
+        "body": [
+            "@codeCoverageIgnore"
+        ]
+    },
+    "coverage-ignore-start": {
+        "description": "Insert a code coverage ignore start tag",
+        "prefix": "cov-ignore-start",
+        "body": [
+            "@codeCoverageIgnoreStart"
+        ]
+    },
+    "coverage-ignore-end": {
+        "description": "Insert a code coverage ignore end tag",
+        "prefix": "cov-ignore-end",
+        "body": [
+            "@codeCoverageIgnoreEnd"
+        ]
+    },
 }

@@ -125,20 +125,19 @@ final class SpecMaker implements SpecMakerInterface
 
     private function assertRouter(): void
     {
-        // @codeCoverageIgnoreStart
-        if ($this->router->routables()->mapCopy()->count() === 0) {
+        if (count($this->router->routables()) === 0) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %interfaceName% does not contain any routable.'))
                     ->code('%interfaceName%', RouterInterface::class)
             );
         }
-        // @codeCoverageIgnoreEnd
     }
 
     private function makeJsonFile(SpecInterface $spec): void
     {
         $filePath = $this->getPathFor($spec->jsonPath());
         $this->files[$spec->jsonPath()] = $filePath;
+
         try {
             $file = new File($filePath);
             if ($file->exists()) {
@@ -146,9 +145,12 @@ final class SpecMaker implements SpecMakerInterface
             }
             $file->create();
             $file->put($this->toJson($spec->toArray()));
-        } catch (Throwable $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
             throw new FilesystemException(null, 0, $e);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     private function getPathFor(string $jsonPath): PathInterface
@@ -161,9 +163,12 @@ final class SpecMaker implements SpecMakerInterface
             $child = ltrim($child, '/');
 
             return $dirPath->getChild($child);
-        } catch (Throwable $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
             throw new FilesystemException(null, 0, $e);
         }
+        // @codeCoverageIgnoreEnd
     }
 
     private function toJson(array $array): string

@@ -16,6 +16,7 @@ namespace Chevere\Components\Router\RouteParsers;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use FastRoute\RouteParser\Std;
+use Throwable;
 
 /**
  * Strict version of `FastRoute\RouteParser\Std`, without optional routing.
@@ -24,7 +25,11 @@ final class StrictStd extends Std
 {
     public function parse($route)
     {
-        $datas = parent::parse($route);
+        try {
+            $datas = parent::parse($route);
+        } catch (Throwable $e) {
+            throw new InvalidArgumentException(null, 0, $e);
+        }
         if (count($datas) > 1) {
             throw new InvalidArgumentException(
                 (new Message('Optional routing for route %route% is forbidden'))
