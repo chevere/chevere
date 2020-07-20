@@ -42,15 +42,21 @@ use function Chevere\Components\Filesystem\filePhpReturnFromString;
 
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
+    private DirInterface $dir;
+
     private RoutingDescriptorsInterface $descriptors;
 
     public function __construct(DirInterface $dir)
     {
+        $this->dir = $dir;
         $this->descriptors = new RoutingDescriptors;
         try {
-            $dirIterator = $this->getRecursiveDirectoryIterator($dir);
-            $filterIterator = $this->getRecursiveFilterIterator($dirIterator);
-            $this->iterate($dir, new RecursiveIteratorIterator($filterIterator));
+            $dirIterator = $this->getRecursiveDirectoryIterator();
+            $this->iterate(
+                new RecursiveIteratorIterator(
+                    $this->getRecursiveFilterIterator($dirIterator)
+                )
+            );
         } catch (Throwable $e) {
             throw new LogicException(null, 0, $e);
         }
@@ -61,7 +67,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         return $this->descriptors;
     }
 
-    private function iterate(DirInterface $dir, RecursiveIteratorIterator $iterator): void
+    private function iterate(RecursiveIteratorIterator $iterator): void
     {
         $iterator->rewind();
         while ($iterator->valid()) {
@@ -75,7 +81,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $path = $this->getPathForParameters(
                 (new Str($current))
                     ->withReplaceFirst(
-                        rtrim($dir->path()->absolute(), '/'),
+                        rtrim($this->dir->path()->absolute(), '/'),
                         ''
                     ),
                 $routeEndpoint->parameters()
@@ -124,10 +130,10 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         }
     }
 
-    private function getRecursiveDirectoryIterator(DirInterface $dir): RecursiveDirectoryIterator
+    private function getRecursiveDirectoryIterator(): RecursiveDirectoryIterator
     {
         return new RecursiveDirectoryIterator(
-            $dir->path()->absolute(),
+            $this->dir->path()->absolute(),
             RecursiveDirectoryIterator::SKIP_DOTS
             | RecursiveDirectoryIterator::KEY_AS_PATHNAME
         );
