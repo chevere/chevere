@@ -15,7 +15,6 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteDecorator;
@@ -51,40 +50,48 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         try {
             $dirIterator = $this->getRecursiveDirectoryIterator($dir);
             $filterIterator = $this->getRecursiveFilterIterator($dirIterator);
-            $iteratorIterator = new RecursiveIteratorIterator($filterIterator);
-            $iteratorIterator->rewind();
-            while ($iteratorIterator->valid()) {
-                $pathName = $iteratorIterator->current()->getPathName();
-                $routeName = $this->getVar($pathName);
-                $current = dirname($pathName) . '/';
-                $endpoints = routeEndpointsForDir(new Dir(new Path($current)));
-                $generator = $endpoints->getGenerator();
-                /** @var RouteEndpointInterface $routeEndpoint */
-                $routeEndpoint = $generator->current();
-                $path = $this->getPathForParameters(
-                    (new Str($current))
+            $this->iterate($dir, new RecursiveIteratorIterator($filterIterator));
+        } catch (Throwable $e) {
+            throw new LogicException(null, 0, $e);
+        }
+    }
+
+    public function descriptors(): RoutingDescriptorsInterface
+    {
+        return $this->descriptors;
+    }
+
+    private function iterate(DirInterface $dir, RecursiveIteratorIterator $iterator): void
+    {
+        $iterator->rewind();
+        while ($iterator->valid()) {
+            $pathName = $iterator->current()->getPathName();
+            $routeName = $this->getVar($pathName);
+            $current = dirname($pathName) . '/';
+            $endpoints = routeEndpointsForDir(new Dir(new Path($current)));
+            $generator = $endpoints->getGenerator();
+            /** @var RouteEndpointInterface $routeEndpoint */
+            $routeEndpoint = $generator->current();
+            $path = $this->getPathForParameters(
+                (new Str($current))
                     ->withReplaceFirst(
                         rtrim($dir->path()->absolute(), '/'),
                         ''
                     ),
-                    $routeEndpoint->parameters()
-                );
-                $route = new Route(new RouteName('name'), new RoutePath($path));
-                try {
-                    foreach ($generator as $routeEndpoint) {
-                        $route = $route->withAddedEndpoint($routeEndpoint);
-                    }
+                $routeEndpoint->parameters()
+            );
+            $route = new Route(new RouteName('name'), new RoutePath($path));
+            try {
+                foreach ($generator as $routeEndpoint) {
+                    $route = $route->withAddedEndpoint($routeEndpoint);
                 }
-                // @codeCoverageIgnoreStart
-                catch (Exception $e) {
-                    throw new LogicException(
-                        $e->message(),
-                        $e->getCode(),
-                        $e
-                    );
-                }
-                // @codeCoverageIgnoreEnd
-                $this->descriptors = $this->descriptors
+            }
+            // @codeCoverageIgnoreStart
+            catch (Exception $e) {
+                throw new LogicException(null, 0, $e);
+            }
+            // @codeCoverageIgnoreEnd
+            $this->descriptors = $this->descriptors
                     ->withAdded(
                         new RoutingDescriptor(
                             dirFromString($current),
@@ -92,20 +99,8 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                             new RouteDecorator($routeName)
                         )
                     );
-                $iteratorIterator->next();
-            }
-        } catch (Throwable $e) {
-            throw new LogicException(
-                new Message('Unable to make routing descriptors'),
-                $e->getCode(),
-                $e
-            );
+            $iterator->next();
         }
-    }
-
-    public function descriptors(): RoutingDescriptorsInterface
-    {
-        return $this->descriptors;
     }
 
     private function getPathForParameters(StrInterface $path, array $parameters): string
