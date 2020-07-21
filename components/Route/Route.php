@@ -40,7 +40,9 @@ final class Route implements RouteInterface
 
     private RouteEndpointInterface $firstEndpoint;
 
-    private RouteEndpoints $endpoints;
+    private RouteEndpointInterface $endpoint;
+
+    private RouteEndpointsInterface $endpoints;
 
     public function __construct(RouteNameInterface $name, RoutePathInterface $routePath)
     {
@@ -67,22 +69,10 @@ final class Route implements RouteInterface
 
     public function withAddedEndpoint(RouteEndpointInterface $endpoint): RouteInterface
     {
-        if ($this->endpoints->hasKey($endpoint->method()->name())) {
-            throw new OverflowException(
-                (new Message('Endpoint for method %method% has been already added'))
-                    ->code('%method%', $endpoint->method()->name())
-            );
-        }
         $new = clone $this;
-        if (!isset($new->firstEndpoint)) {
-            $new->firstEndpoint = $endpoint;
-        } elseif ($new->firstEndpoint->parameters() !== $endpoint->parameters()) {
-            throw new RouteEndpointConflictException(
-                (new Message('Controller parameters provided by %provided% must be compatible with the parameters defined first by %defined%'))
-                    ->code('%provided%', get_class($endpoint->controller()))
-                    ->code('%defined%', get_class($new->firstEndpoint->controller()))
-            );
-        }
+        $new->endpoint = $endpoint;
+        $new->assertUnique();
+        $new->assertNoConflict();
         foreach ($new->routePath->wildcards()->getGenerator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
             $knownWildcardMatch = $new->wildcards[$wildcard->toString()] ?? null;
@@ -112,10 +102,30 @@ final class Route implements RouteInterface
         return $this->endpoints;
     }
 
-    /**
-     * @throws InvalidArgumentException If the controller doesn't take parameters
-     * @throws OutOfBoundsException If wildcard binds to inexistent controller parameter name
-     */
+    private function assertUnique(): void
+    {
+        $key = $this->endpoint->method()->name();
+        if ($this->endpoints->hasKey($key)) {
+            throw new OverflowException(
+                (new Message('Endpoint for method %method% has been already added'))
+                    ->code('%method%', $key)
+            );
+        }
+    }
+
+    private function assertNoConflict(): void
+    {
+        if (!isset($this->firstEndpoint)) {
+            $this->firstEndpoint = $this->endpoint;
+        } elseif ($this->firstEndpoint->parameters() !== $this->endpoint->parameters()) {
+            throw new RouteEndpointConflictException(
+                (new Message('Controller parameters provided by %provided% must be compatible with the parameters defined first by %defined%'))
+                    ->code('%provided%', get_class($this->endpoint->controller()))
+                    ->code('%defined%', get_class($this->firstEndpoint->controller()))
+            );
+        }
+    }
+
     private function assertWildcardEndpoint(RouteWildcardInterface $wildcard, RouteEndpointInterface $endpoint): void
     {
         if ($endpoint->controller()->parameters()->count() === 0) {
