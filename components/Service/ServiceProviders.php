@@ -34,8 +34,6 @@ final class ServiceProviders implements ServiceProvidersInterface
 
     private ServiceableInterface $serviceable;
 
-    private Map $map;
-
     private ReflectionMethod $reflectionMethod;
 
     public function __construct(ServiceableInterface $serviceable)
@@ -99,7 +97,7 @@ final class ServiceProviders implements ServiceProvidersInterface
         ) {
             throw new UnexpectedValueException(
                 (new Message('Argument %argument% must be typed against a concrete class implementing %interface% interface'))
-                ->code('%interface%', ServiceInterface::class)
+                    ->code('%interface%', ServiceInterface::class)
                     ->code('%argument%', '$' . $parameter->getName())
             );
         }
