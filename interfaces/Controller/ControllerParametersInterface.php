@@ -44,7 +44,7 @@ interface ControllerParametersInterface extends Countable
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified controller parameter instance.
      */
-    public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface;
+    public function withAdded(ControllerParameterInterface $controllerParameter): ControllerParametersInterface;
 
     /**
      * Indicates whether the instance has a parameter identified by `$name`.

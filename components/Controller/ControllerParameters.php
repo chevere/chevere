@@ -28,7 +28,7 @@ final class ControllerParameters implements ControllerParametersInterface
         return $this->map->toArray();
     }
 
-    public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
+    public function withAdded(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
     {
         $new = clone $this;
         $new->map->put(

@@ -135,7 +135,7 @@ final class RouteTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withParameter(
+            ->withAdded(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
     }
@@ -159,7 +159,7 @@ final class RouteTestControllerRegexConflict extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withParameter(
+            ->withAdded(
                 new ControllerParameter('id', new Regex('/^\W+$/'))
             );
     }

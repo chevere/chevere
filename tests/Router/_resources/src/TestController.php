@@ -27,10 +27,10 @@ final class TestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withParameter(
+            ->withAdded(
                 new ControllerParameter('name', new Regex('/\w+/'))
             )
-            ->withParameter(
+            ->withAdded(
                 new ControllerParameter('id', new Regex('/\d+/'))
             );
     }

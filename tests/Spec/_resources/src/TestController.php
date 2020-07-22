@@ -43,10 +43,10 @@ class TestController extends Controller implements PluggableHooksInterface
     public function getParameters(): ControllerParametersInterface
     {
         $parameters = (new ControllerParameters)
-            ->withParameter(
+            ->withAdded(
                 new ControllerParameter('name', new Regex('/^[\w]+$/'))
             )
-            ->withParameter(
+            ->withAdded(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
         $this->hook('getParameters:after', $parameters);

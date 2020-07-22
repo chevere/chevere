@@ -75,8 +75,8 @@ final class RouteEndpointTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withParameter(new ControllerParameter('name', new Regex('/^[\w]+$/')))
-            ->withParameter(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
+            ->withAdded(new ControllerParameter('name', new Regex('/^[\w]+$/')))
+            ->withAdded(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
