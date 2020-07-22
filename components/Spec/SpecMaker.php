@@ -63,7 +63,7 @@ final class SpecMaker implements SpecMakerInterface
         $groups = [];
         foreach ($routes->getGenerator() as $routeName => $routable) {
             $groupName = $router->index()->getRouteGroup($routeName);
-            if (!isset($groupName[$groupName])) {
+            if (!isset($groups[$groupName])) {
                 $groups[$groupName] = new GroupSpec($specPath, $groupName);
             }
             $routableSpec = new RoutableSpec(

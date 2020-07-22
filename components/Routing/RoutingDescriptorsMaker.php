@@ -59,10 +59,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             );
         } catch (Throwable $e) {
             throw new LogicException(
-                (new Message('Unable to iterate %dirname%'))
-                    ->code('%dirname%', $dir->path()->absolute()),
-                0,
-                $e
+                new Message($e->getMessage())
             );
         }
     }
@@ -143,8 +140,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 
     private function getRecursiveFilterIterator(RecursiveDirectoryIterator $recursiveDirectoryIterator): RecursiveFilterIterator
     {
-        return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator
-        {
+        return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator {
             public function accept(): bool
             {
                 if ($this->hasChildren()) {
