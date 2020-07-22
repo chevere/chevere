@@ -24,7 +24,6 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Routing\RoutingDescriptor;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Type\Type;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Routing\ExpectingRouteNameException;
@@ -38,8 +37,8 @@ use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 use Throwable;
-use function Chevere\Components\Filesystem\dirFromString;
-use function Chevere\Components\Filesystem\filePhpReturnFromString;
+use function Chevere\Components\Filesystem\dirForString;
+use function Chevere\Components\Filesystem\filePhpReturnForString;
 
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
@@ -99,7 +98,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $this->descriptors = $this->descriptors
                     ->withAdded(
                         new RoutingDescriptor(
-                            dirFromString($current),
+                            dirForString($current),
                             new RoutePath($path),
                             new RouteDecorator($routeName)
                         )
@@ -121,7 +120,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
     private function getVar(string $path): RouteNameInterface
     {
         try {
-            return filePhpReturnFromString($path)
+            return filePhpReturnForString($path)
                 ->withStrict(false)
                 ->varType(new Type(RouteNameInterface::class));
         } catch (FileReturnInvalidTypeException $e) {

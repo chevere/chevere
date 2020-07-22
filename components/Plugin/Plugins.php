@@ -16,7 +16,6 @@ namespace Chevere\Components\Plugin;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Exceptions\Plugin\PlugsFileNotExistsException;
@@ -26,7 +25,7 @@ use Chevere\Interfaces\Plugin\PluginsInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Throwable;
 use TypeError;
-use function Chevere\Components\Filesystem\filePhpReturnFromString;
+use function Chevere\Components\Filesystem\filePhpReturnForString;
 use function DeepCopy\deep_copy;
 
 /**
@@ -53,7 +52,7 @@ final class Plugins implements PluginsInterface
         $this->assertSetPlugsPath($pluggableName);
         $this->assertPlugsPath();
         try {
-            $fileReturn = filePhpReturnFromString($this->plugsPath)
+            $fileReturn = filePhpReturnForString($this->plugsPath)
                 ->withStrict(false);
             /**
              * @var PlugsQueueInterface $var

@@ -18,13 +18,13 @@ use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Filesystem\dirFromString;
+use function Chevere\Components\Filesystem\dirForString;
 
 final class RoutingDescriptorsMakerTest extends TestCase
 {
     public function testObjects(): void
     {
-        $dir = dirFromString(__DIR__ . '/_resources/routes/');
+        $dir = dirForString(__DIR__ . '/_resources/routes/');
         $fsRoutesMaker = new RoutingDescriptorsMaker($dir);
         $fsRoutes = $fsRoutesMaker->descriptors();
         $this->assertCount(2, $fsRoutes);
@@ -43,7 +43,7 @@ final class RoutingDescriptorsMakerTest extends TestCase
 
     public function testWrongObjects(): void
     {
-        $dir = dirFromString(__DIR__ . '/_resources/wrong-routes/');
+        $dir = dirForString(__DIR__ . '/_resources/wrong-routes/');
         $this->expectException(LogicException::class);
         new RoutingDescriptorsMaker($dir);
     }

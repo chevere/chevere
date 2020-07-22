@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Filesystem;
 
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Exceptions\Filesystem\FileExistsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
@@ -23,7 +22,7 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use PHPUnit\Framework\TestCase;
 use Throwable;
-use function Chevere\Components\Filesystem\dirFromString;
+use function Chevere\Components\Filesystem\dirForString;
 
 final class FileTest extends TestCase
 {
@@ -31,7 +30,7 @@ final class FileTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->testDir = dirFromString(__DIR__ . '/FileTest_' . uniqid() . '/');
+        $this->testDir = dirForString(__DIR__ . '/FileTest_' . uniqid() . '/');
     }
 
     protected function tearDown(): void

@@ -17,20 +17,20 @@ use Chevere\Components\Plugin\PlugsMapper;
 use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Filesystem\dirFromString;
+use function Chevere\Components\Filesystem\dirForString;
 
 final class PlugsMapperTest extends TestCase
 {
     public function testConstructInvalidDir(): void
     {
-        $dir = dirFromString(__DIR__ . '/' . uniqid() . '/');
+        $dir = dirForString(__DIR__ . '/' . uniqid() . '/');
         $this->expectException(DirNotExistsException::class);
         new PlugsMapper($dir, new HookPlugType);
     }
 
     public function testConstruct(): void
     {
-        $dir = dirFromString(__DIR__ . '/_resources/PlugsMapperTest/');
+        $dir = dirForString(__DIR__ . '/_resources/PlugsMapperTest/');
         $plugsMapper = new PlugsMapper($dir, new HookPlugType);
         $this->assertTrue(
             $plugsMapper->plugsMap()->hasPlugsFor(

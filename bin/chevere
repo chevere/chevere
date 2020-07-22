@@ -16,12 +16,12 @@ use Chevere\Components\Console\Application;
 use Chevere\Components\Console\Commands\ControllerInspectCommand;
 use Chevere\Components\Console\Commands\ControllerListCommand;
 use Chevere\Components\Console\Commands\ControllerRunCommand;
-use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Components\Writer\Writers;
 use Laminas\Diactoros\StreamFactory;
+use function Chevere\Components\Filesystem\dirForString;
 
 foreach ([
     __DIR__ . '/../../../../vendor/autoload.php',
@@ -43,10 +43,7 @@ if (!isset($autoload)) {
     die(1);
 }
 $autoloadParentDir = stream_resolve_include_path(dirname(dirname($autoload))) . '/';
-$dir = new DirFromString($autoloadParentDir);
-new BootstrapInstance(
-    (new Bootstrap($dir))->withCli(true)
-);
+$dir = dirForString($autoloadParentDir);
 new WritersInstance(new Writers);
 // $output = __DIR__ . '/output';
 // file_put_contents($output, '');

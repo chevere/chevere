@@ -30,7 +30,7 @@ use Chevere\Interfaces\Plugin\PlugsMapInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueTypedInterface;
 use ReflectionClass;
 use Throwable;
-use function Chevere\Components\Filesystem\filePhpReturnFromString;
+use function Chevere\Components\Filesystem\filePhpReturnForString;
 
 final class PlugsMapCache implements PlugsMapCacheInterface
 {
@@ -114,7 +114,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         try {
             $path = $classMap->get($className);
 
-            return filePhpReturnFromString($path)
+            return filePhpReturnForString($path)
                 ->withStrict(false)->var();
         }
         // @codeCoverageIgnoreStart
