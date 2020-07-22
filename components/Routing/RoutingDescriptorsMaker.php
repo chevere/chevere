@@ -81,8 +81,12 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $current = dirname($pathName) . '/';
             $endpoints = routeEndpointsForDir(new Dir(new Path($current)));
             $generator = $endpoints->getGenerator();
-            /** @var RouteEndpointInterface $routeEndpoint */
             $routeEndpoint = $generator->current();
+            if (!($routeEndpoint instanceof RouteEndpointInterface)) {
+                $iterator->next();
+                continue;
+            }
+            /** @var RouteEndpointInterface $routeEndpoint */
             $path = $this->getPathForParameters(
                 (new Str($current))
                     ->withReplaceFirst(
