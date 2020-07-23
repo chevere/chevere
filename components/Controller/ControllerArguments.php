@@ -18,7 +18,6 @@ use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
 use Chevere\Exceptions\Controller\ControllerArgumentRequiredException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Throwable;
 
@@ -69,7 +68,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
         }
     }
 
-    private function assertParameter(string $name, string $value): void
+    private function assertParameter(string $name, string $argument): void
     {
         if ($this->parameters->hasParameterName($name) === false) {
             throw new OutOfBoundsException(
@@ -79,9 +78,10 @@ final class ControllerArguments implements ControllerArgumentsInterface
         }
         $parameter = $this->parameters->get($name);
         $regexString = $parameter->regex()->toString();
-        if (preg_match($regexString, $value) !== 1) {
+        if (preg_match($regexString, $argument) !== 1) {
             throw new ControllerArgumentRegexMatchException(
-                (new Message("Argument for parameter %parameter% doesn't match the regex %regex%"))
+                (new Message("Argument %argument% provided for parameter %parameter% doesn't match the regex %regex%"))
+                    ->code('%argument%', $argument)
                     ->code('%parameter%', $name)
                     ->code('%regex%', $regexString)
             );
