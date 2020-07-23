@@ -28,6 +28,7 @@ use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteNameInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
@@ -39,22 +40,25 @@ use RecursiveIteratorIterator;
 use Throwable;
 use function Chevere\Components\Filesystem\dirForString;
 use function Chevere\Components\Filesystem\filePhpReturnForString;
+use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
-    private DirInterface $dir;
+    private PathInterface $path;
 
     private RoutingDescriptorsInterface $descriptors;
 
     public function __construct(DirInterface $dir)
     {
-        $this->dir = $dir;
+        $this->path = $dir->path();
         $this->descriptors = new RoutingDescriptors;
+        $dirFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
         try {
-            $dirIterator = $this->getRecursiveDirectoryIterator();
             $this->iterate(
                 new RecursiveIteratorIterator(
-                    $this->getRecursiveFilterIterator($dirIterator)
+                    $this->getRecursiveFilterIterator(
+                        recursiveDirectoryIteratorFor($dir, $dirFlags)
+                    )
                 )
             );
         } catch (Throwable $e) {
@@ -76,18 +80,20 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $pathName = $iterator->current()->getPathName();
             $routeName = $this->getVar($pathName);
             $current = dirname($pathName) . '/';
-            $endpoints = routeEndpointsForDir(new Dir(new Path($current)));
-            $generator = $endpoints->getGenerator();
-            $routeEndpoint = $generator->current();
-            if (!($routeEndpoint instanceof RouteEndpointInterface)) {
+            $endpoints = routeEndpointsForDir(dirForString($current));
+            // @codeCoverageIgnoreStart
+            if (count($endpoints) === 0) {
                 $iterator->next();
                 continue;
             }
+            // @codeCoverageIgnoreEnd
+            $generator = $endpoints->getGenerator();
+            $routeEndpoint = $generator->current();
             /** @var RouteEndpointInterface $routeEndpoint */
             $path = $this->getPathForParameters(
                 (new Str($current))
                     ->withReplaceFirst(
-                        rtrim($this->dir->path()->absolute(), '/'),
+                        rtrim($this->path->absolute(), '/'),
                         ''
                     ),
                 $routeEndpoint->parameters()
@@ -129,25 +135,17 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         }
     }
 
-    private function getRecursiveDirectoryIterator(): RecursiveDirectoryIterator
-    {
-        return new RecursiveDirectoryIterator(
-            $this->dir->path()->absolute(),
-            RecursiveDirectoryIterator::SKIP_DOTS
-            | RecursiveDirectoryIterator::KEY_AS_PATHNAME
-        );
-    }
-
     private function getRecursiveFilterIterator(RecursiveDirectoryIterator $recursiveDirectoryIterator): RecursiveFilterIterator
     {
-        return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator {
+        return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator
+        {
             public function accept(): bool
             {
                 if ($this->hasChildren()) {
                     return true;
                 }
 
-                return $this->current()->getFilename() === RoutingDescriptorsMaker::ROUTE_NAME_BASENAME;
+                return $this->current()->getFilename() === RoutingDescriptorsMakerInterface::ROUTE_NAME_BASENAME;
             }
         };
     }

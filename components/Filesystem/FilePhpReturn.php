@@ -99,8 +99,9 @@ final class FilePhpReturn implements FilePhpReturnInterface
                 ? get_class($var)
                 : gettype($var);
             throw new FileReturnInvalidTypeException(
-                (new Message("Return type %return% doesn't match the expected type %expected%"))
+                (new Message("File PHP return of type %return% at %path% doesn't match the expected type %expected%"))
                     ->code('%return%', $typeReturn)
+                    ->code('%path%', $this->filePhp->file()->path()->absolute())
                     ->code('%expected%', $type->typeHinting())
             );
         }

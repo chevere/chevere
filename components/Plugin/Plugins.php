@@ -15,8 +15,10 @@ namespace Chevere\Components\Plugin;
 
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Type\Type;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;
 use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Exceptions\Plugin\PlugsFileNotExistsException;
 use Chevere\Exceptions\Plugin\PlugsQueueInterfaceException;
@@ -26,6 +28,7 @@ use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Throwable;
 use TypeError;
 use function Chevere\Components\Filesystem\filePhpReturnForString;
+use function Chevere\Components\Filesystem\varForFilePhpReturn;
 use function DeepCopy\deep_copy;
 
 /**
@@ -51,29 +54,14 @@ final class Plugins implements PluginsInterface
     {
         $this->assertSetPlugsPath($pluggableName);
         $this->assertPlugsPath();
-        try {
-            $fileReturn = filePhpReturnForString($this->plugsPath)
-                ->withStrict(false);
-            /**
-             * @var PlugsQueueInterface $var
-             */
-            $var = $fileReturn->var();
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                new Message('Runtime file system error'),
-                0,
-                $e
-            );
-        }
-        try {
-            return $var;
-        } catch (TypeError $e) {
-            throw new PlugsQueueInterfaceException(
-                (new Message('Return of %filePath% is not of type %type%'))
-                    ->code('%filePath%', $this->plugsPath)
-                    ->code('%type%', PlugsQueueInterface::class)
-            );
-        }
+        $fileReturn = filePhpReturnForString($this->plugsPath)
+            ->withStrict(false);
+        /**
+         * @var PlugsQueueInterface $var
+         */
+        $var = varForFilePhpReturn($fileReturn, new Type(PlugsQueueInterface::class));
+
+        return $var;
     }
 
     private function assertSetPlugsPath(string $pluggableName): void

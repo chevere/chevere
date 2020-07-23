@@ -33,9 +33,10 @@ final class RouteEndpoint implements RouteEndpointInterface
     {
         $this->method = $method;
         $this->controller = $controller;
-        $this->description = $controller->description() !== ''
-            ? $controller->description()
-            : $method->description();
+        $this->description = $controller->description();
+        if ($this->description === '') {
+            $this->description = $method->description();
+        }
         foreach ($controller->parameters()->getGenerator() as $parameter) {
             $this->parameters[$parameter->name()] = [
                 'name' => $parameter->name(),

@@ -37,27 +37,9 @@ final class ControllerRunnerTest extends TestCase
         return (new ControllerRunner($controller))->execute($arguments);
     }
 
-    public function testControllerSetUpFailure(): void
-    {
-        $controller = new ControllerRunnerTestControllerSetupFail;
-        $ran = $this->getFailedRan($controller);
-        $this->assertSame(1, $ran->code());
-        $this->assertTrue($ran->hasThrowable());
-        $this->assertSame('Something went wrong', $ran->throwable()->getMessage());
-    }
-
     public function testControllerRunFailure(): void
     {
         $controller = new ControllerRunnerTestControllerRunFail;
-        $ran = $this->getFailedRan($controller);
-        $this->assertSame(1, $ran->code());
-        $this->assertTrue($ran->hasThrowable());
-        $this->assertSame('Something went wrong', $ran->throwable()->getMessage());
-    }
-
-    public function testControllerTearDownFailure(): void
-    {
-        $controller = new ControllerRunnerTestControllerTearDownFail;
         $ran = $this->getFailedRan($controller);
         $this->assertSame(1, $ran->code());
         $this->assertTrue($ran->hasThrowable());
@@ -94,36 +76,10 @@ final class ControllerRunnerTestController extends Controller
     }
 }
 
-final class ControllerRunnerTestControllerSetupFail extends Controller
-{
-    public function setUp(): void
-    {
-        throw new Exception('Something went wrong');
-    }
-
-    public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
-    {
-        return new ControllerResponse(true, []);
-    }
-}
-
 final class ControllerRunnerTestControllerRunFail extends Controller
 {
     public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
         throw new Exception('Something went wrong');
-    }
-}
-
-final class ControllerRunnerTestControllerTearDownFail extends Controller
-{
-    public function tearDown(): void
-    {
-        throw new Exception('Something went wrong');
-    }
-
-    public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
-    {
-        return new ControllerResponse(true, []);
     }
 }

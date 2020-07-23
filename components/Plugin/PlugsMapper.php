@@ -23,6 +23,7 @@ use Go\ParserReflection\ReflectionFileNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
+use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 
 final class PlugsMapper
 {
@@ -32,17 +33,15 @@ final class PlugsMapper
 
     private RecursiveIteratorIterator $recursiveIterator;
 
-    /**
-     * Iterates over the target $dir for plugs of type $plugType
-     */
     public function __construct(DirInterface $dir, PlugTypeInterface $plugType)
     {
         $dir->assertExists();
         $this->plugsMap = new PlugsMap($plugType);
         $this->dir = $dir;
+        $dirIteratorFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
         $this->recursiveIterator = new RecursiveIteratorIterator(
             new PlugRecursiveFilterIterator(
-                $this->getRecursiveDirectoryIterator(),
+                recursiveDirectoryIteratorFor($this->dir, $dirIteratorFlags),
                 $plugType->trailingName()
             )
         );
@@ -58,15 +57,6 @@ final class PlugsMapper
     public function plugsMap(): PlugsMapInterface
     {
         return $this->plugsMap;
-    }
-
-    private function getRecursiveDirectoryIterator(): RecursiveDirectoryIterator
-    {
-        return new RecursiveDirectoryIterator(
-            $this->dir->path()->absolute(),
-            RecursiveDirectoryIterator::SKIP_DOTS
-            | RecursiveDirectoryIterator::KEY_AS_PATHNAME
-        );
     }
 
     private function namespaceClassesIterator(array $reflectionFileNamespace): void

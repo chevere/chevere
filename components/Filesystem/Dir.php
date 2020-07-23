@@ -16,7 +16,6 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Filesystem\DirExistsException;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
@@ -28,6 +27,7 @@ use Chevere\Interfaces\Filesystem\PathInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
+use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use function Safe\mkdir;
 use function Safe\rmdir;
 
@@ -94,10 +94,7 @@ final class Dir implements DirInterface
     {
         $this->assertIsDir();
         $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator(
-                $this->path->absolute(),
-                RecursiveDirectoryIterator::SKIP_DOTS
-            ),
+            recursiveDirectoryIteratorFor($this, RecursiveDirectoryIterator::SKIP_DOTS),
             RecursiveIteratorIterator::CHILD_FIRST
         );
         $removed = [];

@@ -16,6 +16,7 @@ namespace Chevere\Tests\Plugin;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\Plugins;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Exceptions\Plugin\PlugsFileNotExistsException;
@@ -66,7 +67,7 @@ final class PluginsTest extends TestCase
             (new ClassMap)
                 ->withPut($pluggable, $map)
         );
-        $this->expectException(PlugsQueueInterfaceException::class);
+        $this->expectException(LogicException::class);
         $plugins->getPlugsQueue($pluggable);
     }
 
@@ -78,7 +79,7 @@ final class PluginsTest extends TestCase
             (new ClassMap)
                 ->withPut($pluggable, $map)
         );
-        $this->expectException(RuntimeException::class);
+        $this->expectException(LogicException::class);
         $plugins->getPlugsQueue($pluggable);
     }
 

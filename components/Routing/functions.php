@@ -40,6 +40,7 @@ use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
+use function Chevere\Components\Filesystem\filePhpReturnForString;
 
 /**
  * @codeCoverageIgnore
@@ -93,7 +94,7 @@ function routeEndpointsForDir(DirInterface $dir): RouteEndpointsInterface
             continue;
         }
         try {
-            $controller = (new FilePhpReturn(new FilePhp(new File($controllerPath))))
+            $controller = filePhpReturnForString($controllerPath->absolute())
                 ->withStrict(false)
                 ->varType(new Type(ControllerInterface::class));
         } catch (FileReturnInvalidTypeException $e) {

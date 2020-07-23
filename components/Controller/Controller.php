@@ -37,14 +37,6 @@ abstract class Controller implements ControllerInterface
         return '';
     }
 
-    public function setUp(): void
-    {
-    }
-
-    public function tearDown(): void
-    {
-    }
-
     abstract public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface;
 
     final public function __construct()

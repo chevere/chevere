@@ -39,16 +39,6 @@ interface ControllerInterface
     public function description(): string;
 
     /**
-     * This method will be called before running `run()`.
-     */
-    public function setUp(): void;
-
-    /**
-     * This method will be called after running `run()`.
-     */
-    public function tearDown(): void;
-
-    /**
      * This method will be called when running the controller.
      */
     public function run(ControllerArgumentsInterface $controllerArguments): ControllerResponseInterface;
