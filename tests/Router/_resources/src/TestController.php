@@ -28,10 +28,12 @@ final class TestController extends Controller
     {
         return (new ControllerParameters)
             ->withAdded(
-                new ControllerParameter('name', new Regex('/\w+/'))
+                (new ControllerParameter('name'))
+                    ->withRegex('/\w+/')
             )
             ->withAdded(
-                new ControllerParameter('id', new Regex('/\d+/'))
+                (new ControllerParameter('id'))
+                    ->withRegex('/\d+/')
             );
     }
 

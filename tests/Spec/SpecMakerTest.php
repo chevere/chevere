@@ -15,9 +15,9 @@ namespace Chevere\Tests\Spec;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
+use Chevere\Components\Controller\ControllerParameterOptional;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Regex\Regex;
@@ -30,14 +30,12 @@ use Chevere\Components\Router\Router;
 use Chevere\Components\Spec\SpecMaker;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Spec\SpecInvalidArgumentException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
-use ReflectionObject;
 
 final class SpecMakerTest extends TestCase
 {
@@ -108,13 +106,14 @@ class SpecMakerTestGetController extends Controller
     {
         return (new ControllerParameters)
             ->withAdded(
-                (new ControllerParameter('id', new Regex('/^[0-9]+$/')))
+                (new ControllerParameter('id'))
+                    ->withRegex('/^[0-9]+$/')
                     ->withDescription('The user integer id')
             )
             ->withAdded(
-                (new ControllerParameter('name', new Regex('/^[\w]+$/')))
+                (new ControllerParameterOptional('name'))
+                    ->withRegex('/^[\w]+$/')
                     ->withDescription('The user name')
-                    ->withIsRequired(false)
             );
     }
 
@@ -130,13 +129,14 @@ class SpecMakerTestPutController extends Controller
     {
         return (new ControllerParameters)
             ->withAdded(
-                (new ControllerParameter('id', new Regex('/^[0-9]+$/')))
+                (new ControllerParameter('id'))
+                    ->withRegex('/^[0-9]+$/')
                     ->withDescription('The user integer id')
             )
             ->withAdded(
-                (new ControllerParameter('name', new Regex('/^[\w]+$/')))
+                (new ControllerParameterOptional('name'))
+                    ->withRegex('/^[\w]+$/')
                     ->withDescription('The user name')
-                    ->withIsRequired(false)
             );
     }
 

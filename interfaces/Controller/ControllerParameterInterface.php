@@ -24,7 +24,7 @@ interface ControllerParameterInterface
     /**
      * @throws ControllerParameterNameInvalidException
      */
-    public function __construct(string $name, RegexInterface $regex);
+    public function __construct(string $name);
 
     /**
      * Indicates whether the parameter is required.
@@ -47,18 +47,18 @@ interface ControllerParameterInterface
     public function description(): string;
 
     /**
+     * Return an instance with the specified regex.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified regex.
+     */
+    public function withRegex(string $regex): ControllerParameterInterface;
+
+    /**
      * Return an instance with the specified description.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified description.
      */
     public function withDescription(string $string): ControllerParameterInterface;
-
-    /**
-     * Return an instance with the specified required flag.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified required flag.
-     */
-    public function withIsRequired(bool $bool): ControllerParameterInterface;
 }

@@ -16,12 +16,12 @@ namespace Chevere\Components\Controller;
 use Chevere\Components\Controller\Traits\ControllerParameterTrait;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 
-final class ControllerParameter implements ControllerParameterInterface
+final class ControllerParameterOptional implements ControllerParameterInterface
 {
     use ControllerParameterTrait;
 
     public function isRequired(): bool
     {
-        return true;
+        return false;
     }
 }

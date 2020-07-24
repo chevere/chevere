@@ -44,10 +44,12 @@ class TestController extends Controller implements PluggableHooksInterface
     {
         $parameters = (new ControllerParameters)
             ->withAdded(
-                new ControllerParameter('name', new Regex('/^[\w]+$/'))
+                (new ControllerParameter('name'))
+                    ->withRegex('/^[\w]+$/')
             )
             ->withAdded(
-                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
+                (new ControllerParameter('id'))
+                    ->withRegex('/^[0-9]+$/')
             );
         $this->hook('getParameters:after', $parameters);
 
@@ -57,7 +59,7 @@ class TestController extends Controller implements PluggableHooksInterface
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
         $this->hook('run:before', $arguments);
-        $response = new ControllerResponse(true);
+        $response = new ControllerResponse(true, []);
         $data = [
             'userName' => $arguments->get('name'),
             'userId' => $arguments->get('id')

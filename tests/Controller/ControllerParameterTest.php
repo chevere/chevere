@@ -14,11 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerParameter;
+use Chevere\Components\Controller\ControllerParameterOptional;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Controller\ControllerParameterNameInvalidException;
-use Chevere\Exceptions\Str\StrContainsException;
-use Chevere\Exceptions\Str\StrCtypeSpaceException;
-use Chevere\Exceptions\Str\StrEmptyException;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerParameterTest extends TestCase
@@ -26,44 +24,44 @@ final class ControllerParameterTest extends TestCase
     public function testEmptyName(): void
     {
         $this->expectException(ControllerParameterNameInvalidException::class);
-        new ControllerParameter('', new Regex('/.*/'));
+        new ControllerParameter('');
     }
 
     public function testCtypeSpaceName(): void
     {
         $this->expectException(ControllerParameterNameInvalidException::class);
-        new ControllerParameter(' ', new Regex('/.*/'));
+        new ControllerParameter(' ');
     }
 
     public function testSpaceInName(): void
     {
         $this->expectException(ControllerParameterNameInvalidException::class);
-        new ControllerParameter('some name', new Regex('/.*/'));
+        new ControllerParameter('some name');
     }
 
     public function testConstruct(): void
     {
         $name = 'id';
-        $regex = new Regex('/^[0-9+]$/');
-        $controllerParameter = new ControllerParameter('id', $regex);
+        $regex = '/^[0-9+]$/';
+        $controllerParameter = new ControllerParameter('id');
         $this->assertSame($name, $controllerParameter->name());
-        $this->assertSame($regex->toString(), $controllerParameter->regex()->toString());
+        $this->assertSame($regex, $controllerParameter->withRegex($regex)->regex()->toString());
     }
 
     public function testWithDescription(): void
     {
         $description = 'ola k ase';
-        $controllerParameter = new ControllerParameter('test', new Regex('/.*/'));
+        $controllerParameter = new ControllerParameter('test');
         $this->assertSame('', $controllerParameter->description());
         $controllerParameter = $controllerParameter->withDescription($description);
         $this->assertSame($description, $controllerParameter->description());
     }
 
-    public function testWithIsRequired(): void
+    public function testParameterOptional(): void
     {
-        $controllerParameter = new ControllerParameter('test', new Regex('/.*/'));
+        $controllerParameter = new ControllerParameter('test');
         $this->assertTrue($controllerParameter->isRequired());
-        $controllerParameter = $controllerParameter->withIsRequired(false);
+        $controllerParameter = new ControllerParameterOptional('test');
         $this->assertFalse($controllerParameter->isRequired());
     }
 }

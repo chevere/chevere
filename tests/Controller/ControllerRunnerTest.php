@@ -65,7 +65,8 @@ final class ControllerRunnerTestController extends Controller
     {
         return (new ControllerParameters)
             ->withAdded(
-                new ControllerParameter('name', new Regex('/^\w+$/'))
+                (new ControllerParameter('name'))
+                    ->withRegex('/^\w+$/')
             );
     }
 

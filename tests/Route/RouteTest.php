@@ -19,7 +19,6 @@ use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
-use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
@@ -33,10 +32,6 @@ use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
 final class RouteTest extends TestCase
 {
@@ -136,13 +131,14 @@ final class RouteTestController extends Controller
     {
         return (new ControllerParameters)
             ->withAdded(
-                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
+                (new ControllerParameter('id'))
+                    ->withRegex('/^[0-9]+$/')
             );
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }
 
@@ -160,20 +156,13 @@ final class RouteTestControllerRegexConflict extends Controller
     {
         return (new ControllerParameters)
             ->withAdded(
-                new ControllerParameter('id', new Regex('/^\W+$/'))
+                (new ControllerParameter('id'))
+                    ->withRegex('/^\W+$/')
             );
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponse(true, []);
-    }
-}
-
-final class RouteTestTestMiddleware implements MiddlewareInterface
-{
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
-        return new Response('OK', 200, []);
     }
 }

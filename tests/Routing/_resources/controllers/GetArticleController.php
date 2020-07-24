@@ -17,10 +17,10 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
+use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
-use Chevere\Components\Regex\Regex;
 
 final class GetArticleController extends Controller
 {
@@ -28,12 +28,13 @@ final class GetArticleController extends Controller
     {
         return (new ControllerParameters)
             ->withAdded(
-                new ControllerParameter('id', new Regex('/^d+$/'))
+                (new ControllerParameter('id'))
+                    ->withRegex('/^d+$/')
             );
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }

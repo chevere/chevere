@@ -20,7 +20,8 @@ use Chevere\Interfaces\Controller\ControllerResponseInterface;
 
 final class GetArticlesController extends Controller
 {
-    public function run(ControllerArgumentsInterface $arguments) : ControllerResponseInterface {
-        return new ControllerResponse(true);
+    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    {
+        return new ControllerResponse(true, []);
     }
 }

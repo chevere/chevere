@@ -18,7 +18,6 @@ use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
@@ -75,12 +74,18 @@ final class RouteEndpointTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withAdded(new ControllerParameter('name', new Regex('/^[\w]+$/')))
-            ->withAdded(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
+            ->withAdded(
+                (new ControllerParameter('name'))
+                    ->withRegex('/^[\w]+$/')
+            )
+            ->withAdded(
+                (new ControllerParameter('id'))
+                    ->withRegex('/^[0-9]+$/')
+            );
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }

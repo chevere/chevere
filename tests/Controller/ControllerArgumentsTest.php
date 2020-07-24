@@ -15,6 +15,7 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerParameter;
+use Chevere\Components\Controller\ControllerParameterOptional;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
@@ -32,10 +33,12 @@ final class ControllerArgumentsTest extends TestCase
         ];
         $parameters = (new ControllerParameters)
             ->withAdded(
-                new ControllerParameter('id', new Regex('/^\d+$/'))
+                (new ControllerParameter('id'))
+                    ->withRegex('/^\d+$/')
             )
             ->withAdded(
-                new ControllerParameter('name', new Regex('/^\w+$/'))
+                (new ControllerParameter('name'))
+                    ->withRegex('/^\w+$/')
             );
         $controllerArguments = new ControllerArguments($parameters, $arguments);
         $this->assertSame($arguments, $controllerArguments->toArray());
@@ -60,7 +63,8 @@ final class ControllerArgumentsTest extends TestCase
     {
         $parameters = (new ControllerParameters)
             ->withAdded(
-                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
+                (new ControllerParameter('id'))
+                    ->withRegex('/^[0-9]+$/')
             );
         $this->expectException(ControllerArgumentRegexMatchException::class);
         (new ControllerArguments($parameters, ['id' => 'abc']));
@@ -74,7 +78,8 @@ final class ControllerArgumentsTest extends TestCase
         $controllerArguments = new ControllerArguments(
             (new ControllerParameters)
                 ->withAdded(
-                    new ControllerParameter($name, new Regex('/^[0-9]+$/'))
+                    (new ControllerParameter($name))
+                        ->withRegex('/^[0-9]+$/')
                 ),
             [$name => $value]
         );
@@ -90,25 +95,27 @@ final class ControllerArgumentsTest extends TestCase
     {
         $parameters = (new ControllerParameters)
             ->withAdded(
-                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
+                (new ControllerParameter('id'))
+                    ->withRegex('/^[0-9]+$/')
             );
         $arguments = [];
         $this->expectException(ControllerArgumentRequiredException::class);
         new ControllerArguments($parameters, $arguments);
     }
 
-    public function testOptionalArgument(): void
+    public function testParameterOptional(): void
     {
         $paramId = 'id';
         $paramName = 'name';
         $controllerArguments = new ControllerArguments(
             (new ControllerParameters)
                 ->withAdded(
-                    new ControllerParameter($paramId, new Regex('/^[0-9]+$/'))
+                    (new ControllerParameter($paramId))
+                        ->withRegex('/^[0-9]+$/')
                 )
                 ->withAdded(
-                    (new ControllerParameter($paramName, new Regex('/^\w+$/')))
-                        ->withIsRequired(false)
+                    (new ControllerParameterOptional($paramName))
+                        ->withRegex('/^\w+$/')
                 ),
             [$paramId => '123']
         );
