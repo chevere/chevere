@@ -15,7 +15,6 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameterOptional;
-use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Controller\ControllerParameterNameInvalidException;
 use PHPUnit\Framework\TestCase;
 
