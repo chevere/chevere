@@ -14,14 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Controller\Traits\ControllerParameterTrait;
-use Chevere\Interfaces\Controller\ControllerParameterInterface;
+use Chevere\Interfaces\Controller\ControllerParameterOptionalInterface;
 
-final class ControllerParameterOptional implements ControllerParameterInterface
+final class ControllerParameterOptional implements ControllerParameterOptionalInterface
 {
     use ControllerParameterTrait;
-
-    public function isRequired(): bool
-    {
-        return false;
-    }
 }

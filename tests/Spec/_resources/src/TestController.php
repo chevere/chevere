@@ -16,10 +16,9 @@ namespace Chevere\Tests\Spec\_resources\src;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
-use Chevere\Components\Controller\ControllerResponse;
+use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
-use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
@@ -59,7 +58,7 @@ class TestController extends Controller implements PluggableHooksInterface
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
         $this->hook('run:before', $arguments);
-        $response = new ControllerResponse(true, []);
+        $response = new ControllerResponseSuccess([]);
         $data = [
             'userName' => $arguments->get('name'),
             'userId' => $arguments->get('id')

@@ -17,7 +17,6 @@ use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameterOptional;
 use Chevere\Components\Controller\ControllerParameters;
-use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
 use Chevere\Exceptions\Controller\ControllerArgumentRequiredException;
 use Chevere\Exceptions\Core\OutOfBoundsException;

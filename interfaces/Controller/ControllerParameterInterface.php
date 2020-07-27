@@ -27,11 +27,6 @@ interface ControllerParameterInterface
     public function __construct(string $name);
 
     /**
-     * Indicates whether the parameter is required.
-     */
-    public function isRequired(): bool;
-
-    /**
      * Provides access to the parameter name.
      */
     public function name(): string;

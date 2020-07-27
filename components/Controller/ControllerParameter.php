@@ -19,9 +19,4 @@ use Chevere\Interfaces\Controller\ControllerParameterInterface;
 final class ControllerParameter implements ControllerParameterInterface
 {
     use ControllerParameterTrait;
-
-    public function isRequired(): bool
-    {
-        return true;
-    }
 }

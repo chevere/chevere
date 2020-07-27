@@ -15,7 +15,7 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Controller\ControllerResponse;
+use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Exceptions\Controller\ControllerInterfaceException;
 use Chevere\Exceptions\Controller\ControllerNameException;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
@@ -86,6 +86,6 @@ final class ControllerNameTestController extends Controller
     {
         // $user = (new UserMiddleware($arguments->get('id')))->get();
 
-        return new ControllerResponse(true, []);
+        return new ControllerResponseSuccess([]);
     }
 }

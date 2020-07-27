@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of Chevere.
+ * This file is part of Chevereto.
  *
- * (c) Rodolfo Berrios <rodolfo@chevere.org>
+ * (c) Rodolfo Berrios <rodolfo@chevereto.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -35,8 +35,7 @@ final class ControllerRunner implements ControllerRunnerInterface
         } catch (Throwable $e) {
             return (new ControllerExecuted([]))->withThrowable($e, 1);
         }
-        $data = $response->data();
 
-        return new ControllerExecuted($data);
+        return new ControllerExecuted($response->data());
     }
 }

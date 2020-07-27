@@ -17,7 +17,7 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
-use Chevere\Components\Controller\ControllerResponse;
+use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Components\Controller\ControllerRunner;
 use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
@@ -72,8 +72,9 @@ final class ControllerRunnerTestController extends Controller
 
     public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
-        return (new ControllerResponse(true, []))
-            ->withData(['user' => $args->get('name')]);
+        return new ControllerResponseSuccess([
+            'user' => $args->get('name')
+        ]);
     }
 }
 

@@ -14,14 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Controller;
 
 /**
- * Describes the component in charge of handling the controller response.
+ * Describes the component in charge of defining an optional controller parameter.
  */
-interface ControllerResponseInterface
+interface ControllerParameterOptionalInterface extends ControllerParameterInterface
 {
-    public function __construct(array $data);
-
-    /**
-     * Provides access to controller response data.
-     */
-    public function data(): array;
 }

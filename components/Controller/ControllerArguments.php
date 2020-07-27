@@ -18,6 +18,8 @@ use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
 use Chevere\Exceptions\Controller\ControllerArgumentRequiredException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerParameterInterface;
+use Chevere\Interfaces\Controller\ControllerParameterOptionalInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Throwable;
 
@@ -92,10 +94,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
     {
         $failed = [];
         foreach ($this->parameters->getGenerator() as $name => $parameter) {
-            if (
-                $parameter->isRequired()
-                && $this->has($name) === false
-            ) {
+            if (!($parameter instanceof ControllerParameterOptionalInterface) && !$this->has($name)) {
                 $failed[] = $name;
             }
         }

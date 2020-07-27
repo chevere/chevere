@@ -16,7 +16,7 @@ namespace Chevere\Tests\Route;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
-use Chevere\Components\Controller\ControllerResponse;
+use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
@@ -86,6 +86,6 @@ final class RouteEndpointTestController extends Controller
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true, []);
+        return new ControllerResponseSuccess([]);
     }
 }

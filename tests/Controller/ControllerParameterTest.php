@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameterOptional;
 use Chevere\Exceptions\Controller\ControllerParameterNameInvalidException;
 use PHPUnit\Framework\TestCase;
 
@@ -54,13 +53,5 @@ final class ControllerParameterTest extends TestCase
         $this->assertSame('', $controllerParameter->description());
         $controllerParameter = $controllerParameter->withDescription($description);
         $this->assertSame($description, $controllerParameter->description());
-    }
-
-    public function testParameterOptional(): void
-    {
-        $controllerParameter = new ControllerParameter('test');
-        $this->assertTrue($controllerParameter->isRequired());
-        $controllerParameter = new ControllerParameterOptional('test');
-        $this->assertFalse($controllerParameter->isRequired());
     }
 }

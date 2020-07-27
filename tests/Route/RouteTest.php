@@ -16,7 +16,7 @@ namespace Chevere\Tests\Route;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
-use Chevere\Components\Controller\ControllerResponse;
+use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Route\Route;
@@ -138,7 +138,7 @@ final class RouteTestController extends Controller
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true, []);
+        return new ControllerResponseSuccess([]);
     }
 }
 
@@ -146,7 +146,7 @@ final class RouteTestControllerNoParams extends Controller
 {
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true, []);
+        return new ControllerResponseSuccess([]);
     }
 }
 
@@ -163,6 +163,6 @@ final class RouteTestControllerRegexConflict extends Controller
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true, []);
+        return new ControllerResponseSuccess([]);
     }
 }

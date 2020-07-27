@@ -15,7 +15,7 @@ namespace Chevere\Tests\Service\_resources;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameters;
-use Chevere\Components\Controller\ControllerResponse;
+use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Components\Service\ServiceProviders;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
@@ -58,6 +58,6 @@ class TestController extends Controller implements ServiceableInterface
             'suelta el dominio tonto ql'
         );
 
-        return new ControllerResponse(true, []);
+        return new ControllerResponseSuccess([]);
     }
 }

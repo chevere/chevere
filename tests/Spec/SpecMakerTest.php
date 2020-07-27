@@ -17,7 +17,7 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameterOptional;
 use Chevere\Components\Controller\ControllerParameters;
-use Chevere\Components\Controller\ControllerResponse;
+use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Route\Route;
@@ -118,7 +118,7 @@ class SpecMakerTestGetController extends Controller
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true, []);
+        return new ControllerResponseSuccess([]);
     }
 }
 
@@ -141,6 +141,6 @@ class SpecMakerTestPutController extends Controller
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true, []);
+        return new ControllerResponseSuccess([]);
     }
 }

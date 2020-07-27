@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerResponse;
+use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 
@@ -22,6 +22,6 @@ final class TestController extends Controller
 {
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true, []);
+        return new ControllerResponseSuccess([]);
     }
 }
