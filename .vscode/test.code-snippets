@@ -1,0 +1,48 @@
+{
+    "test": {
+        "description": "Create a test",
+        "prefix": "test",
+        "body": [
+            "<?php",
+            "namespace Chevere\\Tests\\\\${TM_DIRECTORY/.*tests\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "",
+            "use PHPUnit\\Framework\\TestCase;",
+            "",
+            "final class $TM_FILENAME_BASE extends TestCase",
+            "{",
+            "\t$0",
+            "}"
+        ]
+    },
+    "test-method": {
+        "description": "Create a test method",
+        "prefix": "test-method",
+        "body": [
+            "public function test${1:Name}(): void",
+            "{",
+            "\t$0",
+            "}"
+        ]
+    },
+    "coverage-ignore": {
+        "description": "Insert a code coverage ignore tag",
+        "prefix": "cov-ignore",
+        "body": [
+            "@codeCoverageIgnore"
+        ]
+    },
+    "coverage-ignore-start": {
+        "description": "Insert a code coverage ignore start tag",
+        "prefix": "cov-ignore-start",
+        "body": [
+            "@codeCoverageIgnoreStart"
+        ]
+    },
+    "coverage-ignore-end": {
+        "description": "Insert a code coverage ignore end tag",
+        "prefix": "cov-ignore-end",
+        "body": [
+            "@codeCoverageIgnoreEnd"
+        ]
+    },
+}
