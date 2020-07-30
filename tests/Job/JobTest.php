@@ -14,61 +14,28 @@ declare(strict_types=1);
 namespace Chevere\Tests\Job;
 
 use Chevere\Components\Job\Job;
-use Chevere\Components\Job\Task;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\UnexpectedValueException;
 use PHPUnit\Framework\TestCase;
 
 final class JobTest extends TestCase
 {
-    public function testTookOurJobs(): void
+    public function testUnexpectedValue(): void
     {
-        $this->expectNotToPerformAssertions();
-        $job = (new Job('user-upload-image'))
-            ->with(
-                new Task(
-                    'validate',
-                    'validateImageFn',
-                    ['${job:filename}']
-                )
-            )
-            ->with(
-                new Task(
-                    'upload',
-                    'uploadImageFn',
-                    ['${job:filename}']
-                )
-            )
-            ->with(
-                new Task(
-                    'bind-user',
-                    'bindImageToUserFn',
-                    ['${upload:id}', '${job:userId}']
-                )
-            )
-            ->with(
-                new Task(
-                    'response',
-                    'picoConLaWea',
-                    ['${upload:id}']
-                )
-            );
-        $job = $job
-            // Plugin: check banned hashes
-            ->withBefore(
-                'validate',
-                new Task(
-                    'vendor-ban-check',
-                    'vendorPath/banCheck',
-                    ['${job:filename}']
-                )
-            )
-            // Plugin: sepia filter
-            ->withAfter(
-                'validate',
-                new Task(
-                    'vendor-sepia-filter',
-                    'vendorPath/sepiaFilter',
-                    ['${job:filename}']
-                )
-            );
+        $this->expectException(UnexpectedValueException::class);
+        new Job('job');
+    }
+
+    public function testInvalidArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Job('$jo.b');
+    }
+
+    public function testConstruct(): void
+    {
+        $name = 'the-job-name';
+        $job = new Job($name);
+        $this->assertSame($name, $job->toString());
     }
 }

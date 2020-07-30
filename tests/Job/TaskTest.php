@@ -20,12 +20,12 @@ final class TaskTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $name = 'task-name';
         $callable = 'callable';
-        $arguments = [];
-        $task = new Task($name, $callable, $arguments);
-        $this->assertSame($name, $task->name());
+        $task = new Task($callable);
         $this->assertSame($callable, $task->callable());
+        $this->assertSame([], $task->arguments());
+        $arguments = ['1', '2', '3'];
+        $task = $task->withArguments(...$arguments);
         $this->assertSame($arguments, $task->arguments());
     }
 }

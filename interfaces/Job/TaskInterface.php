@@ -13,14 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Job;
 
+use Chevere\Exceptions\Core\InvalidArgumentException;
+
 /**
  * Describes the component in charge of defining a task (a unit of job).
  */
 interface TaskInterface
 {
-    public function __construct(string $name, string $callable, array $arguments);
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function __construct(string $callable);
 
-    public function name(): string;
+    public function withArguments(string ...$arguments): TaskInterface;
 
     public function callable(): string;
 

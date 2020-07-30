@@ -17,22 +17,22 @@ use Chevere\Interfaces\Job\TaskInterface;
 
 final class Task implements TaskInterface
 {
-    private string $name;
-
     private string $callable;
 
     private array $arguments;
 
-    public function __construct(string $name, string $callable, array $arguments)
+    public function __construct(string $callable)
     {
-        $this->name = $name;
         $this->callable = $callable;
-        $this->arguments = $arguments;
+        $this->arguments = [];
     }
 
-    public function name(): string
+    public function withArguments(string ...$arguments): TaskInterface
     {
-        return $this->name;
+        $new = clone $this;
+        $new->arguments = $arguments;
+
+        return $new;
     }
 
     public function callable(): string

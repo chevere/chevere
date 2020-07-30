@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Exceptions\Core;
 
-use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Traits\ExceptionTrait;
 use Chevere\Interfaces\Message\MessageInterface;
 use Throwable;
