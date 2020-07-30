@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameterOptional;
-use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\ParameterOptional;
+use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
@@ -29,10 +30,10 @@ use Chevere\Components\Router\Router;
 use Chevere\Components\Spec\SpecMaker;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
 
@@ -101,22 +102,22 @@ final class SpecMakerTest extends TestCase
 
 class SpecMakerTestGetController extends Controller
 {
-    public function getParameters(): ControllerParametersInterface
+    public function getParameters(): ParametersInterface
     {
-        return (new ControllerParameters)
+        return (new Parameters)
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/^[0-9]+$/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/^[0-9]+$/'))
                     ->withDescription('The user integer id')
             )
             ->withAdded(
-                (new ControllerParameterOptional('name'))
-                    ->withRegex('/^[\w]+$/')
+                (new ParameterOptional('name'))
+                    ->withRegex(new Regex('/^[\w]+$/'))
                     ->withDescription('The user name')
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponseSuccess([]);
     }
@@ -124,22 +125,22 @@ class SpecMakerTestGetController extends Controller
 
 class SpecMakerTestPutController extends Controller
 {
-    public function getParameters(): ControllerParametersInterface
+    public function getParameters(): ParametersInterface
     {
-        return (new ControllerParameters)
+        return (new Parameters)
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/^[0-9]+$/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/^[0-9]+$/'))
                     ->withDescription('The user integer id')
             )
             ->withAdded(
-                (new ControllerParameterOptional('name'))
-                    ->withRegex('/^[\w]+$/')
+                (new ParameterOptional('name'))
+                    ->withRegex(new Regex('/^[\w]+$/'))
                     ->withDescription('The user name')
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponseSuccess([]);
     }

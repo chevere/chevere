@@ -11,13 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Controller;
+namespace Chevere\Components\Parameter;
 
-use Chevere\Exceptions\Core\Exception;
+use Chevere\Components\Parameter\Traits\ParameterTrait;
+use Chevere\Interfaces\Parameter\ParameterInterface;
 
-/**
- * Exception thrown when the controller argument fails to match the regex.
- */
-final class ControllerArgumentRegexMatchException extends Exception
+final class Parameter implements ParameterInterface
 {
+    use ParameterTrait;
 }

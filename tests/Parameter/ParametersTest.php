@@ -11,20 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameters;
-use Chevere\Components\Regex\Regex;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
-final class ControllerParametersTest extends TestCase
+final class ParametersTest extends TestCase
 {
     public function testEmpty(): void
     {
         $key = 'name';
-        $parameters = new ControllerParameters;
+        $parameters = new Parameters;
         $this->assertCount(0, $parameters->toArray());
         $this->assertFalse($parameters->hasParameterName($key));
         $this->expectException(OutOfBoundsException::class);
@@ -34,8 +33,8 @@ final class ControllerParametersTest extends TestCase
     public function testPut(): void
     {
         $key = 'name';
-        $parameter = new ControllerParameter($key);
-        $parameters = (new ControllerParameters)->withAdded($parameter);
+        $parameter = new Parameter($key);
+        $parameters = (new Parameters)->withAdded($parameter);
         $this->assertCount(1, $parameters->toArray());
         $this->assertTrue($parameters->hasParameterName($key));
         $this->assertSame($parameter, $parameters->get($key));

@@ -14,14 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
@@ -71,20 +72,20 @@ final class RouteEndpointTest extends TestCase
 
 final class RouteEndpointTestController extends Controller
 {
-    public function getParameters(): ControllerParametersInterface
+    public function getParameters(): ParametersInterface
     {
-        return (new ControllerParameters)
+        return (new Parameters)
             ->withAdded(
-                (new ControllerParameter('name'))
-                    ->withRegex('/^[\w]+$/')
+                (new Parameter('name'))
+                    ->withRegex(new Regex('/^[\w]+$/'))
             )
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/^[0-9]+$/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/^[0-9]+$/'))
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponseSuccess([]);
     }

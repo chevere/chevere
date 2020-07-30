@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Regex;
 
-use Chevere\Exceptions\Regex\RegexInvalidException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
@@ -32,16 +31,6 @@ interface RegexInterface extends ToStringInterface
     ];
 
     /**
-     * @throws RegexInvalidException
-     */
-    public function __construct(string $string);
-
-    /**
-     * @throws RegexException If provided regex contains capture groups
-     */
-    public function assertNoCapture(): void;
-
-    /**
      * Provides access to the the regex string without delimiters.
      */
     public function toNoDelimiters(): string;
@@ -50,4 +39,16 @@ interface RegexInterface extends ToStringInterface
      * Provides access to the regex string without delimiters and without anchors (`^`, `$`).
      */
     public function toNoDelimitersNoAnchors(): string;
+
+    /**
+     * Matches string.
+     * @throws RuntimeException
+     */
+    public function match(string $string): array;
+
+    /**
+     * Matches all string.
+     * @throws RuntimeException
+     */
+    public function matchAll(string $string): array;
 }

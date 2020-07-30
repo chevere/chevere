@@ -11,45 +11,47 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Exceptions\Controller\ControllerParameterNameInvalidException;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Regex\Regex;
+use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use PHPUnit\Framework\TestCase;
 
-final class ControllerParameterTest extends TestCase
+final class ParameterTest extends TestCase
 {
     public function testEmptyName(): void
     {
-        $this->expectException(ControllerParameterNameInvalidException::class);
-        new ControllerParameter('');
+        $this->expectException(ParameterNameInvalidException::class);
+        new Parameter('');
     }
 
     public function testCtypeSpaceName(): void
     {
-        $this->expectException(ControllerParameterNameInvalidException::class);
-        new ControllerParameter(' ');
+        $this->expectException(ParameterNameInvalidException::class);
+        new Parameter(' ');
     }
 
     public function testSpaceInName(): void
     {
-        $this->expectException(ControllerParameterNameInvalidException::class);
-        new ControllerParameter('some name');
+        $this->expectException(ParameterNameInvalidException::class);
+        new Parameter('some name');
     }
 
     public function testConstruct(): void
     {
         $name = 'id';
         $regex = '/^[0-9+]$/';
-        $controllerParameter = new ControllerParameter('id');
+        $controllerParameter = new Parameter('id');
         $this->assertSame($name, $controllerParameter->name());
-        $this->assertSame($regex, $controllerParameter->withRegex($regex)->regex()->toString());
+        $this->assertSame($regex, $controllerParameter
+            ->withRegex(new Regex($regex))->regex()->toString());
     }
 
     public function testWithDescription(): void
     {
         $description = 'ola k ase';
-        $controllerParameter = new ControllerParameter('test');
+        $controllerParameter = new Parameter('test');
         $this->assertSame('', $controllerParameter->description());
         $controllerParameter = $controllerParameter->withDescription($description);
         $this->assertSame($description, $controllerParameter->description());

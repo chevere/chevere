@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\Service\_resources;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponseSuccess;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Service\ServiceProviders;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Service\ServiceableInterface;
 use Chevere\Interfaces\Service\ServiceProvidersInterface;
 
@@ -46,12 +46,12 @@ class TestController extends Controller implements ServiceableInterface
         return 'greet';
     }
 
-    public function getParameters(): ControllerParametersInterface
+    public function getParameters(): ParametersInterface
     {
-        return new ControllerParameters;
+        return new Parameters;
     }
 
-    public function run(ControllerArgumentsInterface $controllerArguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $controllerArguments): ControllerResponseInterface
     {
         $this->mailer->send(
             'guy@chevere.com',

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
 use Chevere\Interfaces\Controller\ControllerExecutedInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Controller\ControllerRunnerInterface;
@@ -28,7 +28,7 @@ final class ControllerRunner implements ControllerRunnerInterface
         $this->controller = $controller;
     }
 
-    public function execute(ControllerArgumentsInterface $arguments): ControllerExecutedInterface
+    public function execute(ArgumentedInterface $arguments): ControllerExecutedInterface
     {
         try {
             $response = $this->controller->run($arguments);

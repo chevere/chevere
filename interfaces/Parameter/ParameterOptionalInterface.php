@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Parameter;
 
 /**
- * Describes the component in charge of defining an optional controller parameter.
+ * Describes the component in charge of defining an optional parameter.
  */
-interface ControllerParameterOptionalInterface extends ControllerParameterInterface
+interface ParameterOptionalInterface extends ParameterInterface
 {
 }

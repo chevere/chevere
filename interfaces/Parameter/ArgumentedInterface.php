@@ -11,25 +11,25 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Parameter;
 
-use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
-use Chevere\Exceptions\Controller\ControllerArgumentRequiredException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
+use Chevere\Exceptions\Parameter\ArgumentRequiredException;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\To\ToArrayInterface;
 
 /**
- * Describes the component in charge of handling controller arguments.
+ * Describes the component in charge of defining an argumented set.
  */
-interface ControllerArgumentsInterface extends ToArrayInterface
+interface ArgumentedInterface extends ToArrayInterface
 {
     /**
-     * @throws ControllerArgumentRequiredException
+     * @throws ArgumentRequiredException
      * @throws OutOfBoundsException
-     * @throws ControllerArgumentRegexMatchException
+     * @throws ArgumentRegexMatchException
      */
-    public function __construct(ControllerParametersInterface $parameters, array $arguments);
+    public function __construct(ParametersInterface $parameters, array $arguments);
 
     /**
      * Provides access to the controller arguments as array.
@@ -48,10 +48,10 @@ interface ControllerArgumentsInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified controller argument.
      *
-     * @throws ControllerArgumentRegexMatchException
+     * @throws ArgumentRegexMatchException
      * @throws OutOfBoundsException If `$name` is not a known controller parameter.
      */
-    public function withArgument(string $name, string $value): ControllerArgumentsInterface;
+    public function withArgument(string $name, string $value): ArgumentedInterface;
 
     /**
      * Indicates whether the instance has an argument for the parameter `$name`.

@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller\Traits;
+namespace Chevere\Components\Parameter\Traits;
 
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\StrAssert;
-use Chevere\Exceptions\Controller\ControllerParameterNameInvalidException;
 use Chevere\Exceptions\Core\Exception;
-use Chevere\Interfaces\Controller\ControllerParameterInterface;
+use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
+use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
 
-trait ControllerParameterTrait
+trait ParameterTrait
 {
     private string $name;
 
@@ -35,15 +35,15 @@ trait ControllerParameterTrait
         $this->assertName();
     }
 
-    public function withRegex(string $regex): ControllerParameterInterface
+    public function withRegex(RegexInterface $regex): ParameterInterface
     {
         $new = clone $this;
-        $new->regex = new Regex($regex);
+        $new->regex = $regex;
 
         return $new;
     }
 
-    public function withDescription(string $description): ControllerParameterInterface
+    public function withDescription(string $description): ParameterInterface
     {
         $new = clone $this;
         $new->description = $description;
@@ -74,7 +74,7 @@ trait ControllerParameterTrait
                 ->notCtypeSpace()
                 ->notContains(' ');
         } catch (Exception $e) {
-            throw new ControllerParameterNameInvalidException(
+            throw new ParameterNameInvalidException(
                 $e->message(),
                 $e->getCode(),
                 $e

@@ -19,7 +19,7 @@ use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Exceptions\Controller\ControllerInterfaceException;
 use Chevere\Exceptions\Controller\ControllerNameException;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -82,7 +82,7 @@ final class ControllerNameTestController extends Controller
     // {
     // }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         // $user = (new UserMiddleware($arguments->get('id')))->get();
 

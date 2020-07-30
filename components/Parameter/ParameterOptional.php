@@ -11,13 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Controller;
+namespace Chevere\Components\Parameter;
 
-use Chevere\Exceptions\Core\Exception;
+use Chevere\Components\Parameter\Traits\ParameterTrait;
+use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
 
-/**
- * Exception thrown when parameter name is invalid.
- */
-final class ControllerParameterNameInvalidException extends Exception
+final class ParameterOptional implements ParameterOptionalInterface
 {
+    use ParameterTrait;
 }

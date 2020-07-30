@@ -13,23 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 
 /**
  * @codeCoverageIgnore
  */
 abstract class Controller implements ControllerInterface
 {
-    private ControllerParametersInterface $parameters;
+    private ParametersInterface $parameters;
 
     private string $description;
 
-    public function getParameters(): ControllerParametersInterface
+    public function getParameters(): ParametersInterface
     {
-        return new ControllerParameters;
+        return new Parameters;
     }
 
     public function getDescription(): string
@@ -37,7 +38,7 @@ abstract class Controller implements ControllerInterface
         return '';
     }
 
-    abstract public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface;
+    abstract public function run(ArgumentedInterface $arguments): ControllerResponseInterface;
 
     final public function __construct()
     {
@@ -45,7 +46,7 @@ abstract class Controller implements ControllerInterface
         $this->description = $this->getDescription();
     }
 
-    final public function parameters(): ControllerParametersInterface
+    final public function parameters(): ParametersInterface
     {
         return $this->parameters;
     }

@@ -13,16 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
-use Chevere\Components\Controller\ControllerArguments;
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameterOptional;
-use Chevere\Components\Controller\ControllerParameters;
-use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
-use Chevere\Exceptions\Controller\ControllerArgumentRequiredException;
+use Chevere\Components\Controller\Argumented;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\ParameterOptional;
+use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
+use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use PHPUnit\Framework\TestCase;
 
-final class ControllerArgumentsTest extends TestCase
+final class ArgumentedTest extends TestCase
 {
     public function testConstruct(): void
     {
@@ -30,16 +31,16 @@ final class ControllerArgumentsTest extends TestCase
             'id' => '1',
             'name' => 'someValue',
         ];
-        $parameters = (new ControllerParameters)
+        $parameters = (new Parameters)
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/^\d+$/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/^\d+$/'))
             )
             ->withAdded(
-                (new ControllerParameter('name'))
-                    ->withRegex('/^\w+$/')
+                (new Parameter('name'))
+                    ->withRegex(new Regex('/^\w+$/'))
             );
-        $controllerArguments = new ControllerArguments($parameters, $arguments);
+        $controllerArguments = new Argumented($parameters, $arguments);
         $this->assertSame($arguments, $controllerArguments->toArray());
         foreach ($arguments as $name => $value) {
             $this->assertTrue($controllerArguments->has($name));
@@ -53,20 +54,20 @@ final class ControllerArgumentsTest extends TestCase
 
     public function testInvalidParameterName(): void
     {
-        $parameters = new ControllerParameters;
+        $parameters = new Parameters;
         $this->expectException(OutOfBoundsException::class);
-        new ControllerArguments($parameters, ['id' => '123']);
+        new Argumented($parameters, ['id' => '123']);
     }
 
     public function testInvalidRegexArgument(): void
     {
-        $parameters = (new ControllerParameters)
+        $parameters = (new Parameters)
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/^[0-9]+$/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/^[0-9]+$/'))
             );
-        $this->expectException(ControllerArgumentRegexMatchException::class);
-        (new ControllerArguments($parameters, ['id' => 'abc']));
+        $this->expectException(ArgumentRegexMatchException::class);
+        (new Argumented($parameters, ['id' => 'abc']));
     }
 
     public function testPut(): void
@@ -74,11 +75,11 @@ final class ControllerArgumentsTest extends TestCase
         $name = 'id';
         $value = '123';
         $valueAlt = '321';
-        $controllerArguments = new ControllerArguments(
-            (new ControllerParameters)
+        $controllerArguments = new Argumented(
+            (new Parameters)
                 ->withAdded(
-                    (new ControllerParameter($name))
-                        ->withRegex('/^[0-9]+$/')
+                    (new Parameter($name))
+                        ->withRegex(new Regex('/^[0-9]+$/'))
                 ),
             [$name => $value]
         );
@@ -86,35 +87,35 @@ final class ControllerArgumentsTest extends TestCase
         $this->assertSame($value, $controllerArguments->get($name));
         $controllerArguments = $controllerArguments->withArgument($name, $valueAlt);
         $this->assertSame($valueAlt, $controllerArguments->get($name));
-        $this->expectException(ControllerArgumentRegexMatchException::class);
+        $this->expectException(ArgumentRegexMatchException::class);
         $controllerArguments->withArgument($name, 'invalid');
     }
 
     public function testArgumentsRequiredException(): void
     {
-        $parameters = (new ControllerParameters)
+        $parameters = (new Parameters)
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/^[0-9]+$/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $arguments = [];
-        $this->expectException(ControllerArgumentRequiredException::class);
-        new ControllerArguments($parameters, $arguments);
+        $this->expectException(ArgumentRequiredException::class);
+        new Argumented($parameters, $arguments);
     }
 
     public function testParameterOptional(): void
     {
         $paramId = 'id';
         $paramName = 'name';
-        $controllerArguments = new ControllerArguments(
-            (new ControllerParameters)
+        $controllerArguments = new Argumented(
+            (new Parameters)
                 ->withAdded(
-                    (new ControllerParameter($paramId))
-                        ->withRegex('/^[0-9]+$/')
+                    (new Parameter($paramId))
+                        ->withRegex(new Regex('/^[0-9]+$/'))
                 )
                 ->withAdded(
-                    (new ControllerParameterOptional($paramName))
-                        ->withRegex('/^\w+$/')
+                    (new ParameterOptional($paramName))
+                        ->withRegex(new Regex('/^\w+$/'))
                 ),
             [$paramId => '123']
         );

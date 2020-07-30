@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller;
+namespace Chevere\Components\Parameter;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\Controller\ControllerParameterInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Parameter\ParameterInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 
-final class ControllerParameters implements ControllerParametersInterface
+final class Parameters implements ParametersInterface
 {
     use DsMapTrait;
 
@@ -28,7 +28,7 @@ final class ControllerParameters implements ControllerParametersInterface
         return $this->map->toArray();
     }
 
-    public function withAdded(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
+    public function withAdded(ParameterInterface $controllerParameter): ParametersInterface
     {
         $new = clone $this;
         $new->map->put(
@@ -44,11 +44,11 @@ final class ControllerParameters implements ControllerParametersInterface
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
     }
 
-    public function get(string $name): ControllerParameterInterface
+    public function get(string $name): ParameterInterface
     {
         try {
             /**
-             * @var ControllerParameterInterface $return
+             * @var ParameterInterface $return
              */
             $return = $this->map->get($name);
 

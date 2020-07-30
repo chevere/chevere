@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponseSuccess;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
@@ -28,9 +29,9 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Route\RouteEndpointConflictException;
 use Chevere\Exceptions\Route\RouteWildcardConflictException;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use PHPUnit\Framework\TestCase;
 
 final class RouteTest extends TestCase
@@ -127,16 +128,16 @@ final class RouteTest extends TestCase
 
 final class RouteTestController extends Controller
 {
-    public function getParameters(): ControllerParametersInterface
+    public function getParameters(): ParametersInterface
     {
-        return (new ControllerParameters)
+        return (new Parameters)
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/^[0-9]+$/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/^[0-9]+$/'))
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponseSuccess([]);
     }
@@ -144,7 +145,7 @@ final class RouteTestController extends Controller
 
 final class RouteTestControllerNoParams extends Controller
 {
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponseSuccess([]);
     }
@@ -152,16 +153,16 @@ final class RouteTestControllerNoParams extends Controller
 
 final class RouteTestControllerRegexConflict extends Controller
 {
-    public function getParameters(): ControllerParametersInterface
+    public function getParameters(): ParametersInterface
     {
-        return (new ControllerParameters)
+        return (new Parameters)
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/^\W+$/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/^\W+$/'))
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponseSuccess([]);
     }

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route;
 
 use Chevere\Components\Route\RouteWildcardMatch;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Regex\RegexException;
 use Chevere\Exceptions\Regex\RegexInvalidException;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class RouteWildcardMatchTest extends TestCase

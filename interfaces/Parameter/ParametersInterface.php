@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Parameter;
 
-use Chevere\Interfaces\Controller\ControllerParameterInterface;
+use Chevere\Interfaces\Parameter\ParameterInterface;
 use Countable;
 use Generator;
 
 /**
- * Describes the component in charge of collecting objects implementing `ControllerParameterInterface`.
+ * Describes the component in charge of collecting objects implementing `ParameterInterface`.
  */
-interface ControllerParametersInterface extends Countable
+interface ParametersInterface extends Countable
 {
     /**
-     * @return Generator<string, ControllerParameterInterface>
+     * @return Generator<string, ParameterInterface>
      */
     public function getGenerator(): Generator;
 
@@ -44,7 +44,7 @@ interface ControllerParametersInterface extends Countable
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified controller parameter instance.
      */
-    public function withAdded(ControllerParameterInterface $controllerParameter): ControllerParametersInterface;
+    public function withAdded(ParameterInterface $controllerParameter): ParametersInterface;
 
     /**
      * Indicates whether the instance has a parameter identified by `$name`.
@@ -54,5 +54,5 @@ interface ControllerParametersInterface extends Countable
     /**
      * @throws OutOfBoundsException
      */
-    public function get(string $name): ControllerParameterInterface;
+    public function get(string $name): ParameterInterface;
 }

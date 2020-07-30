@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
+
 /**
  * Describes the component in charge of handling controller instructions.
  */
@@ -21,12 +24,12 @@ interface ControllerInterface
     /**
      * Defines the controller parameters.
      */
-    public function getParameters(): ControllerParametersInterface;
+    public function getParameters(): ParametersInterface;
 
     /**
      * Provides access to the controller parameters defined with `getParameters()`.
      */
-    public function parameters(): ControllerParametersInterface;
+    public function parameters(): ParametersInterface;
 
     /**
      * Defines the controller description.
@@ -41,5 +44,5 @@ interface ControllerInterface
     /**
      * This method will be called when running the controller.
      */
-    public function run(ControllerArgumentsInterface $controllerArguments): ControllerResponseInterface;
+    public function run(ArgumentedInterface $controllerArguments): ControllerResponseInterface;
 }

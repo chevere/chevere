@@ -14,30 +14,30 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponseSuccess;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 
 final class TestController extends Controller
 {
-    public function getParameters(): ControllerParametersInterface
+    public function getParameters(): ParametersInterface
     {
-        return (new ControllerParameters)
+        return (new Parameters)
             ->withAdded(
-                (new ControllerParameter('name'))
-                    ->withRegex('/\w+/')
+                (new Parameter('name'))
+                    ->withRegex(new Regex('/\w+/'))
             )
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/\d+/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/\d+/'))
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponseSuccess([]);
     }

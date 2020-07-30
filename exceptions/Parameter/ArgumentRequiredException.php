@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Controller;
+namespace Chevere\Exceptions\Parameter;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
  * Exception thrown when missing required arguments.
  */
-final class ControllerArgumentRequiredException extends Exception
+final class ArgumentRequiredException extends Exception
 {
 }

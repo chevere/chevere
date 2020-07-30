@@ -17,6 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Regex\RegexException;
 use Chevere\Interfaces\Route\RouteWildcardMatchInterface;
 
 final class RouteWildcardMatch implements RouteWildcardMatchInterface
@@ -27,7 +28,7 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
     {
         $this->string = $string;
         $this->assertFormat();
-        (new Regex('#' . $this->string . '#'))->assertNoCapture();
+        $this->assertRegexNoCapture();
     }
 
     public function toString(): string
@@ -54,6 +55,19 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
                 (new Message('String %string% must omit the ending anchor %char%'))
                     ->code('%string%', $this->string)
                     ->code('%char%', '$')
+            );
+        }
+    }
+
+    public function assertRegexNoCapture(): void
+    {
+        $regex = new Regex('#' . $this->string . '#');
+        $string = $regex->toString();
+        $regex = str_replace(['\(', '\)'], null, $string);
+        if (false !== strpos($regex, '(') || false !== strpos($regex, ')')) {
+            throw new RegexException(
+                (new Message('Provided expression %match% contains capture groups'))
+                    ->code('%match%', $string)
             );
         }
     }

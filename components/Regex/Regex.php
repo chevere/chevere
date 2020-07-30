@@ -15,9 +15,12 @@ namespace Chevere\Components\Regex;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
-use Chevere\Exceptions\Regex\RegexException;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Regex\RegexInvalidException;
 use Chevere\Interfaces\Regex\RegexInterface;
+use Safe\Exceptions\PcreException;
+use function Safe\preg_match;
+use function Safe\preg_match_all;
 
 final class Regex implements RegexInterface
 {
@@ -27,6 +30,9 @@ final class Regex implements RegexInterface
 
     private string $noDelimitersNoAnchors;
 
+    /**
+     * @throws RegexInvalidException
+     */
     public function __construct(string $string)
     {
         $this->string = $string;
@@ -34,17 +40,6 @@ final class Regex implements RegexInterface
         $delimiter = $this->string[0];
         $this->noDelimiters = trim($this->string, $delimiter);
         $this->noDelimitersNoAnchors = (string) preg_replace('#^\^(.*)\$$#', '$1', $this->noDelimiters);
-    }
-
-    public function assertNoCapture(): void
-    {
-        $regex = str_replace(['\(', '\)'], null, $this->string);
-        if (false !== strpos($regex, '(') || false !== strpos($regex, ')')) {
-            throw new RegexException(
-                (new Message('Provided expression %match% contains capture groups'))
-                    ->code('%match%', $this->string)
-            );
-        }
     }
 
     public function toString(): string
@@ -62,16 +57,54 @@ final class Regex implements RegexInterface
         return $this->noDelimitersNoAnchors;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
+    public function match(string $string): array
+    {
+        try {
+            preg_match($this->string, $string, $matches);
+        } catch (PcreException $e) {
+            throw new RuntimeException(
+                (new Message('Unable to %function%'))
+                    ->code('%function%', 'preg_match'),
+                0,
+                $e
+            );
+        }
+
+        return $matches;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function matchAll(string $string): array
+    {
+        try {
+            preg_match_all($this->string, $string, $matches);
+        } catch (\Exception $e) {
+            throw new RuntimeException(
+                (new Message('Unable to %function%'))
+                    ->code('%function%', 'preg_match_all'),
+                0,
+                $e
+            );
+        }
+
+        return $matches;
+    }
+
     private function assertRegex(): void
     {
         try {
-            if (@preg_match($this->string, '') === false) {
+            if (preg_match($this->string, '') === false) {
                 throw new Exception(
                     (new Message('Detected %function% error'))
                         ->code('%function%', 'preg_match')
                 ); // @codeCoverageIgnore
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             throw new RegexInvalidException(
                 (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
                     ->code('%regex%', $this->string)

@@ -14,14 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponseSuccess;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Components\Regex\Regex;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
 
@@ -39,23 +40,23 @@ class TestController extends Controller implements PluggableHooksInterface
             ->withAdded('run:after');
     }
 
-    public function getParameters(): ControllerParametersInterface
+    public function getParameters(): ParametersInterface
     {
-        $parameters = (new ControllerParameters)
+        $parameters = (new Parameters)
             ->withAdded(
-                (new ControllerParameter('name'))
-                    ->withRegex('/^[\w]+$/')
+                (new Parameter('name'))
+                    ->withRegex(new Regex('/^[\w]+$/'))
             )
             ->withAdded(
-                (new ControllerParameter('id'))
-                    ->withRegex('/^[0-9]+$/')
+                (new Parameter('id'))
+                    ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $this->hook('getParameters:after', $parameters);
 
         return $parameters;
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         $this->hook('run:before', $arguments);
         $response = new ControllerResponseSuccess([]);

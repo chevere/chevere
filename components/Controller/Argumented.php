@@ -14,22 +14,21 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
-use Chevere\Exceptions\Controller\ControllerArgumentRequiredException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParameterInterface;
-use Chevere\Interfaces\Controller\ControllerParameterOptionalInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
+use Chevere\Exceptions\Parameter\ArgumentRequiredException;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
+use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Throwable;
 
-final class ControllerArguments implements ControllerArgumentsInterface
+final class Argumented implements ArgumentedInterface
 {
-    private ControllerParametersInterface $parameters;
+    private ParametersInterface $parameters;
 
     private array $arguments;
 
-    public function __construct(ControllerParametersInterface $parameters, array $arguments)
+    public function __construct(ParametersInterface $parameters, array $arguments)
     {
         $this->parameters = $parameters;
         $this->arguments = $arguments;
@@ -44,7 +43,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
         return $this->arguments;
     }
 
-    public function withArgument(string $name, string $value): ControllerArgumentsInterface
+    public function withArgument(string $name, string $value): ArgumentedInterface
     {
         $this->assertParameter($name, $value);
         $new = clone $this;
@@ -81,7 +80,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
         $parameter = $this->parameters->get($name);
         $regexString = $parameter->regex()->toString();
         if (preg_match($regexString, $argument) !== 1) {
-            throw new ControllerArgumentRegexMatchException(
+            throw new ArgumentRegexMatchException(
                 (new Message("Argument %argument% provided for parameter %parameter% doesn't match the regex %regex%"))
                     ->code('%argument%', $argument)
                     ->code('%parameter%', $name)
@@ -94,12 +93,12 @@ final class ControllerArguments implements ControllerArgumentsInterface
     {
         $failed = [];
         foreach ($this->parameters->getGenerator() as $name => $parameter) {
-            if (!($parameter instanceof ControllerParameterOptionalInterface) && !$this->has($name)) {
+            if (!($parameter instanceof ParameterOptionalInterface) && !$this->has($name)) {
                 $failed[] = $name;
             }
         }
         if ($failed !== []) {
-            throw new ControllerArgumentRequiredException(
+            throw new ArgumentRequiredException(
                 (new Message('Missing required argument(s): %message%'))
                     ->code('%message%', implode(', ', $failed))
             );

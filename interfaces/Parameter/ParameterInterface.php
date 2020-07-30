@@ -11,43 +11,43 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Parameter;
 
-use Chevere\Exceptions\Controller\ControllerParameterNameInvalidException;
+use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use Chevere\Interfaces\Regex\RegexInterface;
 
 /**
- * Describes the component in charge of handling controller parameters.
+ * Describes the component in charge of defining a parameter.
  */
-interface ControllerParameterInterface
+interface ParameterInterface
 {
     /**
-     * @throws ControllerParameterNameInvalidException
+     * @throws ParameterNameInvalidException
      */
     public function __construct(string $name);
 
     /**
-     * Provides access to the parameter name.
+     * Provides access to the name.
      */
     public function name(): string;
 
     /**
-     * Provides access to the parameter regex instance.
+     * Provides access to the regex instance.
      */
     public function regex(): RegexInterface;
 
     /**
-     * Provides access to the name instance.
+     * Provides access to the description.
      */
     public function description(): string;
 
     /**
-     * Return an instance with the specified regex.
+     * Return an instance with the specified `$regex`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified regex.
+     * an instance that contains the specified `$regex`.
      */
-    public function withRegex(string $regex): ControllerParameterInterface;
+    public function withRegex(RegexInterface $regex): ParameterInterface;
 
     /**
      * Return an instance with the specified description.
@@ -55,5 +55,5 @@ interface ControllerParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified description.
      */
-    public function withDescription(string $string): ControllerParameterInterface;
+    public function withDescription(string $string): ParameterInterface;
 }

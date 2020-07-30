@@ -15,12 +15,12 @@ namespace Chevere\Tests\Routing\_resources\controllers;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerResponseSuccess;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Parameter\ArgumentedInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 
 final class GetArticlesController extends Controller
 {
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponseSuccess([]);
     }

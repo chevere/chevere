@@ -26,12 +26,6 @@ final class RegexTest extends TestCase
         new Regex('#');
     }
 
-    public function testAssertNoCapture(): void
-    {
-        $this->expectException(RegexException::class);
-        (new Regex('/^(.*)$/'))->assertNoCapture();
-    }
-
     public function testConstruct(): void
     {
         $pattern = '\w+';
@@ -39,8 +33,16 @@ final class RegexTest extends TestCase
         $patternDelimitersAnchors = "/$patternAnchors/";
         $regex = new Regex($patternDelimitersAnchors);
         $this->assertSame($patternDelimitersAnchors, $regex->toString());
-        $regex->assertNoCapture();
         $this->assertSame($patternAnchors, $regex->toNoDelimiters());
         $this->assertSame($pattern, $regex->toNoDelimitersNoAnchors());
+    }
+
+    public function testMatch(): void
+    {
+        $pattern = '/\w+/';
+        $test = 'aa bb';
+        $regex = new Regex($pattern);
+        $this->assertSame(['aa'], $regex->match($test));
+        $this->assertSame([['aa', 'bb']], $regex->matchAll($test));
     }
 }
