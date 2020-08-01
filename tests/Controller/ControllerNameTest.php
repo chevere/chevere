@@ -15,12 +15,12 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Controller\ControllerResponseSuccess;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Exceptions\Controller\ControllerInterfaceException;
 use Chevere\Exceptions\Controller\ControllerNameException;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
-use Chevere\Interfaces\Parameter\ArgumentedInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerNameTest extends TestCase
@@ -82,10 +82,10 @@ final class ControllerNameTestController extends Controller
     // {
     // }
 
-    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         // $user = (new UserMiddleware($arguments->get('id')))->get();
 
-        return new ControllerResponseSuccess([]);
+        return new ResponseSuccess([]);
     }
 }

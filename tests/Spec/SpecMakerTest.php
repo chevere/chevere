@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerResponseSuccess;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Parameter\Parameter;
@@ -30,9 +30,9 @@ use Chevere\Components\Router\Router;
 use Chevere\Components\Spec\SpecMaker;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Parameter\ArgumentedInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
@@ -117,9 +117,9 @@ class SpecMakerTestGetController extends Controller
             );
     }
 
-    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ControllerResponseSuccess([]);
+        return new ResponseSuccess([]);
     }
 }
 
@@ -140,8 +140,8 @@ class SpecMakerTestPutController extends Controller
             );
     }
 
-    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ControllerResponseSuccess([]);
+        return new ResponseSuccess([]);
     }
 }

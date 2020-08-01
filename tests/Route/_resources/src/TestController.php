@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerResponseSuccess;
-use Chevere\Interfaces\Parameter\ArgumentedInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Components\Response\ResponseSuccess;
+use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 
 final class TestController extends Controller
 {
-    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ControllerResponseSuccess([]);
+        return new ResponseSuccess([]);
     }
 }

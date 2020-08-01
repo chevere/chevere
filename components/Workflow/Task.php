@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Job;
+namespace Chevere\Components\Workflow;
 
-use Chevere\Interfaces\Job\TaskInterface;
+use Chevere\Interfaces\Workflow\TaskInterface;
 
 final class Task implements TaskInterface
 {

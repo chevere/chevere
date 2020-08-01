@@ -11,10 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Job;
+namespace Chevere\Components\Response\Traits;
 
-use Chevere\Interfaces\Job\WorkflowRunInterface;
-
-final class WorkflowRun implements WorkflowRunInterface
+trait ResponseTrait
 {
+    private array $data;
+
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function data(): array
+    {
+        return $this->data;
+    }
 }

@@ -11,12 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Job;
+namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\UnexpectedValueException;
-use Chevere\Interfaces\Job\JobInterface;
+use Chevere\Interfaces\Workflow\JobInterface;
 
 final class Job implements JobInterface
 {
@@ -24,12 +23,6 @@ final class Job implements JobInterface
 
     public function __construct(string $name)
     {
-        if ($name === 'job') {
-            throw new UnexpectedValueException(
-                (new Message('Name %name% is reserved'))
-                    ->code('%name%', $name)
-            );
-        }
         if (!preg_match(self::REGEX_KEY, $name)) {
             throw new InvalidArgumentException(
                 (new Message('Name %name% must match %regex%'))

@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Response;
 
 /**
- * Describes the component in charge of defining a provisional controller response.
+ * Describes the component in charge of defining a provisional response.
  */
-interface ControllerResponseProvisionalInterface extends ControllerResponseInterface
+interface ResponseProvisionalInterface extends ResponseInterface
 {
     /**
      * Return an instance with the specified data.
@@ -24,5 +24,5 @@ interface ControllerResponseProvisionalInterface extends ControllerResponseInter
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified data.
      */
-    public function withData(array $data): ControllerResponseProvisionalInterface;
+    public function withData(array $data): ResponseProvisionalInterface;
 }

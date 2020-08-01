@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Controller\Argumented;
+use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\ParameterOptional;
 use Chevere\Components\Parameter\Parameters;
@@ -23,7 +23,7 @@ use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use PHPUnit\Framework\TestCase;
 
-final class ArgumentedTest extends TestCase
+final class ArgumentsTest extends TestCase
 {
     public function testConstruct(): void
     {
@@ -40,7 +40,7 @@ final class ArgumentedTest extends TestCase
                 (new Parameter('name'))
                     ->withRegex(new Regex('/^\w+$/'))
             );
-        $controllerArguments = new Argumented($parameters, $arguments);
+        $controllerArguments = new Arguments($parameters, $arguments);
         $this->assertSame($arguments, $controllerArguments->toArray());
         foreach ($arguments as $name => $value) {
             $this->assertTrue($controllerArguments->has($name));
@@ -56,7 +56,7 @@ final class ArgumentedTest extends TestCase
     {
         $parameters = new Parameters;
         $this->expectException(OutOfBoundsException::class);
-        new Argumented($parameters, ['id' => '123']);
+        new Arguments($parameters, ['id' => '123']);
     }
 
     public function testInvalidRegexArgument(): void
@@ -67,7 +67,7 @@ final class ArgumentedTest extends TestCase
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $this->expectException(ArgumentRegexMatchException::class);
-        (new Argumented($parameters, ['id' => 'abc']));
+        (new Arguments($parameters, ['id' => 'abc']));
     }
 
     public function testPut(): void
@@ -75,7 +75,7 @@ final class ArgumentedTest extends TestCase
         $name = 'id';
         $value = '123';
         $valueAlt = '321';
-        $controllerArguments = new Argumented(
+        $controllerArguments = new Arguments(
             (new Parameters)
                 ->withAdded(
                     (new Parameter($name))
@@ -100,14 +100,14 @@ final class ArgumentedTest extends TestCase
             );
         $arguments = [];
         $this->expectException(ArgumentRequiredException::class);
-        new Argumented($parameters, $arguments);
+        new Arguments($parameters, $arguments);
     }
 
     public function testParameterOptional(): void
     {
         $paramId = 'id';
         $paramName = 'name';
-        $controllerArguments = new Argumented(
+        $controllerArguments = new Arguments(
             (new Parameters)
                 ->withAdded(
                     (new Parameter($paramId))

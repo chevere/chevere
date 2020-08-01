@@ -50,10 +50,10 @@ interface ParameterInterface
     public function withRegex(RegexInterface $regex): ParameterInterface;
 
     /**
-     * Return an instance with the specified description.
+     * Return an instance with the specified `$description`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified description.
+     * an instance that contains the specified `$description`.
      */
-    public function withDescription(string $string): ParameterInterface;
+    public function withDescription(string $description): ParameterInterface;
 }

@@ -28,18 +28,15 @@ final class Parameters implements ParametersInterface
         return $this->map->toArray();
     }
 
-    public function withAdded(ParameterInterface $controllerParameter): ParametersInterface
+    public function withAdded(ParameterInterface $parameter): ParametersInterface
     {
         $new = clone $this;
-        $new->map->put(
-            $controllerParameter->name(),
-            $controllerParameter
-        );
+        $new->map->put($parameter->name(), $parameter);
 
         return $new;
     }
 
-    public function hasParameterName(string $name): bool
+    public function has(string $name): bool
     {
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
     }

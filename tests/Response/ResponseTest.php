@@ -11,25 +11,25 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\Response;
 
-use Chevere\Components\Controller\ControllerResponseFailure;
-use Chevere\Components\Controller\ControllerResponseProvisional;
-use Chevere\Components\Controller\ControllerResponseSuccess;
+use Chevere\Components\Response\ResponseFailure;
+use Chevere\Components\Response\ResponseProvisional;
+use Chevere\Components\Response\ResponseSuccess;
 use PHPUnit\Framework\TestCase;
 
-final class ControllerResponseTest extends TestCase
+final class ResponseTest extends TestCase
 {
     public function testConstructSuccess(): void
     {
         $data = ['data'];
-        $controllerResponse = new ControllerResponseSuccess($data);
+        $controllerResponse = new ResponseSuccess($data);
         $this->assertSame($data, $controllerResponse->data());
     }
 
     public function testSuccessWithData(): void
     {
-        $controllerResponse = new ControllerResponseSuccess([]);
+        $controllerResponse = new ResponseSuccess([]);
         $this->assertSame([], $controllerResponse->data());
         $data = ['data'];
         $controllerResponse = $controllerResponse->withData($data);
@@ -39,13 +39,13 @@ final class ControllerResponseTest extends TestCase
     public function testConstructFailure(): void
     {
         $data = ['data'];
-        $controllerResponse = new ControllerResponseFailure($data);
+        $controllerResponse = new ResponseFailure($data);
         $this->assertSame($data, $controllerResponse->data());
     }
 
     public function testFailureWithData(): void
     {
-        $controllerResponse = new ControllerResponseFailure([]);
+        $controllerResponse = new ResponseFailure([]);
         $this->assertSame([], $controllerResponse->data());
         $data = ['data'];
         $controllerResponse = $controllerResponse->withData($data);
@@ -55,13 +55,13 @@ final class ControllerResponseTest extends TestCase
     public function testConstructProvisional(): void
     {
         $data = ['data'];
-        $controllerResponse = new ControllerResponseProvisional($data);
+        $controllerResponse = new ResponseProvisional($data);
         $this->assertSame($data, $controllerResponse->data());
     }
 
     public function testProvisionalWithData(): void
     {
-        $controllerResponse = new ControllerResponseProvisional([]);
+        $controllerResponse = new ResponseProvisional([]);
         $this->assertSame([], $controllerResponse->data());
         $data = ['data'];
         $controllerResponse = $controllerResponse->withData($data);

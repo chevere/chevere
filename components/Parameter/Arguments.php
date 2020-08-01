@@ -11,18 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller;
+namespace Chevere\Components\Parameter;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
-use Chevere\Interfaces\Parameter\ArgumentedInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Throwable;
 
-final class Argumented implements ArgumentedInterface
+final class Arguments implements ArgumentsInterface
 {
     private ParametersInterface $parameters;
 
@@ -43,7 +43,7 @@ final class Argumented implements ArgumentedInterface
         return $this->arguments;
     }
 
-    public function withArgument(string $name, string $value): ArgumentedInterface
+    public function withArgument(string $name, string $value): ArgumentsInterface
     {
         $this->assertParameter($name, $value);
         $new = clone $this;
@@ -71,7 +71,7 @@ final class Argumented implements ArgumentedInterface
 
     private function assertParameter(string $name, string $argument): void
     {
-        if ($this->parameters->hasParameterName($name) === false) {
+        if ($this->parameters->has($name) === false) {
             throw new OutOfBoundsException(
                 (new Message('Parameter %parameter% not found'))
                     ->code('%parameter%', $name)

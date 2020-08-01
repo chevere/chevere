@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Job;
+namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Job\Task;
+use Chevere\Components\Workflow\Task;
 use PHPUnit\Framework\TestCase;
 
 final class TaskTest extends TestCase

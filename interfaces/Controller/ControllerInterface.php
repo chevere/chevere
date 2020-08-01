@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
-use Chevere\Interfaces\Parameter\ArgumentedInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 /**
  * Describes the component in charge of handling controller instructions.
@@ -44,5 +45,5 @@ interface ControllerInterface
     /**
      * This method will be called when running the controller.
      */
-    public function run(ArgumentedInterface $controllerArguments): ControllerResponseInterface;
+    public function run(ArgumentsInterface $controllerArguments): ResponseInterface;
 }

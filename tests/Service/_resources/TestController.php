@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Service\_resources;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerResponseSuccess;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Service\ServiceProviders;
-use Chevere\Interfaces\Parameter\ArgumentedInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Service\ServiceableInterface;
 use Chevere\Interfaces\Service\ServiceProvidersInterface;
@@ -51,13 +51,13 @@ class TestController extends Controller implements ServiceableInterface
         return new Parameters;
     }
 
-    public function run(ArgumentedInterface $controllerArguments): ControllerResponseInterface
+    public function run(ArgumentsInterface $controllerArguments): ResponseInterface
     {
         $this->mailer->send(
             'guy@chevere.com',
             'suelta el dominio tonto ql'
         );
 
-        return new ControllerResponseSuccess([]);
+        return new ResponseSuccess([]);
     }
 }

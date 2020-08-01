@@ -11,17 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Job;
+namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Job\TaskInterface;
-use Chevere\Interfaces\Job\WorkflowInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Workflow\TaskInterface;
+use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Ds\Map;
-use Ds\Set;
 use Ds\Vector;
 use Safe\Exceptions\PcreException;
 use function DeepCopy\deep_copy;
@@ -35,29 +37,35 @@ final class Workflow implements WorkflowInterface
 
     private Map $map;
 
-    private Vector $tasks;
+    private Vector $steps;
 
-    private Map $arguments;
+    private ParametersInterface $parameters;
+
+    private Map $references;
+
+    private Map $expected;
 
     public function __construct(string $name)
     {
         $this->name = (new Job($name))->toString();
         $this->id = uniqid('', true) . '@' . time();
         $this->map = new Map;
-        $this->tasks = new Vector;
-        $this->arguments = new Map(['job' => new Set]);
+        $this->steps = new Vector;
+        $this->parameters = new Parameters;
+        $this->references = new Map;
+        $this->expected = new Map;
     }
 
     public function count(): int
     {
-        return $this->tasks->count();
+        return $this->steps->count();
     }
 
     public function __clone()
     {
         $this->map = deep_copy($this->map);
-        $this->tasks = deep_copy($this->tasks);
-        $this->arguments = deep_copy($this->arguments);
+        $this->steps = deep_copy($this->steps);
+        $this->parameters = deep_copy($this->parameters);
     }
 
     public function id(): string
@@ -77,7 +85,7 @@ final class Workflow implements WorkflowInterface
         $this->setParameters($name, $task);
         $new = clone $this;
         $new->map->put($name, $task);
-        $new->tasks->push($name);
+        $new->steps->push($name);
 
         return $new;
     }
@@ -90,7 +98,7 @@ final class Workflow implements WorkflowInterface
         $this->setParameters($name, $task);
         $new = clone $this;
         $new->map->put($name, $task);
-        $new->tasks->insert($new->getPosByName($before), $name);
+        $new->steps->insert($new->getPosByName($before), $name);
 
         return $new;
     }
@@ -103,44 +111,64 @@ final class Workflow implements WorkflowInterface
         $this->setParameters($name, $task);
         $new = clone $this;
         $new->map->put($name, $task);
-        $new->tasks->insert($new->getPosByName($after) + 1, $name);
+        $new->steps->insert($new->getPosByName($after) + 1, $name);
 
         return $new;
     }
 
-    public function get(string $taskName): TaskInterface
+    public function has(string $step): bool
+    {
+        return $this->map->hasKey($step);
+    }
+
+    public function get(string $step): TaskInterface
     {
         try {
-            return $this->map->get($taskName);
+            return $this->map->get($step);
         }
         // @codeCoverageIgnoreStart
         catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Task %name% not found'))
-                    ->code('%name%', $taskName)
+                    ->code('%name%', $step)
             );
         }
         // @codeCoverageIgnoreEnd
     }
 
-    public function getParameters(string $taskName): array
+    public function parameters(): ParametersInterface
+    {
+        return $this->parameters;
+    }
+
+    public function order(): array
+    {
+        return $this->steps->toArray();
+    }
+
+    public function hasReference(string $reference): bool
+    {
+        return $this->references->hasKey($reference);
+    }
+
+    public function getReference(string $reference): array
     {
         try {
-            return $this->arguments->get($taskName)->toArray();
+            return $this->references->get($reference);
         }
         // @codeCoverageIgnoreStart
-        catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(
-                (new Message('Task %name% not found'))
-                    ->code('%name%', $taskName)
+        catch (\OverflowException $e) {
+            throw new OverflowException(
+                (new Message('Reference %reference% not found'))
+                    ->code('%reference%', $reference)
             );
         }
         // @codeCoverageIgnoreEnd
     }
 
-    public function keys(): array
+    public function getExpected(string $step): array
     {
-        return $this->tasks->toArray();
+        return $this->expected->get($step);
     }
 
     private function assertNoOverflow(string $name): void
@@ -160,8 +188,9 @@ final class Workflow implements WorkflowInterface
          */
         foreach ($task->arguments() as $argument) {
             try {
-                $putArgument = $argument;
-                if (preg_match(self::REGEX_VARIABLE, $argument, $matches)) {
+                if (preg_match(self::REGEX_PARAMETER_REFERENCE, $argument, $matches)) {
+                    $this->parameters = $this->parameters->withAdded(new Parameter($matches[1]));
+                } elseif (preg_match(self::REGEX_STEP_REFERENCE, $argument, $matches)) {
                     if ($matches[1] !== 'job' && !$this->map->hasKey($matches[1])) {
                         throw new InvalidArgumentException(
                             (new Message("Task %name% references parameter %parameter% from task %task% which doesn't exists"))
@@ -169,32 +198,22 @@ final class Workflow implements WorkflowInterface
                                 ->code('%parameter%', $matches[2])
                                 ->code('%task%', $matches[1])
                         );
-                    } else {
-                        $this->arguments->put('job', $this->getArguments('job', $matches[2]));
                     }
-                    $putArgument = [$matches[1], $matches[2]];
+                    $expected = $this->expected->get($matches[1], []);
+                    $expected[] = $matches[2];
+                    $this->expected->put($matches[1], $expected);
+                    $this->references->put($argument, [$matches[1], $matches[2]]);
                 }
-                $this->arguments->put($name, $this->getArguments($name, $putArgument));
             }
             // @codeCoverageIgnoreStart
             catch (PcreException $e) {
                 throw new LogicException(
                     (new Message('Invalid regex expression provided %regex%'))
-                        ->code('%regex%', self::REGEX_VARIABLE)
+                        ->code('%regex%', self::REGEX_STEP_REFERENCE)
                 );
             }
             // @codeCoverageIgnoreEnd
         }
-    }
-
-    private function getArguments(string $name, $argument): Set
-    {
-        $arguments = $this->arguments->get($name, new Set);
-        if (!$arguments->contains($argument)) {
-            $arguments->add($argument);
-        }
-
-        return $arguments;
     }
 
     private function assertHasTaskByName(string $name): void
@@ -209,7 +228,7 @@ final class Workflow implements WorkflowInterface
 
     private function getPosByName(string $name): int
     {
-        $pos = $this->tasks->find($name);
+        $pos = $this->steps->find($name);
         /** @var int $pos */
         return $pos;
     }

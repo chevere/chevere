@@ -44,12 +44,12 @@ interface ParametersInterface extends Countable
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified controller parameter instance.
      */
-    public function withAdded(ParameterInterface $controllerParameter): ParametersInterface;
+    public function withAdded(ParameterInterface $parameter): ParametersInterface;
 
     /**
      * Indicates whether the instance has a parameter identified by `$name`.
      */
-    public function hasParameterName(string $name): bool;
+    public function has(string $name): bool;
 
     /**
      * @throws OutOfBoundsException

@@ -11,21 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Job;
+namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Job\Job;
+use Chevere\Components\Workflow\Job;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\UnexpectedValueException;
 use PHPUnit\Framework\TestCase;
 
 final class JobTest extends TestCase
 {
-    public function testUnexpectedValue(): void
-    {
-        $this->expectException(UnexpectedValueException::class);
-        new Job('job');
-    }
-
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);

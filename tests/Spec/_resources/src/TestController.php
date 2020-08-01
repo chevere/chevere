@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerResponseSuccess;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
 use Chevere\Components\Regex\Regex;
-use Chevere\Interfaces\Parameter\ArgumentedInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
@@ -56,10 +56,10 @@ class TestController extends Controller implements PluggableHooksInterface
         return $parameters;
     }
 
-    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         $this->hook('run:before', $arguments);
-        $response = new ControllerResponseSuccess([]);
+        $response = new ResponseSuccess([]);
         $data = [
             'userName' => $arguments->get('name'),
             'userId' => $arguments->get('id')

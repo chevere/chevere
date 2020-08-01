@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Job;
+namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Job\Task;
-use Chevere\Components\Job\Workflow;
+use Chevere\Components\Workflow\Task;
+use Chevere\Components\Workflow\Workflow;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
@@ -35,12 +35,13 @@ final class WorkflowTest extends TestCase
     {
         $workflow = new Workflow('test-workflow');
         $task = new Task('callable');
-        $taskName = 'task';
-        $workflow = $workflow->withAdded($taskName, $task);
+        $step = 'task';
+        $workflow = $workflow->withAdded($step, $task);
         $this->assertCount(1, $workflow);
-        $this->assertSame([$taskName], $workflow->keys());
+        $this->assertTrue($workflow->has($step));
+        $this->assertSame([$step], $workflow->order());
         $this->expectException(OverflowException::class);
-        $workflow->withAdded($taskName, $task);
+        $workflow->withAdded($step, $task);
     }
 
     public function testWithAddedBeforeAndAfter(): void
@@ -52,14 +53,14 @@ final class WorkflowTest extends TestCase
         $this->assertSame([
             'task-before',
             'task'
-        ], $workflow->keys());
+        ], $workflow->order());
         $workflow = $workflow
             ->withAddedAfter('task-before', 'task-after', $task);
         $this->assertSame([
             'task-before',
             'task-after',
             'task'
-        ], $workflow->keys());
+        ], $workflow->order());
     }
 
     public function testWithAddedBeforeOutOfBounds(): void
@@ -95,37 +96,18 @@ final class WorkflowTest extends TestCase
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
                 'step',
-                $task->withArguments('test-argument', '${job:foo}', '${job:bar}')
+                $task->withArguments('test-argument', '${foo}')
             );
-        $this->assertSame(
-            [
-                'foo', 'bar'
-            ],
-            $workflow->getParameters('job')
-        );
-        $this->assertSame(
-            [
-                'test-argument', ['job', 'foo'], ['job', 'bar']
-            ],
-            $workflow->getParameters('step')
-        );
+        $this->assertTrue($workflow->parameters()->has('foo'));
         $workflow = $workflow
             ->withAdded(
                 'next-step',
-                $task->withArguments('${step:foo}', '${job:bar}', '${job:oof}')
+                $task->withArguments('${step:foo}', '${foo}', '${bar}')
             );
-        $this->assertSame(
-            [
-                ['step', 'foo'], ['job', 'bar'], ['job', 'oof']
-            ],
-            $workflow->getParameters('next-step')
-        );
-        $this->assertSame(
-            [
-                'foo', 'bar', 'oof'
-            ],
-            $workflow->getParameters('job')
-        );
+        $this->assertTrue($workflow->hasReference('${step:foo}'));
+        $this->assertSame(['step', 'foo'], $workflow->getReference('${step:foo}'));
+        $this->assertTrue($workflow->parameters()->has('foo'));
+        $this->assertTrue($workflow->parameters()->has('bar'));
         $this->expectException(InvalidArgumentException::class);
         $workflow->withAdded(
             'missing-reference',
@@ -140,17 +122,17 @@ final class WorkflowTest extends TestCase
     //         ->withAdded(
     //             'validate',
     //             (new Task('validateImageFn'))
-    //                 ->withArguments('${job:filename}')
+    //                 ->withArguments('${filename}')
     //         )
     //         ->withAdded(
     //             'upload',
     //             (new Task('uploadImageFn'))
-    //                 ->withArguments('${job:filename}')
+    //                 ->withArguments('${filename}')
     //         )
     //         ->withAdded(
     //             'bind-user',
     //             (new Task('bindImageToUserFn'))
-    //                 ->withArguments('${upload:id}', '${job:userId}')
+    //                 ->withArguments('${upload:id}', '${userId}')
     //         )
     //         ->withAdded(
     //             'response',
@@ -163,14 +145,14 @@ final class WorkflowTest extends TestCase
     //             'validate',
     //             'vendor-ban-check',
     //             (new Task('vendorPath/banCheck'))
-    //                 ->withArguments('${job:filename}')
+    //                 ->withArguments('${filename}')
     //         )
     //         // Plugin: sepia filter
     //         ->withAddedAfter(
     //             'validate',
     //             'vendor-sepia-filter',
     //             (new Task('vendorPath/sepiaFilter'))
-    //                 ->withArguments('${job:filename}')
+    //                 ->withArguments('${filename}')
     //         );
     // }
 }

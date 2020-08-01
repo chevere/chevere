@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Job;
+namespace Chevere\Interfaces\Workflow;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
 

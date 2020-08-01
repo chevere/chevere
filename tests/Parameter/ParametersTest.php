@@ -25,7 +25,7 @@ final class ParametersTest extends TestCase
         $key = 'name';
         $parameters = new Parameters;
         $this->assertCount(0, $parameters->toArray());
-        $this->assertFalse($parameters->hasParameterName($key));
+        $this->assertFalse($parameters->has($key));
         $this->expectException(OutOfBoundsException::class);
         $parameters->get($key);
     }
@@ -36,7 +36,7 @@ final class ParametersTest extends TestCase
         $parameter = new Parameter($key);
         $parameters = (new Parameters)->withAdded($parameter);
         $this->assertCount(1, $parameters->toArray());
-        $this->assertTrue($parameters->hasParameterName($key));
+        $this->assertTrue($parameters->has($key));
         $this->assertSame($parameter, $parameters->get($key));
     }
 }

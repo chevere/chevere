@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerResponseSuccess;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Parameter\Parameter;
@@ -29,8 +29,8 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Route\RouteEndpointConflictException;
 use Chevere\Exceptions\Route\RouteWildcardConflictException;
-use Chevere\Interfaces\Parameter\ArgumentedInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -137,17 +137,17 @@ final class RouteTestController extends Controller
             );
     }
 
-    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ControllerResponseSuccess([]);
+        return new ResponseSuccess([]);
     }
 }
 
 final class RouteTestControllerNoParams extends Controller
 {
-    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ControllerResponseSuccess([]);
+        return new ResponseSuccess([]);
     }
 }
 
@@ -162,8 +162,8 @@ final class RouteTestControllerRegexConflict extends Controller
             );
     }
 
-    public function run(ArgumentedInterface $arguments): ControllerResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ControllerResponseSuccess([]);
+        return new ResponseSuccess([]);
     }
 }

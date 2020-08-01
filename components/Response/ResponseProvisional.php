@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller;
+namespace Chevere\Components\Response;
 
-use Chevere\Components\Controller\Traits\ControllerResponseTrait;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Components\Response\Traits\ResponseTrait;
+use Chevere\Interfaces\Response\ResponseInterface;
 
-final class ControllerResponseProvisional implements ControllerResponseInterface
+final class ResponseProvisional implements ResponseInterface
 {
-    use ControllerResponseTrait;
+    use ResponseTrait;
 
     public function withData(array $data): self
     {

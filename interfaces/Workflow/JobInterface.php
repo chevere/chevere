@@ -11,10 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Job;
+namespace Chevere\Interfaces\Workflow;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\UnexpectedValueException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
@@ -25,7 +24,6 @@ interface JobInterface extends ToStringInterface
     const REGEX_KEY = '/^[\w-]*$/';
 
     /**
-     * @throws UnexpectedValueException
      * @throws InvalidArgumentException
      */
     public function __construct(string $name);

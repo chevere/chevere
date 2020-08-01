@@ -11,17 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Response;
 
 /**
- * Describes the component in charge of handling the controller response.
+ * Describes the component in charge of handling the response.
  */
-interface ControllerResponseInterface
+interface ResponseInterface
 {
     public function __construct(array $data);
 
     /**
-     * Provides access to controller response data.
+     * Provides access to response data.
      */
     public function data(): array;
 }

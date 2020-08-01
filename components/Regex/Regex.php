@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Regex;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Regex\RegexInvalidException;
 use Chevere\Interfaces\Regex\RegexInterface;
@@ -63,7 +62,7 @@ final class Regex implements RegexInterface
     public function match(string $string): array
     {
         try {
-            preg_match($this->string, $string, $matches);
+            $match = preg_match($this->string, $string, $matches);
         } catch (PcreException $e) {
             throw new RuntimeException(
                 (new Message('Unable to %function%'))
@@ -73,7 +72,7 @@ final class Regex implements RegexInterface
             );
         }
 
-        return $matches;
+        return $match === 0 ? [] : $matches;
     }
 
     /**
@@ -82,7 +81,7 @@ final class Regex implements RegexInterface
     public function matchAll(string $string): array
     {
         try {
-            preg_match_all($this->string, $string, $matches);
+            $match = preg_match_all($this->string, $string, $matches);
         } catch (\Exception $e) {
             throw new RuntimeException(
                 (new Message('Unable to %function%'))
@@ -92,18 +91,13 @@ final class Regex implements RegexInterface
             );
         }
 
-        return $matches;
+        return $match === 0 ? [] : $matches;
     }
 
     private function assertRegex(): void
     {
         try {
-            if (preg_match($this->string, '') === false) {
-                throw new Exception(
-                    (new Message('Detected %function% error'))
-                        ->code('%function%', 'preg_match')
-                ); // @codeCoverageIgnore
-            }
+            preg_match($this->string, '');
         } catch (\Exception $e) {
             throw new RegexInvalidException(
                 (new Message('Invalid regex string %regex% provided %error% [%preg%]'))

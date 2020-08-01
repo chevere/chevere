@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Response;
 
 /**
- * Describes the component in charge of defining a failure controller response.
+ * Describes the component in charge of defining a success response.
  */
-interface ControllerResponseFailureInterface extends ControllerResponseInterface
+interface ResponseSuccessInterface extends ResponseInterface
 {
     /**
      * Return an instance with the specified data.
@@ -24,5 +24,5 @@ interface ControllerResponseFailureInterface extends ControllerResponseInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified data.
      */
-    public function withData(array $data): ControllerResponseFailureInterface;
+    public function withData(array $data): ResponseSuccessInterface;
 }

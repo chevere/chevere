@@ -20,9 +20,9 @@ use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\To\ToArrayInterface;
 
 /**
- * Describes the component in charge of defining an argumented set.
+ * Describes the component in charge of defining an argumented parameters set.
  */
-interface ArgumentedInterface extends ToArrayInterface
+interface ArgumentsInterface extends ToArrayInterface
 {
     /**
      * @throws ArgumentRequiredException
@@ -51,7 +51,7 @@ interface ArgumentedInterface extends ToArrayInterface
      * @throws ArgumentRegexMatchException
      * @throws OutOfBoundsException If `$name` is not a known controller parameter.
      */
-    public function withArgument(string $name, string $value): ArgumentedInterface;
+    public function withArgument(string $name, string $value): ArgumentsInterface;
 
     /**
      * Indicates whether the instance has an argument for the parameter `$name`.
