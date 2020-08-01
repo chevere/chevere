@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
@@ -31,20 +32,9 @@ final class WorkflowRun implements WorkflowRunInterface
 
     private Map $steps;
 
-    public function __construct(WorkflowInterface $workflow, ArgumentsInterface $arguments)
+    public function __construct(WorkflowInterface $workflow, array $arguments)
     {
-        $keys = array_keys($workflow->parameters()->toArray());
-        foreach ($keys as $name) {
-            // @codeCoverageIgnoreStart
-            if (!$arguments->has($name)) {
-                throw new InvalidArgumentException(
-                    (new Message('Missing argument for %name% parameter'))
-                        ->code('%name%', $name)
-                );
-            }
-            // @codeCoverageIgnoreEnd
-        }
-        $this->arguments = $arguments;
+        $this->arguments = new Arguments($workflow->parameters(), $arguments);
         $this->workflow = $workflow;
         $this->steps = new Map;
     }

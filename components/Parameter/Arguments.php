@@ -34,7 +34,7 @@ final class Arguments implements ArgumentsInterface
         $this->arguments = $arguments;
         $this->assertRequired();
         foreach ($this->arguments as $name => $value) {
-            $this->assertParameter($name, $value);
+            $this->assertParameter((string) $name, $value);
         }
     }
 

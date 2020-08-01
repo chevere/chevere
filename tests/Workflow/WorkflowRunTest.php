@@ -32,13 +32,10 @@ final class WorkflowRunTest extends TestCase
                 (new Task('callable'))
                     ->withArguments('${foo}')
             );
-        $arguments = new Arguments(
-            $workflow->parameters(),
-            ['foo' => 'bar']
-        );
+        $arguments = ['foo' => 'bar'];
         $workflowRun = new WorkflowRun($workflow, $arguments);
         $this->assertSame($workflow, $workflowRun->workflow());
-        $this->assertSame($arguments, $workflowRun->arguments());
+        $this->assertSame($arguments, $workflowRun->arguments()->toArray());
         $this->expectException(OutOfBoundsException::class);
         $workflowRun->get('not-found');
     }
@@ -56,13 +53,10 @@ final class WorkflowRunTest extends TestCase
                 (new Task('callable'))
                     ->withArguments('${step-0:response-0}', '${bar}')
             );
-        $arguments = new Arguments(
-            $workflow->parameters(),
-            [
-                'foo' => 'hola',
-                'bar' => 'mundo'
-            ]
-        );
+        $arguments = [
+            'foo' => 'hola',
+            'bar' => 'mundo'
+        ];
         $responseData = ['response-0' => 'value'];
         $workflowRun = (new WorkflowRun($workflow, $arguments))
             ->withAdded('step-0', new ResponseSuccess($responseData));
@@ -78,10 +72,7 @@ final class WorkflowRunTest extends TestCase
                 (new Task('callable'))
                     ->withArguments('${foo}')
             );
-        $arguments = new Arguments(
-            $workflow->parameters(),
-            ['foo' => 'hola']
-        );
+        $arguments = ['foo' => 'hola'];
         $this->expectException(OutOfBoundsException::class);
         (new WorkflowRun($workflow, $arguments))
             ->withAdded('not-found', new ResponseSuccess([]));
@@ -99,12 +90,8 @@ final class WorkflowRunTest extends TestCase
                 (new Task('callable'))
                     ->withArguments('${step-0:response-0}')
             );
-        $arguments = new Arguments(
-            $workflow->parameters(),
-            []
-        );
         $this->expectException(InvalidArgumentException::class);
-        (new WorkflowRun($workflow, $arguments))
+        (new WorkflowRun($workflow, []))
             ->withAdded('step-0', new ResponseSuccess([]));
     }
 }

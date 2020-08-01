@@ -114,45 +114,4 @@ final class WorkflowTest extends TestCase
             (new Task('callable'))->withArguments('${not:found}')
         );
     }
-
-    // public function testTookOurJobs(): void
-    // {
-    //     $this->expectNotToPerformAssertions();
-    //     $workflow = (new Workflow('user-upload-image'))
-    //         ->withAdded(
-    //             'validate',
-    //             (new Task('validateImageFn'))
-    //                 ->withArguments('${filename}')
-    //         )
-    //         ->withAdded(
-    //             'upload',
-    //             (new Task('uploadImageFn'))
-    //                 ->withArguments('${filename}')
-    //         )
-    //         ->withAdded(
-    //             'bind-user',
-    //             (new Task('bindImageToUserFn'))
-    //                 ->withArguments('${upload:id}', '${userId}')
-    //         )
-    //         ->withAdded(
-    //             'response',
-    //             (new Task('picoConLaWea'))
-    //                 ->withArguments('${upload:id}')
-    //         );
-    //     $workflow = $workflow
-    //         // Plugin: check banned hashes
-    //         ->withAddedBefore(
-    //             'validate',
-    //             'vendor-ban-check',
-    //             (new Task('vendorPath/banCheck'))
-    //                 ->withArguments('${filename}')
-    //         )
-    //         // Plugin: sepia filter
-    //         ->withAddedAfter(
-    //             'validate',
-    //             'vendor-sepia-filter',
-    //             (new Task('vendorPath/sepiaFilter'))
-    //                 ->withArguments('${filename}')
-    //         );
-    // }
 }

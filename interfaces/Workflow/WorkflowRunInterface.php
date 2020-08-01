@@ -21,7 +21,7 @@ use Chevere\Interfaces\Response\ResponseSuccessInterface;
  */
 interface WorkflowRunInterface
 {
-    public function __construct(WorkflowInterface $workflow, ArgumentsInterface $arguments);
+    public function __construct(WorkflowInterface $workflow, array $arguments);
 
     public function workflow(): WorkflowInterface;
 
