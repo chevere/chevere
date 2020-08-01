@@ -70,9 +70,29 @@ interface WorkflowInterface extends Countable
 
     public function order(): array;
 
-    public function hasReference(string $reference): bool;
+    public function hasVar(string $var): bool;
 
-    public function getReference(string $reference): array;
+    /**
+     * Provides access to the `$var` mapping for job variables.
+     *
+     * Case `${foo}` (workflow parameters):
+     *
+     * ```php
+     * return ['foo'];
+     * ```
+     *
+     * Case `${step:var}` (named step responses):
+     *
+     * ```php
+     * return ['step', 'var'];
+     * ```
+     *
+     * @return string[]
+     */
+    public function getVar(string $var): array;
 
+    /**
+     * Provides access to the expected return arguments.
+     */
     public function getExpected(string $step): array;
 }

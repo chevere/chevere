@@ -97,16 +97,22 @@ final class WorkflowTest extends TestCase
                 'step',
                 $task->withArguments('test-argument', '${foo}')
             );
+        $this->assertTrue($workflow->hasVar('${foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
+        $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $workflow = $workflow
             ->withAdded(
                 'next-step',
                 $task->withArguments('${step:foo}', '${foo}', '${bar}')
             );
-        $this->assertTrue($workflow->hasReference('${step:foo}'));
-        $this->assertSame(['step', 'foo'], $workflow->getReference('${step:foo}'));
+        $this->assertTrue($workflow->hasVar('${foo}'));
+        $this->assertTrue($workflow->hasVar('${bar}'));
+        $this->assertTrue($workflow->hasVar('${step:foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertTrue($workflow->parameters()->has('bar'));
+        $this->assertSame(['foo'], $workflow->getVar('${foo}'));
+        $this->assertSame(['bar'], $workflow->getVar('${bar}'));
+        $this->assertSame(['step', 'foo'], $workflow->getVar('${step:foo}'));
         $this->expectException(InvalidArgumentException::class);
         $workflow->withAdded(
             'missing-reference',

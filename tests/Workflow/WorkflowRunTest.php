@@ -63,6 +63,7 @@ final class WorkflowRunTest extends TestCase
         $responseData = ['response-0' => 'value'];
         $workflowRun = (new WorkflowRun($workflow, $arguments))
             ->withAdded('step-0', new ResponseSuccess($responseData));
+        $this->assertTrue($workflow->hasVar('${step-0:response-0}'));
         $this->assertTrue($workflowRun->has('step-0'));
         $this->assertSame($responseData, $workflowRun->get('step-0'));
     }

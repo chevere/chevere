@@ -39,7 +39,7 @@ final class Workflow implements WorkflowInterface
 
     private ParametersInterface $parameters;
 
-    private Map $references;
+    private Map $vars;
 
     private Map $expected;
 
@@ -50,7 +50,7 @@ final class Workflow implements WorkflowInterface
         $this->map = new Map;
         $this->steps = new Vector;
         $this->parameters = new Parameters;
-        $this->references = new Map;
+        $this->vars = new Map;
         $this->expected = new Map;
     }
 
@@ -139,21 +139,21 @@ final class Workflow implements WorkflowInterface
         return $this->steps->toArray();
     }
 
-    public function hasReference(string $reference): bool
+    public function hasVar(string $variable): bool
     {
-        return $this->references->hasKey($reference);
+        return $this->vars->hasKey($variable);
     }
 
-    public function getReference(string $reference): array
+    public function getVar(string $variable): array
     {
         try {
-            return $this->references->get($reference);
+            return $this->vars->get($variable);
         }
         // @codeCoverageIgnoreStart
         catch (\OverflowException $e) {
             throw new OverflowException(
-                (new Message('Reference %reference% not found'))
-                    ->code('%reference%', $reference)
+                (new Message('Variable %variable% not found'))
+                    ->code('%variable%', $variable)
             );
         }
         // @codeCoverageIgnoreEnd
@@ -182,6 +182,7 @@ final class Workflow implements WorkflowInterface
         foreach ($task->arguments() as $argument) {
             try {
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, $argument, $matches)) {
+                    $this->vars->put($argument, [$matches[1]]);
                     $this->parameters = $this->parameters->withAdded(new Parameter($matches[1]));
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, $argument, $matches)) {
                     if ($matches[1] !== 'job' && !$this->map->hasKey($matches[1])) {
@@ -195,7 +196,7 @@ final class Workflow implements WorkflowInterface
                     $expected = $this->expected->get($matches[1], []);
                     $expected[] = $matches[2];
                     $this->expected->put($matches[1], $expected);
-                    $this->references->put($argument, [$matches[1], $matches[2]]);
+                    $this->vars->put($argument, [$matches[1], $matches[2]]);
                 }
             }
             // @codeCoverageIgnoreStart
