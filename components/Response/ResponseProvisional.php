@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Response;
 
 use Chevere\Components\Response\Traits\ResponseTrait;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Response\ResponseProvisionalInterface;
 
-final class ResponseProvisional implements ResponseInterface
+final class ResponseProvisional implements ResponseProvisionalInterface
 {
     use ResponseTrait;
 
