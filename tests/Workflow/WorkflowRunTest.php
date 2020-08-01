@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
@@ -34,6 +33,10 @@ final class WorkflowRunTest extends TestCase
             );
         $arguments = ['foo' => 'bar'];
         $workflowRun = new WorkflowRun($workflow, $arguments);
+        $this->assertMatchesRegularExpression(
+            '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',
+            $workflowRun->uuid()
+        );
         $this->assertSame($workflow, $workflowRun->workflow());
         $this->assertSame($arguments, $workflowRun->arguments()->toArray());
         $this->expectException(OutOfBoundsException::class);

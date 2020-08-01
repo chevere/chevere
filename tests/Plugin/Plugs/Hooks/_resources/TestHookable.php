@@ -22,21 +22,12 @@ class TestHookable implements PluggableHooksInterface
 {
     use PluggableHooksTrait;
 
-    private string $string;
+    private string $string = '';
 
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
         return (new PluggableAnchors)
-            ->withAdded('construct:before')
             ->withAdded('setString:after');
-    }
-
-    public function __construct()
-    {
-        $string = '';
-        $this->hook('construct:before', $string);
-
-        $this->string = $string;
     }
 
     public function setString(string $string): void

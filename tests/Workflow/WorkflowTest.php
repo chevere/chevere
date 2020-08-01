@@ -26,7 +26,6 @@ final class WorkflowTest extends TestCase
     {
         $name = 'test-workflow';
         $workflow = new Workflow($name);
-        $this->assertMatchesRegularExpression('/^(.*)\.(\d*)@(\d*)$/', $workflow->id());
         $this->assertSame($name, $workflow->name());
         $this->assertCount(0, $workflow);
     }

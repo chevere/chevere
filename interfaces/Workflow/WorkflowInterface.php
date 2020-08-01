@@ -28,11 +28,6 @@ interface WorkflowInterface extends Countable
     public function __construct(string $name);
 
     /**
-     * Provides access to the instance id.
-     */
-    public function id(): string;
-
-    /**
      * Provides access to the instance name.
      */
     public function name(): string;

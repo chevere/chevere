@@ -23,6 +23,12 @@ interface WorkflowRunInterface
 {
     public function __construct(WorkflowInterface $workflow, array $arguments);
 
+    /**
+     * Provides access to workflow uuid V4 (RFC 4122).
+     * https://tools.ietf.org/html/rfc4122
+     */
+    public function uuid(): string;
+
     public function workflow(): WorkflowInterface;
 
     public function arguments(): ArgumentsInterface;

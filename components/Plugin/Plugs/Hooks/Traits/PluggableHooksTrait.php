@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin\Plugs\Hooks\Traits;
 
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksRunnerInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
+use Ds\Map;
 
 trait PluggableHooksTrait
 {
@@ -24,7 +26,12 @@ trait PluggableHooksTrait
     public function withHooksRunner(HooksRunnerInterface $hooksRunner): PluggableHooksInterface
     {
         if (!($this instanceof PluggableHooksInterface)) {
-            throw new LogicException; // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            throw new LogicException(
+                (new Message("Instance doesn't implements %type%"))
+                    ->code('%type%', PluggableHooksInterface::class)
+            );
+            // @codeCoverageIgnoreEnd
         }
         $new = clone $this;
         $new->hooksRunner = $hooksRunner;

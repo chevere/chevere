@@ -31,8 +31,6 @@ use function Safe\preg_match;
 
 final class Workflow implements WorkflowInterface
 {
-    private string $id;
-
     private string $name;
 
     private Map $map;
@@ -48,7 +46,7 @@ final class Workflow implements WorkflowInterface
     public function __construct(string $name)
     {
         $this->name = (new Job($name))->toString();
-        $this->id = uniqid('', true) . '@' . time();
+
         $this->map = new Map;
         $this->steps = new Vector;
         $this->parameters = new Parameters;
@@ -66,11 +64,6 @@ final class Workflow implements WorkflowInterface
         $this->map = deep_copy($this->map);
         $this->steps = deep_copy($this->steps);
         $this->parameters = deep_copy($this->parameters);
-    }
-
-    public function id(): string
-    {
-        return $this->id;
     }
 
     public function name(): string

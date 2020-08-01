@@ -22,10 +22,13 @@ use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Ds\Map;
+use Ramsey\Uuid\Uuid;
 use function DeepCopy\deep_copy;
 
 final class WorkflowRun implements WorkflowRunInterface
 {
+    private string $uuid;
+
     private WorkflowInterface $workflow;
 
     private ArgumentsInterface $arguments;
@@ -34,6 +37,7 @@ final class WorkflowRun implements WorkflowRunInterface
 
     public function __construct(WorkflowInterface $workflow, array $arguments)
     {
+        $this->uuid = Uuid::uuid4()->toString();
         $this->arguments = new Arguments($workflow->parameters(), $arguments);
         $this->workflow = $workflow;
         $this->steps = new Map;
@@ -42,6 +46,11 @@ final class WorkflowRun implements WorkflowRunInterface
     public function __clone()
     {
         $this->steps = deep_copy($this->steps);
+    }
+
+    public function uuid(): string
+    {
+        return $this->uuid;
     }
 
     public function workflow(): WorkflowInterface
