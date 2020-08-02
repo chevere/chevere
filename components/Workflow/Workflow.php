@@ -25,6 +25,7 @@ use Chevere\Interfaces\Workflow\TaskInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Ds\Map;
 use Ds\Vector;
+use Generator;
 use Safe\Exceptions\PcreException;
 use function DeepCopy\deep_copy;
 use function Safe\preg_match;
@@ -161,7 +162,21 @@ final class Workflow implements WorkflowInterface
 
     public function getExpected(string $step): array
     {
-        return $this->expected->get($step);
+        try {
+            return $this->expected->get($step);
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(
+                (new Message('Step %step% not found'))
+                    ->code('%step%', $step)
+            );
+        }
+    }
+
+    public function getGenerator(): Generator
+    {
+        foreach ($this->steps as $step) {
+            yield $step => $this->get($step);
+        }
     }
 
     private function assertNoOverflow(string $name): void
@@ -185,7 +200,7 @@ final class Workflow implements WorkflowInterface
                     $this->vars->put($argument, [$matches[1]]);
                     $this->parameters = $this->parameters->withAdded(new Parameter($matches[1]));
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, $argument, $matches)) {
-                    if ($matches[1] !== 'job' && !$this->map->hasKey($matches[1])) {
+                    if (!$this->map->hasKey($matches[1])) {
                         throw new InvalidArgumentException(
                             (new Message("Task %name% references parameter %parameter% from task %task% which doesn't exists"))
                                 ->code('%name%', $name)

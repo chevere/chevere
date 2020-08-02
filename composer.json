@@ -42,6 +42,7 @@
             "components/ThrowableHandler/functions.php",
             "components/Type/functions.php",
             "components/VarDump/functions.php",
+            "components/Workflow/functions.php",
             "components/Writer/functions.php"
         ],
         "psr-4": {

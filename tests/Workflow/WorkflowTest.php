@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Interfaces\Response\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowTest extends TestCase
@@ -33,7 +35,7 @@ final class WorkflowTest extends TestCase
     public function testWithAdded(): void
     {
         $workflow = new Workflow('test-workflow');
-        $task = new Task('callable');
+        $task = new Task('Chevere\Tests\Workflow\workflowTestStep0');
         $step = 'task';
         $workflow = $workflow->withAdded($step, $task);
         $this->assertCount(1, $workflow);
@@ -45,26 +47,32 @@ final class WorkflowTest extends TestCase
 
     public function testWithAddedBeforeAndAfter(): void
     {
-        $task = new Task('callable');
+        $task = new Task('Chevere\Tests\Workflow\workflowTestStep0');
         $workflow = (new Workflow('test-workflow'))
-            ->withAdded('task', $task)
-            ->withAddedBefore('task', 'task-before', $task);
+            ->withAdded('step', $task)
+            ->withAddedBefore('step', 'step-before', $task);
         $this->assertSame([
-            'task-before',
-            'task'
+            'step-before',
+            'step'
         ], $workflow->order());
         $workflow = $workflow
-            ->withAddedAfter('task-before', 'task-after', $task);
+            ->withAddedAfter('step-before', 'step-after', $task);
         $this->assertSame([
-            'task-before',
-            'task-after',
-            'task'
+            'step-before',
+            'step-after',
+            'step'
         ], $workflow->order());
+        $this->expectException(InvalidArgumentException::class);
+        $workflow->withAdded(
+            'step-3',
+            (new Task('Chevere\Tests\Workflow\workflowTestStep1'))
+                ->withArguments('${not-found:reference}')
+        );
     }
 
     public function testWithAddedBeforeOutOfBounds(): void
     {
-        $task = new Task('callable');
+        $task = new Task('Chevere\Tests\Workflow\workflowTestStep0');
         $workflow = (new Workflow('test-workflow'))
             ->withAdded('found', $task);
         $this->expectException(OutOfBoundsException::class);
@@ -73,7 +81,7 @@ final class WorkflowTest extends TestCase
 
     public function testWithAddedAfterOutOfBounds(): void
     {
-        $task = new Task('callable');
+        $task = new Task('Chevere\Tests\Workflow\workflowTestStep0');
         $workflow = (new Workflow('test-workflow'))
             ->withAdded('found', $task);
         $this->expectException(OutOfBoundsException::class);
@@ -82,8 +90,8 @@ final class WorkflowTest extends TestCase
 
     public function testWithAddedTaskWithArguments(): void
     {
-        $task = (new Task('callable'))
-            ->withArguments('foo', 'bar');
+        $task = (new Task('Chevere\Tests\Workflow\workflowTestStep1'))
+            ->withArguments('foo');
         $name = 'name';
         $workflow = (new Workflow('test-workflow'))->withAdded($name, $task);
         $this->assertSame($task, $workflow->get($name));
@@ -91,32 +99,45 @@ final class WorkflowTest extends TestCase
 
     public function testWithAddedTaskWithReferenceArguments(): void
     {
-        $task = new Task('callable');
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                'step',
-                $task->withArguments('test-argument', '${foo}')
+                'step-1',
+                (new Task('Chevere\Tests\Workflow\workflowTestStep1'))
+                    ->withArguments('${foo}')
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $workflow = $workflow
             ->withAdded(
-                'next-step',
-                $task->withArguments('${step:foo}', '${foo}', '${bar}')
+                'step-2',
+                (new Task('Chevere\Tests\Workflow\workflowTestStep2'))
+                    ->withArguments('${step-1:foo}', '${foo}')
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
-        $this->assertTrue($workflow->hasVar('${bar}'));
-        $this->assertTrue($workflow->hasVar('${step:foo}'));
+        $this->assertTrue($workflow->hasVar('${step-1:foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
-        $this->assertTrue($workflow->parameters()->has('bar'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
-        $this->assertSame(['bar'], $workflow->getVar('${bar}'));
-        $this->assertSame(['step', 'foo'], $workflow->getVar('${step:foo}'));
+        $this->assertSame(['step-1', 'foo'], $workflow->getVar('${step-1:foo}'));
         $this->expectException(InvalidArgumentException::class);
         $workflow->withAdded(
             'missing-reference',
             (new Task('callable'))->withArguments('${not:found}')
         );
     }
+}
+
+function workflowTestStep0(): ResponseInterface
+{
+    return new ResponseSuccess([]);
+}
+
+function workflowTestStep1(string $foo): ResponseInterface
+{
+    return new ResponseSuccess([]);
+}
+
+function workflowTestStep2(string $foo, string $bar): ResponseInterface
+{
+    return new ResponseSuccess([]);
 }

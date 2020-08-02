@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Workflow;
 
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
 /**
@@ -37,5 +38,5 @@ interface WorkflowRunInterface
 
     public function has(string $step): bool;
 
-    public function get(string $step): array;
+    public function get(string $step): ResponseInterface;
 }

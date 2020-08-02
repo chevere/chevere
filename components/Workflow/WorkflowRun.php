@@ -15,9 +15,10 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
@@ -66,7 +67,11 @@ final class WorkflowRun implements WorkflowRunInterface
     public function withAdded(string $step, ResponseSuccessInterface $response): WorkflowRunInterface
     {
         $this->workflow->get($step);
-        $expected = $this->workflow->getExpected($step);
+        try {
+            $expected = $this->workflow->getExpected($step);
+        } catch (OutOfBoundsException $e) {
+            $expected = [];
+        }
         $missing = [];
         foreach ($expected as $name) {
             if (!isset($response->data()[$name])) {
@@ -74,13 +79,13 @@ final class WorkflowRun implements WorkflowRunInterface
             }
         }
         if ($missing !== []) {
-            throw new InvalidArgumentException(
+            throw new ArgumentCountException(
                 (new Message('Missing argument(s) %arguments%'))
                     ->code('%arguments%', implode(', ', $missing))
             );
         }
         $new = clone $this;
-        $new->steps->put($step, $response->data());
+        $new->steps->put($step, $response);
 
         return $new;
     }
@@ -90,7 +95,7 @@ final class WorkflowRun implements WorkflowRunInterface
         return $this->steps->hasKey($name);
     }
 
-    public function get(string $name): array
+    public function get(string $name): ResponseInterface
     {
         try {
             return $this->steps->get($name);

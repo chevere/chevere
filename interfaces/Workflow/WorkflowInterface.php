@@ -16,6 +16,7 @@ namespace Chevere\Interfaces\Workflow;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Countable;
+use Generator;
 
 /**
  * Describes the component in charge of defining a collection of chained tasks.
@@ -95,4 +96,9 @@ interface WorkflowInterface extends Countable
      * Provides access to the expected return arguments.
      */
     public function getExpected(string $step): array;
+
+    /**
+     * @return Generator<string, TaskInterface>
+     */
+    public function getGenerator(): Generator;
 }
