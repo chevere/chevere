@@ -20,6 +20,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Workflow\TaskInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
@@ -198,7 +199,7 @@ final class Workflow implements WorkflowInterface
             try {
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, $argument, $matches)) {
                     $this->vars->put($argument, [$matches[1]]);
-                    $this->parameters = $this->parameters->withAdded(new Parameter($matches[1]));
+                    $this->putParameter(new Parameter($matches[1]));
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, $argument, $matches)) {
                     if (!$this->map->hasKey($matches[1])) {
                         throw new InvalidArgumentException(
@@ -240,5 +241,15 @@ final class Workflow implements WorkflowInterface
         $pos = $this->steps->find($name);
         /** @var int $pos */
         return $pos;
+    }
+
+    private function putParameter(ParameterInterface $parameter): void
+    {
+        if ($this->parameters->has($parameter->name())) {
+            $this->parameters = $this->parameters->withModify($parameter);
+
+            return;
+        }
+        $this->parameters = $this->parameters->withAdded($parameter);
     }
 }

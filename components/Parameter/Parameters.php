@@ -16,6 +16,7 @@ namespace Chevere\Components\Parameter;
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 
@@ -30,6 +31,26 @@ final class Parameters implements ParametersInterface
 
     public function withAdded(ParameterInterface $parameter): ParametersInterface
     {
+        if ($this->map->hasKey($parameter->name())) {
+            throw new OverflowException(
+                (new Message('Parameter %name% has been already added'))
+                    ->code('%name%', $parameter->name())
+            );
+        }
+        $new = clone $this;
+        $new->map->put($parameter->name(), $parameter);
+
+        return $new;
+    }
+
+    public function withModify(ParameterInterface $parameter): ParametersInterface
+    {
+        if (!$this->map->hasKey($parameter->name())) {
+            throw new OutOfBoundsException(
+                (new Message("Parameter %name% doesn't exists"))
+                    ->code('%name%', $parameter->name())
+            );
+        }
         $new = clone $this;
         $new->map->put($parameter->name(), $parameter);
 

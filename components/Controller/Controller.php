@@ -38,6 +38,11 @@ abstract class Controller implements ControllerInterface
         return '';
     }
 
+    public function setUp(): ControllerInterface
+    {
+        return $this;
+    }
+
     abstract public function run(ArgumentsInterface $arguments): ResponseInterface;
 
     final public function __construct()

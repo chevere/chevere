@@ -43,7 +43,12 @@ interface ControllerInterface
     public function description(): string;
 
     /**
-     * This method will be called when running the controller.
+     * Returns a new instance with setup made. Useful to wrap pluggable instructions on parameters and description.
+     */
+    public function setUp(): ControllerInterface;
+
+    /**
+     * Method called when running the controller. This method MUST not alter the state of the instance.
      */
     public function run(ArgumentsInterface $controllerArguments): ResponseInterface;
 }

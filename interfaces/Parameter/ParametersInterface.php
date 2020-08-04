@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Parameter;
 
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Countable;
 use Generator;
@@ -28,31 +30,43 @@ interface ParametersInterface extends Countable
     public function getGenerator(): Generator;
 
     /**
-     * Provides access to an array representation.
+     * Provides access to the array representation of this instance.
      *
      * ```php
      * return [
-     *     'name' => $controllerParameter,
+     *     'name' => $parameter,
      * ];
      * ```
      */
     public function toArray(): array;
 
     /**
-     * Return an instance with the specified controller parameter instance.
+     * Return an instance with the specified `$parameter` instance added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified controller parameter instance.
+     * an instance that contains the specified `$parameter` instance added.
+     *
+     * @throws OverflowException
      */
     public function withAdded(ParameterInterface $parameter): ParametersInterface;
 
     /**
-     * Indicates whether the instance has a parameter identified by `$name`.
+     * Return an instance with the specified `$parameter` modifying an already added parameter.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$parameter` modifying an already added parameter.
+     *
+     * @throws OutOfBoundsException
      */
-    public function has(string $name): bool;
+    public function withModify(ParameterInterface $parameter): ParametersInterface;
+
+    /**
+     * Indicates whether the instance has a parameter by name `$parameter`.
+     */
+    public function has(string $parameter): bool;
 
     /**
      * @throws OutOfBoundsException
      */
-    public function get(string $name): ParameterInterface;
+    public function get(string $parameter): ParameterInterface;
 }
