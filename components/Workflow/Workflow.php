@@ -72,40 +72,40 @@ final class Workflow implements WorkflowInterface
         return $this->name;
     }
 
-    public function withAdded(string $name, TaskInterface $task): WorkflowInterface
+    public function withAdded(string $step, TaskInterface $task): WorkflowInterface
     {
-        $name = (new Job($name))->toString();
-        $this->assertNoOverflow($name);
-        $this->setParameters($name, $task);
+        $step = (new Job($step))->toString();
+        $this->assertNoOverflow($step);
+        $this->setParameters($step, $task);
         $new = clone $this;
-        $new->map->put($name, $task);
-        $new->steps->push($name);
+        $new->map->put($step, $task);
+        $new->steps->push($step);
 
         return $new;
     }
 
-    public function withAddedBefore(string $before, string $name, TaskInterface $task): WorkflowInterface
+    public function withAddedBefore(string $before, string $step, TaskInterface $task): WorkflowInterface
     {
-        $this->assertHasTaskByName($before);
-        $name = (new Job($name))->toString();
-        $this->assertNoOverflow($name);
-        $this->setParameters($name, $task);
+        $this->assertHasStepByName($before);
+        $step = (new Job($step))->toString();
+        $this->assertNoOverflow($step);
+        $this->setParameters($step, $task);
         $new = clone $this;
-        $new->map->put($name, $task);
-        $new->steps->insert($new->getPosByName($before), $name);
+        $new->map->put($step, $task);
+        $new->steps->insert($new->getPosByName($before), $step);
 
         return $new;
     }
 
-    public function withAddedAfter(string $after, string $name, TaskInterface $task): WorkflowInterface
+    public function withAddedAfter(string $after, string $step, TaskInterface $task): WorkflowInterface
     {
-        $this->assertHasTaskByName($after);
-        $name = (new Job($name))->toString();
-        $this->assertNoOverflow($name);
-        $this->setParameters($name, $task);
+        $this->assertHasStepByName($after);
+        $step = (new Job($step))->toString();
+        $this->assertNoOverflow($step);
+        $this->setParameters($step, $task);
         $new = clone $this;
-        $new->map->put($name, $task);
-        $new->steps->insert($new->getPosByName($after) + 1, $name);
+        $new->map->put($step, $task);
+        $new->steps->insert($new->getPosByName($after) + 1, $step);
 
         return $new;
     }
@@ -179,35 +179,25 @@ final class Workflow implements WorkflowInterface
         }
     }
 
-    private function assertNoOverflow(string $name): void
+    private function assertNoOverflow(string $step): void
     {
-        if ($this->map->hasKey($name)) {
+        if ($this->map->hasKey($step)) {
             throw new OverflowException(
-                (new Message('Task name %name% has been already added.'))
-                    ->code('%name%', $name)
+                (new Message('Step name %name% has been already added.'))
+                    ->code('%name%', $step)
             );
         }
     }
 
-    private function setParameters(string $name, TaskInterface $task): void
+    private function setParameters(string $step, TaskInterface $task): void
     {
-        /**
-         * @var string $argument
-         */
         foreach ($task->arguments() as $argument) {
             try {
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, $argument, $matches)) {
                     $this->vars->put($argument, [$matches[1]]);
                     $this->parameters = $this->parameters->withAdded(new Parameter($matches[1]));
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, $argument, $matches)) {
-                    if (!$this->map->hasKey($matches[1])) {
-                        throw new InvalidArgumentException(
-                            (new Message("Task %name% references parameter %parameter% from task %task% which doesn't exists"))
-                                ->code('%name%', $name)
-                                ->code('%parameter%', $matches[2])
-                                ->code('%task%', $matches[1])
-                        );
-                    }
+                    $this->assertTaskExists($step, $matches);
                     $expected = $this->expected->get($matches[1], []);
                     $expected[] = $matches[2];
                     $this->expected->put($matches[1], $expected);
@@ -225,20 +215,32 @@ final class Workflow implements WorkflowInterface
         }
     }
 
-    private function assertHasTaskByName(string $name): void
+    private function assertHasStepByName(string $step): void
     {
-        if (!$this->map->hasKey($name)) {
+        if (!$this->map->hasKey($step)) {
             throw new OutOfBoundsException(
                 (new Message("Task name %name% doesn't exists"))
-                    ->code('%name%', $name)
+                    ->code('%name%', $step)
             );
         }
     }
 
-    private function getPosByName(string $name): int
+    private function getPosByName(string $step): int
     {
-        $pos = $this->steps->find($name);
+        $pos = $this->steps->find($step);
         /** @var int $pos */
         return $pos;
+    }
+
+    private function assertTaskExists(string $step, array $matches): void
+    {
+        if (!$this->map->hasKey($matches[1])) {
+            throw new InvalidArgumentException(
+                (new Message("Step %step% references parameter %parameter% from previous step %prevStep% which doesn't exists"))
+                    ->code('%step%', $step)
+                    ->code('%parameter%', $matches[2])
+                    ->code('%prevStep%', $matches[1])
+            );
+        }
     }
 }
