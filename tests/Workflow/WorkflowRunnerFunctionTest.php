@@ -18,6 +18,7 @@ use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
 use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Workflow\ActionInterface;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Workflow\workflowRunner;
 
@@ -29,34 +30,61 @@ final class WorkflowRunnerFunctionTest extends TestCase
         $bar = 'mundo';
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                'step-0',
-                (new Task('Chevere\Tests\Workflow\workflowRunnerFunctionTestStep0'))
+                'step-1',
+                (new Task(WorkflowRunnerFunctionTestStep1::class))
                     ->withArguments('${foo}')
             )
             ->withAdded(
-                'step-1',
-                (new Task('Chevere\Tests\Workflow\workflowRunnerFunctionTestStep1'))
-                    ->withArguments('${step-0:response-0}', '${bar}')
+                'step-2',
+                (new Task(WorkflowRunnerFunctionTestStep2::class))
+                    ->withArguments('${step-1:response-1}', '${bar}')
             );
         $arguments = ['foo' => $foo, 'bar' => $bar];
         $workflowRun = (new WorkflowRun($workflow, $arguments));
         $workflowRun = workflowRunner($workflowRun);
-        $this->assertEquals(workflowRunnerFunctionTestStep0($foo), $workflowRun->get('step-0'));
-        $response0 = $workflowRun->get('step-0')->data()['response-0'];
-        $this->assertEquals(workflowRunnerFunctionTestStep1($response0, $bar), $workflowRun->get('step-1'));
+        $this->assertEquals(
+            (new WorkflowRunnerFunctionTestStep1($foo))->execute(),
+            $workflowRun->get('step-1')
+        );
+        $response0 = $workflowRun->get('step-1')->data()['response-1'];
+        $this->assertEquals(
+            (new WorkflowRunnerFunctionTestStep2($response0, $bar))->execute(),
+            $workflowRun->get('step-2')
+        );
     }
 }
 
-function workflowRunnerFunctionTestStep0(string $foo): ResponseInterface
+class WorkflowRunnerFunctionTestStep1 implements ActionInterface
 {
-    return new ResponseSuccess([
-        'response-0' => $foo,
-    ]);
+    private string $foo;
+
+    public function __construct(string $foo)
+    {
+        $this->foo = $foo;
+    }
+
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([
+            'response-1' => $this->foo,
+        ]);
+    }
 }
 
-function workflowRunnerFunctionTestStep1(string $response0, string $bar): ResponseInterface
+class WorkflowRunnerFunctionTestStep2 implements ActionInterface
 {
-    return new ResponseSuccess([
-        'response-1' => $response0 . ' ^ ' . $bar,
-    ]);
+    private string $response0;
+
+    public function __construct(string $response0, string $bar)
+    {
+        $this->response0 = $response0;
+        $this->bar = $bar;
+    }
+
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([
+            'response-1' => $this->response0 . ' ^ ' . $this->bar,
+        ]);
+    }
 }

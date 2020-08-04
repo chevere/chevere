@@ -19,7 +19,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\UnexpectedValueException;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\TaskInterface;
-use ReflectionFunction;
+use ReflectionClass;
 use ReflectionMethod;
 
 final class Task implements TaskInterface
@@ -28,20 +28,27 @@ final class Task implements TaskInterface
 
     private array $arguments;
 
-    private ReflectionFunction $reflection;
+    private ReflectionClass $reflection;
+
+    private int $countParameters;
 
     public function __construct(string $action)
     {
         $this->action = $action;
         try {
-            $this->reflection = new ReflectionFunction($this->action);
+            $this->reflection = new ReflectionClass($this->action);
         } catch (\ReflectionException $e) {
             throw new InvalidArgumentException(
-                (new Message("Function %action% doesn't exists"))
+                (new Message("Class %action% doesn't exists"))
                     ->code('%action%', $this->action)
             );
         }
-        $this->assertValidAction();
+        $constructor = $this->reflection->getConstructor();
+        if ($constructor === null) {
+            $this->countParameters = 0;
+        } else {
+            $this->countParameters = $constructor->getNumberOfParameters();
+        }
         $this->arguments = [];
     }
 
@@ -64,26 +71,14 @@ final class Task implements TaskInterface
         return $this->arguments;
     }
 
-    private function assertValidAction(): void
-    {
-        if ($this->reflection->getReturnType()->getName() !== ResponseInterface::class) {
-            throw new UnexpectedValueException(
-                (new Message('Action %action% must declare return value of type %interface%'))
-                    ->code('%action%', $this->action)
-                    ->code('%interface%', ResponseInterface::class)
-            );
-        }
-    }
-
     private function assertArguments(): void
     {
         $count = count($this->arguments);
-        $countParameters = $this->reflection->getNumberOfParameters();
-        if ($countParameters !== $count) {
+        if ($this->countParameters !== $count) {
             throw new ArgumentCountException(
-                (new Message('Callable %action% expects %countParameters% arguments, %provided% provided'))
+                (new Message('Class %action% constructor expects %countParameters% arguments, %provided% provided'))
                     ->code('%action%', $this->action)
-                    ->code('%countParameters%', (string) $countParameters)
+                    ->code('%countParameters%', (string) $this->countParameters)
                     ->code('%provided%', (string) $count)
             );
         }

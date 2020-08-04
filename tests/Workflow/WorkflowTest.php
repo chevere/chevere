@@ -20,6 +20,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Workflow\ActionInterface;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowTest extends TestCase
@@ -35,7 +36,7 @@ final class WorkflowTest extends TestCase
     public function testWithAdded(): void
     {
         $workflow = new Workflow('test-workflow');
-        $task = new Task('Chevere\Tests\Workflow\workflowTestStep0');
+        $task = new Task(WorkflowTestStep0::class);
         $step = 'task';
         $workflow = $workflow->withAdded($step, $task);
         $this->assertCount(1, $workflow);
@@ -47,7 +48,7 @@ final class WorkflowTest extends TestCase
 
     public function testWithAddedBeforeAndAfter(): void
     {
-        $task = new Task('Chevere\Tests\Workflow\workflowTestStep0');
+        $task = new Task(WorkflowTestStep0::class);
         $workflow = (new Workflow('test-workflow'))
             ->withAdded('step', $task)
             ->withAddedBefore('step', 'step-before', $task);
@@ -65,14 +66,14 @@ final class WorkflowTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $workflow->withAdded(
             'step-3',
-            (new Task('Chevere\Tests\Workflow\workflowTestStep1'))
+            (new Task(WorkflowTestStep1::class))
                 ->withArguments('${not-found:reference}')
         );
     }
 
     public function testWithAddedBeforeOutOfBounds(): void
     {
-        $task = new Task('Chevere\Tests\Workflow\workflowTestStep0');
+        $task = new Task(WorkflowTestStep0::class);
         $workflow = (new Workflow('test-workflow'))
             ->withAdded('found', $task);
         $this->expectException(OutOfBoundsException::class);
@@ -81,7 +82,7 @@ final class WorkflowTest extends TestCase
 
     public function testWithAddedAfterOutOfBounds(): void
     {
-        $task = new Task('Chevere\Tests\Workflow\workflowTestStep0');
+        $task = new Task(WorkflowTestStep0::class);
         $workflow = (new Workflow('test-workflow'))
             ->withAdded('found', $task);
         $this->expectException(OutOfBoundsException::class);
@@ -90,7 +91,7 @@ final class WorkflowTest extends TestCase
 
     public function testWithAddedTaskWithArguments(): void
     {
-        $task = (new Task('Chevere\Tests\Workflow\workflowTestStep1'))
+        $task = (new Task(WorkflowTestStep1::class))
             ->withArguments('foo');
         $name = 'name';
         $workflow = (new Workflow('test-workflow'))->withAdded($name, $task);
@@ -102,7 +103,7 @@ final class WorkflowTest extends TestCase
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
                 'step-1',
-                (new Task('Chevere\Tests\Workflow\workflowTestStep1'))
+                (new Task(WorkflowTestStep1::class))
                     ->withArguments('${foo}')
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
@@ -111,7 +112,7 @@ final class WorkflowTest extends TestCase
         $workflow = $workflow
             ->withAdded(
                 'step-2',
-                (new Task('Chevere\Tests\Workflow\workflowTestStep2'))
+                (new Task(WorkflowTestStep2::class))
                     ->withArguments('${step-1:foo}', '${foo}')
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
@@ -127,17 +128,34 @@ final class WorkflowTest extends TestCase
     }
 }
 
-function workflowTestStep0(): ResponseInterface
+class WorkflowTestStep0 implements ActionInterface
 {
-    return new ResponseSuccess([]);
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([]);
+    }
 }
 
-function workflowTestStep1(string $foo): ResponseInterface
+class WorkflowTestStep1 implements ActionInterface
 {
-    return new ResponseSuccess([]);
+    public function __construct(string $foo)
+    {
+    }
+
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([]);
+    }
 }
 
-function workflowTestStep2(string $foo, string $bar): ResponseInterface
+class WorkflowTestStep2 implements ActionInterface
 {
-    return new ResponseSuccess([]);
+    public function __construct(string $foo, string $bar)
+    {
+    }
+
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([]);
+    }
 }

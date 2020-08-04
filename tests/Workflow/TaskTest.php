@@ -19,6 +19,7 @@ use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\UnexpectedValueException;
 use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Workflow\ActionInterface;
 use PHPUnit\Framework\TestCase;
 
 final class TaskTest extends TestCase
@@ -29,42 +30,41 @@ final class TaskTest extends TestCase
         new Task('callable');
     }
 
-    public function testUnexpectedArgument(): void
-    {
-        $this->expectException(UnexpectedValueException::class);
-        new Task(__NAMESPACE__ . '\taskTestInvalidReturnType');
-    }
-
     public function testArgumentCountError(): void
     {
         $this->expectException(ArgumentCountException::class);
-        (new Task(__NAMESPACE__ . '\taskTestStep0'))
+        (new Task(TaskTestStep0::class))
             ->withArguments('foo', 'invalid extra argument');
     }
 
     public function testConstruct(): void
     {
-        $action = __NAMESPACE__ . '\taskTestStep';
+        $action = TaskTestStep1::class;
         $task = new Task($action);
         $this->assertSame($action, $task->action());
         $this->assertSame([], $task->arguments());
-        $arguments = ['1', '2', '3'];
+        $arguments = ['1'];
         $task = $task->withArguments(...$arguments);
         $this->assertSame($arguments, $task->arguments());
     }
 }
 
-function taskTestStep(string $one, string $two, string $three): ResponseInterface
+class TaskTestStep0 implements ActionInterface
 {
-    return new ResponseSuccess([]);
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([]);
+    }
 }
 
-function taskTestInvalidReturnType(): int
+class TaskTestStep1 implements ActionInterface
 {
-    return 1;
-}
+    public function __construct(string $one)
+    {
+    }
 
-function taskTestStep0(): ResponseInterface
-{
-    return new ResponseSuccess([]);
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([]);
+    }
 }

@@ -20,6 +20,7 @@ use Chevere\Components\Workflow\WorkflowRun;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Workflow\ActionInterface;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowRunTest extends TestCase
@@ -29,7 +30,7 @@ final class WorkflowRunTest extends TestCase
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
                 'step',
-                (new Task('Chevere\Tests\Workflow\workflowRunTestStep1'))
+                (new Task(WorkflowRunTestStep1::class))
                     ->withArguments('${foo}')
             );
         $arguments = ['foo' => 'bar'];
@@ -49,12 +50,12 @@ final class WorkflowRunTest extends TestCase
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
                 'step-0',
-                (new Task('Chevere\Tests\Workflow\workflowRunTestStep1'))
+                (new Task(WorkflowRunTestStep1::class))
                     ->withArguments('${foo}')
             )
             ->withAdded(
                 'step-1',
-                (new Task('Chevere\Tests\Workflow\workflowRunTestStep2'))
+                (new Task(WorkflowRunTestStep2::class))
                     ->withArguments('${step-0:response-0}', '${bar}')
             );
         $arguments = [
@@ -74,7 +75,7 @@ final class WorkflowRunTest extends TestCase
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
                 'step-0',
-                (new Task('Chevere\Tests\Workflow\workflowRunTestStep1'))
+                (new Task(WorkflowRunTestStep1::class))
                     ->withArguments('${foo}')
             );
         $arguments = ['foo' => 'hola'];
@@ -88,11 +89,11 @@ final class WorkflowRunTest extends TestCase
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
                 'step-0',
-                new Task('Chevere\Tests\Workflow\workflowRunTestStep0')
+                new Task(WorkflowRunTestStep0::class)
             )
             ->withAdded(
                 'step-1',
-                (new Task('Chevere\Tests\Workflow\workflowRunTestStep1'))
+                (new Task(WorkflowRunTestStep1::class))
                     ->withArguments('${step-0:response-0}')
             );
         $this->expectException(ArgumentCountException::class);
@@ -101,17 +102,34 @@ final class WorkflowRunTest extends TestCase
     }
 }
 
-function workflowRunTestStep0(): ResponseInterface
+class WorkflowRunTestStep0 implements ActionInterface
 {
-    return new ResponseSuccess([]);
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([]);
+    }
 }
 
-function workflowRunTestStep1(string $foo): ResponseInterface
+class WorkflowRunTestStep1 implements ActionInterface
 {
-    return new ResponseSuccess([]);
+    public function __construct(string $foo)
+    {
+    }
+
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([]);
+    }
 }
 
-function workflowRunTestStep2(string $foo, string $bar): ResponseInterface
+class WorkflowRunTestStep2 implements ActionInterface
 {
-    return new ResponseSuccess([]);
+    public function __construct(string $foo, string $bar)
+    {
+    }
+
+    public function execute(): ResponseInterface
+    {
+        return new ResponseSuccess([]);
+    }
 }

@@ -27,12 +27,12 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
         if ($workflowRun->has($step)) {
             continue; // @codeCoverageIgnore
         }
-        $callable = $task->action();
-        if (!is_callable($callable)) {
+        $action = $task->action();
+        if (!class_exists($action)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
-                (new Message('String %callable% provided is not callable'))
-                    ->code('%callable%', $callable)
+                (new Message("Class %action% doesn't exist"))
+                    ->code('%action%', $action)
             );
             // @codeCoverageIgnoreEnd
         }
@@ -52,12 +52,12 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
                 $arguments[] = $workflowRun->arguments()->get($reference[0]);
             }
         }
-        $response = $callable(...$arguments);
+        $response = (new $action(...$arguments))->execute();
         if (!$type->validate($response)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('Return value for %callable% must of type %object% and must implement %interface%, type %provided% provided'))
-                    ->code('%callable%', $callable)
+                    ->code('%callable%', $action)
                     ->code('%object%', 'object')
                     ->code('%interface%', $type->typeHinting())
                     ->code('%provided%', gettype($response))
@@ -71,7 +71,7 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
         catch (ArgumentCountException $e) {
             throw new LogicException(
                 (new Message('Unexpected response from callable %callable% at step %step%'))
-                    ->code('%callable%', $callable)
+                    ->code('%callable%', $action)
                     ->code('%step%', $step),
                 0,
                 $e
