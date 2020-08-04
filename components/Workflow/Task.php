@@ -20,21 +20,28 @@ use Chevere\Exceptions\Core\UnexpectedValueException;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\TaskInterface;
 use ReflectionFunction;
+use ReflectionMethod;
 
 final class Task implements TaskInterface
 {
-    private string $callable;
+    private string $action;
 
     private array $arguments;
 
     private ReflectionFunction $reflection;
 
-    public function __construct(string $callable)
+    public function __construct(string $action)
     {
-        $this->callable = $callable;
-        $this->assertIsCallable();
-        $this->reflection = new ReflectionFunction($this->callable);
-        $this->assertIsValidCallable();
+        $this->action = $action;
+        try {
+            $this->reflection = new ReflectionFunction($this->action);
+        } catch (\ReflectionException $e) {
+            throw new InvalidArgumentException(
+                (new Message("Function %action% doesn't exists"))
+                    ->code('%action%', $this->action)
+            );
+        }
+        $this->assertValidAction();
         $this->arguments = [];
     }
 
@@ -47,9 +54,9 @@ final class Task implements TaskInterface
         return $new;
     }
 
-    public function callable(): string
+    public function action(): string
     {
-        return $this->callable;
+        return $this->action;
     }
 
     public function arguments(): array
@@ -57,23 +64,12 @@ final class Task implements TaskInterface
         return $this->arguments;
     }
 
-    private function assertIsCallable(): void
+    private function assertValidAction(): void
     {
-        if (!is_callable($this->callable)) {
-            throw new InvalidArgumentException(
-                (new Message('Argument %callable% provided is not callable'))
-                    ->code('%callable%', $this->callable)
-            );
-        }
-    }
-
-    private function assertIsValidCallable(): void
-    {
-        $type = $this->reflection->getReturnType();
-        if ($type === null || $type->getName() !== ResponseInterface::class) {
+        if ($this->reflection->getReturnType()->getName() !== ResponseInterface::class) {
             throw new UnexpectedValueException(
-                (new Message('Callable %callable% must return an object implementing %interface%'))
-                    ->code('%callable%', $this->callable)
+                (new Message('Action %action% must declare return value of type %interface%'))
+                    ->code('%action%', $this->action)
                     ->code('%interface%', ResponseInterface::class)
             );
         }
@@ -85,8 +81,8 @@ final class Task implements TaskInterface
         $countParameters = $this->reflection->getNumberOfParameters();
         if ($countParameters !== $count) {
             throw new ArgumentCountException(
-                (new Message('Callable %callable% expects %countParameters% arguments, %provided% provided'))
-                    ->code('%callable%', $this->callable)
+                (new Message('Callable %action% expects %countParameters% arguments, %provided% provided'))
+                    ->code('%action%', $this->action)
                     ->code('%countParameters%', (string) $countParameters)
                     ->code('%provided%', (string) $count)
             );

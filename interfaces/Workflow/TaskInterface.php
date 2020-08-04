@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of Chevereto.
+ * This file is part of Chevere.
  *
- * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ * (c) Rodolfo Berrios <rodolfo@chevere.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -23,11 +23,11 @@ interface TaskInterface
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(string $callable);
+    public function __construct(string $action);
 
     public function withArguments(string ...$arguments): TaskInterface;
 
-    public function callable(): string;
+    public function action(): string;
 
     /**
      * @return string[]

@@ -27,7 +27,7 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
         if ($workflowRun->has($step)) {
             continue; // @codeCoverageIgnore
         }
-        $callable = $task->callable();
+        $callable = $task->action();
         if (!is_callable($callable)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
