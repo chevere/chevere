@@ -22,7 +22,6 @@ use Chevere\Exceptions\Core\UnexpectedValueException;
 use Chevere\Interfaces\Service\ServiceableInterface;
 use Chevere\Interfaces\Service\ServiceInterface;
 use Chevere\Interfaces\Service\ServiceProvidersInterface;
-use Chevere\Tests\Service\_resources\Mailer;
 use PHPUnit\Framework\TestCase;
 
 final class ServiceProvidersTest extends TestCase
@@ -51,7 +50,7 @@ final class ServiceProvidersTest extends TestCase
                     ->withAdded('withService');
             }
 
-            private function withService(Mailer $foo): self
+            private function withService(ServiceProvidersTestService $foo): self
             {
                 return $this;
             }
@@ -127,7 +126,7 @@ final class ServiceProvidersTest extends TestCase
                     ->withAdded('withService');
             }
 
-            public function withService(Mailer $foo): self
+            public function withService(ServiceProvidersTestService $foo): self
             {
                 return $this;
             }
@@ -135,5 +134,18 @@ final class ServiceProvidersTest extends TestCase
         $this->expectException(OverflowException::class);
         $serviceable->getServiceProviders()
             ->withAdded('withService');
+    }
+}
+
+final class ServiceProvidersTestService implements ServiceInterface
+{
+    public function getDescription(): string
+    {
+        return 'Does some';
+    }
+
+    public function some(string $foo, string $bar): void
+    {
+        // Pretend that I send an email here...
     }
 }
