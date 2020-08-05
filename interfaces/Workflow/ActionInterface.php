@@ -25,9 +25,12 @@ interface ActionInterface
     public function __construct();
 
     /**
-     * @return string[]
+     * Defines the default parameters.
      */
     public function getParameters(): ParametersInterface;
 
+    /**
+     * Method called when running the action. This method MUST not alter the state of the instance.
+     */
     public function run(ArgumentsInterface $arguments): ResponseInterface;
 }

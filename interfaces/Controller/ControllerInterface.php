@@ -13,32 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Workflow\ActionInterface;
 
 /**
  * Describes the component in charge of handling controller instructions.
  */
-interface ControllerInterface
+interface ControllerInterface extends ActionInterface
 {
-    /**
-     * Defines the controller parameters.
-     */
-    public function getParameters(): ParametersInterface;
-
     /**
      * Provides access to the controller parameters defined with `getParameters()`.
      */
     public function parameters(): ParametersInterface;
 
     /**
-     * Defines the controller description.
+     * Defines the default description.
      */
     public function getDescription(): string;
 
     /**
-     * Provides access to the description defined with `getDescription()`.
+     * Provides access to the description.
      */
     public function description(): string;
 
@@ -46,9 +40,4 @@ interface ControllerInterface
      * Returns a new instance with setup made. Useful to wrap pluggable instructions on parameters and description.
      */
     public function setUp(): ControllerInterface;
-
-    /**
-     * Method called when running the controller. This method MUST not alter the state of the instance.
-     */
-    public function run(ArgumentsInterface $controllerArguments): ResponseInterface;
 }
