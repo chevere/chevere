@@ -17,7 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Interfaces\Workflow\ActionInterface;
+use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 
 function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface

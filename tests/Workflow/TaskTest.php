@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
+use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
-use Chevere\Components\Workflow\Action;
 use Chevere\Components\Workflow\Task;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;

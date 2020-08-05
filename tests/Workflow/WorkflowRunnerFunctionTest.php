@@ -17,14 +17,14 @@ use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
-use Chevere\Components\Workflow\Action;
+use Chevere\Components\Action\Action;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Interfaces\Workflow\ActionInterface;
+use Chevere\Interfaces\Action\ActionInterface;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Workflow\workflowRunner;
 

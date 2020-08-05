@@ -16,7 +16,7 @@ namespace Chevere\Tests\Workflow;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
-use Chevere\Components\Workflow\Action;
+use Chevere\Components\Action\Action;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;

@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Workflow;
+namespace Chevere\Components\Action;
 
 use Chevere\Components\Parameter\Parameters;
+use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Workflow\ActionInterface;
 use Ds\Map;
 
 abstract class Action implements ActionInterface

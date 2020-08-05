@@ -19,7 +19,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\UnexpectedValueException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Workflow\ActionInterface;
+use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Workflow\TaskInterface;
 use ReflectionClass;
 

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
+use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Workflow\ActionInterface;
 
 /**
  * Describes the component in charge of handling controller instructions.
