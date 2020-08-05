@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 final class GetArticleController extends Controller
 {

@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 

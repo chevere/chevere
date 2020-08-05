@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
+use Chevere\Components\Workflow\Action;
 use Chevere\Components\Workflow\Task;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\UnexpectedValueException;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Interfaces\Workflow\ActionInterface;
 use PHPUnit\Framework\TestCase;
+use UnexpectedValueException;
 
 final class TaskTest extends TestCase
 {
@@ -30,11 +34,17 @@ final class TaskTest extends TestCase
         new Task('callable');
     }
 
+    public function testUnexpectedValue(): void
+    {
+        $this->expectException(UnexpectedValueException::class);
+        new Task(__CLASS__);
+    }
+
     public function testArgumentCountError(): void
     {
         $this->expectException(ArgumentCountException::class);
         (new Task(TaskTestStep0::class))
-            ->withArguments('foo', 'invalid extra argument');
+            ->withArguments(['foo' => 'foo', 'bar' => 'invalid extra argument']);
     }
 
     public function testConstruct(): void
@@ -43,27 +53,29 @@ final class TaskTest extends TestCase
         $task = new Task($action);
         $this->assertSame($action, $task->action());
         $this->assertSame([], $task->arguments());
-        $arguments = ['1'];
-        $task = $task->withArguments(...$arguments);
+        $arguments = ['foo' => '1'];
+        $task = $task->withArguments($arguments);
         $this->assertSame($arguments, $task->arguments());
     }
 }
 
-class TaskTestStep0 implements ActionInterface
+class TaskTestStep0 extends Action
 {
-    public function execute(): ResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return new ResponseSuccess([]);
     }
 }
 
-class TaskTestStep1 implements ActionInterface
+class TaskTestStep1 extends Action
 {
-    public function __construct(string $one)
+    public function getParameters(): ParametersInterface
     {
+        return (new Parameters)
+            ->withAdded(new Parameter('foo'));
     }
 
-    public function execute(): ResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return new ResponseSuccess([]);
     }

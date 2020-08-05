@@ -15,8 +15,8 @@ namespace Chevere\Tests\Route\_resources\src;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Response\ResponseSuccess;
-use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 final class TestController extends Controller
 {

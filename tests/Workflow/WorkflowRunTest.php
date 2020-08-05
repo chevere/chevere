@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
+use Chevere\Components\Workflow\Action;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Interfaces\Workflow\ActionInterface;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowRunTest extends TestCase
@@ -31,7 +35,7 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 'step',
                 (new Task(WorkflowRunTestStep1::class))
-                    ->withArguments('${foo}')
+                    ->withArguments(['foo' => '${foo}'])
             );
         $arguments = ['foo' => 'bar'];
         $workflowRun = new WorkflowRun($workflow, $arguments);
@@ -51,12 +55,15 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 'step-0',
                 (new Task(WorkflowRunTestStep1::class))
-                    ->withArguments('${foo}')
+                    ->withArguments(['foo' => '${foo}'])
             )
             ->withAdded(
                 'step-1',
                 (new Task(WorkflowRunTestStep2::class))
-                    ->withArguments('${step-0:response-0}', '${bar}')
+                    ->withArguments([
+                        'foo' => '${step-0:response-0}',
+                        'bar' => '${bar}'
+                    ])
             );
         $arguments = [
             'foo' => 'hola',
@@ -76,7 +83,7 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 'step-0',
                 (new Task(WorkflowRunTestStep1::class))
-                    ->withArguments('${foo}')
+                    ->withArguments(['foo' => '${foo}'])
             );
         $arguments = ['foo' => 'hola'];
         $this->expectException(OutOfBoundsException::class);
@@ -94,7 +101,7 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 'step-1',
                 (new Task(WorkflowRunTestStep1::class))
-                    ->withArguments('${step-0:response-0}')
+                    ->withArguments(['foo' => '${step-0:response-0}'])
             );
         $this->expectException(ArgumentCountException::class);
         (new WorkflowRun($workflow, []))
@@ -102,33 +109,38 @@ final class WorkflowRunTest extends TestCase
     }
 }
 
-class WorkflowRunTestStep0 implements ActionInterface
+class WorkflowRunTestStep0 extends Action
 {
-    public function execute(): ResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return new ResponseSuccess([]);
     }
 }
 
-class WorkflowRunTestStep1 implements ActionInterface
+class WorkflowRunTestStep1 extends Action
 {
-    public function __construct(string $foo)
+    public function getParameters(): ParametersInterface
     {
+        return (new Parameters)
+            ->withAdded(new Parameter('foo'));
     }
 
-    public function execute(): ResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return new ResponseSuccess([]);
     }
 }
 
-class WorkflowRunTestStep2 implements ActionInterface
+class WorkflowRunTestStep2 extends Action
 {
-    public function __construct(string $foo, string $bar)
+    public function getParameters(): ParametersInterface
     {
+        return (new Parameters)
+            ->withAdded(new Parameter('foo'))
+            ->withAdded(new Parameter('bar'));
     }
 
-    public function execute(): ResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return new ResponseSuccess([]);
     }

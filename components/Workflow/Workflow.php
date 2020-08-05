@@ -246,7 +246,7 @@ final class Workflow implements WorkflowInterface
     private function assertStepExists(string $step, array $matches): void
     {
         if (!$this->map->hasKey($matches[1])) {
-            throw new InvalidArgumentException(
+            throw new OutOfBoundsException(
                 (new Message("Step %step% references parameter %parameter% from previous step %prevStep% which doesn't exists"))
                     ->code('%step%', $step)
                     ->code('%parameter%', $matches[2])

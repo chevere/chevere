@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
 use Chevere\Components\Regex\Regex;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 class TestController extends Controller implements PluggableHooksInterface
 {

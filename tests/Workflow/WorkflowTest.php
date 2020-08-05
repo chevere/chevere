@@ -13,14 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
+use Chevere\Components\Workflow\Action;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Parameter\ArgumentRequiredException;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Interfaces\Workflow\ActionInterface;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowTest extends TestCase
@@ -63,11 +68,11 @@ final class WorkflowTest extends TestCase
             'step-after',
             'step'
         ], $workflow->order());
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(ArgumentRequiredException::class);
         $workflow->withAdded(
             'step-3',
             (new Task(WorkflowTestStep1::class))
-                ->withArguments('${not-found:reference}')
+                ->withArguments(['missing' => '${not-found:reference}'])
         );
     }
 
@@ -92,7 +97,7 @@ final class WorkflowTest extends TestCase
     public function testWithAddedTaskWithArguments(): void
     {
         $task = (new Task(WorkflowTestStep1::class))
-            ->withArguments('foo');
+            ->withArguments(['foo' => 'foo']);
         $name = 'name';
         $workflow = (new Workflow('test-workflow'))->withAdded($name, $task);
         $this->assertSame($task, $workflow->get($name));
@@ -104,7 +109,7 @@ final class WorkflowTest extends TestCase
             ->withAdded(
                 'step-1',
                 (new Task(WorkflowTestStep1::class))
-                    ->withArguments('${foo}')
+                    ->withArguments(['foo' => '${foo}'])
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
@@ -113,48 +118,57 @@ final class WorkflowTest extends TestCase
             ->withAdded(
                 'step-2',
                 (new Task(WorkflowTestStep2::class))
-                    ->withArguments('${step-1:foo}', '${foo}')
+                    ->withArguments(
+                        [
+                            'foo' => '${step-1:foo}',
+                            'bar' => '${foo}'
+                        ]
+                    )
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
         $this->assertTrue($workflow->hasVar('${step-1:foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $this->assertSame(['step-1', 'foo'], $workflow->getVar('${step-1:foo}'));
-        $this->expectException(InvalidArgumentException::class);
-        $workflow->withAdded(
-            'missing-reference',
-            (new Task('callable'))->withArguments('${not:found}')
-        );
+        $task = (new Task(WorkflowTestStep1::class))
+            ->withArguments(['foo' => '${not:found}']);
+        $this->expectException(OutOfBoundsException::class);
+        $workflow->withAdded('missing-reference', $task);
     }
 }
 
-class WorkflowTestStep0 implements ActionInterface
+class WorkflowTestStep0 extends Action
 {
-    public function execute(): ResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return new ResponseSuccess([]);
     }
 }
 
-class WorkflowTestStep1 implements ActionInterface
+class WorkflowTestStep1 extends Action
 {
-    public function __construct(string $foo)
+    public function getParameters(): ParametersInterface
     {
+        return (new Parameters)
+            ->withAdded(new Parameter('foo'));
     }
 
-    public function execute(): ResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return new ResponseSuccess([]);
     }
 }
 
-class WorkflowTestStep2 implements ActionInterface
+class WorkflowTestStep2 extends Action
 {
-    public function __construct(string $foo, string $bar)
+    public function getParameters(): ParametersInterface
     {
+        return (new Parameters)
+            ->withAdded(new Parameter('foo'))
+            ->withAdded(new Parameter('bar'));
     }
 
-    public function execute(): ResponseInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return new ResponseSuccess([]);
     }

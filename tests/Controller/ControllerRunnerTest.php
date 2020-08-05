@@ -20,6 +20,7 @@ use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Controller\ControllerExecutedInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
@@ -53,9 +54,12 @@ final class ControllerRunnerTest extends TestCase
         $controller = new ControllerRunnerTestController;
         $arguments = [$parameter => $value];
         $arguments = new Arguments($controller->parameters(), $arguments);
-        $ran = (new ControllerRunner($controller))->execute($arguments);
-        $this->assertSame(0, $ran->code());
-        $this->assertSame(['user' => $value], $ran->data());
+        $execute = (new ControllerRunner($controller))->execute($arguments);
+        $this->assertSame(0, $execute->code());
+        $this->assertSame(['user' => $value], $execute->data());
+        $this->expectException(LogicException::class);
+        (new ControllerRunner($controller))
+            ->execute(new Arguments(new Parameters, []));
     }
 }
 

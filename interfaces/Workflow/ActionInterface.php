@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Workflow;
 
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 
 /**
@@ -20,5 +22,12 @@ use Chevere\Interfaces\Response\ResponseInterface;
  */
 interface ActionInterface
 {
-    public function execute(): ResponseInterface;
+    public function __construct();
+
+    /**
+     * @return string[]
+     */
+    public function getParameters(): ParametersInterface;
+
+    public function run(ArgumentsInterface $arguments): ResponseInterface;
 }

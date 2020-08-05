@@ -17,10 +17,12 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\UnexpectedValueException;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Exceptions\Parameter\ArgumentRequiredException;
+use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Workflow\ActionInterface;
 use Chevere\Interfaces\Workflow\TaskInterface;
 use ReflectionClass;
-use ReflectionMethod;
 
 final class Task implements TaskInterface
 {
@@ -30,7 +32,7 @@ final class Task implements TaskInterface
 
     private ReflectionClass $reflection;
 
-    private int $countParameters;
+    private ParametersInterface $parameters;
 
     public function __construct(string $action)
     {
@@ -43,20 +45,38 @@ final class Task implements TaskInterface
                     ->code('%action%', $this->action)
             );
         }
-        $constructor = $this->reflection->getConstructor();
-        if ($constructor === null) {
-            $this->countParameters = 0;
-        } else {
-            $this->countParameters = $constructor->getNumberOfParameters();
+        if (!$this->reflection->implementsInterface(ActionInterface::class)) {
+            throw new UnexpectedValueException(
+                (new Message('Action %action% must implement %interface% interface'))
+                    ->code('%action%', $this->action)
+                    ->code('%interface%', ActionInterface::class)
+            );
         }
+        $this->parameters = $this->reflection->newInstance()->parameters();
         $this->arguments = [];
     }
 
-    public function withArguments(string ...$arguments): TaskInterface
+    public function withArguments(array $arguments): TaskInterface
     {
+        $this->assertArgumentsCount($arguments);
+        $store = [];
+        $missing = [];
+        foreach ($this->parameters->getGenerator() as $name => $parameter) {
+            $argument = $arguments[$name] ?? null;
+            if (!is_string($argument)) {
+                $missing[] = $name;
+                continue;
+            }
+            $store[$name] = $argument;
+        }
+        if ($missing !== []) {
+            throw new ArgumentRequiredException(
+                (new Message('Missing required argument(s): %message%'))
+                    ->code('%message%', implode(', ', $missing))
+            );
+        }
         $new = clone $this;
-        $new->arguments = $arguments;
-        $new->assertArguments();
+        $new->arguments = $store;
 
         return $new;
     }
@@ -71,14 +91,14 @@ final class Task implements TaskInterface
         return $this->arguments;
     }
 
-    private function assertArguments(): void
+    private function assertArgumentsCount(array $arguments): void
     {
-        $count = count($this->arguments);
-        if ($this->countParameters !== $count) {
+        $count = count($arguments);
+        if ($this->parameters->count() !== $count) {
             throw new ArgumentCountException(
-                (new Message('Class %action% constructor expects %countParameters% arguments, %provided% provided'))
+                (new Message('Class %action% constructor expects %parametersCount% arguments, %provided% provided'))
                     ->code('%action%', $this->action)
-                    ->code('%countParameters%', (string) $this->countParameters)
+                    ->code('%parametersCount%', (string) $this->parameters->count())
                     ->code('%provided%', (string) $count)
             );
         }

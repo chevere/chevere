@@ -19,8 +19,8 @@ use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Exceptions\Controller\ControllerInterfaceException;
 use Chevere\Exceptions\Controller\ControllerNameException;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
-use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerNameTest extends TestCase

@@ -38,6 +38,11 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
+    public function parameters(): ParametersInterface
+    {
+        return $this->parameters;
+    }
+
     public function toArray(): array
     {
         return $this->arguments;
@@ -91,16 +96,16 @@ final class Arguments implements ArgumentsInterface
 
     private function assertRequired(): void
     {
-        $failed = [];
+        $missing = [];
         foreach ($this->parameters->getGenerator() as $name => $parameter) {
             if (!($parameter instanceof ParameterOptionalInterface) && !$this->has($name)) {
-                $failed[] = $name;
+                $missing[] = $name;
             }
         }
-        if ($failed !== []) {
+        if ($missing !== []) {
             throw new ArgumentRequiredException(
                 (new Message('Missing required argument(s): %message%'))
-                    ->code('%message%', implode(', ', $failed))
+                    ->code('%message%', implode(', ', $missing))
             );
         }
     }
