@@ -18,7 +18,6 @@ use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\UnexpectedValueException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
-use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Workflow\ActionInterface;
 use Chevere\Interfaces\Workflow\TaskInterface;
@@ -96,7 +95,7 @@ final class Task implements TaskInterface
         $count = count($arguments);
         if ($this->parameters->count() !== $count) {
             throw new ArgumentCountException(
-                (new Message('Class %action% constructor expects %parametersCount% arguments, %provided% provided'))
+                (new Message('Class %action% expects %parametersCount% arguments, %provided% provided'))
                     ->code('%action%', $this->action)
                     ->code('%parametersCount%', (string) $this->parameters->count())
                     ->code('%provided%', (string) $count)

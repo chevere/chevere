@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter\Traits;
 
+use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Core\Exception;
@@ -75,8 +76,8 @@ trait ParameterTrait
                 ->notContains(' ');
         } catch (Exception $e) {
             throw new ParameterNameInvalidException(
-                $e->message(),
-                $e->getCode(),
+                new Message('Invalid parameter name'),
+                0,
                 $e
             );
         }
