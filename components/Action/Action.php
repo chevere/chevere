@@ -16,12 +16,9 @@ namespace Chevere\Components\Action;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Ds\Map;
 
 abstract class Action implements ActionInterface
 {
-    private Map $arguments;
-
     private ParametersInterface $parameters;
 
     final public function __construct()
