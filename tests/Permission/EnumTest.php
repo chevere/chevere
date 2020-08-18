@@ -35,6 +35,7 @@ final class EnumTest extends TestCase
     public function testConstruct(): void
     {
         $enum = new TestEnumTest(TestEnumTest::AUTO);
+        $this->assertSame('test_enum_test', $enum->getIdentifier());
         $this->assertSame(TestEnumTest::AUTO, $enum->value());
     }
 }

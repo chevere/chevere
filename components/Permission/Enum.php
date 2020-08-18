@@ -15,6 +15,7 @@ namespace Chevere\Components\Permission;
 
 use Chevere\Components\Description\Traits\DescriptorTrait;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Permission\Traits\IdentifierTrait;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Permission\EnumInterface;
@@ -22,6 +23,7 @@ use Chevere\Interfaces\Permission\EnumInterface;
 abstract class Enum implements EnumInterface
 {
     use DescriptorTrait;
+    use IdentifierTrait;
 
     private array $accept;
 

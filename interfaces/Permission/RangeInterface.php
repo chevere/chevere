@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Permission;
 
-use Chevere\Interfaces\Description\DescriptorInterface;
+use Chevere\Interfaces\Description\GetDescriptionInterface;
+use Chevere\Interfaces\Identifier\GetIdentifierInterface;
 
 /**
  * Describes the component in charge of defining an integer range.
  */
-interface RangeInterface extends DescriptorInterface
+interface RangeInterface extends GetDescriptionInterface, GetIdentifierInterface
 {
     /**
      * Provides access to the default value.

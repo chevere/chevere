@@ -23,6 +23,7 @@ final class RangeTest extends TestCase
     {
         $value = null;
         $range = new TestRangeNullTest($value);
+        $this->assertSame('test_range_null_test', $range->getIdentifier());
         $this->assertSame($value, $range->value());
         $this->assertSame([null, null], $range->getAccept());
         $this->assertTrue($range->isInRange(null));

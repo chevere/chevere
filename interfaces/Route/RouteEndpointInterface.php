@@ -24,6 +24,7 @@ use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Http\Methods\TraceMethod;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Interfaces\Description\DescriptionInterface;
 use Chevere\Interfaces\Http\MethodInterface;
 
 /**
@@ -31,7 +32,7 @@ use Chevere\Interfaces\Http\MethodInterface;
  *
  * Note: Parameters must be automatically determined from known `$controller` parameters.
  */
-interface RouteEndpointInterface
+interface RouteEndpointInterface extends DescriptionInterface
 {
     /** Known HTTP methods */
     const KNOWN_METHODS = [
@@ -68,11 +69,6 @@ interface RouteEndpointInterface
      * an instance that contains the specified `$description`.
      */
     public function withDescription(string $description): RouteEndpointInterface;
-
-    /**
-     * Provides access to the description.
-     */
-    public function description(): string;
 
     /**
      * Return an instance with the specified `$parameter` removed.

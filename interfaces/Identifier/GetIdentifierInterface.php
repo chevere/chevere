@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Description;
+namespace Chevere\Interfaces\Identifier;
 
 /**
- * Describes the component in charge of providing an interface for description.
+ * Describes the component in charge of defining the identifier.
  */
-interface DescriptionInterface
+interface GetIdentifierInterface
 {
     /**
-     * Provides access to the description.
+     * Provides the identifier.
      */
-    public function description(): string;
+    public function getIdentifier(): string;
 }

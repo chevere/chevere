@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\Description;
 /**
  * Describes the component in charge of defining the description.
  */
-interface DescriptorInterface
+interface GetDescriptionInterface
 {
     /**
      * Provides the description.

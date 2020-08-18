@@ -15,12 +15,14 @@ namespace Chevere\Components\Permission;
 
 use Chevere\Components\Description\Traits\DescriptorTrait;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Permission\Traits\IdentifierTrait;
 use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Interfaces\Permission\RangeInterface;
 
 abstract class Range implements RangeInterface
 {
     use DescriptorTrait;
+    use IdentifierTrait;
 
     private ?int $min;
 
