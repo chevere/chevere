@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter;
 
-use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
@@ -22,7 +22,7 @@ use Chevere\Interfaces\Parameter\ParametersInterface;
 
 final class Parameters implements ParametersInterface
 {
-    use DsMapTrait;
+    use MapTrait;
 
     public function toArray(): array
     {

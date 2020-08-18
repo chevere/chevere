@@ -13,11 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Permission;
 
+use Chevere\Interfaces\Description\DescriptorInterface;
+
 /**
  * Describes the component in charge of defining a conditional.
  */
-interface ConditionInterface
+interface ConditionInterface extends DescriptorInterface
 {
+    /**
+     * Provides access to the default value.
+     */
+    public function getDefault(): bool;
+
     /**
      * Provides access to the boolean value.
      */

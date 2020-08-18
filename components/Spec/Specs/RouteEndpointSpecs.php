@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -22,7 +22,7 @@ use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecsInterface;
 
 final class RouteEndpointSpecs implements RouteEndpointSpecsInterface
 {
-    use DsMapTrait;
+    use MapTrait;
 
     public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): RouteEndpointSpecsInterface
     {

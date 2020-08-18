@@ -13,11 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Permission;
 
+use Chevere\Interfaces\Description\DescriptorInterface;
+
 /**
  * Describes the component in charge of defining an integer range.
  */
-interface RangeInterface
+interface RangeInterface extends DescriptorInterface
 {
+    /**
+     * Provides access to the default value.
+     */
+    public function getDefault(): ?int;
+
     /**
      * Declares the accepted min value. Use `null` for no limit.
      */

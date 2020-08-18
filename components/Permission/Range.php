@@ -13,15 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Permission;
 
+use Chevere\Components\Description\Traits\DescriptorTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Interfaces\Permission\RangeInterface;
 
 abstract class Range implements RangeInterface
 {
+    use DescriptorTrait;
+
     private ?int $min;
 
     private ?int $max;
+
+    abstract public function getDefault(): ?int;
 
     public function getMin(): ?int
     {

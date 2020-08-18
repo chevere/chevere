@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -22,7 +22,7 @@ use Chevere\Interfaces\Spec\SpecIndexMapInterface;
 
 final class SpecIndex implements SpecIndexInterface
 {
-    use DsMapTrait;
+    use MapTrait;
 
     private SpecIndexMapInterface $specIndexMap;
 

@@ -22,7 +22,6 @@ use Chevere\Interfaces\Routing\RoutingDescriptorInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 use Ds\Set;
 use Generator;
-use OutOfRangeException;
 use Throwable;
 
 final class RoutingDescriptors implements RoutingDescriptorsInterface
@@ -97,10 +96,12 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
     {
         $return = $this->set->get($position);
         if ($return === null) {
+            // @codeCoverageIgnoreStart
             throw new OutOfBoundsException(
                 (new Message('Position %pos% does not exists'))
                     ->code('%pos%', (string) $position)
-            ); // @codeCoverageIgnore
+            );
+            // @codeCoverageIgnoreEnd
         }
 
         return $return;

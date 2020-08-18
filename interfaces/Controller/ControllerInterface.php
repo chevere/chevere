@@ -32,11 +32,6 @@ interface ControllerInterface extends ActionInterface
     public function getDescription(): string;
 
     /**
-     * Provides access to the description.
-     */
-    public function description(): string;
-
-    /**
      * Returns a new instance with setup made. Useful to wrap pluggable instructions on parameters and description.
      */
     public function setUp(): ControllerInterface;

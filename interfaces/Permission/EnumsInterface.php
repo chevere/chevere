@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Permission;
 
+use Chevere\Interfaces\DataStructures\DsMapInterface;
+use Countable;
 use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `EnumInterface`.
  */
-interface EnumsInterface
+interface EnumsInterface extends DsMapInterface
 {
     /**
      * Return an instance with the specified `$enum` added.

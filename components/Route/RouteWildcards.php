@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\RouteWildcardsInterface;
 use Ds\Map;
@@ -23,7 +23,7 @@ use function DeepCopy\deep_copy;
 
 final class RouteWildcards implements RouteWildcardsInterface
 {
-    use DsMapTrait;
+    use MapTrait;
 
     /** @param Map [pos => RouteWildcard,]*/
     private Map $map;

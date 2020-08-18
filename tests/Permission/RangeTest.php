@@ -70,6 +70,10 @@ final class RangeTest extends TestCase
 
 final class TestRangeNullTest extends Range
 {
+    public function getDefault(): ?int
+    {
+        return null;
+    }
 }
 
 final class TestRangeMinTest extends Range
@@ -78,6 +82,11 @@ final class TestRangeMinTest extends Range
     {
         return 10;
     }
+
+    public function getDefault(): ?int
+    {
+        return 15;
+    }
 }
 
 final class TestRangeMaxTest extends Range
@@ -85,6 +94,11 @@ final class TestRangeMaxTest extends Range
     public function getMax(): ?int
     {
         return 10;
+    }
+
+    public function getDefault(): ?int
+    {
+        return 5;
     }
 }
 
@@ -98,5 +112,10 @@ final class TestRangeMinMaxTest extends Range
     public function getMax(): ?int
     {
         return 100;
+    }
+
+    public function getDefault(): ?int
+    {
+        return 75;
     }
 }

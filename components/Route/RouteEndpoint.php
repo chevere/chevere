@@ -16,8 +16,8 @@ namespace Chevere\Components\Route;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
 use Chevere\Interfaces\Http\MethodInterface;
+use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 
 final class RouteEndpoint implements RouteEndpointInterface
@@ -34,7 +34,7 @@ final class RouteEndpoint implements RouteEndpointInterface
     {
         $this->method = $method;
         $this->controller = $controller;
-        $this->description = $controller->description();
+        $this->description = $controller->getDescription();
         if ($this->description === '') {
             $this->description = $method->description();
         }

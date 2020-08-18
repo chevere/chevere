@@ -13,17 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Permission\Traits;
 
-use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Ds\Map;
-use Generator;
-use OverflowException;
-use function DeepCopy\deep_copy;
+use Chevere\Exceptions\Core\OverflowException;
 
 trait CollectionTrait
 {
-    use DsMapTrait;
+    use MapTrait;
 
     public function contains(string $name): bool
     {
@@ -32,26 +29,30 @@ trait CollectionTrait
 
     private function withAssertAdd(object $object): object
     {
-        if (!$this->contains($object::class)) {
+        $class = get_class($object);
+        if ($this->contains($class)) {
             throw new OverflowException(
                 (new Message('%name% has been already added'))
-                    ->code('%name%', $object::class)
+                    ->code('%name%', $class)
             );
         }
         $new = clone $this;
-        $new->map->put($object::class, $object);
+        $new->map->put($class, $object);
 
         return $new;
     }
 
-    public function withAssertModify(object $object): object
+    private function withAssertModify(object $object): object
     {
-        if (!$this->contains($object::class)) {
-            (new Message("%name% doesn't exists"))
-                ->code('%name%', $object::class);
+        $class = get_class($object);
+        if (!$this->contains($class)) {
+            throw new OutOfBoundsException(
+                (new Message("%name% doesn't exists"))
+                    ->code('%name%', $class)
+            );
         }
         $new = clone $this;
-        $new->map->put($object::class, $object);
+        $new->map->put($class, $object);
 
         return $new;
     }

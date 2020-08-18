@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
@@ -21,7 +21,7 @@ use Chevere\Interfaces\Spec\Specs\GroupSpecsInterface;
 
 final class GroupSpecs implements GroupSpecsInterface
 {
-    use DsMapTrait;
+    use MapTrait;
 
     public function withPut(GroupSpecInterface $groupSpec): GroupSpecsInterface
     {

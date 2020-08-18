@@ -13,13 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Action;
 
+use Chevere\Components\Description\Traits\DescriptorTrait;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 
 abstract class Action implements ActionInterface
 {
+    use DescriptorTrait;
+
     private ParametersInterface $parameters;
+
+    public function getParameters(): ParametersInterface
+    {
+        return new Parameters;
+    }
 
     final public function __construct()
     {
@@ -29,10 +37,5 @@ abstract class Action implements ActionInterface
     final public function parameters(): ParametersInterface
     {
         return $this->parameters;
-    }
-
-    public function getParameters(): ParametersInterface
-    {
-        return new Parameters;
     }
 }

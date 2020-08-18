@@ -48,9 +48,10 @@ final class ParametersTest extends TestCase
         $key = 'name';
         $parameter = new Parameter($key);
         $parameters = (new Parameters)->withAdded($parameter);
-        $parameters = $parameters->withModify(
-            (new Parameter($key))->withDescription('modify')
-        );
+        $parameters = $parameters
+            ->withModify(
+                (new Parameter($key))->withDescription('modify')
+            );
         $this->assertTrue($parameters->has($key));
         $this->assertSame('modify', $parameters->get($key)->description());
         $this->expectException(OutOfBoundsException::class);

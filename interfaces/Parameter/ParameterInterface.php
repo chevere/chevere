@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Parameter;
 
 use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
+use Chevere\Interfaces\Description\DescriptionInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
 
 /**
  * Describes the component in charge of defining a parameter.
  */
-interface ParameterInterface
+interface ParameterInterface extends DescriptionInterface
 {
     /**
      * @throws ParameterNameInvalidException
@@ -35,11 +36,6 @@ interface ParameterInterface
      * Provides access to the regex instance.
      */
     public function regex(): RegexInterface;
-
-    /**
-     * Provides access to the description.
-     */
-    public function description(): string;
 
     /**
      * Return an instance with the specified `$regex`.

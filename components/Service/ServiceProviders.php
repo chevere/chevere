@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Service;
 
-use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
@@ -30,7 +30,7 @@ use Throwable;
 
 final class ServiceProviders implements ServiceProvidersInterface
 {
-    use DsMapTrait;
+    use MapTrait;
 
     private ServiceableInterface $serviceable;
 

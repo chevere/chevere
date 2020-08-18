@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter\Traits;
 
+use Chevere\Components\Description\Traits\DescriptorTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\StrAssert;

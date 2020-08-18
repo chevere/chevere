@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Permission;
 
+use Chevere\Components\Description\Traits\DescriptorTrait;
 use Chevere\Interfaces\Permission\ConditionInterface;
 
 /**
@@ -20,12 +21,16 @@ use Chevere\Interfaces\Permission\ConditionInterface;
  */
 abstract class Condition implements ConditionInterface
 {
+    use DescriptorTrait;
+
     private bool $value;
 
     public function __construct(bool $value)
     {
         $this->value = $value;
     }
+
+    abstract public function getDefault(): bool;
 
     final public function value(): bool
     {

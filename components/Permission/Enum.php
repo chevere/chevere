@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Permission;
 
+use Chevere\Components\Description\Traits\DescriptorTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
@@ -20,6 +21,8 @@ use Chevere\Interfaces\Permission\EnumInterface;
 
 abstract class Enum implements EnumInterface
 {
+    use DescriptorTrait;
+
     private array $accept;
 
     private string $value;
@@ -32,9 +35,12 @@ abstract class Enum implements EnumInterface
                 new Message('Missing enum definition')
             );
         }
+        $this->assert($this->getDefault());
+        $this->assert($value);
         $this->value = $value;
-        $this->assert();
     }
+
+    abstract public function getDefault(): string;
 
     public function getAccept(): array
     {
@@ -46,13 +52,13 @@ abstract class Enum implements EnumInterface
         return $this->value;
     }
 
-    private function assert(): void
+    private function assert(string $value): void
     {
-        if (!in_array($this->value, $this->accept)) {
+        if (!in_array($value, $this->accept)) {
             throw new InvalidArgumentException(
                 (new Message('Expecting %expecting%, %provided% provided'))
                     ->code('%expecting%', implode(', ', $this->accept))
-                    ->code('%provided%', $this->value)
+                    ->code('%provided%', $value)
             );
         }
     }

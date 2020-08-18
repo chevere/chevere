@@ -17,7 +17,7 @@ use Ds\Map;
 use Generator;
 use function DeepCopy\deep_copy;
 
-trait DsMapTrait
+trait MapTrait
 {
     private Map $map;
 

@@ -41,6 +41,10 @@ final class EnumTest extends TestCase
 
 final class TestNullEnumTest extends Enum
 {
+    public function getDefault(): string
+    {
+        return '';
+    }
 }
 
 final class TestEnumTest extends Enum
@@ -48,6 +52,11 @@ final class TestEnumTest extends Enum
     const AUTO = 'auto';
     const MANUAL = 'manual';
     const DISABLE = 'disable';
+
+    public function getDefault(): string
+    {
+        return self::MANUAL;
+    }
 
     public function getAccept(): array
     {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Action;
 
+use Chevere\Interfaces\Description\DescriptorInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
@@ -20,7 +21,7 @@ use Chevere\Interfaces\Response\ResponseInterface;
 /**
  * Describes the component in charge of defining a single action.
  */
-interface ActionInterface
+interface ActionInterface extends DescriptorInterface
 {
     public function __construct();
 
