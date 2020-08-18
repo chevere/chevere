@@ -24,15 +24,12 @@ use Generator;
  */
 interface RoutingDescriptorsInterface extends Countable
 {
-    public function getGenerator(): Generator;
-
     /**
      * Return an instance with the specified `$descriptor` added.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$descriptor` added.
      *
-     * @throws RoutingDescriptorAlreadyAddedException
      * @throws OverflowException
      */
     public function withAdded(RoutingDescriptorInterface $descriptor): RoutingDescriptorsInterface;
@@ -43,7 +40,12 @@ interface RoutingDescriptorsInterface extends Countable
     public function contains(RoutingDescriptorInterface $descriptor): bool;
 
     /**
-     * @throws OutOfRangeException
+     * @throws OutOfBoundsException
      */
     public function get(int $position): RoutingDescriptorInterface;
+
+    /**
+     * @return Generator<int, RoutingDescriptorInterface>
+     */
+    public function getGenerator(): Generator;
 }

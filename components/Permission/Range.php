@@ -37,7 +37,6 @@ abstract class Range implements RangeInterface
     {
         $this->min = $this->getMin();
         $this->max = $this->getMax();
-        $this->value = $value;
         if (!$this->isInRange($value)) {
             throw new OutOfRangeException(
                 (new Message('Value %value% is out of the accepted range: %range%'))
@@ -45,6 +44,7 @@ abstract class Range implements RangeInterface
                 ->code('%range%', implode(', ', $this->getAccept()))
             );
         }
+        $this->value = $value;
     }
 
     final public function value(): ?int

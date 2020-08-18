@@ -15,8 +15,9 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Routing\RoutingDescriptorAlreadyAddedException;
 use Chevere\Interfaces\Routing\RoutingDescriptorInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 use Ds\Set;
@@ -44,7 +45,7 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
     public function withAdded(RoutingDescriptorInterface $descriptor): RoutingDescriptorsInterface
     {
         if ($this->set->contains($descriptor)) {
-            throw new RoutingDescriptorAlreadyAddedException(
+            throw new OverflowException(
                 (new Message('Instance of object %object% has been already added'))
                     ->code('%object%', get_class($descriptor) . '#' . spl_object_id($descriptor))
             );
@@ -56,13 +57,13 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
             $new->assertPushPath($descriptor->path()->toString());
             $new->assertPushName($descriptor->decorator()->name()->toString());
         } catch (Throwable $e) {
-            throw new OverflowException(
+            throw new InvalidArgumentException(
                 (new Message('Routing conflict affecting previously declared %route%'))
                     ->code(
                         '%route%',
                         $this->get($e->getCode())->dir()->path()->absolute()
                     ),
-                $e->getCode(),
+                0,
                 $e
             );
         }
@@ -74,8 +75,6 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
 
     /**
      * @codeCoverageIgnore
-     *
-     * @return Generator<int, RoutingDescriptorInterface>
      */
     public function getGenerator(): Generator
     {
@@ -98,7 +97,10 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
     {
         $return = $this->set->get($position);
         if ($return === null) {
-            throw new OutOfRangeException; // @codeCoverageIgnore
+            throw new OutOfBoundsException(
+                (new Message('Position %pos% does not exists'))
+                    ->code('%pos%', (string) $position)
+            ); // @codeCoverageIgnore
         }
 
         return $return;

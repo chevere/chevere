@@ -31,20 +31,20 @@ final class GroupSpecs implements GroupSpecsInterface
         return $new;
     }
 
-    public function has(string $groupName): bool
+    public function has(string $name): bool
     {
-        return $this->map->hasKey($groupName);
+        return $this->map->hasKey($name);
     }
 
-    public function get(string $groupName): GroupSpecInterface
+    public function get(string $name): GroupSpecInterface
     {
         /** @var GroupSpecInterface $return */
         try {
-            $return = $this->map->get($groupName);
+            $return = $this->map->get($name);
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
-                (new Message('Group name %groupName% not found'))
-                    ->code('%groupName%', $groupName)
+                (new Message('Group name %name% not found'))
+                    ->code('%name%', $name)
             );
         }
 

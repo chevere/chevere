@@ -17,8 +17,8 @@ use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Routing\RoutingDescriptor;
 use Chevere\Components\Routing\RoutingDescriptors;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Routing\RoutingDescriptorAlreadyAddedException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use OutOfRangeException;
@@ -69,7 +69,7 @@ final class RoutingDescriptorsTest extends TestCase
             $this->assertTrue($descriptors->contains($objects[$pos]));
             $this->assertSame($objects[$pos], $descriptors->get($count - 1));
         }
-        $this->expectException(RoutingDescriptorAlreadyAddedException::class);
+        $this->expectException(OverflowException::class);
         $descriptors->withAdded($objects[$pos]);
     }
 
@@ -86,7 +86,7 @@ final class RoutingDescriptorsTest extends TestCase
             $this->getRouteDecorator('name')
         );
         $descriptors = (new RoutingDescriptors)->withAdded($fs1);
-        $this->expectException(OverflowException::class);
+        $this->expectException(InvalidArgumentException::class);
         $descriptors->withAdded($fs2);
     }
 
@@ -103,7 +103,7 @@ final class RoutingDescriptorsTest extends TestCase
             $this->getRouteDecorator('name-alt')
         );
         $descriptors = (new RoutingDescriptors)->withAdded($fs1);
-        $this->expectException(OverflowException::class);
+        $this->expectException(InvalidArgumentException::class);
         $descriptors->withAdded($fs2);
     }
 
@@ -122,7 +122,7 @@ final class RoutingDescriptorsTest extends TestCase
             new RoutePath('/path-alt'),
             $this->getRouteDecorator('name-dupe')
         );
-        $this->expectException(OverflowException::class);
+        $this->expectException(InvalidArgumentException::class);
         $descriptors->withAdded($nameConflict);
     }
 }
