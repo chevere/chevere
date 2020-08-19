@@ -55,16 +55,8 @@ final class RangesTest extends TestCase
 
 final class TestRangesTest extends Range
 {
-    public function getDefault(): ?int
-    {
-        return 0;
-    }
 }
 
 final class TestRanges2Test extends Range
 {
-    public function getDefault(): ?int
-    {
-        return 0;
-    }
 }

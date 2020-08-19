@@ -22,11 +22,6 @@ use Chevere\Interfaces\Identifier\GetIdentifierInterface;
 interface RangeInterface extends GetDescriptionInterface, GetIdentifierInterface
 {
     /**
-     * Provides access to the default value.
-     */
-    public function getDefault(): ?int;
-
-    /**
      * Declares the accepted min value. Use `null` for no limit.
      */
     public function getMin(): ?int;
@@ -42,7 +37,7 @@ interface RangeInterface extends GetDescriptionInterface, GetIdentifierInterface
      *
      * @return int[]
      */
-    public function getAccept(): array;
+    public function toArray(): array;
 
     /**
      * Indicates whether `$int` is in range.

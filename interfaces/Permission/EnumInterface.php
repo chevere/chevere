@@ -22,11 +22,6 @@ use Chevere\Interfaces\Identifier\GetIdentifierInterface;
 interface EnumInterface extends GetDescriptionInterface, GetIdentifierInterface
 {
     /**
-     * Provides access to the default value.
-     */
-    public function getDefault(): string;
-
-    /**
      * Declares the default accepted values.
      *
      * @return string[]

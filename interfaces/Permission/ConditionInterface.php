@@ -22,11 +22,6 @@ use Chevere\Interfaces\Identifier\GetIdentifierInterface;
 interface ConditionInterface extends GetDescriptionInterface, GetIdentifierInterface
 {
     /**
-     * Provides access to the default value.
-     */
-    public function getDefault(): bool;
-
-    /**
      * Provides access to the boolean value.
      */
     public function value(): bool;

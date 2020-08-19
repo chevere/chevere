@@ -37,12 +37,9 @@ abstract class Enum implements EnumInterface
                 new Message('Missing enum definition')
             );
         }
-        $this->assert($this->getDefault());
         $this->assert($value);
         $this->value = $value;
     }
-
-    abstract public function getDefault(): string;
 
     public function getAccept(): array
     {

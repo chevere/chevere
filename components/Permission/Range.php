@@ -28,8 +28,6 @@ abstract class Range implements RangeInterface
 
     private ?int $max;
 
-    abstract public function getDefault(): ?int;
-
     public function getMin(): ?int
     {
         return null;
@@ -48,7 +46,7 @@ abstract class Range implements RangeInterface
             throw new OutOfRangeException(
                 (new Message('Value %value% is out of the accepted range: %range%'))
                 ->code('%value%', $value == null ? 'null' : (string) $value)
-                ->code('%range%', implode(', ', $this->getAccept()))
+                ->code('%range%', implode(', ', $this->toArray()))
             );
         }
         $this->value = $value;
@@ -59,7 +57,7 @@ abstract class Range implements RangeInterface
         return $this->value;
     }
 
-    final public function getAccept(): array
+    final public function toArray(): array
     {
         return [$this->min, $this->max];
     }

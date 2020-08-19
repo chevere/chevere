@@ -25,7 +25,7 @@ final class RangeTest extends TestCase
         $range = new TestRangeNullTest($value);
         $this->assertSame('test_range_null_test', $range->getIdentifier());
         $this->assertSame($value, $range->value());
-        $this->assertSame([null, null], $range->getAccept());
+        $this->assertSame([null, null], $range->toArray());
         $this->assertTrue($range->isInRange(null));
         $this->assertTrue($range->isInRange(100));
         new TestRangeNullTest(123);
@@ -36,7 +36,7 @@ final class RangeTest extends TestCase
         $value = 11;
         $range = new TestRangeMinTest($value);
         $this->assertSame($value, $range->value());
-        $this->assertSame([10, null], $range->getAccept());
+        $this->assertSame([10, null], $range->toArray());
         $this->assertTrue($range->isInRange(10));
         $this->assertFalse($range->isInRange(9));
         $this->expectException(OutOfRangeException::class);
@@ -48,7 +48,7 @@ final class RangeTest extends TestCase
         $value = 9;
         $range = new TestRangeMaxTest($value);
         $this->assertSame($value, $range->value());
-        $this->assertSame([null, 10], $range->getAccept());
+        $this->assertSame([null, 10], $range->toArray());
         $this->assertTrue($range->isInRange(10));
         $this->assertFalse($range->isInRange(11));
         $this->expectException(OutOfRangeException::class);
@@ -60,7 +60,7 @@ final class RangeTest extends TestCase
         $value = 50;
         $range = new TestRangeMinMaxTest($value);
         $this->assertSame($value, $range->value());
-        $this->assertSame([50, 100], $range->getAccept());
+        $this->assertSame([50, 100], $range->toArray());
         $this->assertTrue($range->isInRange(50));
         $this->assertFalse($range->isInRange(49));
         $this->assertFalse($range->isInRange(101));
@@ -71,10 +71,6 @@ final class RangeTest extends TestCase
 
 final class TestRangeNullTest extends Range
 {
-    public function getDefault(): ?int
-    {
-        return null;
-    }
 }
 
 final class TestRangeMinTest extends Range
@@ -83,11 +79,6 @@ final class TestRangeMinTest extends Range
     {
         return 10;
     }
-
-    public function getDefault(): ?int
-    {
-        return 15;
-    }
 }
 
 final class TestRangeMaxTest extends Range
@@ -95,11 +86,6 @@ final class TestRangeMaxTest extends Range
     public function getMax(): ?int
     {
         return 10;
-    }
-
-    public function getDefault(): ?int
-    {
-        return 5;
     }
 }
 
@@ -113,10 +99,5 @@ final class TestRangeMinMaxTest extends Range
     public function getMax(): ?int
     {
         return 100;
-    }
-
-    public function getDefault(): ?int
-    {
-        return 75;
     }
 }

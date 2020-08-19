@@ -32,8 +32,6 @@ abstract class Condition implements ConditionInterface
         $this->value = $value;
     }
 
-    abstract public function getDefault(): bool;
-
     final public function value(): bool
     {
         return $this->value;

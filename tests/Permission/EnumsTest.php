@@ -55,11 +55,6 @@ final class EnumsTest extends TestCase
 
 final class TestEnumsTest extends Enum
 {
-    public function getDefault(): string
-    {
-        return '';
-    }
-
     public function getAccept(): array
     {
         return [''];
@@ -68,11 +63,6 @@ final class TestEnumsTest extends Enum
 
 final class TestEnums2Test extends Enum
 {
-    public function getDefault(): string
-    {
-        return '';
-    }
-
     public function getAccept(): array
     {
         return [''];

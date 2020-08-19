@@ -57,16 +57,8 @@ final class ConditionsTest extends TestCase
 
 final class TestConditionsTest extends Condition
 {
-    public function getDefault(): bool
-    {
-        return true;
-    }
 }
 
 final class TestConditions2Test extends Condition
 {
-    public function getDefault(): bool
-    {
-        return false;
-    }
 }
