@@ -16,8 +16,12 @@ namespace Chevere\Components\Spec;
 use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Spec\SpecEndpointsInterface;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
+use TypeError;
+use function Chevere\Components\Type\debugType;
+use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class SpecEndpoints implements SpecEndpointsInterface
 {
@@ -42,16 +46,24 @@ final class SpecEndpoints implements SpecEndpointsInterface
     public function get(string $methodName): string
     {
         try {
+            /**
+             * @var string $return
+             */
             $return = $this->map->get($methodName);
+
+            return $return;
         }
         // @codeCoverageIgnoreStart
-        catch (\OutOfBoundsException $e) {
+        catch (TypeError $e) {
+            throw new TypeException(
+                returnTypeExceptionMessage('string', debugType($return))
+            );
+        } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Method name %methodName% not found'))
                     ->code('%methodName%', $methodName)
             );
         }
         // @codeCoverageIgnoreEnd
-        return $return;
     }
 }

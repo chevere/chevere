@@ -19,11 +19,15 @@ use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RouteIdentifierInterface;
 use Chevere\Interfaces\Router\RouterIndexInterface;
 use Ds\Map;
 use OutOfBoundsException as GlobalOutOfBoundsException;
+use TypeError;
+use function Chevere\Components\Type\debugType;
+use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class RouterIndex implements RouterIndexInterface
 {
@@ -101,20 +105,24 @@ final class RouterIndex implements RouterIndexInterface
 
     public function getRouteIdentifier(string $routeName): RouteIdentifierInterface
     {
-        /** @var RouteIdentifierInterface $return */
         try {
+            /** @var RouteIdentifierInterface $return */
             $return = $this->identifiersMap->get($routeName);
+
+            return $return;
         }
         // @codeCoverageIgnoreStart
-        catch (\OutOfBoundsException $e) {
+        catch (TypeError $e) {
+            throw new TypeException(
+                returnTypeExceptionMessage(RouteIdentifierInterface::class, debugType($return))
+            );
+        } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Route name %routeName% not found'))
                     ->code('%routeName%', $routeName)
             );
         }
         // @codeCoverageIgnoreEnd
-
-        return $return;
     }
 
     public function hasGroup(string $group): bool

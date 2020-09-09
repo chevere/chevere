@@ -130,7 +130,8 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
         } while ($reflectionClass = $reflectionClass->getParentClass());
         $keys = array_keys($properties);
         foreach ($keys as $name) {
-            $this->processProperty(...$properties[$name]);
+            $el = $properties[$name];
+            $this->processProperty($el[0], $el[1], $el[2]);
         }
     }
 

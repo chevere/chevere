@@ -44,6 +44,11 @@ final class PlugRecursiveFilterIterator extends RecursiveFilterIterator
 
     public function getChildren(): RecursiveFilterIterator
     {
-        return new self($this->getInnerIterator()->getChildren(), $this->trailingName);
+        /**
+         * @var RecursiveFilterIterator $inner
+         */
+        $inner = $this->getInnerIterator();
+
+        return new self($inner->getChildren(), $this->trailingName);
     }
 }

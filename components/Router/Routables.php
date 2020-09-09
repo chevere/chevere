@@ -16,8 +16,12 @@ namespace Chevere\Components\Router;
 use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RoutablesInterface;
+use TypeError;
+use function Chevere\Components\Type\debugType;
+use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class Routables implements RoutablesInterface
 {
@@ -43,18 +47,23 @@ final class Routables implements RoutablesInterface
 
     public function get(string $name): RoutableInterface
     {
-        /** @var RoutableInterface $return */
         try {
+            /** @var RoutableInterface $return */
             $return = $this->map->get($name);
+
+            return $return;
         }
         // @codeCoverageIgnoreStart
-        catch (\OutOfBoundsException $e) {
+        catch (TypeError $e) {
+            throw new TypeException(
+                returnTypeExceptionMessage(RoutableInterface::class, debugType($return))
+            );
+        } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Name %name% not found'))
                     ->code('%name%', $name)
             );
         }
         // @codeCoverageIgnoreEnd
-        return $return;
     }
 }

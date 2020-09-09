@@ -19,6 +19,7 @@ use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsMapInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
@@ -27,6 +28,9 @@ use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Ds\Map;
 use Ds\Set;
 use Generator;
+use TypeError;
+use function Chevere\Components\Type\debugType;
+use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class PlugsMap implements PlugsMapInterface
 {
@@ -107,10 +111,16 @@ final class PlugsMap implements PlugsMapInterface
     public function getPlugsQueueTypedFor(string $pluggable): PlugsQueueTypedInterface
     {
         try {
-            return $this->map->get($pluggable, new PlugsQueue($this->type));
+            $return = $this->map->get($pluggable, new PlugsQueue($this->type));
+
+            return $return;
         }
         // @codeCoverageIgnoreStart
-        catch (\OutOfBoundsException $e) {
+        catch (TypeError $e) {
+            throw new TypeException(
+                returnTypeExceptionMessage(PlugsQueueTypedInterface::class, debugType($return))
+            );
+        } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Pluggable %pluggable% not found'))
                     ->code('%pluggable%', $pluggable)

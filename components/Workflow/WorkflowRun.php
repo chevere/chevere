@@ -27,6 +27,7 @@ use Ds\Map;
 use Ramsey\Uuid\Uuid;
 use TypeError;
 use function Chevere\Components\Type\debugType;
+use function Chevere\Components\Type\returnTypeExceptionMessage;
 use function DeepCopy\deep_copy;
 
 final class WorkflowRun implements WorkflowRunInterface
@@ -109,9 +110,7 @@ final class WorkflowRun implements WorkflowRunInterface
             return $return;
         } catch (TypeError $e) {
             throw new TypeException(
-                (new Message('Expecting return type %expected%, type %provided% provided'))
-                    ->code('%expected%', ResponseInterface::class)
-                    ->code('%provided%', debugType($return))
+                returnTypeExceptionMessage(ResponseInterface::class, debugType($return))
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

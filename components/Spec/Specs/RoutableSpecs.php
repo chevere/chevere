@@ -16,8 +16,12 @@ namespace Chevere\Components\Spec\Specs;
 use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
+use TypeError;
+use function Chevere\Components\Type\debugType;
+use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class RoutableSpecs implements RoutableSpecsInterface
 {
@@ -40,16 +44,24 @@ final class RoutableSpecs implements RoutableSpecsInterface
 
     public function get(string $routeName): RoutableSpecInterface
     {
-        /** @var RoutableSpecInterface $return */
         try {
+            /** @var RoutableSpecInterface $return */
             $return = $this->map->get($routeName);
-        } catch (\OutOfBoundsException $e) {
+
+            return $return;
+        }
+        // @codeCoverageIgnoreStart
+        catch (TypeError $e) {
+            throw new TypeException(
+                returnTypeExceptionMessage(RoutableSpecInterface::class, debugType($return))
+            );
+        }
+        // @codeCoverageIgnoreEnd
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Route name %routeName% not found'))
                     ->code('%routeName%', $routeName)
             );
         }
-
-        return $return;
     }
 }

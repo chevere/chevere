@@ -30,6 +30,7 @@ use Generator;
 use Safe\Exceptions\PcreException;
 use TypeError;
 use function Chevere\Components\Type\debugType;
+use function Chevere\Components\Type\returnTypeExceptionMessage;
 use function DeepCopy\deep_copy;
 use function Safe\preg_match;
 
@@ -131,9 +132,7 @@ final class Workflow implements WorkflowInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                (new Message('Expecting type %expected%, type %provided% provided'))
-                    ->code('%expected%', TaskInterface::class)
-                    ->code('%provided%', debugType($return))
+                returnTypeExceptionMessage(TaskInterface::class, debugType($return))
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

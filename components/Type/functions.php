@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Type;
 
+use Chevere\Components\Message\Message;
+use Chevere\Interfaces\Message\MessageInterface;
+
 function varType($var): string
 {
     $type = strtolower(gettype($var));
@@ -31,4 +34,11 @@ function debugType($var): string
     }
 
     return $type;
+}
+
+function returnTypeExceptionMessage(string $expected, string $provided): MessageInterface
+{
+    return (new Message('Expecting return type %expected%, type %provided% provided'))
+        ->code('%expected%', $expected)
+        ->code('%provided%', $provided);
 }
