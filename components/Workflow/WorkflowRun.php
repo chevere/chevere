@@ -17,6 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
@@ -98,7 +99,20 @@ final class WorkflowRun implements WorkflowRunInterface
     public function get(string $name): ResponseInterface
     {
         try {
-            return $this->steps->get($name);
+            $response = $this->steps->get($name);
+            if (!($response instanceof ResponseInterface)) {
+                $provided = gettype($response);
+                if ($provided === 'object') {
+                    $provided = get_class($response);
+                }
+                throw new TypeException(
+                    (new Message('Expecting response of type %expected%, type %provided% provided'))
+                        ->code('%expected%', ResponseInterface::class)
+                        ->code('%provided%', $provided)
+                );
+            }
+
+            return $response;
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Task %name% not found'))
