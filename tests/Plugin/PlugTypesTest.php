@@ -33,8 +33,7 @@ final class PlugTypesTest extends TestCase
             HookInterface::class,
             PluggableHooksInterface::class,
             HooksQueueInterface::class,
-            'Hook.php',
-            'Hooks',
+            'Hook.php'
         );
     }
 
@@ -46,7 +45,6 @@ final class PlugTypesTest extends TestCase
             PluggableEventsInterface::class,
             EventListenersQueueInterface::class,
             'EventListener.php',
-            'EventListeners',
         );
     }
 

@@ -86,6 +86,8 @@ final class ServiceableTestMailer implements ServiceInterface
 
     public function send(string $to, string $subject): void
     {
+        $to;
+        $subject;
         // Pretend that I send an email here...
     }
 }

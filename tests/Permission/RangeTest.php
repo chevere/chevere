@@ -40,7 +40,7 @@ final class RangeTest extends TestCase
         $this->assertTrue($range->isInRange(10));
         $this->assertFalse($range->isInRange(9));
         $this->expectException(OutOfRangeException::class);
-        $range = new TestRangeMinTest(9);
+        new TestRangeMinTest(9);
     }
 
     public function testMaxRange(): void
@@ -52,7 +52,7 @@ final class RangeTest extends TestCase
         $this->assertTrue($range->isInRange(10));
         $this->assertFalse($range->isInRange(11));
         $this->expectException(OutOfRangeException::class);
-        $range = new TestRangeMaxTest(11);
+        new TestRangeMaxTest(11);
     }
 
     public function testMinMaxRange(): void
