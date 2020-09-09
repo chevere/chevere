@@ -24,8 +24,6 @@ final class SpecIndex implements SpecIndexInterface
 {
     use MapTrait;
 
-    private SpecIndexMapInterface $specIndexMap;
-
     public function withAddedRoute(string $routeName, RouteEndpointSpec $routeEndpointSpec): SpecIndexInterface
     {
         $new = clone $this;
