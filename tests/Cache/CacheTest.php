@@ -19,15 +19,13 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\VarExportable\VarExportable;
 use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
-use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Filesystem\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
 {
-    private DirInterface $path;
+    private DirInterface $dir;
 
     public function setUp(): void
     {
