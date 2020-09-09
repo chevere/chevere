@@ -102,7 +102,7 @@ final class WorkflowRun implements WorkflowRunInterface
     public function get(string $name): ResponseInterface
     {
         try {
-            /** @return ResponseInterface $response */
+            /** @var ResponseInterface $return */
             $return = $this->steps->get($name);
 
             return $return;
