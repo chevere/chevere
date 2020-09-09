@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\ParameterOptional;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -33,11 +33,11 @@ final class ArgumentsTest extends TestCase
         ];
         $parameters = (new Parameters)
             ->withAdded(
-                (new Parameter('id'))
+                (new ParameterRequired('id'))
                     ->withRegex(new Regex('/^\d+$/'))
             )
             ->withAdded(
-                (new Parameter('name'))
+                (new ParameterRequired('name'))
                     ->withRegex(new Regex('/^\w+$/'))
             );
         $controllerArguments = new Arguments($parameters, $arguments);
@@ -63,7 +63,7 @@ final class ArgumentsTest extends TestCase
     {
         $parameters = (new Parameters)
             ->withAdded(
-                (new Parameter('id'))
+                (new ParameterRequired('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $this->expectException(ArgumentRegexMatchException::class);
@@ -78,7 +78,7 @@ final class ArgumentsTest extends TestCase
         $controllerArguments = new Arguments(
             (new Parameters)
                 ->withAdded(
-                    (new Parameter($name))
+                    (new ParameterRequired($name))
                         ->withRegex(new Regex('/^[0-9]+$/'))
                 ),
             [$name => $value]
@@ -95,7 +95,7 @@ final class ArgumentsTest extends TestCase
     {
         $parameters = (new Parameters)
             ->withAdded(
-                (new Parameter('id'))
+                (new ParameterRequired('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $arguments = [];
@@ -110,7 +110,7 @@ final class ArgumentsTest extends TestCase
         $controllerArguments = new Arguments(
             (new Parameters)
                 ->withAdded(
-                    (new Parameter($paramId))
+                    (new ParameterRequired($paramId))
                         ->withRegex(new Regex('/^[0-9]+$/'))
                 )
                 ->withAdded(

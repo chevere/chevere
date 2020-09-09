@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
@@ -44,11 +44,11 @@ class TestController extends Controller implements PluggableHooksInterface
     {
         $parameters = (new Parameters)
             ->withAdded(
-                (new Parameter('name'))
+                (new ParameterRequired('name'))
                     ->withRegex(new Regex('/^[\w]+$/'))
             )
             ->withAdded(
-                (new Parameter('id'))
+                (new ParameterRequired('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $this->hook('getParameters:after', $parameters);

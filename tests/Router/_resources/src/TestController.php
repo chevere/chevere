@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
@@ -28,11 +28,11 @@ final class TestController extends Controller
     {
         return (new Parameters)
             ->withAdded(
-                (new Parameter('name'))
+                (new ParameterRequired('name'))
                     ->withRegex(new Regex('/\w+/'))
             )
             ->withAdded(
-                (new Parameter('id'))
+                (new ParameterRequired('id'))
                     ->withRegex(new Regex('/\d+/'))
             );
     }

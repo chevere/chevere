@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Action\Action;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
-use Chevere\Components\Action\Action;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Exceptions\Core\InvalidArgumentException;
@@ -150,7 +150,7 @@ class WorkflowTestStep1 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAdded(new Parameter('foo'));
+            ->withAdded(new ParameterRequired('foo'));
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
@@ -164,8 +164,8 @@ class WorkflowTestStep2 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAdded(new Parameter('foo'))
-            ->withAdded(new Parameter('bar'));
+            ->withAdded(new ParameterRequired('foo'))
+            ->withAdded(new ParameterRequired('bar'));
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

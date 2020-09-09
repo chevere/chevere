@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use PHPUnit\Framework\TestCase;
@@ -23,26 +23,26 @@ final class ParameterTest extends TestCase
     public function testEmptyName(): void
     {
         $this->expectException(ParameterNameInvalidException::class);
-        new Parameter('');
+        new ParameterRequired('');
     }
 
     public function testCtypeSpaceName(): void
     {
         $this->expectException(ParameterNameInvalidException::class);
-        new Parameter(' ');
+        new ParameterRequired(' ');
     }
 
     public function testSpaceInName(): void
     {
         $this->expectException(ParameterNameInvalidException::class);
-        new Parameter('some name');
+        new ParameterRequired('some name');
     }
 
     public function testConstruct(): void
     {
         $name = 'id';
         $regex = '/^[0-9+]$/';
-        $controllerParameter = new Parameter('id');
+        $controllerParameter = new ParameterRequired('id');
         $this->assertSame($name, $controllerParameter->name());
         $this->assertSame($regex, $controllerParameter
             ->withRegex(new Regex($regex))->regex()->toString());
@@ -51,7 +51,7 @@ final class ParameterTest extends TestCase
     public function testWithDescription(): void
     {
         $description = 'ola k ase';
-        $controllerParameter = new Parameter('test');
+        $controllerParameter = new ParameterRequired('test');
         $this->assertSame('', $controllerParameter->description());
         $controllerParameter = $controllerParameter->withDescription($description);
         $this->assertSame($description, $controllerParameter->description());

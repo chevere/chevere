@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
@@ -34,7 +34,7 @@ final class ParametersTest extends TestCase
     public function testWithAdded(): void
     {
         $key = 'name';
-        $parameter = new Parameter($key);
+        $parameter = new ParameterRequired($key);
         $parameters = (new Parameters)->withAdded($parameter);
         $this->assertCount(1, $parameters->toArray());
         $this->assertTrue($parameters->has($key));
@@ -46,15 +46,15 @@ final class ParametersTest extends TestCase
     public function testWithModified(): void
     {
         $key = 'name';
-        $parameter = new Parameter($key);
+        $parameter = new ParameterRequired($key);
         $parameters = (new Parameters)->withAdded($parameter);
         $parameters = $parameters
             ->withModify(
-                (new Parameter($key))->withDescription('modify')
+                (new ParameterRequired($key))->withDescription('modify')
             );
         $this->assertTrue($parameters->has($key));
         $this->assertSame('modify', $parameters->get($key)->description());
         $this->expectException(OutOfBoundsException::class);
-        $parameters->withModify(new Parameter('not-found'));
+        $parameters->withModify(new ParameterRequired('not-found'));
     }
 }

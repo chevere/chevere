@@ -16,8 +16,8 @@ namespace Chevere\Tests\Spec;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
-use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\ParameterOptional;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
@@ -106,7 +106,7 @@ class SpecMakerTestGetController extends Controller
     {
         return (new Parameters)
             ->withAdded(
-                (new Parameter('id'))
+                (new ParameterRequired('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
                     ->withDescription('The user integer id')
             )
@@ -129,7 +129,7 @@ class SpecMakerTestPutController extends Controller
     {
         return (new Parameters)
             ->withAdded(
-                (new Parameter('id'))
+                (new ParameterRequired('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
                     ->withDescription('The user integer id')
             )

@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
+use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
-use Chevere\Components\Action\Action;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
+use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Interfaces\Action\ActionInterface;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Workflow\workflowRunner;
 
@@ -79,7 +79,7 @@ class WorkflowRunnerFunctionTestStep1 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAdded(new Parameter('foo'));
+            ->withAdded(new ParameterRequired('foo'));
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
@@ -95,8 +95,8 @@ class WorkflowRunnerFunctionTestStep2 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAdded(new Parameter('foo'))
-            ->withAdded(new Parameter('bar'));
+            ->withAdded(new ParameterRequired('foo'))
+            ->withAdded(new ParameterRequired('bar'));
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

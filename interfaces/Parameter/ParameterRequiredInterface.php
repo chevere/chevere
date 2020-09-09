@@ -11,10 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Parameter;
+namespace Chevere\Interfaces\Parameter;
 
-use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
-
-final class ParameterOptional extends Parameter implements ParameterOptionalInterface
+/**
+ * Describes the component in charge of defining a required parameter.
+ */
+interface ParameterRequiredInterface extends ParameterInterface
 {
 }

@@ -15,7 +15,7 @@ namespace Chevere\Tests\Route;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
@@ -76,11 +76,11 @@ final class RouteEndpointTestController extends Controller
     {
         return (new Parameters)
             ->withAdded(
-                (new Parameter('name'))
+                (new ParameterRequired('name'))
                     ->withRegex(new Regex('/^[\w]+$/'))
             )
             ->withAdded(
-                (new Parameter('id'))
+                (new ParameterRequired('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
     }

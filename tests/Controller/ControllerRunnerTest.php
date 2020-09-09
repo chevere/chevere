@@ -16,7 +16,7 @@ namespace Chevere\Tests\Controller;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerRunner;
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
@@ -69,7 +69,7 @@ final class ControllerRunnerTestController extends Controller
     {
         return (new Parameters)
             ->withAdded(
-                (new Parameter('name'))
+                (new ParameterRequired('name'))
                     ->withRegex(new Regex('/^\w+$/'))
             );
     }

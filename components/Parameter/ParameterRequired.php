@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter;
 
-use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
+use Chevere\Interfaces\Parameter\ParameterRequiredInterface;
 
-final class ParameterOptional extends Parameter implements ParameterOptionalInterface
+final class ParameterRequired extends Parameter implements ParameterRequiredInterface
 {
 }
