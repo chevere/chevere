@@ -102,17 +102,19 @@ final class WorkflowRun implements WorkflowRunInterface
     public function get(string $name): ResponseInterface
     {
         try {
-            /**
-             * @return ResponseInterface $response
-             */
+            /** @return ResponseInterface $response */
             $return = $this->steps->get($name);
 
             return $return;
-        } catch (TypeError $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (TypeError $e) {
             throw new TypeException(
                 returnTypeExceptionMessage(ResponseInterface::class, debugType($return))
             );
-        } catch (\OutOfBoundsException $e) {
+        }
+        // @codeCoverageIgnoreEnd
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Task %name% not found'))
                     ->code('%name%', $name)

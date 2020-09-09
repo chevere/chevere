@@ -183,14 +183,19 @@ final class Workflow implements WorkflowInterface
     public function getExpected(string $step): array
     {
         try {
+            /** @var array $return */
             $return = $this->expected->get($step);
 
             return $return;
-        } catch (TypeError $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (TypeError $e) {
             throw new TypeException(
                 returnTypeExceptionMessage('array', debugType($return))
             );
-        } catch (\OutOfBoundsException $e) {
+        }
+        // @codeCoverageIgnoreEnd
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Step %step% not found'))
                     ->code('%step%', $step)
