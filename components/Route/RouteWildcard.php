@@ -16,7 +16,6 @@ namespace Chevere\Components\Route;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Route\RouteWildcardInvalidException;
-use Chevere\Exceptions\Route\RouteWildcardStartWithNumberException;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\RouteWildcardMatchInterface;
 
