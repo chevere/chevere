@@ -22,3 +22,13 @@ function varType($var): string
 
     return $type;
 }
+
+function debugType($var): string
+{
+    $type = varType($var);
+    if ($type === 'object') {
+        return get_class($var);
+    }
+
+    return $type;
+}

@@ -25,6 +25,8 @@ use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Ds\Map;
 use Ramsey\Uuid\Uuid;
+use TypeError;
+use function Chevere\Components\Type\debugType;
 use function DeepCopy\deep_copy;
 
 final class WorkflowRun implements WorkflowRunInterface
@@ -99,20 +101,18 @@ final class WorkflowRun implements WorkflowRunInterface
     public function get(string $name): ResponseInterface
     {
         try {
-            $response = $this->steps->get($name);
-            if (!($response instanceof ResponseInterface)) {
-                $provided = gettype($response);
-                if ($provided === 'object') {
-                    $provided = get_class($response);
-                }
-                throw new TypeException(
-                    (new Message('Expecting response of type %expected%, type %provided% provided'))
-                        ->code('%expected%', ResponseInterface::class)
-                        ->code('%provided%', $provided)
-                );
-            }
+            /**
+             * @return ResponseInterface $response
+             */
+            $return = $this->steps->get($name);
 
-            return $response;
+            return $return;
+        } catch (TypeError $e) {
+            throw new TypeException(
+                (new Message('Expecting return type %expected%, type %provided% provided'))
+                    ->code('%expected%', ResponseInterface::class)
+                    ->code('%provided%', debugType($return))
+            );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Task %name% not found'))

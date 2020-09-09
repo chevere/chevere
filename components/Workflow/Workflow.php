@@ -16,10 +16,10 @@ namespace Chevere\Components\Workflow;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Workflow\TaskInterface;
@@ -28,6 +28,8 @@ use Ds\Map;
 use Ds\Vector;
 use Generator;
 use Safe\Exceptions\PcreException;
+use TypeError;
+use function Chevere\Components\Type\debugType;
 use function DeepCopy\deep_copy;
 use function Safe\preg_match;
 
@@ -119,10 +121,21 @@ final class Workflow implements WorkflowInterface
     public function get(string $step): TaskInterface
     {
         try {
-            return $this->map->get($step);
+            /**
+             * @var TaskInterface $return
+             */
+            $return = $this->map->get($step);
+
+            return $return;
         }
         // @codeCoverageIgnoreStart
-        catch (\OutOfBoundsException $e) {
+        catch (TypeError $e) {
+            throw new TypeException(
+                (new Message('Expecting type %expected%, type %provided% provided'))
+                    ->code('%expected%', TaskInterface::class)
+                    ->code('%provided%', debugType($return))
+            );
+        } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Task %name% not found'))
                     ->code('%name%', $step)
