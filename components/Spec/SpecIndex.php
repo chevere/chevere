@@ -18,7 +18,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Spec\SpecIndexInterface;
-use Chevere\Interfaces\Spec\SpecIndexMapInterface;
 
 final class SpecIndex implements SpecIndexInterface
 {
