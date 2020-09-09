@@ -55,7 +55,6 @@ final class RouterDispatcher implements RouterDispatcherInterface
                 break;
             case Dispatcher::FOUND:
                 return new Routed(new ControllerName($info[1]), $info[2]);
-                break;
         }
         throw new LogicException(
             (new Message('Unexpected response code %code% from route dispatcher'))
