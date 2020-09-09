@@ -41,8 +41,6 @@ final class SpecMakerTest extends TestCase
 {
     private DirHelper $dirHelper;
 
-    private DirInterface $tempDir;
-
     private DirInterface $buildDir;
 
     public function setUp(): void

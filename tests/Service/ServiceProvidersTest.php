@@ -52,6 +52,8 @@ final class ServiceProvidersTest extends TestCase
 
             private function withService(ServiceProvidersTestService $foo): self
             {
+                $foo;
+
                 return $this;
             }
         };
@@ -71,6 +73,10 @@ final class ServiceProvidersTest extends TestCase
 
             public function withService($foo, $bar, $twoThousand): self
             {
+                $foo;
+                $bar;
+                $twoThousand;
+
                 return $this;
             }
         };
@@ -90,6 +96,8 @@ final class ServiceProvidersTest extends TestCase
 
             public function withService($foo): self
             {
+                $foo;
+
                 return $this;
             }
         };
@@ -109,6 +117,8 @@ final class ServiceProvidersTest extends TestCase
 
             public function withService(ServiceInterface $foo): self
             {
+                $foo;
+
                 return $this;
             }
         };
@@ -128,6 +138,8 @@ final class ServiceProvidersTest extends TestCase
 
             public function withService(ServiceProvidersTestService $foo): self
             {
+                $foo;
+
                 return $this;
             }
         };
@@ -146,6 +158,8 @@ final class ServiceProvidersTestService implements ServiceInterface
 
     public function some(string $foo, string $bar): void
     {
+        $foo;
+        $bar;
         // Pretend that I send an email here...
     }
 }

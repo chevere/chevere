@@ -55,8 +55,7 @@ final class PlugTypesTest extends TestCase
         string $plugInterface,
         string $pluggableInterface,
         string $plugQueueTypedInterface,
-        string $trailingName,
-        string $queueName
+        string $trailingName
     ): void {
         $this->assertSame($plugInterface, $plugType->interface());
         $this->assertSame($pluggableInterface, $plugType->plugsTo());

@@ -122,7 +122,7 @@ final class RouteTest extends TestCase
         $route = new Route(new RouteName('test'), new RoutePath('/test/{id:\w+}'));
         $endpoint = new RouteEndpoint(new GetMethod, new RouteTestController);
         $this->expectException(RouteWildcardConflictException::class);
-        $route = $route->withAddedEndpoint($endpoint);
+        $route->withAddedEndpoint($endpoint);
     }
 }
 
