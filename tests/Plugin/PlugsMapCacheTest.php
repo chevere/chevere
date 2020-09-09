@@ -14,23 +14,22 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Cache\Cache;
-use Chevere\Components\Plugin\AssertPlug;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\PlugsMap;
 use Chevere\Components\Plugin\PlugsMapCache;
 use Chevere\Components\Plugin\Types\HookPlugType;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Tests\Plugin\_resources\src\TestHook;
 use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
-use Throwable;
 
 final class PlugsMapCacheTest extends TestCase
 {
     private DirHelper $dirHelper;
+
+    private DirInterface $emptyDir;
 
     private DirInterface $workingDir;
 
