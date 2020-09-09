@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin\Plugs\EventListeners\Traits;
 
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersRunnerInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\PluggableEventsInterface;
@@ -24,7 +25,12 @@ trait PluggableEventsTrait
     public function withEventListenersRunner(EventListenersRunnerInterface $eventsRunner): PluggableEventsInterface
     {
         if (!($this instanceof PluggableEventsInterface)) {
-            throw new LogicException; // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            throw new LogicException(
+                (new Message('This method applies only for %interface%'))
+                    ->code('%interface%', PluggableEventsInterface::class)
+            );
+            // @codeCoverageIgnoreEnd
         }
         $new = clone $this;
         $new->eventsRunner = $eventsRunner;
