@@ -53,6 +53,7 @@ final class RoutingDescriptorsTest extends TestCase
         $this->assertCount(0, $descriptors);
         $objects = [];
         $count = 0;
+        $pos = '';
         foreach ([
             ['/path', 'name'],
             ['/path-alt', 'name-alt'],
