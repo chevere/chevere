@@ -68,7 +68,7 @@ function htmlHandler(Throwable $throwable): void
  * @codeCoverageIgnore
  * @throws RuntimeException
  */
-function handleExceptionAs(Throwable $throwable, string $document): ThrowableHandlerInterface
+function handleExceptionAs(Throwable $throwable, string $document): void
 {
     $reflection = new ReflectionClass($document);
     if (!$reflection->implementsInterface(ThrowableHandlerDocumentInterface::class)) {
