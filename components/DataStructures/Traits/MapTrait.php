@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\DataStructures\Traits;
 
 use Ds\Map;
+use Ds\Pair;
 use Generator;
 use function DeepCopy\deep_copy;
 
@@ -48,6 +49,9 @@ trait MapTrait
 
     public function getGenerator(): Generator
     {
+        /**
+         * @var Pair $pair
+         */
         foreach ($this->map->pairs() as $pair) {
             yield $pair->key => $pair->value;
         }
