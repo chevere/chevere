@@ -161,10 +161,17 @@ final class Workflow implements WorkflowInterface
     public function getVar(string $variable): array
     {
         try {
-            return $this->vars->get($variable);
+            /** @var array $return */
+            $return = $this->vars->get($variable);
+
+            return $return;
         }
         // @codeCoverageIgnoreStart
-        catch (\OverflowException $e) {
+        catch (TypeError $e) {
+            throw new TypeException(
+                returnTypeExceptionMessage('array', debugType($return))
+            );
+        } catch (\OverflowException $e) {
             throw new OverflowException(
                 (new Message('Variable %variable% not found'))
                     ->code('%variable%', $variable)
@@ -176,7 +183,13 @@ final class Workflow implements WorkflowInterface
     public function getExpected(string $step): array
     {
         try {
-            return $this->expected->get($step);
+            $return = $this->expected->get($step);
+
+            return $return;
+        } catch (TypeError $e) {
+            throw new TypeException(
+                returnTypeExceptionMessage('array', debugType($return))
+            );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Step %step% not found'))

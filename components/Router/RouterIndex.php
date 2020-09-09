@@ -136,38 +136,46 @@ final class RouterIndex implements RouterIndexInterface
      */
     public function getGroupRouteNames(string $group): array
     {
-        /** @var array $return */
         try {
+            /** @var array $return */
             $return = $this->groupsMap->get($group);
+
+            return $return;
         }
         // @codeCoverageIgnoreStart
-        catch (\OutOfBoundsException $e) {
+        catch (TypeError $e) {
+            throw new TypeException(
+                returnTypeExceptionMessage('array', debugType($return))
+            );
+        } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Group %group% not found'))
                     ->code('%group%', $group)
             );
         }
         // @codeCoverageIgnoreEnd
-
-        return $return;
     }
 
     public function getRouteGroup(string $group): string
     {
-        /** @var string $return */
         try {
+            /** @var string $return */
             $return = $this->groupsIndex->get($group);
+
+            return $return;
         }
         // @codeCoverageIgnoreStart
-        catch (\OutOfBoundsException $e) {
+        catch (TypeError $e) {
+            throw new TypeException(
+                returnTypeExceptionMessage('string', debugType($return))
+            );
+        } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Group %group% not found'))
                     ->code('%group%', $group)
             );
         }
         // @codeCoverageIgnoreEnd
-
-        return $return;
     }
 
     public function toArray(): array

@@ -111,6 +111,9 @@ final class PlugsMap implements PlugsMapInterface
     public function getPlugsQueueTypedFor(string $pluggable): PlugsQueueTypedInterface
     {
         try {
+            /**
+             * @var PlugsQueueTypedInterface $return
+             */
             $return = $this->map->get($pluggable, new PlugsQueue($this->type));
 
             return $return;

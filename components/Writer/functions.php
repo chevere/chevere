@@ -45,7 +45,7 @@ function writers(): WritersInterface
 function streamFor(string $stream, string $mode): StreamInterface
 {
     try {
-        return new Stream(...func_get_args());
+        return new Stream($stream, $mode);
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             (new Message('Unable to create a stream for %stream% %mode%'))
