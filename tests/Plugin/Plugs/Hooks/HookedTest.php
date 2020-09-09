@@ -19,6 +19,7 @@ use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\Plugins;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksRunner;
+use Chevere\Interfaces\Plugin\PluginsInterface;
 use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHook;
 use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookable;
 use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookableWithoutHooks;
@@ -26,6 +27,8 @@ use PHPUnit\Framework\TestCase;
 
 final class HookedTest extends TestCase
 {
+    private PluginsInterface $plugins;
+
     public function setUp(): void
     {
         $resources = (new Path(__DIR__ . '/_resources/'));
@@ -44,7 +47,7 @@ final class HookedTest extends TestCase
             $fqn = "$nsHookable\\$name";
             $classMap = $classMap->withPut($fqn, $path);
         }
-        $this->plugs = new Plugins($classMap);
+        $this->plugins = new Plugins($classMap);
     }
 
     public function testWithoutHooksQueue(): void
