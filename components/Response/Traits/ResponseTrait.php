@@ -13,13 +13,31 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Response\Traits;
 
+use Ramsey\Uuid\Uuid;
+
 trait ResponseTrait
 {
+    private string $uuid;
+
+    private string $token;
+
     private array $data;
 
     public function __construct(array $data)
     {
+        $this->uuid = Uuid::uuid4()->toString();
+        $this->token = bin2hex(random_bytes(128));
         $this->data = $data;
+    }
+
+    public function uuid(): string
+    {
+        return $this->uuid;
+    }
+
+    public function token(): string
+    {
+        return $this->token;
     }
 
     public function data(): array

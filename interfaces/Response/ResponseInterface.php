@@ -21,6 +21,16 @@ interface ResponseInterface
     public function __construct(array $data);
 
     /**
+     * Provides access to response uuid.
+     */
+    public function uuid(): string;
+
+    /**
+     * Provides access to response token.
+     */
+    public function token(): string;
+
+    /**
      * Provides access to response data.
      */
     public function data(): array;

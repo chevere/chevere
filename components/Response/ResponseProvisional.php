@@ -20,7 +20,7 @@ final class ResponseProvisional implements ResponseProvisionalInterface
 {
     use ResponseTrait;
 
-    public function withData(array $data): self
+    public function withData(array $data): ResponseProvisionalInterface
     {
         $new = clone $this;
         $new->data = $data;

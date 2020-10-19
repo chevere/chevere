@@ -21,7 +21,6 @@ use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
-use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
@@ -55,21 +54,25 @@ final class WorkflowRunnerFunctionTest extends TestCase
         $workflowRun = workflowRunner($workflowRun);
         $action1 = new WorkflowRunnerFunctionTestStep1;
         $this->assertEquals(
-            $action1->run(
-                new Arguments($action1->getParameters(), ['foo' => $foo])
-            ),
-            $workflowRun->get('step-1')
+            $action1
+                ->run(
+                    new Arguments($action1->getParameters(), ['foo' => $foo])
+                )
+                ->data(),
+            $workflowRun->get('step-1')->data()
         );
         $foo = $workflowRun->get('step-1')->data()['response-1'];
         $action2 = new WorkflowRunnerFunctionTestStep2;
         $this->assertEquals(
-            $action2->run(
-                new Arguments($action2->getParameters(), [
-                    'foo' => $foo,
-                    'bar' => $bar
-                ])
-            ),
-            $workflowRun->get('step-2')
+            $action2
+                ->run(
+                    new Arguments($action2->getParameters(), [
+                        'foo' => $foo,
+                        'bar' => $bar
+                    ])
+                )
+                ->data(),
+            $workflowRun->get('step-2')->data()
         );
     }
 }
@@ -102,7 +105,7 @@ class WorkflowRunnerFunctionTestStep2 extends Action
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return new ResponseSuccess([
-            'response-1' => $arguments->get('foo') . ' ^ ' . $arguments->get('bar'),
+            'response-2' => $arguments->get('foo') . ' ^ ' . $arguments->get('bar'),
         ]);
     }
 }

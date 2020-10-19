@@ -25,40 +25,40 @@ final class ConditionsTest extends TestCase
     {
         $conditions = new Conditions;
         $this->assertCount(0, $conditions);
-        $this->assertFalse($conditions->contains(TestConditionsTest::class));
+        $this->assertFalse($conditions->contains(ConditionsTestCondition::class));
         $this->expectException(OutOfBoundsException::class);
-        $conditions->get(TestConditionsTest::class);
+        $conditions->get(ConditionsTestCondition::class);
     }
 
     public function testAdded(): void
     {
-        $condition = new TestConditionsTest(false);
+        $condition = new ConditionsTestCondition(false);
         $conditions = (new Conditions)->withAdded($condition);
         $this->assertCount(1, $conditions);
-        $this->assertTrue($conditions->contains(TestConditionsTest::class));
-        $this->assertEquals($condition, $conditions->get(TestConditionsTest::class));
+        $this->assertTrue($conditions->contains(ConditionsTestCondition::class));
+        $this->assertEquals($condition, $conditions->get(ConditionsTestCondition::class));
         $this->expectException(OverflowException::class);
         $conditions->withAdded($condition);
     }
 
     public function testModify(): void
     {
-        $condition = new TestConditionsTest(false);
+        $condition = new ConditionsTestCondition(false);
         $conditions = (new Conditions)->withAdded($condition);
-        $conditionModify = new TestConditionsTest(true);
+        $conditionModify = new ConditionsTestCondition(true);
         $conditions = $conditions->withModify($conditionModify);
         $this->assertCount(1, $conditions);
-        $this->assertTrue($conditions->contains(TestConditionsTest::class));
-        $this->assertEquals($conditionModify, $conditions->get(TestConditionsTest::class));
+        $this->assertTrue($conditions->contains(ConditionsTestCondition::class));
+        $this->assertEquals($conditionModify, $conditions->get(ConditionsTestCondition::class));
         $this->expectException(OutOfBoundsException::class);
-        $conditions->withModify(new TestConditions2Test(false));
+        $conditions->withModify(new ConditionsTestConditionAlt(false));
     }
 }
 
-final class TestConditionsTest extends Condition
+final class ConditionsTestCondition extends Condition
 {
 }
 
-final class TestConditions2Test extends Condition
+final class ConditionsTestConditionAlt extends Condition
 {
 }

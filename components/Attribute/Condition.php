@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Attribute;
 
-use Chevere\Components\Description\Traits\DescriptorTrait;
 use Chevere\Components\Attribute\Traits\IdentifierTrait;
+use Chevere\Components\Description\Traits\DescriptorTrait;
 use Chevere\Interfaces\Attribute\ConditionInterface;
 
 /**
