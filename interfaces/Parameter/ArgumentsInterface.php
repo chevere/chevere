@@ -31,6 +31,9 @@ interface ArgumentsInterface extends ToArrayInterface
      */
     public function __construct(ParametersInterface $parameters, array $arguments);
 
+    /**
+     * Provides access to the parameters instance.
+     */
     public function parameters(): ParametersInterface;
 
     /**

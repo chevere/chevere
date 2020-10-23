@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Parameter;
 
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use Chevere\Interfaces\Description\DescriptionInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
 use Ds\Set;
-use Generator;
 
 /**
  * Describes the component in charge of defining a parameter.
@@ -56,10 +57,12 @@ interface ParameterInterface extends DescriptionInterface
     public function withDescription(string $description): ParameterInterface;
 
     /**
-     * Return an instance with the specified `$attribute`.
+     * Return an instance with the specified `$attribute` added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$attribute`.
+     * an instance that contains the specified `$attribute` added.
+     *
+     * @throws OverflowException
      */
     public function withAddedAttribute(string $attribute): ParameterInterface;
 
@@ -68,6 +71,8 @@ interface ParameterInterface extends DescriptionInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$attribute` removed.
+     *
+     * @throws OutOfBoundsException
      */
     public function withRemovedAttribute(string $attribute): ParameterInterface;
 
