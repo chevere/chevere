@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Service;
 
 /**
- * Describes the component in charge of defining a serviceable instance.
+ * Describes the component in charge of defining a serviceable.
  */
 interface ServiceableInterface
 {

@@ -15,6 +15,8 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Regex\Regex;
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use PHPUnit\Framework\TestCase;
 
@@ -40,20 +42,45 @@ final class ParameterTest extends TestCase
 
     public function testConstruct(): void
     {
-        $name = 'id';
+        $name = 'parameter';
         $regex = '/^[0-9+]$/';
-        $controllerParameter = new ParameterRequired('id');
-        $this->assertSame($name, $controllerParameter->name());
-        $this->assertSame($regex, $controllerParameter
+        $parameter = new ParameterRequired($name);
+        $this->assertSame($name, $parameter->name());
+        $this->assertSame($regex, $parameter
             ->withRegex(new Regex($regex))->regex()->toString());
     }
 
     public function testWithDescription(): void
     {
         $description = 'ola k ase';
-        $controllerParameter = new ParameterRequired('test');
-        $this->assertSame('', $controllerParameter->description());
-        $controllerParameter = $controllerParameter->withDescription($description);
-        $this->assertSame($description, $controllerParameter->description());
+        $parameter = new ParameterRequired('test');
+        $this->assertSame('', $parameter->description());
+        $parameter = $parameter->withDescription($description);
+        $this->assertSame($description, $parameter->description());
+    }
+
+    public function testWithAddedAttribute(): void
+    {
+        $attribute = 'attribute';
+        $parameter = new ParameterRequired('test');
+        $this->assertCount(0, $parameter->attributes());
+        $parameter = $parameter->withAddedAttribute($attribute);
+        $this->assertCount(1, $parameter->attributes());
+        $this->assertTrue($parameter->hasAttribute($attribute));
+        $this->assertFalse($parameter->hasAttribute('wrong-name'));
+        $this->expectException(OverflowException::class);
+        $parameter->withAddedAttribute($attribute);
+    }
+
+    public function testWithRemovedAttribute(): void
+    {
+        $attribute = 'attribute';
+        $parameter = (new ParameterRequired('test'))
+            ->withAddedAttribute($attribute);
+        $parameter = $parameter->withRemovedAttribute($attribute);
+        $this->assertCount(0, $parameter->attributes());
+        $this->assertFalse($parameter->hasAttribute($attribute));
+        $this->expectException(OutOfBoundsException::class);
+        $parameter->withRemovedAttribute($attribute);
     }
 }
