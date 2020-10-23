@@ -28,6 +28,7 @@ use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Throwable;
+use function Safe\filesize;
 
 final class File implements FileInterface
 {
@@ -67,11 +68,18 @@ final class File implements FileInterface
         }
     }
 
-    public function checksum(): string
+    public function getChecksum(): string
     {
         $this->assertExists();
 
         return hash_file(FileInterface::CHECKSUM_ALGO, $this->path->absolute());
+    }
+
+    public function getSize(): int
+    {
+        $this->assertExists();
+
+        return filesize($this->path->absolute());
     }
 
     /**

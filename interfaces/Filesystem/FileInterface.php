@@ -60,7 +60,14 @@ interface FileInterface
      *
      * @throws FileNotExistsException
      */
-    public function checksum(): string;
+    public function getChecksum(): string;
+
+    /**
+     * Retrieves the file size using `filesize`.
+     *
+     * @throws FileNotExistsException
+     */
+    public function getSize(): int;
 
     /**
      * Retrieves the file contents.

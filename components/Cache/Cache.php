@@ -68,7 +68,7 @@ final class Cache implements CacheInterface
             $new = clone $this;
             $new->puts[$key->toString()] = [
                 'path' => $fileReturn->filePhp()->file()->path()->absolute(),
-                'checksum' => $fileReturn->filePhp()->file()->checksum(),
+                'checksum' => $fileReturn->filePhp()->file()->getChecksum(),
             ];
         }
         // @codeCoverageIgnoreStart

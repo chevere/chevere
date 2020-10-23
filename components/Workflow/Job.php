@@ -25,7 +25,7 @@ final class Job implements JobInterface
     {
         if (!preg_match(self::REGEX_KEY, $name)) {
             throw new InvalidArgumentException(
-                (new Message('Name %name% must match %regex%'))
+                (new Message('Name for job %name% must match %regex%'))
                     ->code('%name%', $name)
                     ->code('%regex%', self::REGEX_KEY)
             );

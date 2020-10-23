@@ -57,6 +57,14 @@ interface ParameterInterface extends DescriptionInterface
     public function withDescription(string $description): ParameterInterface;
 
     /**
+     * Return an instance with the specified `$default` value.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$default` value.
+     */
+    public function withDefault(string $default): ParameterInterface;
+
+    /**
      * Return an instance with the specified `$attribute` added.
      *
      * This method MUST retain the state of the current instance, and return
@@ -85,4 +93,9 @@ interface ParameterInterface extends DescriptionInterface
      * Provides access to the attributes instance.
      */
     public function attributes(): Set;
+
+    /**
+     * Provides access to the default value.
+     */
+    public function default(): string;
 }

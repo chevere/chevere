@@ -15,6 +15,7 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Regex\Regex;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
@@ -82,5 +83,23 @@ final class ParameterTest extends TestCase
         $this->assertFalse($parameter->hasAttribute($attribute));
         $this->expectException(OutOfBoundsException::class);
         $parameter->withRemovedAttribute($attribute);
+    }
+
+    public function testWithDefault(): void
+    {
+        $parameter = new ParameterRequired('test');
+        $this->assertSame('', $parameter->default());
+        $default = 'some value';
+        $parameter = $parameter->withDefault($default);
+        $this->assertSame($default, $parameter->default());
+    }
+
+    public function testWithDefaultRegexAware(): void
+    {
+        $parameter = (new ParameterRequired('test'))
+            ->withRegex(new Regex('/^a|b$/'))
+            ->withDefault('a');
+        $this->expectException(InvalidArgumentException::class);
+        $parameter->withDefault('');
     }
 }

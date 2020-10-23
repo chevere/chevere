@@ -17,6 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
@@ -32,6 +33,8 @@ abstract class Parameter implements ParameterInterface
     protected RegexInterface $regex;
 
     protected string $description = '';
+
+    private string $default = '';
 
     protected Set $attributes;
 
@@ -64,19 +67,18 @@ abstract class Parameter implements ParameterInterface
         return $new;
     }
 
-    public function name(): string
+    public function withDefault(string $default): ParameterInterface
     {
-        return $this->name;
-    }
+        if ($this->regex->match($default) == []) {
+            throw new InvalidArgumentException(
+                (new Message('Default value must match the parameter regex %regexString%'))
+                    ->code('%regexString%', $this->regex->toString())
+            );
+        }
+        $new = clone $this;
+        $new->default = $default;
 
-    public function regex(): RegexInterface
-    {
-        return $this->regex;
-    }
-
-    public function description(): string
-    {
-        return $this->description;
+        return $new;
     }
 
     public function withAddedAttribute(string $attribute): ParameterInterface
@@ -105,6 +107,26 @@ abstract class Parameter implements ParameterInterface
         $new->attributes->remove($attribute);
 
         return $new;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function regex(): RegexInterface
+    {
+        return $this->regex;
+    }
+
+    public function description(): string
+    {
+        return $this->description;
+    }
+
+    public function default(): string
+    {
+        return $this->default;
     }
 
     public function hasAttribute(string $attribute): bool

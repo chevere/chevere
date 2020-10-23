@@ -113,10 +113,10 @@ final class Arguments implements ArgumentsInterface
     {
         $missing = [];
         foreach ($this->parameters->getGenerator() as $name => $parameter) {
+            if (!$this->has($name) && $parameter->default() !== '') {
+                $this->arguments[$name] = $parameter->default();
+            }
             if ($parameter instanceof ParameterOptionalInterface) {
-                if (!$this->has($name) && $parameter->default() !== '') {
-                    $this->arguments[$name] = $parameter->default();
-                }
                 continue;
             }
             if (!$this->has($name)) {
