@@ -32,7 +32,7 @@ final class Arguments implements ArgumentsInterface
     {
         $this->parameters = $parameters;
         $this->arguments = $arguments;
-        $this->assertRequired();
+        $this->handleParameters();
         foreach ($this->arguments as $name => $value) {
             $this->assertParameter((string) $name, $value);
         }
@@ -68,7 +68,7 @@ final class Arguments implements ArgumentsInterface
             return $this->arguments[$name];
         } catch (Throwable $e) {
             throw new OutOfBoundsException(
-                (new Message('Name %name% not found'))
+                (new Message('Argument %name% not found'))
                     ->code('%name%', $name)
             );
         }
@@ -94,11 +94,17 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    private function assertRequired(): void
+    private function handleParameters(): void
     {
         $missing = [];
         foreach ($this->parameters->getGenerator() as $name => $parameter) {
-            if (!($parameter instanceof ParameterOptionalInterface) && !$this->has($name)) {
+            if ($parameter instanceof ParameterOptionalInterface) {
+                if (!$this->has($name) && $parameter->default() !== '') {
+                    $this->arguments[$name] = $parameter->default();
+                }
+                continue;
+            }
+            if (!$this->has($name)) {
                 $missing[] = $name;
             }
         }

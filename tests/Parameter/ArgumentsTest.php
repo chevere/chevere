@@ -27,7 +27,7 @@ final class ArgumentsTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $arguments = [
+        $args = [
             'id' => '1',
             'name' => 'someValue',
         ];
@@ -40,16 +40,16 @@ final class ArgumentsTest extends TestCase
                 (new ParameterRequired('name'))
                     ->withRegex(new Regex('/^\w+$/'))
             );
-        $controllerArguments = new Arguments($parameters, $arguments);
-        $this->assertSame($arguments, $controllerArguments->toArray());
-        foreach ($arguments as $name => $value) {
-            $this->assertTrue($controllerArguments->has($name));
-            $this->assertSame($value, $controllerArguments->get($name));
+        $arguments = new Arguments($parameters, $args);
+        $this->assertSame($args, $arguments->toArray());
+        foreach ($args as $name => $value) {
+            $this->assertTrue($arguments->has($name));
+            $this->assertSame($value, $arguments->get($name));
         }
         $notFoundKey = '404';
-        $this->assertFalse($controllerArguments->has($notFoundKey));
+        $this->assertFalse($arguments->has($notFoundKey));
         $this->expectException(OutOfBoundsException::class);
-        $controllerArguments->get($notFoundKey);
+        $arguments->get($notFoundKey);
     }
 
     public function testInvalidParameterName(): void
@@ -75,7 +75,7 @@ final class ArgumentsTest extends TestCase
         $name = 'id';
         $value = '123';
         $valueAlt = '321';
-        $controllerArguments = new Arguments(
+        $arguments = new Arguments(
             (new Parameters)
                 ->withAdded(
                     (new ParameterRequired($name))
@@ -83,12 +83,12 @@ final class ArgumentsTest extends TestCase
                 ),
             [$name => $value]
         );
-        $this->assertTrue($controllerArguments->has($name));
-        $this->assertSame($value, $controllerArguments->get($name));
-        $controllerArguments = $controllerArguments->withArgument($name, $valueAlt);
-        $this->assertSame($valueAlt, $controllerArguments->get($name));
+        $this->assertTrue($arguments->has($name));
+        $this->assertSame($value, $arguments->get($name));
+        $arguments = $arguments->withArgument($name, $valueAlt);
+        $this->assertSame($valueAlt, $arguments->get($name));
         $this->expectException(ArgumentRegexMatchException::class);
-        $controllerArguments->withArgument($name, 'invalid');
+        $arguments->withArgument($name, 'invalid');
     }
 
     public function testArgumentsRequiredException(): void
@@ -105,20 +105,37 @@ final class ArgumentsTest extends TestCase
 
     public function testParameterOptional(): void
     {
-        $paramId = 'id';
-        $paramName = 'name';
-        $controllerArguments = new Arguments(
+        $required = 'id';
+        $optDefault = 'name';
+        $arguments = new Arguments(
             (new Parameters)
                 ->withAdded(
-                    (new ParameterRequired($paramId))
-                        ->withRegex(new Regex('/^[0-9]+$/'))
+                    new ParameterRequired($required)
                 )
                 ->withAdded(
-                    (new ParameterOptional($paramName))
-                        ->withRegex(new Regex('/^\w+$/'))
+                    new ParameterOptional($optDefault)
                 ),
-            [$paramId => '123']
+            [$required => '123']
         );
-        $this->assertFalse($controllerArguments->has($paramName));
+        $this->assertFalse($arguments->has($optDefault));
+    }
+
+    public function testParameterOptionalDefault(): void
+    {
+        $required = 'id';
+        $optDefault = 'name';
+        $arguments = new Arguments(
+            (new Parameters)
+                ->withAdded(
+                    (new ParameterRequired($required))
+                )
+                ->withAdded(
+                    (new ParameterOptional($optDefault))
+                        ->withRegex(new Regex('/^a|b$/'))
+                        ->withDefault('a')
+                ),
+            [$required => '123']
+        );
+        $this->assertTrue($arguments->has($optDefault));
     }
 }
