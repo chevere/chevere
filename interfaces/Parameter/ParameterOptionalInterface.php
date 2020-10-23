@@ -18,4 +18,16 @@ namespace Chevere\Interfaces\Parameter;
  */
 interface ParameterOptionalInterface extends ParameterInterface
 {
+    /**
+     * Return an instance with the specified `$default` value.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$default` value.
+     */
+    public function withDefault(string $default): ParameterOptionalInterface;
+
+    /**
+     * Provides access to the default value.
+     */
+    public function default(): string;
 }

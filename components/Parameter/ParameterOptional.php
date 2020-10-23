@@ -17,4 +17,18 @@ use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
 
 final class ParameterOptional extends Parameter implements ParameterOptionalInterface
 {
+    private string $default = '';
+
+    public function withDefault(string $default): ParameterOptionalInterface
+    {
+        $new = clone $this;
+        $new->default = $default;
+
+        return $new;
+    }
+
+    public function default(): string
+    {
+        return $this->default;
+    }
 }

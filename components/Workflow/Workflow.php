@@ -51,7 +51,6 @@ final class Workflow implements WorkflowInterface
     public function __construct(string $name)
     {
         $this->name = (new Job($name))->toString();
-
         $this->map = new Map;
         $this->steps = new Vector;
         $this->parameters = new Parameters;

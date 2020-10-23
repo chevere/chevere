@@ -22,7 +22,7 @@ use Chevere\Interfaces\Parameter\ParametersInterface;
 interface ControllerInterface extends ActionInterface
 {
     /**
-     * Provides access to the controller parameters defined with `getParameters()`.
+     * Provides access to the actual controller parameters (after hooks, if any).
      */
     public function parameters(): ParametersInterface;
 
