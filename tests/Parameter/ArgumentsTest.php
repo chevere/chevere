@@ -18,6 +18,7 @@ use Chevere\Components\Parameter\ParameterOptional;
 use Chevere\Components\Parameter\ParameterRequired;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
@@ -25,6 +26,16 @@ use PHPUnit\Framework\TestCase;
 
 final class ArgumentsTest extends TestCase
 {
+    public function testInvalidArguments(): void
+    {
+        $parameters = (new Parameters)
+            ->withAdded(
+                new ParameterRequired('test')
+            );
+        $this->expectException(InvalidArgumentException::class);
+        new Arguments($parameters, ['test' => 123]);
+    }
+
     public function testConstruct(): void
     {
         $args = [
@@ -33,12 +44,10 @@ final class ArgumentsTest extends TestCase
         ];
         $parameters = (new Parameters)
             ->withAdded(
-                (new ParameterRequired('id'))
-                    ->withRegex(new Regex('/^\d+$/'))
+                new ParameterRequired('id')
             )
             ->withAdded(
-                (new ParameterRequired('name'))
-                    ->withRegex(new Regex('/^\w+$/'))
+                new ParameterRequired('name')
             );
         $arguments = new Arguments($parameters, $args);
         $this->assertSame($args, $arguments->toArray());

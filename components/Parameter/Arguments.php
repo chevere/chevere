@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Parameter;
 
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
@@ -34,7 +35,8 @@ final class Arguments implements ArgumentsInterface
         $this->arguments = $arguments;
         $this->handleParameters();
         foreach ($this->arguments as $name => $value) {
-            $this->assertParameter((string) $name, $value);
+            $this->assertArguments($name, $value);
+            $this->assertParameter($name, $value);
         }
     }
 
@@ -71,6 +73,19 @@ final class Arguments implements ArgumentsInterface
                 (new Message('Argument %name% not found'))
                     ->code('%name%', $name)
             );
+        }
+    }
+
+    private function assertArguments($name, $value): void
+    {
+        foreach (['name', 'value'] as $argumentName) {
+            if (!is_string($$argumentName)) {
+                throw new InvalidArgumentException(
+                    (new Message('Argument %argumentName% for parameter %parameterName% must be of type string'))
+                        ->code('%argumentName%', $argumentName)
+                        ->code('%parameterName%', $this->parameters->get($name)->name())
+                );
+            }
         }
     }
 
