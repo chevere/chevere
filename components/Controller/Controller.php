@@ -38,7 +38,7 @@ abstract class Controller implements ControllerInterface
         return '';
     }
 
-    public function setUp(): ControllerInterface
+    public function withSetUp(): self
     {
         return $this;
     }

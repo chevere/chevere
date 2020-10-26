@@ -34,5 +34,5 @@ interface ControllerInterface extends ActionInterface
     /**
      * Returns a new instance with setup made. Useful to wrap pluggable instructions on parameters and description.
      */
-    public function setUp(): ControllerInterface;
+    public function withSetUp(): ControllerInterface;
 }
