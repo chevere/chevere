@@ -15,10 +15,12 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Exceptions\Core\ArgumentCountException;
+// use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
+use Chevere\Interfaces\Response\ResponseFailureInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
+use TypeError;
 
 function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
 {
@@ -49,19 +51,28 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
         }
         $actionArguments = new Arguments($action->getParameters(), $arguments);
         $response = $action->run($actionArguments);
-        try {
-            $workflowRun = $workflowRun->withAdded($step, $response);
-        }
-        // @codeCoverageIgnoreStart
-        catch (ArgumentCountException $e) {
+        if ($response instanceof ResponseFailureInterface) {
             throw new LogicException(
-                (new Message('Unexpected response from method %method% at step %step%'))
+                (new Message('Step %step% for workflow %workflow% replied with a response failure at %method%: %message%'))
+                    ->code('%workflow%', $workflowRun->workflow()->name())
+                    ->code('%step%', $step)
                     ->code('%method%', $actionName . '::run')
-                    ->code('%step%', $step),
-                0,
-                $e
+                    ->strtr('%message%', $response->data()['message'])
             );
         }
+        $workflowRun = $workflowRun->withAdded($step, $response);
+        // try {
+        // }
+        // @codeCoverageIgnoreStart
+        // catch (ArgumentCountException $e) {
+        //     throw new LogicException(
+        //         (new Message('Unexpected response from method %method% at step %step%'))
+        //             ->code('%method%', $actionName . '::run')
+        //             ->code('%step%', $step),
+        //         0,
+        //         $e
+        //     );
+        // }
         // @codeCoverageIgnoreEnd
     }
 
