@@ -35,7 +35,7 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 'step',
                 (new Task(WorkflowRunTestStep1::class))
-                    ->withArguments(foo: '${foo}')
+                    ->withArguments(['foo' => '${foo}'])
             );
         $arguments = ['foo' => 'bar'];
         $workflowRun = new WorkflowRun($workflow, $arguments);
@@ -55,15 +55,15 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 'step-0',
                 (new Task(WorkflowRunTestStep1::class))
-                    ->withArguments(foo: '${foo}')
+                    ->withArguments(['foo' => '${foo}'])
             )
             ->withAdded(
                 'step-1',
                 (new Task(WorkflowRunTestStep2::class))
-                    ->withArguments(
-                        foo: '${step-0:response-0}',
-                        bar: '${bar}'
-                    )
+                    ->withArguments([
+                        'foo' => '${step-0:response-0}',
+                        'bar' => '${bar}'
+                    ])
             );
         $arguments = [
             'foo' => 'hola',
@@ -83,7 +83,7 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 'step-0',
                 (new Task(WorkflowRunTestStep1::class))
-                    ->withArguments(foo: '${foo}')
+                    ->withArguments(['foo' => '${foo}'])
             );
         $arguments = ['foo' => 'hola'];
         $this->expectException(OutOfBoundsException::class);
@@ -101,7 +101,7 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 'step-1',
                 (new Task(WorkflowRunTestStep1::class))
-                    ->withArguments(foo: '${step-0:response-0}')
+                    ->withArguments(['foo' => '${step-0:response-0}'])
             );
         $this->expectException(ArgumentCountException::class);
         (new WorkflowRun($workflow, []))

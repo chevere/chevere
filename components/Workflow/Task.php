@@ -56,7 +56,7 @@ final class Task implements TaskInterface
         $this->arguments = [];
     }
 
-    public function withArguments(string ...$arguments): TaskInterface
+    public function withArguments(array $arguments): TaskInterface
     {
         $this->assertArgumentsCount($arguments);
         $store = [];

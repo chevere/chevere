@@ -44,7 +44,7 @@ final class TaskTest extends TestCase
     {
         $this->expectException(ArgumentCountException::class);
         (new Task(TaskTestStep0::class))
-            ->withArguments(foo: 'foo', bar: 'invalid extra argument');
+            ->withArguments(['foo' => 'foo', 'bar' => 'invalid extra argument']);
     }
 
     public function testConstruct(): void
@@ -54,7 +54,7 @@ final class TaskTest extends TestCase
         $this->assertSame($action, $task->action());
         $this->assertSame([], $task->arguments());
         $arguments = ['foo' => '1'];
-        $task = $task->withArguments(foo: '1');
+        $task = $task->withArguments($arguments);
         $this->assertSame($arguments, $task->arguments());
     }
 }
