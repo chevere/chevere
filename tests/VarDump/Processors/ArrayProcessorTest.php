@@ -48,7 +48,7 @@ final class ArrayProcessorTest extends TestCase
         $processor->write();
         foreach ($var as $int) {
             $this->assertStringContainsString(
-                str_replace('%s', $int, $containTpl),
+                str_replace('%s', (string) $int, $containTpl),
                 $varProcess->writer()->toString()
             );
         }

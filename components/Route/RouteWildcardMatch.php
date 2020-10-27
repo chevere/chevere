@@ -63,7 +63,7 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
     {
         $regex = new Regex('#' . $this->string . '#');
         $string = $regex->toString();
-        $regex = str_replace(['\(', '\)'], null, $string);
+        $regex = str_replace(['\(', '\)'], '', $string);
         if (false !== strpos($regex, '(') || false !== strpos($regex, ')')) {
             throw new RegexException(
                 (new Message('Provided expression %match% contains capture groups'))

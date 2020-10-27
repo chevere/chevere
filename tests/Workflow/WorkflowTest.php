@@ -19,7 +19,6 @@ use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
@@ -72,7 +71,7 @@ final class WorkflowTest extends TestCase
         $workflow->withAdded(
             'step-3',
             (new Task(WorkflowTestStep1::class))
-                ->withArguments(['missing' => '${not-found:reference}'])
+                ->withArguments(missing: '${not-found:reference}')
         );
     }
 
@@ -97,7 +96,7 @@ final class WorkflowTest extends TestCase
     public function testWithAddedTaskWithArguments(): void
     {
         $task = (new Task(WorkflowTestStep1::class))
-            ->withArguments(['foo' => 'foo']);
+            ->withArguments(foo: 'foo');
         $name = 'name';
         $workflow = (new Workflow('test-workflow'))->withAdded($name, $task);
         $this->assertSame($task, $workflow->get($name));
@@ -109,7 +108,7 @@ final class WorkflowTest extends TestCase
             ->withAdded(
                 'step-1',
                 (new Task(WorkflowTestStep1::class))
-                    ->withArguments(['foo' => '${foo}'])
+                    ->withArguments(foo: '${foo}')
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
@@ -119,10 +118,8 @@ final class WorkflowTest extends TestCase
                 'step-2',
                 (new Task(WorkflowTestStep2::class))
                     ->withArguments(
-                        [
-                            'foo' => '${step-1:foo}',
-                            'bar' => '${foo}'
-                        ]
+                            foo: '${step-1:foo}',
+                            bar: '${foo}'
                     )
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
@@ -131,7 +128,7 @@ final class WorkflowTest extends TestCase
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $this->assertSame(['step-1', 'foo'], $workflow->getVar('${step-1:foo}'));
         $task = (new Task(WorkflowTestStep1::class))
-            ->withArguments(['foo' => '${not:found}']);
+            ->withArguments(foo: '${not:found}');
         $this->expectException(OutOfBoundsException::class);
         $workflow->withAdded('missing-reference', $task);
     }

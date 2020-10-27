@@ -23,27 +23,27 @@ final class HtmlFormatterTest extends TestCase
     {
         $indent = 5;
         $indented = (new VarDumpHtmlFormatter)->indent($indent);
-        $this->assertTrue(strlen($indented) > $indent);
+        $this->assertTrue(strlen($indented) > strlen((string) $indent));
     }
 
     public function testEmphasis(): void
     {
         $string = 'string';
         $emphasized = (new VarDumpHtmlFormatter)->emphasis($string);
-        $this->assertTrue(strlen($emphasized) > $string);
+        $this->assertTrue(strlen($emphasized) > strlen($string));
     }
 
     public function testFilterEncodedChars(): void
     {
         $string = 'string</a>';
         $filtered = (new VarDumpHtmlFormatter)->filterEncodedChars($string);
-        $this->assertTrue(strlen($filtered) > $string);
+        $this->assertTrue(strlen($filtered) > strlen($string));
     }
 
     public function testHighlight(): void
     {
         $string = 'string';
         $highlighted = (new VarDumpHtmlFormatter)->highlight(VarDumpHighlightInterface::KEYS[0], $string);
-        $this->assertTrue(strlen($highlighted) > $string);
+        $this->assertTrue(strlen($highlighted) > strlen($string));
     }
 }

@@ -23,6 +23,8 @@ use Go\ParserReflection\ReflectionFileNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
+use Throwable;
+
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 
 final class PlugsMapper

@@ -30,7 +30,7 @@ final class ConsoleFormatterTest extends TestCase
     {
         $string = 'string';
         $emphasized = (new VarDumpConsoleFormatter)->emphasis($string);
-        $this->assertTrue(strlen($emphasized) >= $string);
+        $this->assertTrue(strlen($emphasized) >= strlen($string));
     }
 
     public function testFilterEncodedChars(): void
@@ -43,7 +43,8 @@ final class ConsoleFormatterTest extends TestCase
     public function testHighlight(): void
     {
         $string = 'string';
-        $highlighted = (new VarDumpConsoleFormatter)->highlight(VarDumpHighlightInterface::KEYS[0], $string);
-        $this->assertTrue(strlen($highlighted) >= $string);
+        $highlighted = (new VarDumpConsoleFormatter)
+            ->highlight(VarDumpHighlightInterface::KEYS[0], $string);
+        $this->assertTrue(strlen($highlighted) >= strlen($string));
     }
 }

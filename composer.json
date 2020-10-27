@@ -4,13 +4,15 @@
     "homepage": "https://chevere.org",
     "type": "library",
     "license": "MIT",
-    "authors": [{
-        "name": "Rodolfo Berrios",
-        "email": "rodolfo@chevere.org",
-        "homepage": "https://chevere.org"
-    }],
+    "authors": [
+        {
+            "name": "Rodolfo Berrios",
+            "email": "rodolfo@chevere.org",
+            "homepage": "https://chevere.org"
+        }
+    ],
     "require": {
-        "php": ">=7.4",
+        "php": "^8",
         "ext-ctype": "*",
         "ext-ds": "*",
         "ext-json": "*",

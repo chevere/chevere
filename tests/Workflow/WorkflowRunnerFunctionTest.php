@@ -37,17 +37,15 @@ final class WorkflowRunnerFunctionTest extends TestCase
             ->withAdded(
                 'step-1',
                 (new Task(WorkflowRunnerFunctionTestStep1::class))
-                    ->withArguments([
-                        'foo' => '${foo}'
-                    ])
+                    ->withArguments(foo: '${foo}')
             )
             ->withAdded(
                 'step-2',
                 (new Task(WorkflowRunnerFunctionTestStep2::class))
-                    ->withArguments([
-                        'foo' => '${step-1:response-1}',
-                        'bar' => '${bar}'
-                    ])
+                    ->withArguments(
+                        foo: '${step-1:response-1}',
+                        bar: '${bar}'
+                    )
             );
         $arguments = ['foo' => $foo, 'bar' => $bar];
         $workflowRun = (new WorkflowRun($workflow, $arguments));

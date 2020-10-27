@@ -26,7 +26,13 @@ interface TaskInterface
      */
     public function __construct(string $action);
 
-    public function withArguments(array $arguments): TaskInterface;
+    /**
+     * Return an instance with the specified named `$arguments`.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified named `$arguments`.
+     */
+    public function withArguments(string ...$arguments): TaskInterface;
 
     public function action(): string;
 
