@@ -30,7 +30,7 @@ use Throwable;
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
-function dirForString(string $path): DirInterface
+function dirForPath(string $path): DirInterface
 {
     try {
         return new Dir(new Path($path));
@@ -49,7 +49,7 @@ function dirForString(string $path): DirInterface
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
-function fileForString(string $path): FileInterface
+function fileForPath(string $path): FileInterface
 {
     try {
         return new File(new Path($path));
@@ -68,10 +68,10 @@ function fileForString(string $path): FileInterface
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
-function filePhpForString(string $path): FilePhpInterface
+function filePhpForPath(string $path): FilePhpInterface
 {
     try {
-        return new FilePhp(fileForString($path));
+        return new FilePhp(fileForPath($path));
     } catch (Exception $e) {
         throw new FilesystemException(
             (new Message('Unable to create a %instance% for %path%'))
@@ -87,10 +87,10 @@ function filePhpForString(string $path): FilePhpInterface
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
-function filePhpReturnForString(string $path): FilePhpReturn
+function filePhpReturnForPath(string $path): FilePhpReturn
 {
     try {
-        return new FilePhpReturn(filePhpForString($path));
+        return new FilePhpReturn(filePhpForPath($path));
     } catch (Exception $e) {
         throw new FilesystemException(
             (new Message('Unable to create a %instance% for %path%'))

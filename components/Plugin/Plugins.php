@@ -27,7 +27,7 @@ use Chevere\Interfaces\Plugin\PluginsInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Throwable;
 use TypeError;
-use function Chevere\Components\Filesystem\filePhpReturnForString;
+use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use function Chevere\Components\Filesystem\varForFilePhpReturn;
 use function DeepCopy\deep_copy;
 
@@ -54,7 +54,7 @@ final class Plugins implements PluginsInterface
     {
         $this->assertSetPlugsPath($pluggableName);
         $this->assertPlugsPath();
-        $fileReturn = filePhpReturnForString($this->plugsPath)
+        $fileReturn = filePhpReturnForPath($this->plugsPath)
             ->withStrict(false);
         /**
          * @var PlugsQueueInterface $var

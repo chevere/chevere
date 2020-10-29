@@ -22,7 +22,7 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use PHPUnit\Framework\TestCase;
 use Throwable;
-use function Chevere\Components\Filesystem\dirForString;
+use function Chevere\Components\Filesystem\dirForPath;
 
 final class FileTest extends TestCase
 {
@@ -30,7 +30,7 @@ final class FileTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->testDir = dirForString(__DIR__ . '/FileTest_' . uniqid() . '/');
+        $this->testDir = dirForPath(__DIR__ . '/FileTest_' . uniqid() . '/');
     }
 
     protected function tearDown(): void
