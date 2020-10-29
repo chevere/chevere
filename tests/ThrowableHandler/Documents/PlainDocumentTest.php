@@ -21,7 +21,6 @@ use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use LogicException;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Output\OutputInterface;
 
 final class PlainDocumentTest extends TestCase
 {
@@ -40,7 +39,7 @@ final class PlainDocumentTest extends TestCase
         $verbosity = 0;
         $this->assertInstanceOf(ThrowableHandlerPlainFormatter::class, $document->getFormatter());
         $this->assertSame($verbosity, $document->verbosity());
-        $verbosity = OutputInterface::VERBOSITY_QUIET;
+        $verbosity = 16;
         $document = $document->withVerbosity($verbosity);
         $this->assertSame($verbosity, $document->verbosity());
         $getTemplate = $document->getTemplate();

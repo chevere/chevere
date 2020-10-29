@@ -3,3 +3,7 @@
 /.phpunit.result.cache
 /build/
 /.php_cs.cache
+
+# PHPUnit
+/.phpunit.cache
+.phpunit.result.cache

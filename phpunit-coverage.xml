@@ -5,13 +5,13 @@
             <directory suffix="Test.php">tests/</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist>
+    <coverage cacheDirectory=".phpunit.cache/code-coverage" processUncoveredFiles="true" ignoreDeprecatedCodeUnits="true">
+        <include>
             <directory suffix=".php">components/</directory>
-        </whitelist>
-    </filter>
-    <logging>
-        <log type="coverage-html" target="build/coverage/html" />
-        <log type="coverage-clover" target="build/coverage/clover.xml" />
-    </logging>
+        </include>
+        <report>
+            <clover outputFile="build/coverage/clover.xml"/>
+            <html outputDirectory="build/coverage/html" lowUpperBound="50" highLowerBound="90"/>
+        </report>
+    </coverage>
 </phpunit>
