@@ -63,6 +63,11 @@ final class Type implements TypeInterface
         return $this->validator()($var);
     }
 
+    public function isScalar(): bool
+    {
+        return in_array($this->primitive, ['boolean', 'integer', 'float', 'string']);
+    }
+
     private function isAbleToValidateObjects(): bool
     {
         return in_array($this->primitive, [TypeInterface::CLASS_NAME, TypeInterface::INTERFACE_NAME]);

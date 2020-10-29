@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
+use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Type\TypeNotFoundException;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Components\Type\Type;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -33,6 +33,7 @@ final class TypeTest extends TestCase
         if (is_resource($resource) === false) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
+        $scalars = ['boolean', 'integer', 'float', 'string'];
         foreach ([
             TypeInterface::BOOLEAN => true,
             TypeInterface::INTEGER => 1,
@@ -49,6 +50,11 @@ final class TypeTest extends TestCase
             $this->assertSame($key, $type->primitive());
             $this->assertSame($key, $type->typeHinting());
             $this->assertTrue($type->validate($val));
+            if (in_array($key, $scalars)) {
+                $this->assertTrue($type->isScalar());
+            } else {
+                $this->assertFalse($type->isScalar());
+            }
         }
         /** @var resource $resource */
         fclose($resource);
@@ -60,6 +66,7 @@ final class TypeTest extends TestCase
         $this->assertSame(TypeInterface::CLASS_NAME, $type->primitive());
         $this->assertSame(__CLASS__, $type->typeHinting());
         $this->assertTrue($type->validate(new self()));
+        $this->assertFalse($type->isScalar());
     }
 
     public function testInterfaceName(): void

@@ -18,6 +18,7 @@ use Chevere\Components\Controller\ControllerRunner;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Exceptions\Core\LogicException;
@@ -69,7 +70,7 @@ final class ControllerRunnerTestController extends Controller
     {
         return (new Parameters)
             ->withAddedRequired(
-                (new Parameter('name'))
+                (new StringParameter('name'))
                     ->withRegex(new Regex('/^\w+$/'))
             );
     }

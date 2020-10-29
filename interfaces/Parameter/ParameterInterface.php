@@ -17,7 +17,7 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use Chevere\Interfaces\Description\DescriptionInterface;
-use Chevere\Interfaces\Regex\RegexInterface;
+use Chevere\Interfaces\Type\TypeInterface;
 use Ds\Set;
 
 /**
@@ -28,7 +28,7 @@ interface ParameterInterface extends DescriptionInterface
     /**
      * @throws ParameterNameInvalidException
      */
-    public function __construct(string $name);
+    // public function __construct(string $name, TypeInterface $type);
 
     /**
      * Provides access to the name.
@@ -36,17 +36,9 @@ interface ParameterInterface extends DescriptionInterface
     public function name(): string;
 
     /**
-     * Provides access to the regex instance.
+     * Provides access to the type instance.
      */
-    public function regex(): RegexInterface;
-
-    /**
-     * Return an instance with the specified `$regex`.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$regex`.
-     */
-    public function withRegex(RegexInterface $regex): ParameterInterface;
+    public function type(): TypeInterface;
 
     /**
      * Return an instance with the specified `$description`.
@@ -55,14 +47,6 @@ interface ParameterInterface extends DescriptionInterface
      * an instance that contains the specified `$description`.
      */
     public function withDescription(string $description): ParameterInterface;
-
-    /**
-     * Return an instance with the specified `$default` value.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$default` value.
-     */
-    public function withDefault(string $default): ParameterInterface;
 
     /**
      * Return an instance with the specified `$attribute` added.
@@ -93,9 +77,4 @@ interface ParameterInterface extends DescriptionInterface
      * Provides access to the attributes instance.
      */
     public function attributes(): Set;
-
-    /**
-     * Provides access to the default value.
-     */
-    public function default(): string;
 }

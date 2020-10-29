@@ -16,6 +16,7 @@ namespace Chevere\Tests\Workflow;
 use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
@@ -122,7 +123,7 @@ class WorkflowRunTestStep1 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new Parameter('foo'));
+            ->withAddedRequired(new StringParameter('foo'));
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
@@ -136,8 +137,8 @@ class WorkflowRunTestStep2 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new Parameter('foo'))
-            ->withAddedRequired(new Parameter('bar'));
+            ->withAddedRequired(new StringParameter('foo'))
+            ->withAddedRequired(new StringParameter('bar'));
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

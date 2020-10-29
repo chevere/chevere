@@ -16,6 +16,7 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -29,7 +30,7 @@ final class ArgumentsTest extends TestCase
     {
         $parameters = (new Parameters)
             ->withAddedRequired(
-                new Parameter('test')
+                new StringParameter('test')
             );
         $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, ['test' => 123]);
@@ -43,10 +44,10 @@ final class ArgumentsTest extends TestCase
         ];
         $parameters = (new Parameters)
             ->withAddedRequired(
-                new Parameter('id')
+                new StringParameter('id')
             )
             ->withAddedRequired(
-                new Parameter('name')
+                new StringParameter('name')
             );
         $arguments = new Arguments($parameters, $args);
         $this->assertSame($args, $arguments->toArray());
@@ -71,7 +72,7 @@ final class ArgumentsTest extends TestCase
     {
         $parameters = (new Parameters)
             ->withAddedRequired(
-                (new Parameter('id'))
+                (new StringParameter('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $this->expectException(ArgumentRegexMatchException::class);
@@ -86,7 +87,7 @@ final class ArgumentsTest extends TestCase
         $arguments = new Arguments(
             (new Parameters)
                 ->withAddedRequired(
-                    (new Parameter($name))
+                    (new StringParameter($name))
                         ->withRegex(new Regex('/^[0-9]+$/'))
                 ),
             [$name => $value]
@@ -103,7 +104,7 @@ final class ArgumentsTest extends TestCase
     {
         $parameters = (new Parameters)
             ->withAddedRequired(
-                (new Parameter('id'))
+                (new StringParameter('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $arguments = [];
@@ -118,10 +119,10 @@ final class ArgumentsTest extends TestCase
         $arguments = new Arguments(
             (new Parameters)
                 ->withAddedRequired(
-                    new Parameter($required)
+                    new StringParameter($required)
                 )
                 ->withAddedOptional(
-                    new Parameter($optDefault)
+                    new StringParameter($optDefault)
                 ),
             [$required => '123']
         );
@@ -135,10 +136,10 @@ final class ArgumentsTest extends TestCase
         $arguments = new Arguments(
             (new Parameters)
                 ->withAddedRequired(
-                    (new Parameter($required))
+                    (new StringParameter($required))
                 )
                 ->withAddedOptional(
-                    (new Parameter($optDefault))
+                    (new StringParameter($optDefault))
                         ->withRegex(new Regex('/^a|b$/'))
                         ->withDefault('a')
                 ),

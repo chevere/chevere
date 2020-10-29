@@ -16,6 +16,7 @@ namespace Chevere\Components\Workflow;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Parameter\StringParameter;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
@@ -225,7 +226,7 @@ final class Workflow implements WorkflowInterface
             try {
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, $argument, $matches)) {
                     $this->vars->put($argument, [$matches[1]]);
-                    $this->putParameter(new Parameter($matches[1]));
+                    $this->putParameter(new StringParameter($matches[1]));
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, $argument, $matches)) {
                     $this->assertStepExists($step, $matches);
                     $expected = $this->expected->get($matches[1], []);

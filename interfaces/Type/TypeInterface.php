@@ -82,4 +82,9 @@ interface TypeInterface
      * Returns the validator callable.
      */
     public function validator(): callable;
+
+    /**
+     * Returns a boolean indicating if type is scalar.
+     */
+    public function isScalar(): bool;
 }

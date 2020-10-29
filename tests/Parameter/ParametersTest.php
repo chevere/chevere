@@ -15,6 +15,7 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Parameter\StringParameter;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +35,7 @@ final class ParametersTest extends TestCase
     public function testWithAddedRequired(): void
     {
         $name = 'name';
-        $parameter = new Parameter($name);
+        $parameter = new StringParameter($name);
         $parameters = (new Parameters)->withAddedRequired($parameter);
         $this->assertCount(1, $parameters->toArray());
         $this->assertTrue($parameters->has($name));
@@ -47,7 +48,7 @@ final class ParametersTest extends TestCase
     public function testWithAddedOptional(): void
     {
         $name = 'name';
-        $parameter = new Parameter($name);
+        $parameter = new StringParameter($name);
         $parameters = (new Parameters)->withAddedOptional($parameter);
         $this->assertCount(1, $parameters->toArray());
         $this->assertTrue($parameters->has($name));
@@ -74,15 +75,15 @@ final class ParametersTest extends TestCase
     public function testWithModified(): void
     {
         $name = 'name';
-        $parameter = new Parameter($name);
+        $parameter = new StringParameter($name);
         $parameters = (new Parameters)->withAddedRequired($parameter);
         $parameters = $parameters
             ->withModify(
-                (new Parameter($name))->withDescription('modify')
+                (new StringParameter($name))->withDescription('modify')
             );
         $this->assertTrue($parameters->has($name));
         $this->assertSame('modify', $parameters->get($name)->description());
         $this->expectException(OutOfBoundsException::class);
-        $parameters->withModify(new Parameter('not-found'));
+        $parameters->withModify(new StringParameter('not-found'));
     }
 }
