@@ -19,7 +19,6 @@
         "ext-mbstring": "*",
         "ext-zend-opcache": "*",
         "adhocore/cli": "^0.8",
-        "goaop/parser-reflection": "^2.1",
         "kevinlebrun/colors.php": "^1.0",
         "laminas/laminas-diactoros": "^2.4",
         "monolog/monolog": "^2.0",
@@ -30,6 +29,7 @@
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0",
         "ramsey/uuid": "^4.1",
+        "roave/better-reflection": "^4.11",
         "thecodingmachine/safe": "^1.1"
     },
     "require-dev": {

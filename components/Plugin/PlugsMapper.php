@@ -18,13 +18,14 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsMapInterface;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
-use Go\ParserReflection\ReflectionFile;
-use Go\ParserReflection\ReflectionFileNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use ReflectionClass;
-use Throwable;
-
+use Roave\BetterReflection\BetterReflection;
+use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflector\ClassReflector;
+use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 
 final class PlugsMapper
@@ -50,8 +51,15 @@ final class PlugsMapper
         $this->recursiveIterator->rewind();
         while ($this->recursiveIterator->valid()) {
             $pathName = $this->recursiveIterator->current()->getPathName();
-            $parsedFile = new ReflectionFile($pathName);
-            $this->namespaceClassesIterator($parsedFile->getFileNamespaces());
+            $astLocator = (new BetterReflection)->astLocator();
+            $reflector = new ClassReflector(
+                new AggregateSourceLocator([
+                    new AutoloadSourceLocator($astLocator),
+                    new SingleFileSourceLocator($pathName, $astLocator),
+                ])
+            );
+            $classes = $reflector->getAllClasses();
+            $this->classesIterator($classes);
             $this->recursiveIterator->next();
         }
     }
@@ -61,21 +69,23 @@ final class PlugsMapper
         return $this->plugsMap;
     }
 
-    private function namespaceClassesIterator(array $reflectionFileNamespace): void
+    /**
+     * @param ReflectionClass[]
+     */
+    private function classesIterator(array $classes): void
     {
         /**
-         * @var ReflectionFileNamespace $namespace
+         * @var ReflectionClass $class
          */
-        foreach ($reflectionFileNamespace as $namespace) {
-            /**
-             * @var ReflectionClass $class
-             */
-            foreach ($namespace->getClasses() as $class) {
-                if ($class->implementsInterface(PlugInterface::class)) {
-                    $plug = $class->newInstance();
-                    $this->plugsMap = $this->plugsMap
-                        ->withAdded($plug);
-                }
+        foreach ($classes as $class) {
+            if (!$class->isInterface() && $class->implementsInterface(PlugInterface::class)) {
+                $plugName = $class->getName();
+                /**
+                 * @var PlugInterface $plug
+                 */
+                $plug = new $plugName;
+                $this->plugsMap = $this->plugsMap
+                    ->withAdded($plug);
             }
         }
     }
