@@ -16,7 +16,7 @@ namespace Chevere\Tests\Route;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
-use Chevere\Components\Parameter\ParameterRequired;
+use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
@@ -131,8 +131,8 @@ final class RouteTestController extends Controller
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAdded(
-                (new ParameterRequired('id'))
+            ->withAddedRequired(
+                (new Parameter('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
     }
@@ -156,8 +156,8 @@ final class RouteTestControllerRegexConflict extends Controller
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAdded(
-                (new ParameterRequired('id'))
+            ->withAddedRequired(
+                (new Parameter('id'))
                     ->withRegex(new Regex('/^\W+$/'))
             );
     }

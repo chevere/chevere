@@ -16,8 +16,7 @@ namespace Chevere\Tests\Spec;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
-use Chevere\Components\Parameter\ParameterOptional;
-use Chevere\Components\Parameter\ParameterRequired;
+use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
@@ -63,7 +62,10 @@ final class SpecMakerTest extends TestCase
     {
         $putMethod = new PutMethod;
         $getMethod = new GetMethod;
-        $route = new Route(new RouteName('MyRoute'), new RoutePath('/route-path/{id:[0-9]+}'));
+        $route = new Route(
+            new RouteName('MyRoute'),
+            new RoutePath('/route-path/{id:[0-9]+}')
+        );
         $route = $route
             ->withAddedEndpoint(
                 new RouteEndpoint($putMethod, new SpecMakerTestPutController)
@@ -103,13 +105,13 @@ class SpecMakerTestGetController extends Controller
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAdded(
-                (new ParameterRequired('id'))
+            ->withAddedRequired(
+                (new Parameter('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
                     ->withDescription('The user integer id')
             )
-            ->withAdded(
-                (new ParameterOptional('name'))
+            ->withAddedOptional(
+                (new Parameter('name'))
                     ->withRegex(new Regex('/^[\w]+$/'))
                     ->withDescription('The user name')
             );
@@ -126,13 +128,13 @@ class SpecMakerTestPutController extends Controller
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAdded(
-                (new ParameterRequired('id'))
+            ->withAddedRequired(
+                (new Parameter('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
                     ->withDescription('The user integer id')
             )
-            ->withAdded(
-                (new ParameterOptional('name'))
+            ->withAddedRequired(
+                (new Parameter('name'))
                     ->withRegex(new Regex('/^[\w]+$/'))
                     ->withDescription('The user name')
             );

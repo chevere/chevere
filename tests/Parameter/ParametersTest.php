@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\ParameterRequired;
+use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
@@ -23,38 +23,66 @@ final class ParametersTest extends TestCase
 {
     public function testEmpty(): void
     {
-        $key = 'name';
+        $name = 'name';
         $parameters = new Parameters;
         $this->assertCount(0, $parameters->toArray());
-        $this->assertFalse($parameters->has($key));
+        $this->assertFalse($parameters->has($name));
         $this->expectException(OutOfBoundsException::class);
-        $parameters->get($key);
+        $parameters->get($name);
     }
 
-    public function testWithAdded(): void
+    public function testWithAddedRequired(): void
     {
-        $key = 'name';
-        $parameter = new ParameterRequired($key);
-        $parameters = (new Parameters)->withAdded($parameter);
+        $name = 'name';
+        $parameter = new Parameter($name);
+        $parameters = (new Parameters)->withAddedRequired($parameter);
         $this->assertCount(1, $parameters->toArray());
-        $this->assertTrue($parameters->has($key));
-        $this->assertSame($parameter, $parameters->get($key));
+        $this->assertTrue($parameters->has($name));
+        $this->assertTrue($parameters->isRequired($name));
+        $this->assertSame($parameter, $parameters->get($name));
         $this->expectException(OverflowException::class);
-        $parameters->withAdded($parameter);
+        $parameters->withAddedRequired($parameter);
+    }
+
+    public function testWithAddedOptional(): void
+    {
+        $name = 'name';
+        $parameter = new Parameter($name);
+        $parameters = (new Parameters)->withAddedOptional($parameter);
+        $this->assertCount(1, $parameters->toArray());
+        $this->assertTrue($parameters->has($name));
+        $this->assertTrue($parameters->isOptional($name));
+        $this->assertSame($parameter, $parameters->get($name));
+        $this->expectException(OverflowException::class);
+        $parameters->withAddedOptional($parameter);
+    }
+
+    public function testIsRequiredOutOfBounds(): void
+    {
+        $parameters = new Parameters;
+        $this->expectException(OutOfBoundsException::class);
+        $parameters->isRequired('not-found');
+    }
+
+    public function testIsOptionalOutOfBounds(): void
+    {
+        $parameters = new Parameters;
+        $this->expectException(OutOfBoundsException::class);
+        $parameters->isOptional('not-found');
     }
 
     public function testWithModified(): void
     {
-        $key = 'name';
-        $parameter = new ParameterRequired($key);
-        $parameters = (new Parameters)->withAdded($parameter);
+        $name = 'name';
+        $parameter = new Parameter($name);
+        $parameters = (new Parameters)->withAddedRequired($parameter);
         $parameters = $parameters
             ->withModify(
-                (new ParameterRequired($key))->withDescription('modify')
+                (new Parameter($name))->withDescription('modify')
             );
-        $this->assertTrue($parameters->has($key));
-        $this->assertSame('modify', $parameters->get($key)->description());
+        $this->assertTrue($parameters->has($name));
+        $this->assertSame('modify', $parameters->get($name)->description());
         $this->expectException(OutOfBoundsException::class);
-        $parameters->withModify(new ParameterRequired('not-found'));
+        $parameters->withModify(new Parameter('not-found'));
     }
 }

@@ -41,14 +41,24 @@ interface ParametersInterface extends Countable
     public function toArray(): array;
 
     /**
-     * Return an instance with the specified `$parameter` instance added.
+     * Return an instance with the specified required `$parameter` instance added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$parameter` instance added.
+     * an instance that contains the specified required `$parameter` instance added.
      *
      * @throws OverflowException
      */
-    public function withAdded(ParameterInterface $parameter): ParametersInterface;
+    public function withAddedRequired(ParameterInterface $parameter): ParametersInterface;
+
+    /**
+     * Return an instance with the specified optional `$parameter` instance added.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified optional `$parameter` instance added.
+     *
+     * @throws OverflowException
+     */
+    public function withAddedOptional(ParameterInterface $parameter): ParametersInterface;
 
     /**
      * Return an instance with the specified `$parameter` modifying an already added parameter.
@@ -61,9 +71,23 @@ interface ParametersInterface extends Countable
     public function withModify(ParameterInterface $parameter): ParametersInterface;
 
     /**
-     * Indicates whether the instance has a parameter by name `$parameter`.
+     * Indicates whether the instance has a parameter by name.
      */
     public function has(string $parameter): bool;
+
+    /**
+     * Indicates whether the `$parameter` identified by its name is required.
+     *
+     * @throws OutOfBoundsException
+     */
+    public function isRequired(string $parameter): bool;
+
+    /**
+     * Indicates whether the `$parameter` identified by its name is optional.
+     *
+     * @throws OutOfBoundsException
+     */
+    public function isOptional(string $parameter): bool;
 
     /**
      * @throws OutOfBoundsException

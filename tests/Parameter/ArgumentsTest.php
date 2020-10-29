@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\ParameterOptional;
-use Chevere\Components\Parameter\ParameterRequired;
+use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Core\InvalidArgumentException;
@@ -29,8 +28,8 @@ final class ArgumentsTest extends TestCase
     public function testInvalidArguments(): void
     {
         $parameters = (new Parameters)
-            ->withAdded(
-                new ParameterRequired('test')
+            ->withAddedRequired(
+                new Parameter('test')
             );
         $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, ['test' => 123]);
@@ -43,11 +42,11 @@ final class ArgumentsTest extends TestCase
             'name' => 'someValue',
         ];
         $parameters = (new Parameters)
-            ->withAdded(
-                new ParameterRequired('id')
+            ->withAddedRequired(
+                new Parameter('id')
             )
-            ->withAdded(
-                new ParameterRequired('name')
+            ->withAddedRequired(
+                new Parameter('name')
             );
         $arguments = new Arguments($parameters, $args);
         $this->assertSame($args, $arguments->toArray());
@@ -71,8 +70,8 @@ final class ArgumentsTest extends TestCase
     public function testInvalidRegexArgument(): void
     {
         $parameters = (new Parameters)
-            ->withAdded(
-                (new ParameterRequired('id'))
+            ->withAddedRequired(
+                (new Parameter('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $this->expectException(ArgumentRegexMatchException::class);
@@ -86,8 +85,8 @@ final class ArgumentsTest extends TestCase
         $valueAlt = '321';
         $arguments = new Arguments(
             (new Parameters)
-                ->withAdded(
-                    (new ParameterRequired($name))
+                ->withAddedRequired(
+                    (new Parameter($name))
                         ->withRegex(new Regex('/^[0-9]+$/'))
                 ),
             [$name => $value]
@@ -103,8 +102,8 @@ final class ArgumentsTest extends TestCase
     public function testArgumentsRequiredException(): void
     {
         $parameters = (new Parameters)
-            ->withAdded(
-                (new ParameterRequired('id'))
+            ->withAddedRequired(
+                (new Parameter('id'))
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $arguments = [];
@@ -118,28 +117,28 @@ final class ArgumentsTest extends TestCase
         $optDefault = 'name';
         $arguments = new Arguments(
             (new Parameters)
-                ->withAdded(
-                    new ParameterRequired($required)
+                ->withAddedRequired(
+                    new Parameter($required)
                 )
-                ->withAdded(
-                    new ParameterOptional($optDefault)
+                ->withAddedOptional(
+                    new Parameter($optDefault)
                 ),
             [$required => '123']
         );
         $this->assertFalse($arguments->has($optDefault));
     }
 
-    public function testParameterOptionalDefault(): void
+    public function testParameterDefault(): void
     {
         $required = 'id';
         $optDefault = 'name';
         $arguments = new Arguments(
             (new Parameters)
-                ->withAdded(
-                    (new ParameterRequired($required))
+                ->withAddedRequired(
+                    (new Parameter($required))
                 )
-                ->withAdded(
-                    (new ParameterOptional($optDefault))
+                ->withAddedOptional(
+                    (new Parameter($optDefault))
                         ->withRegex(new Regex('/^a|b$/'))
                         ->withDefault('a')
                 ),

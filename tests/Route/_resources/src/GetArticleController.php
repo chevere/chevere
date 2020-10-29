@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Parameter\ParameterRequired;
+use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
@@ -27,8 +27,8 @@ final class GetArticleController extends Controller
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAdded(
-                (new ParameterRequired('id'))
+            ->withAddedRequired(
+                (new Parameter('id'))
                     ->withRegex(new Regex('/^\d+$/'))
             );
     }

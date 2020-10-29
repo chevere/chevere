@@ -40,8 +40,6 @@ final class Route implements RouteInterface
 
     private RouteEndpointInterface $firstEndpoint;
 
-    private RouteEndpointInterface $endpoint;
-
     private RouteEndpointsInterface $endpoints;
 
     public function __construct(RouteNameInterface $name, RoutePathInterface $routePath)
@@ -70,9 +68,8 @@ final class Route implements RouteInterface
     public function withAddedEndpoint(RouteEndpointInterface $endpoint): RouteInterface
     {
         $new = clone $this;
-        $new->endpoint = $endpoint;
-        $new->assertUnique();
-        $new->assertNoConflict();
+        $new->assertUnique($endpoint);
+        $new->assertNoConflict($endpoint);
         foreach ($new->routePath->wildcards()->getGenerator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
             $knownWildcardMatch = $new->wildcards[$wildcard->toString()] ?? null;
@@ -102,9 +99,9 @@ final class Route implements RouteInterface
         return $this->endpoints;
     }
 
-    private function assertUnique(): void
+    private function assertUnique(RouteEndpointInterface $endpoint): void
     {
-        $key = $this->endpoint->method()->name();
+        $key = $endpoint->method()->name();
         if ($this->endpoints->hasKey($key)) {
             throw new OverflowException(
                 (new Message('Endpoint for method %method% has been already added'))
@@ -113,16 +110,20 @@ final class Route implements RouteInterface
         }
     }
 
-    private function assertNoConflict(): void
+    private function assertNoConflict(RouteEndpointInterface $endpoint): void
     {
         if (!isset($this->firstEndpoint)) {
-            $this->firstEndpoint = $this->endpoint;
-        } elseif ($this->firstEndpoint->parameters() !== $this->endpoint->parameters()) {
-            throw new RouteEndpointConflictException(
-                (new Message('Controller parameters provided by %provided% must be compatible with the parameters defined first by %defined%'))
-                    ->code('%provided%', get_class($this->endpoint->controller()))
-                    ->code('%defined%', get_class($this->firstEndpoint->controller()))
-            );
+            $this->firstEndpoint = $endpoint;
+        } else {
+            foreach ($this->firstEndpoint->parameters() as $name => $parameter) {
+                if ($parameter['regex'] !== $endpoint->parameters()[$name]['regex']) {
+                    throw new RouteEndpointConflictException(
+                        (new Message('Controller parameters provided by %provided% must be compatible with the parameters defined first by %defined%'))
+                            ->code('%provided%', get_class($endpoint->controller()))
+                            ->code('%defined%', get_class($this->firstEndpoint->controller()))
+                    );
+                }
+            }
         }
     }
 

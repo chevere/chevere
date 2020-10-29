@@ -51,6 +51,7 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
         }
         $actionArguments = new Arguments($action->getParameters(), $arguments);
         $response = $action->run($actionArguments);
+        // @codeCoverageIgnoreStart
         if ($response instanceof ResponseFailureInterface) {
             throw new LogicException(
                 (new Message('Step %step% for workflow %workflow% replied with a response failure at %method%: %message%'))
@@ -60,6 +61,7 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
                     ->strtr('%message%', $response->data()['message'])
             );
         }
+        // @codeCoverageIgnoreEnd
         $workflowRun = $workflowRun->withAdded($step, $response);
         // try {
         // }

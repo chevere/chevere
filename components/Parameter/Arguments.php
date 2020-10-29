@@ -19,7 +19,6 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParameterOptionalInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Throwable;
 
@@ -116,7 +115,7 @@ final class Arguments implements ArgumentsInterface
             if (!$this->has($name) && $parameter->default() !== '') {
                 $this->arguments[$name] = $parameter->default();
             }
-            if ($parameter instanceof ParameterOptionalInterface) {
+            if ($this->parameters->isOptional($name)) {
                 continue;
             }
             if (!$this->has($name)) {

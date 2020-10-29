@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\ParameterRequired;
+use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -26,26 +26,26 @@ final class ParameterTest extends TestCase
     public function testEmptyName(): void
     {
         $this->expectException(ParameterNameInvalidException::class);
-        new ParameterRequired('');
+        new Parameter('');
     }
 
     public function testCtypeSpaceName(): void
     {
         $this->expectException(ParameterNameInvalidException::class);
-        new ParameterRequired(' ');
+        new Parameter(' ');
     }
 
     public function testSpaceInName(): void
     {
         $this->expectException(ParameterNameInvalidException::class);
-        new ParameterRequired('some name');
+        new Parameter('some name');
     }
 
     public function testConstruct(): void
     {
         $name = 'parameter';
         $regex = '/^[0-9+]$/';
-        $parameter = new ParameterRequired($name);
+        $parameter = new Parameter($name);
         $this->assertSame($name, $parameter->name());
         $this->assertSame($regex, $parameter
             ->withRegex(new Regex($regex))->regex()->toString());
@@ -54,7 +54,7 @@ final class ParameterTest extends TestCase
     public function testWithDescription(): void
     {
         $description = 'ola k ase';
-        $parameter = new ParameterRequired('test');
+        $parameter = new Parameter('test');
         $this->assertSame('', $parameter->description());
         $parameter = $parameter->withDescription($description);
         $this->assertSame($description, $parameter->description());
@@ -63,7 +63,7 @@ final class ParameterTest extends TestCase
     public function testWithAddedAttribute(): void
     {
         $attribute = 'attribute';
-        $parameter = new ParameterRequired('test');
+        $parameter = new Parameter('test');
         $this->assertCount(0, $parameter->attributes());
         $parameter = $parameter->withAddedAttribute($attribute);
         $this->assertCount(1, $parameter->attributes());
@@ -76,7 +76,7 @@ final class ParameterTest extends TestCase
     public function testWithRemovedAttribute(): void
     {
         $attribute = 'attribute';
-        $parameter = (new ParameterRequired('test'))
+        $parameter = (new Parameter('test'))
             ->withAddedAttribute($attribute);
         $parameter = $parameter->withRemovedAttribute($attribute);
         $this->assertCount(0, $parameter->attributes());
@@ -87,7 +87,7 @@ final class ParameterTest extends TestCase
 
     public function testWithDefault(): void
     {
-        $parameter = new ParameterRequired('test');
+        $parameter = new Parameter('test');
         $this->assertSame('', $parameter->default());
         $default = 'some value';
         $parameter = $parameter->withDefault($default);
@@ -96,7 +96,7 @@ final class ParameterTest extends TestCase
 
     public function testWithDefaultRegexAware(): void
     {
-        $parameter = (new ParameterRequired('test'))
+        $parameter = (new Parameter('test'))
             ->withRegex(new Regex('/^a|b$/'))
             ->withDefault('a');
         $this->expectException(InvalidArgumentException::class);

@@ -19,24 +19,44 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
+use Ds\Map;
+use Ds\Set;
+use function DeepCopy\deep_copy;
 
 final class Parameters implements ParametersInterface
 {
     use MapTrait;
+
+    private Set $required;
+
+    public function __construct()
+    {
+        $this->map = new Map;
+        $this->required = new Set;
+    }
+
+    public function __clone()
+    {
+        $this->map = $this->mapCopy();
+        $this->required = deep_copy($this->required);
+    }
 
     public function toArray(): array
     {
         return $this->map->toArray();
     }
 
-    public function withAdded(ParameterInterface $parameter): ParametersInterface
+    public function withAddedRequired(ParameterInterface $parameter): ParametersInterface
     {
-        if ($this->map->hasKey($parameter->name())) {
-            throw new OverflowException(
-                (new Message('Parameter %name% has been already added'))
-                    ->code('%name%', $parameter->name())
-            );
-        }
+        $new = $this->withAddedOptional($parameter);
+        $new->required->add($parameter->name());
+
+        return $new;
+    }
+
+    public function withAddedOptional(ParameterInterface $parameter): ParametersInterface
+    {
+        $this->assertNoOverflow($parameter);
         $new = clone $this;
         $new->map->put($parameter->name(), $parameter);
 
@@ -57,9 +77,23 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    public function has(string $name): bool
+    public function has(string $parameter): bool
     {
-        return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
+        return $this->map->hasKey(/** @scrutinizer ignore-type */ $parameter);
+    }
+
+    public function isRequired(string $parameter): bool
+    {
+        $this->assertNoOutOfBounds($parameter);
+
+        return $this->required->contains($parameter);
+    }
+
+    public function isOptional(string $parameter): bool
+    {
+        $this->assertNoOutOfBounds($parameter);
+
+        return !$this->required->contains($parameter);
     }
 
     public function get(string $name): ParameterInterface
@@ -75,6 +109,26 @@ final class Parameters implements ParametersInterface
             throw new OutOfBoundsException(
                 (new Message('Name %name% not found'))
                     ->code('%name%', $name)
+            );
+        }
+    }
+
+    private function assertNoOutOfBounds(string $parameter): void
+    {
+        if (!$this->has($parameter)) {
+            throw new OutOfBoundsException(
+                (new Message("Parameter %name% doesn't exists"))
+                    ->code('%name%', $parameter)
+            );
+        }
+    }
+
+    private function assertNoOverflow(ParameterInterface $parameter): void
+    {
+        if ($this->has($parameter->name())) {
+            throw new OverflowException(
+                (new Message('Parameter %name% has been already added'))
+                    ->code('%name%', $parameter->name())
             );
         }
     }

@@ -26,7 +26,7 @@ use Chevere\Interfaces\Regex\RegexInterface;
 use Ds\Set;
 use function DeepCopy\deep_copy;
 
-abstract class Parameter implements ParameterInterface
+final class Parameter implements ParameterInterface
 {
     protected string $name;
 
