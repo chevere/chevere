@@ -19,7 +19,9 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Throwable;
 
 final class Arguments implements ArgumentsInterface
@@ -28,11 +30,23 @@ final class Arguments implements ArgumentsInterface
 
     private array $arguments;
 
+    private array $missing;
+
     public function __construct(ParametersInterface $parameters, array $arguments)
     {
         $this->parameters = $parameters;
         $this->arguments = $arguments;
-        $this->handleParameters();
+        $this->missing = [];
+        foreach ($this->parameters->getGenerator() as $parameter) {
+            $this->handleParameter($parameter);
+        }
+        if ($this->missing !== []) {
+            throw new ArgumentRequiredException(
+                (new Message('Missing required argument(s): %message%'))
+                    ->code('%message%', implode(', ', $this->missing))
+            );
+        }
+
         foreach ($this->arguments as $name => $value) {
             $this->assertArguments($name, $value);
             $this->assertParameter($name, $value);
@@ -97,36 +111,41 @@ final class Arguments implements ArgumentsInterface
             );
         }
         $parameter = $this->parameters->get($name);
+        if ($parameter instanceof StringParameterInterface) {
+            /**
+             * @var StringParameterInterface $parameter
+             */
+            $this->assertStringParameter($parameter, $argument);
+        }
+    }
+
+    private function assertStringParameter(StringParameterInterface $parameter, string $argument): void
+    {
         $regexString = $parameter->regex()->toString();
         if (preg_match($regexString, $argument) !== 1) {
             throw new ArgumentRegexMatchException(
                 (new Message("Argument %argument% provided for parameter %parameter% doesn't match the regex %regex%"))
                     ->code('%argument%', $argument)
-                    ->code('%parameter%', $name)
+                    ->code('%parameter%', $parameter->name())
                     ->code('%regex%', $regexString)
             );
         }
     }
 
-    private function handleParameters(): void
+    private function handleParameter(ParameterInterface $parameter): void
     {
-        $missing = [];
-        foreach ($this->parameters->getGenerator() as $name => $parameter) {
-            if (!$this->has($name) && $parameter->default() !== '') {
-                $this->arguments[$name] = $parameter->default();
-            }
-            if ($this->parameters->isOptional($name)) {
-                continue;
-            }
-            if (!$this->has($name)) {
-                $missing[] = $name;
-            }
+        if (
+            !$this->has($parameter->name())
+            && $parameter instanceof StringParameterInterface
+            && $parameter->default() !== ''
+        ) {
+            $this->arguments[$parameter->name()] = $parameter->default();
         }
-        if ($missing !== []) {
-            throw new ArgumentRequiredException(
-                (new Message('Missing required argument(s): %message%'))
-                    ->code('%message%', implode(', ', $missing))
-            );
+        if ($this->parameters->isOptional($parameter->name())) {
+            return;
+        }
+        if (!$this->has($parameter->name())) {
+            $this->missing[] = $parameter->name();
         }
     }
 }
