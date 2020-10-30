@@ -23,12 +23,13 @@ use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Throwable;
+use function Chevere\Components\Type\varType;
 
 final class Arguments implements ArgumentsInterface
 {
     private ParametersInterface $parameters;
 
-    private array $arguments;
+    public array $arguments;
 
     private array $missing;
 
@@ -37,19 +38,10 @@ final class Arguments implements ArgumentsInterface
         $this->parameters = $parameters;
         $this->arguments = $arguments;
         $this->missing = [];
-        foreach ($this->parameters->getGenerator() as $parameter) {
-            $this->handleParameter($parameter);
-        }
-        if ($this->missing !== []) {
-            throw new ArgumentRequiredException(
-                (new Message('Missing required argument(s): %message%'))
-                    ->code('%message%', implode(', ', $this->missing))
-            );
-        }
-
+        $this->assertNotMissing();
         foreach ($this->arguments as $name => $value) {
-            $this->assertArguments($name, $value);
-            $this->assertParameter($name, $value);
+            $this->assertParameter($name);
+            $this->assertType($name, $value);
         }
     }
 
@@ -65,7 +57,8 @@ final class Arguments implements ArgumentsInterface
 
     public function withArgument(string $name, string $value): ArgumentsInterface
     {
-        $this->assertParameter($name, $value);
+        $this->assertParameter($name);
+        $this->assertType($name, $value);
         $new = clone $this;
         $new->arguments[$name] = $value;
 
@@ -77,32 +70,40 @@ final class Arguments implements ArgumentsInterface
         return isset($this->arguments[$name]);
     }
 
-    public function get(string $name): string
+    public function get(string $name)
     {
         try {
             return $this->arguments[$name];
         } catch (Throwable $e) {
             throw new OutOfBoundsException(
                 (new Message('Argument %name% not found'))
-                    ->code('%name%', $name)
+                    ->code('%name%', $name),
             );
         }
     }
 
-    private function assertArguments($name, $value): void
+    private function assertType(string $name, $value): void
     {
-        foreach (['name', 'value'] as $argumentName) {
-            if (!is_string($$argumentName)) {
-                throw new InvalidArgumentException(
-                    (new Message('Argument %argumentName% for parameter %parameterName% must be of type string'))
-                        ->code('%argumentName%', $argumentName)
-                        ->code('%parameterName%', $this->parameters->get($name)->name())
-                );
-            }
+        $parameter = $this->parameters->get($name);
+        $type = $parameter->type();
+        if (!$type->validate($value)) {
+            throw new InvalidArgumentException(
+                (new Message('Expecting argument of type %expected%, %provided% provided'))
+                    ->strong('%expected%', $type->typeHinting())
+                    ->code('%provided%', varType($value))
+            );
+        }
+        if ($parameter instanceof StringParameterInterface) {
+            /**
+             * @var StringParameterInterface $parameter
+             */
+            $this->assertStringArgument($parameter, $value);
+
+            return;
         }
     }
 
-    private function assertParameter(string $name, string $argument): void
+    private function assertParameter(string $name): void
     {
         if ($this->parameters->has($name) === false) {
             throw new OutOfBoundsException(
@@ -110,16 +111,9 @@ final class Arguments implements ArgumentsInterface
                     ->code('%parameter%', $name)
             );
         }
-        $parameter = $this->parameters->get($name);
-        if ($parameter instanceof StringParameterInterface) {
-            /**
-             * @var StringParameterInterface $parameter
-             */
-            $this->assertStringParameter($parameter, $argument);
-        }
     }
 
-    private function assertStringParameter(StringParameterInterface $parameter, string $argument): void
+    private function assertStringArgument(StringParameterInterface $parameter, string $argument): void
     {
         $regexString = $parameter->regex()->toString();
         if (preg_match($regexString, $argument) !== 1) {
@@ -134,8 +128,7 @@ final class Arguments implements ArgumentsInterface
 
     private function handleParameter(ParameterInterface $parameter): void
     {
-        if (
-            !$this->has($parameter->name())
+        if (!$this->has($parameter->name())
             && $parameter instanceof StringParameterInterface
             && $parameter->default() !== ''
         ) {
@@ -146,6 +139,19 @@ final class Arguments implements ArgumentsInterface
         }
         if (!$this->has($parameter->name())) {
             $this->missing[] = $parameter->name();
+        }
+    }
+
+    private function assertNotMissing(): void
+    {
+        foreach ($this->parameters->getGenerator() as $parameter) {
+            $this->handleParameter($parameter);
+        }
+        if ($this->missing !== []) {
+            throw new ArgumentRequiredException(
+                (new Message('Missing required argument(s): %message%'))
+                    ->code('%message%', implode(', ', $this->missing))
+            );
         }
     }
 }

@@ -68,5 +68,5 @@ interface ArgumentsInterface extends ToArrayInterface
      *
      * @throws OutOfBoundsException
      */
-    public function get(string $name): string;
+    public function get(string $name);
 }

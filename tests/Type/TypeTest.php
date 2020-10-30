@@ -50,11 +50,7 @@ final class TypeTest extends TestCase
             $this->assertSame($key, $type->primitive());
             $this->assertSame($key, $type->typeHinting());
             $this->assertTrue($type->validate($val));
-            if (in_array($key, $scalars)) {
-                $this->assertTrue($type->isScalar());
-            } else {
-                $this->assertFalse($type->isScalar());
-            }
+            $this->assertSame(in_array($key, $scalars), $type->isScalar());
         }
         /** @var resource $resource */
         fclose($resource);

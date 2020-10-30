@@ -63,7 +63,7 @@ final class Task implements TaskInterface
         $missing = [];
         foreach ($this->parameters->getGenerator() as $name => $parameter) {
             $argument = $arguments[$name] ?? null;
-            if (!is_string($argument)) {
+            if (is_null($argument)) {
                 $missing[] = $name;
                 continue;
             }
