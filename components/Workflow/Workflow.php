@@ -224,10 +224,10 @@ final class Workflow implements WorkflowInterface
     {
         foreach ($task->arguments() as $argument) {
             try {
-                if (preg_match(self::REGEX_PARAMETER_REFERENCE, $argument, $matches)) {
+                if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $argument, $matches)) {
                     $this->vars->put($argument, [$matches[1]]);
                     $this->putParameter(new StringParameter($matches[1]));
-                } elseif (preg_match(self::REGEX_STEP_REFERENCE, $argument, $matches)) {
+                } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $argument, $matches)) {
                     $this->assertStepExists($step, $matches);
                     $expected = $this->expected->get($matches[1], []);
                     $expected[] = $matches[2];
