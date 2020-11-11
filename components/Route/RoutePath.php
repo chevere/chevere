@@ -19,7 +19,7 @@ use Chevere\Components\Router\RouteParsers\StrictStd;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
-use Chevere\Interfaces\Route\RouteWildcardsInterface;
+use Chevere\Interfaces\Route\WildcardsInterface;
 use FastRoute\DataGenerator\GroupCountBased as DataGenerator;
 use Throwable;
 
@@ -31,14 +31,14 @@ final class RoutePath implements RoutePathInterface
 
     private RegexInterface $regex;
 
-    private RouteWildcardsInterface $wildcards;
+    private WildcardsInterface $wildcards;
 
     public function __construct(string $path)
     {
         $std = new StrictStd;
         $this->data = $std->parse($path)[0];
         $this->path = $path;
-        $this->wildcards = new RouteWildcards;
+        $this->wildcards = new Wildcards;
         $dataGenerator = new DataGenerator;
         try {
             $dataGenerator->addRoute('GET', $this->data, '');
@@ -66,7 +66,7 @@ final class RoutePath implements RoutePathInterface
         $this->regex = new Regex($routerData[0]['GET'][0]['regex'] ?? '#' . $path . '#');
     }
 
-    public function wildcards(): RouteWildcardsInterface
+    public function wildcards(): WildcardsInterface
     {
         return $this->wildcards;
     }

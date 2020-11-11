@@ -51,7 +51,7 @@ final class RoutableSpecTest extends TestCase
                 'spec' => $routeSpecPath,
                 'path' => $routePath->toString(),
                 'regex' => $routePath->regex()->toString(),
-                'wildcards' => $routePath->wildcards()->mapCopy()->toArray(),
+                'wildcards' => $routePath->wildcards()->toArray(),
                 'endpoints' => [
                     $method->name() => $routeEndpoint->toArray()
                 ]

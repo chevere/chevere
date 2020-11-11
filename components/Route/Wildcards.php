@@ -15,13 +15,12 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
-use Chevere\Interfaces\Route\RouteWildcardsInterface;
+use Chevere\Interfaces\Route\WildcardsInterface;
 use Ds\Map;
-use OutOfBoundsException;
 use RangeException;
 use function DeepCopy\deep_copy;
 
-final class RouteWildcards implements RouteWildcardsInterface
+final class Wildcards implements WildcardsInterface
 {
     use MapTrait;
 
@@ -41,11 +40,16 @@ final class RouteWildcards implements RouteWildcardsInterface
 
     public function __clone()
     {
-        $this->map = $this->mapCopy();
+        $this->map = deep_copy($this->map);
         $this->index = deep_copy($this->index);
     }
 
-    public function withAddedWildcard(RouteWildcardInterface $routeWildcard): RouteWildcardsInterface
+    public function toArray(): array
+    {
+        return $this->map->toArray();
+    }
+
+    public function withAddedWildcard(RouteWildcardInterface $routeWildcard): WildcardsInterface
     {
         $new = clone $this;
         if ($new->index->hasKey($routeWildcard->toString())) {

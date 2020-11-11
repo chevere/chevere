@@ -43,7 +43,7 @@ final class RoutableSpec implements RoutableSpecInterface
         $path = $routable->route()->path();
         $this->path = $path->toString();
         $this->regex = $path->regex()->toString();
-        $this->wildcards = $path->wildcards()->mapCopy()->toArray();
+        $this->wildcards = $path->wildcards()->toArray();
         $routeEndpoints = $routable->route()->endpoints();
         /** @var string $key */
         foreach ($routeEndpoints->keys() as $key) {

@@ -28,7 +28,7 @@ trait MapTrait
 
     public function __clone()
     {
-        $this->map = $this->mapCopy();
+        $this->map = deep_copy($this->map);
     }
 
     public function keys(): array
@@ -39,11 +39,6 @@ trait MapTrait
     public function count(): int
     {
         return $this->map->count();
-    }
-
-    public function mapCopy(): Map
-    {
-        return deep_copy($this->map);
     }
 
     public function getGenerator(): Generator

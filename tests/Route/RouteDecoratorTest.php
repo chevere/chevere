@@ -15,7 +15,7 @@ namespace Chevere\Tests\Route;
 
 use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RouteName;
-use Chevere\Components\Route\RouteWildcards;
+use Chevere\Components\Route\Wildcards;
 use PHPUnit\Framework\TestCase;
 
 final class RouteDecoratorTest extends TestCase
@@ -31,7 +31,7 @@ final class RouteDecoratorTest extends TestCase
     public function testWithWildcard(): void
     {
         $routeName = new RouteName('some-name');
-        $routeWildcards = new RouteWildcards;
+        $routeWildcards = new Wildcards;
         $routeDecorator = (new RouteDecorator($routeName))
             ->withWildcards($routeWildcards);
         $this->assertSame($routeWildcards, $routeDecorator->wildcards());

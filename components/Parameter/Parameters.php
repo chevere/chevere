@@ -37,7 +37,7 @@ final class Parameters implements ParametersInterface
 
     public function __clone()
     {
-        $this->map = $this->mapCopy();
+        $this->map = deep_copy($this->map);
         $this->required = deep_copy($this->required);
     }
 

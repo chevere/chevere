@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Route;
 
 use Chevere\Interfaces\DataStructures\DsMapInterface;
+use Chevere\Interfaces\To\ToArrayInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `RouteWildcardInterface`.
  */
-interface RouteWildcardsInterface extends DsMapInterface
+interface WildcardsInterface extends DsMapInterface, ToArrayInterface
 {
     /**
      * Return an instance with the specified `$wildcard`.
@@ -29,7 +30,7 @@ interface RouteWildcardsInterface extends DsMapInterface
      *
      * This method should overrides existing wildcards.
      */
-    public function withAddedWildcard(RouteWildcardInterface $wildcard): RouteWildcardsInterface;
+    public function withAddedWildcard(RouteWildcardInterface $wildcard): WildcardsInterface;
 
     /**
      * Returns a boolean indicating whether the instance has a given RouteWildcardInterface.
