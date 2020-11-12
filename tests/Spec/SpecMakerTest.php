@@ -114,6 +114,8 @@ class SpecMakerTestGetController extends Controller
             ->withAddedOptional(
                 (new StringParameter('name'))
                     ->withRegex(new Regex('/^[\w]+$/'))
+                    ->withAddedAttribute('tryFiles')
+                    ->withAddedAttribute('tryInt')
                     ->withDescription('The user name')
             );
     }

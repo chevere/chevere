@@ -17,6 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
+use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 
 final class RouteEndpoint implements RouteEndpointInterface
@@ -37,13 +38,21 @@ final class RouteEndpoint implements RouteEndpointInterface
         if ($this->description === '') {
             $this->description = $method->description();
         }
+        /**
+         * @var StringParameterInterface $parameter
+         */
         foreach ($controller->parameters()->getGenerator() as $name => $parameter) {
-            $this->parameters[$parameter->name()] = [
+            $attributes = $parameter->attributes()->toArray();
+            $array = [
                 'name' => $parameter->name(),
                 'regex' => $parameter->regex()->toString(),
                 'description' => $parameter->description(),
                 'isRequired' => $controller->parameters()->isRequired($name),
             ];
+            if ($attributes !== []) {
+                $array['attributes'] = implode('|', $attributes);
+            }
+            $this->parameters[$parameter->name()] = $array;
         }
     }
 

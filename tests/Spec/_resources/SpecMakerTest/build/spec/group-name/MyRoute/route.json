@@ -29,7 +29,8 @@
                     "name": "name",
                     "regex": "\/^[\\w]+$\/",
                     "description": "The user name",
-                    "isRequired": false
+                    "isRequired": false,
+                    "attributes": "tryFiles|tryInt"
                 }
             }
         }
