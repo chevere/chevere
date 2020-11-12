@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router;
 
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Controller\ControllerNameInterface;
 
 /**
@@ -26,6 +27,11 @@ interface RoutedInterface
      * Provides access to the `$controllerName` instance.
      */
     public function controllerName(): ControllerNameInterface;
+
+    /**
+     * Provides access to a new `$controllerName` instance.
+     */
+    public function getController(): ControllerInterface;
 
     /**
      * Provides access to the `$arguments` instance.
