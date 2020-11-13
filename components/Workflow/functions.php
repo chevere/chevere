@@ -15,15 +15,34 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
-// use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Response\ResponseFailureInterface;
+use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
-use TypeError;
 
+/**
+ * Push `$workflowQueue` to the queue
+ * @codeCoverageIgnore
+ */
+function pushWorkflowQueue(WorkflowMessageInterface $workflowMessage, $stack): void
+{
+    $stack->push($workflowMessage);
+    // if (in_array($uuid, $stack)) {
+    //     throw new OutOfBoundsException(
+    //         (new Message('Queue uuid %uuid% already exists'))
+    //             ->code('%uuid%', $uuid)
+    //     );
+    // }
+    $stack[] = $workflowMessage;
+}
+
+/**
+ * Runs `$workflowRun`
+ */
 function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
 {
+    $workflowRun->workflow()->getGenerator()->rewind();
     foreach ($workflowRun->workflow()->getGenerator() as $step => $task) {
         if ($workflowRun->has($step)) {
             continue; // @codeCoverageIgnore

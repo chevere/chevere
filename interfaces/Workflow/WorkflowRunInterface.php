@@ -30,13 +30,25 @@ interface WorkflowRunInterface
      */
     public function uuid(): string;
 
+    /**
+     * Provides access to the WorkflowInterface instance.
+     */
     public function workflow(): WorkflowInterface;
 
+    /**
+     * Provides access to the ArgumentsInterface instance.
+     */
     public function arguments(): ArgumentsInterface;
 
     public function withAdded(string $step, ResponseSuccessInterface $response): WorkflowRunInterface;
 
+    /**
+     * Indicates whether the instance has the given `$step`. Will return `true` if step has ran.
+     */
     public function has(string $step): bool;
 
+    /**
+     * Provides access to the ResponseInterface instance for the given `$step`.
+     */
     public function get(string $step): ResponseInterface;
 }

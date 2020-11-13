@@ -15,7 +15,6 @@ namespace Chevere\Tests\Workflow;
 
 use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseSuccess;
@@ -49,7 +48,7 @@ final class WorkflowRunnerFunctionTest extends TestCase
                     ])
             );
         $arguments = ['foo' => $foo, 'bar' => $bar];
-        $workflowRun = (new WorkflowRun($workflow, $arguments));
+        $workflowRun = new WorkflowRun($workflow, $arguments);
         $workflowRun = workflowRunner($workflowRun);
         $action1 = new WorkflowRunnerFunctionTestStep1;
         $this->assertEquals(
