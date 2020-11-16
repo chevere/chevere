@@ -50,11 +50,23 @@ final class WorkflowMessageTest extends TestCase
         $queue = $queue->withPriority(-999);
     }
 
+    public function testWithDelay(): void
+    {
+        $queue = new WorkflowMessage($this->getWorkflowRun());
+        $delay = 3600;
+        $queue = $queue->withDelay($delay);
+        $this->assertSame($delay, $queue->delay());
+        $this->expectException(InvalidArgumentException::class);
+        $queue = $queue->withDelay(-3600);
+    }
+
     public function testWithExpiresInterval(): void
     {
         $queue = new WorkflowMessage($this->getWorkflowRun());
-        $ahead = 60 * 1000;
+        $ahead = 60;
         $queue = $queue->withExpiration($ahead);
         $this->assertSame($ahead, $queue->expiration());
+        $this->expectException(InvalidArgumentException::class);
+        $queue = $queue->withExpiration(-60);
     }
 }

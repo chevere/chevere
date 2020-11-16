@@ -26,6 +26,8 @@ final class WorkflowMessage implements WorkflowMessageInterface
 
     private int $priority;
 
+    private int $delay;
+
     private int $expiration;
 
     public function __construct(WorkflowRunInterface $workflowRun)
@@ -51,10 +53,20 @@ final class WorkflowMessage implements WorkflowMessageInterface
         return $new;
     }
 
-    public function withExpiration(int $milliseconds): WorkflowMessageInterface
+    public function withDelay(int $seconds): WorkflowMessageInterface
     {
+        $this->assertTime($seconds);
         $new = clone $this;
-        $new->expiration = $milliseconds;
+        $new->delay = $seconds;
+
+        return $new;
+    }
+
+    public function withExpiration(int $seconds): WorkflowMessageInterface
+    {
+        $this->assertTime($seconds);
+        $new = clone $this;
+        $new->expiration = $seconds;
 
         return $new;
     }
@@ -74,8 +86,22 @@ final class WorkflowMessage implements WorkflowMessageInterface
         return $this->priority;
     }
 
+    public function delay(): int
+    {
+        return $this->delay;
+    }
+
     public function expiration(): int
     {
         return $this->expiration;
+    }
+
+    private function assertTime(int $time): void
+    {
+        if ($time < 0) {
+            throw new InvalidArgumentException(
+                (new Message("Time provided can't be negative"))
+            );
+        }
     }
 }
