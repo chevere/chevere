@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Workflow;
 
+use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
@@ -40,6 +41,9 @@ interface WorkflowRunInterface
      */
     public function arguments(): ArgumentsInterface;
 
+    /**
+     * @throws ArgumentCountException
+     */
     public function withAdded(string $step, ResponseSuccessInterface $response): WorkflowRunInterface;
 
     /**

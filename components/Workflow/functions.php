@@ -15,6 +15,7 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
+use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Response\ResponseFailureInterface;
@@ -38,11 +39,11 @@ function pushWorkflowQueue(WorkflowMessageInterface $workflowMessage, $stack): v
 }
 
 /**
- * Runs `$workflowRun`
+ * Runs a WorkflowRun
+ * @codeCoverageIgnore
  */
 function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
 {
-    $workflowRun->workflow()->getGenerator()->rewind();
     foreach ($workflowRun->workflow()->getGenerator() as $step => $task) {
         if ($workflowRun->has($step)) {
             continue; // @codeCoverageIgnore
@@ -52,16 +53,15 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
          * @var ActionInterface $action
          */
         $action = new $actionName;
-        $magicArguments = $task->arguments();
         $arguments = [];
-        foreach ($magicArguments as $name => $magicArgument) {
-            if (!$workflowRun->workflow()->hasVar($magicArgument)) {
+        foreach ($task->arguments() as $name => $taskArgument) {
+            if (!$workflowRun->workflow()->hasVar($taskArgument)) {
                 // @codeCoverageIgnoreStart
-                $arguments[$name] = $magicArgument;
+                $arguments[$name] = $taskArgument;
                 continue;
                 // @codeCoverageIgnoreEnd
             }
-            $reference = $workflowRun->workflow()->getVar($magicArgument);
+            $reference = $workflowRun->workflow()->getVar($taskArgument);
             if (isset($reference[1])) {
                 $arguments[$name] = $workflowRun->get($reference[0])->data()[$reference[1]];
             } else {
@@ -81,20 +81,17 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
             );
         }
         // @codeCoverageIgnoreEnd
-        $workflowRun = $workflowRun->withAdded($step, $response);
-        // try {
-        // }
-        // @codeCoverageIgnoreStart
-        // catch (ArgumentCountException $e) {
-        //     throw new LogicException(
-        //         (new Message('Unexpected response from method %method% at step %step%'))
-        //             ->code('%method%', $actionName . '::run')
-        //             ->code('%step%', $step),
-        //         0,
-        //         $e
-        //     );
-        // }
-        // @codeCoverageIgnoreEnd
+        try {
+            $workflowRun = $workflowRun->withAdded($step, $response);
+        } catch (ArgumentCountException $e) {
+            throw new LogicException(
+                (new Message('Unexpected response from method %method% at step %step%'))
+                    ->code('%method%', $actionName . '::run')
+                    ->code('%step%', $step),
+                0,
+                $e
+            );
+        }
     }
 
     return $workflowRun;

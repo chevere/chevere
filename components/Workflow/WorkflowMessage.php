@@ -17,12 +17,13 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
+use Ramsey\Uuid\Uuid;
 
 final class WorkflowMessage implements WorkflowMessageInterface
 {
     private WorkflowRunInterface $workflowRun;
 
-    private string $token;
+    private string $uuid;
 
     private int $priority;
 
@@ -33,7 +34,7 @@ final class WorkflowMessage implements WorkflowMessageInterface
     public function __construct(WorkflowRunInterface $workflowRun)
     {
         $this->workflowRun = $workflowRun;
-        $this->token = bin2hex(random_bytes(128));
+        $this->uuid = Uuid::uuid4()->toString();
         $this->priority = 0;
         $this->expiration = 0;
     }
@@ -76,9 +77,9 @@ final class WorkflowMessage implements WorkflowMessageInterface
         return $this->workflowRun;
     }
 
-    public function token(): string
+    public function uuid(): string
     {
-        return $this->token;
+        return $this->uuid;
     }
 
     public function priority(): int

@@ -52,7 +52,7 @@ interface WorkflowMessageInterface
     /**
      * Provides access to the token.
      */
-    public function token(): string;
+    public function uuid(): string;
 
     /**
      * Provides access to the priority execution.

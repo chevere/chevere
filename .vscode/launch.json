@@ -11,13 +11,5 @@
             "port": 9000,
             "log": true,
         },
-        {
-            "name": "Launch currently open script",
-            "type": "php",
-            "request": "launch",
-            "program": "${file}",
-            "cwd": "${fileDirname}",
-            "port": 9000
-        }
     ]
 }

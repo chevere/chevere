@@ -18,9 +18,6 @@ use Chevere\Components\Workflow\WorkflowMessage;
 use Chevere\Components\Workflow\WorkflowRun;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
-use DateInterval;
-use DateTime;
-use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowMessageTest extends TestCase
@@ -36,7 +33,7 @@ final class WorkflowMessageTest extends TestCase
         $queue = new WorkflowMessage($run);
         $this->assertSame(0, $queue->priority());
         $this->assertSame($run, $queue->workflowRun());
-        $this->assertIsString($queue->token());
+        $this->assertIsString($queue->uuid());
         $this->assertSame(0, $queue->expiration());
     }
 
