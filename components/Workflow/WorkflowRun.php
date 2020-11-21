@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
@@ -40,10 +39,10 @@ final class WorkflowRun implements WorkflowRunInterface
 
     private Map $steps;
 
-    public function __construct(WorkflowInterface $workflow, array $arguments)
+    public function __construct(WorkflowInterface $workflow, ArgumentsInterface $arguments)
     {
         $this->uuid = Uuid::uuid4()->toString();
-        $this->arguments = new Arguments($workflow->parameters(), $arguments);
+        $this->arguments = $arguments;
         $this->workflow = $workflow;
         $this->steps = new Map;
     }
