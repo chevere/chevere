@@ -23,7 +23,7 @@ use Chevere\Interfaces\Response\ResponseSuccessInterface;
  */
 interface WorkflowRunInterface
 {
-    public function __construct(WorkflowInterface $workflow, ArgumentsInterface $arguments);
+    public function __construct(WorkflowInterface $workflow, array $arguments);
 
     /**
      * Provides access to workflow uuid V4 (RFC 4122).

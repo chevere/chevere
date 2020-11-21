@@ -25,10 +25,7 @@ final class WorkflowMessageTest extends TestCase
 {
     public function getWorkflowRun(): WorkflowRunInterface
     {
-        $workflow = new Workflow('test');
-        $arguments = new Arguments($workflow->parameters(), []);
-
-        return new WorkflowRun($workflow, $arguments);
+        return new WorkflowRun(new Workflow('test'), []);
     }
 
     public function testConstruct(): void

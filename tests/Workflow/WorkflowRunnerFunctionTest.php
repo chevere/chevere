@@ -47,7 +47,7 @@ final class WorkflowRunnerFunctionTest extends TestCase
                         'bar' => '${bar}'
                     ])
             );
-        $arguments = new Arguments($workflow->parameters(), ['foo' => $foo, 'bar' => $bar]);
+        $arguments = ['foo' => $foo, 'bar' => $bar];
         $workflowRun = new WorkflowRun($workflow, $arguments);
         $workflowRun = workflowRunner($workflowRun);
         $action1 = new WorkflowRunnerFunctionTestStep1;
