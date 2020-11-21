@@ -30,29 +30,27 @@ final class Task implements TaskInterface
 
     private array $arguments;
 
-    private ReflectionClass $reflection;
-
     private ParametersInterface $parameters;
 
     public function __construct(string $action)
     {
         $this->action = $action;
         try {
-            $this->reflection = new ReflectionClass($this->action);
+            $reflection = new ReflectionClass($this->action);
         } catch (\ReflectionException $e) {
             throw new InvalidArgumentException(
                 (new Message("Class %action% doesn't exists"))
                     ->code('%action%', $this->action)
             );
         }
-        if (!$this->reflection->implementsInterface(ActionInterface::class)) {
+        if (!$reflection->implementsInterface(ActionInterface::class)) {
             throw new UnexpectedValueException(
                 (new Message('Action %action% must implement %interface% interface'))
                     ->code('%action%', $this->action)
                     ->code('%interface%', ActionInterface::class)
             );
         }
-        $this->parameters = $this->reflection->newInstance()->parameters();
+        $this->parameters = $reflection->newInstance()->parameters();
         $this->arguments = [];
     }
 

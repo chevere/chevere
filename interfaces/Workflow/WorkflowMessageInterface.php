@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Workflow;
 
-use DateInterval;
-
 /**
  * Describes the component in charge of defining a workflow queue.
  */

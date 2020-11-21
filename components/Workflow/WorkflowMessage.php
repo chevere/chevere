@@ -36,6 +36,7 @@ final class WorkflowMessage implements WorkflowMessageInterface
         $this->workflowRun = $workflowRun;
         $this->uuid = Uuid::uuid4()->toString();
         $this->priority = 0;
+        $this->delay = 0;
         $this->expiration = 0;
     }
 

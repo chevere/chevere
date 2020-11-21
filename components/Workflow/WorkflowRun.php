@@ -16,6 +16,7 @@ namespace Chevere\Components\Workflow;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\ArgumentCountException;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
