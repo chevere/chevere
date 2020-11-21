@@ -57,7 +57,7 @@ final class ServiceProviders implements ServiceProvidersInterface
         }
         $new->assertVisibility();
         $new->assertParameterCount();
-        $type = $new->assertGetParameterType();
+        $type = $new->getParameterType();
         $new->assertUnique();
         $new->map->put($method, $type);
 
@@ -85,22 +85,10 @@ final class ServiceProviders implements ServiceProvidersInterface
         }
     }
 
-    private function assertGetParameterType(): string
+    private function getParameterType(): string
     {
         /** @var ReflectionParameter $parameter */
         $parameter = $this->reflectionMethod->getParameters()[0];
-        $parameterClass = $parameter->getClass();
-        if (
-            $parameterClass === null
-            || !$parameterClass->implementsInterface(ServiceInterface::class)
-            || $parameterClass->getName() === ServiceInterface::class
-        ) {
-            throw new UnexpectedValueException(
-                (new Message('Argument %argument% must be typed against a concrete class implementing %interface% interface'))
-                    ->code('%interface%', ServiceInterface::class)
-                    ->code('%argument%', '$' . $parameter->getName())
-            );
-        }
 
         return $parameter->getType()->getName();
     }

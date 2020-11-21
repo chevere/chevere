@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Exceptions\Core\LogicException;
