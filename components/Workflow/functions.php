@@ -19,6 +19,7 @@ use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Response\ResponseFailureInterface;
+use Chevere\Interfaces\Service\ServiceDependantInterface;
 use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 
@@ -53,6 +54,9 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
          * @var ActionInterface $action
          */
         $action = new $actionName;
+        if ($action instanceof ServiceDependantInterface) {
+            // Inject the services required by the action
+        }
         $arguments = [];
         foreach ($task->arguments() as $name => $taskArgument) {
             if (!$workflowRun->workflow()->hasVar($taskArgument)) {

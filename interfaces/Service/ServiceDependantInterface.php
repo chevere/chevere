@@ -20,6 +20,8 @@ use Chevere\Components\ClassMap\ClassMap;
  */
 interface ServiceDependantInterface
 {
+    public function withDependencies(array $namedArguments): ServiceDependantInterface;
+
     /**
      * A class mapping for class name -> construct argument name
      */
