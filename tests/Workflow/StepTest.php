@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Workflow\Job;
+use Chevere\Components\Workflow\Step;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class JobTest extends TestCase
+final class StepTest extends TestCase
 {
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new Job('$jo.b');
+        new Step('$st.ep');
     }
 
     public function testConstruct(): void
     {
-        $name = 'the-job-name';
-        $job = new Job($name);
-        $this->assertSame($name, $job->toString());
+        $name = 'the-step-name';
+        $step = new Step($name);
+        $this->assertSame($name, $step->toString());
     }
 }

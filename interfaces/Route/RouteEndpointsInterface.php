@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Route;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\DataStructures\DsMapInterface;
+use Chevere\Interfaces\DataStructures\MapInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `RouteEndpointInterface`.
  */
-interface RouteEndpointsInterface extends DsMapInterface
+interface RouteEndpointsInterface extends MapInterface
 {
     /**
      * Return an instance with the specified `$routeEndpoint`.

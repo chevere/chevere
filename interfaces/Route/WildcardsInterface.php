@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
-use Chevere\Interfaces\DataStructures\DsMapInterface;
+use Chevere\Interfaces\DataStructures\MapInterface;
 use Chevere\Interfaces\To\ToArrayInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `RouteWildcardInterface`.
  */
-interface WildcardsInterface extends DsMapInterface, ToArrayInterface
+interface WildcardsInterface extends MapInterface, ToArrayInterface
 {
     /**
      * Return an instance with the specified `$wildcard`.

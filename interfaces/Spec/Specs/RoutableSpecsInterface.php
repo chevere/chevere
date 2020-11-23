@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\DataStructures\DsMapInterface;
+use Chevere\Interfaces\DataStructures\MapInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `RoutableSpecInterface`.
  */
-interface RoutableSpecsInterface extends DsMapInterface
+interface RoutableSpecsInterface extends MapInterface
 {
     /**
      * Return an instance with the specified `$routableSpec`.

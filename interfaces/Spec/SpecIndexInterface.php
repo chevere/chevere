@@ -15,12 +15,12 @@ namespace Chevere\Interfaces\Spec;
 
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use  Chevere\Interfaces\DataStructures\DsMapInterface;
+use  Chevere\Interfaces\DataStructures\MapInterface;
 
 /**
  * Describes the component in charge of indexing endpoint specs for each route.
  */
-interface SpecIndexInterface extends DsMapInterface
+interface SpecIndexInterface extends MapInterface
 {
     /**
      * Return an instance with the specified `$routeEndpointSpec` for `$routeName`.

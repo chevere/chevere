@@ -50,7 +50,7 @@ final class Workflow implements WorkflowInterface
 
     public function __construct(string $name)
     {
-        $this->name = (new Job($name))->toString();
+        $this->name = (new Step($name))->toString();
         $this->map = new Map;
         $this->steps = new Vector;
         $this->parameters = new Parameters;
@@ -77,7 +77,7 @@ final class Workflow implements WorkflowInterface
 
     public function withAdded(string $step, TaskInterface $task): WorkflowInterface
     {
-        $step = (new Job($step))->toString();
+        new Step($step);
         $this->assertNoOverflow($step);
         $new = clone $this;
         $new->setParameters($step, $task);
@@ -89,8 +89,9 @@ final class Workflow implements WorkflowInterface
 
     public function withAddedBefore(string $before, string $step, TaskInterface $task): WorkflowInterface
     {
+        new Step($before);
+        new Step($step);
         $this->assertHasStepByName($before);
-        $step = (new Job($step))->toString();
         $this->assertNoOverflow($step);
         $new = clone $this;
         $new->setParameters($step, $task);
@@ -102,8 +103,9 @@ final class Workflow implements WorkflowInterface
 
     public function withAddedAfter(string $after, string $step, TaskInterface $task): WorkflowInterface
     {
+        new Step($after);
+        new Step($step);
         $this->assertHasStepByName($after);
-        $step = (new Job($step))->toString();
         $this->assertNoOverflow($step);
         $new = clone $this;
         $new->setParameters($step, $task);

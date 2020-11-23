@@ -15,12 +15,15 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Workflow\JobInterface;
+use Chevere\Interfaces\Workflow\StepInterface;
 
-final class Job implements JobInterface
+final class Step implements StepInterface
 {
     private string $name;
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __construct(string $name)
     {
         if (!preg_match(self::REGEX_KEY, $name)) {

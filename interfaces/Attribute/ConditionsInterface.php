@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Attribute;
 
-use Chevere\Interfaces\DataStructures\DsMapInterface;
+use Chevere\Interfaces\DataStructures\MapInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `ConditionInterface`.
  */
-interface ConditionsInterface extends DsMapInterface
+interface ConditionsInterface extends MapInterface
 {
     /**
      * Return an instance with the specified `$condition` added.

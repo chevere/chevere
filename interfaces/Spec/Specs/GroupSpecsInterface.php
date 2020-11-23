@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\DataStructures\DsMapInterface;
+use Chevere\Interfaces\DataStructures\MapInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `GroupSpecInterface`.
  */
-interface GroupSpecsInterface extends DsMapInterface
+interface GroupSpecsInterface extends MapInterface
 {
     /**
      * Return an instance with the specified `$groupSpec`.

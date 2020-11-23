@@ -19,7 +19,7 @@ use Generator;
 /**
  * Describes the component in charge of easing the work around `Ds\Map`.
  */
-interface DsMapInterface extends Countable
+interface MapInterface extends Countable
 {
     /**
      * Provides access to the map keys.

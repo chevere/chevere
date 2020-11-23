@@ -17,9 +17,9 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
- * Describes the component in charge of defining a job unit name.
+ * Describes the component in charge of defining a step unit name.
  */
-interface JobInterface extends ToStringInterface
+interface StepInterface extends ToStringInterface
 {
     const REGEX_KEY = '/^[\w-]*$/';
 

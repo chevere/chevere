@@ -15,13 +15,13 @@ namespace Chevere\Interfaces\Service;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\DataStructures\DsMapInterface;
+use Chevere\Interfaces\DataStructures\MapInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting service providers in a serviceable interface.
  */
-interface ServiceProvidersInterface extends DsMapInterface
+interface ServiceProvidersInterface extends MapInterface
 {
     public function __construct(ServiceableInterface $serviceable);
 
