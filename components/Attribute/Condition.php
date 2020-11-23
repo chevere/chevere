@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Attribute;
 
 use Chevere\Components\Attribute\Traits\IdentifierTrait;
-use Chevere\Components\Description\Traits\DescriptorTrait;
+use Chevere\Components\Description\Traits\DescriptionTrait;
 use Chevere\Interfaces\Attribute\ConditionInterface;
 
 /**
@@ -22,7 +22,7 @@ use Chevere\Interfaces\Attribute\ConditionInterface;
  */
 abstract class Condition implements ConditionInterface
 {
-    use DescriptorTrait;
+    use DescriptionTrait;
     use IdentifierTrait;
 
     private bool $value;

@@ -16,7 +16,7 @@ namespace Chevere\Components\Description\Traits;
 /**
  * @codeCoverageIgnore
  */
-trait DescriptorTrait
+trait DescriptionTrait
 {
     public function getDescription(): string
     {

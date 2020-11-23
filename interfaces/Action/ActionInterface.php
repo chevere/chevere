@@ -17,6 +17,7 @@ use Chevere\Interfaces\Description\GetDescriptionInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Type\TypeInterface;
 
 /**
  * Describes the component in charge of defining a single action.
@@ -29,6 +30,24 @@ interface ActionInterface extends GetDescriptionInterface
      * Defines default parameters.
      */
     public function getParameters(): ParametersInterface;
+
+    /**
+     * Defines expected return data type when executing `run` method.
+     *
+     * @return array<string, TypeInterface>
+     */
+    public function getReturnTypes(): array;
+
+    public function description(): string;
+
+    public function parameters(): ParametersInterface;
+
+    /**
+     * @return array<string, TypeInterface>
+     */
+    public function returnTypes(): array;
+
+    public function assertReturnTypes(array $namedArguments): void;
 
     /**
      * Method called when running the action. This method MUST not alter the state of the instance.
