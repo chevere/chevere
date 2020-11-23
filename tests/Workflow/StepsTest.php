@@ -17,20 +17,13 @@ use Chevere\Components\Action\Action;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Steps;
 use Chevere\Components\Workflow\Task;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Interfaces\Workflow\TaskInterface;
 use PHPUnit\Framework\TestCase;
 
 final class StepsTest extends TestCase
 {
-    private function getTask(): TaskInterface
-    {
-        return new Task(TestsActionStepsTests::class);
-    }
-
     public function testConstruct(): void
     {
         $steps = new Steps;
@@ -41,9 +34,10 @@ final class StepsTest extends TestCase
     {
         $keys = [0 => 'step-1', 1 => 'step-3'];
         $task = new Task(TestsActionStepsTests::class);
-        $steps = (new Steps)
-            ->withAdded($keys[0], $task)
-            ->withAdded($keys[1], $task);
+        $steps = new Steps;
+        foreach ($keys as $name) {
+            $steps = $steps->withAdded($name, $task);
+        }
         $this->assertSame($keys, $steps->keys());
         foreach ($steps->getGenerator() as $stepName => $stepTask) {
             $this->assertContains($stepName, $keys);
