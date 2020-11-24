@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Service;
 
-use Chevere\Components\ClassMap\ClassMap;
+use Chevere\Interfaces\ClassMap\ClassMapInterface;
 
 /**
  * Describes the component in charge of defining a class with explicit dependencies.
@@ -25,5 +25,5 @@ interface ServiceDependantInterface
     /**
      * A class mapping for class name -> construct argument name
      */
-    public function getDependencies(): ClassMap;
+    public function getDependencies(): ClassMapInterface;
 }

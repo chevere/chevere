@@ -30,7 +30,10 @@ abstract class Action implements ActionInterface
 
     private ParametersInterface $parameters;
 
-    private array $returnTypes;
+    /**
+     * @var array<string, TypeInterface>
+     */
+    private array $responseDataTypes;
 
     /**
      * @codeCoverageIgnore
@@ -43,7 +46,7 @@ abstract class Action implements ActionInterface
     /**
      * @codeCoverageIgnore
      */
-    public function getReturnTypes(): array
+    public function getResponseDataTypes(): array
     {
         return [];
     }
@@ -52,7 +55,7 @@ abstract class Action implements ActionInterface
     {
         $this->description = $this->getDescription();
         $this->parameters = $this->getParameters();
-        $this->returnTypes = $this->getReturnTypes();
+        $this->responseDataTypes = $this->getResponseDataTypes();
     }
 
     final public function description(): string
@@ -65,18 +68,14 @@ abstract class Action implements ActionInterface
         return $this->parameters;
     }
 
-    final public function returnTypes(): array
+    final public function responseDataTypes(): array
     {
-        return $this->returnTypes;
+        return $this->responseDataTypes;
     }
 
-    final public function assertReturnTypes(array $namedArguments): void
+    final public function assertResponseDataTypes(array $namedArguments): void
     {
-        /**
-         * @var string $key
-         * @var TypeInterface $type
-         */
-        foreach ($this->returnTypes as $key => $type) {
+        foreach ($this->responseDataTypes as $key => $type) {
             if (!isset($namedArguments[$key])) {
                 throw new OutOfBoundsException(
                     (new Message("Key %key% doesn't exists"))

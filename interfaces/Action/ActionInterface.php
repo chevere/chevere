@@ -32,11 +32,11 @@ interface ActionInterface extends GetDescriptionInterface
     public function getParameters(): ParametersInterface;
 
     /**
-     * Defines expected return data type when executing `run` method.
+     * Defines expected response data types when executing `run` method.
      *
      * @return array<string, TypeInterface>
      */
-    public function getReturnTypes(): array;
+    public function getResponseDataTypes(): array;
 
     public function description(): string;
 
@@ -45,9 +45,9 @@ interface ActionInterface extends GetDescriptionInterface
     /**
      * @return array<string, TypeInterface>
      */
-    public function returnTypes(): array;
+    public function responseDataTypes(): array;
 
-    public function assertReturnTypes(array $namedArguments): void;
+    public function assertResponseDataTypes(array $namedArguments): void;
 
     /**
      * Method called when running the action. This method MUST not alter the state of the instance.

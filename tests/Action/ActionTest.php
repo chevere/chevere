@@ -17,9 +17,7 @@ use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Type\Type;
-use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
@@ -32,8 +30,8 @@ final class ActionTest extends TestCase
         $action = new ActionTestAction;
         $this->assertSame('test', $action->description());
         $this->assertCount(0, $action->parameters());
-        $this->assertCount(1, $action->returnTypes());
-        $this->assertArrayHasKey('id', $action->returnTypes());
+        $this->assertCount(1, $action->responseDataTypes());
+        $this->assertArrayHasKey('id', $action->responseDataTypes());
         $arguments = new Arguments($action->parameters(), []);
         $action->run($arguments);
     }
@@ -41,13 +39,13 @@ final class ActionTest extends TestCase
     public function testBoundsAssertReturnTypes(): void
     {
         $this->expectException(OutOfBoundsException::class);
-        (new ActionTestAction)->assertReturnTypes(['eee' => 123]);
+        (new ActionTestAction)->assertResponseDataTypes(['eee' => 123]);
     }
 
     public function testTypeAssertReturnTypes(): void
     {
         $this->expectException(TypeException::class);
-        (new ActionTestAction)->assertReturnTypes(['id' => 'string']);
+        (new ActionTestAction)->assertResponseDataTypes(['id' => 'string']);
     }
 }
 
@@ -58,7 +56,7 @@ final class ActionTestAction extends Action
         return 'test';
     }
 
-    public function getReturnTypes(): array
+    public function getResponseDataTypes(): array
     {
         return [
             'id' => new Type(Type::INTEGER),
@@ -70,7 +68,7 @@ final class ActionTestAction extends Action
         $response = new ResponseSuccess([
             'id' => 123,
         ]);
-        $this->assertReturnTypes($response->data());
+        $this->assertResponseDataTypes($response->data());
 
         return $response;
     }
