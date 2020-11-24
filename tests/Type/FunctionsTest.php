@@ -13,16 +13,29 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
+use Chevere\Interfaces\Type\TypeInterface;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
+use function Chevere\Components\Type\varType;
 
 final class FunctionsTest extends TestCase
 {
+    public function testVarType(): void
+    {
+        $table = [
+            'object' => $this,
+            'float' => 10.10,
+        ];
+        foreach ($table as $type => $var) {
+            $this->assertSame($type, varType($var));
+        }
+    }
+
     public function testDebugType(): void
     {
-        $typeObject = debugType($this);
-        $this->assertSame(__CLASS__, $typeObject);
+        $debugType = debugType($this);
+        $this->assertSame(__CLASS__, $debugType);
         $typeScalar = debugType('integer');
         $this->assertSame('string', $typeScalar);
     }
@@ -33,5 +46,18 @@ final class FunctionsTest extends TestCase
         $provided = 'integer';
         $message = returnTypeExceptionMessage($expected, $provided);
         $this->assertSame("Expecting return type $expected, type $provided provided", $message->toString());
+    }
+
+    public function testTypeFunctions(): void
+    {
+        $types = ['boolean', 'integer', 'float', 'string', 'array', 'object', 'callable', 'iterable', 'resource', 'null'];
+        foreach ($types as $k => $v) {
+            $name = 'Chevere\\Components\\Type\\type' . ucfirst($v);
+            /**
+             * @var TypeInterface $fn
+             */
+            $object = $name();
+            $this->assertSame($v, $object->typeHinting());
+        }
     }
 }

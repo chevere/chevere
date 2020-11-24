@@ -20,20 +20,16 @@ use Chevere\Exceptions\Type\TypeNotFoundException;
  */
 interface TypeInterface
 {
-    /** Scalar */
     const BOOLEAN = 'boolean';
     const INTEGER = 'integer';
     const FLOAT = 'float';
     const STRING = 'string';
-    /** Compound */
     const ARRAY = 'array';
     const OBJECT = 'object';
     const CALLABLE = 'callable';
     const ITERABLE = 'iterable';
-    /** Special */
     const RESOURCE = 'resource';
     const NULL = 'null';
-    /** Pseudo-types */
     const CLASS_NAME = 'className';
     const INTERFACE_NAME = 'interfaceName';
 
