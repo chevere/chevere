@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Service;
 
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 
 /**
@@ -26,4 +27,9 @@ interface ServiceDependantInterface
      * A class mapping for class name -> construct argument name
      */
     public function getDependencies(): ClassMapInterface;
+
+    /**
+     * @throws LogicException
+     */
+    public function assertDependencies(): void;
 }

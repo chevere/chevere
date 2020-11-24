@@ -13,16 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Service\Traits;
 
-use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
+use Chevere\Interfaces\ClassMap\ClassMapInterface;
 
 trait AssertDependenciesTrait
 {
-    public function getDependencies(): ClassMap
-    {
-        return new ClassMap;
-    }
+    abstract public function getDependencies(): ClassMapInterface;
 
     final public function assertDependencies(): void
     {

@@ -16,6 +16,7 @@ namespace Chevere\Tests\Service\Traits;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Service\Traits\AssertDependenciesTrait;
 use Chevere\Exceptions\Core\LogicException;
+use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use PHPUnit\Framework\TestCase;
 
 final class AssertDependenciesTraitTest extends TestCase
@@ -25,6 +26,11 @@ final class AssertDependenciesTraitTest extends TestCase
         $dependable = new class
         {
             use AssertDependenciesTrait;
+
+            public function getDependencies(): ClassMapInterface
+            {
+                return new ClassMap;
+            }
         };
         $this->assertCount(0, $dependable->getDependencies());
         $dependable->assertDependencies();
