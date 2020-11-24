@@ -88,7 +88,8 @@ final class Arguments implements ArgumentsInterface
         $type = $parameter->type();
         if (!$type->validate($value)) {
             throw new InvalidArgumentException(
-                (new Message('Expecting argument of type %expected%, %provided% provided'))
+                (new Message('Expecting value of argument %argument% of type %expected%, %provided% provided'))
+                    ->strong('%argument%', $name)
                     ->strong('%expected%', $type->typeHinting())
                     ->code('%provided%', varType($value))
             );
