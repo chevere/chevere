@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Action;
 
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Description\GetDescriptionInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Interfaces\Type\TypeInterface;
 
 /**
  * Describes the component in charge of defining a single action.
@@ -32,22 +33,31 @@ interface ActionInterface extends GetDescriptionInterface
     public function getParameters(): ParametersInterface;
 
     /**
-     * Defines expected response data types when executing `run` method.
-     *
-     * @return array<string, TypeInterface>
+     * Defines expected response data parameters when executing `run` method.
      */
-    public function getResponseDataTypes(): array;
+    public function getResponseDataParameters(): ParametersInterface;
 
+    /**
+     * Provides access to the description.
+     */
     public function description(): string;
 
+    /**
+     * Provides access to the parameters.
+     */
     public function parameters(): ParametersInterface;
 
     /**
-     * @return array<string, TypeInterface>
+     * Provides access to the expected response data parameters.
      */
-    public function responseDataTypes(): array;
+    public function responseDataParameters(): ParametersInterface;
 
-    public function assertResponseDataTypes(array $namedArguments): void;
+    /**
+     *
+     * @throws OutOfBoundsException
+     * @throws TypeException
+     */
+    public function assertResponseDataParameters(array $namedArguments): void;
 
     /**
      * Method called when running the action. This method MUST not alter the state of the instance.

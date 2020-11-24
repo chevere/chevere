@@ -19,8 +19,8 @@ use Chevere\Components\Parameter\Parameters;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Action\ActionInterface;
+use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Type\TypeInterface;
 
 abstract class Action implements ActionInterface
 {
@@ -30,32 +30,23 @@ abstract class Action implements ActionInterface
 
     private ParametersInterface $parameters;
 
-    /**
-     * @var array<string, TypeInterface>
-     */
-    private array $responseDataTypes;
+    private ParametersInterface $responseDataParameters;
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function getParameters(): ParametersInterface
     {
         return new Parameters;
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
-    public function getResponseDataTypes(): array
+    public function getResponseDataParameters(): ParametersInterface
     {
-        return [];
+        return new Parameters;
     }
 
     final public function __construct()
     {
         $this->description = $this->getDescription();
         $this->parameters = $this->getParameters();
-        $this->responseDataTypes = $this->getResponseDataTypes();
+        $this->responseDataParameters = $this->getResponseDataParameters();
     }
 
     final public function description(): string
@@ -68,25 +59,29 @@ abstract class Action implements ActionInterface
         return $this->parameters;
     }
 
-    final public function responseDataTypes(): array
+    final public function responseDataParameters(): ParametersInterface
     {
-        return $this->responseDataTypes;
+        return $this->responseDataParameters;
     }
 
-    final public function assertResponseDataTypes(array $namedArguments): void
+    final public function assertResponseDataParameters(array $namedArguments): void
     {
-        foreach ($this->responseDataTypes as $key => $type) {
-            if (!isset($namedArguments[$key])) {
+        /**
+         * @var string $name
+         * @var ParameterInterface $parameter
+         */
+        foreach ($this->responseDataParameters->getGenerator() as $name => $parameter) {
+            if (!isset($namedArguments[$name])) {
                 throw new OutOfBoundsException(
                     (new Message("Key %key% doesn't exists"))
-                        ->code('%key%', $key)
+                        ->code('%key%', $name)
                 );
             }
-            if (!$type->validate($namedArguments[$key])) {
+            if (!$parameter->type()->validate($namedArguments[$name])) {
                 throw new TypeException(
                     (new Message("Key %key% value doesn't validate the expected type %type%"))
-                    ->code('%key%', $key)
-                    ->code('%type%', $type->typeHinting())
+                    ->code('%key%', $name)
+                    ->code('%type%', $parameter->type()->typeHinting())
                 );
             }
         }

@@ -15,11 +15,14 @@ namespace Chevere\Tests\Action;
 
 use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Arguments;
+use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -30,8 +33,7 @@ final class ActionTest extends TestCase
         $action = new ActionTestAction;
         $this->assertSame('test', $action->description());
         $this->assertCount(0, $action->parameters());
-        $this->assertCount(1, $action->responseDataTypes());
-        $this->assertArrayHasKey('id', $action->responseDataTypes());
+        $this->assertCount(1, $action->responseDataParameters());
         $arguments = new Arguments($action->parameters(), []);
         $action->run($arguments);
     }
@@ -39,13 +41,13 @@ final class ActionTest extends TestCase
     public function testBoundsAssertReturnTypes(): void
     {
         $this->expectException(OutOfBoundsException::class);
-        (new ActionTestAction)->assertResponseDataTypes(['eee' => 123]);
+        (new ActionTestAction)->assertResponseDataParameters(['eee' => 123]);
     }
 
     public function testTypeAssertReturnTypes(): void
     {
         $this->expectException(TypeException::class);
-        (new ActionTestAction)->assertResponseDataTypes(['id' => 'string']);
+        (new ActionTestAction)->assertResponseDataParameters(['id' => 'string']);
     }
 }
 
@@ -56,11 +58,10 @@ final class ActionTestAction extends Action
         return 'test';
     }
 
-    public function getResponseDataTypes(): array
+    public function getResponseDataParameters(): ParametersInterface
     {
-        return [
-            'id' => new Type(Type::INTEGER),
-        ];
+        return (new Parameters)
+            ->withAddedRequired(new Parameter('id', new Type(Type::INTEGER)));
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
@@ -68,7 +69,7 @@ final class ActionTestAction extends Action
         $response = new ResponseSuccess([
             'id' => 123,
         ]);
-        $this->assertResponseDataTypes($response->data());
+        $this->assertResponseDataParameters($response->data());
 
         return $response;
     }
