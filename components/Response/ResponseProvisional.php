@@ -15,10 +15,13 @@ namespace Chevere\Components\Response;
 
 use Chevere\Components\Response\Traits\ResponseTrait;
 use Chevere\Interfaces\Response\ResponseProvisionalInterface;
+use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 
 final class ResponseProvisional implements ResponseProvisionalInterface
 {
     use ResponseTrait;
+
+    private WorkflowMessageInterface $workflowMessage;
 
     public function withData(array $data): ResponseProvisionalInterface
     {
@@ -26,5 +29,22 @@ final class ResponseProvisional implements ResponseProvisionalInterface
         $new->data = $data;
 
         return $new;
+    }
+
+    public function withWorkflowMessage(WorkflowMessageInterface $workflowMessage): ResponseProvisionalInterface
+    {
+        $new = clone $this;
+        $new->workflowMessage = $workflowMessage;
+        $new->data = array_merge($new->data, [
+            'delay' => $workflowMessage->delay(),
+            'expiration' => $workflowMessage->expiration(),
+        ]);
+
+        return $new;
+    }
+
+    public function workflowMessage(): WorkflowMessageInterface
+    {
+        return $this->workflowMessage;
     }
 }

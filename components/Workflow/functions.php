@@ -20,8 +20,14 @@ use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Response\ResponseFailureInterface;
 use Chevere\Interfaces\Service\ServiceDependantInterface;
+use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
+
+function getWorkflowMessage(WorkflowInterface $workflow, array $arguments): WorkflowMessageInterface
+{
+    return new WorkflowMessage(new WorkflowRun($workflow, $arguments));
+}
 
 /**
  * Push `$workflowQueue` to the queue
