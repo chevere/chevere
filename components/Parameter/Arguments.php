@@ -82,6 +82,31 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
+    public function getBoolean(string $name): bool
+    {
+        return $this->get($name);
+    }
+
+    public function getString(string $name): string
+    {
+        return $this->get($name);
+    }
+
+    public function getInteger(string $name): int
+    {
+        return $this->get($name);
+    }
+
+    public function getFloat(string $name): float
+    {
+        return $this->get($name);
+    }
+
+    public function getArray(string $name): array
+    {
+        return $this->get($name);
+    }
+
     private function assertType(string $name, $value): void
     {
         $parameter = $this->parameters->get($name);

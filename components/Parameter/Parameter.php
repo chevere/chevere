@@ -27,6 +27,6 @@ final class Parameter implements ParameterInterface
         $this->name = $name;
         $this->assertName();
         $this->type = $type;
-        $this->attributes = new Set();
+        $this->attributes = new Set;
     }
 }

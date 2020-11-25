@@ -35,7 +35,7 @@ final class StringParameter implements StringParameterInterface
         $this->name = $name;
         $this->assertName();
         $this->type = new Type(Type::STRING);
-        $this->attributes = new Set();
+        $this->attributes = new Set;
         $this->regex = new Regex('/^.*$/');
     }
 

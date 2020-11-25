@@ -29,7 +29,7 @@ final class IntegerParameter implements IntegerParameterInterface
         $this->name = $name;
         $this->assertName();
         $this->type = new Type(Type::INTEGER);
-        $this->attributes = new Set();
+        $this->attributes = new Set;
     }
 
     public function withDefault(int $default): IntegerParameterInterface

@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Components\Parameter\Arguments;
+use Chevere\Components\Parameter\ArrayParameter;
+use Chevere\Components\Parameter\BooleanParameter;
+use Chevere\Components\Parameter\FloatParameter;
+use Chevere\Components\Parameter\IntegerParameter;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
@@ -26,6 +30,7 @@ use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use Chevere\Interfaces\Type\TypeInterface;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use TypeError;
 
 final class ArgumentsTest extends TestCase
 {
@@ -164,6 +169,7 @@ final class ArgumentsTest extends TestCase
         if (is_resource($resource) === false) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
+        $getters = ['boolean', 'string', 'integer', 'float', 'array'];
         foreach ([
             TypeInterface::BOOLEAN => true,
             TypeInterface::INTEGER => 1,
@@ -184,8 +190,92 @@ final class ArgumentsTest extends TestCase
                 [$name => $value]
             );
             $this->assertSame($value, $arguments->get($name));
+            if (in_array($type, $getters)) {
+                $getter = 'get' . ucfirst($type);
+                $this->assertSame($value, $arguments->{$getter}($name));
+            }
         }
         /** @var resource $resource */
         fclose($resource);
+    }
+
+    public function testGetBoolean(): void
+    {
+        $name = 'test';
+        $var = true;
+        $arguments = new Arguments(
+            (new Parameters)
+                ->withAddedRequired(
+                    new BooleanParameter($name)
+                ),
+            [$name => $var]
+        );
+        $this->assertSame($var, $arguments->getBoolean($name));
+        $this->expectException(TypeError::class);
+        $arguments->getString($name);
+    }
+
+    public function testGetString(): void
+    {
+        $name = 'test';
+        $var = 'string';
+        $arguments = new Arguments(
+            (new Parameters)
+                ->withAddedRequired(
+                    new StringParameter($name)
+                ),
+            [$name => $var]
+        );
+        $this->assertSame($var, $arguments->getString($name));
+        $this->expectException(TypeError::class);
+        $arguments->getBoolean($name);
+    }
+
+    public function testGetInteger(): void
+    {
+        $name = 'test';
+        $var = 1234;
+        $arguments = new Arguments(
+            (new Parameters)
+                ->withAddedRequired(
+                    new IntegerParameter($name)
+                ),
+            [$name => $var]
+        );
+        $this->assertSame($var, $arguments->getInteger($name));
+        $this->expectException(TypeError::class);
+        $arguments->getArray($name);
+    }
+
+    public function testGetFloat(): void
+    {
+        $name = 'test';
+        $var = 12.34;
+        $arguments = new Arguments(
+            (new Parameters)
+                ->withAddedRequired(
+                    new FloatParameter($name)
+                ),
+            [$name => $var]
+        );
+        $this->assertSame($var, $arguments->getFloat($name));
+        $this->expectException(TypeError::class);
+        $arguments->getArray($name);
+    }
+
+    public function testGetArray(): void
+    {
+        $name = 'test';
+        $var = [1, 2, '3'];
+        $arguments = new Arguments(
+            (new Parameters)
+                ->withAddedRequired(
+                    new ArrayParameter($name)
+                ),
+            [$name => $var]
+        );
+        $this->assertSame($var, $arguments->getArray($name));
+        $this->expectException(TypeError::class);
+        $arguments->getInteger($name);
     }
 }
