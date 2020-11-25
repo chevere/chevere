@@ -29,7 +29,7 @@ final class ArrayParameter implements ArrayParameterInterface
         $this->name = $name;
         $this->assertName();
         $this->type = new Type(Type::ARRAY);
-        $this->attributes = new Set();
+        $this->attributes = new Set;
     }
 
     public function withDefault(array $default): ArrayParameterInterface

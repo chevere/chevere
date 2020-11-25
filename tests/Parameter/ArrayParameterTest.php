@@ -22,7 +22,7 @@ final class ArrayParameterTest extends TestCase
     {
         $parameter = new ArrayParameter('name');
         $this->assertSame([], $parameter->default());
-        $default = ['test'];
+        $default = ['test', 1];
         $parameter = $parameter->withDefault($default);
         $this->assertSame($default, $parameter->default());
     }
