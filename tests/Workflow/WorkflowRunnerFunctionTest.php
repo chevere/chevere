@@ -85,9 +85,13 @@ class WorkflowRunnerFunctionTestStep1 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([
-            'response-1' => $arguments->get('foo'),
-        ]);
+        return new ResponseSuccess(
+            (new Parameters)
+                ->withAddedRequired(new StringParameter('response-1')),
+            [
+                'response-1' => $arguments->get('foo'),
+            ]
+        );
     }
 }
 
@@ -102,8 +106,12 @@ class WorkflowRunnerFunctionTestStep2 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([
-            'response-2' => $arguments->get('foo') . ' ^ ' . $arguments->get('bar'),
-        ]);
+        return new ResponseSuccess(
+            (new Parameters)
+                ->withAddedRequired(new StringParameter('response-2')),
+            [
+                'response-2' => $arguments->get('foo') . ' ^ ' . $arguments->get('bar'),
+            ]
+        );
     }
 }

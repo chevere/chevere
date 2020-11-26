@@ -15,6 +15,7 @@ namespace Chevere\Tests\Action;
 
 use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Arguments;
+use Chevere\Components\Parameter\IntegerParameter;
 use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
@@ -66,9 +67,13 @@ final class ActionTestAction extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        $response = new ResponseSuccess([
-            'id' => 123,
-        ]);
+        $response = new ResponseSuccess(
+            (new Parameters)
+                ->withAddedRequired(new IntegerParameter('id')),
+            [
+                'id' => 123,
+            ]
+        );
         $this->assertResponseDataParameters($response->data());
 
         return $response;

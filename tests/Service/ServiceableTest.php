@@ -73,7 +73,7 @@ class ServiceableTestController extends Controller implements ServiceableInterfa
             'suelta el dominio tonto ql'
         );
 
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }
 

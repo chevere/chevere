@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Workflow;
 
 use Chevere\Components\Action\Action;
-use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseSuccess;
@@ -72,7 +71,14 @@ final class WorkflowRunTest extends TestCase
         ];
         $responseData = ['response-0' => 'value'];
         $workflowRun = (new WorkflowRun($workflow, $arguments))
-            ->withAdded('step-0', new ResponseSuccess($responseData));
+            ->withAdded(
+                'step-0',
+                new ResponseSuccess(
+                    (new Parameters)
+                        ->withAddedRequired(new StringParameter('response-0')),
+                    $responseData
+                )
+            );
         $this->assertTrue($workflow->hasVar('${step-0:response-0}'));
         $this->assertTrue($workflowRun->has('step-0'));
         $this->assertSame($responseData, $workflowRun->get('step-0')->data());
@@ -89,7 +95,7 @@ final class WorkflowRunTest extends TestCase
         $arguments = ['foo' => 'hola'];
         $this->expectException(OutOfBoundsException::class);
         (new WorkflowRun($workflow, $arguments))
-            ->withAdded('not-found', new ResponseSuccess([]));
+            ->withAdded('not-found', new ResponseSuccess(new Parameters, []));
     }
 
     public function testWithAddedMissingArguments(): void
@@ -106,7 +112,7 @@ final class WorkflowRunTest extends TestCase
             );
         $this->expectException(ArgumentCountException::class);
         (new WorkflowRun($workflow, []))
-            ->withAdded('step-0', new ResponseSuccess([]));
+            ->withAdded('step-0', new ResponseSuccess(new Parameters, []));
     }
 }
 
@@ -114,7 +120,7 @@ class WorkflowRunTestStep0 extends Action
 {
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }
 
@@ -128,7 +134,7 @@ class WorkflowRunTestStep1 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }
 
@@ -143,6 +149,6 @@ class WorkflowRunTestStep2 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }

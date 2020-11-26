@@ -77,9 +77,13 @@ final class ControllerRunnerTestController extends Controller
 
     public function run(ArgumentsInterface $args): ResponseInterface
     {
-        return new ResponseSuccess([
-            'user' => $args->get('name')
-        ]);
+        return new ResponseSuccess(
+            (new Parameters)
+                ->withAddedRequired(new StringParameter('user')),
+            [
+                'user' => $args->get('name')
+            ]
+        );
     }
 }
 

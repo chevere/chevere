@@ -64,7 +64,7 @@ class TaskTestStep0 extends Action
 {
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }
 
@@ -79,6 +79,6 @@ class TaskTestStep1 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }

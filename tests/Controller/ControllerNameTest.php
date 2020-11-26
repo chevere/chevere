@@ -15,6 +15,7 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerName;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Exceptions\Controller\ControllerInterfaceException;
 use Chevere\Exceptions\Controller\ControllerNameException;
@@ -65,27 +66,8 @@ final class ControllerNameTest extends TestCase
 
 final class ControllerNameTestController extends Controller
 {
-    // use HookableTrait;
-
-    // public function runMiddlewares(ControllerArgumentsInterface $arguments)
-    // {
-    //     $middleware = (new UserMiddleware($arguments->get('id')))
-    //         ->assertValidId()
-    //         ->assertExists()
-    //         ->assertIsEnabled()
-    //         ->assertNotOverQuota('upload.quota')
-    //         ->assertHasAccessToService('upload.service');
-    //     $this->hook()
-    // }
-
-    // public function getMiddlewares(): array
-    // {
-    // }
-
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        // $user = (new UserMiddleware($arguments->get('id')))->get();
-
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }

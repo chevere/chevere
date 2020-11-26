@@ -140,7 +140,7 @@ final class RouteTestController extends Controller
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }
 
@@ -148,7 +148,7 @@ final class RouteTestControllerNoParams extends Controller
 {
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }
 
@@ -165,6 +165,6 @@ final class RouteTestControllerRegexConflict extends Controller
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }

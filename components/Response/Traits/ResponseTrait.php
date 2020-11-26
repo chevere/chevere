@@ -13,18 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Response\Traits;
 
+use Chevere\Components\Parameter\Arguments;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Ramsey\Uuid\Uuid;
 
 trait ResponseTrait
 {
+    private ArgumentsInterface $arguments;
+
     private string $uuid;
 
     private string $token;
 
     private array $data;
 
-    public function __construct(array $data)
+    public function __construct(ParametersInterface $parameters, array $data)
     {
+        $this->arguments = new Arguments($parameters, $data);
         $this->uuid = Uuid::uuid4()->toString();
         $this->token = bin2hex(random_bytes(128));
         $this->data = $data;

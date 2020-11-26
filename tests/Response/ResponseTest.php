@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Response;
 
+use Chevere\Components\Parameter\IntegerParameter;
+use Chevere\Components\Parameter\Parameters;
+use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseFailure;
-use Chevere\Components\Response\ResponseProvisional;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Workflow;
-use Chevere\Components\Workflow\WorkflowMessage;
-use Error;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Rfc4122\Validator;
 use function Chevere\Components\Workflow\getWorkflowMessage;
@@ -28,7 +28,11 @@ final class ResponseTest extends TestCase
     public function testConstructResponseSuccess(): void
     {
         $data = ['data'];
-        $response = new ResponseSuccess($data);
+        $response = new ResponseSuccess(
+            (new Parameters)
+                ->withAddedRequired(new StringParameter('0')),
+            $data
+        );
         $this->assertSame($data, $response->data());
         $this->assertTrue(
             (new Validator())->validate($response->uuid()),
@@ -39,7 +43,7 @@ final class ResponseTest extends TestCase
 
     public function testResponseSuccessWithData(): void
     {
-        $response = new ResponseSuccess([]);
+        $response = new ResponseSuccess(new Parameters, []);
         $this->assertSame([], $response->data());
         $data = ['data'];
         $response = $response->withData($data);
@@ -48,39 +52,25 @@ final class ResponseTest extends TestCase
 
     public function testConstructResponseFailure(): void
     {
-        $data = ['data'];
-        $response = new ResponseFailure($data);
+        $data = ['0' => 'data'];
+        $response = new ResponseFailure(
+            (new Parameters)
+                ->withAddedRequired(new StringParameter('0')),
+            $data
+        );
         $this->assertSame($data, $response->data());
     }
 
     public function testResponseFailureWithData(): void
     {
-        $response = new ResponseFailure([]);
+        $response = new ResponseFailure(new Parameters, []);
         $this->assertSame([], $response->data());
         $data = ['data'];
         $response = $response->withData($data);
         $this->assertSame($data, $response->data());
     }
 
-    public function testConstructResponseProvisional(): void
-    {
-        $data = ['data'];
-        $response = new ResponseProvisional($data);
-        $this->assertSame($data, $response->data());
-    }
-
-    public function testResponseProvisionalWithData(): void
-    {
-        $response = new ResponseProvisional([]);
-        $this->assertSame([], $response->data());
-        $data = ['data'];
-        $response = $response->withData($data);
-        $this->assertSame($data, $response->data());
-        $this->expectException(Error::class);
-        $response->workflowMessage();
-    }
-
-    public function testResponseProvisionalWithWorkflowMessage(): void
+    public function testResponseSuccessWithWorkflowMessage(): void
     {
         $data = [
             'delay' => 123,
@@ -90,7 +80,7 @@ final class ResponseTest extends TestCase
             ->withDelay($data['delay'])
             ->withExpiration($data['expiration'])
             ->withPriority(10);
-        $response = (new ResponseProvisional([]))
+        $response = (new ResponseSuccess(new Parameters, []))
             ->withWorkflowMessage($workflowMessage);
         $this->assertSame($workflowMessage, $response->workflowMessage());
         $this->assertSame($data, $response->data());

@@ -40,6 +40,6 @@ final class TestController extends Controller
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }

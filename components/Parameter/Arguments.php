@@ -40,8 +40,8 @@ final class Arguments implements ArgumentsInterface
         $this->missing = [];
         $this->assertNotMissing();
         foreach ($this->arguments as $name => $value) {
-            $this->assertParameter($name);
-            $this->assertType($name, $value);
+            $this->assertParameter((string) $name);
+            $this->assertType((string) $name, $value);
         }
     }
 

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Routing\_resources\controllers;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
@@ -36,6 +35,6 @@ final class GetArticleController extends Controller
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return new ResponseSuccess([]);
+        return new ResponseSuccess(new Parameters, []);
     }
 }
