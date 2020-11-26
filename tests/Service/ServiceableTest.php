@@ -15,11 +15,9 @@ namespace Chevere\Tests\Service;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Service\ServiceProviders;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Service\ServiceableInterface;
 use Chevere\Interfaces\Service\ServiceInterface;
 use Chevere\Interfaces\Service\ServiceProvidersInterface;
@@ -66,14 +64,14 @@ class ServiceableTestController extends Controller implements ServiceableInterfa
         return new Parameters;
     }
 
-    public function run(ArgumentsInterface $controllerArguments): ResponseInterface
+    public function run(array $arguments): ResponseSuccessInterface
     {
         $this->mailer->send(
             'guy@chevere.com',
             'suelta el dominio tonto ql'
         );
 
-        return new ResponseSuccess(new Parameters, []);
+        return $this->getResponseSuccess([]);
     }
 }
 

@@ -15,15 +15,12 @@ namespace Chevere\Tests\Route;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
@@ -86,8 +83,8 @@ final class RouteEndpointTestController extends Controller
             );
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function run(array $arguments): ResponseSuccessInterface
     {
-        return new ResponseSuccess(new Parameters, []);
+        return $this->getResponseSuccess([]);
     }
 }

@@ -17,13 +17,11 @@ use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\IntegerParameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Task;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
@@ -62,9 +60,9 @@ final class TaskTest extends TestCase
 
 class TaskTestStep0 extends Action
 {
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function run(array $arguments): ResponseSuccessInterface
     {
-        return new ResponseSuccess(new Parameters, []);
+        return $this->getResponseSuccess([]);
     }
 }
 
@@ -77,8 +75,8 @@ class TaskTestStep1 extends Action
             ->withAddedRequired(new IntegerParameter('bar'));
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function run(array $arguments): ResponseSuccessInterface
     {
-        return new ResponseSuccess(new Parameters, []);
+        return $this->getResponseSuccess([]);
     }
 }

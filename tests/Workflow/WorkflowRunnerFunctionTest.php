@@ -14,16 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Tests\Workflow;
 
 use Chevere\Components\Action\Action;
-use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Workflow\workflowRunner;
 
@@ -53,9 +50,7 @@ final class WorkflowRunnerFunctionTest extends TestCase
         $action1 = new WorkflowRunnerFunctionTestStep1;
         $this->assertEquals(
             $action1
-                ->run(
-                    new Arguments($action1->getParameters(), ['foo' => $foo])
-                )
+                ->run(['foo' => $foo])
                 ->data(),
             $workflowRun->get('step-1')->data()
         );
@@ -64,10 +59,10 @@ final class WorkflowRunnerFunctionTest extends TestCase
         $this->assertEquals(
             $action2
                 ->run(
-                    new Arguments($action2->getParameters(), [
+                    [
                         'foo' => $foo,
                         'bar' => $bar
-                    ])
+                    ]
                 )
                 ->data(),
             $workflowRun->get('step-2')->data()
@@ -83,13 +78,19 @@ class WorkflowRunnerFunctionTestStep1 extends Action
             ->withAddedRequired(new StringParameter('foo'));
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function getResponseDataParameters(): ParametersInterface
     {
-        return new ResponseSuccess(
-            (new Parameters)
-                ->withAddedRequired(new StringParameter('response-1')),
+        return (new Parameters)
+            ->withAddedRequired(new StringParameter('response-1'));
+    }
+
+    public function run(array $arguments): ResponseSuccessInterface
+    {
+        $arguments = $this->getArguments($arguments);
+
+        return $this->getResponseSuccess(
             [
-                'response-1' => $arguments->get('foo'),
+                'response-1' => $arguments->getString('foo'),
             ]
         );
     }
@@ -104,13 +105,19 @@ class WorkflowRunnerFunctionTestStep2 extends Action
             ->withAddedRequired(new StringParameter('bar'));
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function getResponseDataParameters(): ParametersInterface
     {
-        return new ResponseSuccess(
-            (new Parameters)
-                ->withAddedRequired(new StringParameter('response-2')),
+        return (new Parameters)
+            ->withAddedRequired(new StringParameter('response-2'));
+    }
+
+    public function run(array $arguments): ResponseSuccessInterface
+    {
+        $arguments = $this->getArguments($arguments);
+
+        return $this->getResponseSuccess(
             [
-                'response-2' => $arguments->get('foo') . ' ^ ' . $arguments->get('bar'),
+                'response-2' => $arguments->getString('foo') . ' ^ ' . $arguments->getString('bar'),
             ]
         );
     }

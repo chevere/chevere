@@ -15,18 +15,13 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerRunner;
-use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Response\ResponseSuccess;
-use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Controller\ControllerExecutedInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -34,9 +29,7 @@ final class ControllerRunnerTest extends TestCase
 {
     private function getFailedRan(ControllerInterface $controller): ControllerExecutedInterface
     {
-        $arguments = new Arguments($controller->parameters(), []);
-
-        return (new ControllerRunner($controller))->execute($arguments);
+        return (new ControllerRunner($controller))->execute([]);
     }
 
     public function testControllerRunFailure(): void
@@ -54,13 +47,9 @@ final class ControllerRunnerTest extends TestCase
         $value = 'PeterPoison';
         $controller = new ControllerRunnerTestController;
         $arguments = [$parameter => $value];
-        $arguments = new Arguments($controller->parameters(), $arguments);
         $execute = (new ControllerRunner($controller))->execute($arguments);
         $this->assertSame(0, $execute->code());
         $this->assertSame(['user' => $value], $execute->data());
-        $this->expectException(LogicException::class);
-        (new ControllerRunner($controller))
-            ->execute(new Arguments(new Parameters, []));
     }
 }
 
@@ -75,21 +64,25 @@ final class ControllerRunnerTestController extends Controller
             );
     }
 
-    public function run(ArgumentsInterface $args): ResponseInterface
+    public function getResponseDataParameters(): ParametersInterface
     {
-        return new ResponseSuccess(
-            (new Parameters)
-                ->withAddedRequired(new StringParameter('user')),
-            [
-                'user' => $args->get('name')
-            ]
-        );
+        return (new Parameters)
+            ->withAddedRequired(new StringParameter('user'));
+    }
+
+    public function run(array $arguments): ResponseSuccessInterface
+    {
+        $arguments = $this->getArguments($arguments);
+
+        return $this->getResponseSuccess([
+            'user' => $arguments->getString('name')
+        ]);
     }
 }
 
 final class ControllerRunnerTestControllerRunFail extends Controller
 {
-    public function run(ArgumentsInterface $args): ResponseInterface
+    public function run(array $arguments): ResponseSuccessInterface
     {
         throw new Exception('Something went wrong');
     }

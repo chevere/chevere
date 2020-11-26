@@ -14,15 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\Routing\_resources\controllers;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Response\ResponseSuccess;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
 final class GetArticlesController extends Controller
 {
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function run(array $arguments): ResponseSuccessInterface
     {
-        return new ResponseSuccess(new Parameters, []);
+        return $this->getResponseSuccess([]);
     }
 }

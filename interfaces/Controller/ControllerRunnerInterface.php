@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-
 /**
  * Describes the component in charge of running the controller.
  */
@@ -25,5 +23,5 @@ interface ControllerRunnerInterface
     /**
      * Executes the controller with the given `$arguments`.
      */
-    public function execute(ArgumentsInterface $arguments): ControllerExecutedInterface;
+    public function execute(array $arguments): ControllerExecutedInterface;
 }

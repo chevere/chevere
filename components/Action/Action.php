@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Action;
 
 use Chevere\Components\Description\Traits\DescriptionTrait;
-use Chevere\Components\Message\Message;
+use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameters;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\TypeException;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Interfaces\Action\ActionInterface;
-use Chevere\Interfaces\Parameter\ParameterInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
 abstract class Action implements ActionInterface
 {
@@ -41,6 +41,8 @@ abstract class Action implements ActionInterface
     {
         return new Parameters;
     }
+
+    abstract public function run(array $arguments): ResponseSuccessInterface;
 
     final public function __construct()
     {
@@ -64,26 +66,13 @@ abstract class Action implements ActionInterface
         return $this->responseDataParameters;
     }
 
-    final public function assertResponseDataParameters(array $arguments): void
+    final public function getArguments(array $arguments): ArgumentsInterface
     {
-        /**
-         * @var string $name
-         * @var ParameterInterface $parameter
-         */
-        foreach ($this->responseDataParameters->getGenerator() as $name => $parameter) {
-            if (!isset($arguments[$name])) {
-                throw new OutOfBoundsException(
-                    (new Message("Key %key% doesn't exists"))
-                        ->code('%key%', $name)
-                );
-            }
-            if (!$parameter->type()->validate($arguments[$name])) {
-                throw new TypeException(
-                    (new Message("Key %key% value doesn't validate the expected type %type%"))
-                    ->code('%key%', $name)
-                    ->code('%type%', $parameter->type()->typeHinting())
-                );
-            }
-        }
+        return new Arguments($this->parameters, $arguments);
+    }
+
+    final public function getResponseSuccess(array $data): ResponseSuccessInterface
+    {
+        return new ResponseSuccess($this->responseDataParameters, $data);
     }
 }

@@ -14,13 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Workflow;
 
 use Chevere\Components\Action\Action;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Components\Workflow\Steps;
 use Chevere\Components\Workflow\Task;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use PHPUnit\Framework\TestCase;
 
 final class StepsTest extends TestCase
@@ -51,8 +48,8 @@ final class StepsTest extends TestCase
 
 class TestsActionStepsTests extends Action
 {
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function run(array $arguments): ResponseSuccessInterface
     {
-        return new ResponseSuccess(new Parameters, []);
+        return $this->getResponseSuccess([]);
     }
 }

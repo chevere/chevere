@@ -15,13 +15,10 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Exceptions\Controller\ControllerInterfaceException;
 use Chevere\Exceptions\Controller\ControllerNameException;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerNameTest extends TestCase
@@ -66,8 +63,8 @@ final class ControllerNameTest extends TestCase
 
 final class ControllerNameTestController extends Controller
 {
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function run(array $arguments): ResponseSuccessInterface
     {
-        return new ResponseSuccess(new Parameters, []);
+        return $this->getResponseSuccess([]);
     }
 }

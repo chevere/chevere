@@ -107,7 +107,7 @@ final class Parameters implements ParametersInterface
             return $return;
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
-                (new Message('Name %name% not found'))
+                (new Message('Parameter %name% not found'))
                     ->code('%name%', $name)
             );
         }

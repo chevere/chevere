@@ -78,8 +78,7 @@ function workflowRunner(WorkflowRunInterface $workflowRun): WorkflowRunInterface
                 $arguments[$name] = $workflowRun->arguments()->get($reference[0]);
             }
         }
-        $actionArguments = new Arguments($action->getParameters(), $arguments);
-        $response = $action->run($actionArguments);
+        $response = $action->run($arguments);
         // @codeCoverageIgnoreStart
         if ($response instanceof ResponseFailureInterface) {
             throw new LogicException(
