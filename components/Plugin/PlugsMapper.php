@@ -14,19 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Plugin\PlugsMap;
+use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsMapInterface;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use Roave\BetterReflection\BetterReflection;
-use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflector\ClassReflector;
-use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
+use ReflectionClass;
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
+use function Safe\file_get_contents;
 
 final class PlugsMapper
 {
@@ -51,15 +48,7 @@ final class PlugsMapper
         $this->recursiveIterator->rewind();
         while ($this->recursiveIterator->valid()) {
             $pathName = $this->recursiveIterator->current()->getPathName();
-            $astLocator = (new BetterReflection)->astLocator();
-            $reflector = new ClassReflector(
-                new AggregateSourceLocator([
-                    new AutoloadSourceLocator($astLocator),
-                    new SingleFileSourceLocator($pathName, $astLocator),
-                ])
-            );
-            $classes = $reflector->getAllClasses();
-            $this->classesIterator($classes);
+            $this->classAnalyze($pathName);
             $this->recursiveIterator->next();
         }
     }
@@ -69,24 +58,21 @@ final class PlugsMapper
         return $this->plugsMap;
     }
 
-    /**
-     * @param ReflectionClass[]
-     */
-    private function classesIterator(array $classes): void
+    private function classAnalyze(string $filename): void
     {
-        /**
-         * @var ReflectionClass $class
-         */
-        foreach ($classes as $class) {
-            if (!$class->isInterface() && $class->implementsInterface(PlugInterface::class)) {
-                $plugName = $class->getName();
-                /**
-                 * @var PlugInterface $plug
-                 */
-                $plug = new $plugName;
-                $this->plugsMap = $this->plugsMap
-                    ->withAdded($plug);
-            }
+        $regex = new Regex('/namespace (.*);[\S\s]* class (\S*) .*/');
+        $matches = $regex->match(file_get_contents($filename));
+        $namespace = $matches[1];
+        $className = $matches[2];
+        $reflection = new ReflectionClass("$namespace\\$className");
+        if (!$reflection->isInterface() && $reflection->implementsInterface(PlugInterface::class)) {
+            $plugName = $reflection->getName();
+            /**
+             * @var PlugInterface $plug
+             */
+            $plug = new $plugName;
+            $this->plugsMap = $this->plugsMap
+                ->withAdded($plug);
         }
     }
 }

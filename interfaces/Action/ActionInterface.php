@@ -57,7 +57,7 @@ interface ActionInterface extends GetDescriptionInterface
      * @throws OutOfBoundsException
      * @throws TypeException
      */
-    public function assertResponseDataParameters(array $namedArguments): void;
+    public function assertResponseDataParameters(array $arguments): void;
 
     /**
      * Method called when running the action. This method MUST not alter the state of the instance.

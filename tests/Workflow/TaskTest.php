@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Workflow;
 
 use Chevere\Components\Action\Action;
-use Chevere\Components\Parameter\Parameter;
+use Chevere\Components\Parameter\IntegerParameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseSuccess;
@@ -54,7 +54,7 @@ final class TaskTest extends TestCase
         $task = new Task($action);
         $this->assertSame($action, $task->action());
         $this->assertSame([], $task->arguments());
-        $arguments = ['foo' => '1'];
+        $arguments = ['foo' => '1', 'bar' => 123];
         $task = $task->withArguments($arguments);
         $this->assertSame($arguments, $task->arguments());
     }
@@ -73,7 +73,8 @@ class TaskTestStep1 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new StringParameter('foo'));
+            ->withAddedRequired(new StringParameter('foo'))
+            ->withAddedRequired(new IntegerParameter('bar'));
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

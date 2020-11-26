@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Workflow;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
 
 /**
  * Describes the component in charge of defining a task (a unit of job).
@@ -27,7 +26,6 @@ interface TaskInterface
     public function __construct(string $action);
 
     /**
-     * TODO: PHP 8
      * Return an instance with the specified named `$arguments`.
      *
      * This method MUST retain the state of the current instance, and return

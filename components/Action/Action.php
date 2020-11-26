@@ -64,20 +64,20 @@ abstract class Action implements ActionInterface
         return $this->responseDataParameters;
     }
 
-    final public function assertResponseDataParameters(array $namedArguments): void
+    final public function assertResponseDataParameters(array $arguments): void
     {
         /**
          * @var string $name
          * @var ParameterInterface $parameter
          */
         foreach ($this->responseDataParameters->getGenerator() as $name => $parameter) {
-            if (!isset($namedArguments[$name])) {
+            if (!isset($arguments[$name])) {
                 throw new OutOfBoundsException(
                     (new Message("Key %key% doesn't exists"))
                         ->code('%key%', $name)
                 );
             }
-            if (!$parameter->type()->validate($namedArguments[$name])) {
+            if (!$parameter->type()->validate($arguments[$name])) {
                 throw new TypeException(
                     (new Message("Key %key% value doesn't validate the expected type %type%"))
                     ->code('%key%', $name)
