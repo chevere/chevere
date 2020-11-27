@@ -24,6 +24,8 @@ use function Chevere\Components\Type\varType;
 
 trait ServiceDependantTrait
 {
+    private ClassMapInterface $dependencies;
+
     public function getDependencies(): ClassMapInterface
     {
         return new ClassMap;
@@ -33,8 +35,8 @@ trait ServiceDependantTrait
     {
         $missing = [];
         $new = clone $this;
-        $dependencies = $new->getDependencies();
-        foreach ($dependencies->getGenerator() as $className => $key) {
+        $new->dependencies = $new->getDependencies();
+        foreach ($new->dependencies->getGenerator() as $className => $key) {
             $value = $namedArguments[$key] ?? null;
             if (!isset($value)) {
                 $missing[] = $key;
@@ -58,13 +60,9 @@ trait ServiceDependantTrait
 
     final public function assertDependencies(): void
     {
-        $dependencies = $this->getDependencies();
+        $dependencies = $this->dependencies ?? $this->getDependencies();
         $missing = [];
-        /**
-         * @var string $type
-         * @var string $variable
-         */
-        foreach ($dependencies->getGenerator() as $type => $variable) {
+        foreach ($dependencies->keys() as $variable) {
             if (!isset($this->{$variable})) {
                 $missing[] = $variable;
             }

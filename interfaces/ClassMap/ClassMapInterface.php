@@ -62,6 +62,8 @@ interface ClassMapInterface extends MapInterface, ToArrayInterface
     public function getClass(string $key): string;
 
     /**
+     * Provides a generator with `className => key`
+     *
      * @return Generator<string, string>
      */
     public function getGenerator(): Generator;
