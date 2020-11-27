@@ -38,8 +38,7 @@ final class RoutableSpec implements RoutableSpecInterface
         $this->key = $routable->route()->name()->toString();
         $this->routeEndpointSpecs = new RouteEndpointSpecs;
         $specGroupRoute = $specGroupPath->getChild($this->key);
-        $this->jsonPath = $specGroupRoute
-            ->getChild('route.json')->toString();
+        $this->jsonPath = $specGroupRoute->getChild('route.json')->toString();
         $path = $routable->route()->path();
         $this->path = $path->toString();
         $this->regex = $path->regex()->toString();

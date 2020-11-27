@@ -47,17 +47,18 @@ final class ArgumentsTest extends TestCase
     public function testConstruct(): void
     {
         $args = [
-            'id' => '1',
+            'id' => 1,
             'name' => 'someValue',
         ];
         $parameters = (new Parameters)
             ->withAddedRequired(
-                new StringParameter('id')
+                new IntegerParameter('id')
             )
             ->withAddedRequired(
                 new StringParameter('name')
             );
         $arguments = new Arguments($parameters, $args);
+        $this->assertSame($parameters, $arguments->parameters());
         $this->assertSame($args, $arguments->toArray());
         foreach ($args as $name => $value) {
             $this->assertTrue($arguments->has($name));
