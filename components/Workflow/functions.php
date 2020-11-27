@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;

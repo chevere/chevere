@@ -21,26 +21,35 @@ use PHPUnit\Framework\TestCase;
 
 final class ClassMapTest extends TestCase
 {
-    public function testConstruct(): void
+    public function testConstructGet(): void
     {
         $test = 'test';
         $classMap = new ClassMap;
-        $this->assertSame([], $classMap->toArray());
         $this->assertCount(0, $classMap);
         $this->assertFalse($classMap->has($test));
         $this->expectException(ClassNotMappedException::class);
         $classMap->get($test);
     }
 
+    public function testConstructGetClass(): void
+    {
+        $key = 'test';
+        $classMap = new ClassMap;
+        $this->expectException(ClassNotMappedException::class);
+        $classMap->getClass($key);
+    }
+
     public function testWithPut(): void
     {
         $className = __CLASS__;
-        $mapping = 'self';
-        $classMap = (new ClassMap)->withPut($className, $mapping);
+        $key = 'self';
+        $classMap = (new ClassMap)->withPut($className, $key);
         $this->assertCount(1, $classMap);
         $this->assertTrue($classMap->has($className));
-        $this->assertSame([$className => $mapping], $classMap->toArray());
-        $this->assertSame($mapping, $classMap->get($className));
+        $this->assertTrue($classMap->hasKey($key));
+        $this->assertSame([$className => $key], $classMap->toArray());
+        $this->assertSame($key, $classMap->get($className));
+        $this->assertSame($className, $classMap->getClass($key));
     }
 
     public function testWithPutSameMapping(): void

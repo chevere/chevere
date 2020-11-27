@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Chevere\Tests\Service\Traits;
 
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Service\Traits\AssertDependenciesTrait;
+use Chevere\Components\Service\Traits\ServiceDependantTrait;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use PHPUnit\Framework\TestCase;
 
-final class AssertDependenciesTraitTest extends TestCase
+final class ServiceDependantTraitTest extends TestCase
 {
     public function testConstructEmpty(): void
     {
         $dependable = new class
         {
-            use AssertDependenciesTrait;
+            use ServiceDependantTrait;
 
             public function getDependencies(): ClassMapInterface
             {
@@ -40,7 +40,7 @@ final class AssertDependenciesTraitTest extends TestCase
     {
         $dependable = new class
         {
-            use AssertDependenciesTrait;
+            use ServiceDependantTrait;
 
             public function getDependencies(): ClassMap
             {
