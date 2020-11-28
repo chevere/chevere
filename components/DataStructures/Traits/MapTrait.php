@@ -28,7 +28,7 @@ trait MapTrait
 
     public function __clone()
     {
-        $this->map = deep_copy($this->map);
+        $this->map = new Map($this->map->toArray());
     }
 
     public function keys(): array

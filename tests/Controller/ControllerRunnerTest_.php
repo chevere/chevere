@@ -18,6 +18,7 @@ use Chevere\Components\Controller\ControllerRunner;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Interfaces\Controller\ControllerExecutedInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
@@ -72,10 +73,11 @@ final class ControllerRunnerTestController extends Controller
 
     public function run(array $arguments): ResponseSuccessInterface
     {
+        return new ResponseSuccess(new Parameters, []);
         $arguments = $this->getArguments($arguments);
 
         return $this->getResponseSuccess([
-            'user' => $arguments->getString('name')
+            'user' => 'eee'
         ]);
     }
 }

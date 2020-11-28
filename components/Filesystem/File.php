@@ -28,7 +28,10 @@ use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Throwable;
+
+use function Safe\file_get_contents;
 use function Safe\filesize;
+use function Safe\unlink;
 
 final class File implements FileInterface
 {
@@ -83,7 +86,6 @@ final class File implements FileInterface
     }
 
     /**
-     * @codeCoverageIgnoreStart
      * @throws FileNotExistsException
      * @throws FileUnableToGetException
      */
@@ -116,8 +118,7 @@ final class File implements FileInterface
             unlink($this->path->absolute());
         } catch (Throwable $e) {
             throw new FileUnableToRemoveException(
-                (new Message('Unable to remove file %path%'))
-                    ->code('%path%', $this->path->absolute())
+                new Message($e->getMessage())
             );
         }
         // @codeCoverageIgnoreEnd

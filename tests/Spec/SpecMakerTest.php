@@ -13,12 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec;
 
-use Chevere\Components\Controller\Controller;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
@@ -29,8 +25,8 @@ use Chevere\Components\Spec\SpecMaker;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Tests\Spec\_resources\src\SpecMakerTestGetController;
+use Chevere\Tests\Spec\_resources\src\SpecMakerTestPutController;
 use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
 
@@ -95,53 +91,5 @@ final class SpecMakerTest extends TestCase
             $route->name()->toString(),
             $getMethod->name()
         ));
-    }
-}
-
-class SpecMakerTestGetController extends Controller
-{
-    public function getParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(
-                (new StringParameter('id'))
-                    ->withRegex(new Regex('/^[0-9]+$/'))
-                    ->withDescription('The user integer id')
-            )
-            ->withAddedOptional(
-                (new StringParameter('name'))
-                    ->withRegex(new Regex('/^[\w]+$/'))
-                    ->withAddedAttribute('tryFiles')
-                    ->withAddedAttribute('tryInt')
-                    ->withDescription('The user name')
-            );
-    }
-
-    public function run(array $arguments): ResponseSuccessInterface
-    {
-        return $this->getResponseSuccess([]);
-    }
-}
-
-class SpecMakerTestPutController extends Controller
-{
-    public function getParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(
-                (new StringParameter('id'))
-                    ->withRegex(new Regex('/^[0-9]+$/'))
-                    ->withDescription('The user integer id')
-            )
-            ->withAddedRequired(
-                (new StringParameter('name'))
-                    ->withRegex(new Regex('/^[\w]+$/'))
-                    ->withDescription('The user name')
-            );
-    }
-
-    public function run(array $arguments): ResponseSuccessInterface
-    {
-        return $this->getResponseSuccess([]);
     }
 }

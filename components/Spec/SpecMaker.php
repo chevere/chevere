@@ -108,7 +108,7 @@ final class SpecMaker implements SpecMakerInterface
     {
         try {
             if (!$this->dir->exists()) {
-                $this->dir->create(0777);
+                $this->dir->create(0755);
             }
             $this->dir->assertExists();
             if (!$this->dir->path()->isWritable()) {
@@ -120,10 +120,7 @@ final class SpecMaker implements SpecMakerInterface
             $this->dir->removeContents();
         } catch (Throwable $e) {
             throw new FilesystemException(
-                (new Message('Unable to use %dirname%'))
-                    ->code('%dirname%', $this->dir->path()->absolute()),
-                0,
-                $e
+                new Message($e->getMessage())
             );
         }
     }

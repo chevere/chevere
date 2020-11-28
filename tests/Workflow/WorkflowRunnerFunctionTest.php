@@ -13,14 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Action\Action;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Tests\Workflow\_resources\src\WorkflowRunnerFunctionTestStep1;
+use Chevere\Tests\Workflow\_resources\src\WorkflowRunnerFunctionTestStep2;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Workflow\workflowRunner;
 
@@ -66,59 +63,6 @@ final class WorkflowRunnerFunctionTest extends TestCase
                 )
                 ->data(),
             $workflowRun->get('step-2')->data()
-        );
-    }
-}
-
-class WorkflowRunnerFunctionTestStep1 extends Action
-{
-    public function getParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(new StringParameter('foo'));
-    }
-
-    public function getResponseDataParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(new StringParameter('response-1'));
-    }
-
-    public function run(array $arguments): ResponseSuccessInterface
-    {
-        $arguments = $this->getArguments($arguments);
-
-        return $this->getResponseSuccess(
-            [
-                'response-1' => $arguments->getString('foo'),
-            ]
-        );
-    }
-}
-
-class WorkflowRunnerFunctionTestStep2 extends Action
-{
-    public function getParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(new StringParameter('foo'))
-            ->withAddedRequired(new StringParameter('bar'));
-    }
-
-    public function getResponseDataParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(new StringParameter('response-2'));
-    }
-
-    public function run(array $arguments): ResponseSuccessInterface
-    {
-        $arguments = $this->getArguments($arguments);
-
-        return $this->getResponseSuccess(
-            [
-                'response-2' => $arguments->getString('foo') . ' ^ ' . $arguments->getString('bar'),
-            ]
         );
     }
 }

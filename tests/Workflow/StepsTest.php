@@ -39,7 +39,7 @@ final class StepsTest extends TestCase
         $this->assertSame($keys, $steps->keys());
         foreach ($steps->getGenerator() as $stepName => $stepTask) {
             $this->assertContains($stepName, $keys);
-            $this->assertSame($task, $stepTask);
+            $this->assertEquals($task, $stepTask);
         }
         $this->expectException(OverflowException::class);
         $steps->withAdded($keys[1], $task);

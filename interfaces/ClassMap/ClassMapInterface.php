@@ -18,7 +18,6 @@ use Chevere\Exceptions\ClassMap\ClassNotMappedException;
 use Chevere\Exceptions\ClassMap\StringMappedException;
 use Chevere\Interfaces\DataStructures\MapInterface;
 use Chevere\Interfaces\To\ToArrayInterface;
-use Countable;
 use Generator;
 
 /**

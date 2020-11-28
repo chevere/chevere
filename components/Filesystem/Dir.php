@@ -156,9 +156,7 @@ final class Dir implements DirInterface
             rmdir($this->path->absolute());
         } catch (Throwable $e) {
             throw new DirUnableToRemoveException(
-                (new Message($e->getMessage())),
-                $e->getCode(),
-                $e
+                new Message($e->getMessage())
             );
         }
     }
