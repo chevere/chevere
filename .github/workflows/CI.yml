@@ -1,4 +1,4 @@
-scrutinizername: CI
+name: CI
 
 on: [push]
 
