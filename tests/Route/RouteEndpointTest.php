@@ -13,14 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Route;
 
-use Chevere\Components\Controller\Controller;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Tests\Route\_resources\src\RouteEndpointTestController;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
@@ -65,26 +60,5 @@ final class RouteEndpointTest extends TestCase
         $routeEndpoint = (new RouteEndpoint(new GetMethod, $controller))
             ->withoutParameter($key);
         $this->assertArrayNotHasKey($key, $routeEndpoint->parameters());
-    }
-}
-
-final class RouteEndpointTestController extends Controller
-{
-    public function getParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(
-                (new StringParameter('name'))
-                    ->withRegex(new Regex('/^[\w]+$/'))
-            )
-            ->withAddedRequired(
-                (new StringParameter('id'))
-                    ->withRegex(new Regex('/^[0-9]+$/'))
-            );
-    }
-
-    public function run(array $arguments): ResponseSuccessInterface
-    {
-        return $this->getResponseSuccess([]);
     }
 }

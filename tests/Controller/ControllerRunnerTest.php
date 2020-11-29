@@ -13,17 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
-use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerRunner;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Regex\Regex;
-use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Interfaces\Controller\ControllerExecutedInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
-use Exception;
+use Chevere\Tests\Controller\_resources\src\ControllerRunnerTestController;
+use Chevere\Tests\Controller\_resources\src\ControllerRunnerTestControllerRunFail;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerRunnerTest extends TestCase
@@ -45,47 +39,11 @@ final class ControllerRunnerTest extends TestCase
     public function testRunWithArguments(): void
     {
         $parameter = 'name';
-        $value = 'PeterPoison';
+        $value = 'PeoplesHernandez';
         $controller = new ControllerRunnerTestController;
         $arguments = [$parameter => $value];
         $execute = (new ControllerRunner($controller))->execute($arguments);
         $this->assertSame(0, $execute->code());
         $this->assertSame(['user' => $value], $execute->data());
-    }
-}
-
-final class ControllerRunnerTestController extends Controller
-{
-    public function getParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(
-                (new StringParameter('name'))
-                    ->withRegex(new Regex('/^\w+$/'))
-            );
-    }
-
-    public function getResponseDataParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(new StringParameter('user'));
-    }
-
-    public function run(array $arguments): ResponseSuccessInterface
-    {
-        return new ResponseSuccess(new Parameters, []);
-        $arguments = $this->getArguments($arguments);
-
-        return $this->getResponseSuccess([
-            'user' => 'eee'
-        ]);
-    }
-}
-
-final class ControllerRunnerTestControllerRunFail extends Controller
-{
-    public function run(array $arguments): ResponseSuccessInterface
-    {
-        throw new Exception('Something went wrong');
     }
 }

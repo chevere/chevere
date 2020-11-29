@@ -17,7 +17,6 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Filesystem\FileExistsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileUnableToCreateException;
@@ -28,8 +27,8 @@ use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Throwable;
-
 use function Safe\file_get_contents;
+use function Safe\file_put_contents;
 use function Safe\filesize;
 use function Safe\unlink;
 
@@ -93,30 +92,27 @@ final class File implements FileInterface
     {
         $this->assertExists();
         try {
-            $contents = file_get_contents($this->path->absolute());
-            if (false === $contents) {
-                throw new Exception(
-                    (new Message('Failure in function %functionName%'))
-                        ->code('%functionName%', 'file_get_contents')
-                );
-            }
-        } catch (Throwable $e) {
+            return file_get_contents($this->path->absolute());
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
             throw new FileUnableToGetException(
                 (new Message('Unable to read the contents of the file at %path%'))
                     ->code('%path%', $this->path->absolute())
             );
         }
-
-        return $contents;
+        // @codeCoverageIgnoreEnd
     }
 
     public function remove(): void
     {
         $this->assertExists();
-        // @codeCoverageIgnoreStart
+
         try {
             unlink($this->path->absolute());
-        } catch (Throwable $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
             throw new FileUnableToRemoveException(
                 new Message($e->getMessage())
             );
@@ -134,14 +130,16 @@ final class File implements FileInterface
             );
         }
         $this->createPath();
-        if (false === file_put_contents($this->path->absolute(), null)) {
-            // @codeCoverageIgnoreStart
-            throw new FileUnableToCreateException(
-                (new Message('Unable to create file %path% (file system error)'))
-                    ->code('%path%', $this->path->absolute())
-            );
-            // @codeCoverageIgnoreEnd
+        try {
+            file_put_contents($this->path->absolute(), '');
         }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
+            throw new FileUnableToCreateException(
+                new Message($e->getMessage())
+            );
+        }
+        // @codeCoverageIgnoreEnd
     }
 
     public function put(string $contents): void
