@@ -1,6 +1,6 @@
 {
     "interface": {
-        "description": "Create an interface",
+        "description": "Chevere interface",
         "prefix": "interface",
         "body": [
             "<?php",
@@ -16,7 +16,7 @@
         ]
     },
     "immutable-method": {
-        "description": "Create a immutable method",
+        "description": "Chevere immutable method",
         "prefix": "immutable-method",
         "body": [
             "private ${2|int,string,bool,array,object,resource|} \\$${3:argument};",
@@ -31,7 +31,7 @@
         ]
     },
     "component": {
-        "description": "Create a component",
+        "description": "Chevere component",
         "prefix": "component",
         "body": [
             "<?php",
@@ -44,7 +44,7 @@
         ]
     },
     "exception": {
-        "description": "Create an exception",
+        "description": "Chevere exception",
         "prefix": "exception",
         "body": [
             "<?php",

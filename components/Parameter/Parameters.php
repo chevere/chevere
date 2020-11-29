@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter;
 
+use Chevere\Components\DataStructures\Traits\MapToArrayTrait;
 use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -26,6 +27,7 @@ use function DeepCopy\deep_copy;
 final class Parameters implements ParametersInterface
 {
     use MapTrait;
+    use MapToArrayTrait;
 
     private Set $required;
 
@@ -37,13 +39,8 @@ final class Parameters implements ParametersInterface
 
     public function __clone()
     {
-        $this->map = deep_copy($this->map);
         $this->required = deep_copy($this->required);
-    }
-
-    public function toArray(): array
-    {
-        return $this->map->toArray();
+        $this->map = deep_copy($this->map);
     }
 
     public function withAddedRequired(ParameterInterface $parameter): ParametersInterface

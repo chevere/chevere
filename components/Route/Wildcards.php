@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\DataStructures\Traits\MapToArrayTrait;
 use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\WildcardsInterface;
@@ -23,6 +24,7 @@ use function DeepCopy\deep_copy;
 final class Wildcards implements WildcardsInterface
 {
     use MapTrait;
+    use MapToArrayTrait;
 
     /** @param Map [pos => RouteWildcard,]*/
     private Map $map;
@@ -42,11 +44,6 @@ final class Wildcards implements WildcardsInterface
     {
         $this->map = deep_copy($this->map);
         $this->index = deep_copy($this->index);
-    }
-
-    public function toArray(): array
-    {
-        return $this->map->toArray();
     }
 
     public function withAddedWildcard(RouteWildcardInterface $routeWildcard): WildcardsInterface

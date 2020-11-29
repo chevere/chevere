@@ -27,7 +27,9 @@ final class StrictStd extends Std
     {
         try {
             $datas = parent::parse($route);
-        } catch (Throwable $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
             throw new InvalidArgumentException(
                 (new Message('Unable to parse route %route%'))
                     ->code('%route%', $route),
@@ -35,6 +37,7 @@ final class StrictStd extends Std
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
         if (count($datas) > 1) {
             throw new InvalidArgumentException(
                 (new Message('Optional routing at route %route% is forbidden'))

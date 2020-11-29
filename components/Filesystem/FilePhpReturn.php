@@ -22,7 +22,6 @@ use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Filesystem\FileUnableToGetException;
-use Chevere\Exceptions\Filesystem\FileUnableToPutException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
@@ -30,6 +29,7 @@ use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 use Throwable;
+use function Chevere\Components\Type\varType;
 
 final class FilePhpReturn implements FilePhpReturnInterface
 {
@@ -95,9 +95,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     {
         $var = $this->var();
         if ($type->validate($var) === false) {
-            $typeReturn = is_object($var)
-                ? get_class($var)
-                : gettype($var);
+            $typeReturn = is_object($var) ? get_class($var) : varType($var);
             throw new FileReturnInvalidTypeException(
                 (new Message("File PHP return of type %return% at %path% doesn't match the expected type %expected%"))
                     ->code('%return%', $typeReturn)

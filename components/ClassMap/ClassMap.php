@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ClassMap;
 
+use Chevere\Components\DataStructures\Traits\MapToArrayTrait;
 use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\ClassMap\ClassNotExistsException;
@@ -25,6 +26,7 @@ use function DeepCopy\deep_copy;
 final class ClassMap implements ClassMapInterface
 {
     use MapTrait;
+    use MapToArrayTrait;
 
     /** @var Map [className => key] */
     private Map $map;
@@ -100,10 +102,5 @@ final class ClassMap implements ClassMapInterface
         }
 
         return $this->flip[$key];
-    }
-
-    public function toArray(): array
-    {
-        return $this->map->toArray();
     }
 }

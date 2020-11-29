@@ -89,7 +89,7 @@ final class VarExportable implements VarExportableInterface
     /**
      * @throws VarExportableIsResourceException
      */
-    private function breadcrumbIterable($var): void
+    private function breadcrumbIterable(iterable $var): void
     {
         $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
         $iterableKey = $this->breadcrumb->pos();

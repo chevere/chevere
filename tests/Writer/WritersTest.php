@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Writer;
 
-use Chevere\Interfaces\Writer\WriterInterface;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Components\Writer\Writers;
+use Chevere\Interfaces\Writer\WriterInterface;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
 
@@ -33,6 +33,15 @@ final class WritersTest extends TestCase
     }
 
     public function testWith(): void
+    {
+        $writer = new StreamWriter((new StreamFactory)->createStream(''));
+        $writers = (new Writers())->with($writer);
+        foreach (['out', 'error', 'debug', 'log']  as $name) {
+            $this->assertSame($writer, $writers->{$name}());
+        }
+    }
+
+    public function testWithX(): void
     {
         foreach (['out', 'error', 'debug', 'log']  as $name) {
             $writer = new StreamWriter((new StreamFactory)->createStream(''));

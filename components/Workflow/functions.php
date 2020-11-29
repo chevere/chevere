@@ -23,6 +23,9 @@ use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 function getWorkflowMessage(WorkflowInterface $workflow, array $arguments): WorkflowMessageInterface
 {
     return new WorkflowMessage(new WorkflowRun($workflow, $arguments));

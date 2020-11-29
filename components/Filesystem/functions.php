@@ -102,6 +102,10 @@ function filePhpReturnForPath(string $path): FilePhpReturn
     }
 }
 
+/**
+ * @codeCoverageIgnore
+ * @throws LogicException
+ */
 function varForFilePhpReturn(FilePhpReturnInterface $filePhpReturn, TypeInterface $type)
 {
     try {

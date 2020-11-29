@@ -13,16 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
-use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\IntegerParameter;
 use Chevere\Components\Parameter\Parameters;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Tests\Action\_resources\src\ActionTestAction;
+use Chevere\Tests\Action\_resources\src\ActionTestEmptyAction;
 use PHPUnit\Framework\TestCase;
 
 final class ActionTest extends TestCase
 {
+    public function testConstructEmpty(): void
+    {
+        $action = new ActionTestEmptyAction;
+        $parameters = new Parameters;
+        $this->assertEquals($parameters, $action->getParameters());
+        $this->assertEquals($parameters, $action->parameters());
+        $arguments = new Arguments($parameters, []);
+        $this->assertEquals($arguments, $action->getArguments([]));
+    }
+
     public function testConstruct(): void
     {
         $action = new ActionTestAction;
@@ -31,24 +39,5 @@ final class ActionTest extends TestCase
         $this->assertCount(1, $action->responseDataParameters());
         $arguments = new Arguments($action->parameters(), []);
         $action->run($arguments->toArray());
-    }
-}
-
-final class ActionTestAction extends Action
-{
-    public function getDescription(): string
-    {
-        return 'test';
-    }
-
-    public function getResponseDataParameters(): ParametersInterface
-    {
-        return (new Parameters)
-            ->withAddedRequired(new IntegerParameter('id'));
-    }
-
-    public function run(array $arguments): ResponseSuccessInterface
-    {
-        return $this->getResponseSuccess(['id' => 123, ]);
     }
 }

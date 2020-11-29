@@ -18,7 +18,6 @@ use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Serialize\UnserializeInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use Throwable;
 use function Chevere\Components\Type\varType;
 
 final class Unserialize implements UnserializeInterface
@@ -32,7 +31,7 @@ final class Unserialize implements UnserializeInterface
         $this->var = @unserialize($serialized);
         if ($this->var === false) {
             throw new UnserializeException(
-                (new Message('String provided is unable to unserialize.'))
+                new Message('Unable to unserialize provided string.')
             );
         }
         $type = is_object($this->var) ? get_class($this->var) : varType($this->var);

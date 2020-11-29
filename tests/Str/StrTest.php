@@ -121,6 +121,7 @@ final class StrTest extends TestCase
     public function testReplaceLast(): void
     {
         $string = 'string.php';
+        $stringAlt = 'eee';
         $search = '.php';
         $replace = '.md';
         $expected = 'string.md';
@@ -129,8 +130,27 @@ final class StrTest extends TestCase
             (new Str($string))->withReplaceLast($search, $replace)->toString()
         );
         $this->assertSame(
-            'eee',
-            (new Str('eee'))->withReplaceLast($search, $replace)->toString()
+            $stringAlt,
+            (new Str($stringAlt))->withReplaceLast($search, $replace)->toString()
+        );
+    }
+
+    public function testWithReplaceAll(): void
+    {
+        $string = 'hola mundo po';
+        $search = ' ';
+        $this->assertSame(
+            str_replace($search, '', $string),
+            (new Str($string))->withReplaceAll($search, '')->toString()
+        );
+    }
+
+    public function testWithStripANSIColos(): void
+    {
+        $string = 'Arg#1 [38;5;245mnull[0m';
+        $this->assertSame(
+            'Arg#1 null',
+            (new Str($string))->withStripANSIColors($string)->toString()
         );
     }
 }

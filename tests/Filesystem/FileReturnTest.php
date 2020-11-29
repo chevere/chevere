@@ -17,9 +17,11 @@ use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Type\Type;
 use Chevere\Components\VarExportable\VarExportable;
 use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
@@ -149,15 +151,22 @@ final class FileReturnTest extends TestCase
             $this->assertSame($val, $this->phpFileReturn->var());
         }
 
-        foreach ([
-            $this->path->getChild('test'),
-            ['test', [1, false], 1.1, null],
-        ] as $val) {
+        $types = [
+            Type::OBJECT => $this->path->getChild('test'),
+            Type::ARRAY => ['test', [1, false], 1.1, null]
+        ];
+        foreach ($types as $type => $val) {
             $this->phpFileReturn->put(
                 new VarExportable($val)
             );
             $this->assertEquals($val, $this->phpFileReturn->var());
+            $this->assertEquals(
+                $val,
+                $this->phpFileReturn->varType(new Type($type))
+            );
         }
+        $this->expectException(FileReturnInvalidTypeException::class);
+        $this->phpFileReturn->varType(new Type(Type::INTEGER));
     }
 
     public function testFileWithoutContentsException(): void

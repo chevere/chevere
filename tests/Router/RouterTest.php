@@ -26,9 +26,15 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
-    public function testRouter(): void
+    public function testConstruct(): void
     {
         $router = new Router;
+        $this->assertSame([], $router->index()->toArray());
+        $this->assertCount(0, $router->routables());
+    }
+
+    public function testRouter(): void
+    {
         $routeName = new RouteName('my-route');
         $routePath = new RoutePath('/user/{id:\d+}/{name:\w+}/');
         $route = new Route($routeName, $routePath);
@@ -39,7 +45,7 @@ final class RouterTest extends TestCase
             )
         );
         $routable = new Routable($route);
-        $router = $router->withAddedRoutable($routable, 'my-group');
+        $router = (new Router)->withAddedRoutable($routable, 'my-group');
         $this->assertInstanceOf(RouteCollector::class, $router->routeCollector());
     }
 }

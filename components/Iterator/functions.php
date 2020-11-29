@@ -16,6 +16,9 @@ namespace Chevere\Components\Iterator;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use RecursiveDirectoryIterator;
 
+/**
+ * @codeCoverageIgnore
+ */
 function recursiveDirectoryIteratorFor(DirInterface $dir, int $flags): RecursiveDirectoryIterator
 {
     return new RecursiveDirectoryIterator(

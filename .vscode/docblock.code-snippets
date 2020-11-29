@@ -1,6 +1,6 @@
 {
     "docblock-construct": {
-        "description": "Insert a docblock construct",
+        "description": "Docblock construct",
         "prefix": "docblock-construct",
         "body": [
             "/**",
@@ -9,7 +9,7 @@
         ]
     },
     "docblock-instance": {
-        "description": "Insert a docblock instance",
+        "description": "Docblock instance",
         "prefix": "docblock-instance",
         "body": [
             "/**",
@@ -18,7 +18,7 @@
         ]
     },
     "docblock-immutable": {
-        "description": "Insert a docblock immutable",
+        "description": "Docblock immutable",
         "prefix": "docblock-immutable",
         "body": [
             "/**",
@@ -30,7 +30,7 @@
         ]
     },
     "docblock-boolean": {
-        "description": "Insert a docblock boolean",
+        "description": "Docblock boolean",
         "prefix": "docblock-boolean",
         "body": [
             "/**",
@@ -39,7 +39,7 @@
         ]
     },
     "docblock-interface": {
-        "description": "Insert a docblock interface",
+        "description": "Docblock interface",
         "prefix": "docblock-interface",
         "body": [
             "/**",
