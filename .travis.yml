@@ -1,8 +1,9 @@
-dist: bionic
+dist: focal
 language: php
 
 php:
   - 7.4
+  - 8.0
   - nightly
 
 matrix:
@@ -19,7 +20,7 @@ before_install:
   - composer validate
 
 install:
-  - composer install --prefer-dist --classmap-authoritative
+  - composer install --prefer-dist --no-progress --classmap-authoritative
 
 script:
   - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
