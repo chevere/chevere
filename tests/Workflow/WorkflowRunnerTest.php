@@ -16,12 +16,13 @@ namespace Chevere\Tests\Workflow;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
+use Chevere\Components\Workflow\WorkflowRunner;
 use Chevere\Tests\Workflow\_resources\src\WorkflowRunnerFunctionTestStep1;
 use Chevere\Tests\Workflow\_resources\src\WorkflowRunnerFunctionTestStep2;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Workflow\workflowRunner;
 
-final class WorkflowRunnerFunctionTest extends TestCase
+final class WorkflowRunnerTest extends TestCase
 {
     public function testWorkflowRunner(): void
     {
@@ -43,12 +44,13 @@ final class WorkflowRunnerFunctionTest extends TestCase
             );
         $arguments = ['foo' => $foo, 'bar' => $bar];
         $workflowRun = new WorkflowRun($workflow, $arguments);
-        $workflowRun = workflowRunner($workflowRun);
+        $container = [];
+        $workflowRunner = new WorkflowRunner($workflowRun);
+        $workflowRun = $workflowRunner->run($container);
+        $this->assertSame($workflowRun, $workflowRunner->workflowRun());
         $action1 = new WorkflowRunnerFunctionTestStep1;
         $this->assertEquals(
-            $action1
-                ->run(['foo' => $foo])
-                ->data(),
+            $action1->run(['foo' => $foo])->data(),
             $workflowRun->get('step-1')->data()
         );
         $foo = $workflowRun->get('step-1')->data()['response-1'];
