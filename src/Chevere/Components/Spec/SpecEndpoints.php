@@ -20,7 +20,6 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Spec\SpecEndpointsInterface;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
 use TypeError;
-use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class SpecEndpoints implements SpecEndpointsInterface
@@ -56,7 +55,7 @@ final class SpecEndpoints implements SpecEndpointsInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('string', debugType($return))
+                returnTypeExceptionMessage('string', $return ?? null)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

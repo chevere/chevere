@@ -26,10 +26,10 @@ final class Wildcards implements WildcardsInterface
     use MapTrait;
     use MapToArrayTrait;
 
-    /** @param Map [pos => RouteWildcard,]*/
+    /** int => RouteWildcardInterface $route` */
     private Map $map;
 
-    /** @param Map [wildcardName => pos,]*/
+    /** `name => int $pos` */
     private Map $index;
 
     private int $pos = -1;

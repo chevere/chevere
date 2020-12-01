@@ -16,7 +16,6 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\RangeException;
 use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileNotPhpException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;

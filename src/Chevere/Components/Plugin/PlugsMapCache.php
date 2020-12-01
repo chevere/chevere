@@ -35,9 +35,9 @@ use function Chevere\Components\Filesystem\filePhpReturnForPath;
 final class PlugsMapCache implements PlugsMapCacheInterface
 {
     /**
-     * @var ClassMap [pluggableClassName => path_to_plugsQueue,]
+     * @var ClassMapInterface [pluggableClassName => path_to_plugsQueue,]
      */
-    private ClassMap $classMap;
+    private ClassMapInterface $classMap;
 
     private CacheInterface $cache;
 
@@ -114,14 +114,14 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         try {
             $path = $classMap->get($className);
 
-            return filePhpReturnForPath($path)
-                ->withStrict(false)->var();
+            return filePhpReturnForPath($path)->withStrict(false)->var();
         }
         // @codeCoverageIgnoreStart
-        catch (Exception $e) {
+        catch (Throwable $e) {
             throw new RuntimeException(
-                (new Message('Unable to retrieve cached variable for cache path %path%'))
-                    ->code('%path%', $path),
+                (new Message('Unable to retrieve cached variable for %className% cache at path %path%'))
+                    ->code('%className%', $className)
+                    ->code('%path%', $path ?? '<unmapped>'),
                 0,
                 $e
             );

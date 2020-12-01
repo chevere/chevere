@@ -15,15 +15,15 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Spec\SpecIndexInterface;
+use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
 
 final class SpecIndex implements SpecIndexInterface
 {
     use MapTrait;
 
-    public function withAddedRoute(string $routeName, RouteEndpointSpec $routeEndpointSpec): SpecIndexInterface
+    public function withAddedRoute(string $routeName, RouteEndpointSpecInterface $routeEndpointSpec): SpecIndexInterface
     {
         $new = clone $this;
         if ($new->map->hasKey($routeName)) {

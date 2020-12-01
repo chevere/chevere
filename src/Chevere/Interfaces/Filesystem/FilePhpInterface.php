@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Filesystem;
 
 use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileNotPhpException;
 
 /**

@@ -20,7 +20,6 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RoutablesInterface;
 use TypeError;
-use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class Routables implements RoutablesInterface
@@ -56,7 +55,7 @@ final class Routables implements RoutablesInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(RoutableInterface::class, debugType($return))
+                returnTypeExceptionMessage(RoutableInterface::class, $return ?? null)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

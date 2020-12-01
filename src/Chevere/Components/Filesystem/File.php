@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Filesystem\FileExistsException;
@@ -145,14 +143,17 @@ final class File implements FileInterface
     public function put(string $contents): void
     {
         $this->assertExists();
-        if (false === file_put_contents($this->path->absolute(), $contents)) {
-            // @codeCoverageIgnoreStart
+        try {
+            file_put_contents($this->path->absolute(), $contents);
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
             throw new FileUnableToPutException(
                 (new Message('Unable to write content to file %filepath%'))
                     ->code('%filepath%', $this->path->absolute())
             );
-            // @codeCoverageIgnoreEnd
         }
+        // @codeCoverageIgnoreEnd
     }
 
     private function createPath(): void

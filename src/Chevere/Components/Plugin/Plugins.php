@@ -13,20 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
-use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;
-use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Exceptions\Core\TypeException;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Exceptions\Plugin\PlugsFileNotExistsException;
-use Chevere\Exceptions\Plugin\PlugsQueueInterfaceException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Chevere\Interfaces\Plugin\PluginsInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
-use Throwable;
-use TypeError;
 use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use function Chevere\Components\Filesystem\varForFilePhpReturn;
 use function DeepCopy\deep_copy;
@@ -36,7 +30,7 @@ use function DeepCopy\deep_copy;
  */
 final class Plugins implements PluginsInterface
 {
-    private ClassMap $classMap;
+    private ClassMapInterface $classMap;
 
     private string $plugsPath;
 

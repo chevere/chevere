@@ -15,7 +15,6 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
@@ -30,7 +29,6 @@ use Ds\Vector;
 use Generator;
 use Safe\Exceptions\PcreException;
 use TypeError;
-use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 use function DeepCopy\deep_copy;
 use function Safe\preg_match;
@@ -134,7 +132,7 @@ final class Workflow implements WorkflowInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(TaskInterface::class, debugType($return))
+                returnTypeExceptionMessage(TaskInterface::class, $return ?? null)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
@@ -171,10 +169,10 @@ final class Workflow implements WorkflowInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('array', debugType($return))
+                returnTypeExceptionMessage('array', $return ?? null)
             );
-        } catch (\OverflowException $e) {
-            throw new OverflowException(
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(
                 (new Message('Variable %variable% not found'))
                     ->code('%variable%', $variable)
             );
@@ -193,7 +191,7 @@ final class Workflow implements WorkflowInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('array', debugType($return))
+                returnTypeExceptionMessage('array', $return ?? null)
             );
         }
         // @codeCoverageIgnoreEnd

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Cache;
 
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 
 /**

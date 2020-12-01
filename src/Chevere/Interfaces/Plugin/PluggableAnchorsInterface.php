@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
-use Chevere\Exceptions\Plugin\PluggableAnchorExistsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Ds\Set;
 
 /**

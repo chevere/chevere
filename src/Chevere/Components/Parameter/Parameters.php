@@ -45,7 +45,9 @@ final class Parameters implements ParametersInterface
 
     public function withAddedRequired(ParameterInterface $parameter): ParametersInterface
     {
-        $new = $this->withAddedOptional($parameter);
+        $this->assertNoOverflow($parameter);
+        $new = clone $this;
+        $new->map->put($parameter->name(), $parameter);
         $new->required->add($parameter->name());
 
         return $new;

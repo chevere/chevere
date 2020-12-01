@@ -20,7 +20,6 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecsInterface;
 use TypeError;
-use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class GroupSpecs implements GroupSpecsInterface
@@ -51,7 +50,7 @@ final class GroupSpecs implements GroupSpecsInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(GroupSpecInterface::class, debugType($return))
+                returnTypeExceptionMessage(GroupSpecInterface::class, $return ?? null)
             );
         }
         // @codeCoverageIgnoreEnd

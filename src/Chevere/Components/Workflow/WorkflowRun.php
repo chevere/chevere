@@ -26,7 +26,6 @@ use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Ds\Map;
 use Ramsey\Uuid\Uuid;
 use TypeError;
-use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 use function DeepCopy\deep_copy;
 
@@ -101,6 +100,7 @@ final class WorkflowRun implements WorkflowRunInterface
 
     public function get(string $name): ResponseInterface
     {
+        $return = null;
         try {
             /** @var ResponseInterface $return */
             $return = $this->steps->get($name);
@@ -110,7 +110,7 @@ final class WorkflowRun implements WorkflowRunInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(ResponseInterface::class, debugType($return))
+                returnTypeExceptionMessage(ResponseInterface::class, $return)
             );
         }
         // @codeCoverageIgnoreEnd

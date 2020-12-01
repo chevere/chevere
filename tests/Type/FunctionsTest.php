@@ -43,9 +43,8 @@ final class FunctionsTest extends TestCase
     public function testReturnTypeExceptionMessage(): void
     {
         $expected = 'string';
-        $provided = 'integer';
-        $message = returnTypeExceptionMessage($expected, $provided);
-        $this->assertSame("Expecting return type $expected, type $provided provided", $message->toString());
+        $message = returnTypeExceptionMessage($expected, $expected);
+        $this->assertSame("Expecting return type $expected, type $expected provided", $message->toString());
     }
 
     public function testTypeFunctions(): void

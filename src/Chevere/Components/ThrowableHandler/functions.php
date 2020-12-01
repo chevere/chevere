@@ -21,7 +21,6 @@ use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Exceptions\Core\ErrorException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
-use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use LogicException;
 use ReflectionClass;
 use RuntimeException;

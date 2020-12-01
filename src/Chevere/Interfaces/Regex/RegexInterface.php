@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Regex;
 
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
@@ -42,12 +43,14 @@ interface RegexInterface extends ToStringInterface
 
     /**
      * Matches string.
+     *
      * @throws RuntimeException
      */
     public function match(string $string): array;
 
     /**
      * Matches all string.
+     *
      * @throws RuntimeException
      */
     public function matchAll(string $string): array;

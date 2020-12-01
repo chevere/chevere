@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugin\PlugsQueue;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -29,7 +28,6 @@ use Ds\Map;
 use Ds\Set;
 use Generator;
 use TypeError;
-use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class PlugsMap implements PlugsMapInterface
@@ -121,7 +119,7 @@ final class PlugsMap implements PlugsMapInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(PlugsQueueTypedInterface::class, debugType($return))
+                returnTypeExceptionMessage(PlugsQueueTypedInterface::class, $return ?? null)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

@@ -20,7 +20,6 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
 use TypeError;
-use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class RoutableSpecs implements RoutableSpecsInterface
@@ -53,7 +52,7 @@ final class RoutableSpecs implements RoutableSpecsInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(RoutableSpecInterface::class, debugType($return))
+                returnTypeExceptionMessage(RoutableSpecInterface::class, $return ?? null)
             );
         }
         // @codeCoverageIgnoreEnd

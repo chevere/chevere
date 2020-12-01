@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
+use Chevere\Exceptions\Core\InvalidArgumentException;
+
 /**
  * Describes the component in charge of processing a variable of a known type.
  */

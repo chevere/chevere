@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Breadcrumb;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Breadcrumb\BreadcrumbException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
 

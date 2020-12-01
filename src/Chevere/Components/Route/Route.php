@@ -19,6 +19,7 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Route\RouteEndpointConflictException;
 use Chevere\Exceptions\Route\RouteWildcardConflictException;
+use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Interfaces\Route\RouteInterface;
@@ -73,8 +74,11 @@ final class Route implements RouteInterface
         foreach ($new->routePath->wildcards()->getGenerator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
             $knownWildcardMatch = $new->wildcards[$wildcard->toString()] ?? null;
-            $controllerParamMatch = $endpoint->controller()->parameters()
-                ->get($wildcard->toString())->regex()->toNoDelimitersNoAnchors();
+            /**
+             * @var StringParameterInterface $controllerParamMatch
+             */
+            $controllerParamMatch = $endpoint->controller()->parameters()->get($wildcard->toString());
+            $controllerParamMatch = $controllerParamMatch->regex()->toNoDelimitersNoAnchors();
             if (!isset($knownWildcardMatch)) {
                 if ($controllerParamMatch !== $wildcard->match()->toString()) {
                     throw new RouteWildcardConflictException(

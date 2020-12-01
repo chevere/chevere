@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Routing;
 
-use Chevere\Exceptions\Core\OutOfRangeException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Routing\RoutingDescriptorAlreadyAddedException;
 use Countable;
 use Generator;
 

@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Writer;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Writer\WriterInterface;
 use Chevere\Interfaces\Writer\WritersInterface;
 use Laminas\Diactoros\Exception\InvalidArgumentException;
-use LogicException;
 
 final class Writers implements WritersInterface
 {

@@ -29,6 +29,7 @@ use Chevere\Interfaces\Spec\SpecIndexInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecMakerInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
+use Chevere\Interfaces\Spec\Specs\IndexSpecInterface;
 use Ds\Map;
 use Throwable;
 
@@ -40,9 +41,9 @@ final class SpecMaker implements SpecMakerInterface
 
     private RouterInterface $router;
 
-    private SpecIndex $specIndex;
+    private SpecIndexInterface $specIndex;
 
-    private IndexSpec $indexSpec;
+    private IndexSpecInterface $indexSpec;
 
     private Map $files;
 

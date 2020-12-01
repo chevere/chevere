@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\FilePhp;
-use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteEndpoints;

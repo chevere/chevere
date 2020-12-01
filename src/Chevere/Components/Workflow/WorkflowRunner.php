@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Service\ServiceDependantInterface;
 use Chevere\Interfaces\Workflow\TaskInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunnerInterface;
-use LogicException;
 use Throwable;
 
 final class WorkflowRunner implements WorkflowRunnerInterface
@@ -69,7 +69,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             }
             // @codeCoverageIgnoreStart
             catch (Throwable $e) {
-                throw new LogicException($e->getMessage(), 100);
+                throw new LogicException(new Message($e->getMessage()), 100);
             }
             // @codeCoverageIgnoreEnd
             $this->addStep();

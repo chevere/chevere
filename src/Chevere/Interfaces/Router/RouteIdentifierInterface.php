@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router;
 
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\To\ToArrayInterface;
 
 /**

@@ -26,7 +26,6 @@ use Chevere\Interfaces\Router\RouterIndexInterface;
 use Ds\Map;
 use OutOfBoundsException as GlobalOutOfBoundsException;
 use TypeError;
-use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class RouterIndex implements RouterIndexInterface
@@ -114,7 +113,7 @@ final class RouterIndex implements RouterIndexInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(RouteIdentifierInterface::class, debugType($return))
+                returnTypeExceptionMessage(RouteIdentifierInterface::class, $return ?? null)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
@@ -145,7 +144,7 @@ final class RouterIndex implements RouterIndexInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('array', debugType($return))
+                returnTypeExceptionMessage('array', $return ?? null)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
@@ -167,7 +166,7 @@ final class RouterIndex implements RouterIndexInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('string', debugType($return))
+                returnTypeExceptionMessage('string', $return ?? null)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

@@ -16,8 +16,6 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Core\TypeException;
-use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Filesystem\FilesystemException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;

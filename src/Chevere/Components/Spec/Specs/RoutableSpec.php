@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
+use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecsInterface;
 use function DeepCopy\deep_copy;
 
 final class RoutableSpec implements RoutableSpecInterface
 {
     use SpecsTrait;
 
-    private RouteEndpointSpecs $routeEndpointSpecs;
+    private RouteEndpointSpecsInterface $routeEndpointSpecs;
 
     private string $path;
 
