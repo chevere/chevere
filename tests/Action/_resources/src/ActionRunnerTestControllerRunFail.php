@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller\_resources\src;
+namespace Chevere\Tests\Action\_resources\src;
 
-use Chevere\Components\Controller\Controller;
+use Chevere\Components\Action\Controller;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Exception;
 
-final class ControllerRunnerTestControllerRunFail extends Controller
+final class ActionRunnerTestControllerRunFail extends Controller
 {
     public function run(array $arguments): ResponseSuccessInterface
     {

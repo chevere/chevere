@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller;
+namespace Chevere\Components\Action;
 
-use Chevere\Interfaces\Controller\ControllerExecutedInterface;
+use Chevere\Interfaces\Action\ActionExecutedInterface;
 use Throwable;
 
-final class ControllerExecuted implements ControllerExecutedInterface
+final class ActionExecuted implements ActionExecutedInterface
 {
     private int $code = 0;
 
@@ -39,7 +39,7 @@ final class ControllerExecuted implements ControllerExecutedInterface
         return $this->data;
     }
 
-    public function withThrowable(Throwable $throwable, int $code): ControllerExecutedInterface
+    public function withThrowable(Throwable $throwable, int $code): ActionExecutedInterface
     {
         $new = clone $this;
         $new->throwable = $throwable;

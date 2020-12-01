@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Controller\ControllerName;
+use Chevere\Components\Action\ControllerName;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Http\MethodNotAllowedException;

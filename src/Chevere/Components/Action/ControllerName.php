@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller;
+namespace Chevere\Components\Action;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
@@ -19,8 +19,8 @@ use Chevere\Exceptions\Controller\ControllerInterfaceException;
 use Chevere\Exceptions\Controller\ControllerNameException;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
 use Chevere\Exceptions\Core\Exception;
-use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Controller\ControllerNameInterface;
+use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Action\ControllerNameInterface;
 
 final class ControllerName implements ControllerNameInterface
 {

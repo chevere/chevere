@@ -11,13 +11,24 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Routing\_resources\controllers;
+namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Components\Action\Controller;
+use Chevere\Components\Parameter\IntegerParameter;
+use Chevere\Components\Parameter\Parameters;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
-final class GetArticlesController extends Controller
+final class ControllerTestInvalidController extends Controller
 {
+    public function getParameters(): ParametersInterface
+    {
+        return (new Parameters)
+            ->withAddedRequired(
+                new IntegerParameter('integer')
+            );
+    }
+
     public function run(array $arguments): ResponseSuccessInterface
     {
         return $this->getResponseSuccess([]);

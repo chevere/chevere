@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Action;
 
 use Throwable;
 
 /**
  * Describes the component in charge of handling the controller execution outcome.
  */
-interface ControllerExecutedInterface
+interface ActionExecutedInterface
 {
     public function __construct(array $data);
 
@@ -38,7 +38,7 @@ interface ControllerExecutedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified throwable, with its exit code.
      */
-    public function withThrowable(Throwable $throwable, int $code): ControllerExecutedInterface;
+    public function withThrowable(Throwable $throwable, int $code): ActionExecutedInterface;
 
     /**
      * Indicates whether the instance has a `\Throwable`.

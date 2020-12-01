@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Route;
 
-use Chevere\Components\Controller\Controller;
+use Chevere\Components\Action\Controller;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Parameter\Parameters;

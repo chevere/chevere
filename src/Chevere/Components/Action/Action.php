@@ -26,11 +26,11 @@ abstract class Action implements ActionInterface
 {
     use DescriptionTrait;
 
-    private string $description;
+    protected string $description;
 
-    private ParametersInterface $parameters;
+    protected ParametersInterface $parameters;
 
-    private ParametersInterface $responseDataParameters;
+    protected ParametersInterface $responseDataParameters;
 
     public function getParameters(): ParametersInterface
     {
@@ -44,7 +44,7 @@ abstract class Action implements ActionInterface
 
     abstract public function run(array $arguments): ResponseSuccessInterface;
 
-    final public function __construct()
+    public function __construct()
     {
         $this->description = $this->getDescription();
         $this->parameters = $this->getParameters();

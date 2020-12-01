@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Route\_resources\src;
 
-use Chevere\Components\Controller\Controller;
+use Chevere\Components\Action\Controller;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
 final class TestController extends Controller

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Action;
 
 use Chevere\Exceptions\Controller\ControllerInterfaceException;
 use Chevere\Exceptions\Controller\ControllerNameException;

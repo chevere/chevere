@@ -11,14 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\Action;
 
-use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerName;
+use Chevere\Components\Action\ControllerName;
 use Chevere\Exceptions\Controller\ControllerInterfaceException;
 use Chevere\Exceptions\Controller\ControllerNameException;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Tests\Action\_resources\src\ControllerNameTestController;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerNameTest extends TestCase
@@ -58,13 +57,5 @@ final class ControllerNameTest extends TestCase
         $className = ControllerNameTestController::class;
         $controllerName = new ControllerName($className);
         $this->assertSame($className, $controllerName->toString());
-    }
-}
-
-final class ControllerNameTestController extends Controller
-{
-    public function run(array $arguments): ResponseSuccessInterface
-    {
-        return $this->getResponseSuccess([]);
     }
 }

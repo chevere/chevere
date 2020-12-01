@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router;
 
-use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Controller\ControllerNameInterface;
+use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Action\ControllerNameInterface;
 
 /**
  * Describes the component in charge of defining a routed route.

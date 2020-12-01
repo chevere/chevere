@@ -11,25 +11,25 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller;
+namespace Chevere\Interfaces\Action;
 
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 
 /**
- * Describes the component in charge of handling controller instructions.
+ * Describes the component in charge of defining a controller, which is an action
+ * but with fixed parameters type.
  */
 interface ControllerInterface extends ActionInterface
 {
+    public function getParametersTypeName(): string;
+
+    public function assertParametersType(): void;
+
     /**
      * Provides access to the actual controller parameters (after hooks, if any).
      */
     public function parameters(): ParametersInterface;
-
-    /**
-     * Defines the default description.
-     */
-    public function getDescription(): string;
 
     /**
      * Returns a new instance with setup made. Useful to wrap pluggable instructions on parameters and description.

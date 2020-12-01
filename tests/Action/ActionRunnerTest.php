@@ -11,25 +11,25 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\Action;
 
-use Chevere\Components\Controller\ControllerRunner;
-use Chevere\Interfaces\Controller\ControllerExecutedInterface;
-use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Tests\Controller\_resources\src\ControllerRunnerTestController;
-use Chevere\Tests\Controller\_resources\src\ControllerRunnerTestControllerRunFail;
+use Chevere\Components\Action\ActionRunner;
+use Chevere\Interfaces\Action\ActionExecutedInterface;
+use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Tests\Action\_resources\src\ActionRunnerTestController;
+use Chevere\Tests\Action\_resources\src\ActionRunnerTestControllerRunFail;
 use PHPUnit\Framework\TestCase;
 
-final class ControllerRunnerTest extends TestCase
+final class ActionRunnerTest extends TestCase
 {
-    private function getFailedRan(ControllerInterface $controller): ControllerExecutedInterface
+    private function getFailedRan(ControllerInterface $controller): ActionExecutedInterface
     {
-        return (new ControllerRunner($controller))->execute([]);
+        return (new ActionRunner($controller))->execute([]);
     }
 
     public function testControllerRunFailure(): void
     {
-        $controller = new ControllerRunnerTestControllerRunFail;
+        $controller = new ActionRunnerTestControllerRunFail;
         $ran = $this->getFailedRan($controller);
         $this->assertSame(1, $ran->code());
         $this->assertTrue($ran->hasThrowable());
@@ -40,9 +40,9 @@ final class ControllerRunnerTest extends TestCase
     {
         $parameter = 'name';
         $value = 'PeoplesHernandez';
-        $controller = new ControllerRunnerTestController;
+        $controller = new ActionRunnerTestController;
         $arguments = [$parameter => $value];
-        $execute = (new ControllerRunner($controller))->execute($arguments);
+        $execute = (new ActionRunner($controller))->execute($arguments);
         $this->assertSame(0, $execute->code());
         $this->assertSame(['user' => $value], $execute->data());
     }

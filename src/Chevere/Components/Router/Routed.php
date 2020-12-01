@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Controller\ControllerNameInterface;
+use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Action\ControllerNameInterface;
 use Chevere\Interfaces\Router\RoutedInterface;
 
 final class Routed implements RoutedInterface

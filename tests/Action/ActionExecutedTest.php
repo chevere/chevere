@@ -11,20 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\Action;
 
-use Chevere\Components\Controller\ControllerExecuted;
+use Chevere\Components\Action\ActionExecuted;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
 use Error;
 use PHPUnit\Framework\TestCase;
 
-final class ControllerExecutedTest extends TestCase
+final class ActionExecutedTest extends TestCase
 {
     public function testConstruct(): void
     {
         $data = ['The data'];
-        $executed = new ControllerExecuted($data);
+        $executed = new ActionExecuted($data);
         $this->assertSame(0, $executed->code());
         $this->assertSame($data, $executed->data());
         $this->assertFalse($executed->hasThrowable());
@@ -34,7 +34,7 @@ final class ControllerExecutedTest extends TestCase
 
     public function testWithThrowable(): void
     {
-        $executed = new ControllerExecuted([]);
+        $executed = new ActionExecuted([]);
         $throwable = new Exception(new Message('Uy'));
         $executed = $executed->withThrowable($throwable, 1);
         $this->assertTrue($executed->hasThrowable());

@@ -23,7 +23,7 @@ use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Http\Methods\TraceMethod;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Interfaces\Action\ControllerInterface;
 use Chevere\Interfaces\Description\DescriptionInterface;
 use Chevere\Interfaces\Http\MethodInterface;
 
