@@ -44,15 +44,15 @@ interface WorkflowRunInterface
     /**
      * @throws ArgumentCountException
      */
-    public function withAdded(string $step, ResponseSuccessInterface $response): WorkflowRunInterface;
+    public function withAdded(StepInterface $step, ResponseSuccessInterface $response): WorkflowRunInterface;
 
     /**
      * Indicates whether the instance has the given `$step`. Will return `true` if step has ran.
      */
-    public function has(string $step): bool;
+    public function has(StepInterface $step): bool;
 
     /**
      * Provides access to the ResponseInterface instance for the given `$step`.
      */
-    public function get(string $step): ResponseInterface;
+    public function get(StepInterface $step): ResponseInterface;
 }

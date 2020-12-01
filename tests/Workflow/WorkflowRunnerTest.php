@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
+use Chevere\Components\Workflow\Step;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
@@ -20,7 +21,6 @@ use Chevere\Components\Workflow\WorkflowRunner;
 use Chevere\Tests\Workflow\_resources\src\WorkflowRunnerFunctionTestStep1;
 use Chevere\Tests\Workflow\_resources\src\WorkflowRunnerFunctionTestStep2;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Workflow\workflowRunner;
 
 final class WorkflowRunnerTest extends TestCase
 {
@@ -28,14 +28,16 @@ final class WorkflowRunnerTest extends TestCase
     {
         $foo = 'hola';
         $bar = 'mundo';
+        $step1 = new Step('step-1');
+        $step2 = new Step('step-2');
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                'step-1',
+                $step1,
                 (new Task(WorkflowRunnerFunctionTestStep1::class))
                     ->withArguments(['foo' => '${foo}'])
             )
             ->withAdded(
-                'step-2',
+                $step2,
                 (new Task(WorkflowRunnerFunctionTestStep2::class))
                     ->withArguments([
                         'foo' => '${step-1:response-1}',
@@ -51,9 +53,9 @@ final class WorkflowRunnerTest extends TestCase
         $action1 = new WorkflowRunnerFunctionTestStep1;
         $this->assertEquals(
             $action1->run(['foo' => $foo])->data(),
-            $workflowRun->get('step-1')->data()
+            $workflowRun->get($step1)->data()
         );
-        $foo = $workflowRun->get('step-1')->data()['response-1'];
+        $foo = $workflowRun->get($step1)->data()['response-1'];
         $action2 = new WorkflowRunnerFunctionTestStep2;
         $this->assertEquals(
             $action2
@@ -64,7 +66,7 @@ final class WorkflowRunnerTest extends TestCase
                     ]
                 )
                 ->data(),
-            $workflowRun->get('step-2')->data()
+            $workflowRun->get($step2)->data()
         );
     }
 }

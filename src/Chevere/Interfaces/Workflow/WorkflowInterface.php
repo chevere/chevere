@@ -41,7 +41,7 @@ interface WorkflowInterface extends Countable
      *
      * @throws OverflowException
      */
-    public function withAdded(string $step, TaskInterface $task): WorkflowInterface;
+    public function withAdded(StepInterface $step, TaskInterface $task): WorkflowInterface;
 
     /**
      * Return an instance with the specified `$task` added before `$before`.
@@ -51,7 +51,7 @@ interface WorkflowInterface extends Countable
      *
      * @throws OverflowException
      */
-    public function withAddedBefore(string $before, string $step, TaskInterface $task): WorkflowInterface;
+    public function withAddedBefore(StepInterface $before, StepInterface $step, TaskInterface $task): WorkflowInterface;
 
     /**
      * Return an instance with the specified `$task` added after `$after`.
@@ -61,11 +61,11 @@ interface WorkflowInterface extends Countable
      *
      * @throws OverflowException
      */
-    public function withAddedAfter(string $after, string $step, TaskInterface $task): WorkflowInterface;
+    public function withAddedAfter(StepInterface $after, StepInterface $step, TaskInterface $task): WorkflowInterface;
 
-    public function has(string $step): bool;
+    public function has(StepInterface $step): bool;
 
-    public function get(string $step): TaskInterface;
+    public function get(StepInterface $step): TaskInterface;
 
     public function parameters(): ParametersInterface;
 
@@ -95,7 +95,7 @@ interface WorkflowInterface extends Countable
     /**
      * Provides access to the expected return arguments.
      */
-    public function getExpected(string $step): array;
+    public function getExpected(StepInterface $step): array;
 
     /**
      * @return Generator<string, TaskInterface>

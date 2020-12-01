@@ -18,6 +18,7 @@ use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Service\ServiceDependantInterface;
+use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\TaskInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunnerInterface;
@@ -27,7 +28,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
 {
     private WorkflowRunInterface $workflowRun;
 
-    private string $step;
+    private StepInterface $step;
 
     private TaskInterface $task;
 
@@ -54,6 +55,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
          * @var TaskInterface $task
          */
         foreach ($this->workflowRun->workflow()->getGenerator() as $step => $task) {
+            $step = new Step($step);
             if ($this->workflowRun->has($step)) {
                 continue; // @codeCoverageIgnore
             }
@@ -62,15 +64,15 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             $this->actionName = $this->task->action();
             $this->action = new $this->actionName;
             $this->injectDependencies($container);
-            try {
-                $this->responseSuccess = $this->action->run(
-                    $this->getArguments()
-                );
-            }
+            // try {
+            $this->responseSuccess = $this->action->run(
+                $this->getArguments()
+            );
+            // }
             // @codeCoverageIgnoreStart
-            catch (Throwable $e) {
-                throw new LogicException(new Message($e->getMessage()), 100);
-            }
+            // catch (Throwable $e) {
+            //     throw new LogicException(new Message($e->getMessage() . 'eee'), 100);
+            // }
             // @codeCoverageIgnoreEnd
             $this->addStep();
         }
@@ -99,7 +101,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             $reference = $this->workflowRun->workflow()->getVar($taskArgument);
             if (isset($reference[1])) {
                 $arguments[$name] = $this->workflowRun
-                    ->get($reference[0])->data()[$reference[1]];
+                    ->get(new Step($reference[0]))->data()[$reference[1]];
             } else {
                 $arguments[$name] = $this->workflowRun
                     ->arguments()->get($reference[0]);
@@ -122,7 +124,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             throw new LogicException(
                 (new Message('Unexpected response from method %method% at step %step%: %message%'))
                     ->code('%method%', $this->actionName . '::run')
-                    ->code('%step%', $this->step)
+                    ->code('%step%', $this->step->toString())
                     ->code('%message%', $e->getMessage())
             );
         }

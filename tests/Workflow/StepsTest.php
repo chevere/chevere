@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Workflow;
 
 use Chevere\Components\Action\Action;
+use Chevere\Components\Workflow\Step;
 use Chevere\Components\Workflow\Steps;
 use Chevere\Components\Workflow\Task;
 use Chevere\Exceptions\Core\OverflowException;
@@ -34,7 +35,7 @@ final class StepsTest extends TestCase
         $task = new Task(TestsActionStepsTests::class);
         $steps = new Steps;
         foreach ($keys as $name) {
-            $steps = $steps->withAdded($name, $task);
+            $steps = $steps->withAdded(new Step($name), $task);
         }
         $this->assertSame($keys, $steps->keys());
         foreach ($steps->getGenerator() as $stepName => $stepTask) {
@@ -42,7 +43,7 @@ final class StepsTest extends TestCase
             $this->assertEquals($task, $stepTask);
         }
         $this->expectException(OverflowException::class);
-        $steps->withAdded($keys[1], $task);
+        $steps->withAdded(new Step($keys[1]), $task);
     }
 }
 

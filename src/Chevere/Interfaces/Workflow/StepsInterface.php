@@ -25,7 +25,7 @@ interface StepsInterface extends MapInterface
     /**
      * @throws OverflowException
      */
-    public function withAdded(string $step, TaskInterface $task): StepsInterface;
+    public function withAdded(StepInterface $step, TaskInterface $task): StepsInterface;
 
     /**
      * @return Generator<string, TaskInterface>

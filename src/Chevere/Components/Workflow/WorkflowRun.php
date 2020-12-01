@@ -21,6 +21,7 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Ds\Map;
@@ -67,7 +68,7 @@ final class WorkflowRun implements WorkflowRunInterface
         return $this->arguments;
     }
 
-    public function withAdded(string $step, ResponseSuccessInterface $response): WorkflowRunInterface
+    public function withAdded(StepInterface $step, ResponseSuccessInterface $response): WorkflowRunInterface
     {
         $this->workflow->get($step);
         try {
@@ -88,36 +89,35 @@ final class WorkflowRun implements WorkflowRunInterface
             );
         }
         $new = clone $this;
-        $new->steps->put($step, $response);
+        $new->steps->put($step->toString(), $response);
 
         return $new;
     }
 
-    public function has(string $name): bool
+    public function has(StepInterface $name): bool
     {
-        return $this->steps->hasKey($name);
+        return $this->steps->hasKey($name->toString());
     }
 
-    public function get(string $name): ResponseInterface
+    public function get(StepInterface $name): ResponseInterface
     {
-        $return = null;
         try {
             /** @var ResponseInterface $return */
-            $return = $this->steps->get($name);
+            $return = $this->steps->get($name->toString());
 
             return $return;
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(ResponseInterface::class, $return)
+                returnTypeExceptionMessage(ResponseInterface::class, $return ?? null)
             );
         }
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Task %name% not found'))
-                    ->code('%name%', $name)
+                    ->code('%name%', $name->toString())
             );
         }
     }

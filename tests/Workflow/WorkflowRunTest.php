@@ -17,6 +17,7 @@ use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseSuccess;
+use Chevere\Components\Workflow\Step;
 use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
@@ -32,7 +33,7 @@ final class WorkflowRunTest extends TestCase
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                'step',
+                new Step('step'),
                 (new Task(WorkflowRunTestStep1::class))
                     ->withArguments(['foo' => '${foo}'])
             );
@@ -45,19 +46,21 @@ final class WorkflowRunTest extends TestCase
         $this->assertSame($workflow, $workflowRun->workflow());
         $this->assertSame($arguments, $workflowRun->arguments()->toArray());
         $this->expectException(OutOfBoundsException::class);
-        $workflowRun->get('not-found');
+        $workflowRun->get(new Step('not-found'));
     }
 
     public function testWithAdded(): void
     {
+        $step0 = new Step('step-0');
+        $step1 = new Step('step-1');
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                'step-0',
+                $step0,
                 (new Task(WorkflowRunTestStep1::class))
                     ->withArguments(['foo' => '${foo}'])
             )
             ->withAdded(
-                'step-1',
+                $step1,
                 (new Task(WorkflowRunTestStep2::class))
                     ->withArguments([
                         'foo' => '${step-0:response-0}',
@@ -71,7 +74,7 @@ final class WorkflowRunTest extends TestCase
         $responseData = ['response-0' => 'value'];
         $workflowRun = (new WorkflowRun($workflow, $arguments))
             ->withAdded(
-                'step-0',
+                $step0,
                 new ResponseSuccess(
                     (new Parameters)
                         ->withAddedRequired(new StringParameter('response-0')),
@@ -79,39 +82,45 @@ final class WorkflowRunTest extends TestCase
                 )
             );
         $this->assertTrue($workflow->hasVar('${step-0:response-0}'));
-        $this->assertTrue($workflowRun->has('step-0'));
-        $this->assertSame($responseData, $workflowRun->get('step-0')->data());
+        $this->assertTrue($workflowRun->has($step0));
+        $this->assertSame($responseData, $workflowRun->get($step0)->data());
     }
 
     public function testWithAddedNotFound(): void
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                'step-0',
+                new Step('step-0'),
                 (new Task(WorkflowRunTestStep1::class))
                     ->withArguments(['foo' => '${foo}'])
             );
         $arguments = ['foo' => 'hola'];
         $this->expectException(OutOfBoundsException::class);
         (new WorkflowRun($workflow, $arguments))
-            ->withAdded('not-found', new ResponseSuccess(new Parameters, []));
+            ->withAdded(
+                new Step('not-found'),
+                new ResponseSuccess(new Parameters, [])
+            );
     }
 
     public function testWithAddedMissingArguments(): void
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                'step-0',
+                new Step('step-0'),
                 new Task(WorkflowRunTestStep0::class)
             )
             ->withAdded(
-                'step-1',
+                new Step('step-1'),
                 (new Task(WorkflowRunTestStep1::class))
                     ->withArguments(['foo' => '${step-0:response-0}'])
             );
         $this->expectException(ArgumentCountException::class);
         (new WorkflowRun($workflow, []))
-            ->withAdded('step-0', new ResponseSuccess(new Parameters, []));
+            ->withAdded(
+                new Step('step-0'),
+                new ResponseSuccess(new Parameters, [])
+            );
     }
 }
 
