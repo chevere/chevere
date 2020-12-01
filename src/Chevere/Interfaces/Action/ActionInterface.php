@@ -36,6 +36,8 @@ interface ActionInterface extends GetDescriptionInterface
 
     /**
      * Retrieves a new success response with type-hinted data.
+     * 
+     * @param array<string, mixed> $data
      */
     public function getResponseSuccess(array $data): ResponseSuccessInterface;
 

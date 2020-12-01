@@ -33,6 +33,7 @@
         "thecodingmachine/safe": "^1.1"
     },
     "require-dev": {
+        "phpstan/phpstan": "^0.12.58",
         "phpunit/phpunit": "^9.4"
     },
     "autoload": {
