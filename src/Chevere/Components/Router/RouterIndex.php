@@ -104,6 +104,7 @@ final class RouterIndex implements RouterIndexInterface
 
     public function getRouteIdentifier(string $routeName): RouteIdentifierInterface
     {
+        $return = null;
         try {
             /** @var RouteIdentifierInterface $return */
             $return = $this->identifiersMap->get($routeName);
@@ -113,7 +114,7 @@ final class RouterIndex implements RouterIndexInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(RouteIdentifierInterface::class, $return ?? null)
+                returnTypeExceptionMessage(RouteIdentifierInterface::class, $return)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
@@ -135,6 +136,7 @@ final class RouterIndex implements RouterIndexInterface
      */
     public function getGroupRouteNames(string $group): array
     {
+        $return = null;
         try {
             /** @var array $return */
             $return = $this->groupsMap->get($group);
@@ -144,7 +146,7 @@ final class RouterIndex implements RouterIndexInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('array', $return ?? null)
+                returnTypeExceptionMessage('array', $return)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
@@ -157,6 +159,7 @@ final class RouterIndex implements RouterIndexInterface
 
     public function getRouteGroup(string $group): string
     {
+        $return = null;
         try {
             /** @var string $return */
             $return = $this->groupsIndex->get($group);
@@ -166,7 +169,7 @@ final class RouterIndex implements RouterIndexInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('string', $return ?? null)
+                returnTypeExceptionMessage('string', $return)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

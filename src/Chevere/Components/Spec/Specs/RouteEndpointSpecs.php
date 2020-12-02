@@ -43,6 +43,7 @@ final class RouteEndpointSpecs implements RouteEndpointSpecsInterface
 
     public function get(string $methodName): RouteEndpointSpecInterface
     {
+        $return = null;
         try {
             /** @var RouteEndpointSpec $return */
             $return = $this->map->get($methodName);
@@ -52,7 +53,7 @@ final class RouteEndpointSpecs implements RouteEndpointSpecsInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(RouteEndpointSpecInterface::class, $return ?? null)
+                returnTypeExceptionMessage(RouteEndpointSpecInterface::class, $return)
             );
         }
         // @codeCoverageIgnoreEnd

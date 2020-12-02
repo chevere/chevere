@@ -43,6 +43,7 @@ final class RoutableSpecs implements RoutableSpecsInterface
 
     public function get(string $routeName): RoutableSpecInterface
     {
+        $return = null;
         try {
             /** @var RoutableSpecInterface $return */
             $return = $this->map->get($routeName);
@@ -52,7 +53,7 @@ final class RoutableSpecs implements RoutableSpecsInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(RoutableSpecInterface::class, $return ?? null)
+                returnTypeExceptionMessage(RoutableSpecInterface::class, $return)
             );
         }
         // @codeCoverageIgnoreEnd

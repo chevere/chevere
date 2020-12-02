@@ -108,6 +108,7 @@ final class PlugsMap implements PlugsMapInterface
 
     public function getPlugsQueueTypedFor(string $pluggable): PlugsQueueTypedInterface
     {
+        $return = null;
         try {
             /**
              * @var PlugsQueueTypedInterface $return
@@ -119,7 +120,7 @@ final class PlugsMap implements PlugsMapInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(PlugsQueueTypedInterface::class, $return ?? null)
+                returnTypeExceptionMessage(PlugsQueueTypedInterface::class, $return)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

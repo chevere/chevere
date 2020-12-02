@@ -122,6 +122,7 @@ final class Workflow implements WorkflowInterface
 
     public function get(StepInterface $step): TaskInterface
     {
+        $return = null;
         $step = $step->toString();
         try {
             /**
@@ -134,7 +135,7 @@ final class Workflow implements WorkflowInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(TaskInterface::class, $return ?? null)
+                returnTypeExceptionMessage(TaskInterface::class, $return)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
@@ -162,6 +163,7 @@ final class Workflow implements WorkflowInterface
 
     public function getVar(string $variable): array
     {
+        $return = null;
         try {
             /** @var array $return */
             $return = $this->vars->get($variable);
@@ -171,7 +173,7 @@ final class Workflow implements WorkflowInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('array', $return ?? null)
+                returnTypeExceptionMessage('array', $return)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
@@ -184,6 +186,7 @@ final class Workflow implements WorkflowInterface
 
     public function getExpected(StepInterface $step): array
     {
+        $return = null;
         try {
             /** @var array $return */
             $return = $this->expected->get($step->toString());
@@ -193,7 +196,7 @@ final class Workflow implements WorkflowInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('array', $return ?? null)
+                returnTypeExceptionMessage('array', $return)
             );
         }
         // @codeCoverageIgnoreEnd

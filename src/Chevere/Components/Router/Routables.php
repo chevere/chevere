@@ -46,13 +46,14 @@ final class Routables implements RoutablesInterface
 
     public function get(string $name): RoutableInterface
     {
+        $return = null;
         try {
             return $this->map->get($name);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(RoutableInterface::class, $return ?? null)
+                returnTypeExceptionMessage(RoutableInterface::class, $return)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

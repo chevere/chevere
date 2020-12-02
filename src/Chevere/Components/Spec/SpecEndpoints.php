@@ -44,6 +44,7 @@ final class SpecEndpoints implements SpecEndpointsInterface
 
     public function get(string $methodName): string
     {
+        $return = null;
         try {
             /**
              * @var string $return
@@ -55,7 +56,7 @@ final class SpecEndpoints implements SpecEndpointsInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage('string', $return ?? null)
+                returnTypeExceptionMessage('string', $return)
             );
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

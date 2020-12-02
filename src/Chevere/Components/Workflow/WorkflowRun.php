@@ -101,6 +101,7 @@ final class WorkflowRun implements WorkflowRunInterface
 
     public function get(StepInterface $name): ResponseInterface
     {
+        $return = null;
         try {
             /** @var ResponseInterface $return */
             $return = $this->steps->get($name->toString());
@@ -110,7 +111,7 @@ final class WorkflowRun implements WorkflowRunInterface
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(ResponseInterface::class, $return ?? null)
+                returnTypeExceptionMessage(ResponseInterface::class, $return)
             );
         }
         // @codeCoverageIgnoreEnd

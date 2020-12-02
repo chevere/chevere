@@ -41,13 +41,14 @@ final class GroupSpecs implements GroupSpecsInterface
 
     public function get(string $name): GroupSpecInterface
     {
+        $return = null;
         try {
             return $this->map->get($name);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(
-                returnTypeExceptionMessage(GroupSpecInterface::class, $return ?? null)
+                returnTypeExceptionMessage(GroupSpecInterface::class, $return)
             );
         }
         // @codeCoverageIgnoreEnd
