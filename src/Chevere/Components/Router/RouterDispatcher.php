@@ -40,6 +40,7 @@ final class RouterDispatcher implements RouterDispatcherInterface
         $info = (new Dispatcher($this->routeCollector->getData()))
             ->dispatch($httpMethod, $uri);
         switch ($info[0]) {
+            default:
             case Dispatcher::NOT_FOUND:
                 throw new RouteNotFoundException(
                     (new Message('No route found for %uri%'))

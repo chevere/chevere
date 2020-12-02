@@ -82,29 +82,29 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    public function getBoolean(string $name): bool
+    public function getBoolean(string $boolean): bool
     {
-        return $this->get($name);
+        return $this->get($boolean);
     }
 
-    public function getString(string $name): string
+    public function getString(string $string): string
     {
-        return $this->get($name);
+        return $this->get($string);
     }
 
-    public function getInteger(string $name): int
+    public function getInteger(string $integer): int
     {
-        return $this->get($name);
+        return $this->get($integer);
     }
 
-    public function getFloat(string $name): float
+    public function getFloat(string $float): float
     {
-        return $this->get($name);
+        return $this->get($float);
     }
 
-    public function getArray(string $name): array
+    public function getArray(string $array): array
     {
-        return $this->get($name);
+        return $this->get($array);
     }
 
     private function assertType(string $name, $value): void
@@ -124,8 +124,6 @@ final class Arguments implements ArgumentsInterface
              * @var StringParameterInterface $parameter
              */
             $this->assertStringArgument($parameter, $value);
-
-            return;
         }
     }
 

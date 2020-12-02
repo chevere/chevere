@@ -86,9 +86,8 @@ final class FilePhpReturn implements FilePhpReturnInterface
     public function var()
     {
         $var = $this->raw();
-        $var = $this->getReturnVar($var);
-
-        return $var;
+        
+        return $this->getReturnVar($var);
     }
 
     public function varType(TypeInterface $type)

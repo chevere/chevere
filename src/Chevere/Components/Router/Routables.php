@@ -47,10 +47,7 @@ final class Routables implements RoutablesInterface
     public function get(string $name): RoutableInterface
     {
         try {
-            /** @var RoutableInterface $return */
-            $return = $this->map->get($name);
-
-            return $return;
+            return $this->map->get($name);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {

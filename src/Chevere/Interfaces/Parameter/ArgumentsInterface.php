@@ -72,42 +72,42 @@ interface ArgumentsInterface extends ToArrayInterface
     public function get(string $name);
 
     /**
-     * Provides access to the argument value for the parameter `$name` type-hinted as boolean.
+     * Provides access to the argument value for the parameter `$boolean` type-hinted as boolean.
      *
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getBoolean(string $name): bool;
+    public function getBoolean(string $boolean): bool;
 
     /**
-     * Provides access to the argument value for the parameter `$name` type-hinted as string.
+     * Provides access to the argument value for the parameter `$string` type-hinted as string.
      *
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getString(string $name): string;
+    public function getString(string $string): string;
 
     /**
-     * Provides access to the argument value for the parameter `$name` type-hinted as integer.
+     * Provides access to the argument value for the parameter `$integer` type-hinted as integer.
      *
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getInteger(string $name): int;
+    public function getInteger(string $integer): int;
 
     /**
-     * Provides access to the argument value for the parameter `$name` type-hinted as float.
+     * Provides access to the argument value for the parameter `$float` type-hinted as float.
      *
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getFloat(string $name): float;
+    public function getFloat(string $float): float;
 
     /**
-     * Provides access to the argument value for the parameter `$name` type-hinted as array.
+     * Provides access to the argument value for the parameter `$array` type-hinted as array.
      *
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getArray(string $name): array;
+    public function getArray(string $array): array;
 }

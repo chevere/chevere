@@ -98,12 +98,7 @@ final class Parameters implements ParametersInterface
     public function get(string $name): ParameterInterface
     {
         try {
-            /**
-             * @var ParameterInterface $return
-             */
-            $return = $this->map->get($name);
-
-            return $return;
+            return $this->map->get($name);
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Parameter %name% not found'))

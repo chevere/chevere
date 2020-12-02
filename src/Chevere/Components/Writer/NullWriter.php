@@ -19,10 +19,12 @@ final class NullWriter implements WriterInterface
 {
     public function __construct()
     {
+        // null
     }
 
     public function write(string $string): void
     {
+        // null
     }
 
     public function toString(): string

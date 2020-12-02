@@ -26,11 +26,6 @@ final class WritersInstance
 
     public function __construct(WritersInterface $writers)
     {
-        // if (isset(self::$instance)) {
-        //     throw new LogicException(
-        //         (new Message('This instance can be only created once'))
-        //     );
-        // }
         self::$instance = $writers;
     }
 

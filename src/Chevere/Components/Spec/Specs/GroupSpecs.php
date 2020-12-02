@@ -42,10 +42,7 @@ final class GroupSpecs implements GroupSpecsInterface
     public function get(string $name): GroupSpecInterface
     {
         try {
-            /** @var GroupSpecInterface $return */
-            $return = $this->map->get($name);
-
-            return $return;
+            return $this->map->get($name);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {

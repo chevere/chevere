@@ -21,8 +21,15 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
+use Chevere\Interfaces\Message\MessageInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Throwable;
+
+function getFilesystemInstanceMessage(string $instance, string $path): MessageInterface {
+    return (new Message('Unable to create a %instance% for %path%'))
+        ->code('%instance%', $instance)
+        ->code('%path%', $path);
+}
 
 /**
  * @codeCoverageIgnore
@@ -34,9 +41,7 @@ function dirForPath(string $path): DirInterface
         return new Dir(new Path($path));
     } catch (Exception $e) {
         throw new FilesystemException(
-            (new Message('Unable to create a %instance% for %path%'))
-                ->code('%instance%', Dir::class)
-                ->code('%path%', $path),
+            getFilesystemInstanceMessage(Dir::class, $path),
             0,
             $e
         );
@@ -53,9 +58,7 @@ function fileForPath(string $path): FileInterface
         return new File(new Path($path));
     } catch (Exception $e) {
         throw new FilesystemException(
-            (new Message('Unable to create a %instance% for %path%'))
-                ->code('%instance%', File::class)
-                ->code('%path%', $path),
+            getFilesystemInstanceMessage(File::class, $path),
             0,
             $e
         );
@@ -72,9 +75,7 @@ function filePhpForPath(string $path): FilePhpInterface
         return new FilePhp(fileForPath($path));
     } catch (Exception $e) {
         throw new FilesystemException(
-            (new Message('Unable to create a %instance% for %path%'))
-                ->code('%instance%', FilePhp::class)
-                ->code('%path%', $path),
+            getFilesystemInstanceMessage(FilePhp::class, $path),
             0,
             $e
         );
@@ -91,9 +92,7 @@ function filePhpReturnForPath(string $path): FilePhpReturn
         return new FilePhpReturn(filePhpForPath($path));
     } catch (Exception $e) {
         throw new FilesystemException(
-            (new Message('Unable to create a %instance% for %path%'))
-                ->code('%instance%', FilePhpReturn::class)
-                ->code('%path%', $path),
+            getFilesystemInstanceMessage(FilePhpReturn::class, $path),
             0,
             $e
         );

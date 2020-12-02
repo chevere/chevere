@@ -26,11 +26,6 @@ final class VarDumpInstance
 
     public function __construct(VarDumpInterface $varDump)
     {
-        // if (isset(self::$instance)) {
-        //     throw new LogicException(
-        //         (new Message('This instance can be only created once'))
-        //     );
-        // }
         self::$instance = $varDump;
     }
 
