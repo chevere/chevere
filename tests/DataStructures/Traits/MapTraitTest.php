@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructures\Traits;
 
-use Chevere\Components\Filesystem\Path;
 use Chevere\Tests\DataStructures\src\UsesMapTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;

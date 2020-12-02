@@ -31,7 +31,6 @@ use Generator;
 use Safe\Exceptions\PcreException;
 use TypeError;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
-use function DeepCopy\deep_copy;
 use function Safe\preg_match;
 
 final class Workflow implements WorkflowInterface
@@ -61,13 +60,6 @@ final class Workflow implements WorkflowInterface
     public function count(): int
     {
         return $this->steps->count();
-    }
-
-    public function __clone()
-    {
-        $this->map = deep_copy($this->map);
-        $this->steps = deep_copy($this->steps);
-        $this->parameters = deep_copy($this->parameters);
     }
 
     public function name(): string

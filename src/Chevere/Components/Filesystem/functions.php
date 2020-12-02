@@ -25,7 +25,11 @@ use Chevere\Interfaces\Message\MessageInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Throwable;
 
-function getFilesystemInstanceMessage(string $instance, string $path): MessageInterface {
+/**
+ * @codeCoverageIgnore
+ */
+function getFilesystemInstanceMessage(string $instance, string $path): MessageInterface
+{
     return (new Message('Unable to create a %instance% for %path%'))
         ->code('%instance%', $instance)
         ->code('%path%', $path);

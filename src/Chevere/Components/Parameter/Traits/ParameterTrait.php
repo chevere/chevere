@@ -36,7 +36,7 @@ trait ParameterTrait
 
     public function __clone()
     {
-        $this->attributes = deep_copy($this->attributes);
+        $this->attributes = new Set(deep_copy($this->attributes->toArray()));
     }
 
     public function withDescription(string $description): ParameterInterface
@@ -97,7 +97,7 @@ trait ParameterTrait
 
     public function attributes(): Set
     {
-        return deep_copy($this->attributes);
+        return $this->attributes;
     }
 
     private function assertName(): void

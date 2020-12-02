@@ -28,7 +28,6 @@ use Ds\Map;
 use Ramsey\Uuid\Uuid;
 use TypeError;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
-use function DeepCopy\deep_copy;
 
 final class WorkflowRun implements WorkflowRunInterface
 {
@@ -46,11 +45,6 @@ final class WorkflowRun implements WorkflowRunInterface
         $this->arguments = new Arguments($workflow->parameters(), $arguments);
         $this->workflow = $workflow;
         $this->steps = new Map;
-    }
-
-    public function __clone()
-    {
-        $this->steps = deep_copy($this->steps);
     }
 
     public function uuid(): string
