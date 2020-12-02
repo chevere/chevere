@@ -20,7 +20,6 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecsInterface;
 use TypeError;
-use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class GroupSpecs implements GroupSpecsInterface
 {
@@ -39,17 +38,18 @@ final class GroupSpecs implements GroupSpecsInterface
         return $this->map->hasKey($name);
     }
 
+    /**
+     * @throws TypeException
+     * @throws OutOfBoundsException
+     */
     public function get(string $name): GroupSpecInterface
     {
-        $return = null;
         try {
             return $this->map->get($name);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(
-                returnTypeExceptionMessage(GroupSpecInterface::class, $return)
-            );
+            throw new TypeException(new Message($e->getMessage()));
         }
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {

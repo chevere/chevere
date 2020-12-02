@@ -28,7 +28,6 @@ use Ds\Map;
 use Ds\Set;
 use Generator;
 use TypeError;
-use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class PlugsMap implements PlugsMapInterface
 {
@@ -106,29 +105,26 @@ final class PlugsMap implements PlugsMapInterface
         return $this->map->hasKey($pluggable);
     }
 
+    /**
+     * @throws TypeException
+     * @throws OutOfBoundsException
+     */
     public function getPlugsQueueTypedFor(string $pluggable): PlugsQueueTypedInterface
     {
-        $return = null;
         try {
-            /**
-             * @var PlugsQueueTypedInterface $return
-             */
-            $return = $this->map->get($pluggable, new PlugsQueue($this->type));
-
-            return $return;
+            return $this->map->get($pluggable);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(
-                returnTypeExceptionMessage(PlugsQueueTypedInterface::class, $return)
-            );
-        } catch (\OutOfBoundsException $e) {
+            throw new TypeException(new Message($e->getMessage()));
+        }
+        // @codeCoverageIgnoreEnd
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Pluggable %pluggable% not found'))
                     ->code('%pluggable%', $pluggable)
             );
         }
-        // @codeCoverageIgnoreEnd
     }
 
     public function getGenerator(): Generator

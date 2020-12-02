@@ -150,7 +150,7 @@ final class StrTest extends TestCase
         $string = 'Arg#1 [38;5;245mnull[0m';
         $this->assertSame(
             'Arg#1 null',
-            (new Str($string))->withStripANSIColors($string)->toString()
+            (new Str($string))->withStripANSIColors()->toString()
         );
     }
 }

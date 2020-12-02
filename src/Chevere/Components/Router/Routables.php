@@ -20,7 +20,6 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RoutablesInterface;
 use TypeError;
-use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class Routables implements RoutablesInterface
 {
@@ -44,23 +43,25 @@ final class Routables implements RoutablesInterface
         return $this->map->hasKey($key);
     }
 
+    /**
+     * @throws TypeException
+     * @throws OutOfBoundsException
+     */
     public function get(string $name): RoutableInterface
     {
-        $return = null;
         try {
             return $this->map->get($name);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(
-                returnTypeExceptionMessage(RoutableInterface::class, $return)
-            );
-        } catch (\OutOfBoundsException $e) {
+            throw new TypeException(new Message($e->getMessage()));
+        }
+        // @codeCoverageIgnoreEnd
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Name %name% not found'))
                     ->code('%name%', $name)
             );
         }
-        // @codeCoverageIgnoreEnd
     }
 }

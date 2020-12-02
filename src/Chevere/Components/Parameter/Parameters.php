@@ -23,6 +23,8 @@ use Chevere\Interfaces\Parameter\ParametersInterface;
 use Ds\Map;
 use Ds\Set;
 
+use function DeepCopy\deep_copy;
+
 final class Parameters implements ParametersInterface
 {
     use MapTrait;
@@ -34,6 +36,12 @@ final class Parameters implements ParametersInterface
     {
         $this->map = new Map;
         $this->required = new Set;
+    }
+
+    public function __clone()
+    {
+        $this->map = new Map(deep_copy($this->map->toArray()));
+        $this->required = new Set(deep_copy($this->required->toArray()));
     }
 
     public function withAddedRequired(ParameterInterface $parameter): ParametersInterface

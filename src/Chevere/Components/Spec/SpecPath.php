@@ -37,10 +37,7 @@ final class SpecPath implements SpecPathInterface
                     ->notEndsWith('/');
             } catch (Throwable $e) {
                 throw new InvalidArgumentException(
-                    (new Message('Invalid argument %argument% provided'))
-                        ->code('%argument%', $path),
-                    0,
-                    $e
+                    new Message($e->getMessage())
                 );
             }
         }

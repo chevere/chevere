@@ -34,6 +34,8 @@ final class WorkflowTest extends TestCase
         $workflow = new Workflow($name);
         $this->assertSame($name, $workflow->name());
         $this->assertCount(0, $workflow);
+        $this->expectException(OutOfBoundsException::class);
+        $workflow->getVar('not-found');
     }
 
     public function testWithAdded(): void

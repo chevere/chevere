@@ -20,7 +20,6 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Spec\SpecEndpointsInterface;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
 use TypeError;
-use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class SpecEndpoints implements SpecEndpointsInterface
 {
@@ -42,28 +41,25 @@ final class SpecEndpoints implements SpecEndpointsInterface
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $methodName);
     }
 
+    /**
+     * @throws TypeException
+     * @throws OutOfBoundsException
+     */
     public function get(string $methodName): string
     {
-        $return = null;
         try {
-            /**
-             * @var string $return
-             */
-            $return = $this->map->get($methodName);
-
-            return $return;
+            return $this->map->get($methodName);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(
-                returnTypeExceptionMessage('string', $return)
-            );
-        } catch (\OutOfBoundsException $e) {
+            throw new TypeException(new Message($e->getMessage()));
+        }
+        // @codeCoverageIgnoreEnd
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Method name %methodName% not found'))
                     ->code('%methodName%', $methodName)
             );
         }
-        // @codeCoverageIgnoreEnd
     }
 }

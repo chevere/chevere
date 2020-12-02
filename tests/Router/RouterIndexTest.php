@@ -20,10 +20,10 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\RouterIndex;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Router\RouteIdentifierInterface;
 use Chevere\Tests\Router\_resources\src\TestController;
-use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class RouterIndexTest extends TestCase
@@ -32,6 +32,27 @@ final class RouterIndexTest extends TestCase
     {
         $routerIndex = new RouterIndex();
         $this->assertSame([], $routerIndex->toArray());
+    }
+
+    public function testGetRouteIdentifier(): void
+    {
+        $routerIndex = new RouterIndex();
+        $this->expectException(OutOfBoundsException::class);
+        $routerIndex->getRouteIdentifier('not-found');
+    }
+
+    public function testGetGroupRouteNames(): void
+    {
+        $routerIndex = new RouterIndex();
+        $this->expectException(OutOfBoundsException::class);
+        $routerIndex->getGroupRouteNames('not-found');
+    }
+
+    public function testGetRouteGroup(): void
+    {
+        $routerIndex = new RouterIndex();
+        $this->expectException(OutOfBoundsException::class);
+        $routerIndex->getRouteGroup('not-found');
     }
 
     public function testWithAdded(): void

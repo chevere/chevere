@@ -41,6 +41,10 @@ final class RouterDispatcher implements RouterDispatcherInterface
             ->dispatch($httpMethod, $uri);
         switch ($info[0]) {
             default:
+                throw new LogicException(
+                    (new Message('Unexpected response code %code% from route dispatcher'))
+                        ->code('%code%', $info[0])
+                );
             case Dispatcher::NOT_FOUND:
                 throw new RouteNotFoundException(
                     (new Message('No route found for %uri%'))
@@ -57,9 +61,5 @@ final class RouterDispatcher implements RouterDispatcherInterface
             case Dispatcher::FOUND:
                 return new Routed(new ControllerName($info[1]), $info[2]);
         }
-        throw new LogicException(
-            (new Message('Unexpected response code %code% from route dispatcher'))
-                ->code('%code%', $info[0])
-        );
     }
 }

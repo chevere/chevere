@@ -20,6 +20,7 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Routables;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -42,5 +43,7 @@ final class RoutablesTest extends TestCase
         $routables = (new Routables)->withPut($routable);
         $this->assertTrue($routables->has($key));
         $this->assertSame($routable, $routables->get($key));
+        $this->expectException(OutOfBoundsException::class);
+        $routables->get('not-found');
     }
 }

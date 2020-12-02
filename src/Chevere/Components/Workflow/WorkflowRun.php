@@ -27,7 +27,6 @@ use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Ds\Map;
 use Ramsey\Uuid\Uuid;
 use TypeError;
-use function Chevere\Components\Type\returnTypeExceptionMessage;
 
 final class WorkflowRun implements WorkflowRunInterface
 {
@@ -93,20 +92,18 @@ final class WorkflowRun implements WorkflowRunInterface
         return $this->steps->hasKey($name->toString());
     }
 
+    /**
+     * @throws TypeException
+     * @throws OutOfBoundsException
+     */
     public function get(StepInterface $name): ResponseInterface
     {
-        $return = null;
         try {
-            /** @var ResponseInterface $return */
-            $return = $this->steps->get($name->toString());
-
-            return $return;
+            return $this->steps->get($name->toString());
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(
-                returnTypeExceptionMessage(ResponseInterface::class, $return)
-            );
+            throw new TypeException(new Message($e->getMessage()));
         }
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {

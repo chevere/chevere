@@ -30,7 +30,6 @@ use Ds\Vector;
 use Generator;
 use Safe\Exceptions\PcreException;
 use TypeError;
-use function Chevere\Components\Type\returnTypeExceptionMessage;
 use function Safe\preg_match;
 
 final class Workflow implements WorkflowInterface
@@ -112,30 +111,27 @@ final class Workflow implements WorkflowInterface
         return $this->map->hasKey($step->toString());
     }
 
+    /**
+     * @throws TypeException
+     * @throws OutOfBoundsException
+     */
     public function get(StepInterface $step): TaskInterface
     {
-        $return = null;
         $step = $step->toString();
         try {
-            /**
-             * @var TaskInterface $return
-             */
-            $return = $this->map->get($step);
-
-            return $return;
+            return $this->map->get($step);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(
-                returnTypeExceptionMessage(TaskInterface::class, $return)
-            );
-        } catch (\OutOfBoundsException $e) {
+            throw new TypeException(new Message($e->getMessage()));
+        }
+        // @codeCoverageIgnoreEnd
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Task %name% not found'))
                     ->code('%name%', $step)
             );
         }
-        // @codeCoverageIgnoreEnd
     }
 
     public function parameters(): ParametersInterface
@@ -153,43 +149,40 @@ final class Workflow implements WorkflowInterface
         return $this->vars->hasKey($variable);
     }
 
+    /**
+     * @throws TypeException
+     * @throws OutOfBoundsException
+     */
     public function getVar(string $variable): array
     {
-        $return = null;
         try {
-            /** @var array $return */
-            $return = $this->vars->get($variable);
-
-            return $return;
+            return $this->vars->get($variable);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(
-                returnTypeExceptionMessage('array', $return)
-            );
-        } catch (\OutOfBoundsException $e) {
+            throw new TypeException(new Message($e->getMessage()));
+        }
+        // @codeCoverageIgnoreEnd
+        catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Variable %variable% not found'))
                     ->code('%variable%', $variable)
             );
         }
-        // @codeCoverageIgnoreEnd
     }
 
+    /**
+     * @throws TypeException
+     * @throws OutOfBoundsException
+     */
     public function getExpected(StepInterface $step): array
     {
-        $return = null;
         try {
-            /** @var array $return */
-            $return = $this->expected->get($step->toString());
-
-            return $return;
+            return $this->expected->get($step->toString());
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(
-                returnTypeExceptionMessage('array', $return)
-            );
+            throw new TypeException(new Message($e->getMessage()));
         }
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {
