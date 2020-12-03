@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Action;
 
 use Chevere\Interfaces\Action\ActionExecutedInterface;
+use Chevere\Interfaces\Action\ActionRunnerInterface;
 use Chevere\Interfaces\Action\ControllerInterface;
-use Chevere\Interfaces\Action\ControllerRunnerInterface;
 use Throwable;
 
-final class ActionRunner implements ControllerRunnerInterface
+final class ActionRunner implements ActionRunnerInterface
 {
     private ControllerInterface $controller;
 

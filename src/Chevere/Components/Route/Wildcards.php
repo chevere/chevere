@@ -19,7 +19,6 @@ use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\WildcardsInterface;
 use Ds\Map;
 use RangeException;
-
 use function DeepCopy\deep_copy;
 
 final class Wildcards implements WildcardsInterface
@@ -43,8 +42,8 @@ final class Wildcards implements WildcardsInterface
 
     public function __clone()
     {
-        $this->map = new Map(deep_copy($this->map->toArray()));
-        $this->index = new Map(deep_copy($this->index->toArray()));
+        $this->map = deep_copy($this->map);
+        $this->index = new Map($this->index->toArray());
     }
 
     public function withAddedWildcard(RouteWildcardInterface $routeWildcard): WildcardsInterface

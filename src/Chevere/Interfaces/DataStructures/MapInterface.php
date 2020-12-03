@@ -13,21 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\DataStructures;
 
-use Countable;
-use Generator;
-
 /**
- * Describes the component in charge of easing the work around `Ds\Map`.
+ * Describes the component in charge of defining an immutable map.
  */
-interface MapInterface extends Countable
+interface MapInterface extends MappedInterface
 {
-    /**
-     * Provides access to the map keys.
-     */
-    public function keys(): array;
+    public function __construct(array $namedArguments);
 
-    /**
-     * Provides the generator.
-     */
-    public function getGenerator(): Generator;
+    public function withPut(string $key, $value): MapInterface;
+
+    public function assertHasKey(string ...$key): void;
+
+    public function get(string $key);
 }

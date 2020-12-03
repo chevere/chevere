@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Router;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\DataStructures\MapInterface;
+use Chevere\Interfaces\DataStructures\MappedInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `RoutableInterface`.
  */
-interface RoutablesInterface extends MapInterface
+interface RoutablesInterface extends MappedInterface
 {
     /**
      * Return an instance with the specified `$routable`.

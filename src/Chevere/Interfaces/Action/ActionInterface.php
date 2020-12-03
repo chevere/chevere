@@ -25,9 +25,14 @@ interface ActionInterface extends GetDescriptionInterface
     public function __construct();
 
     /**
-     * Defines default parameters.
+     * Defines parameters.
      */
     public function getParameters(): ParametersInterface;
+
+    /**
+     * Provides access to the parameters.
+     */
+    public function parameters(): ParametersInterface;
 
     /**
      * Defines expected response data parameters when executing `run` method.
@@ -35,8 +40,13 @@ interface ActionInterface extends GetDescriptionInterface
     public function getResponseDataParameters(): ParametersInterface;
 
     /**
+     * Provides access to the expected response data parameters.
+     */
+    public function responseDataParameters(): ParametersInterface;
+
+    /**
      * Retrieves a new success response with type-hinted data.
-     * 
+     *
      * @param array<string, mixed> $data
      */
     public function getResponseSuccess(array $data): ResponseSuccessInterface;
@@ -47,17 +57,7 @@ interface ActionInterface extends GetDescriptionInterface
     public function description(): string;
 
     /**
-     * Provides access to the parameters.
-     */
-    public function parameters(): ParametersInterface;
-
-    /**
-     * Provides access to the expected response data parameters.
-     */
-    public function responseDataParameters(): ParametersInterface;
-
-    /**
-     * Method called when running the action. This method MUST not alter the state of the instance.
+     * Method called when running the action.
      */
     public function run(array $arguments): ResponseSuccessInterface;
 }

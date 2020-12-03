@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Spec;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\DataStructures\MapInterface;
+use Chevere\Interfaces\DataStructures\MappedInterface;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
 
 /**
  * Describes the component in charge of collecting objects implementing `RouteEndpointSpecInterface`.
  */
-interface SpecEndpointsInterface extends MapInterface
+interface SpecEndpointsInterface extends MappedInterface
 {
     /**
      * Return an instance with the specified `$routeEndpointSpec`.

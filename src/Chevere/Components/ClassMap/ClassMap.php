@@ -22,8 +22,6 @@ use Chevere\Exceptions\ClassMap\StringMappedException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Ds\Map;
 
-use function DeepCopy\deep_copy;
-
 final class ClassMap implements ClassMapInterface
 {
     use MapTrait;
@@ -43,8 +41,8 @@ final class ClassMap implements ClassMapInterface
 
     public function __clone()
     {
-        $this->map = new Map(deep_copy($this->map->toArray()));
-        $this->flip = new Map(deep_copy($this->flip->toArray()));
+        $this->map = new Map($this->map->toArray());
+        $this->flip = new Map($this->flip->toArray());
     }
 
     public function withPut(string $className, string $key): ClassMapInterface

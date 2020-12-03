@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Workflow;
 
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\DataStructures\MapInterface;
+use Chevere\Interfaces\DataStructures\MappedInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting stepped tasks.
  */
-interface StepsInterface extends MapInterface
+interface StepsInterface extends MappedInterface
 {
     /**
      * @throws OverflowException

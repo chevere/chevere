@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -26,7 +25,7 @@ final class ParametersTest extends TestCase
     {
         $name = 'name';
         $parameters = new Parameters;
-        $this->assertCount(0, $parameters->toArray());
+        $this->assertCount(0, $parameters);
         $this->assertFalse($parameters->has($name));
         $this->expectException(OutOfBoundsException::class);
         $parameters->get($name);
@@ -37,7 +36,7 @@ final class ParametersTest extends TestCase
         $name = 'name';
         $parameter = new StringParameter($name);
         $parameters = (new Parameters)->withAddedRequired($parameter);
-        $this->assertCount(1, $parameters->toArray());
+        $this->assertCount(1, $parameters);
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
@@ -50,7 +49,7 @@ final class ParametersTest extends TestCase
         $name = 'name';
         $parameter = new StringParameter($name);
         $parameters = (new Parameters)->withAddedOptional($parameter);
-        $this->assertCount(1, $parameters->toArray());
+        $this->assertCount(1, $parameters);
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isOptional($name));
         $this->assertSame($parameter, $parameters->get($name));

@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\Action;
 /**
  * Describes the component in charge of running the controller.
  */
-interface ControllerRunnerInterface
+interface ActionRunnerInterface
 {
     public function __construct(ControllerInterface $controller);
 

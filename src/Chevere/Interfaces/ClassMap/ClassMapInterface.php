@@ -16,14 +16,13 @@ namespace Chevere\Interfaces\ClassMap;
 use Chevere\Exceptions\ClassMap\ClassNotExistsException;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;
 use Chevere\Exceptions\ClassMap\StringMappedException;
-use Chevere\Interfaces\DataStructures\MapInterface;
-use Chevere\Interfaces\To\ToArrayInterface;
+use Chevere\Interfaces\DataStructures\MappedInterface;
 use Generator;
 
 /**
  * Describes the component in charge of mapping classes to keys.
  */
-interface ClassMapInterface extends MapInterface, ToArrayInterface
+interface ClassMapInterface extends MappedInterface
 {
     /**
      * Return an instance with the specified className mapping.
@@ -68,13 +67,9 @@ interface ClassMapInterface extends MapInterface, ToArrayInterface
     public function getGenerator(): Generator;
 
     /**
-     * Provides access to the class map.
+     * Provides access to the class map `className => key`
      *
-     * ```php
-     * return [
-     *     'className' => 'string',
-     * ]
-     * ```
+     * @return array<string, string>
      */
     public function toArray(): array;
 }

@@ -17,6 +17,8 @@ use Chevere\Tests\DataStructures\src\UsesMapTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
+use function DeepCopy\deep_copy;
+
 final class MapTraitTest extends TestCase
 {
     public function testConstruct(): void
@@ -49,5 +51,7 @@ final class MapTraitTest extends TestCase
         $mapClone = $mapClone->withPut($keyAdd, $object);
         $this->assertSame($object, $mapClone->map()->get($keyAdd));
         $this->assertNotSame($object, $mapClone->map()->get($key));
+        $mapClone = $mapClone->withPut($keyAdd, deep_copy($object));
+        $this->assertNotSame($object, $mapClone->map()->get($keyAdd));
     }
 }

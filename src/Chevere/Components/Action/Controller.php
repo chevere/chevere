@@ -13,27 +13,43 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Action;
 
-use Chevere\Components\Action\Action;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Parameter\Arguments;
+use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 
 abstract class Controller extends Action implements ControllerInterface
 {
+    private ParametersInterface $contextParameters;
+
+    private ArgumentsInterface $contextArguments;
+
     private TypeInterface $parametersType;
+
+    abstract public function run(array $arguments): ResponseSuccessInterface;
+
+    public function getContextParameters(): ParametersInterface
+    {
+        return new Parameters;
+    }
+
+    public function withSetUp(): self
+    {
+        return $this;
+    }
 
     public function __construct()
     {
         parent::__construct();
-        $this->parametersType = new Type($this->getParametersTypeName());
+        $this->contextParameters = $this->getContextParameters();
+        $this->parametersType = new Type(self::PARAMETER_TYPE);
         $this->assertParametersType();
-    }
-
-    public function getParametersTypeName(): string
-    {
-        return Type::STRING;
     }
 
     final public function assertParametersType(): void
@@ -54,8 +70,26 @@ abstract class Controller extends Action implements ControllerInterface
         }
     }
 
-    public function withSetUp(): self
+    final public function withContextArguments(array $namedArguments): self
     {
-        return $this;
+        $new = clone $this;
+        $new->contextArguments = new Arguments($new->contextParameters, $namedArguments);
+
+        return $new;
+    }
+
+    final public function contextArguments(): ArgumentsInterface
+    {
+        return $this->contextArguments;
+    }
+
+    final public function hasContextArguments(): bool
+    {
+        return isset($this->contextArguments);
+    }
+
+    final public function contextParameters(): ParametersInterface
+    {
+        return $this->contextParameters;
     }
 }

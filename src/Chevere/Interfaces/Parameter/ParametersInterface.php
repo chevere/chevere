@@ -15,30 +15,18 @@ namespace Chevere\Interfaces\Parameter;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Parameter\ParameterInterface;
-use Countable;
+use Chevere\Interfaces\DataStructures\MappedInterface;
 use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `ParameterInterface`.
  */
-interface ParametersInterface extends Countable
+interface ParametersInterface extends MappedInterface
 {
     /**
      * @return Generator<string, ParameterInterface>
      */
     public function getGenerator(): Generator;
-
-    /**
-     * Provides access to the array representation of this instance.
-     *
-     * ```php
-     * return [
-     *     'name' => $parameter,
-     * ];
-     * ```
-     */
-    public function toArray(): array;
 
     /**
      * Return an instance with the specified required `$parameter` instance added.

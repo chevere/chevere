@@ -22,7 +22,6 @@ use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Ds\Set;
-use function DeepCopy\deep_copy;
 
 trait ParameterTrait
 {
@@ -36,7 +35,7 @@ trait ParameterTrait
 
     public function __clone()
     {
-        $this->attributes = new Set(deep_copy($this->attributes->toArray()));
+        $this->attributes = new Set($this->attributes->toArray());
     }
 
     public function withDescription(string $description): ParameterInterface
