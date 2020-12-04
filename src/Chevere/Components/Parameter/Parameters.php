@@ -41,35 +41,42 @@ final class Parameters implements ParametersInterface
         $this->required = new Set($this->required->toArray());
     }
 
-    public function withAddedRequired(ParameterInterface $parameter): ParametersInterface
+    public function withAddedRequired(ParameterInterface ...$parameter): ParametersInterface
     {
-        $this->assertNoOverflow($parameter);
         $new = clone $this;
-        $new->map->put($parameter->name(), $parameter);
-        $new->required->add($parameter->name());
-
-        return $new;
-    }
-
-    public function withAddedOptional(ParameterInterface $parameter): ParametersInterface
-    {
-        $this->assertNoOverflow($parameter);
-        $new = clone $this;
-        $new->map->put($parameter->name(), $parameter);
-
-        return $new;
-    }
-
-    public function withModify(ParameterInterface $parameter): ParametersInterface
-    {
-        if (!$this->map->hasKey($parameter->name())) {
-            throw new OutOfBoundsException(
-                (new Message("Parameter %name% doesn't exists"))
-                    ->code('%name%', $parameter->name())
-            );
+        foreach ($parameter as $param) {
+            $new->assertNoOverflow($param);
+            $new->map->put($param->name(), $param);
+            $new->required->add($param->name());
         }
+
+        return $new;
+    }
+
+    public function withAddedOptional(ParameterInterface ...$parameter): ParametersInterface
+    {
         $new = clone $this;
-        $new->map->put($parameter->name(), $parameter);
+        foreach ($parameter as $param) {
+            $new->assertNoOverflow($param);
+            $new->map->put($param->name(), $param);
+        }
+
+        return $new;
+    }
+
+    public function withModify(ParameterInterface ...$parameter): ParametersInterface
+    {
+        $new = clone $this;
+        foreach ($parameter as $param) {
+            if (!$new->map->hasKey($param->name())) {
+                throw new OutOfBoundsException(
+                    (new Message("Parameter %name% doesn't exists"))
+                        ->code('%name%', $param->name())
+                );
+            }
+        }
+
+        $new->map->put($param->name(), $param);
 
         return $new;
     }
