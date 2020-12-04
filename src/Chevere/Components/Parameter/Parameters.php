@@ -117,14 +117,14 @@ final class Parameters implements ParametersInterface
         }
     }
 
-    public function countRequired(): int
+    public function required(): Set
     {
-        return $this->required->count();
+        return new Set($this->required->toArray());
     }
 
-    public function countOptional(): int
+    public function optional(): Set
     {
-        return $this->optional->count();
+        return new Set($this->optional->toArray());
     }
 
     private function assertNoOutOfBounds(string $parameter): void

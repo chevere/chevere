@@ -16,6 +16,7 @@ namespace Chevere\Interfaces\Parameter;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\DataStructures\MappedInterface;
+use Ds\Set;
 use Generator;
 
 /**
@@ -82,7 +83,7 @@ interface ParametersInterface extends MappedInterface
      */
     public function get(string $parameter): ParameterInterface;
 
-    public function countRequired(): int;
+    public function required(): Set;
 
-    public function countOptional(): int;
+    public function optional(): Set;
 }
