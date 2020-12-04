@@ -23,6 +23,7 @@ use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Type\Type;
+use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
@@ -34,7 +35,7 @@ use TypeError;
 
 final class ArgumentsTest extends TestCase
 {
-    public function testInvalidArguments(): void
+    public function testInvalidArgument(): void
     {
         $parameters = (new Parameters)
             ->withAddedRequired(
@@ -68,17 +69,20 @@ final class ArgumentsTest extends TestCase
         $arguments->get($notFoundKey);
     }
 
-    public function testInvalidParameterName(): void
+    public function testInvalidParameterCount(): void
     {
         $parameters = new Parameters;
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(ArgumentCountException::class);
         new Arguments($parameters, ['id' => '123']);
     }
 
-    public function testInvalidArgumentName(): void
+    public function testInvalidParameters(): void
     {
-        $parameters = new Parameters;
-        $this->expectException(OutOfBoundsException::class);
+        $parameters = (new Parameters)
+            ->withAddedRequired(
+                new StringParameter('test')
+            );
+        $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, ['id' => '123']);
     }
 
@@ -89,11 +93,23 @@ final class ArgumentsTest extends TestCase
                 (new StringParameter('id'))
                     ->withRegex(new Regex('/^[0-9]+$/')),
             );
-        $this->expectException(ArgumentRegexMatchException::class);
+        $this->expectException(InvalidArgumentException::class);
         (new Arguments($parameters, ['id' => 'abc']));
     }
 
-    public function testPut(): void
+    public function testWithMissingArgument(): void
+    {
+        $name = 'test';
+        $parameters = (new Parameters)
+            ->withAddedRequired(
+                new StringParameter($name)
+            );
+        $arguments = new Arguments($parameters, [$name => '123']);
+        $this->expectException(ArgumentRequiredException::class);
+        $arguments->withArgument('not-found', 1234);
+    }
+
+    public function testWithArgument(): void
     {
         $name = 'id';
         $value = '123';
@@ -122,7 +138,7 @@ final class ArgumentsTest extends TestCase
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $arguments = [];
-        $this->expectException(ArgumentRequiredException::class);
+        $this->expectException(ArgumentCountException::class);
         new Arguments($parameters, $arguments);
     }
 

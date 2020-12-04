@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Exceptions\Core;
 
-use Chevere\Exceptions\Core\Exception;
-
 /**
- * Exception thrown when the argument count gives the cacha.
+ * Exception thrown when the argument count is unexpected.
  */
 final class ArgumentCountException extends Exception
 {

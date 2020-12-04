@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Parameter;
 
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
@@ -31,17 +32,34 @@ final class Arguments implements ArgumentsInterface
 
     public array $arguments;
 
-    private array $missing;
+    private array $errors;
 
     public function __construct(ParametersInterface $parameters, array $arguments)
     {
         $this->parameters = $parameters;
         $this->arguments = $arguments;
-        $this->missing = [];
-        $this->assertNotMissing();
-        foreach ($this->arguments as $name => $value) {
-            $this->assertParameter((string) $name);
-            $this->assertType((string) $name, $value);
+        $this->assertCount();
+        $this->errors = [];
+        foreach ($this->parameters->getGenerator() as $parameter) {
+            $this->handleParameter($parameter);
+        }
+        if ($this->errors !== []) {
+            throw new InvalidArgumentException(
+                (new Message(implode(', ', $this->errors)))
+            );
+        }
+    }
+
+    private function assertCount(): void
+    {
+        $numParameters = $this->parameters->countRequired();
+        $numArguments = count($this->arguments);
+        if ($numParameters !== $numArguments) {
+            throw new ArgumentCountException(
+                (new Message('Expecting %numParameters% required arguments, %numArguments% provided'))
+                    ->code('%numParameters%', (string) $numParameters)
+                    ->code('%numArguments%', (string) $numArguments)
+            );
         }
     }
 
@@ -55,9 +73,9 @@ final class Arguments implements ArgumentsInterface
         return $this->arguments;
     }
 
-    public function withArgument(string $name, string $value): ArgumentsInterface
+    public function withArgument(string $name, $value): ArgumentsInterface
     {
-        $this->assertParameter($name);
+        $this->assertHasParameter($name);
         $this->assertType($name, $value);
         $new = clone $this;
         $new->arguments[$name] = $value;
@@ -113,8 +131,8 @@ final class Arguments implements ArgumentsInterface
         $type = $parameter->type();
         if (!$type->validate($value)) {
             throw new InvalidArgumentException(
-                (new Message('Expecting value of argument %argument% of type %expected%, %provided% provided'))
-                    ->strong('%argument%', $name)
+                (new Message('Parameter %name%: Expecting value of type %expected%, %provided% provided'))
+                    ->strong('%name%', $name)
                     ->strong('%expected%', $type->typeHinting())
                     ->code('%provided%', varType($value))
             );
@@ -127,23 +145,29 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    private function assertParameter(string $name): void
+    /**
+     * @throws ArgumentRequiredException
+     */
+    private function assertHasParameter(string $name): void
     {
         if ($this->parameters->has($name) === false) {
-            throw new OutOfBoundsException(
+            throw new ArgumentRequiredException(
                 (new Message('Parameter %parameter% not found'))
                     ->code('%parameter%', $name)
             );
         }
     }
 
+    /**
+     * @throws ArgumentRegexMatchException
+     */
     private function assertStringArgument(StringParameterInterface $parameter, string $argument): void
     {
         $regexString = $parameter->regex()->toString();
         if (preg_match($regexString, $argument) !== 1) {
             throw new ArgumentRegexMatchException(
-                (new Message("Argument %argument% provided for parameter %parameter% doesn't match the regex %regex%"))
-                    ->code('%argument%', $argument)
+                (new Message("Parameter %name%: Argument provided doesn't match the regex %regex%"))
+                    ->strong('%name%', $parameter->name())
                     ->code('%parameter%', $parameter->name())
                     ->code('%regex%', $regexString)
             );
@@ -152,30 +176,27 @@ final class Arguments implements ArgumentsInterface
 
     private function handleParameter(ParameterInterface $parameter): void
     {
-        if (!$this->has($parameter->name())
+        $name = $parameter->name();
+        if (!$this->has($name)
             && $parameter instanceof StringParameterInterface
             && $parameter->default() !== ''
         ) {
-            $this->arguments[$parameter->name()] = $parameter->default();
+            $this->arguments[$name] = $parameter->default();
         }
-        if ($this->parameters->isOptional($parameter->name())) {
+        if ($this->parameters->isOptional($name)) {
             return;
         }
-        if (!$this->has($parameter->name())) {
-            $this->missing[] = $parameter->name();
-        }
-    }
+        if (!$this->has($name)) {
+            $this->errors[] = (new Message('Parameter %name%: Missing required argument of type %type%'))
+                ->code('%type%', $parameter->type()->typeHinting())
+                ->code('%name%', $name);
 
-    private function assertNotMissing(): void
-    {
-        foreach ($this->parameters->getGenerator() as $parameter) {
-            $this->handleParameter($parameter);
+            return;
         }
-        if ($this->missing !== []) {
-            throw new ArgumentRequiredException(
-                (new Message('Missing required argument(s): %message%'))
-                    ->code('%message%', implode(', ', $this->missing))
-            );
+        try {
+            $this->assertType($name, $this->get($name));
+        } catch (Throwable $e) {
+            $this->errors[] = $e->getMessage();
         }
     }
 }

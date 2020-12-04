@@ -87,19 +87,19 @@ final class WorkflowRun implements WorkflowRunInterface
         return $new;
     }
 
-    public function has(StepInterface $name): bool
+    public function has(string $name): bool
     {
-        return $this->steps->hasKey($name->toString());
+        return $this->steps->hasKey($name);
     }
 
     /**
      * @throws TypeException
      * @throws OutOfBoundsException
      */
-    public function get(StepInterface $name): ResponseInterface
+    public function get(string $name): ResponseInterface
     {
         try {
-            return $this->steps->get($name->toString());
+            return $this->steps->get($name);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
@@ -109,7 +109,7 @@ final class WorkflowRun implements WorkflowRunInterface
         catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Task %name% not found'))
-                    ->code('%name%', $name->toString())
+                    ->code('%name%', $name)
             );
         }
     }

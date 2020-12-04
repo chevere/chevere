@@ -49,9 +49,4 @@ interface ControllerInterface extends ActionInterface
      * Provides access to context parameters.
      */
     public function contextParameters(): ParametersInterface;
-
-    /**
-     * Returns a new instance with setup made. Useful to wrap pluggable instructions on parameters and description.
-     */
-    public function withSetUp(): ControllerInterface;
 }

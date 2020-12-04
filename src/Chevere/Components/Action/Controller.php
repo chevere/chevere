@@ -39,11 +39,6 @@ abstract class Controller extends Action implements ControllerInterface
         return new Parameters;
     }
 
-    public function withSetUp(): self
-    {
-        return $this;
-    }
-
     public function __construct()
     {
         parent::__construct();

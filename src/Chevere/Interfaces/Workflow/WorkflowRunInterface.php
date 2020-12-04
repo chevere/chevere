@@ -49,10 +49,10 @@ interface WorkflowRunInterface
     /**
      * Indicates whether the instance has the given `$step`. Will return `true` if step has ran.
      */
-    public function has(StepInterface $step): bool;
+    public function has(string $step): bool;
 
     /**
      * Provides access to the ResponseInterface instance for the given `$step`.
      */
-    public function get(StepInterface $step): ResponseInterface;
+    public function get(string $step): ResponseInterface;
 }

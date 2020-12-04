@@ -55,11 +55,10 @@ final class WorkflowRunner implements WorkflowRunnerInterface
          * @var TaskInterface $task
          */
         foreach ($this->workflowRun->workflow()->getGenerator() as $step => $task) {
-            $step = new Step($step);
             if ($this->workflowRun->has($step)) {
                 continue; // @codeCoverageIgnore
             }
-            $this->step = $step;
+            $this->step = new Step($step);
             $this->task = $task;
             $this->actionName = $this->task->action();
             $this->action = new $this->actionName;
@@ -101,7 +100,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             $reference = $this->workflowRun->workflow()->getVar($taskArgument);
             if (isset($reference[1])) {
                 $arguments[$name] = $this->workflowRun
-                    ->get(new Step($reference[0]))->data()[$reference[1]];
+                    ->get($reference[0])->data()[$reference[1]];
             } else {
                 $arguments[$name] = $this->workflowRun
                     ->arguments()->get($reference[0]);

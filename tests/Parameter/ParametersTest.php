@@ -26,6 +26,8 @@ final class ParametersTest extends TestCase
         $name = 'name';
         $parameters = new Parameters;
         $this->assertCount(0, $parameters);
+        $this->assertSame(0, $parameters->countOptional());
+        $this->assertSame(0, $parameters->countRequired());
         $this->assertFalse($parameters->has($name));
         $this->expectException(OutOfBoundsException::class);
         $parameters->get($name);
@@ -37,6 +39,8 @@ final class ParametersTest extends TestCase
         $parameter = new StringParameter($name);
         $parameters = (new Parameters)->withAddedRequired($parameter);
         $this->assertCount(1, $parameters);
+        $this->assertSame(0, $parameters->countOptional());
+        $this->assertSame(1, $parameters->countRequired());
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
@@ -50,6 +54,8 @@ final class ParametersTest extends TestCase
         $parameter = new StringParameter($name);
         $parameters = (new Parameters)->withAddedOptional($parameter);
         $this->assertCount(1, $parameters);
+        $this->assertSame(1, $parameters->countOptional());
+        $this->assertSame(0, $parameters->countRequired());
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isOptional($name));
         $this->assertSame($parameter, $parameters->get($name));

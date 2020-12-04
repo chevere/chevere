@@ -31,7 +31,7 @@ final class ControllerTest extends TestCase
 
     public function testController(): void
     {
-        $controller = (new ControllerTestController)->withSetUp();
+        $controller = new ControllerTestController;
         $this->assertFalse($controller->hasContextArguments());
         $this->assertSame(Type::STRING, $controller::PARAMETER_TYPE);
         $newController = $controller->withContextArguments([]);

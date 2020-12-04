@@ -46,7 +46,7 @@ final class WorkflowRunTest extends TestCase
         $this->assertSame($workflow, $workflowRun->workflow());
         $this->assertSame($arguments, $workflowRun->arguments()->toArray());
         $this->expectException(OutOfBoundsException::class);
-        $workflowRun->get(new Step('not-found'));
+        $workflowRun->get('not-found');
     }
 
     public function testWithAdded(): void
@@ -82,8 +82,8 @@ final class WorkflowRunTest extends TestCase
                 )
             );
         $this->assertTrue($workflow->hasVar('${step-0:response-0}'));
-        $this->assertTrue($workflowRun->has($step0));
-        $this->assertSame($responseData, $workflowRun->get($step0)->data());
+        $this->assertTrue($workflowRun->has($step0->toString()));
+        $this->assertSame($responseData, $workflowRun->get($step0->toString())->data());
     }
 
     public function testWithAddedNotFound(): void

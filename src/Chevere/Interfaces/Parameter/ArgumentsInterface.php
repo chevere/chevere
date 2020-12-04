@@ -16,7 +16,6 @@ namespace Chevere\Interfaces\Parameter;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
-use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\To\ToArrayInterface;
 use TypeError;
 
@@ -57,7 +56,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws ArgumentRegexMatchException
      * @throws OutOfBoundsException If `$name` is not a known controller parameter.
      */
-    public function withArgument(string $name, string $value): ArgumentsInterface;
+    public function withArgument(string $name, $value): ArgumentsInterface;
 
     /**
      * Indicates whether the instance has an argument for the parameter `$name`.

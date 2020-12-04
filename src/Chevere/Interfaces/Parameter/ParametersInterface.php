@@ -81,4 +81,8 @@ interface ParametersInterface extends MappedInterface
      * @throws OutOfBoundsException
      */
     public function get(string $parameter): ParameterInterface;
+
+    public function countRequired(): int;
+
+    public function countOptional(): int;
 }
