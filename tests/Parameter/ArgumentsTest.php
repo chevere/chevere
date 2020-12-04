@@ -52,9 +52,7 @@ final class ArgumentsTest extends TestCase
         ];
         $parameters = (new Parameters)
             ->withAddedRequired(
-                new IntegerParameter('id')
-            )
-            ->withAddedRequired(
+                new IntegerParameter('id'),
                 new StringParameter('name')
             );
         $arguments = new Arguments($parameters, $args);
@@ -89,7 +87,7 @@ final class ArgumentsTest extends TestCase
         $parameters = (new Parameters)
             ->withAddedRequired(
                 (new StringParameter('id'))
-                    ->withRegex(new Regex('/^[0-9]+$/'))
+                    ->withRegex(new Regex('/^[0-9]+$/')),
             );
         $this->expectException(ArgumentRegexMatchException::class);
         (new Arguments($parameters, ['id' => 'abc']));

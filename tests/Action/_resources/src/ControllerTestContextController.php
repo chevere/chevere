@@ -42,9 +42,7 @@ final class ControllerTestContextController extends Controller
     {
         return (new Parameters)
             ->withAddedRequired(
-                new IntegerParameter('userId')
-            )
-            ->withAddedRequired(
+                new IntegerParameter('userId'),
                 new IntegerParameter('contextId')
             );
     }

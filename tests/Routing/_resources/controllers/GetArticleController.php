@@ -27,7 +27,7 @@ final class GetArticleController extends Controller
         return (new Parameters)
             ->withAddedRequired(
                 (new StringParameter('id'))
-                    ->withRegex(new Regex('/^d+$/'))
+                    ->withRegex(new Regex('/^d+$/')),
             );
     }
 

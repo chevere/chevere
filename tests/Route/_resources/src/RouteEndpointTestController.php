@@ -28,11 +28,11 @@ final class RouteEndpointTestController extends Controller
             ->withAddedRequired(
                 (new StringParameter('name'))
                     ->withRegex(new Regex('/^[\w]+$/'))
-                    ->withAddedAttribute('attr')
+                    ->withAddedAttribute('attr'),
             )
             ->withAddedRequired(
                 (new StringParameter('id'))
-                    ->withRegex(new Regex('/^[0-9]+$/'))
+                    ->withRegex(new Regex('/^[0-9]+$/')),
             );
     }
 

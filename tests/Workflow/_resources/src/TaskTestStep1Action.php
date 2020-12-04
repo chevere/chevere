@@ -25,8 +25,10 @@ class TaskTestStep1Action extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new StringParameter('foo'))
-            ->withAddedRequired(new IntegerParameter('bar'));
+            ->withAddedRequired(
+                new StringParameter('foo'),
+                new IntegerParameter('bar')
+            );
     }
 
     public function run(array $arguments): ResponseSuccessInterface

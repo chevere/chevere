@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Response;
 
-use Chevere\Components\Parameter\IntegerParameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseFailure;
