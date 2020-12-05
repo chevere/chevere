@@ -21,7 +21,7 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
-use Chevere\Interfaces\Workflow\StepInterface;
+use Chevere\Interfaces\Workflow\StepNameInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Ds\Map;
@@ -61,11 +61,11 @@ final class WorkflowRun implements WorkflowRunInterface
         return $this->arguments;
     }
 
-    public function withAdded(StepInterface $step, ResponseSuccessInterface $response): WorkflowRunInterface
+    public function withAdded(StepNameInterface $stepName, ResponseSuccessInterface $response): WorkflowRunInterface
     {
-        $this->workflow->get($step);
+        $this->workflow->get($stepName->toString());
         try {
-            $expected = $this->workflow->getExpected($step);
+            $expected = $this->workflow->getExpected($stepName);
         } catch (OutOfBoundsException $e) {
             $expected = [];
         }
@@ -82,7 +82,7 @@ final class WorkflowRun implements WorkflowRunInterface
             );
         }
         $new = clone $this;
-        $new->steps->put($step->toString(), $response);
+        $new->steps->put($stepName->toString(), $response);
 
         return $new;
     }

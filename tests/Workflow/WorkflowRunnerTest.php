@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
+use Chevere\Components\Workflow\StepName;
 use Chevere\Components\Workflow\Step;
-use Chevere\Components\Workflow\Task;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
 use Chevere\Components\Workflow\WorkflowRunner;
@@ -30,13 +30,9 @@ final class WorkflowRunnerTest extends TestCase
         $bar = 'mundo';
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                new Step('step-1'),
-                (new Task(WorkflowRunnerFunctionTestStep1::class))
-                    ->withArguments(['foo' => '${foo}'])
-            )
-            ->withAdded(
-                new Step('step-2'),
-                (new Task(WorkflowRunnerFunctionTestStep2::class))
+                (new Step('step-1', WorkflowRunnerFunctionTestStep1::class))
+                    ->withArguments(['foo' => '${foo}']),
+                (new Step('step-2', WorkflowRunnerFunctionTestStep2::class))
                     ->withArguments([
                         'foo' => '${step-1:response-1}',
                         'bar' => '${bar}'

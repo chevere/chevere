@@ -18,8 +18,8 @@ use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Service\ServiceDependantInterface;
+use Chevere\Interfaces\Workflow\StepNameInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
-use Chevere\Interfaces\Workflow\TaskInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunnerInterface;
 use Throwable;
@@ -28,9 +28,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
 {
     private WorkflowRunInterface $workflowRun;
 
-    private StepInterface $step;
-
-    private TaskInterface $task;
+    private StepInterface $task;
 
     private string $actionName;
 
@@ -51,14 +49,12 @@ final class WorkflowRunner implements WorkflowRunnerInterface
     public function run($container): WorkflowRunInterface
     {
         /**
-         * @var string $step
-         * @var TaskInterface $task
+         * @var StepInterface $task
          */
-        foreach ($this->workflowRun->workflow()->getGenerator() as $step => $task) {
-            if ($this->workflowRun->has($step)) {
+        foreach ($this->workflowRun->workflow()->getGenerator() as $task) {
+            if ($this->workflowRun->has($task->name())) {
                 continue; // @codeCoverageIgnore
             }
-            $this->step = new Step($step);
             $this->task = $task;
             $this->actionName = $this->task->action();
             $this->action = new $this->actionName;
@@ -75,7 +71,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             // @codeCoverageIgnoreEnd
             $this->addStep();
         }
-        unset($this->step, $this->task, $this->actionName, $this->action, $this->responseSuccess);
+        unset($this->task, $this->actionName, $this->action, $this->responseSuccess);
 
         return $this->workflowRun;
     }
@@ -114,7 +110,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
     {
         try {
             $this->workflowRun = $this->workflowRun->withAdded(
-                $this->step,
+                new StepName($this->task->name()),
                 $this->responseSuccess
             );
         }
@@ -123,7 +119,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             throw new LogicException(
                 (new Message('Unexpected response from method %method% at step %step%: %message%'))
                     ->code('%method%', $this->actionName . '::run')
-                    ->code('%step%', $this->step->toString())
+                    ->code('%step%', $this->task->name())
                     ->code('%message%', $e->getMessage())
             );
         }

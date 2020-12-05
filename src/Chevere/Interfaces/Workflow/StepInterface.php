@@ -14,17 +14,31 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Workflow;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\To\ToStringInterface;
 
 /**
- * Describes the component in charge of defining a step unit name.
+ * Describes the component in charge of defining a task (a unit of job).
  */
-interface StepInterface extends ToStringInterface
+interface StepInterface
 {
-    const REGEX_KEY = '/^[\w-]*$/';
-
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(string $name);
+    public function __construct(string $name, string $action);
+
+    /**
+     * Return an instance with the specified named `$arguments`.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified named `$arguments`.
+     */
+    public function withArguments(array $arguments): StepInterface;
+
+    public function name(): string;
+
+    public function action(): string;
+
+    /**
+     * @return string[]
+     */
+    public function arguments(): array;
 }

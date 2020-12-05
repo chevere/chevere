@@ -22,8 +22,8 @@ use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Workflow\StepNameInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
-use Chevere\Interfaces\Workflow\TaskInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Ds\Map;
 use Ds\Vector;
@@ -48,7 +48,7 @@ final class Workflow implements WorkflowInterface
 
     public function __construct(string $name)
     {
-        $this->name = (new Step($name))->toString();
+        $this->name = $name;
         $this->map = new Map;
         $this->steps = new Vector;
         $this->parameters = new Parameters;
@@ -56,68 +56,64 @@ final class Workflow implements WorkflowInterface
         $this->expected = new Map;
     }
 
-    public function count(): int
-    {
-        return $this->steps->count();
-    }
-
     public function name(): string
     {
         return $this->name;
     }
 
-    public function withAdded(StepInterface $step, TaskInterface $task): WorkflowInterface
+    public function count(): int
     {
-        $step = $step->toString();
-        $this->assertNoOverflow($step);
+        return $this->steps->count();
+    }    
+
+    public function withAdded(StepInterface ...$task): WorkflowInterface
+    {
         $new = clone $this;
-        $new->setParameters($step, $task);
-        $new->map->put($step, $task);
-        $new->steps->push($step);
+        foreach($task as $taskArg) {
+            $new->assertNoOverflow($taskArg);
+            $new->setParameters($taskArg);
+            $new->map->put($taskArg->name(), $taskArg);
+            $new->steps->push($taskArg->name());
+        }
+        
+        return $new;
+    }
+
+    public function withAddedBefore(string $before, StepInterface $task): WorkflowInterface
+    {
+        $new = clone $this;
+        $new->assertHasStepByName($before);
+        $new->assertNoOverflow($task);
+        $new->setParameters($task);
+        $new->map->put($task->name(), $task);
+        $new->steps->insert($new->getPosByName($before), $task->name());
 
         return $new;
     }
 
-    public function withAddedBefore(StepInterface $before, StepInterface $step, TaskInterface $task): WorkflowInterface
+    public function withAddedAfter(string $after, StepInterface $task): WorkflowInterface
     {
-        $before = $before->toString();
-        $step = $step->toString();
-        $this->assertHasStepByName($before);
-        $this->assertNoOverflow($step);
         $new = clone $this;
-        $new->setParameters($step, $task);
-        $new->map->put($step, $task);
-        $new->steps->insert($new->getPosByName($before), $step);
+        $new->assertHasStepByName($after);
+        $this->assertNoOverflow($task);
+        $new->setParameters($task);
+        $new->map->put($task->name(), $task);
+        $new->steps->insert($new->getPosByName($after) + 1, $task->name());
 
         return $new;
     }
 
-    public function withAddedAfter(StepInterface $after, StepInterface $step, TaskInterface $task): WorkflowInterface
+    public function has(string $step): bool
     {
-        $after = $after->toString();
-        $step = $step->toString();
-        $this->assertHasStepByName($after);
-        $this->assertNoOverflow($step);
-        $new = clone $this;
-        $new->setParameters($step, $task);
-        $new->map->put($step, $task);
-        $new->steps->insert($new->getPosByName($after) + 1, $step);
-
-        return $new;
-    }
-
-    public function has(StepInterface $step): bool
-    {
-        return $this->map->hasKey($step->toString());
+        return $this->map->hasKey($step);
     }
 
     /**
      * @throws TypeException
      * @throws OutOfBoundsException
      */
-    public function get(StepInterface $step): TaskInterface
+    public function get(string $step): StepInterface
     {
-        $step = $step->toString();
         try {
             return $this->map->get($step);
         }
@@ -175,7 +171,7 @@ final class Workflow implements WorkflowInterface
      * @throws TypeException
      * @throws OutOfBoundsException
      */
-    public function getExpected(StepInterface $step): array
+    public function getExpected(StepNameInterface $step): array
     {
         try {
             return $this->expected->get($step->toString());
@@ -196,21 +192,21 @@ final class Workflow implements WorkflowInterface
     public function getGenerator(): Generator
     {
         foreach ($this->steps as $step) {
-            yield $step => $this->get(new Step($step));
+            yield $step => $this->get($step);
         }
     }
 
-    private function assertNoOverflow(string $step): void
+    private function assertNoOverflow(StepInterface $task): void
     {
-        if ($this->map->hasKey($step)) {
+        if ($this->map->hasKey($task->name())) {
             throw new OverflowException(
                 (new Message('Step name %name% has been already added.'))
-                    ->code('%name%', $step)
+                    ->code('%name%', $task->name())
             );
         }
     }
 
-    private function setParameters(string $step, TaskInterface $task): void
+    private function setParameters(StepInterface $task): void
     {
         $action = $task->action();
         /**
@@ -224,7 +220,7 @@ final class Workflow implements WorkflowInterface
                     $this->vars->put($argument, [$matches[1]]);
                     $this->putParameter($parameters->get($matches[1]));
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $argument, $matches)) {
-                    $this->assertStepExists($step, $matches);
+                    $this->assertStepExists($task->name(), $matches);
                     $expected = $this->expected->get($matches[1], []);
                     $expected[] = $matches[2];
                     $this->expected->put($matches[1], $expected);
