@@ -23,7 +23,7 @@ use Chevere\Interfaces\Response\ResponseSuccessInterface;
  */
 interface WorkflowRunInterface
 {
-    public function __construct(WorkflowInterface $workflow, array $arguments);
+    public function __construct(WorkflowInterface $workflow, mixed ...$namedArguments);
 
     /**
      * Provides access to workflow uuid V4 (RFC 4122).
@@ -44,7 +44,7 @@ interface WorkflowRunInterface
     /**
      * @throws ArgumentCountException
      */
-    public function withAdded(StepNameInterface $step, ResponseSuccessInterface $response): WorkflowRunInterface;
+    public function withStepResponse(string $step, ResponseSuccessInterface $response): WorkflowRunInterface;
 
     /**
      * Indicates whether the instance has the given `$step`. Will return `true` if step has ran.

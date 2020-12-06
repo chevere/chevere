@@ -25,7 +25,7 @@ final class WorkflowMessageTest extends TestCase
 {
     public function getWorkflowRun(): WorkflowRunInterface
     {
-        return new WorkflowRun(new Workflow('test'), []);
+        return new WorkflowRun(new Workflow('test'));
     }
 
     public function testConstruct(): void

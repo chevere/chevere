@@ -40,38 +40,38 @@ final class WorkflowTest extends TestCase
     public function testWithAdded(): void
     {
         $workflow = new Workflow('test-workflow');
-        $task = new Step('task', WorkflowTestStep0::class);
-        $workflow = $workflow->withAdded($task);
+        $step = new Step(WorkflowTestStep0::class);
+        $workflow = $workflow->withAdded(step: $step);
         $this->assertCount(1, $workflow);
-        $this->assertTrue($workflow->has('task'));
-        $this->assertSame(['task'], $workflow->order());
+        $this->assertTrue($workflow->has('step'));
+        $this->assertSame(['step'], $workflow->order());
         $this->expectException(OverflowException::class);
-        $workflow->withAdded($task);
+        $workflow->withAdded(step: $step);
     }
 
     public function testWithAddedBeforeAndAfter(): void
     {
         $workflow = (new Workflow('test-workflow'))
-            ->withAdded(new Step('step', WorkflowTestStep0::class))
+            ->withAdded(step: new Step(WorkflowTestStep0::class))
             ->withAddedBefore(
                 'step',
-                new Step('step-before', WorkflowTestStep0::class)
+                stepBefore: new Step(WorkflowTestStep0::class)
             );
-        $this->assertSame(['step-before', 'step'], $workflow->order());
+        $this->assertSame(['stepBefore', 'step'], $workflow->order());
         $workflow = $workflow
             ->withAddedAfter(
-                'step-before',
-                new Step('step-after', WorkflowTestStep0::class)
+                'stepBefore',
+                stepAfter: new Step(WorkflowTestStep0::class)
             );
         $this->assertSame([
-            'step-before',
-            'step-after',
+            'stepBefore',
+            'stepAfter',
             'step'
         ], $workflow->order());
         $this->expectException(ArgumentRequiredException::class);
         $workflow->withAdded(
-            (new Step('step-3', WorkflowTestStep1::class))
-                ->withArguments(['missing' => '${not-found:reference}'])
+            step3: (new Step(WorkflowTestStep1::class))
+                ->withArguments(missing: '${not-found:reference}')
         );
     }
 
@@ -79,62 +79,63 @@ final class WorkflowTest extends TestCase
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                new Step('found', WorkflowTestStep0::class)
+                found: new Step(WorkflowTestStep0::class)
             );
         $this->expectException(OutOfBoundsException::class);
         $workflow->withAddedBefore(
             'not-found',
-            new Step('test', WorkflowTestStep0::class)
+            test: new Step(WorkflowTestStep0::class)
         );
     }
 
     public function testWithAddedAfterOutOfBounds(): void
     {
-        $task = new Step('found', WorkflowTestStep0::class);
+        $step = new Step(WorkflowTestStep0::class);
         $workflow = (new Workflow('test-workflow'))
-            ->withAdded($task);
+            ->withAdded(found: $step);
         $this->expectException(OutOfBoundsException::class);
         $workflow->withAddedAfter(
             'not-found',
-            new Step('test', WorkflowTestStep0::class)
+            test: new Step(WorkflowTestStep0::class)
         );
     }
 
     public function testWithAddedTaskWithArguments(): void
     {
-        $task = (new Step('name', WorkflowTestStep1::class))
-            ->withArguments(['foo' => 'foo']);
-        $workflow = (new Workflow('test-workflow'))->withAdded($task);
-        $this->assertSame($task, $workflow->get('name'));
+        $step = (new Step(WorkflowTestStep1::class))
+            ->withArguments(foo: 'foo');
+        $workflow = (new Workflow('test-workflow'))
+            ->withAdded(name: $step);
+        $this->assertSame($step, $workflow->get('name'));
     }
 
     public function testWithAddedTaskWithReferenceArguments(): void
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                (new Step('step-1', WorkflowTestStep1::class))
-                    ->withArguments(['foo' => '${foo}'])
+                step1: (new Step(WorkflowTestStep1::class))
+                    ->withArguments(foo:  '${foo}')
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $workflow = $workflow
             ->withAdded(
-                (new Step('step-2', WorkflowTestStep2::class))
-                    ->withArguments([
-                        'foo' => '${step-1:foo}',
-                        'bar' => '${foo}'
-                    ])
+                step2: (new Step(WorkflowTestStep2::class))
+                    ->withArguments(
+                        foo: '${step1:foo}',
+                        bar: '${foo}'
+                    )
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
-        $this->assertTrue($workflow->hasVar('${step-1:foo}'));
+        $this->assertTrue($workflow->hasVar('${step1:foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
-        $this->assertSame(['step-1', 'foo'], $workflow->getVar('${step-1:foo}'));
-        $task = (new Step('missing-reference', WorkflowTestStep1::class))
-            ->withArguments(['foo' => '${not:found}']);
+        $this->assertSame(['step1', 'foo'], $workflow->getVar('${step1:foo}'));
+        $step = (new Step(WorkflowTestStep1::class))
+            ->withArguments(foo: '${not:found}');
         $this->expectException(OutOfBoundsException::class);
-        $workflow->withAdded($task);
+        $workflow->withAdded($step);
     }
 }
 

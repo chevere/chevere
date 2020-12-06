@@ -29,7 +29,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws OutOfBoundsException
      * @throws ArgumentRegexMatchException
      */
-    public function __construct(ParametersInterface $parameters, array $arguments);
+    public function __construct(ParametersInterface $parameters, mixed ...$namedArguments);
 
     /**
      * Provides access to the parameters instance.

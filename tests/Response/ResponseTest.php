@@ -75,7 +75,7 @@ final class ResponseTest extends TestCase
             'delay' => 123,
             'expiration' => 111,
         ];
-        $workflowMessage = getWorkflowMessage(new Workflow('name'), [])
+        $workflowMessage = getWorkflowMessage(new Workflow('name'))
             ->withDelay($data['delay'])
             ->withExpiration($data['expiration'])
             ->withPriority(10);

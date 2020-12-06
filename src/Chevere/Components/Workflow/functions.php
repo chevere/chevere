@@ -19,9 +19,9 @@ use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 /**
  * @codeCoverageIgnore
  */
-function getWorkflowMessage(WorkflowInterface $workflow, array $arguments): WorkflowMessageInterface
+function getWorkflowMessage(WorkflowInterface $workflow, mixed ...$namedArguments): WorkflowMessageInterface
 {
-    return new WorkflowMessage(new WorkflowRun($workflow, $arguments));
+    return new WorkflowMessage(new WorkflowRun($workflow, ...$namedArguments));
 }
 
 /**

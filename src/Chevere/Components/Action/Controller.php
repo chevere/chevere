@@ -65,10 +65,10 @@ abstract class Controller extends Action implements ControllerInterface
         }
     }
 
-    final public function withContextArguments(array $namedArguments): self
+    final public function withContextArguments(mixed ...$namedArguments): self
     {
         $new = clone $this;
-        $new->contextArguments = new Arguments($new->contextParameters, $namedArguments);
+        $new->contextArguments = new Arguments($new->contextParameters, ...$namedArguments);
 
         return $new;
     }

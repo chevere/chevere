@@ -34,7 +34,7 @@ final class ControllerTest extends TestCase
         $controller = new ControllerTestController;
         $this->assertFalse($controller->hasContextArguments());
         $this->assertSame(Type::STRING, $controller::PARAMETER_TYPE);
-        $newController = $controller->withContextArguments([]);
+        $newController = $controller->withContextArguments(...[]);
         $this->assertNotEquals($controller, $newController);
         $this->assertTrue($newController->hasContextArguments());
         $this->assertEquals(new Parameters, $newController->contextParameters());
@@ -47,7 +47,7 @@ final class ControllerTest extends TestCase
         $runArgument = 'userId';
         $runValue = '321';
         $controller = (new ControllerTestContextController)
-            ->withContextArguments([$contextArgument => $contextValue]);
+            ->withContextArguments(...[$contextArgument => $contextValue]);
         $this->assertTrue($controller->contextArguments()->has($contextArgument));
         $this->assertSame($contextValue, $controller->contextArguments()->get($contextArgument));
         $response = $controller->run([$runArgument => $runValue]);

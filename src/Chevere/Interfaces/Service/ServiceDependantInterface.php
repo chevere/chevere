@@ -21,7 +21,7 @@ use Chevere\Interfaces\ClassMap\ClassMapInterface;
  */
 interface ServiceDependantInterface
 {
-    public function withDependencies(array $namedArguments): ServiceDependantInterface;
+    public function withDependencies(mixed ...$namedArguments): ServiceDependantInterface;
 
     /**
      * A class mapping for class name -> construct argument name

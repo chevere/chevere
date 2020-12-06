@@ -19,7 +19,10 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use ReflectionObject;
+use stdClass;
 use TypeError;
+
+use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\varType;
 
 trait ServiceDependantTrait
@@ -31,7 +34,7 @@ trait ServiceDependantTrait
         return new ClassMap;
     }
 
-    public function withDependencies(array $namedArguments): self
+    public function withDependencies(mixed ...$namedArguments): self
     {
         $missing = [];
         $new = clone $this;
@@ -53,6 +56,7 @@ trait ServiceDependantTrait
                 );
             }
         }
+
         $new->assertNotMissing($missing);
 
         return $new;
@@ -77,7 +81,7 @@ trait ServiceDependantTrait
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
                     ->strong('%key%', $key)
                     ->code('%expected%', $className)
-                    ->code('%provided%', varType($key)),
+                    ->code('%provided%', debugType($key)),
                 100
             );
         }
@@ -86,7 +90,7 @@ trait ServiceDependantTrait
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
                     ->strong('%key%', $key)
                     ->code('%expected%', $className)
-                    ->code('%provided%', varType($key)),
+                    ->code('%provided%', debugType($value)),
                 101
             );
         }

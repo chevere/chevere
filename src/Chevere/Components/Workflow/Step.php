@@ -26,17 +26,14 @@ use ReflectionClass;
 
 final class Step implements StepInterface
 {
-    private string $name;
-
     private string $action;
 
     private array $arguments;
 
     private ParametersInterface $parameters;
 
-    public function __construct(string $name, string $action)
+    public function __construct(string $action)
     {
-        $this->name = (new StepName($name))->toString();
         $this->action = $action;
         try {
             $reflection = new ReflectionClass($this->action);
@@ -57,13 +54,14 @@ final class Step implements StepInterface
         $this->arguments = [];
     }
 
-    public function withArguments(array $arguments): StepInterface
+    public function withArguments(mixed ...$namedArguments): StepInterface
     {
-        $this->assertArgumentsCount($arguments);
+        $new = clone $this;
+        $new->assertArgumentsCount($namedArguments);
         $store = [];
         $missing = [];
-        foreach ($this->parameters->getGenerator() as $name => $parameter) {
-            $argument = $arguments[$name] ?? null;
+        foreach ($new->parameters->getGenerator() as $name => $parameter) {
+            $argument = $namedArguments[$name] ?? null;
             if (is_null($argument)) {
                 $missing[] = $name;
                 continue;
@@ -76,15 +74,10 @@ final class Step implements StepInterface
                     ->code('%message%', implode(', ', $missing))
             );
         }
-        $new = clone $this;
+        
         $new->arguments = $store;
 
         return $new;
-    }
-
-    public function name(): string
-    {
-        return $this->name;
     }
 
     public function action(): string

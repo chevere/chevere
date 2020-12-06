@@ -23,17 +23,15 @@ interface StepInterface
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(string $name, string $action);
+    public function __construct(string $action);
 
     /**
-     * Return an instance with the specified named `$arguments`.
+     * Return an instance with the specified named `$namedArguments`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified named `$arguments`.
+     * an instance that contains the specified named `$namedArguments`.
      */
-    public function withArguments(array $arguments): StepInterface;
-
-    public function name(): string;
+    public function withArguments(mixed ...$namedArguments): StepInterface;
 
     public function action(): string;
 

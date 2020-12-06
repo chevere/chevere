@@ -25,10 +25,12 @@ final class Map implements MapInterface
 {
     use MapTrait;
 
-    public function __construct(array $namedArguments)
+    public function __construct(mixed ...$namedArguments)
     {
         $this->map = new InternalMap;
-        $this->map->putAll($namedArguments);
+        if(count($namedArguments) > 0) {
+            $this->map->putAll($namedArguments);
+        }
     }
 
     public function __clone()

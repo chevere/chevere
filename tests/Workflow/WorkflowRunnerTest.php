@@ -30,16 +30,16 @@ final class WorkflowRunnerTest extends TestCase
         $bar = 'mundo';
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                (new Step('step-1', WorkflowRunnerFunctionTestStep1::class))
-                    ->withArguments(['foo' => '${foo}']),
-                (new Step('step-2', WorkflowRunnerFunctionTestStep2::class))
-                    ->withArguments([
-                        'foo' => '${step-1:response-1}',
-                        'bar' => '${bar}'
-                    ])
+                step1: (new Step(WorkflowRunnerFunctionTestStep1::class))
+                    ->withArguments(foo: '${foo}'),
+                step2: (new Step(WorkflowRunnerFunctionTestStep2::class))
+                    ->withArguments(
+                        foo: '${step1:response-1}',
+                        bar: '${bar}'
+                    )
             );
         $arguments = ['foo' => $foo, 'bar' => $bar];
-        $workflowRun = new WorkflowRun($workflow, $arguments);
+        $workflowRun = new WorkflowRun($workflow, ...$arguments);
         $container = [];
         $workflowRunner = new WorkflowRunner($workflowRun);
         $workflowRun = $workflowRunner->run($container);
@@ -47,9 +47,9 @@ final class WorkflowRunnerTest extends TestCase
         $action1 = new WorkflowRunnerFunctionTestStep1;
         $this->assertEquals(
             $action1->run(['foo' => $foo])->data(),
-            $workflowRun->get('step-1')->data()
+            $workflowRun->get('step1')->data()
         );
-        $foo = $workflowRun->get('step-1')->data()['response-1'];
+        $foo = $workflowRun->get('step1')->data()['response-1'];
         $action2 = new WorkflowRunnerFunctionTestStep2;
         $this->assertEquals(
             $action2
@@ -60,7 +60,7 @@ final class WorkflowRunnerTest extends TestCase
                     ]
                 )
                 ->data(),
-            $workflowRun->get('step-2')->data()
+            $workflowRun->get('step2')->data()
         );
     }
 }

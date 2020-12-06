@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Service\Traits;
 
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Service\Traits\ServiceDependantTrait;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\TypeException;
@@ -78,7 +77,7 @@ final class ServiceDependantTraitTest extends TestCase
     {
         $dependable = $this->getTestDependant();
         $this->expectException(InvalidArgumentException::class);
-        $dependable->withDependencies([]);
+        $dependable->withDependencies(...[]);
     }
 
     public function testWithWrongDependencyType(): void
@@ -86,7 +85,7 @@ final class ServiceDependantTraitTest extends TestCase
         $dependable = $this->getTestDependant();
         $this->expectException(TypeException::class);
         $this->expectExceptionCode(100);
-        $dependable->withDependencies(['testCase' => 'e']);
+        $dependable->withDependencies(testCase: 'e');
     }
 
     public function testWithWrongDependencyClass(): void
@@ -94,7 +93,7 @@ final class ServiceDependantTraitTest extends TestCase
         $dependable = $this->getTestDependant();
         $this->expectException(TypeException::class);
         $this->expectExceptionCode(101);
-        $dependable->withDependencies(['testCase' => new Path(__DIR__)]);
+        $dependable->withDependencies(testCase: new \stdClass);
     }
 
     public function testWithDependencyMismatch(): void
@@ -102,14 +101,15 @@ final class ServiceDependantTraitTest extends TestCase
         $dependable = $this->getTestDependantMismatch();
         $this->expectException(TypeException::class);
         $this->expectExceptionCode(102);
-        $dependable->withDependencies(['testCase' => $this]);
+        $dependable->withDependencies(testCase: $this);
     }
 
     public function testWithDependency(): void
     {
+        $property = 'testCase';
         $dependable = $this->getTestDependant();
-        $dependable = $dependable->withDependencies(['testCase' => $this]);
-        $this->assertObjectHasAttribute('testCase', $dependable);
+        $dependable = $dependable->withDependencies(...[$property => $this]);
+        $this->assertObjectHasAttribute($property, $dependable);
         $this->assertSame($this, $dependable->testCase);
     }
 }

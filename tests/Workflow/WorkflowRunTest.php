@@ -33,11 +33,11 @@ final class WorkflowRunTest extends TestCase
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                (new Step('step', WorkflowRunTestStep1::class))
-                    ->withArguments(['foo' => '${foo}'])
+                step: (new Step(WorkflowRunTestStep1::class))
+                    ->withArguments(foo: '${foo}')
             );
         $arguments = ['foo' => 'bar'];
-        $workflowRun = new WorkflowRun($workflow, $arguments);
+        $workflowRun = new WorkflowRun($workflow, ...$arguments);
         $this->assertMatchesRegularExpression(
             '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',
             $workflowRun->uuid()
@@ -52,45 +52,45 @@ final class WorkflowRunTest extends TestCase
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                (new Step('step-0', WorkflowRunTestStep1::class))
-                    ->withArguments(['foo' => '${foo}']),
-                (new Step('step-1', WorkflowRunTestStep2::class))
-                    ->withArguments([
-                        'foo' => '${step-0:response-0}',
-                        'bar' => '${bar}'
-                    ])
+                step0: (new Step(WorkflowRunTestStep1::class))
+                    ->withArguments(foo: '${foo}'),
+                step1: (new Step(WorkflowRunTestStep2::class))
+                    ->withArguments(
+                        foo: '${step0:response-0}',
+                        bar: '${bar}'
+                    )
             );
         $arguments = [
             'foo' => 'hola',
             'bar' => 'mundo'
         ];
         $responseData = ['response-0' => 'value'];
-        $workflowRun = (new WorkflowRun($workflow, $arguments))
-            ->withAdded(
-                new StepName('step-0'),
+        $workflowRun = (new WorkflowRun($workflow, ...$arguments))
+            ->withStepResponse(
+                'step0',
                 new ResponseSuccess(
                     (new Parameters)
                         ->withAddedRequired(new StringParameter('response-0')),
                     $responseData
                 )
             );
-        $this->assertTrue($workflow->hasVar('${step-0:response-0}'));
-        $this->assertTrue($workflowRun->has('step-0'));
-        $this->assertSame($responseData, $workflowRun->get('step-0')->data());
+        $this->assertTrue($workflow->hasVar('${step0:response-0}'));
+        $this->assertTrue($workflowRun->has('step0'));
+        $this->assertSame($responseData, $workflowRun->get('step0')->data());
     }
 
     public function testWithAddedNotFound(): void
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                (new Step('step-0', WorkflowRunTestStep1::class))
-                    ->withArguments(['foo' => '${foo}'])
+                step0: (new Step(WorkflowRunTestStep1::class))
+                    ->withArguments(foo: '${foo}')
             );
         $arguments = ['foo' => 'hola'];
         $this->expectException(OutOfBoundsException::class);
-        (new WorkflowRun($workflow, $arguments))
-            ->withAdded(
-                new StepName('not-found'),
+        (new WorkflowRun($workflow, ...$arguments))
+            ->withStepResponse(
+                'not-found',
                 new ResponseSuccess(new Parameters, [])
             );
     }
@@ -99,14 +99,14 @@ final class WorkflowRunTest extends TestCase
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                new Step('step-0', WorkflowRunTestStep0::class),
-                (new Step('step-1', WorkflowRunTestStep1::class))
-                    ->withArguments(['foo' => '${step-0:response-0}'])
+                step0: new Step(WorkflowRunTestStep0::class),
+                step1: (new Step(WorkflowRunTestStep1::class))
+                    ->withArguments(foo: '${step0:response-0}')
             );
         $this->expectException(ArgumentCountException::class);
-        (new WorkflowRun($workflow, []))
-            ->withAdded(
-                new StepName('step-0'),
+        (new WorkflowRun($workflow))
+            ->withStepResponse(
+                'step0',
                 new ResponseSuccess(new Parameters, [])
             );
     }

@@ -34,7 +34,7 @@ final class Arguments implements ArgumentsInterface
 
     private array $errors;
 
-    public function __construct(ParametersInterface $parameters, array $namedArguments)
+    public function __construct(ParametersInterface $parameters, mixed ...$namedArguments)
     {
         $this->parameters = $parameters;
         $this->arguments = $namedArguments;

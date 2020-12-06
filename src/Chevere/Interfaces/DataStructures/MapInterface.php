@@ -18,7 +18,7 @@ namespace Chevere\Interfaces\DataStructures;
  */
 interface MapInterface extends MappedInterface
 {
-    public function __construct(array $namedArguments);
+    public function __construct(mixed ...$namedArguments);
 
     public function withPut(string $key, $value): MapInterface;
 

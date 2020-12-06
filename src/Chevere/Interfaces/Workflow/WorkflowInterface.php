@@ -34,34 +34,34 @@ interface WorkflowInterface extends Countable
     public function name(): string;
 
     /**
-     * Return an instance with the specified `$task`.
+     * Return an instance with the specified `$step`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$task`.
+     * an instance that contains the specified `$step`.
      *
      * @throws OverflowException
      */
-    public function withAdded(StepInterface ...$task): WorkflowInterface;
+    public function withAdded(StepInterface ...$step): WorkflowInterface;
 
     /**
-     * Return an instance with the specified `$task` added before `$before`.
+     * Return an instance with the specified `$step` added before `$before`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$task` added before `$before`.
+     * an instance that contains the specified `$step` added before `$before`.
      *
      * @throws OverflowException
      */
-    public function withAddedBefore(string $before, StepInterface $task): WorkflowInterface;
+    public function withAddedBefore(string $before, StepInterface ...$step): WorkflowInterface;
 
     /**
-     * Return an instance with the specified `$task` added after `$after`.
+     * Return an instance with the specified `$step` added after `$after`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$task` added after `$after`.
+     * an instance that contains the specified `$step` added after `$after`.
      *
      * @throws OverflowException
      */
-    public function withAddedAfter(string $after, StepInterface $task): WorkflowInterface;
+    public function withAddedAfter(string $after, StepInterface ...$step): WorkflowInterface;
 
     public function has(string $step): bool;
 
@@ -93,9 +93,9 @@ interface WorkflowInterface extends Countable
     public function getVar(string $var): array;
 
     /**
-     * Provides access to the expected return arguments.
+     * Provides access to the expected return arguments for the given `$step`.
      */
-    public function getExpected(StepNameInterface $step): array;
+    public function getExpected(string $step): array;
 
     /**
      * @return Generator<string, StepInterface>

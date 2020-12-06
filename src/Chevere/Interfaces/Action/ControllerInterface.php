@@ -39,7 +39,7 @@ interface ControllerInterface extends ActionInterface
      */
     public function getContextParameters(): ParametersInterface;
 
-    public function withContextArguments(array $namedArguments): self;
+    public function withContextArguments(mixed ...$namedArguments): self;
 
     public function contextArguments(): ArgumentsInterface;
 

@@ -26,30 +26,33 @@ final class StepTest extends TestCase
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new Step('name', 'callable');
+        new Step('callable');
     }
 
     public function testUnexpectedValue(): void
     {
         $this->expectException(UnexpectedValueException::class);
-        new Step('name', __CLASS__);
+        new Step(__CLASS__);
     }
 
     public function testArgumentCountError(): void
     {
         $this->expectException(ArgumentCountException::class);
-        (new Step('name', TaskTestStep0Action::class))
-            ->withArguments(['foo' => 'foo', 'bar' => 'invalid extra argument']);
+        (new Step(TaskTestStep0Action::class))
+            ->withArguments(
+                foo: 'foo',
+                bar: 'invalid extra argument'
+            );
     }
 
     public function testConstruct(): void
     {
         $action = TaskTestStep1Action::class;
-        $task = new Step('name', $action);
+        $task = new Step($action);
         $this->assertSame($action, $task->action());
         $this->assertSame([], $task->arguments());
         $arguments = ['foo' => '1', 'bar' => 123];
-        $task = $task->withArguments($arguments);
+        $task = $task->withArguments(...$arguments);
         $this->assertSame($arguments, $task->arguments());
     }
 }

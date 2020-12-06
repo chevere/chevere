@@ -18,7 +18,6 @@ use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Service\ServiceDependantInterface;
-use Chevere\Interfaces\Workflow\StepNameInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunnerInterface;
@@ -27,14 +26,6 @@ use Throwable;
 final class WorkflowRunner implements WorkflowRunnerInterface
 {
     private WorkflowRunInterface $workflowRun;
-
-    private StepInterface $task;
-
-    private string $actionName;
-
-    private ActionInterface $action;
-
-    private ResponseSuccessInterface $responseSuccess;
 
     public function __construct(WorkflowRunInterface $workflowRun)
     {
@@ -51,42 +42,38 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         /**
          * @var StepInterface $task
          */
-        foreach ($this->workflowRun->workflow()->getGenerator() as $task) {
-            if ($this->workflowRun->has($task->name())) {
+        foreach ($this->workflowRun->workflow()->getGenerator() as $name => $step) {
+            if ($this->workflowRun->has($name)) {
                 continue; // @codeCoverageIgnore
             }
-            $this->task = $task;
-            $this->actionName = $this->task->action();
-            $this->action = new $this->actionName;
-            $this->injectDependencies($container);
+            $actionName = $step->action();
+            $action = new $actionName;
+            $this->injectDependencies($action, $container);
             // try {
-            $this->responseSuccess = $this->action->run(
-                $this->getArguments()
-            );
+            $responseSuccess = $action->run($this->getArguments($step));
             // }
             // @codeCoverageIgnoreStart
             // catch (Throwable $e) {
             //     throw new LogicException(new Message($e->getMessage() . 'eee'), 100);
             // }
             // @codeCoverageIgnoreEnd
-            $this->addStep();
+            $this->addStep($name, $step, $responseSuccess);
         }
-        unset($this->task, $this->actionName, $this->action, $this->responseSuccess);
 
         return $this->workflowRun;
     }
 
-    private function injectDependencies($container): void
+    private function injectDependencies(ActionInterface $action, $container): void
     {
-        if ($this->action instanceof ServiceDependantInterface) {
+        if ($action instanceof ServiceDependantInterface) {
             // Inject the services required by the action
         }
     }
 
-    private function getArguments(): array
+    private function getArguments(StepInterface $step): array
     {
         $arguments = [];
-        foreach ($this->task->arguments() as $name => $taskArgument) {
+        foreach ($step->arguments() as $name => $taskArgument) {
             if (!$this->workflowRun->workflow()->hasVar($taskArgument)) {
                 // @codeCoverageIgnoreStart
                 $arguments[$name] = $taskArgument;
@@ -106,20 +93,17 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         return $arguments;
     }
 
-    private function addStep(): void
+    private function addStep(string $name, StepInterface $step, ResponseSuccessInterface $response): void
     {
         try {
-            $this->workflowRun = $this->workflowRun->withAdded(
-                new StepName($this->task->name()),
-                $this->responseSuccess
-            );
+            $this->workflowRun = $this->workflowRun->withStepResponse($name, $response);
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new LogicException(
                 (new Message('Unexpected response from method %method% at step %step%: %message%'))
-                    ->code('%method%', $this->actionName . '::run')
-                    ->code('%step%', $this->task->name())
+                    ->code('%method%', $step->action() . '::run')
+                    ->code('%step%', $name)
                     ->code('%message%', $e->getMessage())
             );
         }

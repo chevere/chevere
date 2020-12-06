@@ -17,29 +17,39 @@ use Chevere\Components\DataStructures\Map;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
-use function DeepCopy\deep_copy;
-
 final class MapTest extends TestCase
 {
     public function testAssertEmpty(): void
     {
-        $map = new Map([]);
+        $map = new Map(...[]);
         $this->expectException(OutOfBoundsException::class);
         $map->assertHasKey('not-found');
     }
 
     public function testGetEmpty(): void
     {
-        $map = new Map([]);
+        $map = new Map(...[]);
         $this->expectException(OutOfBoundsException::class);
         $map->get('not-found');
+    }
+
+    public function testConstructPutAll(): void
+    {
+        $arguments = [
+            'test' => 123,
+            'some' => 'thing',
+        ];
+        $map = new Map(...$arguments);
+        foreach($arguments as $name => $value) {
+            $this->assertSame($value, $map->get($name));
+        }
     }
 
     public function testWithPut(): void
     {
         $key = 'key';
         $value = 1234;
-        $map = new Map([]);
+        $map = new Map(...[]);
         $mapCloned = $map->withPut($key, $value);
         $this->assertNotSame($map, $mapCloned);
         $this->assertNotEquals($map->keys(), $mapCloned->keys());
