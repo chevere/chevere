@@ -6,7 +6,7 @@ filter:
 build:
   environment:
     php:
-      version: 7.4
+      version: 8.0
       pecl_extensions:
         - ds
       ini:
@@ -16,7 +16,7 @@ build:
         "extension": "ds.so"
   dependencies:
     override:
-      - composer install --prefer-dist --classmap-authoritative
+      - composer install --prefer-dist --no-progress --classmap-authoritative
   nodes:
     analysis:
       tests:

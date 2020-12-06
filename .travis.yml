@@ -2,7 +2,6 @@ dist: focal
 language: php
 
 php:
-  - 7.4
   - nightly
 
 matrix:
