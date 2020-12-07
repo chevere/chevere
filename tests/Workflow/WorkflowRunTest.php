@@ -17,7 +17,6 @@ use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseSuccess;
-use Chevere\Components\Workflow\StepName;
 use Chevere\Components\Workflow\Step;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
