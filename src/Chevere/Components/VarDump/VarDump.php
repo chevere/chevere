@@ -57,7 +57,7 @@ final class VarDump implements VarDumpInterface
 
     public function process(WriterInterface $writer): void
     {
-        if (empty($this->vars)) {
+        if ($this->vars === []) {
             return;
         }
         $this->setDebugBacktrace();

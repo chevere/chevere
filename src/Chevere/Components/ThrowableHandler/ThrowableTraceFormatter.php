@@ -71,7 +71,8 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
             if (empty($val)) {
                 continue;
             }
-            $array[$tag] = $this->formatter->varDumpFormatter()->highlight($key, (string) $trValues[$tag]);
+            $array[$tag] = $this->formatter->varDumpFormatter()
+                ->highlight($key, (string) $val);
         }
 
         return $array;

@@ -96,7 +96,7 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
                 $missing[] = $key;
             }
         }
-        if (!empty($missing)) {
+        if ($missing !== []) {
             throw new InvalidArgumentException(
                 (new Message('Missing key(s) %keyNames%'))
                     ->code('%keyNames%', implode(', ', $missing))
