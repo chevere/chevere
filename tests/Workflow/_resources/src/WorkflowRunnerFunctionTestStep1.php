@@ -24,13 +24,13 @@ class WorkflowRunnerFunctionTestStep1 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new StringParameter('foo'));
+            ->withAddedRequired(foo: new StringParameter);
     }
 
     public function getResponseDataParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new StringParameter('response-1'));
+            ->withAddedRequired(response1: new StringParameter);
     }
 
     public function run(array $arguments): ResponseSuccessInterface
@@ -39,7 +39,7 @@ class WorkflowRunnerFunctionTestStep1 extends Action
 
         return $this->getResponseSuccess(
             [
-                'response-1' => $arguments->getString('foo'),
+                'response1' => $arguments->getString('foo'),
             ]
         );
     }

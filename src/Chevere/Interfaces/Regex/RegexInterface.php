@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Regex;
 
 use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Regex\RegexInvalidException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
@@ -30,6 +31,11 @@ interface RegexInterface extends ToStringInterface
         PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
         PREG_JIT_STACKLIMIT_ERROR => 'PREG_JIT_STACKLIMIT_ERROR',
     ];
+
+    /**
+     * @throws RegexInvalidException
+     */
+    public function __construct(string $string);
 
     /**
      * Provides access to the the regex string without delimiters.

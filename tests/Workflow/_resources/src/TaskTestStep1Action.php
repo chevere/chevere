@@ -26,8 +26,8 @@ class TaskTestStep1Action extends Action
     {
         return (new Parameters)
             ->withAddedRequired(
-                new StringParameter('foo'),
-                new IntegerParameter('bar')
+                foo: new StringParameter,
+                bar: new IntegerParameter
             );
     }
 

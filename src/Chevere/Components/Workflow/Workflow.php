@@ -224,7 +224,7 @@ final class Workflow implements WorkflowInterface
             try {
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $argument, $matches)) {
                     $this->vars->put($argument, [$matches[1]]);
-                    $this->putParameter($parameters->get($matches[1]));
+                    $this->putParameter($matches[1], $parameters->get($matches[1]));
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $argument, $matches)) {
                     $this->assertStepExists($name, $matches);
                     $expected = $this->expected->get($matches[1], []);
@@ -261,14 +261,16 @@ final class Workflow implements WorkflowInterface
         return $pos;
     }
 
-    private function putParameter(ParameterInterface $parameter): void
+    private function putParameter(string $name, ParameterInterface $parameter): void
     {
-        if ($this->parameters->has($parameter->name())) {
-            $this->parameters = $this->parameters->withModify($parameter);
+        if ($this->parameters->has($name)) {
+            $this->parameters = $this->parameters
+                ->withModify(...[$name => $parameter]);
 
             return;
         }
-        $this->parameters = $this->parameters->withAddedRequired($parameter);
+        $this->parameters = $this->parameters
+            ->withAddedRequired(...[$name => $parameter]);
     }
 
     private function assertStepExists(string $step, array $matches): void

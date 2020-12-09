@@ -29,7 +29,7 @@ final class ActionTestAction extends Action
     public function getResponseDataParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new IntegerParameter('id'));
+            ->withAddedRequired(id: new IntegerParameter);
     }
 
     public function run(array $arguments): ResponseSuccessInterface

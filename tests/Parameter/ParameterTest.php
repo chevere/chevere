@@ -22,9 +22,7 @@ final class ParameterTest extends TestCase
     public function testConstruct(): void
     {
         $type = new Type(Type::INTEGER);
-        $name = 'parameter';
-        $parameter = new Parameter($name, $type);
-        $this->assertSame($name, $parameter->name());
+        $parameter = new Parameter($type);
         $this->assertEquals($type, $parameter->type());
     }
 }

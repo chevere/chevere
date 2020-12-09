@@ -26,12 +26,12 @@ class SpecMakerTestGetController extends Controller
     {
         return (new Parameters)
             ->withAddedRequired(
-                (new StringParameter('id'))
+                id: (new StringParameter)
                     ->withRegex(new Regex('/^[0-9]+$/'))
                     ->withDescription('The user integer id')
             )
             ->withAddedOptional(
-                (new StringParameter('name'))
+                name: (new StringParameter)
                     ->withRegex(new Regex('/^[\w]+$/'))
                     ->withDescription('The user name')
             );

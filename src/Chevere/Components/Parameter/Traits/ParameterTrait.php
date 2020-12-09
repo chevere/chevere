@@ -25,8 +25,6 @@ use Ds\Set;
 
 trait ParameterTrait
 {
-    private string $name;
-
     private TypeInterface $type;
 
     private string $description = '';
@@ -83,11 +81,6 @@ trait ParameterTrait
         return $new;
     }
 
-    public function name(): string
-    {
-        return $this->name;
-    }
-
     public function type(): TypeInterface
     {
         return $this->type;
@@ -106,19 +99,5 @@ trait ParameterTrait
     public function attributes(): Set
     {
         return $this->attributes;
-    }
-
-    private function assertName(): void
-    {
-        try {
-            (new StrAssert($this->name))
-                ->notEmpty()
-                ->notCtypeSpace()
-                ->notContains(' ');
-        } catch (Exception $e) {
-            throw new ParameterNameInvalidException(
-                new Message('Invalid parameter name')
-            );
-        }
     }
 }

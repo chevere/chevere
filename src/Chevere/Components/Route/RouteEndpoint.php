@@ -44,7 +44,7 @@ final class RouteEndpoint implements RouteEndpointInterface
         foreach ($controller->parameters()->getGenerator() as $name => $parameter) {
             $attributes = $parameter->attributes()->toArray();
             $array = [
-                'name' => $parameter->name(),
+                'name' => $name,
                 'regex' => $parameter->regex()->toString(),
                 'description' => $parameter->description(),
                 'isRequired' => $controller->parameters()->isRequired($name),
@@ -52,7 +52,7 @@ final class RouteEndpoint implements RouteEndpointInterface
             if ($attributes !== []) {
                 $array['attributes'] = implode('|', $attributes);
             }
-            $this->parameters[$parameter->name()] = $array;
+            $this->parameters[$name] = $array;
         }
     }
 

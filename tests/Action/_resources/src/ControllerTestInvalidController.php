@@ -24,9 +24,7 @@ final class ControllerTestInvalidController extends Controller
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(
-                new IntegerParameter('integer')
-            );
+            ->withAddedRequired(integer: new IntegerParameter);
     }
 
     public function run(array $arguments): ResponseSuccessInterface

@@ -24,10 +24,8 @@ final class IntegerParameter implements IntegerParameterInterface
 
     private int $default = 0;
 
-    public function __construct(string $name)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->assertName();
         $this->type = new Type(Type::INTEGER);
         $this->attributes = new Set;
     }

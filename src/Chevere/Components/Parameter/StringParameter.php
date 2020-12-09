@@ -30,10 +30,8 @@ final class StringParameter implements StringParameterInterface
 
     private string $default = '';
 
-    public function __construct(string $name)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->assertName();
         $this->type = new Type(Type::STRING);
         $this->attributes = new Set;
         $this->regex = new Regex('/^.*$/');

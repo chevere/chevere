@@ -55,7 +55,7 @@ final class WorkflowRunTest extends TestCase
                     ->withArguments(foo: '${foo}'),
                 step1: (new Step(WorkflowRunTestStep2::class))
                     ->withArguments(
-                        foo: '${step0:response-0}',
+                        foo: '${step0:response0}',
                         bar: '${bar}'
                     )
             );
@@ -63,17 +63,17 @@ final class WorkflowRunTest extends TestCase
             'foo' => 'hola',
             'bar' => 'mundo'
         ];
-        $responseData = ['response-0' => 'value'];
+        $responseData = ['response0' => 'value'];
         $workflowRun = (new WorkflowRun($workflow, ...$arguments))
             ->withStepResponse(
                 'step0',
                 new ResponseSuccess(
                     (new Parameters)
-                        ->withAddedRequired(new StringParameter('response-0')),
+                        ->withAddedRequired(response0: new StringParameter),
                     $responseData
                 )
             );
-        $this->assertTrue($workflow->hasVar('${step0:response-0}'));
+        $this->assertTrue($workflow->hasVar('${step0:response0}'));
         $this->assertTrue($workflowRun->has('step0'));
         $this->assertSame($responseData, $workflowRun->get('step0')->data());
     }
@@ -100,7 +100,7 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 step0: new Step(WorkflowRunTestStep0::class),
                 step1: (new Step(WorkflowRunTestStep1::class))
-                    ->withArguments(foo: '${step0:response-0}')
+                    ->withArguments(foo: '${step0:response0}')
             );
         $this->expectException(ArgumentCountException::class);
         (new WorkflowRun($workflow))
@@ -124,7 +124,7 @@ class WorkflowRunTestStep1 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new StringParameter('foo'));
+            ->withAddedRequired(foo: new StringParameter);
     }
 
     public function run(array $arguments): ResponseSuccessInterface
@@ -138,8 +138,10 @@ class WorkflowRunTestStep2 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new StringParameter('foo'))
-            ->withAddedRequired(new StringParameter('bar'));
+            ->withAddedRequired(
+                foo: new StringParameter,
+                bar: new StringParameter
+            );
     }
 
     public function run(array $arguments): ResponseSuccessInterface

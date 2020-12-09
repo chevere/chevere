@@ -48,10 +48,11 @@ final class Parameters implements ParametersInterface
     public function withAddedRequired(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
-        foreach ($parameter as $param) {
-            $new->assertNoOverflow($param);
-            $new->map->put($param->name(), $param);
-            $new->required->add($param->name());
+        foreach ($parameter as $name => $param) {
+            $name = (string) $name;
+            $new->assertNoOverflow($name);
+            $new->map->put($name, $param);
+            $new->required->add($name);
         }
 
         return $new;
@@ -60,10 +61,11 @@ final class Parameters implements ParametersInterface
     public function withAddedOptional(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
-        foreach ($parameter as $param) {
-            $new->assertNoOverflow($param);
-            $new->map->put($param->name(), $param);
-            $new->optional->add($param->name());
+        foreach ($parameter as $name => $param) {
+            $name = (string) $name;
+            $new->assertNoOverflow($name);
+            $new->map->put($name, $param);
+            $new->optional->add($name);
         }
 
         return $new;
@@ -72,16 +74,17 @@ final class Parameters implements ParametersInterface
     public function withModify(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
-        foreach ($parameter as $param) {
-            if (!$new->map->hasKey($param->name())) {
+        foreach ($parameter as $name => $param) {
+            $name = (string) $name;
+            if (!$new->map->hasKey($name)) {
                 throw new OutOfBoundsException(
                     (new Message("Parameter %name% doesn't exists"))
-                        ->code('%name%', $param->name())
+                        ->code('%name%', $name)
                 );
             }
         }
 
-        $new->map->put($param->name(), $param);
+        $new->map->put($name, $param);
 
         return $new;
     }
@@ -137,12 +140,12 @@ final class Parameters implements ParametersInterface
         }
     }
 
-    private function assertNoOverflow(ParameterInterface $parameter): void
+    private function assertNoOverflow(string $name): void
     {
-        if ($this->has($parameter->name())) {
+        if ($this->has($name)) {
             throw new OverflowException(
                 (new Message('Parameter %name% has been already added'))
-                    ->code('%name%', $parameter->name())
+                    ->code('%name%', $name)
             );
         }
     }

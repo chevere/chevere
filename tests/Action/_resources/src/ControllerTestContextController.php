@@ -25,25 +25,21 @@ final class ControllerTestContextController extends Controller
     public function getParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(
-                new StringParameter('userId')
-            );
+            ->withAddedRequired(userId: new StringParameter);
     }
 
     public function getContextParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(
-                new IntegerParameter('contextId')
-            );
+            ->withAddedRequired(contextId: new IntegerParameter);
     }
 
     public function getResponseDataParameters(): ParametersInterface
     {
         return (new Parameters)
             ->withAddedRequired(
-                new IntegerParameter('userId'),
-                new IntegerParameter('contextId')
+                userId: new IntegerParameter,
+                contextId: new IntegerParameter
             );
     }
 

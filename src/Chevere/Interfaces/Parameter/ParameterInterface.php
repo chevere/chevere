@@ -26,21 +26,11 @@ use Ds\Set;
 interface ParameterInterface extends DescriptionInterface
 {
     /**
-     * @throws ParameterNameInvalidException
-     */
-    // public function __construct(string $name, TypeInterface $type);
-
-    /**
-     * Provides access to the name.
-     */
-    public function name(): string;
-
-    /**
      * Provides access to the type instance.
      */
     public function type(): TypeInterface;
 
-    /**
+    /**W
      * Return an instance with the specified `$description`.
      *
      * This method MUST retain the state of the current instance, and return

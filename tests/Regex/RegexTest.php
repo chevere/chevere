@@ -45,4 +45,13 @@ final class RegexTest extends TestCase
         $this->assertSame(['aa'], $regex->match($test));
         $this->assertSame([['aa', 'bb']], $regex->matchAll($test));
     }
+
+    public function testMatchRegex(): void
+    {
+        $pattern = '/^id-[\d]+$/';
+        $test = 'id-123';
+        $regex = new Regex($pattern);
+        $this->assertSame([$test], $regex->match($test));
+        $this->assertSame([[$test]], $regex->matchAll($test));
+    }
 }

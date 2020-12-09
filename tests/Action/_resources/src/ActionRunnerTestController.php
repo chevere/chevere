@@ -26,7 +26,7 @@ final class ActionRunnerTestController extends Controller
     {
         return (new Parameters)
             ->withAddedRequired(
-                (new StringParameter('name'))
+                name: (new StringParameter)
                     ->withRegex(new Regex('/^\w+$/'))
             );
     }
@@ -34,7 +34,7 @@ final class ActionRunnerTestController extends Controller
     public function getResponseDataParameters(): ParametersInterface
     {
         return (new Parameters)
-            ->withAddedRequired(new StringParameter('user'));
+            ->withAddedRequired(user: new StringParameter);
     }
 
     public function run(array $arguments): ResponseSuccessInterface

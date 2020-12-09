@@ -26,11 +26,11 @@ final class TestController extends Controller
     {
         return (new Parameters)
             ->withAddedRequired(
-                (new StringParameter('name'))
+                name: (new StringParameter)
                     ->withRegex(new Regex('/\w+/')),
             )
             ->withAddedRequired(
-                (new StringParameter('id'))
+                id: (new StringParameter)
                     ->withRegex(new Regex('/\d+/')),
             );
     }

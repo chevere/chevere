@@ -22,10 +22,8 @@ final class Parameter implements ParameterInterface
 {
     use ParameterTrait;
 
-    public function __construct(string $name, TypeInterface $type)
+    public function __construct(TypeInterface $type)
     {
-        $this->name = $name;
-        $this->assertName();
         $this->type = $type;
         $this->attributes = new Set;
     }

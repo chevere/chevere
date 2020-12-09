@@ -33,7 +33,7 @@ final class WorkflowRunnerTest extends TestCase
                     ->withArguments(foo: '${foo}'),
                 step2: (new Step(WorkflowRunnerFunctionTestStep2::class))
                     ->withArguments(
-                        foo: '${step1:response-1}',
+                        foo: '${step1:response1}',
                         bar: '${bar}'
                     )
             );
@@ -48,7 +48,7 @@ final class WorkflowRunnerTest extends TestCase
             $action1->run(['foo' => $foo])->data(),
             $workflowRun->get('step1')->data()
         );
-        $foo = $workflowRun->get('step1')->data()['response-1'];
+        $foo = $workflowRun->get('step1')->data()['response1'];
         $action2 = new WorkflowRunnerFunctionTestStep2;
         $this->assertEquals(
             $action2

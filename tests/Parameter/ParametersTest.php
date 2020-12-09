@@ -36,8 +36,8 @@ final class ParametersTest extends TestCase
     public function testWithAddedRequired(): void
     {
         $name = 'name';
-        $parameter = new StringParameter($name);
-        $parameters = (new Parameters)->withAddedRequired($parameter);
+        $parameter = new StringParameter;
+        $parameters = (new Parameters)->withAddedRequired(...[$name => $parameter]);
         $this->assertCount(1, $parameters);
         $this->assertCount(0, $parameters->optional());
         $this->assertCount(1, $parameters->required());
@@ -45,13 +45,13 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
         $this->expectException(OverflowException::class);
-        $parameters->withAddedRequired($parameter);
+        $parameters->withAddedRequired(...[$name => $parameter]);
     }
 
     public function testWithAddedOptional(): void
     {
-        $name = 'name';
-        $parameter = new StringParameter($name);
+        $name = '0';
+        $parameter = new StringParameter;
         $parameters = (new Parameters)->withAddedOptional($parameter);
         $this->assertCount(1, $parameters);
         $this->assertCount(1, $parameters->optional());
@@ -80,15 +80,14 @@ final class ParametersTest extends TestCase
     public function testWithModified(): void
     {
         $name = 'name';
-        $parameter = new StringParameter($name);
-        $parameters = (new Parameters)->withAddedRequired($parameter);
+        $parameters = (new Parameters)->withAddedRequired(name: new StringParameter);
         $parameters = $parameters
             ->withModify(
-                (new StringParameter($name))->withDescription('modify')
+                name: (new StringParameter)->withDescription('modify')
             );
         $this->assertTrue($parameters->has($name));
         $this->assertSame('modify', $parameters->get($name)->description());
         $this->expectException(OutOfBoundsException::class);
-        $parameters->withModify(new StringParameter('not-found'));
+        $parameters->withModify(notFound: new StringParameter);
     }
 }

@@ -26,10 +26,10 @@ final class ResponseTest extends TestCase
 {
     public function testConstructResponseSuccess(): void
     {
-        $data = ['data'];
+        $data = ['param' => 'data'];
         $response = new ResponseSuccess(
             (new Parameters)
-                ->withAddedRequired(new StringParameter('0')),
+                ->withAddedRequired(param: new StringParameter),
             $data
         );
         $this->assertSame($data, $response->data());
@@ -51,10 +51,10 @@ final class ResponseTest extends TestCase
 
     public function testConstructResponseFailure(): void
     {
-        $data = ['0' => 'data'];
+        $data = ['param' => 'data'];
         $response = new ResponseFailure(
             (new Parameters)
-                ->withAddedRequired(new StringParameter('0')),
+                ->withAddedRequired(param: new StringParameter),
             $data
         );
         $this->assertSame($data, $response->data());

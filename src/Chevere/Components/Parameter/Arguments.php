@@ -40,8 +40,8 @@ final class Arguments implements ArgumentsInterface
         $this->arguments = $namedArguments;
         $this->assertCount();
         $this->errors = [];
-        foreach ($this->parameters->getGenerator() as $parameter) {
-            $this->handleParameter($parameter);
+        foreach ($this->parameters->getGenerator() as $name => $parameter) {
+            $this->handleParameter($name, $parameter);
         }
         if ($this->errors !== []) {
             throw new InvalidArgumentException(
@@ -142,7 +142,7 @@ final class Arguments implements ArgumentsInterface
             /**
              * @var StringParameterInterface $parameter
              */
-            $this->assertStringArgument($parameter, $value);
+            $this->assertStringArgument($name, $parameter, $value);
         }
     }
 
@@ -162,46 +162,46 @@ final class Arguments implements ArgumentsInterface
     /**
      * @throws ArgumentRegexMatchException
      */
-    private function assertStringArgument(StringParameterInterface $parameter, string $argument): void
+    private function assertStringArgument(string $name, StringParameterInterface $parameter, string $argument): void
     {
         $regexString = $parameter->regex()->toString();
         if (preg_match($regexString, $argument) !== 1) {
             throw new ArgumentRegexMatchException(
                 (new Message("Parameter %name%: Argument provided doesn't match the regex %regex%"))
-                    ->strong('%name%', $parameter->name())
-                    ->code('%parameter%', $parameter->name())
+                    ->strong('%name%', $name)
+                    ->code('%parameter%', $name)
                     ->code('%regex%', $regexString)
             );
         }
     }
 
-    private function handleParameter(ParameterInterface $parameter): void
+    private function handleParameter(string $name, ParameterInterface $parameter): void
     {
-        $this->handleParameterDefault($parameter);
-        if ($this->parameters->isOptional($parameter->name())) {
+        $this->handleParameterDefault($name, $parameter);
+        if ($this->parameters->isOptional($name)) {
             return;
         }
-        if (!$this->has($parameter->name())) {
+        if (!$this->has($name)) {
             $this->errors[] = (new Message('Parameter %name%: Missing required argument of type %type%'))
                 ->code('%type%', $parameter->type()->typeHinting())
-                ->code('%name%', $parameter->name());
+                ->code('%name%', $name);
 
             return;
         }
         try {
-            $this->assertType($parameter->name(), $this->get($parameter->name()));
+            $this->assertType($name, $this->get($name));
         } catch (Throwable $e) {
             $this->errors[] = $e->getMessage();
         }
     }
 
-    private function handleParameterDefault(ParameterInterface $parameter): void
+    private function handleParameterDefault(string $name, ParameterInterface $parameter): void
     {
-        if (!$this->has($parameter->name())
+        if (!$this->has($name)
             && $parameter instanceof StringParameterInterface
             && $parameter->default() !== ''
         ) {
-            $this->arguments[$parameter->name()] = $parameter->default();
+            $this->arguments[$name] = $parameter->default();
         }
     }
 }

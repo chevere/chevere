@@ -26,37 +26,19 @@ use PHPUnit\Framework\TestCase;
 
 final class StringParameterTest extends TestCase
 {
-    public function testEmptyName(): void
-    {
-        $this->expectException(ParameterNameInvalidException::class);
-        new StringParameter('');
-    }
-
-    public function testCtypeSpaceName(): void
-    {
-        $this->expectException(ParameterNameInvalidException::class);
-        new StringParameter(' ');
-    }
-
-    public function testSpaceInName(): void
-    {
-        $this->expectException(ParameterNameInvalidException::class);
-        new StringParameter('some name');
-    }
 
     public function testConstruct(): void
     {
         $name = 'parameter';
         $regex = '/^.*$/';
-        $parameter = new StringParameter($name);
-        $this->assertSame($name, $parameter->name());
+        $parameter = new StringParameter;
         $this->assertSame($regex, $parameter->regex()->toString());
     }
 
     public function testWithRegex(): void
     {
         $regex = new Regex('/^[0-9+]$/');
-        $parameter = (new StringParameter('test'))->withRegex($regex);
+        $parameter = (new StringParameter)->withRegex($regex);
         $this->assertSame($regex->toString(), $parameter->regex()->toString());
     }
 
