@@ -22,6 +22,7 @@ use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use PHPUnit\Framework\TestCase;
@@ -113,7 +114,7 @@ final class WorkflowRunTest extends TestCase
 
 class WorkflowRunTestStep0 extends Action
 {
-    public function run(array $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
         return $this->getResponseSuccess([]);
     }
@@ -127,7 +128,7 @@ class WorkflowRunTestStep1 extends Action
             ->withAddedRequired(foo: new StringParameter);
     }
 
-    public function run(array $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
         return $this->getResponseSuccess([]);
     }
@@ -144,7 +145,7 @@ class WorkflowRunTestStep2 extends Action
             );
     }
 
-    public function run(array $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
         return $this->getResponseSuccess([]);
     }

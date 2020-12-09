@@ -16,6 +16,7 @@ namespace Chevere\Tests\Action\_resources\src;
 use Chevere\Components\Action\Controller;
 use Chevere\Components\Parameter\IntegerParameter;
 use Chevere\Components\Parameter\Parameters;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
@@ -27,7 +28,7 @@ final class ControllerTestInvalidController extends Controller
             ->withAddedRequired(integer: new IntegerParameter);
     }
 
-    public function run(array $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
         return $this->getResponseSuccess([]);
     }

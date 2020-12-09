@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
+use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
@@ -50,7 +51,8 @@ final class ControllerTest extends TestCase
             ->withContextArguments(...[$contextArgument => $contextValue]);
         $this->assertTrue($controller->contextArguments()->has($contextArgument));
         $this->assertSame($contextValue, $controller->contextArguments()->get($contextArgument));
-        $response = $controller->run([$runArgument => $runValue]);
+        $response = $controller
+            ->run($controller->getArguments(...[$runArgument => $runValue]));
         $this->assertSame([
             $runArgument => (int) $runValue,
             $contextArgument => $contextValue,

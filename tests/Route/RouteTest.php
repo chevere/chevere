@@ -28,6 +28,7 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Route\RouteEndpointConflictException;
 use Chevere\Exceptions\Route\RouteWildcardConflictException;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use PHPUnit\Framework\TestCase;
@@ -135,7 +136,7 @@ final class RouteTestController extends Controller
             );
     }
 
-    public function run(array $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
         return $this->getResponseSuccess([]);
     }
@@ -143,7 +144,7 @@ final class RouteTestController extends Controller
 
 final class RouteTestControllerNoParams extends Controller
 {
-    public function run(array $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
         return $this->getResponseSuccess([]);
     }
@@ -160,7 +161,7 @@ final class RouteTestControllerRegexConflict extends Controller
             );
     }
 
-    public function run(array $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
         return $this->getResponseSuccess([]);
     }

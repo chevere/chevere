@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Action;
 
+use Chevere\Components\Parameter\Arguments;
 use Chevere\Interfaces\Action\ActionExecutedInterface;
 use Chevere\Interfaces\Action\ActionRunnerInterface;
 use Chevere\Interfaces\Action\ControllerInterface;
@@ -27,10 +28,12 @@ final class ActionRunner implements ActionRunnerInterface
         $this->controller = $controller;
     }
 
-    public function execute(array $arguments): ActionExecutedInterface
+    public function execute(mixed ...$arguments): ActionExecutedInterface
     {
         try {
-            $response = $this->controller->run($arguments);
+            $response = $this->controller->run(
+                $this->controller->getArguments(...$arguments)
+            );
         } catch (Throwable $e) {
             return (new ActionExecuted([]))->withThrowable($e, 1);
         }
