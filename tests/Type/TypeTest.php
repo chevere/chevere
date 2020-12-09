@@ -35,16 +35,16 @@ final class TypeTest extends TestCase
         }
         $scalars = ['boolean', 'integer', 'float', 'string'];
         foreach ([
-            TypeInterface::BOOLEAN => true,
-            TypeInterface::INTEGER => 1,
-            TypeInterface::FLOAT => 13.13,
-            TypeInterface::STRING => 'test',
-            TypeInterface::ARRAY => ['test'],
-            TypeInterface::OBJECT => new stdClass,
-            TypeInterface::CALLABLE => 'phpinfo',
-            TypeInterface::ITERABLE => [4, 2, 1, 3],
-            TypeInterface::NULL => null,
-            TypeInterface::RESOURCE => $resource,
+            Type::BOOLEAN => true,
+            Type::INTEGER => 1,
+            Type::FLOAT => 13.13,
+            Type::STRING => 'test',
+            Type::ARRAY => ['test'],
+            Type::OBJECT => new stdClass,
+            Type::CALLABLE => 'phpinfo',
+            Type::ITERABLE => [4, 2, 1, 3],
+            Type::NULL => null,
+            Type::RESOURCE => $resource,
         ] as $key => $val) {
             $type = new Type($key);
             $this->assertSame($key, $type->primitive());
@@ -59,7 +59,7 @@ final class TypeTest extends TestCase
     public function testClassName(): void
     {
         $type = new Type(__CLASS__);
-        $this->assertSame(TypeInterface::CLASS_NAME, $type->primitive());
+        $this->assertSame(Type::PRIMITIVE_CLASS_NAME, $type->primitive());
         $this->assertSame(__CLASS__, $type->typeHinting());
         $this->assertTrue($type->validate(new self()));
         $this->assertFalse($type->isScalar());
@@ -68,8 +68,8 @@ final class TypeTest extends TestCase
     public function testInterfaceName(): void
     {
         $type = new Type(TypeInterface::class);
-        $this->assertSame(TypeInterface::INTERFACE_NAME, $type->primitive());
+        $this->assertSame(Type::PRIMITIVE_INTERFACE_NAME, $type->primitive());
         $this->assertSame(TypeInterface::class, $type->typeHinting());
-        $this->assertTrue($type->validate(new Type(TypeInterface::STRING)));
+        $this->assertTrue($type->validate(new Type(Type::STRING)));
     }
 }

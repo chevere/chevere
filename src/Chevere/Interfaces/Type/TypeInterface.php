@@ -30,8 +30,9 @@ interface TypeInterface
     const ITERABLE = 'iterable';
     const RESOURCE = 'resource';
     const NULL = 'null';
-    const CLASS_NAME = 'className';
-    const INTERFACE_NAME = 'interfaceName';
+
+    const PRIMITIVE_CLASS_NAME = 'className';
+    const PRIMITIVE_INTERFACE_NAME = 'interfaceName';
 
     /**
      * Type validators [primitive => validator callable]
@@ -48,11 +49,13 @@ interface TypeInterface
         self::OBJECT => 'is_object',
         self::RESOURCE => 'is_resource',
         self::STRING => 'is_string',
-        self::CLASS_NAME => 'is_object',
-        self::INTERFACE_NAME => 'is_object',
+        self::PRIMITIVE_CLASS_NAME => 'is_object',
+        self::PRIMITIVE_INTERFACE_NAME => 'is_object',
     ];
 
     /**
+     * 
+     * @param string $type A
      * @throws TypeNotFoundException if the type doesn't exists
      */
     public function __construct(string $type);

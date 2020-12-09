@@ -32,9 +32,9 @@ final class Type implements TypeInterface
         $this->type = $type;
         $this->setPrimitive();
         $this->assertHasPrimitive();
-        $this->validator = TypeInterface::TYPE_VALIDATORS[$this->primitive];
+        $this->validator = Type::TYPE_VALIDATORS[$this->primitive];
         $this->typeHinting = $this->primitive;
-        if (in_array($this->primitive, [TypeInterface::CLASS_NAME, TypeInterface::INTERFACE_NAME])) {
+        if (in_array($this->primitive, [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME])) {
             $this->typeHinting = $this->type;
         }
     }
@@ -70,16 +70,19 @@ final class Type implements TypeInterface
 
     private function isAbleToValidateObjects(): bool
     {
-        return in_array($this->primitive, [TypeInterface::CLASS_NAME, TypeInterface::INTERFACE_NAME]);
+        return in_array(
+            $this->primitive,
+            [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME]
+        );
     }
 
     private function validateObject(object $object): bool
     {
         $objectClass = get_class($object);
         switch ($this->primitive) {
-            case TypeInterface::CLASS_NAME:
+            case self::PRIMITIVE_CLASS_NAME:
                 return $this->isClassName($objectClass);
-            case TypeInterface::INTERFACE_NAME:
+            case self::PRIMITIVE_INTERFACE_NAME:
             default:
                 return $this->isInterfaceImplemented($object);
         }
@@ -97,16 +100,16 @@ final class Type implements TypeInterface
 
     private function setPrimitive(): void
     {
-        if (isset(TypeInterface::TYPE_VALIDATORS[$this->type])) {
+        if (isset(Type::TYPE_VALIDATORS[$this->type])) {
             $this->primitive = $this->type;
 
             return;
         }
 
         if (class_exists($this->type)) {
-            $this->primitive = 'className';
+            $this->primitive = self::PRIMITIVE_CLASS_NAME;
         } elseif (interface_exists($this->type)) {
-            $this->primitive = 'interfaceName';
+            $this->primitive = self::PRIMITIVE_INTERFACE_NAME;
         }
     }
 
