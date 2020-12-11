@@ -61,11 +61,11 @@ final class CacheTest extends TestCase
         $varExportable = new VarExportable($var);
         $cacheKey = new CacheKey($key);
         $cache = (new Cache($this->dir))
-            ->withAddedItem($cacheKey, $varExportable);
+            ->withPut($cacheKey, $varExportable);
         $this->assertArrayHasKey($key, $cache->puts());
         $this->assertTrue($cache->exists($cacheKey));
         $this->assertInstanceOf(CacheItemInterface::class, $cache->get($cacheKey));
-        $cache = $cache->withoutItem($cacheKey);
+        $cache = $cache->without($cacheKey);
         $this->assertArrayNotHasKey($key, $cache->puts());
         $this->assertFalse($cache->exists($cacheKey));
     }

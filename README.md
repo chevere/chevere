@@ -1,5 +1,6 @@
 # Chevere
 
+[![Build](https://img.shields.io/github/workflow/status/chevere/chevere/CI/master?style=flat-square)](https://github.com/chevere/chevere/actions)
 [![Quality Gate Status](https://img.shields.io/sonar/alert_status/chevere_chevere?server=https%3A%2F%2Fsonarcloud.io&style=flat-square
 )](https://sonarcloud.io/dashboard?id=chevere_chevere)
 [![Scrutinizer Code

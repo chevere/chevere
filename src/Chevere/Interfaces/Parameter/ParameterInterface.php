@@ -46,7 +46,7 @@ interface ParameterInterface extends DescriptionInterface
      *
      * @throws OverflowException
      */
-    public function withAddedAttribute(string $attribute): ParameterInterface;
+    public function withAddedAttribute(string ...$attribute): ParameterInterface;
 
     /**
      * Return an instance with the specified `$attribute` removed.
@@ -56,12 +56,12 @@ interface ParameterInterface extends DescriptionInterface
      *
      * @throws OutOfBoundsException
      */
-    public function withRemovedAttribute(string $attribute): ParameterInterface;
+    public function withRemovedAttribute(string ...$attribute): ParameterInterface;
 
     /**
      * Indicates whether the instance has the given `$attribute`.
      */
-    public function hasAttribute(string $attribute): bool;
+    public function hasAttribute(string ...$attribute): bool;
 
     /**
      * Provides access to the attributes instance.
