@@ -48,36 +48,44 @@ trait ParameterTrait
         return $new;
     }
 
-    public function withAddedAttribute(string $attribute): ParameterInterface
+    public function withAddedAttribute(string ...$attribute): ParameterInterface
     {
-        if ($this->hasAttribute($attribute)) {
-            throw new OverflowException(
-                (new Message('Attribute %attribute% has been already added'))
-                    ->strong('%attribute%', $attribute)
-            );
-        }
-        /**
-         * @var ParameterInterface $new
-         */
         $new = clone $this;
-        $new->attributes->add($attribute);
+        foreach($attribute as $attr) {
+            if ($this->hasAttribute($attr)) {
+                throw new OverflowException(
+                    (new Message('Attribute %attribute% has been already added'))
+                        ->strong('%attribute%', $attr)
+                );
+            }
+            /**
+             * @var ParameterInterface $new
+             */
+            
+            $new->attributes->add($attr);
+        }
+        
 
         return $new;
     }
 
-    public function withRemovedAttribute(string $attribute): ParameterInterface
+    public function withRemovedAttribute(string ...$attribute): ParameterInterface
     {
-        if (!$this->hasAttribute($attribute)) {
-            throw new OutOfBoundsException(
-                (new Message("Attribute %attribute% doesn't exists"))
-                    ->strong('%attribute%', $attribute)
-            );
-        }
-        /**
-         * @var ParameterInterface $new
-         */
         $new = clone $this;
-        $new->attributes->remove($attribute);
+        foreach($attribute as $attr) {
+            if (!$this->hasAttribute($attr)) {
+                throw new OutOfBoundsException(
+                    (new Message("Attribute %attribute% doesn't exists"))
+                        ->strong('%attribute%', $attr)
+                );
+            }
+            /**
+             * @var ParameterInterface $new
+             */
+            
+            $new->attributes->remove($attr);
+        }
+        
 
         return $new;
     }
@@ -92,9 +100,9 @@ trait ParameterTrait
         return $this->description;
     }
 
-    public function hasAttribute(string $attribute): bool
+    public function hasAttribute(string ...$attribute): bool
     {
-        return $this->attributes->contains($attribute);
+        return $this->attributes->contains(...$attribute);
     }
 
     public function attributes(): Set
