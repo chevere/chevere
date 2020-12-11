@@ -52,7 +52,7 @@ final class Cache implements CacheInterface
         return $this->dir;
     }
 
-    public function withAddedItem(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface
+    public function withPut(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface
     {
         $path = $this->getPath($key->toString());
         try {
@@ -74,9 +74,7 @@ final class Cache implements CacheInterface
         // @codeCoverageIgnoreStart
         catch (Exception $e) {
             throw new RuntimeException(
-                $e->message(),
-                $e->getCode(),
-                $e
+                new Message($e->getMessage())
             );
         }
         // @codeCoverageIgnoreEnd
@@ -84,7 +82,7 @@ final class Cache implements CacheInterface
         return $new;
     }
 
-    public function withoutItem(CacheKeyInterface $cacheKey): CacheInterface
+    public function without(CacheKeyInterface $cacheKey): CacheInterface
     {
         $new = clone $this;
         $path = $this->getPath($cacheKey->toString());

@@ -59,7 +59,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
                     ->withForwardSlashes()->toString() . '/';
                 $cacheAt = new Cache($new->cache->dir()->getChild($classNameAsPath));
                 $queueName = (new ReflectionClass($plugsQueueTyped))->getShortName();
-                $cacheAt = $cacheAt->withAddedItem(
+                $cacheAt = $cacheAt->withPut(
                     new CacheKey($queueName),
                     new VarExportable($plugsQueueTyped)
                 );
@@ -70,7 +70,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
                     );
             }
             $new->cache = $new->cache
-                ->withAddedItem(
+                ->withPut(
                     $new->classMapKey,
                     new VarExportable($new->classMap)
                 );
