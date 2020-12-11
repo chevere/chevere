@@ -30,11 +30,6 @@ interface ControllerInterface extends ActionInterface
     const PARAMETER_TYPE = Type::STRING;
 
     /**
-     * @throws InvalidArgumentException If `getParameters` provides anything else than StringParameter
-     */
-    public function assertParametersType(): void;
-
-    /**
      * Defines context parameters.
      */
     public function getContextParameters(): ParametersInterface;

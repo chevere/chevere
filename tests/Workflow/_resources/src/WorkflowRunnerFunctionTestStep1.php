@@ -16,6 +16,7 @@ namespace Chevere\Tests\Workflow\_resources\src;
 use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
@@ -33,10 +34,8 @@ class WorkflowRunnerFunctionTestStep1 extends Action
             ->withAddedRequired(response1: new StringParameter);
     }
 
-    public function run(array $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        $arguments = $this->getArguments($arguments);
-
         return $this->getResponseSuccess(
             [
                 'response1' => $arguments->getString('foo'),

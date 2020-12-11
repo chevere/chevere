@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\Description\Traits\DescriptionTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Action\ControllerInterface;
@@ -22,11 +23,11 @@ use Chevere\Interfaces\Route\RouteEndpointInterface;
 
 final class RouteEndpoint implements RouteEndpointInterface
 {
+    use DescriptionTrait;
+
     private MethodInterface $method;
 
     private ControllerInterface $controller;
-
-    private string $description = '';
 
     private array $parameters = [];
 

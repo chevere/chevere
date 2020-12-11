@@ -32,8 +32,6 @@ abstract class Controller extends Action implements ControllerInterface
 
     private TypeInterface $parametersType;
 
-    abstract public function run(array $arguments): ResponseSuccessInterface;
-
     public function getContextParameters(): ParametersInterface
     {
         return new Parameters;
@@ -47,28 +45,13 @@ abstract class Controller extends Action implements ControllerInterface
         $this->assertParametersType();
     }
 
-    final public function assertParametersType(): void
-    {
-        $invalid = [];
-        foreach ($this->parameters()->getGenerator() as $name => $parameter) {
-            if ($parameter->type() != $this->parametersType) {
-                $invalid[] = $name;
-            }
-        }
-        if ($invalid !== []) {
-            throw new InvalidArgumentException(
-                (new Message('Parameter %parameters% must be of type %type% for controller %className%.'))
-                    ->code('%parameters%', implode(', ', $invalid))
-                    ->strong('%type%', $this->parametersType->typeHinting())
-                    ->strong('%className%', static::class)
-            );
-        }
-    }
-
     final public function withContextArguments(mixed ...$namedArguments): self
     {
         $new = clone $this;
-        $new->contextArguments = new Arguments($new->contextParameters, ...$namedArguments);
+        $new->contextArguments = new Arguments(
+            $new->contextParameters,
+            ...$namedArguments
+        );
 
         return $new;
     }
@@ -86,5 +69,23 @@ abstract class Controller extends Action implements ControllerInterface
     final public function contextParameters(): ParametersInterface
     {
         return $this->contextParameters;
+    }
+
+    private function assertParametersType(): void
+    {
+        $invalid = [];
+        foreach ($this->parameters()->getGenerator() as $name => $parameter) {
+            if ($parameter->type() != $this->parametersType) {
+                $invalid[] = $name;
+            }
+        }
+        if ($invalid !== []) {
+            throw new InvalidArgumentException(
+                (new Message('Parameter %parameters% must be of type %type% for controller %className%.'))
+                    ->code('%parameters%', implode(', ', $invalid))
+                    ->strong('%type%', $this->parametersType->typeHinting())
+                    ->strong('%className%', static::class)
+            );
+        }
     }
 }

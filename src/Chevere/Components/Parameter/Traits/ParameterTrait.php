@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter\Traits;
 
+use Chevere\Components\Description\Traits\DescriptionTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Core\Exception;
@@ -25,9 +26,9 @@ use Ds\Set;
 
 trait ParameterTrait
 {
+    use DescriptionTrait;
+    
     private TypeInterface $type;
-
-    private string $description = '';
 
     private Set $attributes;
 

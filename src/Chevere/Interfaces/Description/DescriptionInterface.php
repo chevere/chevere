@@ -22,4 +22,9 @@ interface DescriptionInterface
      * Provides access to the description.
      */
     public function description(): string;
+
+    /**
+     * Defines the description.
+     */
+    public function getDescription(): string;
 }

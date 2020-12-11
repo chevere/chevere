@@ -18,8 +18,15 @@ namespace Chevere\Components\Description\Traits;
  */
 trait DescriptionTrait
 {
+    protected string $description = '';
+    
     public function getDescription(): string
     {
         return '';
+    }
+
+    public function description(): string
+    {
+        return $this->description;
     }
 }

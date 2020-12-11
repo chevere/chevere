@@ -24,7 +24,7 @@ final class ActionRunnerTest extends TestCase
 {
     private function getFailedRan(ControllerInterface $controller): ActionExecutedInterface
     {
-        return (new ActionRunner($controller))->execute([]);
+        return (new ActionRunner($controller))->execute(...[]);
     }
 
     public function testControllerRunFailure(): void
@@ -42,7 +42,7 @@ final class ActionRunnerTest extends TestCase
         $value = 'PeoplesHernandez';
         $controller = new ActionRunnerTestController;
         $arguments = [$parameter => $value];
-        $execute = (new ActionRunner($controller))->execute($arguments);
+        $execute = (new ActionRunner($controller))->execute(...$arguments);
         $this->assertSame(0, $execute->code());
         $this->assertSame(['user' => $value], $execute->data());
     }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
@@ -50,7 +51,9 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             $action = new $actionName;
             $this->injectDependencies($action, $container);
             // try {
-            $responseSuccess = $action->run($this->getArguments($step));
+            $responseSuccess = $action->run(
+                new Arguments($action->parameters(), ...$this->getArguments($step))
+            );
             // }
             // @codeCoverageIgnoreStart
             // catch (Throwable $e) {
