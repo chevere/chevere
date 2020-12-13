@@ -102,6 +102,11 @@ interface ThrowableHandlerDocumentInterface extends ToStringInterface
      */
     public function getSectionServer(): string;
 
+    /** 
+     * Returns a formatted content for a section.
+     */
+    public function getContent(string $content): string;
+
     /**
      * Returns the template used for translating placeholders tags.
      *

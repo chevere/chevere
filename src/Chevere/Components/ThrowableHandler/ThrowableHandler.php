@@ -43,15 +43,14 @@ final class ThrowableHandler implements ThrowableHandlerInterface
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new RuntimeException(
-                (new Message('Unable to create %var%'))
-                    ->code('%var%', 'dateTimeUtc'),
-                0,
-                $e
+                (new Message('Unable to create %var%: %error%'))
+                    ->code('%var%', 'dateTimeUtc')
+                    ->strtr('%error%', $e->getMessage())
             );
         }
         // @codeCoverageIgnoreEnd
         $this->throwableRead = $throwableRead;
-        $this->id = uniqid('', true);
+        $this->id = uniqid('', false);
     }
 
     public function withIsDebug(bool $isDebug): ThrowableHandlerInterface

@@ -98,35 +98,48 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
         ];
     }
 
+    public function getContent(string $content): string
+    {
+        return $content;
+    }
+
     public function getSectionTitle(): string
     {
-        return $this->formatter->wrapTitle(static::TAG_TITLE . ' in ' . static::TAG_FILE_LINE);
+        return $this->formatter
+            ->wrapTitle(static::TAG_TITLE . ' in ' . static::TAG_FILE_LINE);
     }
 
     public function getSectionMessage(): string
     {
-        return $this->formatter->wrapSectionTitle('# Message ' . static::TAG_CODE_WRAP) . "\n" . static::TAG_MESSAGE;
+        return $this->formatter
+            ->wrapSectionTitle('# Message ' . static::TAG_CODE_WRAP) .
+            "\n" . $this->getContent(static::TAG_MESSAGE);
     }
 
     public function getSectionId(): string
     {
-        return $this->formatter->wrapSectionTitle('# Incident ID:' . static::TAG_ID);
+        return $this->formatter
+            ->wrapSectionTitle('# Incident ID:' . static::TAG_ID);
     }
 
     public function getSectionTime(): string
     {
-        return $this->formatter->wrapSectionTitle('# Time') . "\n" . static::TAG_DATE_TIME_UTC_ATOM
-            . ' [' . static::TAG_TIMESTAMP . ']';
+        return $this->formatter->wrapSectionTitle('# Time') . "\n" .
+            $this->getContent( static::TAG_DATE_TIME_UTC_ATOM .
+                ' [' . static::TAG_TIMESTAMP . ']'
+            );
     }
 
     public function getSectionStack(): string
     {
-        return $this->formatter->wrapSectionTitle('# Stack trace') . "\n" . static::TAG_STACK;
+        return $this->formatter->wrapSectionTitle('# Stack trace') . "\n" .
+            $this->getContent(static::TAG_STACK);
     }
 
     public function getSectionServer(): string
     {
-        return $this->formatter->wrapSectionTitle('# Server') . "\n" . static::TAG_PHP_UNAME;
+        return $this->formatter->wrapSectionTitle('# Server') . "\n" .
+            $this->getContent(static::TAG_PHP_UNAME);
     }
 
     /**

@@ -27,9 +27,12 @@ final class ThrowableHandlerConsoleFormatter extends ThrowableHandlerAbstractFor
 
     public function getTraceEntryTemplate(): string
     {
-        return $this->wrapSectionTitle('#' . ThrowableTraceFormatterInterface::TAG_ENTRY_POS) . ' ' . ThrowableTraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n"
-            . ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS . ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE . ThrowableTraceFormatterInterface::TAG_ENTRY_FUNCTION
-            . '()';
+        return $this->wrapSectionTitle(
+            '#' . ThrowableTraceFormatterInterface::TAG_ENTRY_POS) .
+            ' ' . ThrowableTraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n" .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_FUNCTION . '()';
     }
 
     public function getHr(): string

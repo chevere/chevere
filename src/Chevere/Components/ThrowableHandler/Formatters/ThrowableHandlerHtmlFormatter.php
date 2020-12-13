@@ -26,9 +26,14 @@ final class ThrowableHandlerHtmlFormatter extends ThrowableHandlerAbstractFormat
 
     public function getTraceEntryTemplate(): string
     {
-        return '<div class="pre pre--stack-entry ' . ThrowableTraceFormatterInterface::TAG_ENTRY_CSS_EVEN_CLASS . '">#' . ThrowableTraceFormatterInterface::TAG_ENTRY_POS . ' '
-            . ThrowableTraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n" . ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS
-            . ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE . ThrowableTraceFormatterInterface::TAG_ENTRY_FUNCTION . '()</div>';
+        return '<div class="pre pre--stack-entry ' .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_CSS_EVEN_CLASS . '">#' .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_POS . ' ' .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n" .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_FUNCTION .
+            '()</div>';
     }
 
     public function getHr(): string
@@ -43,7 +48,8 @@ final class ThrowableHandlerHtmlFormatter extends ThrowableHandlerAbstractFormat
 
     public function wrapSectionTitle(string $value): string
     {
-        return '<div class="title">' . str_replace('# ', $this->wrapHidden('#&nbsp;'), $value) . '</div>';
+        return '<div class="title">' .
+            str_replace('# ', $this->wrapHidden('#&nbsp;'), $value) . '</div>';
     }
 
     public function wrapHidden(string $value): string

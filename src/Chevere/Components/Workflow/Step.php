@@ -74,7 +74,6 @@ final class Step implements StepInterface
                     ->code('%message%', implode(', ', $missing))
             );
         }
-        
         $new->arguments = $store;
 
         return $new;

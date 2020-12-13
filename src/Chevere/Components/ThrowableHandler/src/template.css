@@ -1,3 +1,7 @@
+html, body {
+    min-height: 100%;
+}
+
 html {
     color: #000;
     font: 16px Helvetica, Arial, sans-serif;
@@ -32,6 +36,14 @@ html {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.user-select-all {
+    -webkit-touch-callout: all;
+    -webkit-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
 }
 
 main {
