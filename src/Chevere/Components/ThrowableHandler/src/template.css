@@ -3,6 +3,7 @@ html, body {
 }
 
 html {
+    height: 100%;
     color: #000;
     font: 16px Helvetica, Arial, sans-serif;
     line-height: 1.2;
@@ -10,6 +11,7 @@ html {
     background: -moz-linear-gradient(top, #3498db 0%, #8e44ad 100%);
     background: -webkit-linear-gradient(top, #3498db 0%, #8e44ad 100%);
     background: linear-gradient(to bottom, #3498db 0%, #8e44ad 100%);
+    background-attachment: fixed;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3498db", endColorstr="#8e44ad", GradientType=0);
 }
 
