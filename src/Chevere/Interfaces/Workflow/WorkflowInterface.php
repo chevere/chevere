@@ -23,8 +23,9 @@ use Generator;
  */
 interface WorkflowInterface extends Countable
 {
-    const REGEX_PARAMETER_REFERENCE = '/^\${([\w-]*)}$/';
-    const REGEX_STEP_REFERENCE = '/^\${([\w-]*)\:([\w-]*)}$/';
+    public const REGEX_PARAMETER_REFERENCE = '/^\${([\w-]*)}$/';
+
+    public const REGEX_STEP_REFERENCE = '/^\${([\w-]*)\:([\w-]*)}$/';
 
     public function __construct(string $name);
 

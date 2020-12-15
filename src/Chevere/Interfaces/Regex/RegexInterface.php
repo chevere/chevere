@@ -22,7 +22,7 @@ use Chevere\Interfaces\To\ToStringInterface;
  */
 interface RegexInterface extends ToStringInterface
 {
-    const ERRORS = [
+    public const ERRORS = [
         PREG_NO_ERROR => 'PREG_NO_ERROR', // duh!
         PREG_INTERNAL_ERROR => 'PREG_INTERNAL_ERROR',
         PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',

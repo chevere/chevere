@@ -31,9 +31,9 @@ final class Router implements RouterInterface
 
     public function __construct()
     {
-        $this->index = new RouterIndex;
-        $this->routables = new Routables;
-        $this->routeCollector = new RouteCollector(new StrictStd, new DataGenerator);
+        $this->index = new RouterIndex();
+        $this->routables = new Routables();
+        $this->routeCollector = new RouteCollector(new StrictStd(), new DataGenerator());
     }
 
     public function withAddedRoutable(RoutableInterface $routable, string $group): RouterInterface

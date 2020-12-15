@@ -75,7 +75,7 @@ final class HooksRunner implements HooksRunnerInterface
     private function setHook(string $entry): void
     {
         try {
-            $this->hook = new $entry;
+            $this->hook = new $entry();
         } catch (Throwable $e) {
             throw new RuntimeException(
                 (new Message('Invalid hook type'))

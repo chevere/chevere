@@ -45,8 +45,8 @@ final class PlugsMap implements PlugsMapInterface
 
     public function __construct(PlugTypeInterface $type)
     {
-        $this->set = new Set;
-        $this->map = new Map;
+        $this->set = new Set();
+        $this->map = new Map();
         $this->type = $type;
     }
 
@@ -77,9 +77,7 @@ final class PlugsMap implements PlugsMapInterface
             );
         }
         $this->assertUnique($plug);
-        /**
-         * @var PlugsQueueInterface $queue
-         */
+        /** @var PlugsQueueInterface $queue */
         $queue = $this->map->hasKey($plug->at())
             ? $this->map->get($plug->at())
             : $assert->plugType()->getPlugsQueueTyped();
@@ -134,7 +132,7 @@ final class PlugsMap implements PlugsMapInterface
         }
     }
 
-    protected function assertUnique(PlugInterface $plug): void
+    private function assertUnique(PlugInterface $plug): void
     {
         if ($this->has($plug)) {
             throw new OverflowException(

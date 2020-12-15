@@ -21,7 +21,7 @@ final class VarDumpConsoleOutputter extends VarDumpAbstractOutputter
 
     public function prepare(): void
     {
-        $color = new Color;
+        $color = new Color();
         $this->outputHr = $color->fg('blue', str_repeat('-', 60));
         $this->writer()->write(
             implode("\n", [

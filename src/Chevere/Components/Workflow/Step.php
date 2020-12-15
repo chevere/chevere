@@ -1,9 +1,9 @@
 <?php
 
 /*
- * This file is part of Chevereto.
+ * This file is part of Chevere.
  *
- * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ * (c) Rodolfo Berrios <rodolfo@chevere.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -35,6 +35,7 @@ final class Step implements StepInterface
     public function __construct(string $action)
     {
         $this->action = $action;
+
         try {
             $reflection = new ReflectionClass($this->action);
         } catch (\ReflectionException $e) {
@@ -64,6 +65,7 @@ final class Step implements StepInterface
             $argument = $namedArguments[$name] ?? null;
             if (is_null($argument)) {
                 $missing[] = $name;
+
                 continue;
             }
             $store[$name] = $argument;

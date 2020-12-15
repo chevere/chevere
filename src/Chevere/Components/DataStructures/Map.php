@@ -18,7 +18,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructures\MapInterface;
 use Ds\Map as InternalMap;
-
 use function DeepCopy\deep_copy;
 
 final class Map implements MapInterface
@@ -27,8 +26,8 @@ final class Map implements MapInterface
 
     public function __construct(mixed ...$namedArguments)
     {
-        $this->map = new InternalMap;
-        if(count($namedArguments) > 0) {
+        $this->map = new InternalMap();
+        if (count($namedArguments) > 0) {
             $this->map->putAll($namedArguments);
         }
     }

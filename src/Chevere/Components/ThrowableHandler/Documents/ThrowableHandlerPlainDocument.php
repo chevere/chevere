@@ -20,6 +20,6 @@ final class ThrowableHandlerPlainDocument extends ThrowableHandlerAbstractDocume
 {
     public function getFormatter(): ThrowableHandlerFormatterInterface
     {
-        return new ThrowableHandlerPlainFormatter;
+        return new ThrowableHandlerPlainFormatter();
     }
 }

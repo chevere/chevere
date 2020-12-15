@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Str;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Str\StrContainsException;
 use Chevere\Exceptions\Str\StrCtypeDigitException;
 use Chevere\Exceptions\Str\StrCtypeSpaceException;
@@ -47,6 +46,7 @@ final class StrAssert implements StrAssertInterface
         if ((new StrBool($this->string))->empty()) {
             return $this;
         }
+
         throw new StrNotEmptyException(
             (new Message('String %string% is not empty'))
                 ->code('%string%', $this->string)
@@ -69,6 +69,7 @@ final class StrAssert implements StrAssertInterface
         if ((new StrBool($this->string))->ctypeSpace()) {
             return $this;
         }
+
         throw new StrNotCtypeSpaceException(
             (new Message('String %string% is not %algo%'))
                 ->code('%string%', $this->string)
@@ -93,6 +94,7 @@ final class StrAssert implements StrAssertInterface
         if ((new StrBool($this->string))->ctypeSpace()) {
             return $this;
         }
+
         throw new StrNotCtypeDigitException(
             (new Message('String %string% is not %algo%'))
                 ->code('%string%', $this->string)
@@ -117,6 +119,7 @@ final class StrAssert implements StrAssertInterface
         if ((new StrBool($this->string))->startsWithCtypeDigit()) {
             return $this;
         }
+
         throw new StrNotStartsWithCtypeDigitException(
             (new Message('String %string% does not starts with a %algo% character'))
                 ->code('%string%', $this->string)
@@ -142,6 +145,7 @@ final class StrAssert implements StrAssertInterface
         if ((new StrBool($this->string))->startsWith($needle)) {
             return $this;
         }
+
         throw new StrNotStartsWithException(
             (new Message('String %string% does not starts with %needle%'))
                 ->code('%string%', $this->string)
@@ -167,6 +171,7 @@ final class StrAssert implements StrAssertInterface
         if ((new StrBool($this->string))->endsWith($needle)) {
             return $this;
         }
+
         throw new StrNotEndsWithException(
             (new Message('String %string% does not ends with %needle%'))
                 ->code('%string%', $this->string)
@@ -192,6 +197,7 @@ final class StrAssert implements StrAssertInterface
         if ((new StrBool($this->string))->same($string)) {
             return $this;
         }
+
         throw new StrNotSameException(
             (new Message('Provided string %provided% is not the same as %string%'))
                 ->code('%provided%', $string)
@@ -217,6 +223,7 @@ final class StrAssert implements StrAssertInterface
         if ((new StrBool($this->string))->contains($string)) {
             return $this;
         }
+
         throw new StrNotContainsException(
             (new Message('String %string% not contains %provided%'))
                 ->code('%provided%', $string)

@@ -16,7 +16,6 @@ namespace Chevere\Interfaces\Filesystem;
 use Chevere\Exceptions\Filesystem\PathDotSlashException;
 use Chevere\Exceptions\Filesystem\PathDoubleDotsDashException;
 use Chevere\Exceptions\Filesystem\PathExtraSlashesException;
-use Chevere\Exceptions\Filesystem\PathInvalidException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
 use Chevere\Exceptions\Filesystem\PathNotExistsException;

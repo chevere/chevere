@@ -38,7 +38,7 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
 
     public function __construct()
     {
-        $this->set = new Set;
+        $this->set = new Set();
     }
 
     public function withAdded(RoutingDescriptorInterface $descriptor): RoutingDescriptorsInterface
@@ -52,6 +52,7 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
         $new = clone $this;
         $new->descriptor = $descriptor;
         $new->pos++;
+
         try {
             $new->assertPushPath($descriptor->path()->toString());
             $new->assertPushName($descriptor->decorator()->name()->toString());

@@ -20,7 +20,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
  */
 interface VarDumpProcessorInterface
 {
-    const MAX_DEPTH = 10;
+    public const MAX_DEPTH = 10;
 
     /**
     * @throws InvalidArgumentException

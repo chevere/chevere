@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
-use Chevere\Exceptions\ClassMap\ClassNotMappedException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Exceptions\Plugin\PlugsFileNotExistsException;

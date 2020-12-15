@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugin\PluggableAnchors;
-use Chevere\Components\Plugin\PlugTypesList;
 use Chevere\Exceptions\Plugin\PluggableAnchorNotExistsException;
 use Chevere\Exceptions\Plugin\PluggableAnchorsException;
 use Chevere\Exceptions\Plugin\PluggableNotExistsException;
@@ -36,12 +34,13 @@ final class AssertPlug implements AssertPlugInterface
 
     public function __construct(PlugInterface $plug)
     {
-        $this->plugTypesList = new PlugTypesList;
+        $this->plugTypesList = new PlugTypesList();
         $this->plug = $plug;
         foreach ($this->plugTypesList->getGenerator() as $plugType) {
             $plugInterface = $plugType->interface();
             if ($this->plug instanceof $plugInterface) {
                 $this->type = $plugType;
+
                 break;
             }
         }
@@ -49,6 +48,7 @@ final class AssertPlug implements AssertPlugInterface
         $this->assertPluggableExists();
         $anchorsMethod = $this->plugType()->pluggableAnchorsMethod();
         $at = $this->plug->at();
+
         try {
             $anchors = $at::$anchorsMethod();
         } catch (Error $e) {
@@ -82,6 +82,7 @@ final class AssertPlug implements AssertPlugInterface
             foreach ($this->plugTypesList->getGenerator() as $plugType) {
                 $accept[] = $plugType->interface();
             }
+
             throw new PlugInterfaceException(
                 (new Message("Plug %className% doesn't implement any of the accepted plug interfaces %interfaces%"))
                     ->code('%className%', $this->plug->at())

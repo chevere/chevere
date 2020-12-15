@@ -52,7 +52,8 @@ final class PlugsMapCache implements PlugsMapCacheInterface
     public function withPut(PlugsMapInterface $plugsMap): PlugsMapCacheInterface
     {
         $new = clone $this;
-        $new->classMap = new ClassMap;
+        $new->classMap = new ClassMap();
+
         try {
             foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueueTyped) {
                 $classNameAsPath = (new Str($pluggableName))
@@ -93,6 +94,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         if (!$this->cache->exists($this->classMapKey)) {
             return false;
         }
+
         try {
             return $this->getClassMapFromCache()->has($className);
         } catch (Throwable $e) {
@@ -111,6 +113,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
                 3
             );
         }
+
         try {
             $path = $classMap->get($className);
 

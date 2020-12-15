@@ -39,9 +39,9 @@ final class RouterIndex implements RouterIndexInterface
 
     public function __construct()
     {
-        $this->identifiersMap = new Map;
-        $this->groupsIndex = new Map;
-        $this->groupsMap = new Map;
+        $this->identifiersMap = new Map();
+        $this->groupsIndex = new Map();
+        $this->groupsMap = new Map();
     }
 
     public function withAddedRoutable(RoutableInterface $routable, string $group): RouterIndexInterface
@@ -64,8 +64,9 @@ final class RouterIndex implements RouterIndexInterface
         /** @var \Ds\TKey $routeKey */
         $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeKey)) {
-            /** @var string  $groupName*/
+            /** @var string $groupName*/
             $groupName = $new->groupsIndex->get($routeName);
+
             throw new OverflowException(
                 (new Message('Route name %routeName% is already bound to group %groupName%'))
                     ->code('%routeName%', $routeName)

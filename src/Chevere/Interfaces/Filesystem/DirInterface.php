@@ -19,7 +19,6 @@ use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\PathInvalidException;
 use Chevere\Exceptions\Filesystem\PathIsFileException;
-use Chevere\Interfaces\Filesystem\PathInterface;
 
 /**
  * Describes the component in charge of interacting with filesystem directories.

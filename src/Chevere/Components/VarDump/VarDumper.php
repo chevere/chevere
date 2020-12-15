@@ -44,7 +44,7 @@ final class VarDumper implements VarDumperInterface
         $this->writer = $writer;
         $this->dumpable = $dumpable;
         $this->formatter = $formatter;
-        $this->known = new Set;
+        $this->known = new Set();
         ++$this->depth;
     }
 

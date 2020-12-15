@@ -27,7 +27,7 @@ final class ArrayParameter implements ArrayParameterInterface
     public function __construct()
     {
         $this->type = new Type(Type::ARRAY);
-        $this->attributes = new Set;
+        $this->attributes = new Set();
     }
 
     public function withDefault(array $default): ArrayParameterInterface

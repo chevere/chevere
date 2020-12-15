@@ -19,11 +19,8 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use ReflectionObject;
-use stdClass;
 use TypeError;
-
 use function Chevere\Components\Type\debugType;
-use function Chevere\Components\Type\varType;
 
 trait ServiceDependantTrait
 {
@@ -31,7 +28,7 @@ trait ServiceDependantTrait
 
     public function getDependencies(): ClassMapInterface
     {
-        return new ClassMap;
+        return new ClassMap();
     }
 
     public function withDependencies(mixed ...$namedArguments): self
@@ -43,9 +40,11 @@ trait ServiceDependantTrait
             $value = $namedArguments[$key] ?? null;
             if (!isset($value)) {
                 $missing[] = $key;
+
                 continue;
             }
             $this->assertType($className, $key, $value);
+
             try {
                 $new->{$key} = $value;
             } catch (TypeError $e) {

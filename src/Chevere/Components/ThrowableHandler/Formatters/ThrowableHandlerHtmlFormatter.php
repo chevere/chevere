@@ -21,7 +21,7 @@ final class ThrowableHandlerHtmlFormatter extends ThrowableHandlerAbstractFormat
 {
     public function getVarDumpFormatter(): VarDumpFormatterInterface
     {
-        return new VarDumpHtmlFormatter;
+        return new VarDumpHtmlFormatter();
     }
 
     public function getTraceEntryTemplate(): string

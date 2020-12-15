@@ -36,7 +36,7 @@ final class RoutableSpec implements RoutableSpecInterface
     public function __construct(SpecPathInterface $specGroupPath, RoutableInterface $routable)
     {
         $this->key = $routable->route()->name()->toString();
-        $this->routeEndpointSpecs = new RouteEndpointSpecs;
+        $this->routeEndpointSpecs = new RouteEndpointSpecs();
         $specGroupRoute = $specGroupPath->getChild($this->key);
         $this->jsonPath = $specGroupRoute->getChild('route.json')->toString();
         $path = $routable->route()->path();

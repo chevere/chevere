@@ -35,11 +35,12 @@ final class RoutePath implements RoutePathInterface
 
     public function __construct(string $path)
     {
-        $std = new StrictStd;
+        $std = new StrictStd();
         $this->data = $std->parse($path)[0];
         $this->path = $path;
-        $this->wildcards = new Wildcards;
-        $dataGenerator = new DataGenerator;
+        $this->wildcards = new Wildcards();
+        $dataGenerator = new DataGenerator();
+
         try {
             $dataGenerator->addRoute('GET', $this->data, '');
         }

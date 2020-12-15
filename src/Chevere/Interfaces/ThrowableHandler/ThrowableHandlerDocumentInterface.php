@@ -20,24 +20,37 @@ use Chevere\Interfaces\To\ToStringInterface;
  */
 interface ThrowableHandlerDocumentInterface extends ToStringInterface
 {
-    const SECTION_TITLE = 'title';
-    const SECTION_MESSAGE = 'message';
-    const SECTION_ID = 'id';
-    const SECTION_TIME = 'time';
-    const SECTION_STACK = 'stack';
-    const SECTION_SERVER = 'server';
+    public const SECTION_TITLE = 'title';
 
-    const TAG_TITLE = '%title%';
-    const TAG_MESSAGE = '%message%';
-    const TAG_CODE_WRAP = '%codeWrap%';
-    const TAG_ID = '%id%';
-    const TAG_FILE_LINE = '%fileLine%';
-    const TAG_DATE_TIME_UTC_ATOM = '%dateTimeUtcAtom%';
-    const TAG_TIMESTAMP = '%timestamp%';
-    const TAG_STACK = '%stack%';
-    const TAG_PHP_UNAME = '%phpUname%';
+    public const SECTION_MESSAGE = 'message';
 
-    const SECTIONS = [
+    public const SECTION_ID = 'id';
+
+    public const SECTION_TIME = 'time';
+
+    public const SECTION_STACK = 'stack';
+
+    public const SECTION_SERVER = 'server';
+
+    public const TAG_TITLE = '%title%';
+
+    public const TAG_MESSAGE = '%message%';
+
+    public const TAG_CODE_WRAP = '%codeWrap%';
+
+    public const TAG_ID = '%id%';
+
+    public const TAG_FILE_LINE = '%fileLine%';
+
+    public const TAG_DATE_TIME_UTC_ATOM = '%dateTimeUtcAtom%';
+
+    public const TAG_TIMESTAMP = '%timestamp%';
+
+    public const TAG_STACK = '%stack%';
+
+    public const TAG_PHP_UNAME = '%phpUname%';
+
+    public const SECTIONS = [
         self::SECTION_TITLE,
         self::SECTION_MESSAGE,
         self::SECTION_ID,
@@ -46,7 +59,7 @@ interface ThrowableHandlerDocumentInterface extends ToStringInterface
         self::SECTION_SERVER,
     ];
 
-    const SECTIONS_VERBOSITY = [
+    public const SECTIONS_VERBOSITY = [
         self::SECTION_TITLE => 16,
         self::SECTION_MESSAGE => 16,
         self::SECTION_ID => 16,
@@ -102,7 +115,7 @@ interface ThrowableHandlerDocumentInterface extends ToStringInterface
      */
     public function getSectionServer(): string;
 
-    /** 
+    /**
      * Returns a formatted content for a section.
      */
     public function getContent(string $content): string;

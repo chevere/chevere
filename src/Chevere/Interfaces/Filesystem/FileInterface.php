@@ -20,15 +20,15 @@ use Chevere\Exceptions\Filesystem\FileUnableToGetException;
 use Chevere\Exceptions\Filesystem\FileUnableToPutException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\PathIsDirException;
-use Chevere\Interfaces\Filesystem\PathInterface;
 
 /**
  * Describes the component in charge of interacting with filesystem files.
  */
 interface FileInterface
 {
-    const CHECKSUM_ALGO = 'sha256';
-    const CHECKSUM_LENGTH = 64;
+    public const CHECKSUM_ALGO = 'sha256';
+
+    public const CHECKSUM_LENGTH = 64;
 
     /**
      * @throws PathIsDirException

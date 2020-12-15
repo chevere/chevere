@@ -22,7 +22,7 @@ use Chevere\Interfaces\Cache\CacheInterface;
  */
 interface PlugsMapCacheInterface
 {
-    const KEY_CLASS_MAP = 'classmap';
+    public const KEY_CLASS_MAP = 'classmap';
 
     public function __construct(CacheInterface $cache);
 

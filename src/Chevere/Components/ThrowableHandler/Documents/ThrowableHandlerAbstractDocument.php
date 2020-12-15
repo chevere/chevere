@@ -125,7 +125,8 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
     public function getSectionTime(): string
     {
         return $this->formatter->wrapSectionTitle('# Time') . "\n" .
-            $this->getContent( static::TAG_DATE_TIME_UTC_ATOM .
+            $this->getContent(
+                static::TAG_DATE_TIME_UTC_ATOM .
                 ' [' . static::TAG_TIMESTAMP . ']'
             );
     }

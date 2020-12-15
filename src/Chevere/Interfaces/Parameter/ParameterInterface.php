@@ -15,7 +15,6 @@ namespace Chevere\Interfaces\Parameter;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use Chevere\Interfaces\Description\DescriptionInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Ds\Set;

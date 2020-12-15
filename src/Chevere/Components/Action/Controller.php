@@ -33,7 +33,7 @@ abstract class Controller extends Action implements ControllerInterface
 
     public function getContextParameters(): ParametersInterface
     {
-        return new Parameters;
+        return new Parameters();
     }
 
     public function __construct()

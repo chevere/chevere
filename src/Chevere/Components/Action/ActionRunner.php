@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Action;
 
-use Chevere\Components\Parameter\Arguments;
 use Chevere\Interfaces\Action\ActionExecutedInterface;
 use Chevere\Interfaces\Action\ActionRunnerInterface;
 use Chevere\Interfaces\Action\ControllerInterface;

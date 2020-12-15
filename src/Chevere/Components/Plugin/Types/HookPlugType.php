@@ -38,7 +38,7 @@ final class HookPlugType implements PlugTypeInterface
 
     public function getPlugsQueueTyped(): PlugsQueueTypedInterface
     {
-        return new HooksQueue;
+        return new HooksQueue();
     }
 
     public function pluggableAnchorsMethod(): string

@@ -22,13 +22,14 @@ final class ThrowableHandlerConsoleFormatter extends ThrowableHandlerAbstractFor
 {
     public function getVarDumpFormatter(): VarDumpFormatterInterface
     {
-        return new VarDumpFormatter;
+        return new VarDumpFormatter();
     }
 
     public function getTraceEntryTemplate(): string
     {
         return $this->wrapSectionTitle(
-            '#' . ThrowableTraceFormatterInterface::TAG_ENTRY_POS) .
+            '#' . ThrowableTraceFormatterInterface::TAG_ENTRY_POS
+        ) .
             ' ' . ThrowableTraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n" .
             ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS .
             ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE .

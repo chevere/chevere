@@ -82,6 +82,7 @@ function handleExceptionAs(Throwable $throwable, string $document): void
     $document = new $document(
         new ThrowableHandler(new ThrowableRead($throwable))
     );
+
     try {
         $writer = WritersInstance::get()->error();
     } catch (LogicException $e) {

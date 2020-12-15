@@ -26,7 +26,7 @@ final class RouteDecorator implements RouteDecoratorInterface
     public function __construct(RouteNameInterface $name)
     {
         $this->name = $name;
-        $this->wildcards = new Wildcards;
+        $this->wildcards = new Wildcards();
     }
 
     public function withWildcards(WildcardsInterface $wildcards): RouteDecoratorInterface

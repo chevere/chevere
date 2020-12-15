@@ -28,20 +28,14 @@ final class RoutableTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
-        $route = new Route(
-            new RouteName('test'),
-            new RoutePath('/test')
-        );
+        $route = new Route(new RoutePath('/test'));
         $this->expectException(RouteWithoutEndpointsException::class);
         new Routable($route);
     }
 
     public function testConstruct(): void
     {
-        $route = (new Route(
-            new RouteName('test'),
-            new RoutePath('/test')
-        ))
+        $route = (new Route(new RoutePath('/test')))
             ->withAddedEndpoint(
                 new RouteEndpoint(
                     new GetMethod,
@@ -54,7 +48,7 @@ final class RoutableTest extends TestCase
 
     public function testNotExportable(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test'));
+        $route = new Route(new RoutePath('/test'));
         $route->resource = fopen('php://output', 'r+');
         $this->expectException(RouteNotRoutableException::class);
         new Routable($route);

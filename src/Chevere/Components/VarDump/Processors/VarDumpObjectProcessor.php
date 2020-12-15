@@ -116,6 +116,7 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
         do {
             foreach ($reflectionClass->getProperties() as $property) {
                 $property->setAccessible(true);
+
                 try {
                     $value = $property->getValue($this->var);
                 } catch (Throwable $e) {

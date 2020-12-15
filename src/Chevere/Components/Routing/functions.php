@@ -51,7 +51,7 @@ use function Chevere\Components\Filesystem\filePhpReturnForPath;
  */
 function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, string $group): RouterInterface
 {
-    $router = new Router;
+    $router = new Router();
     foreach ($descriptors->getGenerator() as $descriptor) {
         $routePath = $descriptor->path();
         $routeDecorator = $descriptor->decorator();
@@ -59,7 +59,7 @@ function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, s
         //     $routePath = $routePath->withWildcard($routeWildcard); // @codeCoverageIgnore
         // }
         $routeEndpoints = routeEndpointsForDir($descriptor->dir());
-        $route = new Route($routeDecorator->name(), $routePath);
+        $route = new Route($routePath);
         foreach ($routeEndpoints->keys() as $key) {
             $route = $route->withAddedEndpoint(
                 $routeEndpoints->get($key)
@@ -83,13 +83,14 @@ function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, s
  */
 function routeEndpointsForDir(DirInterface $dir): RouteEndpointsInterface
 {
-    $routeEndpoints = new RouteEndpoints;
+    $routeEndpoints = new RouteEndpoints();
     $path = $dir->path();
     foreach (RouteEndpointInterface::KNOWN_METHODS as $name => $methodClass) {
         $controllerPath = $path->getChild($name . '.php');
         if (!$controllerPath->exists()) {
             continue;
         }
+
         try {
             $controller = filePhpReturnForPath($controllerPath->absolute())
                 ->withStrict(false)
@@ -99,7 +100,7 @@ function routeEndpointsForDir(DirInterface $dir): RouteEndpointsInterface
         }
         $routeEndpoints = $routeEndpoints
             ->withPut(
-                new RouteEndpoint(new $methodClass, $controller)
+                new RouteEndpoint(new $methodClass(), $controller)
             );
     }
 

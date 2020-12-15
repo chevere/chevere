@@ -33,8 +33,9 @@ use Chevere\Interfaces\VarExportable\VarExportableInterface;
  */
 interface FilePhpReturnInterface
 {
-    const PHP_RETURN = '<?php return ';
-    const PHP_RETURN_CHARS = 13;
+    public const PHP_RETURN = '<?php return ';
+
+    public const PHP_RETURN_CHARS = 13;
 
     /**
      * Return an instance with the strict flag.

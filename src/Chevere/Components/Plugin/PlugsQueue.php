@@ -32,7 +32,7 @@ final class PlugsQueue implements PlugsQueueInterface
     public function __construct(PlugTypeInterface $plugType)
     {
         $this->plugType = $plugType;
-        $this->set = new Set;
+        $this->set = new Set();
     }
 
     public function withAdded(PlugInterface $plug): PlugsQueueInterface

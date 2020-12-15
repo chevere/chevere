@@ -36,15 +36,15 @@ abstract class Action implements ActionInterface
         $this->parameters = $this->getParameters();
         $this->responseDataParameters = $this->getResponseDataParameters();
     }
-    
+
     public function getParameters(): ParametersInterface
     {
-        return new Parameters;
+        return new Parameters();
     }
 
     public function getResponseDataParameters(): ParametersInterface
     {
-        return new Parameters;
+        return new Parameters();
     }
 
     abstract public function run(ArgumentsInterface $arguments): ResponseSuccessInterface;
@@ -62,7 +62,6 @@ abstract class Action implements ActionInterface
     final public function getArguments(mixed ...$arguments): ArgumentsInterface
     {
         return new Arguments($this->parameters(), ...$arguments);
-
     }
 
     final public function getResponseSuccess(array $data): ResponseSuccessInterface

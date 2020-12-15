@@ -43,12 +43,12 @@ final class Route implements RouteInterface
 
     private RouteEndpointsInterface $endpoints;
 
-    public function __construct(RouteNameInterface $name, RoutePathInterface $routePath)
+    public function __construct(RoutePathInterface $routePath)
     {
         $this->name = $name;
         $this->routePath = $routePath;
         $this->maker = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
-        $this->endpoints = new RouteEndpoints;
+        $this->endpoints = new RouteEndpoints();
     }
 
     public function name(): RouteNameInterface
@@ -74,9 +74,7 @@ final class Route implements RouteInterface
         foreach ($new->routePath->wildcards()->getGenerator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
             $knownWildcardMatch = $new->wildcards[$wildcard->toString()] ?? null;
-            /**
-             * @var StringParameterInterface $controllerParamMatch
-             */
+            /** @var StringParameterInterface $controllerParamMatch */
             $controllerParamMatch = $endpoint->controller()->parameters()->get($wildcard->toString());
             $controllerParamMatch = $controllerParamMatch->regex()->toNoDelimitersNoAnchors();
             if (!isset($knownWildcardMatch)) {
@@ -142,6 +140,7 @@ final class Route implements RouteInterface
         }
         if (array_key_exists($wildcard->toString(), $endpoint->parameters()) === false) {
             $parameters = array_keys($endpoint->parameters());
+
             throw new OutOfBoundsException(
                 (new Message('Wildcard parameter %wildcard% must bind to one of the known %controller% parameters: %parameters%'))
                     ->code('%wildcard%', $wildcard->toString())

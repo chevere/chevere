@@ -34,6 +34,7 @@ final class VarExportable implements VarExportableInterface
     {
         $this->var = $var;
         $this->breadcrumb = new Breadcrumb();
+
         try {
             $this->assertExportable($this->var);
         } catch (Throwable $e) {
@@ -82,6 +83,7 @@ final class VarExportable implements VarExportableInterface
             } else {
                 $message = new Message("Argument is a resource which can't be exported");
             }
+
             throw new VarExportableIsResourceException($message);
         }
     }

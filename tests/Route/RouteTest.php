@@ -39,7 +39,7 @@ final class RouteTest extends TestCase
     {
         $routeName = new RouteName('test');
         $routePath = new RoutePath('/test');
-        $route = new Route($routeName, $routePath);
+        $route = new Route($routePath);
         $line = __LINE__ - 1;
         $this->assertSame($routeName, $route->name());
         $this->assertSame($routePath, $route->path());
@@ -54,7 +54,7 @@ final class RouteTest extends TestCase
 
     public function testWithAddedEndpoint(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test'));
+        $route = new Route(new RoutePath('/test'));
         $method = new GetMethod;
         $controller = new RouteTestController;
         $endpoint = new RouteEndpoint($method, $controller);
@@ -65,7 +65,7 @@ final class RouteTest extends TestCase
 
     public function testWithAddedEndpointWrongWildcard(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test/{foo}'));
+        $route = new Route(new RoutePath('/test/{foo}'));
         $method = new GetMethod;
         $controller = new RouteTestController;
         $endpoint = new RouteEndpoint($method, $controller);
@@ -75,7 +75,7 @@ final class RouteTest extends TestCase
 
     public function testWithAddedEndpointNoParams(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test/{foo}'));
+        $route = new Route(new RoutePath('/test/{foo}'));
         $method = new GetMethod;
         $controller = new RouteTestControllerNoParams;
         $endpoint = new RouteEndpoint($method, $controller);
@@ -85,7 +85,7 @@ final class RouteTest extends TestCase
 
     public function testWithAddedEndpointWildcardParameter(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test/{id:[0-9]+}'));
+        $route = new Route(new RoutePath('/test/{id:[0-9]+}'));
         $method = new GetMethod;
         $controller = new RouteTestController;
         $endpoint = new RouteEndpoint($method, $controller);
@@ -99,7 +99,7 @@ final class RouteTest extends TestCase
 
     public function testWithAddedEndpointOverride(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test/{id:[0-9]+}'));
+        $route = new Route(new RoutePath('/test/{id:[0-9]+}'));
         $endpoint = new RouteEndpoint(new GetMethod, new RouteTestController);
         $route = $route->withAddedEndpoint($endpoint);
         $this->expectException(OverflowException::class);
@@ -108,7 +108,7 @@ final class RouteTest extends TestCase
 
     public function testWithAddedEndpointConflict(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test/{id:[0-9]+}'));
+        $route = new Route(new RoutePath('/test/{id:[0-9]+}'));
         $endpoint1 = new RouteEndpoint(new GetMethod, new RouteTestController);
         $endpoint2 = new RouteEndpoint(new PostMethod, new RouteTestControllerRegexConflict);
         $route = $route->withAddedEndpoint($endpoint1);
@@ -118,7 +118,7 @@ final class RouteTest extends TestCase
 
     public function testWithAddedEndpointWildcardConflict(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test/{id:\w+}'));
+        $route = new Route(new RoutePath('/test/{id:\w+}'));
         $endpoint = new RouteEndpoint(new GetMethod, new RouteTestController);
         $this->expectException(RouteWildcardConflictException::class);
         $route->withAddedEndpoint($endpoint);

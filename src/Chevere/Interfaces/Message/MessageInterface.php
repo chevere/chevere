@@ -21,7 +21,7 @@ use Chevere\Interfaces\To\ToStringInterface;
  */
 interface MessageInterface extends ToStringInterface
 {
-    const CLI_TABLE = [
+    public const CLI_TABLE = [
         'emphasis' => [
             'bold' => 3,
         ],
@@ -37,7 +37,7 @@ interface MessageInterface extends ToStringInterface
         ],
     ];
 
-    const HTML_TABLE = [
+    public const HTML_TABLE = [
         'emphasis' => 'em',
         'underline' => 'u',
     ];

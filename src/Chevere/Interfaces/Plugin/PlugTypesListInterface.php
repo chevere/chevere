@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
-use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Generator;
 
 /**

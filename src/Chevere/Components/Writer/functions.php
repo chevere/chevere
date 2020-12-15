@@ -62,6 +62,7 @@ function streamForString(string $content = ''): StreamInterface
 {
     $type = 'stream';
     $stream = 'php://temp';
+
     try {
         $resource = fopen($stream, 'r+');
         fwrite($resource, $content);

@@ -30,7 +30,7 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
     public function __construct(string $key)
     {
         $this->assertKey($key);
-        $this->color = new Color;
+        $this->color = new Color();
         $color = $this->pallet()[$key] ?? 'reset';
         $this->style = is_string($color) ? [$color] : $color;
     }

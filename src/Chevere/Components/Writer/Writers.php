@@ -44,8 +44,8 @@ final class Writers implements WritersInterface
             );
         }
         // @codeCoverageIgnoreEnd
-        $this->debug = new NullWriter;
-        $this->log = new NullWriter;
+        $this->debug = new NullWriter();
+        $this->log = new NullWriter();
     }
 
     public function with(WriterInterface $writer): WritersInterface

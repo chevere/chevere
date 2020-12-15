@@ -20,25 +20,35 @@ use Chevere\Exceptions\Type\TypeNotFoundException;
  */
 interface TypeInterface
 {
-    const BOOLEAN = 'boolean';
-    const INTEGER = 'integer';
-    const FLOAT = 'float';
-    const STRING = 'string';
-    const ARRAY = 'array';
-    const OBJECT = 'object';
-    const CALLABLE = 'callable';
-    const ITERABLE = 'iterable';
-    const RESOURCE = 'resource';
-    const NULL = 'null';
+    public const BOOLEAN = 'boolean';
 
-    const PRIMITIVE_CLASS_NAME = 'className';
-    const PRIMITIVE_INTERFACE_NAME = 'interfaceName';
+    public const INTEGER = 'integer';
+
+    public const FLOAT = 'float';
+
+    public const STRING = 'string';
+
+    public const ARRAY = 'array';
+
+    public const OBJECT = 'object';
+
+    public const CALLABLE = 'callable';
+
+    public const ITERABLE = 'iterable';
+
+    public const RESOURCE = 'resource';
+
+    public const NULL = 'null';
+
+    public const PRIMITIVE_CLASS_NAME = 'className';
+
+    public const PRIMITIVE_INTERFACE_NAME = 'interfaceName';
 
     /**
      * Type validators [primitive => validator callable]
      * taken from https://www.php.net/manual/en/ref.var.php.
      */
-    const TYPE_VALIDATORS = [
+    public const TYPE_VALIDATORS = [
         self::ARRAY => 'is_array',
         self::BOOLEAN => 'is_bool',
         self::CALLABLE => 'is_callable',
@@ -54,7 +64,7 @@ interface TypeInterface
     ];
 
     /**
-     * 
+     *
      * @param string $type A
      * @throws TypeNotFoundException if the type doesn't exists
      */

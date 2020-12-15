@@ -30,17 +30,24 @@ use Ds\Set;
  */
 interface VarDumperInterface
 {
-    const FILE = '_file';
-    const CLASS_REG = '_class';
-    const CLASS_ANON = 'class@anonymous';
-    const OPERATOR = '_operator';
-    const FUNCTION = '_function';
-    const MODIFIERS = '_modifiers';
-    const VARIABLE = '_variable';
-    const EMPHASIS = '_emphasis';
+    public const FILE = '_file';
+
+    public const CLASS_REG = '_class';
+
+    public const CLASS_ANON = 'class@anonymous';
+
+    public const OPERATOR = '_operator';
+
+    public const FUNCTION = '_function';
+
+    public const MODIFIERS = '_modifiers';
+
+    public const VARIABLE = '_variable';
+
+    public const EMPHASIS = '_emphasis';
 
     /** @var array [ProcessorInterface $processor,] */
-    const PROCESSORS = [
+    public const PROCESSORS = [
         TypeInterface::BOOLEAN => VarDumpBooleanProcessor::class,
         TypeInterface::ARRAY => VarDumpArrayProcessor::class,
         TypeInterface::OBJECT => VarDumpObjectProcessor::class,

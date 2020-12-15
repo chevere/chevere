@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Components\Spec\Specs\GroupSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
@@ -29,7 +28,7 @@ final class IndexSpec implements IndexSpecInterface
     public function __construct(SpecPathInterface $specPath)
     {
         $this->jsonPath = $specPath->getChild('index.json')->toString();
-        $this->groupSpecs = new GroupSpecs;
+        $this->groupSpecs = new GroupSpecs();
     }
 
     public function withAddedGroup(GroupSpecInterface $groupSpec): IndexSpecInterface

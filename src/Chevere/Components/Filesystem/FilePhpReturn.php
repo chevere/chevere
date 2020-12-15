@@ -86,7 +86,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     public function var()
     {
         $var = $this->raw();
-        
+
         return $this->getReturnVar($var);
     }
 
@@ -95,6 +95,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         $var = $this->var();
         if ($type->validate($var) === false) {
             $typeReturn = is_object($var) ? get_class($var) : varType($var);
+
             throw new FileReturnInvalidTypeException(
                 (new Message("File PHP return of type %return% at %path% doesn't match the expected type %expected%"))
                     ->code('%return%', $typeReturn)
@@ -180,6 +181,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     private function assertNonStrict(): void
     {
         $contents = $this->filePhp->file()->contents();
+
         try {
             (new StrAssert($contents))->notEmpty()->notCtypeSpace();
         } catch (Throwable $e) {

@@ -89,6 +89,7 @@ final class File implements FileInterface
     public function contents(): string
     {
         $this->assertExists();
+
         try {
             return file_get_contents($this->path->absolute());
         }
@@ -128,6 +129,7 @@ final class File implements FileInterface
             );
         }
         $this->createPath();
+
         try {
             file_put_contents($this->path->absolute(), '');
         }
@@ -143,6 +145,7 @@ final class File implements FileInterface
     public function put(string $contents): void
     {
         $this->assertExists();
+
         try {
             file_put_contents($this->path->absolute(), $contents);
         }

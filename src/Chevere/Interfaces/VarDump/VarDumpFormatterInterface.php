@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
-use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
-
 /**
  * Describes the component in charge of formatting the var dump strings.
  */

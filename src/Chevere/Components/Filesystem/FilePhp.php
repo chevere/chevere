@@ -45,6 +45,7 @@ final class FilePhp implements FilePhpInterface
         $path = $this->file->path()->absolute();
         $past = stat($path)['mtime'] - 10;
         touch($path, $past);
+
         try {
             if (!opcache_compile_file($path)) {
                 throw new RangeException(

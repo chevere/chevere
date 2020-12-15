@@ -26,7 +26,7 @@ use Chevere\Interfaces\VarExportable\VarExportableInterface;
  */
 interface CacheInterface
 {
-    const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
+    public const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
     /**
      * @param DirInterface $dir Directory for working cache

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use Chevere\Components\VarDump\VarDumpable;
-use Chevere\Components\VarDump\VarDumper;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpOutputterInterface;

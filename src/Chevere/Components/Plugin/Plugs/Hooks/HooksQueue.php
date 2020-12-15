@@ -30,6 +30,6 @@ final class HooksQueue implements HooksQueueInterface
 
     public function getPlugType(): PlugTypeInterface
     {
-        return new HookPlugType;
+        return new HookPlugType();
     }
 }

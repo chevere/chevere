@@ -38,7 +38,7 @@ final class Routed implements RoutedInterface
     {
         $controller = $this->controllerName->toString();
 
-        return new $controller;
+        return new $controller();
     }
 
     public function arguments(): array

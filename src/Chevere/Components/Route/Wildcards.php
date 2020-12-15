@@ -36,8 +36,8 @@ final class Wildcards implements WildcardsInterface
 
     public function __construct()
     {
-        $this->map = new Map;
-        $this->index = new Map;
+        $this->map = new Map();
+        $this->index = new Map();
     }
 
     public function __clone()
@@ -70,7 +70,7 @@ final class Wildcards implements WildcardsInterface
         $pos = $this->index->get($wildcardName);
         $get = $this->map->get($pos);
         if ($get === null) {
-            throw new RangeException; // @codeCoverageIgnore
+            throw new RangeException(); // @codeCoverageIgnore
         }
 
         return $get;

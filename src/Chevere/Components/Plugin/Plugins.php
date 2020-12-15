@@ -53,9 +53,7 @@ final class Plugins implements PluginsInterface
         /**
          * @var PlugsQueueInterface $var
          */
-        $var = varForFilePhpReturn($fileReturn, new Type(PlugsQueueInterface::class));
-
-        return $var;
+        return varForFilePhpReturn($fileReturn, new Type(PlugsQueueInterface::class));
     }
 
     private function assertSetPlugsPath(string $pluggableName): void

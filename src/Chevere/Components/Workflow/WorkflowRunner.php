@@ -48,7 +48,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
                 continue; // @codeCoverageIgnore
             }
             $actionName = $step->action();
-            $action = new $actionName;
+            $action = new $actionName();
             $this->injectDependencies($action, $container);
             // try {
             $responseSuccess = $action->run(
@@ -80,6 +80,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             if (!$this->workflowRun->workflow()->hasVar($taskArgument)) {
                 // @codeCoverageIgnoreStart
                 $arguments[$name] = $taskArgument;
+
                 continue;
                 // @codeCoverageIgnoreEnd
             }

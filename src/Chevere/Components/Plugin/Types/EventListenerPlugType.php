@@ -41,7 +41,7 @@ final class EventListenerPlugType implements PlugTypeInterface
 
     public function getPlugsQueueTyped(): EventListenersQueueInterface
     {
-        return new EventListenersQueue;
+        return new EventListenersQueue();
     }
 
     public function pluggableAnchorsMethod(): string

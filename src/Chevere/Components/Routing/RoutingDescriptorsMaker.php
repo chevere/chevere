@@ -17,7 +17,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteDecorator;
-use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Type\Type;
@@ -48,8 +47,9 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
     public function __construct(DirInterface $dir)
     {
         $this->path = $dir->path();
-        $this->descriptors = new RoutingDescriptors;
+        $this->descriptors = new RoutingDescriptors();
         $dirFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
+
         try {
             $this->iterate(
                 new RecursiveIteratorIterator(
@@ -81,6 +81,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             // @codeCoverageIgnoreStart
             if (count($endpoints) === 0) {
                 $iterator->next();
+
                 continue;
             }
             // @codeCoverageIgnoreEnd
@@ -95,7 +96,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                     ),
                 $routeEndpoint->parameters()
             );
-            $route = new Route(new RouteName('name'), new RoutePath($path));
+            $route = new Route(new RoutePath($path));
             foreach ($generator as $routeEndpoint) {
                 $route = $route->withAddedEndpoint($routeEndpoint);
             }
@@ -134,8 +135,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 
     private function getRecursiveFilterIterator(RecursiveDirectoryIterator $recursiveDirectoryIterator): RecursiveFilterIterator
     {
-        return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator
-        {
+        return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator {
             public function accept(): bool
             {
                 if ($this->hasChildren()) {

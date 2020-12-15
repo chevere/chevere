@@ -15,11 +15,8 @@ namespace Chevere\Components\Parameter\Traits;
 
 use Chevere\Components\Description\Traits\DescriptionTrait;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Str\StrAssert;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Ds\Set;
@@ -27,7 +24,7 @@ use Ds\Set;
 trait ParameterTrait
 {
     use DescriptionTrait;
-    
+
     private TypeInterface $type;
 
     private Set $attributes;
@@ -39,9 +36,7 @@ trait ParameterTrait
 
     public function withDescription(string $description): ParameterInterface
     {
-        /**
-         * @var ParameterInterface $new
-         */
+        /** @var ParameterInterface $new */
         $new = clone $this;
         $new->description = $description;
 
@@ -51,20 +46,17 @@ trait ParameterTrait
     public function withAddedAttribute(string ...$attribute): ParameterInterface
     {
         $new = clone $this;
-        foreach($attribute as $attr) {
+        foreach ($attribute as $attr) {
             if ($this->hasAttribute($attr)) {
                 throw new OverflowException(
                     (new Message('Attribute %attribute% has been already added'))
                         ->strong('%attribute%', $attr)
                 );
             }
-            /**
-             * @var ParameterInterface $new
-             */
-            
+            /** @var ParameterInterface $new */
+
             $new->attributes->add($attr);
         }
-        
 
         return $new;
     }
@@ -72,20 +64,17 @@ trait ParameterTrait
     public function withRemovedAttribute(string ...$attribute): ParameterInterface
     {
         $new = clone $this;
-        foreach($attribute as $attr) {
+        foreach ($attribute as $attr) {
             if (!$this->hasAttribute($attr)) {
                 throw new OutOfBoundsException(
                     (new Message("Attribute %attribute% doesn't exists"))
                         ->strong('%attribute%', $attr)
                 );
             }
-            /**
-             * @var ParameterInterface $new
-             */
-            
+            /** @var ParameterInterface $new */
+
             $new->attributes->remove($attr);
         }
-        
 
         return $new;
     }

@@ -21,7 +21,7 @@ final class ThrowableHandlerConsoleDocument extends ThrowableHandlerAbstractDocu
 {
     public function getFormatter(): ThrowableHandlerFormatterInterface
     {
-        return new ThrowableHandlerConsoleFormatter;
+        return new ThrowableHandlerConsoleFormatter();
     }
 
     public function getSectionTitle(): string

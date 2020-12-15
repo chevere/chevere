@@ -21,7 +21,7 @@ use Chevere\Interfaces\Filesystem\DirInterface;
  */
 interface RoutingDescriptorsMakerInterface
 {
-    const ROUTE_NAME_BASENAME = 'RouteName.php';
+    public const ROUTE_NAME_BASENAME = 'RouteName.php';
 
     /**
      * @throws LogicException

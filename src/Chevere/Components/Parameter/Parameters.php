@@ -33,9 +33,9 @@ final class Parameters implements ParametersInterface
 
     public function __construct()
     {
-        $this->map = new Map;
-        $this->required = new Set;
-        $this->optional = new Set;
+        $this->map = new Map();
+        $this->required = new Set();
+        $this->optional = new Set();
     }
 
     public function __clone()

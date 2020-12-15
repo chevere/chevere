@@ -18,6 +18,7 @@ namespace Chevere\Interfaces\VarDump;
  */
 interface VarDumpTemplateInterface
 {
-    const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid rgba(236,240,241,.1);"></span>  ';
-    const HTML_EMPHASIS = '<em>%s</em>';
+    public const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid rgba(236,240,241,.1);"></span>  ';
+
+    public const HTML_EMPHASIS = '<em>%s</em>';
 }

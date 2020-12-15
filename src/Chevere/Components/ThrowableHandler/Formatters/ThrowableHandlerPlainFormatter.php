@@ -20,6 +20,6 @@ final class ThrowableHandlerPlainFormatter extends ThrowableHandlerAbstractForma
 {
     public function getVarDumpFormatter(): VarDumpFormatterInterface
     {
-        return new VarDumpFormatter;
+        return new VarDumpFormatter();
     }
 }

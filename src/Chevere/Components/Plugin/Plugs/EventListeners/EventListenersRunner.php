@@ -43,7 +43,7 @@ final class EventListenersRunner implements EventListenersRunnerInterface
             foreach ($queue as $entries) {
                 foreach ($entries as $entry) {
                     // @codeCoverageIgnoreStart
-                    $this->eventListener = new $entry;
+                    $this->eventListener = new $entry();
                     // @codeCoverageIgnoreEnd
                     $eventListener = $this->eventListener;
                     $eventListener($data, $this->writers);

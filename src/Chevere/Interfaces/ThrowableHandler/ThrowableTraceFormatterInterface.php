@@ -22,16 +22,23 @@ use Chevere\Interfaces\VarDump\VarDumperInterface;
  */
 interface ThrowableTraceFormatterInterface extends ToArrayInterface, ToStringInterface
 {
-    const TAG_ENTRY_FILE = '%file%';
-    const TAG_ENTRY_LINE = '%line%';
-    const TAG_ENTRY_FILE_LINE = '%fileLine%';
-    const TAG_ENTRY_CLASS = '%class%';
-    const TAG_ENTRY_TYPE = '%type%';
-    const TAG_ENTRY_FUNCTION = '%function%';
-    const TAG_ENTRY_CSS_EVEN_CLASS = '%cssEvenClass%';
-    const TAG_ENTRY_POS = '%pos%';
+    public const TAG_ENTRY_FILE = '%file%';
 
-    const HIGHLIGHT_TAGS = [
+    public const TAG_ENTRY_LINE = '%line%';
+
+    public const TAG_ENTRY_FILE_LINE = '%fileLine%';
+
+    public const TAG_ENTRY_CLASS = '%class%';
+
+    public const TAG_ENTRY_TYPE = '%type%';
+
+    public const TAG_ENTRY_FUNCTION = '%function%';
+
+    public const TAG_ENTRY_CSS_EVEN_CLASS = '%cssEvenClass%';
+
+    public const TAG_ENTRY_POS = '%pos%';
+
+    public const HIGHLIGHT_TAGS = [
         self::TAG_ENTRY_FILE => VarDumperInterface::FILE,
         self::TAG_ENTRY_LINE => VarDumperInterface::FILE,
         self::TAG_ENTRY_FILE_LINE => VarDumperInterface::FILE,

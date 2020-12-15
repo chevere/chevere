@@ -25,7 +25,7 @@ final class PluggableAnchors implements PluggableAnchorsInterface
 
     public function __construct()
     {
-        $this->set = new Set;
+        $this->set = new Set();
     }
 
     public function withAdded(string $anchor): PluggableAnchorsInterface

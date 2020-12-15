@@ -55,6 +55,7 @@ final class Cache implements CacheInterface
     public function withPut(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface
     {
         $path = $this->getPath($key->toString());
+
         try {
             $file = new File($path);
             if (!$file->exists()) {
@@ -86,6 +87,7 @@ final class Cache implements CacheInterface
     {
         $new = clone $this;
         $path = $this->getPath($cacheKey->toString());
+
         try {
             if ($path->exists() === false) {
                 return $new; // @codeCoverageIgnore
@@ -140,6 +142,7 @@ final class Cache implements CacheInterface
     private function getPath(string $name): PathInterface
     {
         $child = $name . '.php';
+
         try {
             return $this->dir->path()->getChild($child);
         }

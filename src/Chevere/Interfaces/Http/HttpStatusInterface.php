@@ -18,7 +18,7 @@ namespace Chevere\Interfaces\Http;
  */
 interface HttpStatusInterface
 {
-    const STATUSES = [
+    public const STATUSES = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',

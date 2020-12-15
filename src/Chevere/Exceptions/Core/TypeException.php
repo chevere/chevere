@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Exceptions\Core;
 
-use Chevere\Exceptions\Core\Exception;
-
 /**
  * Exception thrown when the type gives the cacha.
  */

@@ -35,9 +35,8 @@ final class RouterTest extends TestCase
 
     public function testRouter(): void
     {
-        $routeName = new RouteName('my-route');
         $routePath = new RoutePath('/user/{id:\d+}/{name:\w+}/');
-        $route = new Route($routeName, $routePath);
+        $route = new Route($routePath);
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(
                 new GetMethod,

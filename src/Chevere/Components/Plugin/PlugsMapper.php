@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
-use Chevere\Components\Plugin\PlugsMap;
 use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Plugin\PlugInterface;
@@ -67,10 +66,8 @@ final class PlugsMapper
         $reflection = new ReflectionClass("$namespace\\$className");
         if (!$reflection->isInterface() && $reflection->implementsInterface(PlugInterface::class)) {
             $plugName = $reflection->getName();
-            /**
-             * @var PlugInterface $plug
-             */
-            $plug = new $plugName;
+            /** @var PlugInterface $plug */
+            $plug = new $plugName();
             $this->plugsMap = $this->plugsMap
                 ->withAdded($plug);
         }

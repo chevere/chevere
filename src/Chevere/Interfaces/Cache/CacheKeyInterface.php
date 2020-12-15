@@ -21,7 +21,7 @@ use Chevere\Interfaces\To\ToStringInterface;
  */
 interface CacheKeyInterface extends ToStringInterface
 {
-    const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
+    public const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
     /**
     * @throws CacheInvalidKeyException

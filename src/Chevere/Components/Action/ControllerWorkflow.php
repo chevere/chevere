@@ -26,7 +26,7 @@ abstract class ControllerWorkflow extends Controller implements WorkflowProvider
         $this->workflow = $this->getWorkflow();
     }
 
-    abstract function getWorkflow(): WorkflowInterface;
+    abstract public function getWorkflow(): WorkflowInterface;
 
     public function workflow(): WorkflowInterface
     {

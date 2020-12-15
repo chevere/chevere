@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Components\Spec\Specs\RoutableSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
@@ -30,7 +29,7 @@ final class GroupSpec implements GroupSpecInterface
     {
         $this->jsonPath = $specPath->getChild("$groupName/routes.json")->toString();
         $this->key = $groupName;
-        $this->routableSpecs = new RoutableSpecs;
+        $this->routableSpecs = new RoutableSpecs();
     }
 
     public function withAddedRoutableSpec(RoutableSpecInterface $routableSpec): GroupSpecInterface

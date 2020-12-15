@@ -57,9 +57,9 @@ final class SpecMaker implements SpecMakerInterface
         $this->assertDir();
         $this->router = $router;
         $this->assertRouter();
-        $this->specIndex = new SpecIndex;
+        $this->specIndex = new SpecIndex();
         $this->indexSpec = new IndexSpec($this->specPath);
-        $this->files = new Map;
+        $this->files = new Map();
         $routes = $router->routables();
         $groups = [];
         foreach ($routes->getGenerator() as $routeName => $routable) {
@@ -140,6 +140,7 @@ final class SpecMaker implements SpecMakerInterface
     {
         $filePath = $this->getPathFor($spec->jsonPath());
         $this->files[$spec->jsonPath()] = $filePath;
+
         try {
             $file = new File($filePath);
             if ($file->exists()) {

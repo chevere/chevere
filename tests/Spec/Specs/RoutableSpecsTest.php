@@ -44,7 +44,7 @@ final class RoutableSpecsTest extends TestCase
         $spec = new RoutableSpec(
             new SpecPath('/spec/group'),
             new Routable(
-                (new Route(new RouteName('name'), new RoutePath('/path')))
+                (new Route(new RoutePath('/path')))
                     ->withAddedEndpoint(
                         new RouteEndpoint(
                             new PatchMethod,

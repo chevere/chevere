@@ -19,23 +19,23 @@ use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 final class ThrowableHandlerHtmlDocument extends ThrowableHandlerAbstractDocument
 {
     /** @var string Title used when debug=0 */
-    const NO_DEBUG_TITLE_PLAIN = 'Something went wrong';
+    public const NO_DEBUG_TITLE_PLAIN = 'Something went wrong';
 
     /** @var string HTML content used when debug=0 */
-    const NO_DEBUG_CONTENT_HTML = '<p>Please try again later. If the problem persist don\'t hesitate to contact the system administrator.</p>';
+    public const NO_DEBUG_CONTENT_HTML = '<p>Please try again later. If the problem persist don\'t hesitate to contact the system administrator.</p>';
 
     /** @var string HTML document template */
-    const HTML_TEMPLATE = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>%css%</style></head><body class="%bodyClass%">%body%</body></html>';
+    public const HTML_TEMPLATE = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>%css%</style></head><body class="%bodyClass%">%body%</body></html>';
 
     /** @var string HTML body used when debug=0 */
-    const BODY_DEBUG_0_HTML = '<main class="user-select-none"><div>%content%</div></main>';
+    public const BODY_DEBUG_0_HTML = '<main class="user-select-none"><div>%content%</div></main>';
 
     /** @var string HTML body used when debug=1 */
-    const BODY_DEBUG_1_HTML = '<main class="main--stack"><div>%content%</div></main>';
+    public const BODY_DEBUG_1_HTML = '<main class="main--stack"><div>%content%</div></main>';
 
     public function getFormatter(): ThrowableHandlerFormatterInterface
     {
-        return new ThrowableHandlerHtmlFormatter;
+        return new ThrowableHandlerHtmlFormatter();
     }
 
     public function getTemplate(): array

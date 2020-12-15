@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Action;
 
 use Chevere\Components\Type\Type;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 
@@ -27,7 +26,7 @@ use Chevere\Interfaces\Parameter\ParametersInterface;
  */
 interface ControllerInterface extends ActionInterface
 {
-    const PARAMETER_TYPE = Type::STRING;
+    public const PARAMETER_TYPE = Type::STRING;
 
     /**
      * Defines context parameters.

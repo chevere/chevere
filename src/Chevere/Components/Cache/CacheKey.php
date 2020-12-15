@@ -37,6 +37,7 @@ final class CacheKey implements CacheKeyInterface
         if (preg_match_all('#[' . CacheKeyInterface::ILLEGAL_KEY_CHARACTERS . ']#', $this->key, $matches)) {
             $matches = array_unique($matches[0]);
             $forbidden = implode(' ', $matches);
+
             throw new CacheInvalidKeyException(
                 (new Message('Use of forbidden character(s) %character%'))
                     ->code('%character%', $forbidden)

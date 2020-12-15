@@ -33,7 +33,7 @@ final class StringParameter implements StringParameterInterface
     public function __construct()
     {
         $this->type = new Type(Type::STRING);
-        $this->attributes = new Set;
+        $this->attributes = new Set();
         $this->regex = new Regex('/^.*$/');
     }
 

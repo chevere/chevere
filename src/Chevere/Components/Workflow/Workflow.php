@@ -48,11 +48,11 @@ final class Workflow implements WorkflowInterface
     public function __construct(string $name)
     {
         $this->name = $name;
-        $this->map = new Map;
-        $this->steps = new Vector;
-        $this->parameters = new Parameters;
-        $this->vars = new Map;
-        $this->expected = new Map;
+        $this->map = new Map();
+        $this->steps = new Vector();
+        $this->parameters = new Parameters();
+        $this->vars = new Map();
+        $this->expected = new Map();
     }
 
     public function name(): string
@@ -63,19 +63,19 @@ final class Workflow implements WorkflowInterface
     public function count(): int
     {
         return $this->steps->count();
-    }    
+    }
 
     public function withAdded(StepInterface ...$step): WorkflowInterface
     {
         $new = clone $this;
-        foreach($step as $name => $task) {
+        foreach ($step as $name => $task) {
             $name = (string) $name;
             $new->assertNoOverflow($name);
             $new->setParameters($name, $task);
             $new->map->put($name, $task);
             $new->steps->push($name);
         }
-        
+
         return $new;
     }
 
@@ -83,7 +83,7 @@ final class Workflow implements WorkflowInterface
     {
         $new = clone $this;
         $new->assertHasStepByName($before);
-        foreach($step as $name => $task) {
+        foreach ($step as $name => $task) {
             $name = (string) $name;
             $new->assertNoOverflow($name);
             $new->setParameters($name, $task);
@@ -98,7 +98,7 @@ final class Workflow implements WorkflowInterface
     {
         $new = clone $this;
         $new->assertHasStepByName($after);
-        foreach($step as $name => $task) {
+        foreach ($step as $name => $task) {
             $name = (string) $name;
             $new->assertNoOverflow($name);
             $new->setParameters($name, $task);
@@ -215,10 +215,8 @@ final class Workflow implements WorkflowInterface
     private function setParameters(string $name, StepInterface $step): void
     {
         $action = $step->action();
-        /**
-         * @var ActionInterface $action
-         */
-        $action = new $action;
+        /** @var ActionInterface $action */
+        $action = new $action();
         $parameters = $action->parameters();
         foreach ($step->arguments() as $argument) {
             try {
@@ -256,9 +254,7 @@ final class Workflow implements WorkflowInterface
 
     private function getPosByName(string $step): int
     {
-        $pos = $this->steps->find($step);
-        /** @var int $pos */
-        return $pos;
+        return $this->steps->find($step);
     }
 
     private function putParameter(string $name, ParameterInterface $parameter): void

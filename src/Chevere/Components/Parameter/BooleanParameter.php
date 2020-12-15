@@ -27,7 +27,7 @@ final class BooleanParameter implements BooleanParameterInterface
     public function __construct()
     {
         $this->type = new Type(Type::BOOLEAN);
-        $this->attributes = new Set;
+        $this->attributes = new Set();
     }
 
     public function withDefault(bool $default): BooleanParameterInterface

@@ -43,7 +43,7 @@ final class WorkflowRun implements WorkflowRunInterface
         $this->uuid = Uuid::uuid4()->toString();
         $this->arguments = new Arguments($workflow->parameters(), ...$namedArguments);
         $this->workflow = $workflow;
-        $this->steps = new Map;
+        $this->steps = new Map();
     }
 
     public function uuid(): string
@@ -65,12 +65,13 @@ final class WorkflowRun implements WorkflowRunInterface
     {
         $new = clone $this;
         $new->workflow->get($name);
+
         try {
             $expected = $new->workflow->getExpected($name);
         } catch (OutOfBoundsException $e) {
             $expected = [];
         }
-        
+
         $missing = [];
         foreach ($expected as $expectParamName) {
             if (!isset($response->data()[$expectParamName])) {
@@ -83,8 +84,7 @@ final class WorkflowRun implements WorkflowRunInterface
                     ->code('%arguments%', implode(', ', $missing))
             );
         }
-        
-        
+
         $new->steps = $new->steps->withPut($name, $response);
 
         return $new;
@@ -94,8 +94,9 @@ final class WorkflowRun implements WorkflowRunInterface
     {
         try {
             $this->steps->assertHasKey($name);
+
             return true;
-        } catch(Throwable $e) {
+        } catch (Throwable $e) {
             return false;
         }
     }

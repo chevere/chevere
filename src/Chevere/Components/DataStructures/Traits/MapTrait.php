@@ -15,7 +15,6 @@ namespace Chevere\Components\DataStructures\Traits;
 
 use Ds\Map;
 use Generator;
-
 use function DeepCopy\deep_copy;
 
 trait MapTrait
@@ -24,7 +23,7 @@ trait MapTrait
 
     public function __construct()
     {
-        $this->map = new Map;
+        $this->map = new Map();
     }
 
     public function __clone()

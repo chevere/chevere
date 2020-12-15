@@ -25,6 +25,6 @@ final class Parameter implements ParameterInterface
     public function __construct(TypeInterface $type)
     {
         $this->type = $type;
-        $this->attributes = new Set;
+        $this->attributes = new Set();
     }
 }

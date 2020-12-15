@@ -30,7 +30,7 @@ final class SpecIndex implements SpecIndexInterface
             /** @var SpecEndpoints $specEndpoints */
             $specEndpoints = $new->map->get($routeName);
         } else {
-            $specEndpoints = new SpecEndpoints;
+            $specEndpoints = new SpecEndpoints();
             $new->map->put($routeName, $specEndpoints);
         }
         $specEndpoints = $specEndpoints->withPut($routeEndpointSpec);

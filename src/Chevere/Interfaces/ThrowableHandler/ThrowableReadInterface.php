@@ -23,10 +23,10 @@ use Throwable;
  */
 interface ThrowableReadInterface
 {
-    const DEFAULT_ERROR_TYPE = E_ERROR;
+    public const DEFAULT_ERROR_TYPE = E_ERROR;
 
     /** @var string[] Readable PHP error mapping */
-    const ERROR_TYPES = [
+    public const ERROR_TYPES = [
         E_ERROR => 'Fatal error',
         E_WARNING => 'Warning',
         E_PARSE => 'Parse error',
@@ -45,7 +45,7 @@ interface ThrowableReadInterface
     ];
 
     /** @var string[] PHP error code LogLevel table. Stripped from Monolog\ErrorHandler::defaultErrorLevelMap */
-    const ERROR_LEVELS = [
+    public const ERROR_LEVELS = [
         E_ERROR => LogLevel::CRITICAL,
         E_WARNING => LogLevel::WARNING,
         E_PARSE => LogLevel::ALERT,

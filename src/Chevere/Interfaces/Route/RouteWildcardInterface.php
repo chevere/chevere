@@ -22,10 +22,11 @@ use Chevere\Interfaces\To\ToStringInterface;
 interface RouteWildcardInterface extends ToStringInterface
 {
     /** Regex pattern used by default (no explicit where). */
-    const REGEX_MATCH_DEFAULT = '[A-z0-9\\_\\-\\%]+';
+    public const REGEX_MATCH_DEFAULT = '[A-z0-9\\_\\-\\%]+';
 
-    const ACCEPT_CHARS = '([a-z\_][\w_]*?)';
-    const ACCEPT_CHARS_REGEX = '/^' . self::ACCEPT_CHARS . '+$/i';
+    public const ACCEPT_CHARS = '([a-z\_][\w_]*?)';
+
+    public const ACCEPT_CHARS_REGEX = '/^' . self::ACCEPT_CHARS . '+$/i';
 
     /**
      * @throws RouteWildcardInvalidException

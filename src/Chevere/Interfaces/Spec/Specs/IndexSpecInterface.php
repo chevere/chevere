@@ -15,7 +15,6 @@ namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
-use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 
 /**
  * Describes the component in charge of defining the index spec.

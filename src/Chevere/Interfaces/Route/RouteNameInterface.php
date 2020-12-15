@@ -23,7 +23,7 @@ use Chevere\Interfaces\To\ToStringInterface;
 interface RouteNameInterface extends ToStringInterface
 {
     /** Regex pattern used to validate route name. */
-    const REGEX = '/^[\w\-\.]+$/i';
+    public const REGEX = '/^[\w\-\.]+$/i';
 
     /**
      * @throws StrAssertException If `$name` is empty or if it is ctype-space.

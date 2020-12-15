@@ -41,7 +41,7 @@ final class Message implements MessageInterface
     public function toConsole(): string
     {
         $tr = [];
-        $color = new Color;
+        $color = new Color();
         $colorStyles = [];
         foreach ($this->trTable as $search => $formatting) {
             $format = $formatting[0];

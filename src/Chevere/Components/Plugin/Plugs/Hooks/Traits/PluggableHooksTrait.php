@@ -17,7 +17,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksRunnerInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
-use Ds\Map;
 
 trait PluggableHooksTrait
 {

@@ -16,7 +16,6 @@ namespace Chevere\Components\Router;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Router\RouteIdentifierException;
 use Chevere\Interfaces\Router\RouteIdentifierInterface;
 use Throwable;
 

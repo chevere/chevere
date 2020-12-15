@@ -35,8 +35,8 @@ final class ClassMap implements ClassMapInterface
 
     public function __construct()
     {
-        $this->map = new Map;
-        $this->flip = new Map;
+        $this->map = new Map();
+        $this->flip = new Map();
     }
 
     public function __clone()

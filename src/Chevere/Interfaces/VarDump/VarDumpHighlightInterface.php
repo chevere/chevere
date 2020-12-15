@@ -21,7 +21,7 @@ use Chevere\Interfaces\Type\TypeInterface;
  */
 interface VarDumpHighlightInterface
 {
-    const KEYS = [
+    public const KEYS = [
         TypeInterface::STRING,
         TypeInterface::FLOAT,
         TypeInterface::INTEGER,

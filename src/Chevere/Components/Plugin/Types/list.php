@@ -17,6 +17,6 @@ namespace Chevere\Components\Plugin\Types;
  * @codeCoverageIgnore
  */
 return [
-    new HookPlugType,
-    new EventListenerPlugType
+    new HookPlugType(),
+    new EventListenerPlugType()
 ];

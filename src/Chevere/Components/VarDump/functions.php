@@ -12,14 +12,12 @@
 declare(strict_types=1);
 
 namespace Chevere\Components\VarDump {
-    use Chevere\Components\Instances\VarDumpInstance;
     use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter;
     use Chevere\Components\VarDump\Formatters\VarDumpHtmlFormatter;
     use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter;
     use Chevere\Components\VarDump\Outputters\VarDumpConsoleOutputter;
     use Chevere\Components\VarDump\Outputters\VarDumpHtmlOutputter;
     use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
-    use Chevere\Components\VarDump\VarDump;
     use Chevere\Interfaces\VarDump\VarDumpInterface;
 
     /**
@@ -29,8 +27,8 @@ namespace Chevere\Components\VarDump {
     {
         return
             new VarDump(
-                new VarDumpPlainFormatter,
-                new VarDumpPlainOutputter
+                new VarDumpPlainFormatter(),
+                new VarDumpPlainOutputter()
             );
     }
 
@@ -41,8 +39,8 @@ namespace Chevere\Components\VarDump {
     {
         return
             new VarDump(
-                new VarDumpConsoleFormatter,
-                new VarDumpConsoleOutputter
+                new VarDumpConsoleFormatter(),
+                new VarDumpConsoleOutputter()
             );
     }
 
@@ -53,8 +51,8 @@ namespace Chevere\Components\VarDump {
     {
         return
             new VarDump(
-                new VarDumpHtmlFormatter,
-                new VarDumpHtmlOutputter
+                new VarDumpHtmlFormatter(),
+                new VarDumpHtmlOutputter()
             );
     }
 }
@@ -79,10 +77,11 @@ namespace {
             } catch (LogicException $e) {
                 $varDump = varDumpConsole();
             }
+
             try {
                 $writers = WritersInstance::get();
             } catch (LogicException $e) {
-                $writers = (new Writers)
+                $writers = (new Writers())
                     ->withOut(
                         new StreamWriter(streamFor('php://stdout', 'r+'))
                     )
@@ -105,10 +104,11 @@ namespace {
             } catch (LogicException $e) {
                 $varDump = varDumpConsole();
             }
+
             try {
                 $writers = WritersInstance::get();
             } catch (LogicException $e) {
-                $writers = (new Writers)
+                $writers = (new Writers())
                     ->withOut(
                         new StreamWriter(streamFor('php://stdout', 'r+'))
                     )

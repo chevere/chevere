@@ -50,6 +50,7 @@ final class RouterDispatcher implements RouterDispatcherInterface
                     (new Message('No route found for %uri%'))
                         ->code('%uri%', $uri)
                 );
+
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 throw new MethodNotAllowedException(
@@ -57,6 +58,7 @@ final class RouterDispatcher implements RouterDispatcherInterface
                         ->code('%method%', $httpMethod)
                         ->code('%allowed%', implode(', ', $info[1]))
                 );
+
                 break;
             case Dispatcher::FOUND:
                 return new Routed(new ControllerName($info[1]), $info[2]);

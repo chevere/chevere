@@ -35,7 +35,7 @@ use Chevere\Interfaces\Http\MethodInterface;
 interface RouteEndpointInterface extends DescriptionInterface
 {
     /** Known HTTP methods */
-    const KNOWN_METHODS = [
+    public const KNOWN_METHODS = [
         'CONNECT' => ConnectMethod::class,
         'DELETE' => DeleteMethod::class,
         'GET' => GetMethod::class,

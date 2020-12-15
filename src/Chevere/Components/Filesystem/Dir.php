@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirTailException;
@@ -103,6 +101,7 @@ final class Dir implements DirInterface
                 $path = new Path(rtrim($fileInfo->getRealPath(), '/') . '/');
                 (new Dir($path))->rmdir();
                 $removed[] = $path->absolute();
+
                 continue;
             } else {
                 $path = new Path($fileInfo->getRealPath());

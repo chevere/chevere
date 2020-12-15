@@ -139,9 +139,7 @@ final class Arguments implements ArgumentsInterface
             );
         }
         if ($parameter instanceof StringParameterInterface) {
-            /**
-             * @var StringParameterInterface $parameter
-             */
+            /** @var StringParameterInterface $parameter */
             $this->assertStringArgument($name, $parameter, $value);
         }
     }
@@ -188,6 +186,7 @@ final class Arguments implements ArgumentsInterface
 
             return;
         }
+
         try {
             $this->assertType($name, $this->get($name));
         } catch (Throwable $e) {

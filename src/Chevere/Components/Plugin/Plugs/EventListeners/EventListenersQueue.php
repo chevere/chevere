@@ -30,6 +30,6 @@ final class EventListenersQueue implements EventListenersQueueInterface
 
     public function getPlugType(): PlugTypeInterface
     {
-        return new EventListenerPlugType;
+        return new EventListenerPlugType();
     }
 }
