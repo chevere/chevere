@@ -29,7 +29,7 @@ Refer to [Installation documentation](https://chevere.org/get-started/installati
 
 ## Contribution
 
-You can contribute to Chevere in many different ways (not only with code!). Any help will be welcome, from testing, documenting, typos, etc. Of course, you can also [donate](https://paypal.me/RodolfoBerrios) to support my work.
+You can contribute to Chevere in different ways (not only with code!). Any help will be welcome, from testing, documenting, typos, etc. Of course, you can also [donate](https://paypal.me/RodolfoBerrios) to support my work.
 
 ## License
 
