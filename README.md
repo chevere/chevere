@@ -8,14 +8,13 @@
 [![Codacy Badge](https://img.shields.io/codacy/grade/b956754f8ff04aaa9ca24a6e4cc21661?style=flat-square)](https://www.codacy.com/gh/chevere/chevere?utm_source=github.com&utm_medium=referral&utm_content=chevere/chevere&utm_campaign=Badge_Grade)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
 [![Tech Debt](https://img.shields.io/codeclimate/tech-debt/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
+[![MIT License](https://img.shields.io/github/license/chevere/chevere?style=flat-square)](LICENSE)
 
 ![Chevere](LOGO.svg)
 
 The Chevere Framework for building pluggable server-side applications.
 
 Chevere is the custom made, tailored framework that powers [Chevereto V4](https://github.com/chevereto/chevereto) onwards. It follows clean code principles, with PHP 8 syntax and strong typed code.
-
-## Under development
 
 The project is under beta development and is still not recommended to use it for production yet. You are welcome to join the project and help to build it.
 
