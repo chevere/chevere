@@ -21,16 +21,15 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Action\ControllerInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 
 abstract class Controller extends Action implements ControllerInterface
 {
-    private ParametersInterface $contextParameters;
+    protected ParametersInterface $contextParameters;
 
-    private ArgumentsInterface $contextArguments;
+    protected ArgumentsInterface $contextArguments;
 
-    private TypeInterface $parametersType;
+    protected TypeInterface $parametersType;
 
     public function getContextParameters(): ParametersInterface
     {
