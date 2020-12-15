@@ -91,7 +91,7 @@ final class Parameters implements ParametersInterface
 
     public function has(string $parameter): bool
     {
-        return $this->map->hasKey(/** @scrutinizer ignore-type */ $parameter);
+        return $this->map->hasKey($parameter);
     }
 
     public function isRequired(string $parameter): bool

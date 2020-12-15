@@ -65,7 +65,7 @@ final class RouterIndex implements RouterIndexInterface
         $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeKey)) {
             /** @var string  $groupName*/
-            $groupName = $new->groupsIndex->get(/** @scrutinizer ignore-type */ $routeName);
+            $groupName = $new->groupsIndex->get($routeName);
             throw new OverflowException(
                 (new Message('Route name %routeName% is already bound to group %groupName%'))
                     ->code('%routeName%', $routeName)

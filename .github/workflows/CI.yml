@@ -37,11 +37,6 @@ jobs:
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
 
-      # - name: Send code coverage report to Scrutinizer-CI
-      #   run: |
-      #     wget https://scrutinizer-ci.com/ocular.phar
-      #     php ocular.phar code-coverage:upload --format=php-clover build/coverage/clover.xml
-
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:

@@ -38,7 +38,7 @@ final class SpecEndpoints implements SpecEndpointsInterface
 
     public function has(string $methodName): bool
     {
-        return $this->map->hasKey(/** @scrutinizer ignore-type */ $methodName);
+        return $this->map->hasKey($methodName);
     }
 
     /**
