@@ -186,13 +186,13 @@ final class FilePhpReturn implements FilePhpReturnInterface
             (new StrAssert($contents))->notEmpty()->notCtypeSpace();
         } catch (Throwable $e) {
             throw new FileWithoutContentsException(
-                (new Message("The file at %path% doesn't have any contents (non-strict validation)"))
+                (new Message("The file at %path% doesn't have any contents"))
                     ->code('%path%', $this->filePhp->file()->path()->absolute())
             );
         }
         if (preg_match('#<?php[\S\s]*\s*return\s*[\S\s]*;#', $contents) !== 1) {
             throw new FileInvalidContentsException(
-                (new Message('Unexpected contents in %path% (non-strict validation)'))
+                (new Message('Unexpected contents in %path%'))
                     ->code('%path%', $this->filePhp->file()->path()->absolute())
             );
         }
