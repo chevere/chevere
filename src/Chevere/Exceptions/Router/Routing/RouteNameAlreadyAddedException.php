@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Routing;
+namespace Chevere\Exceptions\Router\Routing;
 
 use Chevere\Exceptions\Core\Exception;
 

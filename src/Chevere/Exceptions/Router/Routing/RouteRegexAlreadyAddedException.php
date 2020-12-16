@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Route;
+namespace Chevere\Exceptions\Router\Routing;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when detecting a route wildcard conflict.
+ * Exception thrown when the route regex has been already added.
  */
-final class RouteWildcardConflictException extends Exception
+final class RouteRegexAlreadyAddedException extends Exception
 {
 }

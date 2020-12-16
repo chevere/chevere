@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Routing;
+namespace Chevere\Exceptions\Router\Routing;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when the route regex has been already added.
+ * Exception thrown when failing to provide a ControllerInterface.
  */
-final class RouteRegexAlreadyAddedException extends Exception
+final class ExpectingControllerException extends Exception
 {
 }

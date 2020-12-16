@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Routing;
+namespace Chevere\Exceptions\Router\Route;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when failing to provide a RouteNameInterface.
+ * Exception thrown when a wildcard doesn't exists.
  */
-final class ExpectingRouteNameException extends Exception
+final class RouteWildcardNotFoundException extends Exception
 {
 }

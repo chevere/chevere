@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Route;
+namespace Chevere\Exceptions\Router\Route;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when the wildcard contains invalid chars.
+ * Exception thrown when the route path doesn't start with a forward slash.
  */
-final class RouteWildcardInvalidException extends Exception
+final class RoutePathForwardSlashException extends Exception
 {
 }

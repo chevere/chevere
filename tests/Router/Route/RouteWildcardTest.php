@@ -15,7 +15,7 @@ namespace Chevere\Tests\Router\Route;
 
 use Chevere\Components\Router\Route\RouteWildcard;
 use Chevere\Components\Router\Route\RouteWildcardMatch;
-use Chevere\Exceptions\Route\RouteWildcardInvalidException;
+use Chevere\Exceptions\Router\Route\RouteWildcardInvalidException;
 use FastRoute\RouteParser\Std;
 use PHPUnit\Framework\TestCase;
 

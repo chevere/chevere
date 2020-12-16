@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Routing;
+namespace Chevere\Exceptions\Router\Routing;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when a routing descriptor has been already added.
+ * Exception thrown when the route path has been already added.
  */
-final class RoutingDescriptorAlreadyAddedException extends Exception
+final class RoutePathAlreadyAddedException extends Exception
 {
 }

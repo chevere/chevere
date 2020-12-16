@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router\Route;
 
-use Chevere\Exceptions\Route\RouteWildcardInvalidException;
+use Chevere\Exceptions\Router\Route\RouteWildcardInvalidException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**

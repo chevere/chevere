@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Route;
+namespace Chevere\Exceptions\Router\Route;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when detecting a route endpoint conflict.
+ * Exception thrown when detecting a route wildcard conflict.
  */
-final class RouteEndpointConflictException extends Exception
+final class RouteWildcardConflictException extends Exception
 {
 }

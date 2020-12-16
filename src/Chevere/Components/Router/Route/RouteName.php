@@ -15,7 +15,7 @@ namespace Chevere\Components\Router\Route;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
-use Chevere\Exceptions\Route\RouteNameInvalidException;
+use Chevere\Exceptions\Router\Route\RouteNameInvalidException;
 use Chevere\Interfaces\Router\Route\RouteNameInterface;
 
 final class RouteName implements RouteNameInterface

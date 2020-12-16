@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router\Routing;
 
 use Chevere\Components\Router\Routing\RoutingDescriptorsMaker;
-use Chevere\Exceptions\Routing\ExpectingControllerException;
+use Chevere\Exceptions\Router\Routing\ExpectingControllerException;
 use Chevere\Interfaces\Router\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Router\Route\RoutePathInterface;
 use PHPUnit\Framework\TestCase;

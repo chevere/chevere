@@ -16,8 +16,8 @@ namespace Chevere\Interfaces\Router\Route;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Route\RouteEndpointConflictException;
-use Chevere\Exceptions\Route\RouteWildcardConflictException;
+use Chevere\Exceptions\Router\Route\RouteEndpointConflictException;
+use Chevere\Exceptions\Router\Route\RouteWildcardConflictException;
 
 /**
  * Describes the component in charge of defining a route.

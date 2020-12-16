@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Route;
+namespace Chevere\Exceptions\Router\Route;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when a wildcard doesn't exists.
+ * Exception thrown when the wildcard contains invalid chars.
  */
-final class RouteWildcardNotFoundException extends Exception
+final class RouteWildcardInvalidException extends Exception
 {
 }
