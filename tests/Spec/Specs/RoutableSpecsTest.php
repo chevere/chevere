@@ -40,9 +40,10 @@ final class RoutableSpecsTest extends TestCase
 
     public function testWithPut(): void
     {
+        $repository = 'repo';
         $specs = new RoutableSpecs();
         $spec = new RoutableSpec(
-            new SpecDir(dirForPath('/spec/group/')),
+            new SpecDir(dirForPath("/spec/$repository/")),
             new Routable(
                 (new Route(new RoutePath('/path/')))
                     ->withAddedEndpoint(
@@ -51,7 +52,8 @@ final class RoutableSpecsTest extends TestCase
                             new TestController()
                         )
                     )
-            )
+            ),
+            $repository
         );
         $specs = $specs->withPut($spec);
         $this->assertCount(1, $specs);

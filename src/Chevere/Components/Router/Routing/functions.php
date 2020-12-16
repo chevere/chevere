@@ -49,7 +49,7 @@ use function Chevere\Components\Filesystem\filePhpReturnForPath;
  * @throws OutOfBoundsException
  * @throws RouteWildcardConflictException
  */
-function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, string $group): RouterInterface
+function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors): RouterInterface
 {
     $router = new Router();
     foreach ($descriptors->getGenerator() as $descriptor) {
@@ -62,7 +62,10 @@ function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, s
             );
         }
         $router = $router
-            ->withAddedRoutable(new Routable($route), $group);
+            ->withAddedRoutable(
+                new Routable($route),
+                $descriptor->decorator()->name()->repository()
+            );
     }
 
     return $router;

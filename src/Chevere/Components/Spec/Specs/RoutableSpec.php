@@ -33,12 +33,13 @@ final class RoutableSpec implements RoutableSpecInterface
 
     private array $wildcards;
 
-    public function __construct(SpecDirInterface $specGroupPath, RoutableInterface $routable)
+    public function __construct(SpecDirInterface $specGroupPath, RoutableInterface $routable, string $repository)
     {
-        $this->key = $routable->route()->path()->toString();
+        $path = $routable->route()->path()->toString();
+        $this->key = $repository . ':' . $path;
         $this->routeEndpointSpecs = new RouteEndpointSpecs();
         $specGroupRoute = $specGroupPath
-            ->getChild(ltrim($this->key, '/'));
+            ->getChild(ltrim($path, '/'));
         $this->jsonPath = $specGroupRoute->toString() . 'route.json';
         $path = $routable->route()->path();
         $this->path = $path->toString();

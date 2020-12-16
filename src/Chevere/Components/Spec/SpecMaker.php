@@ -63,19 +63,20 @@ final class SpecMaker implements SpecMakerInterface
         $routes = $router->routables();
         $groups = [];
         foreach ($routes->getGenerator() as $routeName => $routable) {
-            $groupName = $router->index()->getRouteGroup($routeName);
-            if (!isset($groups[$groupName])) {
-                $groups[$groupName] = new GroupSpec($specPath, $groupName);
+            $repository = $router->index()->getRouteGroup($routeName);
+            if (!isset($groups[$repository])) {
+                $groups[$repository] = new GroupSpec($specPath, $repository);
             }
             $routableSpec = new RoutableSpec(
-                $specPath->getChild("$groupName/"),
-                $routable
+                $specPath->getChild("$repository/"),
+                $routable,
+                $repository
             );
             $this->makeJsonFile($routableSpec);
             /** @var GroupSpec $groupSpec */
-            $groupSpec = $groups[$groupName];
+            $groupSpec = $groups[$repository];
             $groupSpec = $groupSpec->withAddedRoutableSpec($routableSpec);
-            $groups[$groupName] = $groupSpec;
+            $groups[$repository] = $groupSpec;
             $routeEndpointSpecs = $routableSpec->clonedRouteEndpointSpecs();
             foreach ($routeEndpointSpecs->getGenerator() as $routeEndpointSpec) {
                 $this->specIndex = $this->specIndex->withAddedRoute(

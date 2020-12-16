@@ -93,13 +93,13 @@ final class RouterIndexTest extends TestCase
 
     public function testWithAddedAlready(): void
     {
-        $group = 'group-name';
+        $repo = 'repository';
         $route = (new Route(new RoutePath('/path')))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())
             );
         $routable = new Routable($route);
-        $routerIndex = (new RouterIndex())->withAddedRoutable($routable, $group);
+        $routerIndex = (new RouterIndex())->withAddedRoutable($routable, $repo);
         $this->expectException(OverflowException::class);
         $routerIndex->withAddedRoutable($routable, 'other-group');
     }

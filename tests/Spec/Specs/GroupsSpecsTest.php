@@ -37,7 +37,7 @@ final class GroupsSpecsTest extends TestCase
         $specs = new GroupSpecs();
         $spec = new GroupSpec(
             new SpecDir(dirForPath('/spec/')),
-            'group-name'
+            'repo'
         );
         $specs = $specs->withPut($spec);
         $this->assertCount(1, $specs);

@@ -23,7 +23,11 @@ use Chevere\Interfaces\Spec\SpecInterface;
  */
 interface RoutableSpecInterface extends SpecInterface
 {
-    public function __construct(SpecDirInterface $specGroupPath, RoutableInterface $routable);
+    public function __construct(
+        SpecDirInterface $specGroupPath,
+        RoutableInterface $routable,
+        string $repository
+    );
 
     /**
      * Provides access to a cloned `RouteEndpointSpecs` which doesn't affects the object instance used in `toArray`.

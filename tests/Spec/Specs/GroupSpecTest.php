@@ -31,15 +31,15 @@ final class GroupSpecTest extends TestCase
     public function testConstruct(): void
     {
         $specPath = new SpecDir(dirForPath('/spec/'));
-        $groupName = 'group-name';
+        $repository = 'repo';
         $specGroupPathJson = $specPath
-            ->getChild("$groupName/")
+            ->getChild("$repository/")
             ->toString() . 'routes.json';
-        $spec = new GroupSpec($specPath, $groupName);
+        $spec = new GroupSpec($specPath, $repository);
         $this->assertSame($specGroupPathJson, $spec->jsonPath());
         $this->assertSame(
             [
-                'name' => $groupName,
+                'name' => $repository,
                 'spec' => $specGroupPathJson,
                 'routes' => []
             ],
@@ -49,10 +49,11 @@ final class GroupSpecTest extends TestCase
 
     public function testWithAddedRoutable(): void
     {
-        $routeName = new RouteName('repo:/path/');
+        $repository = 'repo';
+        $routeName = new RouteName($repository . ':/path/');
         $specPath = new SpecDir(dirForPath('/spec/'));
-        $groupName = 'group-name';
-        $groupSpecPath = $specPath->getChild("$groupName/");
+        $repository = 'repo';
+        $groupSpecPath = $specPath->getChild("$repository/");
         $routesSpecPathJson = $groupSpecPath->toString() . 'routes.json';
         $route = (new Route(new RoutePath('/route/path/')))
             ->withAddedEndpoint(
@@ -62,13 +63,14 @@ final class GroupSpecTest extends TestCase
             $groupSpecPath->getChild(
                 ltrim($routeName->path(), '/')
             ),
-            new Routable($route)
+            new Routable($route),
+            $repository
         );
-        $spec = (new GroupSpec($specPath, $groupName))
+        $spec = (new GroupSpec($specPath, $repository))
             ->withAddedRoutableSpec($routableSpec);
         $this->assertSame(
             [
-                'name' => $groupName,
+                'name' => $repository,
                 'spec' => $routesSpecPathJson,
                 'routes' => [$routableSpec->key() => $routableSpec->toArray()],
             ],

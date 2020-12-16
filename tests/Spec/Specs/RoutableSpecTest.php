@@ -30,9 +30,10 @@ final class RoutableSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $routeName = new RouteName('repo:/route/path/');
+        $repository = 'repo';
+        $routeName = new RouteName($repository . ':/route/path/');
         $routePath = new RoutePath('/route/path/');
-        $specPath = new SpecDir(dirForPath('/spec/repo/'));
+        $specPath = new SpecDir(dirForPath("/spec/$repository/"));
         $routeSpecPath = $specPath
             ->getChild(
                 ltrim($routeName->path(), '/')
@@ -44,7 +45,7 @@ final class RoutableSpecTest extends TestCase
         $route = (new Route($routePath))
             ->withAddedEndpoint($routeEndpoint);
         $routable = new Routable($route);
-        $spec = new RoutableSpec($specPath, $routable);
+        $spec = new RoutableSpec($specPath, $routable, $repository);
         $routeEndpoint = new RouteEndpointSpec(
             $specPath->getChild(ltrim($routeName->path(), '/')),
             $routeEndpoint
@@ -52,7 +53,7 @@ final class RoutableSpecTest extends TestCase
         $this->assertSame($routeSpecPath, $spec->jsonPath());
         $this->assertSame(
             [
-                'name' => $routeName->path(),
+                'name' => $routeName->toString(),
                 'spec' => $routeSpecPath,
                 'path' => $routePath->toString(),
                 'regex' => $routePath->regex()->toString(),

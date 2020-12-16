@@ -40,14 +40,14 @@ final class IndexSpecTest extends TestCase
     {
         $routePath = new RoutePath('/route/path');
         $specPath = new SpecDir(dirForPath('/spec/'));
-        $groupName = 'group-name';
+        $repository = 'repo';
         $route = (new Route($routePath))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())
             );
         $objectStorage = new SplObjectStorage();
         $objectStorage->attach(new Routable($route));
-        $groupSpec = new GroupSpec($specPath, $groupName);
+        $groupSpec = new GroupSpec($specPath, $repository);
         $spec = (new IndexSpec($specPath))->withAddedGroup($groupSpec);
         $this->assertSame($specPath->toString() . 'index.json', $spec->jsonPath());
         $this->assertSame(

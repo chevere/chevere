@@ -1,6 +1,6 @@
 {
-    "name": "\/route-path\/{id:[0-9]+}\/",
-    "spec": "\/spec\/group-name\/route-path\/{id:[0-9]+}\/route.json",
+    "name": "repo:\/route-path\/{id:[0-9]+}\/",
+    "spec": "\/spec\/repo\/route-path\/{id:[0-9]+}\/route.json",
     "path": "\/route-path\/{id:[0-9]+}\/",
     "regex": "~^(?|\/route\\-path\/([0-9]+)\/)$~",
     "wildcards": {
@@ -9,7 +9,7 @@
     "endpoints": {
         "PUT": {
             "method": "PUT",
-            "spec": "\/spec\/group-name\/route-path\/{id:[0-9]+}\/PUT\/.json",
+            "spec": "\/spec\/repo\/route-path\/{id:[0-9]+}\/PUT\/.json",
             "description": "Replace all current representations of the target resource with the request payload",
             "parameters": {
                 "name": {
@@ -22,7 +22,7 @@
         },
         "GET": {
             "method": "GET",
-            "spec": "\/spec\/group-name\/route-path\/{id:[0-9]+}\/GET\/.json",
+            "spec": "\/spec\/repo\/route-path\/{id:[0-9]+}\/GET\/.json",
             "description": "Transfer a current representation of the target resource",
             "parameters": {
                 "name": {
