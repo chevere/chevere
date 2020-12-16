@@ -54,7 +54,6 @@ function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, s
     $router = new Router();
     foreach ($descriptors->getGenerator() as $descriptor) {
         $routePath = $descriptor->path();
-        $routeDecorator = $descriptor->decorator();
         $routeEndpoints = routeEndpointsForDir($descriptor->dir());
         $route = new Route($routePath);
         foreach ($routeEndpoints->keys() as $key) {

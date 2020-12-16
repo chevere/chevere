@@ -64,6 +64,7 @@ final class Step implements StepInterface
         $store = [];
         $missing = [];
         foreach ($new->parameters->getGenerator() as $name => $parameter) {
+            $parameter->description();
             $argument = $namedArguments[$name] ?? null;
             if (is_null($argument)) {
                 $missing[] = $name;
