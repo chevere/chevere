@@ -17,8 +17,8 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\VarExportable\VarExportable;
 use Chevere\Exceptions\Router\RouteNotRoutableException;
 use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
-use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Router\Route\RouteInterface;
 use Throwable;
 
 final class Routable implements RoutableInterface

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec\Specs;
 
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\Route;
-use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RouteName;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
+use Chevere\Components\Router\Route\Route;
+use Chevere\Components\Router\Route\RouteEndpoint;
+use Chevere\Components\Router\Route\RouteName;
+use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;

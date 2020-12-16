@@ -15,8 +15,8 @@ namespace Chevere\Tests\Router\Routing;
 
 use Chevere\Components\Router\Routing\RoutingDescriptorsMaker;
 use Chevere\Exceptions\Routing\ExpectingControllerException;
-use Chevere\Interfaces\Route\RouteDecoratorInterface;
-use Chevere\Interfaces\Route\RoutePathInterface;
+use Chevere\Interfaces\Router\Route\RouteDecoratorInterface;
+use Chevere\Interfaces\Router\Route\RoutePathInterface;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Filesystem\dirForPath;
 

@@ -15,8 +15,8 @@ namespace Chevere\Tests\Spec;
 
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
-use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RouteName;
+use Chevere\Components\Router\Route\RouteEndpoint;
+use Chevere\Components\Router\Route\RouteName;
 use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\SpecIndex;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;

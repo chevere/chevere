@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Routing;
 
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Route\Route;
-use Chevere\Components\Route\RouteDecorator;
-use Chevere\Components\Route\RouteName;
-use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Router\Route\Route;
+use Chevere\Components\Router\Route\RouteDecorator;
+use Chevere\Components\Router\Route\RouteName;
+use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Str\Str;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Route\RouteEndpointInterface;
+use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsMakerInterface;
 use Chevere\Interfaces\Str\StrInterface;
@@ -30,7 +30,6 @@ use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 use function Chevere\Components\Filesystem\dirForPath;
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
-use function Chevere\Components\Router\Routing\routeEndpointsForDir;
 
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {

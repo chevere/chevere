@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Routing;
 
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Route\RouteDecoratorInterface;
-use Chevere\Interfaces\Route\RoutePathInterface;
+use Chevere\Interfaces\Router\Route\RouteDecoratorInterface;
+use Chevere\Interfaces\Router\Route\RoutePathInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorInterface;
 
 /**

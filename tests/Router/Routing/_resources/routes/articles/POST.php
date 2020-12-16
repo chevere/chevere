@@ -11,6 +11,6 @@
 
 declare(strict_types=1);
 
-use Chevere\Tests\Route\_resources\src\TestController;
+use Chevere\Tests\Router\Route\_resources\src\TestController;
 
 return new TestController();

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router;
 
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\Route;
-use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
+use Chevere\Components\Router\Route\Route;
+use Chevere\Components\Router\Route\RouteEndpoint;
+use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Exceptions\Router\RouteNotRoutableException;
 use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
 use Chevere\Tests\Router\_resources\src\TestController;

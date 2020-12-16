@@ -15,10 +15,10 @@ namespace Chevere\Tests\Spec;
 
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
-use Chevere\Components\Route\Route;
-use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
+use Chevere\Components\Router\Route\Route;
+use Chevere\Components\Router\Route\RouteEndpoint;
+use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\SpecMaker;

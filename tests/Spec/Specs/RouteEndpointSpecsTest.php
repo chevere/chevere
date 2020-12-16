@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec\Specs;
 
 use Chevere\Components\Http\Methods\PatchMethod;
-use Chevere\Components\Route\RouteEndpoint;
+use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;

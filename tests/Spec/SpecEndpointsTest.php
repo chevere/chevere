@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec;
 
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\RouteEndpoint;
+use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\SpecEndpoints;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Tests\Route\_resources\src\TestController;
+use Chevere\Tests\Router\Route\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Filesystem\dirForPath;
 

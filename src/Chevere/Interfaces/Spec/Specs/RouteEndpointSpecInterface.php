@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Route\RouteEndpointInterface;
+use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Spec\SpecDirInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 
