@@ -39,14 +39,11 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 
     private RoutingDescriptorsInterface $descriptors;
 
-    private Set $set;
-
     public function __construct(string $repository, DirInterface $dir)
     {
         $this->repository = $repository;
         $this->dir = $dir;
         $this->descriptors = new RoutingDescriptors();
-        $this->set = new Set();
         $dirFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
         $this->iterate(
             new RecursiveIteratorIterator(
@@ -69,22 +66,8 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $pathName = $iterator->current()->getPathName();
             $dirName = rtrim(dirname($pathName), '/') . '/';
             $path = str_replace($this->dir->path()->absolute(), '/', $dirName);
-            // @codeCoverageIgnoreStart
-            if ($this->set->contains($path)) {
-                $iterator->next();
-
-                continue;
-            }
-            // @codeCoverageIgnoreEnd
             $routeName = new RouteName($this->repository . ':' . $path);
             $endpoints = routeEndpointsForDir(dirForPath($dirName));
-            // @codeCoverageIgnoreStart
-            if (count($endpoints) === 0) {
-                $iterator->next();
-
-                continue;
-            }
-            // @codeCoverageIgnoreEnd
             $generator = $endpoints->getGenerator();
             $routeEndpoint = $generator->current();
             /** @var RouteEndpointInterface $routeEndpoint */
@@ -108,7 +91,6 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                             new RouteDecorator($routeName)
                         )
                     );
-            $this->set->add($path);
             $iterator->next();
         }
     }
@@ -126,14 +108,17 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
     private function getRecursiveFilterIterator(RecursiveDirectoryIterator $recursiveDirectoryIterator): RecursiveFilterIterator
     {
         return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator {
-            private array $methodFilenames;
+            private Set $methodFilenames;
+
+            private Set $knownPaths;
 
             public function __construct(RecursiveDirectoryIterator $iterator)
             {
                 parent::__construct($iterator);
-                $this->methodFilenames = [];
+                $this->methodFilenames = new Set();
+                $this->knownPaths = new Set();
                 foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $method) {
-                    $this->methodFilenames[] = "$method.php";
+                    $this->methodFilenames->add("$method.php");
                 }
             }
 
@@ -142,8 +127,17 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                 if ($this->hasChildren()) {
                     return true;
                 }
+                $dirname = dirname((string) $this->current());
+                if ($this->knownPaths->contains($dirname)) {
+                    return false;
+                }
+                if ($this->methodFilenames->contains($this->current()->getFilename())) {
+                    $this->knownPaths->add($dirname);
 
-                return in_array($this->current()->getFilename(), $this->methodFilenames);
+                    return true;
+                }
+
+                return false;
             }
         };
     }
