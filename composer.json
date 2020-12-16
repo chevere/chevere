@@ -65,5 +65,17 @@
     },
     "bin": [
         "bin/chevere"
-    ]
+    ],
+    "scripts": {
+        "report": "vendor/bin/phpunit -c phpunit-report.xml",
+        "test": "vendor/bin/phpunit -c phpunit.xml",
+        "qa": "vendor/bin/psalm",
+        "cs": "vendor/bin/ecs check src --fix --ansi"
+    },
+    "scripts-descriptions": {
+        "report": "Run all tests with report",
+        "test": "Run all tests",
+        "qa": "Run quality assurance",
+        "cs": "Run coding standard"
+    }
 }
