@@ -130,7 +130,7 @@ final class Workflow implements WorkflowInterface
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
-                (new Message('Task %name% not found'))
+                (new Message('Step %name% not found'))
                     ->code('%name%', $step)
             );
         }
@@ -221,9 +221,11 @@ final class Workflow implements WorkflowInterface
         foreach ($step->arguments() as $argument) {
             try {
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $argument, $matches)) {
+                    /** @var array $matches */
                     $this->vars->put($argument, [$matches[1]]);
                     $this->putParameter($matches[1], $parameters->get($matches[1]));
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $argument, $matches)) {
+                    /** @var array $matches */
                     $this->assertStepExists($name, $matches);
                     $expected = $this->expected->get($matches[1], []);
                     $expected[] = $matches[2];
@@ -254,6 +256,7 @@ final class Workflow implements WorkflowInterface
 
     private function getPosByName(string $step): int
     {
+        /** @var int */
         return $this->steps->find($step);
     }
 

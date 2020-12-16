@@ -30,7 +30,6 @@ trait TypedPlugsQueueTrait
 
     public function withAdded(PlugInterface $plug): PlugsQueueTypedInterface
     {
-        /** @var PlugsQueueTypedInterface $new */
         $new = clone $this;
         $new->plugsQueue = $new->plugsQueue->withAdded($plug);
 

@@ -28,7 +28,6 @@ final class RouteEndpointSpecs implements RouteEndpointSpecsInterface
     public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): RouteEndpointSpecsInterface
     {
         $new = clone $this;
-        /** @var \Ds\TKey $key */
         $key = $routeEndpointSpec->key();
         $new->map->put($key, $routeEndpointSpec);
 

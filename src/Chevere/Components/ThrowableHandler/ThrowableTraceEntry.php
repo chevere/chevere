@@ -119,6 +119,7 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
     private function handleMissingClassFile()
     {
         if ($this->file === '' && $this->class !== '') {
+            /** @var class-string $this->class */
             $reflector = new ReflectionMethod($this->class, $this->function);
             $filename = $reflector->getFileName();
             if (false !== $filename) {

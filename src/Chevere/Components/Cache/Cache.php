@@ -100,8 +100,6 @@ final class Cache implements CacheInterface
         catch (Exception $e) {
             throw new RuntimeException(
                 $e->message(),
-                $e->getCode(),
-                $e
             );
         }
         // @codeCoverageIgnoreEnd

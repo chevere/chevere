@@ -35,7 +35,8 @@
     "require-dev": {
         "phpstan/phpstan": "^0.12.58",
         "phpunit/phpunit": "^9.5",
-        "symplify/easy-coding-standard": "^9.0"
+        "symplify/easy-coding-standard": "^9.0",
+        "vimeo/psalm": "^4.3"
     },
     "autoload": {
         "files": [

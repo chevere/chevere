@@ -30,7 +30,7 @@ final class AssertPlug implements AssertPlugInterface
 
     private PlugInterface $plug;
 
-    private PlugTypeInterface $type;
+    private PlugTypeInterface $plugType;
 
     public function __construct(PlugInterface $plug)
     {
@@ -39,7 +39,7 @@ final class AssertPlug implements AssertPlugInterface
         foreach ($this->plugTypesList->getGenerator() as $plugType) {
             $plugInterface = $plugType->interface();
             if ($this->plug instanceof $plugInterface) {
-                $this->type = $plugType;
+                $this->plugType = $plugType;
 
                 break;
             }
@@ -64,7 +64,7 @@ final class AssertPlug implements AssertPlugInterface
 
     public function plugType(): PlugTypeInterface
     {
-        return $this->type;
+        return $this->plugType;
     }
 
     public function plug(): PlugInterface
@@ -74,7 +74,8 @@ final class AssertPlug implements AssertPlugInterface
 
     private function assertType(): void
     {
-        if (!isset($this->type)) {
+        /** @psalm-suppress RedundantPropertyInitializationCheck */
+        if (!isset($this->plugType)) {
             $accept = [];
             /**
              * @var PlugTypeInterface $plugType

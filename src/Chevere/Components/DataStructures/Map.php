@@ -37,7 +37,7 @@ final class Map implements MapInterface
         $this->map = new InternalMap(deep_copy($this->map->toArray()));
     }
 
-    public function withPut(string $key, $value): MapInterface
+    public function withPut(string $key, $value): self
     {
         $new = clone $this;
         $new->map->put($key, $value);

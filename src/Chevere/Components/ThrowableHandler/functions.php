@@ -69,6 +69,7 @@ function htmlHandler(Throwable $throwable): void
  */
 function handleExceptionAs(Throwable $throwable, string $document): void
 {
+    /** @var class-string $document */
     $reflection = new ReflectionClass($document);
     if (!$reflection->implementsInterface(ThrowableHandlerDocumentInterface::class)) {
         trigger_error(

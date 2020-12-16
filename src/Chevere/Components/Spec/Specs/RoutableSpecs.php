@@ -28,7 +28,6 @@ final class RoutableSpecs implements RoutableSpecsInterface
     public function withPut(RoutableSpecInterface $routableSpec): RoutableSpecsInterface
     {
         $new = clone $this;
-        /** @var \Ds\TKey $key */
         $key = $routableSpec->key();
         $new->map->put($key, $routableSpec);
 

@@ -20,7 +20,7 @@ interface MapInterface extends MappedInterface
 {
     public function __construct(mixed ...$namedArguments);
 
-    public function withPut(string $key, $value): MapInterface;
+    public function withPut(string $key, $value): self;
 
     public function assertHasKey(string ...$key): void;
 

@@ -19,6 +19,9 @@ trait MapToArrayTrait
 {
     private Map $map;
 
+    /**
+     * @psalm-suppress LessSpecificImplementedReturnType
+     */
     public function toArray(): array
     {
         return $this->map->toArray();

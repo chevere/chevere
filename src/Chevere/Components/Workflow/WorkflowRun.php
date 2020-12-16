@@ -61,13 +61,13 @@ final class WorkflowRun implements WorkflowRunInterface
         return $this->arguments;
     }
 
-    public function withStepResponse(string $name, ResponseSuccessInterface $response): WorkflowRunInterface
+    public function withStepResponse(string $step, ResponseSuccessInterface $response): WorkflowRunInterface
     {
         $new = clone $this;
-        $new->workflow->get($name);
+        $new->workflow->get($step);
 
         try {
-            $expected = $new->workflow->getExpected($name);
+            $expected = $new->workflow->getExpected($step);
         } catch (OutOfBoundsException $e) {
             $expected = [];
         }
@@ -85,7 +85,7 @@ final class WorkflowRun implements WorkflowRunInterface
             );
         }
 
-        $new->steps = $new->steps->withPut($name, $response);
+        $new->steps = $new->steps->withPut($step, $response);
 
         return $new;
     }

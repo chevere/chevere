@@ -25,7 +25,7 @@ final class ThrowableRead implements ThrowableReadInterface
 {
     private string $className;
 
-    private int $code;
+    private string $code;
 
     private int $severity;
 
@@ -44,11 +44,11 @@ final class ThrowableRead implements ThrowableReadInterface
     public function __construct(Throwable $throwable)
     {
         $this->className = get_class($throwable);
-        $this->code = $throwable->getCode();
+        $this->code = (string) $throwable->getCode();
         if ($throwable instanceof ErrorException) {
             $this->severity = $throwable->getSeverity();
-            if ($this->code === 0) {
-                $this->code = $this->severity;
+            if ($this->code === '0') {
+                $this->code = (string) $this->severity;
             }
         } else {
             $this->severity = ThrowableReadInterface::DEFAULT_ERROR_TYPE;
@@ -71,7 +71,7 @@ final class ThrowableRead implements ThrowableReadInterface
         return $this->className;
     }
 
-    public function code(): int
+    public function code(): string
     {
         return $this->code;
     }

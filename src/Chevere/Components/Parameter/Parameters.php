@@ -82,9 +82,8 @@ final class Parameters implements ParametersInterface
                         ->code('%name%', $name)
                 );
             }
+            $new->map->put($name, $param);
         }
-
-        $new->map->put($name, $param);
 
         return $new;
     }

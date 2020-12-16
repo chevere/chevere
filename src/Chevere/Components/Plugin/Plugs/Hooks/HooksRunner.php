@@ -75,6 +75,7 @@ final class HooksRunner implements HooksRunnerInterface
     private function setHook(string $entry): void
     {
         try {
+            /** @var HookInterface */
             $this->hook = new $entry();
         } catch (Throwable $e) {
             throw new RuntimeException(

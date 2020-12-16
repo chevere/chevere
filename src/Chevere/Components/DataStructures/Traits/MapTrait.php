@@ -31,6 +31,9 @@ trait MapTrait
         $this->map = new Map(deep_copy($this->map->toArray(), true));
     }
 
+    /**
+     * @psalm-suppress LessSpecificImplementedReturnType
+     */
     public function keys(): array
     {
         return $this->map->keys()->toArray();
@@ -41,6 +44,9 @@ trait MapTrait
         return $this->map->count();
     }
 
+    /**
+     * @psalm-suppress LessSpecificImplementedReturnType
+     */
     public function getGenerator(): Generator
     {
         /**

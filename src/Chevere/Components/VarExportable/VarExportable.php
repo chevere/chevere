@@ -40,8 +40,6 @@ final class VarExportable implements VarExportableInterface
         } catch (Throwable $e) {
             throw new VarExportableException(
                 new Message($e->getMessage()),
-                $e->getCode(),
-                $e
             );
         }
     }

@@ -61,7 +61,6 @@ final class RouterIndex implements RouterIndexInterface
         // @codeCoverageIgnoreEnd
         $new = clone $this;
         $routeName = $routable->route()->path()->toString();
-        /** @var \Ds\TKey $routeKey */
         $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeKey)) {
             /** @var string $groupName*/
@@ -73,9 +72,7 @@ final class RouterIndex implements RouterIndexInterface
                     ->code('%groupName%', $groupName)
             );
         }
-        /** @var \Ds\TKey $groupKey */
         $groupKey = $group;
-        /** @var \Ds\TValue $groupValue */
         $groupValue = $group;
         $new->identifiersMap->put(
             $routeKey,
@@ -86,7 +83,6 @@ final class RouterIndex implements RouterIndexInterface
         if ($new->groupsMap->hasKey($groupKey)) {
             $names = $new->groupsMap->get($groupKey);
         }
-        /** @var \Ds\TValue $names */
         $names[] = $routeName;
         $new->groupsMap->put($groupKey, $names);
 
@@ -95,7 +91,6 @@ final class RouterIndex implements RouterIndexInterface
 
     public function hasRouteName(string $name): bool
     {
-        /** @var \Ds\TKey $key */
         $key = $name;
 
         return $this->identifiersMap->hasKey($key);

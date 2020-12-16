@@ -36,7 +36,6 @@ trait ParameterTrait
 
     public function withDescription(string $description): ParameterInterface
     {
-        /** @var ParameterInterface $new */
         $new = clone $this;
         $new->description = $description;
 
@@ -53,8 +52,6 @@ trait ParameterTrait
                         ->strong('%attribute%', $attr)
                 );
             }
-            /** @var ParameterInterface $new */
-
             $new->attributes->add($attr);
         }
 
@@ -71,7 +68,6 @@ trait ParameterTrait
                         ->strong('%attribute%', $attr)
                 );
             }
-            /** @var ParameterInterface $new */
 
             $new->attributes->remove($attr);
         }

@@ -34,6 +34,7 @@ final class Step implements StepInterface
 
     public function __construct(string $action)
     {
+        /** @var class-string $action */
         $this->action = $action;
 
         try {
@@ -57,6 +58,7 @@ final class Step implements StepInterface
 
     public function withArguments(mixed ...$namedArguments): StepInterface
     {
+        /** @var array<string, mixed> $namedArguments */
         $new = clone $this;
         $new->assertArgumentsCount($namedArguments);
         $store = [];

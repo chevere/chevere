@@ -76,7 +76,7 @@ interface ThrowableReadInterface
     /**
      * Provides access to the exception code.
      */
-    public function code(): int;
+    public function code(): string;
 
     /**
      * Provides access to the exception severity.

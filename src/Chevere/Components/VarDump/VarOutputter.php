@@ -53,9 +53,9 @@ final class VarOutputter implements VarOutputterInterface
 
     private function handleClassFunction(): void
     {
-        $item = $this->debugBacktrace[1] ?? null;
+        $item = $this->debugBacktrace[1] ?? [];
         $class = $item['class'] ?? null;
-        if ($class !== null) {
+        if (isset($item, $class)) {
             $this->writer->write("\n");
             $type = $item['type'];
             $this->writer->write(
@@ -68,7 +68,7 @@ final class VarOutputter implements VarOutputterInterface
             $debugFn .= '()';
             $this->writer->write(
                 ($class === null ? "\n" : '')
-                . $this->formatter->highlight(VarDumperInterface::FUNCTION, (string) $debugFn)
+                . $this->formatter->highlight(VarDumperInterface::FUNCTION, $debugFn)
             );
         }
     }

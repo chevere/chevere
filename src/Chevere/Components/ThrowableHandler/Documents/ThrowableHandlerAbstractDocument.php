@@ -155,7 +155,7 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
 
     private function getExceptionCode(): string
     {
-        return $this->handler->throwableRead()->code() > 0
+        return $this->handler->throwableRead()->code() !== '0'
             ? '[Code #' . $this->handler->throwableRead()->code() . ']'
             : '';
     }

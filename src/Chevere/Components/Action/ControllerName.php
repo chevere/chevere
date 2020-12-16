@@ -48,8 +48,6 @@ final class ControllerName implements ControllerNameInterface
         } catch (Exception $e) {
             throw new ControllerNameException(
                 $e->message(),
-                $e->getCode(),
-                $e,
             );
         }
     }

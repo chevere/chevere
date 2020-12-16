@@ -41,6 +41,7 @@ final class Type implements TypeInterface
 
     public function validator(): callable
     {
+        /** @var callable */
         return $this->validator;
     }
 

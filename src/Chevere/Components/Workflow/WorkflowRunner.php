@@ -48,6 +48,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
                 continue; // @codeCoverageIgnore
             }
             $actionName = $step->action();
+            /** @var ActionInterface $action */
             $action = new $actionName();
             $this->injectDependencies($action, $container);
             // try {

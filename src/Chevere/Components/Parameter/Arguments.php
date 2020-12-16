@@ -37,13 +37,14 @@ final class Arguments implements ArgumentsInterface
     public function __construct(ParametersInterface $parameters, mixed ...$namedArguments)
     {
         $this->parameters = $parameters;
+        /** @var array<string, mixed> $namedArguments */
         $this->arguments = $namedArguments;
         $this->assertCount();
         $this->errors = [];
         foreach ($this->parameters->getGenerator() as $name => $parameter) {
             $this->handleParameter($name, $parameter);
         }
-        if ($this->errors !== []) {
+        if (count($this->errors) !== 0) {
             throw new InvalidArgumentException(
                 (new Message(implode(', ', $this->errors)))
             );
@@ -182,7 +183,8 @@ final class Arguments implements ArgumentsInterface
         if (!$this->has($name)) {
             $this->errors[] = (new Message('Parameter %name%: Missing required argument of type %type%'))
                 ->code('%type%', $parameter->type()->typeHinting())
-                ->code('%name%', $name);
+                ->code('%name%', $name)
+                ->toString();
 
             return;
         }

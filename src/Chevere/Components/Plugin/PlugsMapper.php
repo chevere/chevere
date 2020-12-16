@@ -63,7 +63,9 @@ final class PlugsMapper
         $matches = $regex->match(file_get_contents($filename));
         $namespace = $matches[1];
         $className = $matches[2];
-        $reflection = new ReflectionClass("$namespace\\$className");
+        /** @var class-string */
+        $classString = "$namespace\\$className";
+        $reflection = new ReflectionClass($classString);
         if (!$reflection->isInterface() && $reflection->implementsInterface(PlugInterface::class)) {
             $plugName = $reflection->getName();
             /** @var PlugInterface $plug */

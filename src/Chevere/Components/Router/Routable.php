@@ -49,7 +49,6 @@ final class Routable implements RoutableInterface
         } catch (Throwable $e) {
             throw new RouteNotRoutableException(
                 new Message($e->getMessage()),
-                $e->getCode(),
             );
         }
     }

@@ -22,7 +22,7 @@ use Chevere\Interfaces\Writer\WritersInterface;
  */
 final class WritersInstance
 {
-    private static WritersInterface $instance;
+    private static ?WritersInterface $instance;
 
     public function __construct(WritersInterface $writers)
     {

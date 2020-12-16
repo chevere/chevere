@@ -36,7 +36,7 @@ final class Route implements RouteInterface
     /** @var array [wildcardName => $endpoint] */
     private array $wildcards;
 
-    private RouteEndpointInterface $firstEndpoint;
+    private ?RouteEndpointInterface $firstEndpoint;
 
     private RouteEndpointsInterface $endpoints;
 

@@ -62,7 +62,7 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
                 (new Message('Routing conflict affecting previously declared %route%'))
                     ->code(
                         '%route%',
-                        $this->get($e->getCode())->dir()->path()->absolute()
+                        $this->get((int) $e->getCode())->dir()->path()->absolute()
                     ),
                 0,
                 $e

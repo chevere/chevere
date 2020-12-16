@@ -22,9 +22,9 @@ final class VarDumpPlainFormatter implements VarDumpFormatterInterface
     use IndentTrait;
     use FilterEncodedCharsTrait;
 
-    public function highlight(string $key, string $dump): string
+    public function highlight(string $key, string $string): string
     {
-        return $dump;
+        return $string;
     }
 
     public function emphasis(string $string): string

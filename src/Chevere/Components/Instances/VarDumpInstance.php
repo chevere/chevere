@@ -22,7 +22,7 @@ use Chevere\Interfaces\VarDump\VarDumpInterface;
  */
 final class VarDumpInstance
 {
-    private static VarDumpInterface $instance;
+    private static ?VarDumpInterface $instance;
 
     public function __construct(VarDumpInterface $varDump)
     {

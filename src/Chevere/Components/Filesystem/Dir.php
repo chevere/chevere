@@ -72,8 +72,6 @@ final class Dir implements DirInterface
         } catch (Throwable $e) {
             throw new DirUnableToCreateException(
                 (new Message($e->getMessage())),
-                $e->getCode(),
-                $e
             );
         }
     }

@@ -36,8 +36,6 @@ final class CacheItem implements CacheItemInterface
         catch (Exception $e) {
             throw new RuntimeException(
                 $e->message(),
-                $e->getCode(),
-                $e
             );
         }
         // @codeCoverageIgnoreEnd
@@ -52,8 +50,6 @@ final class CacheItem implements CacheItemInterface
         catch (Exception $e) {
             throw new RuntimeException(
                 $e->message(),
-                $e->getCode(),
-                $e
             );
         }
         // @codeCoverageIgnoreEnd

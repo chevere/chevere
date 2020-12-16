@@ -67,11 +67,10 @@ final class Regex implements RegexInterface
             throw new RuntimeException(
                 (new Message('Unable to %function%'))
                     ->code('%function%', 'preg_match'),
-                0,
-                $e
             );
         }
 
+        /** @var array $matches */
         return $match === 0 ? [] : $matches;
     }
 
@@ -86,11 +85,10 @@ final class Regex implements RegexInterface
             throw new RuntimeException(
                 (new Message('Unable to %function%'))
                     ->code('%function%', 'preg_match_all'),
-                0,
-                $e
             );
         }
 
+        /** @var array $matches */
         return $match === 0 ? [] : $matches;
     }
 

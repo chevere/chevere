@@ -36,9 +36,9 @@ final class Routed implements RoutedInterface
 
     public function getController(): ControllerInterface
     {
-        $controller = $this->controllerName->toString();
-
-        return new $controller();
+        $controllerName = $this->controllerName->toString();
+        /** @var ControllerInterface */
+        return new $controllerName();
     }
 
     public function arguments(): array

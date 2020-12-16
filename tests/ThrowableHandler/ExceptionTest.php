@@ -33,7 +33,7 @@ final class ExceptionTest extends TestCase
         $exception = new ThrowableRead($throw);
         $this->assertSame($exceptionName, $exception->className());
         $this->assertEquals($message, $exception->message());
-        $this->assertSame($code, $exception->code());
+        $this->assertSame((string) $code, $exception->code());
         $this->assertSame(__FILE__, $exception->file());
         $this->assertSame($line, $exception->line());
         $this->assertSame(1, $exception->severity());
@@ -48,7 +48,7 @@ final class ExceptionTest extends TestCase
         $exceptionName = TestErrorException::class;
         $exception = new $exceptionName(new Message('test'));
         $normalized = new ThrowableRead($exception);
-        $this->assertSame($code, $normalized->code());
+        $this->assertSame((string) $code, $normalized->code());
     }
 
     public function testConstructWithErrorInvalidSeverity(): void

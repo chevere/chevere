@@ -43,6 +43,7 @@ final class EventListenersRunner implements EventListenersRunnerInterface
             foreach ($queue as $entries) {
                 foreach ($entries as $entry) {
                     // @codeCoverageIgnoreStart
+                    /** @var EventListenerInterface */
                     $this->eventListener = new $entry();
                     // @codeCoverageIgnoreEnd
                     $eventListener = $this->eventListener;
@@ -55,8 +56,6 @@ final class EventListenersRunner implements EventListenersRunnerInterface
             throw new RuntimeException(
                 (new Message('Unable to run event listeners for anchor %anchor% provided.'))
                     ->code('%anchor%', $anchor),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd

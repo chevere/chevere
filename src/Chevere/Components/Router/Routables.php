@@ -28,7 +28,6 @@ final class Routables implements RoutablesInterface
     public function withPut(RoutableInterface $routable): RoutablesInterface
     {
         $new = clone $this;
-        /** @var \Ds\TKey $key */
         $key = $routable->route()->path()->toString();
         $new->map->put($key, $routable);
 
@@ -37,7 +36,6 @@ final class Routables implements RoutablesInterface
 
     public function has(string $name): bool
     {
-        /** @var \Ds\TKey $key */
         $key = $name;
 
         return $this->map->hasKey($key);
