@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Routing;
+namespace Chevere\Tests\Router\Routing;
 
 use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Routing\RoutingDescriptor;
-use Chevere\Components\Routing\RoutingDescriptors;
+use Chevere\Components\Router\Routing\RoutingDescriptor;
+use Chevere\Components\Router\Routing\RoutingDescriptors;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Exceptions\Core\OverflowException;

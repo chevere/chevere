@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Routing;
+namespace Chevere\Components\Router\Routing;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
@@ -19,8 +19,8 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\TypeException;
-use Chevere\Interfaces\Routing\RoutingDescriptorInterface;
-use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
+use Chevere\Interfaces\Router\Routing\RoutingDescriptorInterface;
+use Chevere\Interfaces\Router\Routing\RoutingDescriptorsInterface;
 use Ds\Set;
 use Generator;
 use Throwable;

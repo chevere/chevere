@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Routing;
+namespace Chevere\Tests\Router\Routing;
 
-use Chevere\Components\Routing\RoutingDescriptorsMaker;
+use Chevere\Components\Router\Routing\RoutingDescriptorsMaker;
 use Chevere\Exceptions\Routing\ExpectingControllerException;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;

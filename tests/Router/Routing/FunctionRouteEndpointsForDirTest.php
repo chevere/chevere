@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Routing;
+namespace Chevere\Tests\Router\Routing;
 
 use Chevere\Exceptions\Routing\ExpectingControllerException;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Filesystem\dirForPath;
-use function Chevere\Components\Routing\routeEndpointsForDir;
+use function Chevere\Components\Router\Routing\routeEndpointsForDir;
 
-final class RouteEndpointsIteratorTest extends TestCase
+final class FunctionRouteEndpointsForDirTest extends TestCase
 {
     public function testObjects(): void
     {

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Routing;
+namespace Chevere\Interfaces\Router\Routing;
 
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Filesystem\DirInterface;
