@@ -68,12 +68,12 @@ final class Workflow implements WorkflowInterface
     public function withAdded(StepInterface ...$step): WorkflowInterface
     {
         $new = clone $this;
-        foreach ($step as $name => $task) {
-            $name = (string) $name;
-            $new->assertNoOverflow($name);
-            $new->setParameters($name, $task);
-            $new->map->put($name, $task);
-            $new->steps->push($name);
+        foreach ($step as $stepName => $stepTask) {
+            $stepName = (string) $stepName;
+            $new->assertNoOverflow($stepName);
+            $new->setParameters($stepName, $stepTask);
+            $new->map->put($stepName, $stepTask);
+            $new->steps->push($stepName);
         }
 
         return $new;
@@ -83,12 +83,12 @@ final class Workflow implements WorkflowInterface
     {
         $new = clone $this;
         $new->assertHasStepByName($before);
-        foreach ($step as $name => $task) {
-            $name = (string) $name;
-            $new->assertNoOverflow($name);
-            $new->setParameters($name, $task);
-            $new->map->put($name, $task);
-            $new->steps->insert($new->getPosByName($before), $name);
+        foreach ($step as $stepName => $stepTask) {
+            $stepName = (string) $stepName;
+            $new->assertNoOverflow($stepName);
+            $new->setParameters($stepName, $stepTask);
+            $new->map->put($stepName, $stepTask);
+            $new->steps->insert($new->getPosByName($before), $stepName);
         }
 
         return $new;
@@ -98,12 +98,12 @@ final class Workflow implements WorkflowInterface
     {
         $new = clone $this;
         $new->assertHasStepByName($after);
-        foreach ($step as $name => $task) {
-            $name = (string) $name;
-            $new->assertNoOverflow($name);
-            $new->setParameters($name, $task);
-            $new->map->put($name, $task);
-            $new->steps->insert($new->getPosByName($after) + 1, $name);
+        foreach ($step as $stepName => $stepTask) {
+            $stepName = (string) $stepName;
+            $new->assertNoOverflow($stepName);
+            $new->setParameters($stepName, $stepTask);
+            $new->map->put($stepName, $stepTask);
+            $new->steps->insert($new->getPosByName($after) + 1, $stepName);
         }
 
         return $new;

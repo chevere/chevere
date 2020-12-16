@@ -19,6 +19,5 @@ final class HooksRunnerNull implements HooksRunnerInterface
 {
     public function run(string $anchor, &$argument): void
     {
-        return;
     }
 }

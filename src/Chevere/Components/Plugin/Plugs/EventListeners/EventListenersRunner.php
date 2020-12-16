@@ -24,7 +24,7 @@ use Throwable;
 
 final class EventListenersRunner implements EventListenersRunnerInterface
 {
-    private PlugsQueueInterface $queue;
+    private PlugsQueueInterface $plugsQueue;
 
     private WritersInterface $writers;
 
@@ -32,22 +32,22 @@ final class EventListenersRunner implements EventListenersRunnerInterface
 
     public function __construct(EventListenersQueueInterface $queue, WritersInterface $writers)
     {
-        $this->queue = $queue->plugsQueue();
+        $this->plugsQueue = $queue->plugsQueue();
         $this->writers = $writers;
     }
 
     public function run(string $anchor, array $data): void
     {
         try {
-            $queue = $this->queue->toArray()[$anchor] ?? [];
+            $queue = $this->plugsQueue->toArray()[$anchor] ?? [];
             foreach ($queue as $entries) {
                 foreach ($entries as $entry) {
                     // @codeCoverageIgnoreStart
                     /** @var EventListenerInterface */
                     $this->eventListener = new $entry();
                     // @codeCoverageIgnoreEnd
-                    $eventListener = $this->eventListener;
-                    $eventListener($data, $this->writers);
+                    $event = $this->eventListener;
+                    $event($data, $this->writers);
                 }
             }
         }
