@@ -24,7 +24,7 @@ final class ClassMapTest extends TestCase
     public function testConstructGet(): void
     {
         $test = 'test';
-        $classMap = new ClassMap;
+        $classMap = new ClassMap();
         $this->assertCount(0, $classMap);
         $this->assertFalse($classMap->has($test));
         $this->expectException(ClassNotMappedException::class);
@@ -34,7 +34,7 @@ final class ClassMapTest extends TestCase
     public function testConstructGetClass(): void
     {
         $key = 'test';
-        $classMap = new ClassMap;
+        $classMap = new ClassMap();
         $this->expectException(ClassNotMappedException::class);
         $classMap->getClass($key);
     }
@@ -43,7 +43,7 @@ final class ClassMapTest extends TestCase
     {
         $className = __CLASS__;
         $key = 'self';
-        $classMap = (new ClassMap)->withPut($className, $key);
+        $classMap = (new ClassMap())->withPut($className, $key);
         $this->assertCount(1, $classMap);
         $this->assertTrue($classMap->has($className));
         $this->assertTrue($classMap->hasKey($key));
@@ -56,7 +56,7 @@ final class ClassMapTest extends TestCase
     {
         $mapping = 'self';
         $this->expectException(StringMappedException::class);
-        (new ClassMap)
+        (new ClassMap())
             ->withPut(__CLASS__, $mapping)
             ->withPut(TestCase::class, $mapping);
     }
@@ -64,6 +64,6 @@ final class ClassMapTest extends TestCase
     public function testWithPutInexistentClass(): void
     {
         $this->expectException(ClassNotExistsException::class);
-        (new ClassMap)->withPut(uniqid(), 'test');
+        (new ClassMap())->withPut(uniqid(), 'test');
     }
 }

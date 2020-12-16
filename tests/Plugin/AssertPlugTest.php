@@ -30,37 +30,37 @@ final class AssertPlugTest extends TestCase
 {
     public function testUnaccepted(): void
     {
-        $plug = new TestUnacceptedPlug;
+        $plug = new TestUnacceptedPlug();
         $this->expectException(PlugInterfaceException::class);
         new AssertPlug($plug);
     }
 
     public function testAtNotExists(): void
     {
-        $hook = new TestHookAtNotExists;
+        $hook = new TestHookAtNotExists();
         $this->expectException(PluggableNotExistsException::class);
         new AssertPlug($hook);
     }
 
     public function testAtInvalidInterface(): void
     {
-        $hook = new TestHookAtInvalidInterface;
+        $hook = new TestHookAtInvalidInterface();
         $this->expectException(PluggableAnchorsException::class);
         new AssertPlug($hook);
     }
 
     public function testForNotExists(): void
     {
-        $hook = new TestHookForNotExists;
+        $hook = new TestHookForNotExists();
         $this->expectException(PluggableAnchorNotExistsException::class);
         new AssertPlug($hook);
     }
 
     public function testConstruct(): void
     {
-        $hook = new TestHook;
+        $hook = new TestHook();
         $assertHook = new AssertPlug($hook);
         $this->assertSame($hook, $assertHook->plug());
-        $this->assertEquals(new HookPlugType, $assertHook->plugType());
+        $this->assertEquals(new HookPlugType(), $assertHook->plugType());
     }
 }

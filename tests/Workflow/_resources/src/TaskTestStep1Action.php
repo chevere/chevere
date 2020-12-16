@@ -25,10 +25,10 @@ class TaskTestStep1Action extends Action
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters)
+        return (new Parameters())
             ->withAddedRequired(
-                foo: new StringParameter,
-                bar: new IntegerParameter
+                foo: new StringParameter(),
+                bar: new IntegerParameter()
             );
     }
 

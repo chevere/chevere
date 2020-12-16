@@ -17,10 +17,8 @@ use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\Plugins;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Exceptions\Plugin\PlugsFileNotExistsException;
-use Chevere\Exceptions\Plugin\PlugsQueueInterfaceException;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +36,7 @@ final class PluginsTest extends TestCase
 
     public function testEmpty(): void
     {
-        $classMap = new ClassMap;
+        $classMap = new ClassMap();
         $plugins = new Plugins($classMap);
         $this->assertNotSame($classMap, $plugins->clonedClassMap());
         $this->assertEquals($classMap, $plugins->clonedClassMap());
@@ -52,7 +50,7 @@ final class PluginsTest extends TestCase
         $pluggable = 'stdClass';
         $map = uniqid() . '.php';
         $plugins = new Plugins(
-            (new ClassMap)
+            (new ClassMap())
                 ->withPut($pluggable, $map)
         );
         $this->expectException(PlugsFileNotExistsException::class);
@@ -64,7 +62,7 @@ final class PluginsTest extends TestCase
         $pluggable = 'stdClass';
         $map = $this->resourcesPath->getChild('invalid.php')->absolute();
         $plugins = new Plugins(
-            (new ClassMap)
+            (new ClassMap())
                 ->withPut($pluggable, $map)
         );
         $this->expectException(LogicException::class);
@@ -76,7 +74,7 @@ final class PluginsTest extends TestCase
         $pluggable = 'stdClass';
         $map = $this->resourcesPath->getChild('corrupted.php')->absolute();
         $plugins = new Plugins(
-            (new ClassMap)
+            (new ClassMap())
                 ->withPut($pluggable, $map)
         );
         $this->expectException(LogicException::class);
@@ -88,7 +86,7 @@ final class PluginsTest extends TestCase
         $pluggable = 'stdClass';
         $map = $this->resourcesPath->getChild('hooks.php')->absolute();
         $plugins = new Plugins(
-            (new ClassMap)
+            (new ClassMap())
                 ->withPut($pluggable, $map)
         );
         $this->assertInstanceOf(

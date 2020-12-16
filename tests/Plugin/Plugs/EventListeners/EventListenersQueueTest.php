@@ -23,15 +23,15 @@ final class EventListenersQueueTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $eventListenersQueue = new EventListenersQueue;
+        $eventListenersQueue = new EventListenersQueue();
         $this->assertSame($eventListenersQueue->interface(), EventListenerInterface::class);
-        $this->assertEquals(new EventListenerPlugType, $eventListenersQueue->getPlugType());
+        $this->assertEquals(new EventListenerPlugType(), $eventListenersQueue->getPlugType());
     }
 
     public function testWithAddedEventListener(): void
     {
-        $eventListener = new TestEventListener;
-        $eventListenersQueue = (new EventListenersQueue)
+        $eventListener = new TestEventListener();
+        $eventListenersQueue = (new EventListenersQueue())
             ->withAdded($eventListener);
         $this->assertSame([
             $eventListener->anchor() => [

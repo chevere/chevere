@@ -14,4 +14,4 @@ declare(strict_types=1);
 use Chevere\Components\Plugin\PlugsQueue;
 use Chevere\Components\Plugin\Types\HookPlugType;
 
-return new PlugsQueue(new HookPlugType);
+return new PlugsQueue(new HookPlugType());

@@ -11,87 +11,15 @@
 
 declare(strict_types=1);
 
-use PhpCsFixer\Fixer\ArrayNotation\NoMultilineWhitespaceAroundDoubleArrowFixer;
-use PhpCsFixer\Fixer\ArrayNotation\TrimArraySpacesFixer;
-use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
-use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
-use PhpCsFixer\Fixer\Comment\SingleLineCommentStyleFixer;
-use PhpCsFixer\Fixer\ControlStructure\IncludeFixer;
-use PhpCsFixer\Fixer\FunctionNotation\FunctionTypehintSpaceFixer;
-use PhpCsFixer\Fixer\FunctionNotation\ReturnTypeDeclarationFixer;
-use PhpCsFixer\Fixer\LanguageConstruct\CombineConsecutiveUnsetsFixer;
-use PhpCsFixer\Fixer\NamespaceNotation\NoLeadingNamespaceWhitespaceFixer;
-use PhpCsFixer\Fixer\NamespaceNotation\SingleBlankLineBeforeNamespaceFixer;
-use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
-use PhpCsFixer\Fixer\Operator\ObjectOperatorWithoutWhitespaceFixer;
-use PhpCsFixer\Fixer\Semicolon\MultilineWhitespaceBeforeSemicolonsFixer;
-use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
-use PhpCsFixer\Fixer\StringNotation\SingleQuoteFixer;
-use PhpCsFixer\Fixer\Whitespace\ArrayIndentationFixer;
-use PhpCsFixer\Fixer\Whitespace\BlankLineBeforeStatementFixer;
-use PhpCsFixer\Fixer\Whitespace\CompactNullableTypehintFixer;
-use PhpCsFixer\Fixer\Whitespace\NoExtraBlankLinesFixer;
-use PhpCsFixer\Fixer\Whitespace\NoSpacesAroundOffsetFixer;
-use PhpCsFixer\Fixer\Whitespace\NoWhitespaceInBlankLineFixer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symplify\EasyCodingStandard\ValueObject\Option;
-use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->import(__DIR__ . '/ecs-chevere.php');
     $parameters = $containerConfigurator->parameters();
-    // $parameters->set(Option::SKIP, [
-    //     DeclareStrictTypesFixer::class => [
-    //         __DIR__ . '/my-nasty-dirty-file.php',
-    //         __DIR__ . '/Legacy/too-legacy-to-look-at.php',
-    //         __DIR__ . '/Legacy',
-    //         __DIR__ . '/*/Command',
-    //     ]
-    // ]);
-    $header = file_get_contents(__DIR__ . '/.header');
-
-    $parameters->set(Option::SETS, [
-        SetList::CLEAN_CODE,
-        SetList::PSR_12
+    $parameters->set(Option::SKIP, [
+        __DIR__ . '/tests/Cache/_resources/*',
+        __DIR__ . '/tests/Filesystem/_resources/*',
+        __DIR__ . '/tests/Plugin/_resources/*',
     ]);
-    $services = $containerConfigurator->services();
-    $services->set(HeaderCommentFixer::class)
-        ->call('configure', [[
-            'header' => $header, 'location' => 'after_open'
-        ]]);
-    $services->set(DeclareStrictTypesFixer::class);
-    $services->set(CompactNullableTypehintFixer::class);
-    $services->set(FunctionTypehintSpaceFixer::class);
-    $services->set(NoLeadingNamespaceWhitespaceFixer::class);
-    $services->set(NoWhitespaceInBlankLineFixer::class);
-    $services->set(ReturnTypeDeclarationFixer::class)
-        ->call('configure', [[
-            'space_before' => 'none'
-        ]]);
-    $services->set(BlankLineBeforeStatementFixer::class);
-    $services->set(ArrayIndentationFixer::class);
-    $services->set(CombineConsecutiveUnsetsFixer::class);
-    $services->set(ClassAttributesSeparationFixer::class);
-    $services->set(MultilineWhitespaceBeforeSemicolonsFixer::class);
-    $services->set(SingleQuoteFixer::class);
-    $services->set(SingleLineCommentStyleFixer::class);
-    $services->set(IncludeFixer::class);
-    $services->set(NoMultilineWhitespaceAroundDoubleArrowFixer::class);
-    $services->set(NoSpacesAroundOffsetFixer::class);
-    $services->set(ObjectOperatorWithoutWhitespaceFixer::class);
-    $services->set(SingleBlankLineBeforeNamespaceFixer::class);
-    $services->set(TrimArraySpacesFixer::class);
-    $services->set(BinaryOperatorSpacesFixer::class)
-        ->call('configure', [[
-            'align_double_arrow' => false,
-            'align_equals' => false,
-        ]]);
-    $services->set(NoExtraBlankLinesFixer::class)
-        ->call('configure', [[
-            'curly_brace_block',
-            'extra',
-            'parenthesis_brace_block',
-            'square_brace_block',
-            'throw',
-            'use',
-        ]]);
 };

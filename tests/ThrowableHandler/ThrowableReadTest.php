@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
-use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Chevere\Components\Message\Message;
+use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Chevere\Exceptions\Core\Exception as CoreException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableReadInterface;
 use ErrorException;

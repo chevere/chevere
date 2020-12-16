@@ -21,8 +21,8 @@ final class HooksRunnerNullTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $runner = new HooksRunnerNull;
-        $argument = new stdClass;
+        $runner = new HooksRunnerNull();
+        $argument = new stdClass();
         $same = $argument;
         $runner->run('anchor', $argument);
         $this->assertSame($same, $argument);

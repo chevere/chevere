@@ -25,14 +25,14 @@ class SpecMakerTestGetController extends Controller
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters)
+        return (new Parameters())
             ->withAddedRequired(
-                id: (new StringParameter)
+                id: (new StringParameter())
                     ->withRegex(new Regex('/^[0-9]+$/'))
                     ->withDescription('The user integer id')
             )
             ->withAddedOptional(
-                name: (new StringParameter)
+                name: (new StringParameter())
                     ->withRegex(new Regex('/^[\w]+$/'))
                     ->withDescription('The user name')
             );

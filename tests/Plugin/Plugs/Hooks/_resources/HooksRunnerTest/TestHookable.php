@@ -30,7 +30,7 @@ class TestHookable implements PluggableHooksInterface
 
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
-        return (new PluggableAnchors)
+        return (new PluggableAnchors())
             ->withAdded('string')
             ->withAdded('path')
             ->withAdded('type');

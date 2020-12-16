@@ -19,14 +19,13 @@ use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Plugin\PlugInterfaceException;
 use Chevere\Tests\Plugin\_resources\src\TestHook;
-use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class PlugsQueueTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $plugType = new HookPlugType;
+        $plugType = new HookPlugType();
         $plugsQueue = new PlugsQueue($plugType);
         $this->assertSame($plugType, $plugsQueue->plugType());
         $this->assertSame([], $plugsQueue->toArray());
@@ -34,8 +33,8 @@ final class PlugsQueueTest extends TestCase
 
     public function testWithWrongPlug(): void
     {
-        $hook = new TestHook;
-        $plugType = new EventListenerPlugType;
+        $hook = new TestHook();
+        $plugType = new EventListenerPlugType();
         $plugsQueue = new PlugsQueue($plugType);
         $this->expectException(PlugInterfaceException::class);
         $plugsQueue->withAdded($hook);
@@ -43,8 +42,8 @@ final class PlugsQueueTest extends TestCase
 
     public function testWithPlug(): void
     {
-        $hook = new TestHook;
-        $plugQueue = new PlugsQueue(new HookPlugType);
+        $hook = new TestHook();
+        $plugQueue = new PlugsQueue(new HookPlugType());
         $plugQueue = $plugQueue->withAdded($hook);
         $this->assertSame([
             $hook->anchor() => [
@@ -57,8 +56,8 @@ final class PlugsQueueTest extends TestCase
 
     public function testWithAlreadyAddedPlug(): void
     {
-        $hook = new TestHook;
-        $plugsQueue = (new PlugsQueue(new HookPlugType))
+        $hook = new TestHook();
+        $plugsQueue = (new PlugsQueue(new HookPlugType()))
             ->withAdded($hook);
         $this->expectException(OverflowException::class);
         $plugsQueue->withAdded($hook);

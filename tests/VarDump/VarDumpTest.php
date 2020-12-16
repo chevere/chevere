@@ -18,7 +18,6 @@ use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
 use Chevere\Components\VarDump\VarDump;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
-use Chevere\Interfaces\Writer\WriterInterface;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
@@ -28,12 +27,12 @@ final class VarDumpTest extends TestCase
 {
     private function getVarDump(): VarDumpInterface
     {
-        return new VarDump(new VarDumpPlainFormatter, new VarDumpPlainOutputter);
+        return new VarDump(new VarDumpPlainFormatter(), new VarDumpPlainOutputter());
     }
 
     private function getStream(): StreamInterface
     {
-        return (new StreamFactory)->createStream('');
+        return (new StreamFactory())->createStream('');
     }
 
     public function testConstruct(): void
@@ -47,7 +46,7 @@ final class VarDumpTest extends TestCase
     {
         $stream = $this->getStream();
         $writer = new StreamWriter($stream);
-        $var = new stdClass;
+        $var = new stdClass();
         $varDump = $this->getVarDump()->withVars($var);
         $this->assertEquals([$var], $varDump->vars());
         $varDump->process($writer);

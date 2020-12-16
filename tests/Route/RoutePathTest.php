@@ -15,7 +15,6 @@ namespace Chevere\Tests\Route;
 
 use Chevere\Components\Route\RoutePath;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class RoutePathTest extends TestCase

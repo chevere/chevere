@@ -47,7 +47,7 @@ final class VarDumpableTest extends TestCase
                 null, VarDumpNullProcessor::class
             ],
             TypeInterface::OBJECT => [
-                new stdClass, VarDumpObjectProcessor::class
+                new stdClass(), VarDumpObjectProcessor::class
             ],
             TypeInterface::RESOURCE => [
                 fopen(__FILE__, 'r'),

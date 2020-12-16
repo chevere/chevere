@@ -34,7 +34,7 @@ class TestController extends Controller implements PluggableHooksInterface
 
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
-        return (new PluggableAnchors)
+        return (new PluggableAnchors())
             ->withAdded('getParameters:after')
             ->withAdded('run:before')
             ->withAdded('run:after');
@@ -42,11 +42,11 @@ class TestController extends Controller implements PluggableHooksInterface
 
     public function getParameters(): ParametersInterface
     {
-        $parameters = (new Parameters)
+        $parameters = (new Parameters())
             ->withAddedRequired(
-                name: (new StringParameter)
+                name: (new StringParameter())
                     ->withRegex(new Regex('/^[\w]+$/')),
-                id: (new StringParameter)
+                id: (new StringParameter())
                     ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $this->hook('getParameters:after', $parameters);

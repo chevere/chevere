@@ -37,7 +37,7 @@ final class HookedTest extends TestCase
         $srcAt = $resources->absolute();
         $nsHookable = 'Chevere\Tests\Plugin\Plugs\Hooks\_resources';
         $fsHooks = 'Chevere/Components/Hooks/Tests/';
-        $classMap = new ClassMap;
+        $classMap = new ClassMap();
         foreach ([
             'TestHookable' => $hooksPath . "$fsHooks/TestHookable/hooks.php",
             'TestHookableWithCorruptedHooks' => $hooksPath . "$fsHooks/MyHookableWithCorruptedHooks/hooks.php",
@@ -53,7 +53,7 @@ final class HookedTest extends TestCase
     public function testWithoutHooksQueue(): void
     {
         $string = 'string';
-        $testHookable = new TestHookableWithoutHooks;
+        $testHookable = new TestHookableWithoutHooks();
         $testHookable->setString($string);
         $this->assertSame($string, $testHookable->string());
     }
@@ -61,11 +61,9 @@ final class HookedTest extends TestCase
     public function testHooked(): void
     {
         $string = 'string';
-        $hooksQueue = (new HooksQueue)->withAdded(new TestHook);
-        /**
-         * @var TestHookable $testHookable
-         */
-        $testHookable = (new TestHookable)
+        $hooksQueue = (new HooksQueue())->withAdded(new TestHook());
+        /** @var TestHookable $testHookable */
+        $testHookable = (new TestHookable())
             ->withHooksRunner(
                 new HooksRunner($hooksQueue)
             );

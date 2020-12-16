@@ -16,14 +16,12 @@ namespace Chevere\Tests\Filesystem;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Exceptions\Filesystem\DirExistsException;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 

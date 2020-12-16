@@ -44,28 +44,28 @@ final class VarOutputterTest extends TestCase
     public function testPlainOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
-        $writer = new StreamWriter((new StreamFactory)->createStream(''));
+        $writer = new StreamWriter((new StreamFactory())->createStream(''));
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
-            new VarDumpPlainFormatter,
+            new VarDumpPlainFormatter(),
             null,
         );
-        $varOutputter->process(new VarDumpPlainOutputter);
+        $varOutputter->process(new VarDumpPlainOutputter());
         $this->assertSame($this->getParsed($backtrace, 'output-plain'), $writer->toString());
     }
 
     public function testConsoleOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
-        $writer = new StreamWriter((new StreamFactory)->createStream(''));
+        $writer = new StreamWriter((new StreamFactory())->createStream(''));
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
-            new VarDumpConsoleFormatter,
+            new VarDumpConsoleFormatter(),
             null,
         );
-        $varOutputter->process(new VarDumpConsoleOutputter);
+        $varOutputter->process(new VarDumpConsoleOutputter());
         $parsed = $this->getParsed($backtrace, 'output-console-color');
         $string = $writer->toString();
         $parsed = (new Str($parsed))->withStripANSIColors()->toString();
@@ -76,14 +76,14 @@ final class VarOutputterTest extends TestCase
     public function testHtmlOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
-        $writer = new StreamWriter((new StreamFactory)->createStream(''));
+        $writer = new StreamWriter((new StreamFactory())->createStream(''));
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
-            new VarDumpHtmlFormatter,
+            new VarDumpHtmlFormatter(),
             null,
         );
-        $varOutputter->process(new VarDumpHtmlOutputter);
+        $varOutputter->process(new VarDumpHtmlOutputter());
         $parsed = $this->getParsed($backtrace, 'output-html');
 
         $this->assertSame($parsed, $writer->toString());

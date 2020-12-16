@@ -25,18 +25,18 @@ final class EventListenersRunnerTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $runner = new EventListenersRunner(new EventListenersQueue, new Writers);
+        $runner = new EventListenersRunner(new EventListenersQueue(), new Writers());
         $this->expectNotToPerformAssertions();
         $runner->run('anchor', []);
     }
 
     public function testRun(): void
     {
-        $stream = (new StreamFactory)->createStream('');
+        $stream = (new StreamFactory())->createStream('');
         $writer = new StreamWriter($stream);
-        $writers = (new Writers)->with($writer);
-        $eventListener = new TestEventListener;
-        $eventListenersQueue = (new EventListenersQueue)
+        $writers = (new Writers())->with($writer);
+        $eventListener = new TestEventListener();
+        $eventListenersQueue = (new EventListenersQueue())
             ->withAdded($eventListener);
         $runner = new EventListenersRunner($eventListenersQueue, $writers);
         $data = ['data'];

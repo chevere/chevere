@@ -13,32 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use BadFunctionCallException;
-use Chevere\Components\Parameter\Parameter;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Parameter\ParameterNameInvalidException;
 use PHPUnit\Framework\TestCase;
 
 final class StringParameterTest extends TestCase
 {
-
     public function testConstruct(): void
     {
-        $name = 'parameter';
         $regex = '/^.*$/';
-        $parameter = new StringParameter;
+        $parameter = new StringParameter();
         $this->assertSame($regex, $parameter->regex()->toString());
     }
 
     public function testWithRegex(): void
     {
         $regex = new Regex('/^[0-9+]$/');
-        $parameter = (new StringParameter)->withRegex($regex);
+        $parameter = (new StringParameter())->withRegex($regex);
         $this->assertSame($regex->toString(), $parameter->regex()->toString());
     }
 

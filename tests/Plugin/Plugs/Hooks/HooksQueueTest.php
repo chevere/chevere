@@ -23,15 +23,15 @@ final class HooksQueueTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $hooksQueue = new HooksQueue;
+        $hooksQueue = new HooksQueue();
         $this->assertSame($hooksQueue->interface(), HookInterface::class);
-        $this->assertEquals(new HookPlugType, $hooksQueue->getPlugType());
+        $this->assertEquals(new HookPlugType(), $hooksQueue->getPlugType());
     }
 
     public function testWithAddedHook(): void
     {
-        $hook = new TestHook;
-        $hooksQueue = (new HooksQueue)->withAdded($hook);
+        $hook = new TestHook();
+        $hooksQueue = (new HooksQueue())->withAdded($hook);
         $this->assertSame([
             $hook->anchor() => [
                 [

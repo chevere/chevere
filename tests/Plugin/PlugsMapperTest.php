@@ -25,13 +25,13 @@ final class PlugsMapperTest extends TestCase
     {
         $dir = dirForPath(__DIR__ . '/' . uniqid() . '/');
         $this->expectException(DirNotExistsException::class);
-        new PlugsMapper($dir, new HookPlugType);
+        new PlugsMapper($dir, new HookPlugType());
     }
 
     public function testConstruct(): void
     {
         $dir = dirForPath(__DIR__ . '/_resources/PlugsMapperTest/');
-        $plugsMapper = new PlugsMapper($dir, new HookPlugType);
+        $plugsMapper = new PlugsMapper($dir, new HookPlugType());
         $this->assertTrue(
             $plugsMapper->plugsMap()->hasPlugsFor(
                 'Chevere\Tests\Plugin\_resources\PlugsMapperTest\TestMappedHookable'

@@ -21,7 +21,7 @@ final class StrictStdTest extends TestCase
 {
     public function testParseSuccess(): void
     {
-        $routeParser = new StrictStd;
+        $routeParser = new StrictStd();
         $datas = $routeParser->parse('/hello-world/');
         $this->assertSame([
             0 => ['/hello-world/']
@@ -30,7 +30,7 @@ final class StrictStdTest extends TestCase
 
     public function testParseError(): void
     {
-        $routeParser = new StrictStd;
+        $routeParser = new StrictStd();
         $this->expectException(InvalidArgumentException::class);
         $routeParser->parse('/hello-error/[optional]');
     }

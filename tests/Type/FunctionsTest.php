@@ -50,11 +50,9 @@ final class FunctionsTest extends TestCase
     public function testTypeFunctions(): void
     {
         $types = ['boolean', 'integer', 'float', 'string', 'array', 'object', 'callable', 'iterable', 'resource', 'null'];
-        foreach ($types as $k => $v) {
+        foreach ($types as $v) {
             $name = 'Chevere\\Components\\Type\\type' . ucfirst($v);
-            /**
-             * @var TypeInterface $fn
-             */
+            /** @var TypeInterface $fn */
             $object = $name();
             $this->assertSame($v, $object->typeHinting());
         }

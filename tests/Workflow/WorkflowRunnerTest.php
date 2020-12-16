@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Workflow\Step;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
@@ -44,7 +43,7 @@ final class WorkflowRunnerTest extends TestCase
         $workflowRunner = new WorkflowRunner($workflowRun);
         $workflowRun = $workflowRunner->run($container);
         $this->assertSame($workflowRun, $workflowRunner->workflowRun());
-        $action1 = new WorkflowRunnerFunctionTestStep1;
+        $action1 = new WorkflowRunnerFunctionTestStep1();
         $this->assertEquals(
             $action1->run(
                 $action1->getArguments(...['foo' => $foo])
@@ -52,7 +51,7 @@ final class WorkflowRunnerTest extends TestCase
             $workflowRun->get('step1')->data()
         );
         $foo = $workflowRun->get('step1')->data()['response1'];
-        $action2 = new WorkflowRunnerFunctionTestStep2;
+        $action2 = new WorkflowRunnerFunctionTestStep2();
         $this->assertEquals(
             $action2
                 ->run(

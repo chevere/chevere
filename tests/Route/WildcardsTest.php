@@ -23,7 +23,7 @@ final class WildcardsTest extends TestCase
 {
     public function testConstructEmpty(): void
     {
-        $routeWildcards = new Wildcards;
+        $routeWildcards = new Wildcards();
         $this->assertCount(0, $routeWildcards);
     }
 
@@ -34,7 +34,7 @@ final class WildcardsTest extends TestCase
             $wildcardName,
             new RouteWildcardMatch(Std::DEFAULT_DISPATCH_REGEX)
         );
-        $routeWildcards = (new Wildcards)->withAddedWildcard($routeWildcard);
+        $routeWildcards = (new Wildcards())->withAddedWildcard($routeWildcard);
         $this->assertCount(1, $routeWildcards);
         $this->assertTrue($routeWildcards->hasPos(0));
         $this->assertSame($routeWildcard, $routeWildcards->getPos(0));
@@ -46,7 +46,7 @@ final class WildcardsTest extends TestCase
     {
         $match = new RouteWildcardMatch(Std::DEFAULT_DISPATCH_REGEX);
         $wildcards = [new RouteWildcard('test1', $match), new RouteWildcard('test2', $match)];
-        $routeWildcards = new Wildcards;
+        $routeWildcards = new Wildcards();
         foreach ($wildcards as $wildcard) {
             $routeWildcards = $routeWildcards
                 ->withAddedWildcard($wildcard)

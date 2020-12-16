@@ -23,8 +23,8 @@ final class RouteEndpointTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $method = new GetMethod;
-        $controller = new RouteEndpointTestController;
+        $method = new GetMethod();
+        $controller = new RouteEndpointTestController();
         $routeEndpoint = new RouteEndpoint($method, $controller);
         $this->assertSame($method, $routeEndpoint->method());
         $this->assertSame($controller, $routeEndpoint->controller());
@@ -38,26 +38,26 @@ final class RouteEndpointTest extends TestCase
     public function testWithDescription(): void
     {
         $description = 'Some description';
-        $routeEndpoint = (new RouteEndpoint(new GetMethod, new RouteEndpointTestController))
+        $routeEndpoint = (new RouteEndpoint(new GetMethod(), new RouteEndpointTestController()))
             ->withDescription($description);
         $this->assertSame($description, $routeEndpoint->description());
     }
 
     public function testWithoutWrongParameter(): void
     {
-        $controller = new RouteEndpointTestController;
+        $controller = new RouteEndpointTestController();
         $this->expectException(OutOfBoundsException::class);
-        (new RouteEndpoint(new GetMethod, $controller))
+        (new RouteEndpoint(new GetMethod(), $controller))
             ->withoutParameter('0x0');
     }
 
     public function testWithoutParameter(): void
     {
-        $controller = new RouteEndpointTestController;
+        $controller = new RouteEndpointTestController();
         $generator = $controller->parameters()->getGenerator();
         $generator->rewind();
         $key = $generator->key() ?? 'name';
-        $routeEndpoint = (new RouteEndpoint(new GetMethod, $controller))
+        $routeEndpoint = (new RouteEndpoint(new GetMethod(), $controller))
             ->withoutParameter($key);
         $this->assertArrayNotHasKey($key, $routeEndpoint->parameters());
     }

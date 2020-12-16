@@ -25,8 +25,8 @@ trait VarDumperTrait
     private function getVarDumper($var): VarDumperInterface
     {
         return new VarDumper(
-            new StreamWriter((new StreamFactory)->createStream('')),
-            new VarDumpPlainFormatter,
+            new StreamWriter((new StreamFactory())->createStream('')),
+            new VarDumpPlainFormatter(),
             new VarDumpable($var)
         );
     }

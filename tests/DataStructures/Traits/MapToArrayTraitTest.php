@@ -20,7 +20,7 @@ final class MapToArrayTraitTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $map = new UsesMapToArrayTrait;
+        $map = new UsesMapToArrayTrait();
         $this->assertSame([0 => 'test'], $map->toArray());
     }
 }

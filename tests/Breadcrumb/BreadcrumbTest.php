@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Breadcrumb;
 
 use Chevere\Components\Breadcrumb\Breadcrumb;
-use Chevere\Exceptions\Breadcrumb\BreadcrumbException;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 

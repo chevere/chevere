@@ -24,8 +24,7 @@ final class ControllerWorkflowTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $controller = new class extends ControllerWorkflow
-        {
+        $controller = new class() extends ControllerWorkflow {
             public function getWorkflow(): WorkflowInterface
             {
                 return new Workflow('test');

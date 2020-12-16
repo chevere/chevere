@@ -21,15 +21,14 @@ final class IdentifierTraitTest extends TestCase
 {
     public function testUseTrait(): void
     {
-        $object = new UsesIdentifierTrait;
+        $object = new UsesIdentifierTrait();
         $identifier = str_replace('\\', '_', get_class($object));
         $this->assertSame($identifier, $object->getIdentifier());
     }
 
     public function testAnonUseTrait(): void
     {
-        $anon = new class
-        {
+        $anon = new class() {
             use IdentifierTrait;
         };
         $this->assertSame(get_class($anon), $anon->getIdentifier());

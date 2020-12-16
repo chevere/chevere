@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Str;
 
+use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Str\StrContainsException;
 use Chevere\Exceptions\Str\StrCtypeDigitException;
 use Chevere\Exceptions\Str\StrCtypeSpaceException;
@@ -29,7 +30,6 @@ use Chevere\Exceptions\Str\StrNotStartsWithException;
 use Chevere\Exceptions\Str\StrSameException;
 use Chevere\Exceptions\Str\StrStartsWithCtypeDigitException;
 use Chevere\Exceptions\Str\StrStartsWithException;
-use Chevere\Components\Str\StrAssert;
 use PHPUnit\Framework\TestCase;
 
 final class StrAssertTest extends TestCase

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Regex;
 
 use Chevere\Components\Regex\Regex;
-use Chevere\Exceptions\Regex\RegexException;
 use Chevere\Exceptions\Regex\RegexInvalidException;
 use PHPUnit\Framework\TestCase;
 

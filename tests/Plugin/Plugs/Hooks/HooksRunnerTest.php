@@ -27,9 +27,9 @@ final class HooksRunnerTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $hooksQueue = new HooksQueue;
+        $hooksQueue = new HooksQueue();
         $runner = new HooksRunner($hooksQueue);
-        $argument = new stdClass;
+        $argument = new stdClass();
         $same = $argument;
         $runner->run('anchor', $argument);
         $this->assertSame($same, $argument);
@@ -37,7 +37,7 @@ final class HooksRunnerTest extends TestCase
 
     public function testRunHookedString(): void
     {
-        $hooksQueue = (new HooksQueue)->withAdded(new TestHookString);
+        $hooksQueue = (new HooksQueue())->withAdded(new TestHookString());
         $runner = new HooksRunner($hooksQueue);
         $argument = 'string';
         $same = $argument;
@@ -47,7 +47,7 @@ final class HooksRunnerTest extends TestCase
 
     public function testRunHookedObject(): void
     {
-        $hooksQueue = (new HooksQueue)->withAdded(new TestHookPath);
+        $hooksQueue = (new HooksQueue())->withAdded(new TestHookPath());
         $runner = new HooksRunner($hooksQueue);
         $argument = new Path(__DIR__);
         $runner->run('path', $argument);
@@ -56,7 +56,7 @@ final class HooksRunnerTest extends TestCase
 
     public function testRunHookedTypeChange(): void
     {
-        $hooksQueue = (new HooksQueue)->withAdded(new TestHookTypeChange);
+        $hooksQueue = (new HooksQueue())->withAdded(new TestHookTypeChange());
         $runner = new HooksRunner($hooksQueue);
         $argument = 'string';
         $this->expectException(InvalidArgumentException::class);

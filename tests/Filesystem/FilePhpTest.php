@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Exceptions\Filesystem\FileNotExistsException;
-use Chevere\Exceptions\Filesystem\FileNotPhpException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
-use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileNotPhpException;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class FilePhpTest extends TestCase

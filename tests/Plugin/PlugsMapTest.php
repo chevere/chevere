@@ -27,7 +27,7 @@ final class PlugsMapTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $plugType = new HookPlugType;
+        $plugType = new HookPlugType();
         $plugsMap = new PlugsMap($plugType);
         $this->assertCount(0, $plugsMap);
         $this->assertSame($plugType, $plugsMap->plugType());
@@ -37,17 +37,17 @@ final class PlugsMapTest extends TestCase
 
     public function testWithInvalidAddedPlug(): void
     {
-        $plugType = new EventListenerPlugType;
+        $plugType = new EventListenerPlugType();
         $plugsMap = new PlugsMap($plugType);
-        $hook = new TestHook;
+        $hook = new TestHook();
         $this->expectException(InvalidArgumentException::class);
         $plugsMap->withAdded($hook);
     }
 
     public function testWithAlreadyAddedPlug(): void
     {
-        $hook = new TestHook;
-        $plugsMap = (new PlugsMap(new HookPlugType))
+        $hook = new TestHook();
+        $plugsMap = (new PlugsMap(new HookPlugType()))
             ->withAdded($hook);
         $this->expectException(OverflowException::class);
         $plugsMap->withAdded($hook);
@@ -55,15 +55,14 @@ final class PlugsMapTest extends TestCase
 
     public function testWithAddedPlug(): void
     {
-        $hook = new TestHook;
-        $hook2 = new class extends TestHook
-        {
+        $hook = new TestHook();
+        $hook2 = new class() extends TestHook {
             public function anchor(): string
             {
                 return 'hook-anchor-2';
             }
         };
-        $plugsMap = (new PlugsMap(new HookPlugType))
+        $plugsMap = (new PlugsMap(new HookPlugType()))
             ->withAdded($hook)
             ->withAdded($hook2);
         $this->assertTrue($plugsMap->has($hook));

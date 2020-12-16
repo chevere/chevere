@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Tests\Cache;
 
 use Chevere\Components\Cache\CacheItem;
-use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Interfaces\Cache\CacheItemInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class CacheItemTest extends TestCase

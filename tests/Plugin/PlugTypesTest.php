@@ -29,7 +29,7 @@ final class PlugTypesTest extends TestCase
     public function testHookPlugType(): void
     {
         $this->plugTypeTester(
-            new HookPlugType,
+            new HookPlugType(),
             HookInterface::class,
             PluggableHooksInterface::class,
             HooksQueueInterface::class,
@@ -40,7 +40,7 @@ final class PlugTypesTest extends TestCase
     public function testEventListenerPlugType(): void
     {
         $this->plugTypeTester(
-            new EventListenerPlugType,
+            new EventListenerPlugType(),
             EventListenerInterface::class,
             PluggableEventsInterface::class,
             EventListenersQueueInterface::class,

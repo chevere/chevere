@@ -16,14 +16,13 @@ namespace Chevere\Tests\DataStructures\Traits;
 use Chevere\Tests\DataStructures\src\UsesMapTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-
 use function DeepCopy\deep_copy;
 
 final class MapTraitTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $map = new UsesMapTrait;
+        $map = new UsesMapTrait();
         $this->assertSame(0, $map->count());
         $this->assertSame([], $map->keys());
         $this->assertCount(0, $map->getGenerator());
@@ -32,8 +31,8 @@ final class MapTraitTest extends TestCase
     public function testWithClone(): void
     {
         $key = 'test';
-        $object = new stdClass;
-        $map = new UsesMapTrait;
+        $object = new stdClass();
+        $map = new UsesMapTrait();
         $mapClone = $map->withPut($key, $object);
         $this->assertSame(1, $mapClone->count());
         $this->assertSame([$key], $mapClone->keys());

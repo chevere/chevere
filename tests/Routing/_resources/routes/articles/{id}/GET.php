@@ -13,4 +13,4 @@ declare(strict_types=1);
 
 use Chevere\Tests\Route\_resources\src\GetArticleController;
 
-return new GetArticleController;
+return new GetArticleController();

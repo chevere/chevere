@@ -40,7 +40,7 @@ final class MapTest extends TestCase
             'some' => 'thing',
         ];
         $map = new Map(...$arguments);
-        foreach($arguments as $name => $value) {
+        foreach ($arguments as $name => $value) {
             $this->assertSame($value, $map->get($name));
         }
     }

@@ -26,7 +26,7 @@ class TestMappedHookable implements PluggableHooksInterface
 
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
-        return (new PluggableAnchors)
+        return (new PluggableAnchors())
             ->withAdded('hook-anchor-1');
     }
 

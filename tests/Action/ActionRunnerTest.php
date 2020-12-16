@@ -29,7 +29,7 @@ final class ActionRunnerTest extends TestCase
 
     public function testControllerRunFailure(): void
     {
-        $controller = new ActionRunnerTestControllerRunFail;
+        $controller = new ActionRunnerTestControllerRunFail();
         $ran = $this->getFailedRan($controller);
         $this->assertSame(1, $ran->code());
         $this->assertTrue($ran->hasThrowable());
@@ -40,7 +40,7 @@ final class ActionRunnerTest extends TestCase
     {
         $parameter = 'name';
         $value = 'PeoplesHernandez';
-        $controller = new ActionRunnerTestController;
+        $controller = new ActionRunnerTestController();
         $arguments = [$parameter => $value];
         $execute = (new ActionRunner($controller))->execute(...$arguments);
         $this->assertSame(0, $execute->code());

@@ -40,7 +40,7 @@ final class TypeTest extends TestCase
             Type::FLOAT => 13.13,
             Type::STRING => 'test',
             Type::ARRAY => ['test'],
-            Type::OBJECT => new stdClass,
+            Type::OBJECT => new stdClass(),
             Type::CALLABLE => 'phpinfo',
             Type::ITERABLE => [4, 2, 1, 3],
             Type::NULL => null,

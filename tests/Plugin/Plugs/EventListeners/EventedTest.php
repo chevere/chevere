@@ -27,21 +27,19 @@ final class EventedTest extends TestCase
     public function testWithoutEventListenersQueue(): void
     {
         $string = 'string';
-        $testEventable = new TestEventable;
+        $testEventable = new TestEventable();
         $testEventable->setString($string);
         $this->assertSame($string, $testEventable->string());
     }
 
     public function testEventListeners(): void
     {
-        $writer = new StreamWriter((new StreamFactory)->createStream(''));
-        $writers = (new Writers)->with($writer);
+        $writer = new StreamWriter((new StreamFactory())->createStream(''));
+        $writers = (new Writers())->with($writer);
         $string = 'string';
-        $eventListenersQueue = (new EventListenersQueue)->withAdded(new TestEventListener);
-        /**
-         * @var TestEventable $testEventable
-         */
-        $testEventable = (new TestEventable)
+        $eventListenersQueue = (new EventListenersQueue())->withAdded(new TestEventListener());
+        /** @var TestEventable $testEventable */
+        $testEventable = (new TestEventable())
             ->withEventListenersRunner(
                 new EventListenersRunner($eventListenersQueue, $writers)
             );
@@ -52,7 +50,7 @@ final class EventedTest extends TestCase
     public function testNotEventedClass(): void
     {
         $string = 'string';
-        $testEventable = new TestEventable;
+        $testEventable = new TestEventable();
         $testEventable->setString($string);
         $this->assertSame($string, $testEventable->string());
     }

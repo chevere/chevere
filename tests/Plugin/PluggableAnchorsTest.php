@@ -15,14 +15,13 @@ namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Plugin\PluggableAnchorExistsException;
 use PHPUnit\Framework\TestCase;
 
 final class PluggableAnchorsTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $pluggableAnchors = new PluggableAnchors;
+        $pluggableAnchors = new PluggableAnchors();
         $this->assertCount(0, $pluggableAnchors->clonedSet());
         $this->assertFalse($pluggableAnchors->has('anchor'));
     }
@@ -30,7 +29,7 @@ final class PluggableAnchorsTest extends TestCase
     public function testWithAddedAnchor(): void
     {
         $anchor = 'anchor';
-        $pluggableAnchors = (new PluggableAnchors)
+        $pluggableAnchors = (new PluggableAnchors())
             ->withAdded($anchor);
         $this->assertCount(1, $pluggableAnchors->clonedSet());
         $this->assertTrue($pluggableAnchors->has($anchor));

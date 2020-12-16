@@ -15,7 +15,6 @@ namespace Chevere\Tests\Writer;
 
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Writer\streamFor;
 use function Chevere\Components\Writer\streamForString;

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowMessage;
 use Chevere\Components\Workflow\WorkflowRun;

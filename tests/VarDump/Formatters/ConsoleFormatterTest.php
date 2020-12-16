@@ -22,28 +22,28 @@ final class ConsoleFormatterTest extends TestCase
     public function testIndent(): void
     {
         $indent = 5;
-        $indented = (new VarDumpConsoleFormatter)->indent($indent);
+        $indented = (new VarDumpConsoleFormatter())->indent($indent);
         $this->assertTrue(strlen($indented) === $indent);
     }
 
     public function testEmphasis(): void
     {
         $string = 'string';
-        $emphasized = (new VarDumpConsoleFormatter)->emphasis($string);
+        $emphasized = (new VarDumpConsoleFormatter())->emphasis($string);
         $this->assertTrue(strlen($emphasized) >= strlen($string));
     }
 
     public function testFilterEncodedChars(): void
     {
         $string = 'string</a>';
-        $filtered = (new VarDumpConsoleFormatter)->filterEncodedChars($string);
+        $filtered = (new VarDumpConsoleFormatter())->filterEncodedChars($string);
         $this->assertSame($string, $filtered);
     }
 
     public function testHighlight(): void
     {
         $string = 'string';
-        $highlighted = (new VarDumpConsoleFormatter)
+        $highlighted = (new VarDumpConsoleFormatter())
             ->highlight(VarDumpHighlightInterface::KEYS[0], $string);
         $this->assertTrue(strlen($highlighted) >= strlen($string));
     }

@@ -69,8 +69,8 @@ final class WorkflowRunTest extends TestCase
             ->withStepResponse(
                 'step0',
                 new ResponseSuccess(
-                    (new Parameters)
-                        ->withAddedRequired(response0: new StringParameter),
+                    (new Parameters())
+                        ->withAddedRequired(response0: new StringParameter()),
                     $responseData
                 )
             );
@@ -91,7 +91,7 @@ final class WorkflowRunTest extends TestCase
         (new WorkflowRun($workflow, ...$arguments))
             ->withStepResponse(
                 'not-found',
-                new ResponseSuccess(new Parameters, [])
+                new ResponseSuccess(new Parameters(), [])
             );
     }
 
@@ -107,7 +107,7 @@ final class WorkflowRunTest extends TestCase
         (new WorkflowRun($workflow))
             ->withStepResponse(
                 'step0',
-                new ResponseSuccess(new Parameters, [])
+                new ResponseSuccess(new Parameters(), [])
             );
     }
 }
@@ -124,8 +124,8 @@ class WorkflowRunTestStep1 extends Action
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters)
-            ->withAddedRequired(foo: new StringParameter);
+        return (new Parameters())
+            ->withAddedRequired(foo: new StringParameter());
     }
 
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
@@ -138,10 +138,10 @@ class WorkflowRunTestStep2 extends Action
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters)
+        return (new Parameters())
             ->withAddedRequired(
-                foo: new StringParameter,
-                bar: new StringParameter
+                foo: new StringParameter(),
+                bar: new StringParameter()
             );
     }
 

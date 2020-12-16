@@ -26,7 +26,7 @@ final class ObjectProcessorTest extends TestCase
 
     public function testEmptyObject(): void
     {
-        $object = new stdClass;
+        $object = new stdClass();
         $id = (string) spl_object_id($object);
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
@@ -37,7 +37,7 @@ final class ObjectProcessorTest extends TestCase
 
     public function testUnsetObject(): void
     {
-        $object = new DummyClass;
+        $object = new DummyClass();
         $id = (string) spl_object_id($object);
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
@@ -49,7 +49,7 @@ final class ObjectProcessorTest extends TestCase
             $string
         );
         $this->assertStringContainsString(
-            'protected $protected null',
+            'private $protected null',
             $string
         );
         $this->assertStringContainsString(
@@ -64,7 +64,7 @@ final class ObjectProcessorTest extends TestCase
 
     public function testObjectProperty(): void
     {
-        $varDumper = $this->getVarDumper((new DummyClass)->withPublic());
+        $varDumper = $this->getVarDumper((new DummyClass())->withPublic());
         (new VarDumpObjectProcessor($varDumper))->write();
         $this->assertStringContainsString(
             'public $public stdClass',
@@ -74,8 +74,7 @@ final class ObjectProcessorTest extends TestCase
 
     public function testAnonClass(): void
     {
-        $object = new class()
-        {
+        $object = new class() {
         };
         $id = (string) spl_object_id($object);
         $varDumper = $this->getVarDumper($object);
@@ -85,7 +84,7 @@ final class ObjectProcessorTest extends TestCase
 
     public function testCircularReference(): void
     {
-        $object = (new DummyClass)->withCircularReference();
+        $object = (new DummyClass())->withCircularReference();
         $id = (string) spl_object_id($object);
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
@@ -98,7 +97,7 @@ final class ObjectProcessorTest extends TestCase
 
     public function testDeep(): void
     {
-        $object = (new DummyClass)->withDeep(VarDumpProcessorInterface::MAX_DEPTH);
+        $object = (new DummyClass())->withDeep(VarDumpProcessorInterface::MAX_DEPTH);
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
         $processor->write();
@@ -127,7 +126,7 @@ final class DummyClass
 {
     private object $private;
 
-    protected object $protected;
+    private object $protected;
 
     public object $public;
 
@@ -138,7 +137,7 @@ final class DummyClass
     public function withPrivate(): self
     {
         $new = clone $this;
-        $new->private = new stdClass;
+        $new->private = new stdClass();
 
         return $new;
     }
@@ -146,7 +145,7 @@ final class DummyClass
     public function withProtected(): self
     {
         $new = clone $this;
-        $new->protected = new stdClass;
+        $new->protected = new stdClass();
 
         return $new;
     }
@@ -154,7 +153,7 @@ final class DummyClass
     public function withPublic(): self
     {
         $new = clone $this;
-        $new->public = new stdClass;
+        $new->public = new stdClass();
         $new->public->string = 'string';
         $new->public->array = [];
         $new->public->int = 1;

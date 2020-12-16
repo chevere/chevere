@@ -29,6 +29,6 @@ final class TestTypedPlugsQueueInvalidAccept implements PlugsQueueTypedInterface
 
     public function getPlugType(): PlugTypeInterface
     {
-        return new HookPlugType;
+        return new HookPlugType();
     }
 }

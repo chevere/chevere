@@ -74,7 +74,7 @@ final class PlugsMapCacheTest extends TestCase
     {
         $workingCache = new Cache($this->workingDir);
         $cache = new Cache($workingCache->dir()->getChild('empty/'));
-        $plugsMap = new PlugsMap(new HookPlugType);
+        $plugsMap = new PlugsMap(new HookPlugType());
         $plugsMapCache = (new PlugsMapCache($cache))
             ->withPut($plugsMap);
         $this->expectException(OutOfBoundsException::class);
@@ -86,7 +86,7 @@ final class PlugsMapCacheTest extends TestCase
         $cachedCache = new Cache($this->cachedDir);
         $cache = new Cache($cachedCache->dir()->getChild('corrupted-queue/'));
         $plugsMapCache = new PlugsMapCache($cache);
-        $hookableClassName = (new TestHook)->at();
+        $hookableClassName = (new TestHook())->at();
         $this->assertTrue($plugsMapCache->hasPlugsQueueTypedFor($hookableClassName));
         $this->expectException(RuntimeException::class);
         $plugsMapCache->getPlugsQueueTypedFor($hookableClassName);
@@ -95,8 +95,8 @@ final class PlugsMapCacheTest extends TestCase
     public function testWorking(): void
     {
         $cache = new Cache($this->workingDir);
-        $plugsMap = new PlugsMap(new HookPlugType);
-        $hook = new TestHook;
+        $plugsMap = new PlugsMap(new HookPlugType());
+        $hook = new TestHook();
         $hookableClassName = $hook->at();
         $plugsMap = $plugsMap->withAdded($hook);
         $plugsMapCache = (new PlugsMapCache($cache))->withPut($plugsMap);

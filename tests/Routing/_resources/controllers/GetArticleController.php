@@ -25,9 +25,9 @@ final class GetArticleController extends Controller
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters)
+        return (new Parameters())
             ->withAddedRequired(
-                id: (new StringParameter)
+                id: (new StringParameter())
                     ->withRegex(new Regex('/^d+$/')),
             );
     }

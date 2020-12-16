@@ -28,8 +28,8 @@ final class ResponseTest extends TestCase
     {
         $data = ['param' => 'data'];
         $response = new ResponseSuccess(
-            (new Parameters)
-                ->withAddedRequired(param: new StringParameter),
+            (new Parameters())
+                ->withAddedRequired(param: new StringParameter()),
             $data
         );
         $this->assertSame($data, $response->data());
@@ -42,7 +42,7 @@ final class ResponseTest extends TestCase
 
     public function testResponseSuccessWithData(): void
     {
-        $response = new ResponseSuccess(new Parameters, []);
+        $response = new ResponseSuccess(new Parameters(), []);
         $this->assertSame([], $response->data());
         $data = ['data'];
         $response = $response->withData($data);
@@ -53,8 +53,8 @@ final class ResponseTest extends TestCase
     {
         $data = ['param' => 'data'];
         $response = new ResponseFailure(
-            (new Parameters)
-                ->withAddedRequired(param: new StringParameter),
+            (new Parameters())
+                ->withAddedRequired(param: new StringParameter()),
             $data
         );
         $this->assertSame($data, $response->data());
@@ -62,7 +62,7 @@ final class ResponseTest extends TestCase
 
     public function testResponseFailureWithData(): void
     {
-        $response = new ResponseFailure(new Parameters, []);
+        $response = new ResponseFailure(new Parameters(), []);
         $this->assertSame([], $response->data());
         $data = ['data'];
         $response = $response->withData($data);
@@ -79,7 +79,7 @@ final class ResponseTest extends TestCase
             ->withDelay($data['delay'])
             ->withExpiration($data['expiration'])
             ->withPriority(10);
-        $response = (new ResponseSuccess(new Parameters, []))
+        $response = (new ResponseSuccess(new Parameters(), []))
             ->withWorkflowMessage($workflowMessage);
         $this->assertSame($workflowMessage, $response->workflowMessage());
         $this->assertSame($data, $response->data());

@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Components\Plugin\PlugTypesList;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use PHPUnit\Framework\TestCase;
 
 final class PlugTypesListTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $plugTypesList = new PlugTypesList;
+        $plugTypesList = new PlugTypesList();
         /**
          * @var int $pos
          * @var PlugTypeInterface $plugType

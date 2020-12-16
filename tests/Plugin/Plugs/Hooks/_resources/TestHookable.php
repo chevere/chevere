@@ -26,7 +26,7 @@ class TestHookable implements PluggableHooksInterface
 
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
-        return (new PluggableAnchors)
+        return (new PluggableAnchors())
             ->withAdded('setString:after');
     }
 

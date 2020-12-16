@@ -25,14 +25,14 @@ final class RouteEndpointTestController extends Controller
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters)
+        return (new Parameters())
             ->withAddedRequired(
-                name: (new StringParameter)
+                name: (new StringParameter())
                     ->withRegex(new Regex('/^[\w]+$/'))
                     ->withAddedAttribute('attr'),
             )
             ->withAddedRequired(
-                id: (new StringParameter)
+                id: (new StringParameter())
                     ->withRegex(new Regex('/^[0-9]+$/')),
             );
     }

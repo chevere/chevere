@@ -25,17 +25,17 @@ final class ActionRunnerTestController extends Controller
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters)
+        return (new Parameters())
             ->withAddedRequired(
-                name: (new StringParameter)
+                name: (new StringParameter())
                     ->withRegex(new Regex('/^\w+$/'))
             );
     }
 
     public function getResponseDataParameters(): ParametersInterface
     {
-        return (new Parameters)
-            ->withAddedRequired(user: new StringParameter);
+        return (new Parameters())
+            ->withAddedRequired(user: new StringParameter());
     }
 
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface

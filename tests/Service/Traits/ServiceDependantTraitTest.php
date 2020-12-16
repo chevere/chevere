@@ -24,15 +24,14 @@ final class ServiceDependantTraitTest extends TestCase
 {
     private function getTestDependant(): ServiceDependantInterface
     {
-        return new class implements ServiceDependantInterface
-        {
+        return new class() implements ServiceDependantInterface {
             use ServiceDependantTrait;
 
             public TestCase $testCase;
 
             public function getDependencies(): ClassMap
             {
-                return (new ClassMap)
+                return (new ClassMap())
                     ->withPut(TestCase::class, 'testCase');
             }
         };
@@ -40,8 +39,7 @@ final class ServiceDependantTraitTest extends TestCase
 
     private function getTestDependantMismatch(): ServiceDependantInterface
     {
-        return new class implements ServiceDependantInterface
-        {
+        return new class() implements ServiceDependantInterface {
             use ServiceDependantTrait;
 
             /** $testCase won't match getDependencies */
@@ -49,7 +47,7 @@ final class ServiceDependantTraitTest extends TestCase
 
             public function getDependencies(): ClassMap
             {
-                return (new ClassMap)
+                return (new ClassMap())
                     ->withPut(TestCase::class, 'testCase');
             }
         };
@@ -57,8 +55,7 @@ final class ServiceDependantTraitTest extends TestCase
 
     public function testAssertEmpty(): void
     {
-        $dependable = new class implements ServiceDependantInterface
-        {
+        $dependable = new class() implements ServiceDependantInterface {
             use ServiceDependantTrait;
         };
         $this->assertCount(0, $dependable->getDependencies());
@@ -93,7 +90,7 @@ final class ServiceDependantTraitTest extends TestCase
         $dependable = $this->getTestDependant();
         $this->expectException(TypeException::class);
         $this->expectExceptionCode(101);
-        $dependable->withDependencies(testCase: new \stdClass);
+        $dependable->withDependencies(testCase: new \stdClass());
     }
 
     public function testWithDependencyMismatch(): void
