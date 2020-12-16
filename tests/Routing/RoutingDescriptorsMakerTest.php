@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Routing;
 
 use Chevere\Components\Routing\RoutingDescriptorsMaker;
-use Chevere\Exceptions\Core\LogicException;
+use Chevere\Exceptions\Routing\ExpectingControllerException;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +25,7 @@ final class RoutingDescriptorsMakerTest extends TestCase
     public function testObjects(): void
     {
         $dir = dirForPath(__DIR__ . '/_resources/routes/');
-        $fsRoutesMaker = new RoutingDescriptorsMaker($dir);
+        $fsRoutesMaker = new RoutingDescriptorsMaker('routes', $dir);
         $fsRoutes = $fsRoutesMaker->descriptors();
         $this->assertCount(2, $fsRoutes);
         for ($i = 0; $i < $fsRoutes->count(); ++$i) {
@@ -44,7 +44,7 @@ final class RoutingDescriptorsMakerTest extends TestCase
     public function testWrongObjects(): void
     {
         $dir = dirForPath(__DIR__ . '/_resources/wrong-routes/');
-        $this->expectException(LogicException::class);
-        new RoutingDescriptorsMaker($dir);
+        $this->expectException(ExpectingControllerException::class);
+        new RoutingDescriptorsMaker('wrong-routes', $dir);
     }
 }

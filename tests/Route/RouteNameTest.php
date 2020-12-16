@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Route;
 
+use Chevere\Components\Route\RouteName;
 use Chevere\Exceptions\Route\RouteNameInvalidException;
 use PHPUnit\Framework\TestCase;
-use Chevere\Components\Route\RouteName;
 
 final class RouteNameTest extends TestCase
 {
@@ -27,8 +27,12 @@ final class RouteNameTest extends TestCase
 
     public function testConstruct(): void
     {
-        $name = 'test';
+        $repo = 'repo';
+        $path = '/path/';
+        $name = "$repo:$path";
         $routeName = new RouteName($name);
         $this->assertSame($name, $routeName->toString());
+        $this->assertSame($repo, $routeName->repository());
+        $this->assertSame($path, $routeName->path());
     }
 }

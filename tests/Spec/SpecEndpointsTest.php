@@ -15,18 +15,19 @@ namespace Chevere\Tests\Spec;
 
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\RouteEndpoint;
+use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\SpecEndpoints;
-use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Tests\Route\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\dirForPath;
 
 final class SpecEndpointsTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $specEndpoints = new SpecEndpoints;
+        $specEndpoints = new SpecEndpoints();
         $this->assertCount(0, $specEndpoints);
         $this->assertFalse($specEndpoints->has('not-found'));
         $this->expectException(OutOfBoundsException::class);
@@ -35,17 +36,17 @@ final class SpecEndpointsTest extends TestCase
 
     public function testWithPut(): void
     {
-        $method = new GetMethod;
+        $method = new GetMethod();
         $routeEndpoint = new RouteEndpoint(
             $method,
-            new TestController
+            new TestController()
         );
-        $specPath = new SpecPath('/path');
+        $specPath = new SpecDir(dirForPath('/path/'));
         $routeEndpointSpec = new RouteEndpointSpec(
             $specPath,
             $routeEndpoint
         );
-        $specEndpoints = (new SpecEndpoints)->withPut($routeEndpointSpec);
+        $specEndpoints = (new SpecEndpoints())->withPut($routeEndpointSpec);
         $this->assertCount(1, $specEndpoints);
         $this->assertTrue($specEndpoints->has($method->name()));
     }

@@ -38,8 +38,17 @@ use Symplify\EasyCodingStandard\ValueObject\Option;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    $header = file_get_contents(__DIR__ . '/.header');
     $parameters = $containerConfigurator->parameters();
+    // $parameters->set(Option::SKIP, [
+    //     DeclareStrictTypesFixer::class => [
+    //         __DIR__ . '/my-nasty-dirty-file.php',
+    //         __DIR__ . '/Legacy/too-legacy-to-look-at.php',
+    //         __DIR__ . '/Legacy',
+    //         __DIR__ . '/*/Command',
+    //     ]
+    // ]);
+    $header = file_get_contents(__DIR__ . '/.header');
+
     $parameters->set(Option::SETS, [
         SetList::CLEAN_CODE,
         SetList::PSR_12

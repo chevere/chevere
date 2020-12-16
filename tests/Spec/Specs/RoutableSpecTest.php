@@ -19,35 +19,40 @@ use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
-use Chevere\Components\Spec\SpecPath;
+use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\dirForPath;
 
 final class RoutableSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $routeName = new RouteName('route-name');
-        $routePath = new RoutePath('/route/path');
-        $specPath = new SpecPath('/spec/group');
-        $routeSpecPath = $specPath->getChild($routeName->toString() . '/route.json')->toString();
-        $method = new GetMethod;
-        $routeEndpoint = (new RouteEndpoint($method, new TestController))
+        $routeName = new RouteName('repo:/route/path/');
+        $routePath = new RoutePath('/route/path/');
+        $specPath = new SpecDir(dirForPath('/spec/repo/'));
+        $routeSpecPath = $specPath
+            ->getChild(
+                ltrim($routeName->path(), '/')
+            )
+            ->toString() . 'route.json';
+        $method = new GetMethod();
+        $routeEndpoint = (new RouteEndpoint($method, new TestController()))
             ->withDescription('Test endpoint');
-        $route = (new Route($routeName, $routePath))
+        $route = (new Route($routePath))
             ->withAddedEndpoint($routeEndpoint);
         $routable = new Routable($route);
         $spec = new RoutableSpec($specPath, $routable);
         $routeEndpoint = new RouteEndpointSpec(
-            $specPath->getChild($routeName->toString()),
+            $specPath->getChild(ltrim($routeName->path(), '/')),
             $routeEndpoint
         );
         $this->assertSame($routeSpecPath, $spec->jsonPath());
         $this->assertSame(
             [
-                'name' => $routeName->toString(),
+                'name' => $routeName->path(),
                 'spec' => $routeSpecPath,
                 'path' => $routePath->toString(),
                 'regex' => $routePath->regex()->toString(),

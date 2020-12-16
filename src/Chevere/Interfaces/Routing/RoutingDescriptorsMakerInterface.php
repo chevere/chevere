@@ -21,12 +21,10 @@ use Chevere\Interfaces\Filesystem\DirInterface;
  */
 interface RoutingDescriptorsMakerInterface
 {
-    public const ROUTE_NAME_BASENAME = 'RouteName.php';
-
     /**
      * @throws LogicException
      */
-    public function __construct(DirInterface $dir);
+    public function __construct(string $repository, DirInterface $dir);
 
     /**
      * Provides access to the generated routing descriptors.

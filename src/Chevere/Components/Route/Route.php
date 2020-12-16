@@ -23,14 +23,11 @@ use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Interfaces\Route\RouteInterface;
-use Chevere\Interfaces\Route\RouteNameInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 
 final class Route implements RouteInterface
 {
-    private RouteNameInterface $name;
-
     private RoutePathInterface $routePath;
 
     /** @var array details about the instance maker */
@@ -45,15 +42,9 @@ final class Route implements RouteInterface
 
     public function __construct(RoutePathInterface $routePath)
     {
-        $this->name = $name;
         $this->routePath = $routePath;
         $this->maker = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
         $this->endpoints = new RouteEndpoints();
-    }
-
-    public function name(): RouteNameInterface
-    {
-        return $this->name;
     }
 
     public function path(): RoutePathInterface

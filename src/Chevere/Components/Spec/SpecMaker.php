@@ -25,17 +25,17 @@ use Chevere\Exceptions\Filesystem\FilesystemException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Router\RouterInterface;
+use Chevere\Interfaces\Spec\SpecDirInterface;
 use Chevere\Interfaces\Spec\SpecIndexInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecMakerInterface;
-use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Interfaces\Spec\Specs\IndexSpecInterface;
 use Ds\Map;
 use Throwable;
 
 final class SpecMaker implements SpecMakerInterface
 {
-    private SpecPathInterface $specPath;
+    private SpecDirInterface $specPath;
 
     private DirInterface $dir;
 
@@ -48,7 +48,7 @@ final class SpecMaker implements SpecMakerInterface
     private Map $files;
 
     public function __construct(
-        SpecPathInterface $specPath,
+        SpecDirInterface $specPath,
         DirInterface $dir,
         RouterInterface $router
     ) {
@@ -68,7 +68,7 @@ final class SpecMaker implements SpecMakerInterface
                 $groups[$groupName] = new GroupSpec($specPath, $groupName);
             }
             $routableSpec = new RoutableSpec(
-                $specPath->getChild($groupName),
+                $specPath->getChild("$groupName/"),
                 $routable
             );
             $this->makeJsonFile($routableSpec);

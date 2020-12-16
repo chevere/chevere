@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
-use Chevere\Interfaces\Spec\SpecPathInterface;
+use Chevere\Interfaces\Spec\SpecDirInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
@@ -25,9 +25,11 @@ final class GroupSpec implements GroupSpecInterface
 
     private RoutableSpecsInterface $routableSpecs;
 
-    public function __construct(SpecPathInterface $specPath, string $groupName)
+    public function __construct(SpecDirInterface $specPath, string $groupName)
     {
-        $this->jsonPath = $specPath->getChild("$groupName/routes.json")->toString();
+        $this->jsonPath = $specPath
+            ->getChild("$groupName/")
+            ->toString() . 'routes.json';
         $this->key = $groupName;
         $this->routableSpecs = new RoutableSpecs();
     }

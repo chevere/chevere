@@ -16,21 +16,21 @@ namespace Chevere\Tests\Spec\Specs;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
-use Chevere\Components\Spec\SpecPath;
+use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\IndexSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 use SplObjectStorage;
+use function Chevere\Components\Filesystem\dirForPath;
 
 final class IndexSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $spec = new IndexSpec(new SpecPath('/spec'));
+        $spec = new IndexSpec(new SpecDir(dirForPath('/spec/')));
         $this->assertSame([
             'groups' => []
         ], $spec->toArray());
@@ -38,19 +38,18 @@ final class IndexSpecTest extends TestCase
 
     public function testWithAddedGroup(): void
     {
-        $routeName = new RouteName('route-name');
         $routePath = new RoutePath('/route/path');
-        $specPath = new SpecPath('/spec');
+        $specPath = new SpecDir(dirForPath('/spec/'));
         $groupName = 'group-name';
-        $route = (new Route($routeName, $routePath))
+        $route = (new Route($routePath))
             ->withAddedEndpoint(
-                new RouteEndpoint(new GetMethod, new TestController)
+                new RouteEndpoint(new GetMethod(), new TestController())
             );
-        $objectStorage = new SplObjectStorage;
+        $objectStorage = new SplObjectStorage();
         $objectStorage->attach(new Routable($route));
         $groupSpec = new GroupSpec($specPath, $groupName);
         $spec = (new IndexSpec($specPath))->withAddedGroup($groupSpec);
-        $this->assertSame($specPath->getChild('index.json')->toString(), $spec->jsonPath());
+        $this->assertSame($specPath->toString() . 'index.json', $spec->jsonPath());
         $this->assertSame(
             [
                 'groups' => [

@@ -15,15 +15,15 @@ namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Spec\SpecDirInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
-use Chevere\Interfaces\Spec\SpecPathInterface;
 
 /**
  * Describes the component in charge of defining a routable spec.
  */
 interface RoutableSpecInterface extends SpecInterface
 {
-    public function __construct(SpecPathInterface $specGroupPath, RoutableInterface $routable);
+    public function __construct(SpecDirInterface $specGroupPath, RoutableInterface $routable);
 
     /**
      * Provides access to a cloned `RouteEndpointSpecs` which doesn't affects the object instance used in `toArray`.

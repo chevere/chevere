@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Route;
 
 use Chevere\Exceptions\Route\RouteNameInvalidException;
-use Chevere\Exceptions\Str\StrAssertException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
@@ -22,12 +21,15 @@ use Chevere\Interfaces\To\ToStringInterface;
  */
 interface RouteNameInterface extends ToStringInterface
 {
-    /** Regex pattern used to validate route name. */
-    public const REGEX = '/^[\w\-\.]+$/i';
+    /** Regex pattern used to match repo:path */
+    public const REGEX = '/^([\w\-]+)\:(\/.+\/|\/)$/i';
 
     /**
-     * @throws StrAssertException If `$name` is empty or if it is ctype-space.
      * @throws RouteNameInvalidException if `$name` doesn't match `self::REGEX`
      */
     public function __construct(string $name);
+
+    public function repository(): string;
+
+    public function path(): string;
 }

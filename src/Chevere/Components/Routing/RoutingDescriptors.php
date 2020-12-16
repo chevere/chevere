@@ -16,8 +16,9 @@ namespace Chevere\Components\Routing;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Routing\RoutingDescriptorInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 use Ds\Set;
@@ -95,17 +96,19 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
 
     public function get(int $position): RoutingDescriptorInterface
     {
-        $return = $this->set->get($position);
-        if ($return === null) {
-            // @codeCoverageIgnoreStart
-            throw new OutOfBoundsException(
+        try {
+            return $this->set->get($position);
+        }
+        // @codeCoverageIgnoreStart
+        catch (\TypeError $e) {
+            throw new TypeException(new Message($e->getMessage()));
+        } catch (\OutOfRangeException $e) {
+            throw new OutOfRangeException(
                 (new Message('Position %pos% does not exists'))
                     ->code('%pos%', (string) $position)
             );
-            // @codeCoverageIgnoreEnd
         }
-
-        return $return;
+        // @codeCoverageIgnoreEnd
     }
 
     private function assertPushPath(string $path): void

@@ -22,7 +22,7 @@ final class RouteDecoratorTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $routeName = new RouteName('some-name');
+        $routeName = new RouteName('repo:/path/');
         $routeDecorator = new RouteDecorator($routeName);
         $this->assertSame($routeName, $routeDecorator->name());
         $this->assertCount(0, $routeDecorator->wildcards());
@@ -30,9 +30,10 @@ final class RouteDecoratorTest extends TestCase
 
     public function testWithWildcard(): void
     {
-        $routeName = new RouteName('some-name');
-        $routeWildcards = new Wildcards;
-        $routeDecorator = (new RouteDecorator($routeName))
+        $routeWildcards = new Wildcards();
+        $routeDecorator = (new RouteDecorator(
+            new RouteName('repo:/path/')
+        ))
             ->withWildcards($routeWildcards);
         $this->assertSame($routeWildcards, $routeDecorator->wildcards());
     }

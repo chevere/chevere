@@ -35,6 +35,7 @@ final class RoutePath implements RoutePathInterface
 
     public function __construct(string $path)
     {
+        // todo: check must be trailing
         $std = new StrictStd();
         $this->data = $std->parse($path)[0];
         $this->path = $path;

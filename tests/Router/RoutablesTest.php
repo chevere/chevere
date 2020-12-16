@@ -16,7 +16,6 @@ namespace Chevere\Tests\Router;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Routables;
@@ -29,18 +28,17 @@ final class RoutablesTest extends TestCase
     public function testWithPut(): void
     {
         $route = new Route(
-            new RouteName('some-name'),
             new RoutePath('/some-path')
         );
-        $key = $route->name()->toString();
+        $key = $route->path()->toString();
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(
-                new GetMethod,
-                new TestController
+                new GetMethod(),
+                new TestController()
             )
         );
         $routable = new Routable($route);
-        $routables = (new Routables)->withPut($routable);
+        $routables = (new Routables())->withPut($routable);
         $this->assertTrue($routables->has($key));
         $this->assertSame($routable, $routables->get($key));
         $this->expectException(OutOfBoundsException::class);

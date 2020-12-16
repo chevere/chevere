@@ -27,11 +27,6 @@ interface RouteInterface
     public function __construct(RoutePathInterface $path);
 
     /**
-     * Provides access to the `$name` instance.
-     */
-    public function name(): RouteNameInterface;
-
-    /**
      * Provides access to the `$path` instance.
      */
     public function path(): RoutePathInterface;

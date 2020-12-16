@@ -19,20 +19,22 @@ use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
-use Chevere\Components\Spec\SpecPath;
+use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\dirForPath;
 
 final class GroupSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $specPath = new SpecPath('/spec');
+        $specPath = new SpecDir(dirForPath('/spec/'));
         $groupName = 'group-name';
-        $specGroupPathJson = $specPath->getChild($groupName)
-            ->getChild('routes.json')->toString();
+        $specGroupPathJson = $specPath
+            ->getChild("$groupName/")
+            ->toString() . 'routes.json';
         $spec = new GroupSpec($specPath, $groupName);
         $this->assertSame($specGroupPathJson, $spec->jsonPath());
         $this->assertSame(
@@ -47,17 +49,19 @@ final class GroupSpecTest extends TestCase
 
     public function testWithAddedRoutable(): void
     {
-        $routeName = new RouteName('route-name');
-        $specPath = new SpecPath('/spec');
+        $routeName = new RouteName('repo:/path/');
+        $specPath = new SpecDir(dirForPath('/spec/'));
         $groupName = 'group-name';
-        $groupSpecPath = $specPath->getChild($groupName);
-        $routesSpecPathJson = $groupSpecPath->getChild('routes.json')->toString();
-        $route = (new Route($routeName, new RoutePath('/route/path')))
+        $groupSpecPath = $specPath->getChild("$groupName/");
+        $routesSpecPathJson = $groupSpecPath->toString() . 'routes.json';
+        $route = (new Route(new RoutePath('/route/path/')))
             ->withAddedEndpoint(
-                new RouteEndpoint(new GetMethod, new TestController)
+                new RouteEndpoint(new GetMethod(), new TestController())
             );
         $routableSpec = new RoutableSpec(
-            $groupSpecPath->getChild($routeName->toString()),
+            $groupSpecPath->getChild(
+                ltrim($routeName->path(), '/')
+            ),
             new Routable($route)
         );
         $spec = (new GroupSpec($specPath, $groupName))

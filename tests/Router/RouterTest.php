@@ -16,7 +16,6 @@ namespace Chevere\Tests\Router;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
@@ -28,7 +27,7 @@ final class RouterTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $router = new Router;
+        $router = new Router();
         $this->assertSame([], $router->index()->toArray());
         $this->assertCount(0, $router->routables());
     }
@@ -39,12 +38,12 @@ final class RouterTest extends TestCase
         $route = new Route($routePath);
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(
-                new GetMethod,
-                new TestController
+                new GetMethod(),
+                new TestController()
             )
         );
         $routable = new Routable($route);
-        $router = (new Router)->withAddedRoutable($routable, 'my-group');
+        $router = (new Router())->withAddedRoutable($routable, 'my-group');
         $this->assertInstanceOf(RouteCollector::class, $router->routeCollector());
     }
 }

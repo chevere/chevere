@@ -14,22 +14,23 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Spec;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
  * Describes the component in charge of handling a spec path.
  */
-interface SpecPathInterface extends ToStringInterface
+interface SpecDirInterface extends ToStringInterface
 {
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(string $path);
+    public function __construct(DirInterface $dir);
 
     /**
      * Returns a child instance for the given `$childPath`.
      *
      * @throws InvalidArgumentException
      */
-    public function getChild(string $childPath): SpecPathInterface;
+    public function getChild(string $childPath): SpecDirInterface;
 }

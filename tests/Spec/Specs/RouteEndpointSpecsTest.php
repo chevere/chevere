@@ -15,18 +15,19 @@ namespace Chevere\Tests\Spec\Specs;
 
 use Chevere\Components\Http\Methods\PatchMethod;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Spec\SpecPath;
+use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\dirForPath;
 
 final class RouteEndpointSpecsTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $specs = new RouteEndpointSpecs;
+        $specs = new RouteEndpointSpecs();
         $key = 'key';
         $this->assertCount(0, $specs);
         $this->assertFalse($specs->has($key));
@@ -36,12 +37,12 @@ final class RouteEndpointSpecsTest extends TestCase
 
     public function testWithPut(): void
     {
-        $immutable = new RouteEndpointSpecs;
+        $immutable = new RouteEndpointSpecs();
         $spec = new RouteEndpointSpec(
-            new SpecPath('/spec'),
+            new SpecDir(dirForPath('/spec/')),
             new RouteEndpoint(
-                new PatchMethod,
-                new TestController
+                new PatchMethod(),
+                new TestController()
             )
         );
         $muted = $immutable->withPut($spec);

@@ -29,7 +29,7 @@ final class Routables implements RoutablesInterface
     {
         $new = clone $this;
         /** @var \Ds\TKey $key */
-        $key = $routable->route()->name()->toString();
+        $key = $routable->route()->path()->toString();
         $new->map->put($key, $routable);
 
         return $new;

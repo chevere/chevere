@@ -60,7 +60,7 @@ final class RouterIndex implements RouterIndexInterface
         }
         // @codeCoverageIgnoreEnd
         $new = clone $this;
-        $routeName = $routable->route()->name()->toString();
+        $routeName = $routable->route()->path()->toString();
         /** @var \Ds\TKey $routeKey */
         $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeKey)) {

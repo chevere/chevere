@@ -17,18 +17,18 @@ use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
+use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\SpecMaker;
-use Chevere\Components\Spec\SpecPath;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Tests\Spec\_resources\src\SpecMakerTestGetController;
 use Chevere\Tests\Spec\_resources\src\SpecMakerTestPutController;
 use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\dirForPath;
 
 final class SpecMakerTest extends TestCase
 {
@@ -46,31 +46,30 @@ final class SpecMakerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         new SpecMaker(
-            new SpecPath('/spec'),
+            new SpecDir(dirForPath('/spec/')),
             $this->buildDir->getChild('spec/'),
-            new Router
+            new Router()
         );
     }
 
     public function testBuild(): void
     {
-        $putMethod = new PutMethod;
-        $getMethod = new GetMethod;
+        $putMethod = new PutMethod();
+        $getMethod = new GetMethod();
         $route = new Route(
-            new RouteName('MyRoute'),
-            new RoutePath('/route-path/{id:[0-9]+}')
+            new RoutePath('/route-path/{id:[0-9]+}/')
         );
         $route = $route
             ->withAddedEndpoint(
-                new RouteEndpoint($putMethod, new SpecMakerTestPutController)
+                new RouteEndpoint($putMethod, new SpecMakerTestPutController())
             )
             ->withAddedEndpoint(
-                new RouteEndpoint($getMethod, new SpecMakerTestGetController)
+                new RouteEndpoint($getMethod, new SpecMakerTestGetController())
             );
-        $router = (new Router)
+        $router = (new Router())
             ->withAddedRoutable(new Routable($route), 'group-name');
         $specMaker = new SpecMaker(
-            new SpecPath('/spec'),
+            new SpecDir(dirForPath('/spec/')),
             $this->buildDir->getChild('spec/'),
             $router
         );
@@ -84,11 +83,11 @@ final class SpecMakerTest extends TestCase
             );
         }
         $this->assertTrue($specMaker->specIndex()->has(
-            $route->name()->toString(),
+            $route->path()->toString(),
             $putMethod->name()
         ));
         $this->assertTrue($specMaker->specIndex()->has(
-            $route->name()->toString(),
+            $route->path()->toString(),
             $getMethod->name()
         ));
     }

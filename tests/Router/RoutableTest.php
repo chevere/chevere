@@ -16,7 +16,6 @@ namespace Chevere\Tests\Router;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Exceptions\Router\RouteNotRoutableException;
@@ -38,8 +37,8 @@ final class RoutableTest extends TestCase
         $route = (new Route(new RoutePath('/test')))
             ->withAddedEndpoint(
                 new RouteEndpoint(
-                    new GetMethod,
-                    new TestController
+                    new GetMethod(),
+                    new TestController()
                 )
             );
         $routable = new Routable($route);

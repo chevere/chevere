@@ -13,108 +13,34 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec;
 
-use Chevere\Components\Spec\SpecPath;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Str\StrEndsWithException;
-use Chevere\Exceptions\Str\StrNotStartsWithException;
-use Chevere\Interfaces\Spec\SpecPathInterface;
+use Chevere\Components\Spec\SpecDir;
+use Chevere\Interfaces\Spec\SpecDirInterface;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\dirForPath;
 
 final class SpecPathTest extends TestCase
 {
-    private SpecPathInterface $specPath;
+    private SpecDirInterface $specPath;
 
     public function setUp(): void
     {
-        $this->specPath = new SpecPath('/spec');
-    }
-
-    public function testPubEmpty(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new SpecPath('');
-    }
-
-    public function testPubSpace(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new SpecPath(' ');
-    }
-
-    public function testPubInvalidFirstChar(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new SpecPath('spec');
-    }
-
-    public function testPubDoubleForwardSlashes(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new SpecPath('/sp//ec');
-    }
-
-    public function testPubBackwardSlashes(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new SpecPath('/sp\ec');
-    }
-
-    public function testPubEndsWithSlash(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new SpecPath('/spec/');
+        $this->specPath = new SpecDir(dirForPath('/spec/'));
     }
 
     public function testConstruct(): void
     {
-        $pub = '/spec';
-        $specPath = new SpecPath($pub);
-        $this->assertSame($pub, $specPath->toString());
-    }
-
-    public function testGetChildEmpty(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->specPath->getChild('');
-    }
-
-    public function testGetChildSpaces(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->specPath->getChild(' ');
-    }
-
-    public function testGetChildDoubleForwardSlashes(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->specPath->getChild('chi//ld');
-    }
-
-    public function testGetChildBackwardSlashes(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->specPath->getChild('chi\ld');
-    }
-
-    public function testGetChildStartsWithForwardSlash(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->specPath->getChild('/child');
-    }
-
-    public function testGetChildEndsWithForwardSlash(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->specPath->getChild('child/');
+        $pub = dirForPath('/spec/');
+        $specPath = new SpecDir($pub);
+        $this->assertSame($pub->path()->absolute(), $specPath->toString());
     }
 
     public function testGetChild(): void
     {
-        $pub = '/spec';
+        $pub = '/spec/';
         $child = 'child';
-        $specPath = new SpecPath($pub);
-        $getChild = $specPath->getChild($child);
-        $this->assertSame($pub . '/' . $child, $getChild->toString());
+        $specPath = new SpecDir(dirForPath($pub));
+        $getChild = $specPath->getChild("$child/");
+        $this->assertSame("$pub$child/", $getChild->toString());
         $this->assertSame($child, basename($getChild->toString()));
     }
 }

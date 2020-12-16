@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec\Specs;
 
-use Chevere\Components\Spec\SpecPath;
+use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\GroupSpecs;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\dirForPath;
 
 final class GroupsSpecsTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $spec = new GroupSpecs;
+        $spec = new GroupSpecs();
         $key = 'key';
         $this->assertCount(0, $spec);
         $this->assertFalse($spec->has($key));
@@ -33,9 +34,9 @@ final class GroupsSpecsTest extends TestCase
 
     public function testWithPut(): void
     {
-        $specs = new GroupSpecs;
+        $specs = new GroupSpecs();
         $spec = new GroupSpec(
-            new SpecPath('/spec'),
+            new SpecDir(dirForPath('/spec/')),
             'group-name'
         );
         $specs = $specs->withPut($spec);

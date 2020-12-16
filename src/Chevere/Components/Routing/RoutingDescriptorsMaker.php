@@ -13,56 +13,48 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteDecorator;
+use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Str\Str;
-use Chevere\Components\Type\Type;
-use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
-use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
-use Chevere\Interfaces\Route\RouteNameInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsMakerInterface;
 use Chevere\Interfaces\Str\StrInterface;
+use Ds\Set;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
-use Throwable;
 use function Chevere\Components\Filesystem\dirForPath;
-use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
-    private PathInterface $path;
+    private string $repository;
+
+    private DirInterface $dir;
 
     private RoutingDescriptorsInterface $descriptors;
 
-    public function __construct(DirInterface $dir)
-    {
-        $this->path = $dir->path();
-        $this->descriptors = new RoutingDescriptors();
-        $dirFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
+    private Set $set;
 
-        try {
-            $this->iterate(
-                new RecursiveIteratorIterator(
-                    $this->getRecursiveFilterIterator(
-                        recursiveDirectoryIteratorFor($dir, $dirFlags)
-                    )
+    public function __construct(string $repository, DirInterface $dir)
+    {
+        $this->repository = $repository;
+        $this->dir = $dir;
+        $this->descriptors = new RoutingDescriptors();
+        $this->set = new Set();
+        $dirFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
+        $this->iterate(
+            new RecursiveIteratorIterator(
+                $this->getRecursiveFilterIterator(
+                    recursiveDirectoryIteratorFor($dir, $dirFlags),
                 )
-            );
-        } catch (Throwable $e) {
-            throw new LogicException(
-                new Message($e->getMessage())
-            );
-        }
+            )
+        );
     }
 
     public function descriptors(): RoutingDescriptorsInterface
@@ -75,9 +67,17 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         $iterator->rewind();
         while ($iterator->valid()) {
             $pathName = $iterator->current()->getPathName();
-            $routeName = $this->getVar($pathName);
-            $current = dirname($pathName) . '/';
-            $endpoints = routeEndpointsForDir(dirForPath($current));
+            $dirName = rtrim(dirname($pathName), '/') . '/';
+            $path = str_replace($this->dir->path()->absolute(), '/', $dirName);
+            // @codeCoverageIgnoreStart
+            if ($this->set->contains($path)) {
+                $iterator->next();
+
+                continue;
+            }
+            // @codeCoverageIgnoreEnd
+            $routeName = new RouteName($this->repository . ':' . $path);
+            $endpoints = routeEndpointsForDir(dirForPath($dirName));
             // @codeCoverageIgnoreStart
             if (count($endpoints) === 0) {
                 $iterator->next();
@@ -89,9 +89,9 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $routeEndpoint = $generator->current();
             /** @var RouteEndpointInterface $routeEndpoint */
             $path = $this->getPathForParameters(
-                (new Str($current))
+                (new Str($dirName))
                     ->withReplaceFirst(
-                        rtrim($this->path->absolute(), '/'),
+                        rtrim($this->dir->path()->absolute(), '/'),
                         ''
                     ),
                 $routeEndpoint->parameters()
@@ -103,11 +103,12 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $this->descriptors = $this->descriptors
                     ->withAdded(
                         new RoutingDescriptor(
-                            dirForPath($current),
+                            dirForPath($dirName),
                             new RoutePath($path),
                             new RouteDecorator($routeName)
                         )
                     );
+            $this->set->add($path);
             $iterator->next();
         }
     }
@@ -122,27 +123,27 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         return $path->toString();
     }
 
-    private function getVar(string $path): RouteNameInterface
-    {
-        try {
-            return filePhpReturnForPath($path)
-                ->withStrict(false)
-                ->varType(new Type(RouteNameInterface::class));
-        } catch (FileReturnInvalidTypeException $e) {
-            throw new ExpectingRouteNameException($e->message());
-        }
-    }
-
     private function getRecursiveFilterIterator(RecursiveDirectoryIterator $recursiveDirectoryIterator): RecursiveFilterIterator
     {
         return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator {
+            private array $methodFilenames;
+
+            public function __construct(RecursiveDirectoryIterator $iterator)
+            {
+                parent::__construct($iterator);
+                $this->methodFilenames = [];
+                foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $method) {
+                    $this->methodFilenames[] = "$method.php";
+                }
+            }
+
             public function accept(): bool
             {
                 if ($this->hasChildren()) {
                     return true;
                 }
 
-                return $this->current()->getFilename() === RoutingDescriptorsMakerInterface::ROUTE_NAME_BASENAME;
+                return in_array($this->current()->getFilename(), $this->methodFilenames);
             }
         };
     }

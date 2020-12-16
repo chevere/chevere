@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Spec\Specs;
 
+use Chevere\Interfaces\Spec\SpecDirInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
-use Chevere\Interfaces\Spec\SpecPathInterface;
 
 /**
  * Describes the component in charge of defining the group spec.
  */
 interface GroupSpecInterface extends SpecInterface
 {
-    public function __construct(SpecPathInterface $specPath, string $group);
+    public function __construct(SpecDirInterface $specPath, string $group);
 
     /**
      * Return an instance with the specified `$routableSpec`.
