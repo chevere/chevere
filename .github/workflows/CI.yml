@@ -10,12 +10,20 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup PHP Action
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@master
         with:
           php-version: 8.0
-          extensions: opcache, mbstring, ds
-          ini-values: opcache.enable_cli = 1, precision=16, default_charset='UTF-8', pcov.directory=components
-          coverage: pcov
+          extensions: opcache, mbstring
+          ini-values: opcache.enable_cli = 1, precision=16, default_charset='UTF-8', extension=pcov.so, pcov.directory=components
+
+      - name: Install PEAR
+        run: sudo apt-get -y install php-pear
+
+      - name: Install ds
+        run: sudo pecl install ds
+
+      - name: Install PCOV
+        run: sudo pecl install pcov
 
       - name: Validate composer.json and composer.lock
         run: composer validate
