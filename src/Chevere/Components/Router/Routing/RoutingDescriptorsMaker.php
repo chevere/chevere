@@ -65,7 +65,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         while ($iterator->valid()) {
             $pathName = $iterator->current()->getPathName();
             $dirName = rtrim(dirname($pathName), '/') . '/';
-            $path = str_replace($this->dir->path()->absolute(), '/', $dirName);
+            $path = str_replace($this->dir->path()->toString(), '/', $dirName);
             $routeName = new RouteName($this->repository . ':' . $path);
             $endpoints = routeEndpointsForDir(dirForPath($dirName));
             $generator = $endpoints->getGenerator();
@@ -74,7 +74,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $path = $this->getPathForParameters(
                 (new Str($dirName))
                     ->withReplaceFirst(
-                        rtrim($this->dir->path()->absolute(), '/'),
+                        rtrim($this->dir->path()->toString(), '/'),
                         ''
                     ),
                 $routeEndpoint->parameters()

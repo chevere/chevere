@@ -20,10 +20,10 @@ use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Router\Router;
-use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\SpecMaker;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Tests\Spec\_resources\src\SpecMakerTestGetController;
 use Chevere\Tests\Spec\_resources\src\SpecMakerTestPutController;
 use Chevere\Tests\src\DirHelper;
@@ -46,7 +46,7 @@ final class SpecMakerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         new SpecMaker(
-            new SpecDir(dirForPath('/spec/')),
+            dirForPath('/spec/'),
             $this->buildDir->getChild('spec/'),
             new Router()
         );
@@ -69,16 +69,19 @@ final class SpecMakerTest extends TestCase
         $router = (new Router())
             ->withAddedRoutable(new Routable($route), 'repo');
         $specMaker = new SpecMaker(
-            new SpecDir(dirForPath('/spec/')),
+            dirForPath('/spec/'),
             $this->buildDir->getChild('spec/'),
             $router
         );
         $buildPath = $this->buildDir->path();
+        /**
+         * @var PathInterface $path
+         */
         foreach ($specMaker->files() as $jsonPath => $path) {
-            $cachedFile = $buildPath->getChild(ltrim($jsonPath, '/'))->absolute();
+            $cachedFile = $buildPath->getChild(ltrim($jsonPath, '/'))->toString();
             $this->assertFileEquals(
                 $cachedFile,
-                $path->absolute(),
+                $path->toString(),
                 $cachedFile
             );
         }

@@ -15,7 +15,6 @@ namespace Chevere\Tests\Spec;
 
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\SpecEndpoints;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -41,9 +40,9 @@ final class SpecEndpointsTest extends TestCase
             $method,
             new TestController()
         );
-        $specPath = new SpecDir(dirForPath('/path/'));
+        $specDir = dirForPath('/path/');
         $routeEndpointSpec = new RouteEndpointSpec(
-            $specPath,
+            $specDir,
             $routeEndpoint
         );
         $specEndpoints = (new SpecEndpoints())->withPut($routeEndpointSpec);

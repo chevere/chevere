@@ -15,7 +15,6 @@ namespace Chevere\Tests\Spec\Specs;
 
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
@@ -25,18 +24,20 @@ final class RouteEndpointSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $specPath = new SpecDir(dirForPath('/spec/group/route-name/'));
+        $specDir = dirForPath('/spec/group/route-name/');
         $routeEndpoint = new RouteEndpoint(new GetMethod(), new TestController());
-        $spec = new RouteEndpointSpec($specPath, $routeEndpoint);
-        $specPathJson = $specPath
+        $spec = new RouteEndpointSpec($specDir, $routeEndpoint);
+        $specPathJson = $specDir
             ->getChild($routeEndpoint->method()->name() . '/')
+            ->path()
             ->toString() . '.json';
         $this->assertSame($specPathJson, $spec->jsonPath());
         $this->assertSame(
             [
                 'method' => $routeEndpoint->method()->name(),
-                'spec' => $specPath
+                'spec' => $specDir
                     ->getChild($routeEndpoint->method()->name() . '/')
+                    ->path()
                     ->toString() . '.json',
                 'description' => $routeEndpoint->method()->description(),
                 'parameters' => $routeEndpoint->parameters(),

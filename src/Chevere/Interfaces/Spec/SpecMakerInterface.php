@@ -29,8 +29,8 @@ interface SpecMakerInterface
      * @throws InvalidArgumentException
      */
     public function __construct(
-        SpecDirInterface $specPath,
-        DirInterface $dir,
+        DirInterface $specDir,
+        DirInterface $workingDir,
         RouterInterface $router
     );
 

@@ -69,7 +69,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     public function raw()
     {
         $this->assert();
-        $filePath = $this->filePhp->file()->path()->absolute();
+        $filePath = $this->filePhp->file()->path()->toString();
         // @codeCoverageIgnoreStart
         try {
             return include $filePath;
@@ -99,7 +99,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
             throw new FileReturnInvalidTypeException(
                 (new Message("File PHP return of type %return% at %path% doesn't match the expected type %expected%"))
                     ->code('%return%', $typeReturn)
-                    ->code('%path%', $this->filePhp->file()->path()->absolute())
+                    ->code('%path%', $this->filePhp->file()->path()->toString())
                     ->code('%expected%', $type->typeHinting())
             );
         }
@@ -144,7 +144,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     private function assertStrict(): void
     {
         $this->filePhp->file()->assertExists();
-        $filename = $this->filePhp->file()->path()->absolute();
+        $filename = $this->filePhp->file()->path()->toString();
         $handle = fopen($filename, 'r');
         if (false === $handle) {
             // @codeCoverageIgnoreStart
@@ -187,13 +187,13 @@ final class FilePhpReturn implements FilePhpReturnInterface
         } catch (Throwable $e) {
             throw new FileWithoutContentsException(
                 (new Message("The file at %path% doesn't have any contents"))
-                    ->code('%path%', $this->filePhp->file()->path()->absolute())
+                    ->code('%path%', $this->filePhp->file()->path()->toString())
             );
         }
         if (preg_match('#<?php[\S\s]*\s*return\s*[\S\s]*;#', $contents) !== 1) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path%'))
-                    ->code('%path%', $this->filePhp->file()->path()->absolute())
+                    ->code('%path%', $this->filePhp->file()->path()->toString())
             );
         }
     }

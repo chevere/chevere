@@ -96,7 +96,7 @@ final class DirTest extends TestCase
         $this->testDir->create();
         $this->testDir->getChild('child/')->create();
         $removed = $this->testDir->remove();
-        $this->assertContainsEquals($this->testDir->path()->absolute(), $removed);
+        $this->assertContainsEquals($this->testDir->path()->toString(), $removed);
         $this->assertFalse($this->testDir->exists());
     }
 
@@ -107,7 +107,7 @@ final class DirTest extends TestCase
         $childFile = new File($childPath);
         $childFile->create();
         $removed = $this->testDir->removeContents();
-        $this->assertNotContainsEquals($this->testDir->path()->absolute(), $removed);
-        $this->assertContainsEquals($childFile->path()->absolute(), $removed);
+        $this->assertNotContainsEquals($this->testDir->path()->toString(), $removed);
+        $this->assertContainsEquals($childFile->path()->toString(), $removed);
     }
 }

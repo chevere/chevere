@@ -64,13 +64,13 @@ final class PathTest extends TestCase
     {
         $path = $this->getPath('var/PathTest_dir_' . uniqid());
         $this->assertFalse($path->exists());
-        if (!mkdir($path->absolute(), 0777, true)) {
-            throw new RuntimeException('Unable to create dir ' . $path->absolute());
+        if (!mkdir($path->toString(), 0777, true)) {
+            throw new RuntimeException('Unable to create dir ' . $path->toString());
         }
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isDir());
-        if (!rmdir($path->absolute())) {
-            throw new RuntimeException('Unable to remove dir ' . $path->absolute());
+        if (!rmdir($path->toString())) {
+            throw new RuntimeException('Unable to remove dir ' . $path->toString());
         }
         $this->assertFalse($path->exists());
         $this->assertFalse($path->isDir());
@@ -80,13 +80,13 @@ final class PathTest extends TestCase
     {
         $path = $this->getPath('var/PathTest_file_' . uniqid() . '.jpg');
         $this->assertFalse($path->exists());
-        if (false === file_put_contents($path->absolute(), 'file put contents')) {
-            throw new RuntimeException('Unable to create file ' . $path->absolute());
+        if (false === file_put_contents($path->toString(), 'file put contents')) {
+            throw new RuntimeException('Unable to create file ' . $path->toString());
         }
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isFile());
-        if (!unlink($path->absolute())) {
-            throw new RuntimeException('Unable to remove file ' . $path->absolute());
+        if (!unlink($path->toString())) {
+            throw new RuntimeException('Unable to remove file ' . $path->toString());
         }
         $this->assertFalse($path->exists());
         $this->assertFalse($path->isFile());

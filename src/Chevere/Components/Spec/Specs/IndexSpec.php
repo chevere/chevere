@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
-use Chevere\Interfaces\Spec\SpecDirInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecsInterface;
 use Chevere\Interfaces\Spec\Specs\IndexSpecInterface;
@@ -25,9 +25,9 @@ final class IndexSpec implements IndexSpecInterface
 
     private GroupSpecsInterface $groupSpecs;
 
-    public function __construct(SpecDirInterface $specPath)
+    public function __construct(DirInterface $specDir)
     {
-        $this->jsonPath = $specPath->toString() . 'index.json';
+        $this->jsonPath = $specDir->path()->toString() . 'index.json';
         $this->groupSpecs = new GroupSpecs();
     }
 

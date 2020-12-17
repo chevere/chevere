@@ -19,7 +19,6 @@ use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RouteName;
 use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
@@ -30,12 +29,13 @@ final class GroupSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $specPath = new SpecDir(dirForPath('/spec/'));
+        $specDir = dirForPath('/spec/');
         $repository = 'repo';
-        $specGroupPathJson = $specPath
+        $specGroupPathJson = $specDir
             ->getChild("$repository/")
+            ->path()
             ->toString() . 'routes.json';
-        $spec = new GroupSpec($specPath, $repository);
+        $spec = new GroupSpec($specDir, $repository);
         $this->assertSame($specGroupPathJson, $spec->jsonPath());
         $this->assertSame(
             [
@@ -51,22 +51,22 @@ final class GroupSpecTest extends TestCase
     {
         $repository = 'repo';
         $routeName = new RouteName($repository . ':/path/');
-        $specPath = new SpecDir(dirForPath('/spec/'));
+        $specDir = dirForPath('/spec/');
         $repository = 'repo';
-        $groupSpecPath = $specPath->getChild("$repository/");
-        $routesSpecPathJson = $groupSpecPath->toString() . 'routes.json';
+        $groupSpecDir = $specDir->getChild("$repository/");
+        $routesSpecPathJson = $groupSpecDir->path()->toString() . 'routes.json';
         $route = (new Route(new RoutePath('/route/path/')))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())
             );
         $routableSpec = new RoutableSpec(
-            $groupSpecPath->getChild(
+            $groupSpecDir->getChild(
                 ltrim($routeName->path(), '/')
             ),
             new Routable($route),
             $repository
         );
-        $spec = (new GroupSpec($specPath, $repository))
+        $spec = (new GroupSpec($specDir, $repository))
             ->withAddedRoutableSpec($routableSpec);
         $this->assertSame(
             [

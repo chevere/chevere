@@ -91,7 +91,7 @@ function routeEndpointsForDir(DirInterface $dir): RouteEndpointsInterface
         }
 
         try {
-            $controller = filePhpReturnForPath($controllerPath->absolute())
+            $controller = filePhpReturnForPath($controllerPath->toString())
                 ->withStrict(false)
                 ->varType(new Type(ControllerInterface::class));
         } catch (FileReturnInvalidTypeException $e) {

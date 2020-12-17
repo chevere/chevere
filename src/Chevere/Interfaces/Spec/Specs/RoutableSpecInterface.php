@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
-use Chevere\Interfaces\Spec\SpecDirInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 
 /**
@@ -24,7 +24,7 @@ use Chevere\Interfaces\Spec\SpecInterface;
 interface RoutableSpecInterface extends SpecInterface
 {
     public function __construct(
-        SpecDirInterface $specGroupPath,
+        DirInterface $specDir,
         RoutableInterface $routable,
         string $repository
     );

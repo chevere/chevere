@@ -19,7 +19,6 @@ use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RouteName;
 use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
@@ -33,11 +32,12 @@ final class RoutableSpecTest extends TestCase
         $repository = 'repo';
         $routeName = new RouteName($repository . ':/route/path/');
         $routePath = new RoutePath('/route/path/');
-        $specPath = new SpecDir(dirForPath("/spec/$repository/"));
-        $routeSpecPath = $specPath
+        $specDir = dirForPath("/spec/$repository/");
+        $routeSpecPath = $specDir
             ->getChild(
                 ltrim($routeName->path(), '/')
             )
+            ->path()
             ->toString() . 'route.json';
         $method = new GetMethod();
         $routeEndpoint = (new RouteEndpoint($method, new TestController()))
@@ -45,9 +45,9 @@ final class RoutableSpecTest extends TestCase
         $route = (new Route($routePath))
             ->withAddedEndpoint($routeEndpoint);
         $routable = new Routable($route);
-        $spec = new RoutableSpec($specPath, $routable, $repository);
+        $spec = new RoutableSpec($specDir, $routable, $repository);
         $routeEndpoint = new RouteEndpointSpec(
-            $specPath->getChild(ltrim($routeName->path(), '/')),
+            $specDir->getChild(ltrim($routeName->path(), '/')),
             $routeEndpoint
         );
         $this->assertSame($routeSpecPath, $spec->jsonPath());

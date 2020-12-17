@@ -22,7 +22,7 @@ use RecursiveDirectoryIterator;
 function recursiveDirectoryIteratorFor(DirInterface $dir, int $flags): RecursiveDirectoryIterator
 {
     return new RecursiveDirectoryIterator(
-        $dir->path()->absolute(),
+        $dir->path()->toString(),
         $flags
     );
 }

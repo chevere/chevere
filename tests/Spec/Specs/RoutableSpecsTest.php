@@ -18,7 +18,6 @@ use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Components\Spec\Specs\RoutableSpecs;
 use Chevere\Tests\Spec\_resources\src\TestController;
@@ -43,7 +42,7 @@ final class RoutableSpecsTest extends TestCase
         $repository = 'repo';
         $specs = new RoutableSpecs();
         $spec = new RoutableSpec(
-            new SpecDir(dirForPath("/spec/$repository/")),
+            dirForPath("/spec/$repository/"),
             new Routable(
                 (new Route(new RoutePath('/path/')))
                     ->withAddedEndpoint(

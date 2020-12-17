@@ -39,7 +39,7 @@ final class File implements FileInterface
     public function __construct(PathInterface $path)
     {
         $this->path = $path;
-        $this->isPhp = (new StrBool($this->path->absolute()))->endsWith('.php');
+        $this->isPhp = (new StrBool($this->path->toString()))->endsWith('.php');
         $this->assertIsNotDir();
     }
 
@@ -63,7 +63,7 @@ final class File implements FileInterface
         if (!$this->exists()) {
             throw new FileNotExistsException(
                 (new Message("File %path% doesn't exists"))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->path->toString())
             );
         }
     }
@@ -72,14 +72,14 @@ final class File implements FileInterface
     {
         $this->assertExists();
 
-        return hash_file(FileInterface::CHECKSUM_ALGO, $this->path->absolute());
+        return hash_file(FileInterface::CHECKSUM_ALGO, $this->path->toString());
     }
 
     public function getSize(): int
     {
         $this->assertExists();
 
-        return filesize($this->path->absolute());
+        return filesize($this->path->toString());
     }
 
     /**
@@ -91,13 +91,13 @@ final class File implements FileInterface
         $this->assertExists();
 
         try {
-            return file_get_contents($this->path->absolute());
+            return file_get_contents($this->path->toString());
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new FileUnableToGetException(
                 (new Message('Unable to read the contents of the file at %path%'))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->path->toString())
             );
         }
         // @codeCoverageIgnoreEnd
@@ -108,7 +108,7 @@ final class File implements FileInterface
         $this->assertExists();
 
         try {
-            unlink($this->path->absolute());
+            unlink($this->path->toString());
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
@@ -125,13 +125,13 @@ final class File implements FileInterface
         if ($this->path->exists()) {
             throw new FileExistsException(
                 (new Message('Unable to create file %path% (file already exists)'))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->path->toString())
             );
         }
         $this->createPath();
 
         try {
-            file_put_contents($this->path->absolute(), '');
+            file_put_contents($this->path->toString(), '');
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
@@ -147,13 +147,13 @@ final class File implements FileInterface
         $this->assertExists();
 
         try {
-            file_put_contents($this->path->absolute(), $contents);
+            file_put_contents($this->path->toString(), $contents);
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new FileUnableToPutException(
                 (new Message('Unable to write content to file %filepath%'))
-                    ->code('%filepath%', $this->path->absolute())
+                    ->code('%filepath%', $this->path->toString())
             );
         }
         // @codeCoverageIgnoreEnd
@@ -161,7 +161,7 @@ final class File implements FileInterface
 
     private function createPath(): void
     {
-        $dirname = dirname($this->path->absolute());
+        $dirname = dirname($this->path->toString());
         $path = new Path($dirname . '/');
         if (!$path->exists()) {
             (new Dir($path))->create();
@@ -173,7 +173,7 @@ final class File implements FileInterface
         if ($this->path->isDir()) {
             throw new PathIsDirException(
                 (new Message('Path %path% is a directory'))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->path->toString())
             );
         }
     }

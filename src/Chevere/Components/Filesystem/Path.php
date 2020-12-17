@@ -28,7 +28,7 @@ final class Path implements PathInterface
         $this->absolute = $assert->path();
     }
 
-    public function absolute(): string
+    public function toString(): string
     {
         return $this->absolute;
     }

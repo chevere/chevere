@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
-use Chevere\Interfaces\Spec\SpecDirInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecsInterface;
 use function DeepCopy\deep_copy;
@@ -33,14 +33,14 @@ final class RoutableSpec implements RoutableSpecInterface
 
     private array $wildcards;
 
-    public function __construct(SpecDirInterface $specGroupPath, RoutableInterface $routable, string $repository)
+    public function __construct(DirInterface $specDir, RoutableInterface $routable, string $repository)
     {
         $path = $routable->route()->path()->toString();
         $this->key = $repository . ':' . $path;
         $this->routeEndpointSpecs = new RouteEndpointSpecs();
-        $specGroupRoute = $specGroupPath
+        $specGroupRoute = $specDir
             ->getChild(ltrim($path, '/'));
-        $this->jsonPath = $specGroupRoute->toString() . 'route.json';
+        $this->jsonPath = $specGroupRoute->path()->toString() . 'route.json';
         $path = $routable->route()->path();
         $this->path = $path->toString();
         $this->regex = $path->regex()->toString();

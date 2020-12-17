@@ -59,7 +59,7 @@ final class CacheItemTest extends TestCase
     {
         $path = $this->resourcesPath->getChild('return.php');
         $cacheItem = $this->getCacheItem($path);
-        $var = include $path->absolute();
+        $var = include $path->toString();
         $this->assertSame($var, $cacheItem->raw());
         $this->assertSame($var, $cacheItem->var());
     }
@@ -69,7 +69,7 @@ final class CacheItemTest extends TestCase
         $path = $this->resourcesPath->getChild('return-serialized.php');
         $this->writeSerialized($path);
         $cacheItem = $this->getCacheItem($path);
-        $var = include $path->absolute();
+        $var = include $path->toString();
         $this->assertSame($var, $cacheItem->raw());
         $this->assertEquals(unserialize($var), $cacheItem->var());
     }

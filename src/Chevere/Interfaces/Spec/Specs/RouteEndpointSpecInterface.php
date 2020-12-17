@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
-use Chevere\Interfaces\Spec\SpecDirInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 
 /**
@@ -26,5 +26,5 @@ interface RouteEndpointSpecInterface extends SpecInterface
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(SpecDirInterface $specPath, RouteEndpointInterface $routeEndpoint);
+    public function __construct(DirInterface $specDir, RouteEndpointInterface $routeEndpoint);
 }

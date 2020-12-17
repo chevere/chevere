@@ -70,7 +70,7 @@ final class FileTest extends TestCase
         $file = $this->getChildFile('.test');
         $file->create();
         $this->assertSame(FileInterface::CHECKSUM_LENGTH, strlen($file->getChecksum()));
-        $this->assertSame(filesize($file->path()->absolute()), $file->getSize());
+        $this->assertSame(filesize($file->path()->toString()), $file->getSize());
         $this->assertTrue($file->exists());
         $this->expectException(FileExistsException::class);
         $file->create();
@@ -111,7 +111,7 @@ final class FileTest extends TestCase
         $file->create();
         $id = uniqid();
         $file->put($id);
-        $this->assertSame($id, file_get_contents($file->path()->absolute()));
+        $this->assertSame($id, file_get_contents($file->path()->toString()));
         $file->remove();
     }
 }

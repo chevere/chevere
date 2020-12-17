@@ -60,7 +60,7 @@ final class Dir implements DirInterface
         if (!$this->exists()) {
             throw new DirNotExistsException(
                 (new Message("Dir %path% doesn't exists"))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->path->toString())
             );
         }
     }
@@ -68,7 +68,7 @@ final class Dir implements DirInterface
     public function create(int $mode = 0755): void
     {
         try {
-            mkdir($this->path->absolute(), $mode, true);
+            mkdir($this->path->toString(), $mode, true);
         } catch (Throwable $e) {
             throw new DirUnableToCreateException(
                 (new Message($e->getMessage())),
@@ -81,7 +81,7 @@ final class Dir implements DirInterface
         $this->assertIsDir();
         $array = $this->removeContents();
         $this->rmdir();
-        $array[] = $this->path->absolute();
+        $array[] = $this->path->toString();
 
         return $array;
     }
@@ -98,14 +98,14 @@ final class Dir implements DirInterface
             if ($fileInfo->isDir()) {
                 $path = new Path(rtrim($fileInfo->getRealPath(), '/') . '/');
                 (new Dir($path))->rmdir();
-                $removed[] = $path->absolute();
+                $removed[] = $path->toString();
 
                 continue;
             } else {
                 $path = new Path($fileInfo->getRealPath());
             }
             (new File($path))->remove();
-            $removed[] = $path->absolute();
+            $removed[] = $path->toString();
         }
 
         return $removed;
@@ -116,14 +116,14 @@ final class Dir implements DirInterface
         if ($this->path->isFile()) {
             throw new PathIsFileException(
                 (new Message('Path %path% is a file'))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->path->toString())
             );
         }
     }
 
     private function assertTailDir(): void
     {
-        $absolute = $this->path->absolute();
+        $absolute = $this->path->toString();
         if ($absolute[-1] !== '/') {
             throw new DirTailException(
                 (new Message('Instance of %className% must provide an absolute path ending with %tailChar%, path %provided% provided'))
@@ -139,7 +139,7 @@ final class Dir implements DirInterface
         if (!$this->path->isDir()) {
             throw new PathIsNotDirectoryException(
                 (new Message('Path %path% is not a directory'))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->path->toString())
             );
         }
     }
@@ -150,7 +150,7 @@ final class Dir implements DirInterface
     private function rmdir(): void
     {
         try {
-            rmdir($this->path->absolute());
+            rmdir($this->path->toString());
         } catch (Throwable $e) {
             throw new DirUnableToRemoveException(
                 new Message($e->getMessage())

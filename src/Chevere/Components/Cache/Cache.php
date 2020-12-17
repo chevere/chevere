@@ -68,7 +68,7 @@ final class Cache implements CacheInterface
             $filePhp->cache();
             $new = clone $this;
             $new->puts[$key->toString()] = [
-                'path' => $fileReturn->filePhp()->file()->path()->absolute(),
+                'path' => $fileReturn->filePhp()->file()->path()->toString(),
                 'checksum' => $fileReturn->filePhp()->file()->getChecksum(),
             ];
         }
@@ -149,7 +149,7 @@ final class Cache implements CacheInterface
             throw new RuntimeException(
                 (new Message('Unable to get cache for child %child% at path %path%'))
                     ->code('%child%', $child)
-                    ->code('%path%', $this->dir->path()->absolute()),
+                    ->code('%path%', $this->dir->path()->toString()),
                 0,
                 $e
             );

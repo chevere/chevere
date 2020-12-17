@@ -25,7 +25,6 @@ use Chevere\Exceptions\Filesystem\FilesystemException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Router\RouterInterface;
-use Chevere\Interfaces\Spec\SpecDirInterface;
 use Chevere\Interfaces\Spec\SpecIndexInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecMakerInterface;
@@ -35,9 +34,9 @@ use Throwable;
 
 final class SpecMaker implements SpecMakerInterface
 {
-    private SpecDirInterface $specPath;
+    private DirInterface $specDir;
 
-    private DirInterface $dir;
+    private DirInterface $workingDir;
 
     private RouterInterface $router;
 
@@ -48,27 +47,27 @@ final class SpecMaker implements SpecMakerInterface
     private Map $files;
 
     public function __construct(
-        SpecDirInterface $specPath,
-        DirInterface $dir,
+        DirInterface $specDir,
+        DirInterface $workingDir,
         RouterInterface $router
     ) {
-        $this->specPath = $specPath;
-        $this->dir = $dir;
+        $this->specDir = $specDir;
+        $this->workingDir = $workingDir;
         $this->assertDir();
         $this->router = $router;
         $this->assertRouter();
         $this->specIndex = new SpecIndex();
-        $this->indexSpec = new IndexSpec($this->specPath);
+        $this->indexSpec = new IndexSpec($this->specDir);
         $this->files = new Map();
         $routes = $router->routables();
         $groups = [];
         foreach ($routes->getGenerator() as $routeName => $routable) {
             $repository = $router->index()->getRouteGroup($routeName);
             if (!isset($groups[$repository])) {
-                $groups[$repository] = new GroupSpec($specPath, $repository);
+                $groups[$repository] = new GroupSpec($specDir, $repository);
             }
             $routableSpec = new RoutableSpec(
-                $specPath->getChild("$repository/"),
+                $specDir->getChild("$repository/"),
                 $routable,
                 $repository
             );
@@ -109,17 +108,17 @@ final class SpecMaker implements SpecMakerInterface
     private function assertDir(): void
     {
         try {
-            if (!$this->dir->exists()) {
-                $this->dir->create(0755);
+            if (!$this->workingDir->exists()) {
+                $this->workingDir->create(0755);
             }
-            $this->dir->assertExists();
-            if (!$this->dir->path()->isWritable()) {
+            $this->workingDir->assertExists();
+            if (!$this->workingDir->path()->isWritable()) {
                 throw new Exception(
                     (new Message('Directory %pathName% is not writable'))
-                        ->code('%pathName%', $this->dir->path()->absolute())
+                        ->code('%pathName%', $this->workingDir->path()->toString())
                 );
             }
-            $this->dir->removeContents();
+            $this->workingDir->removeContents();
         } catch (Throwable $e) {
             throw new FilesystemException(
                 new Message($e->getMessage())
@@ -154,7 +153,7 @@ final class SpecMaker implements SpecMakerInterface
         catch (Throwable $e) {
             throw new FilesystemException(
                 (new Message('Unable to make file %filename%'))
-                    ->code('%filename%', $filePath->absolute()),
+                    ->code('%filename%', $filePath->toString()),
                 0,
                 $e
             );
@@ -165,9 +164,9 @@ final class SpecMaker implements SpecMakerInterface
     private function getPathFor(string $jsonPath): PathInterface
     {
         try {
-            $dirPath = $this->dir->path();
+            $dirPath = $this->workingDir->path();
             $child = (new Str($jsonPath))
-                ->withReplaceFirst($this->specPath->toString(), '')
+                ->withReplaceFirst($this->specDir->path()->toString(), '')
                 ->toString();
             $child = ltrim($child, '/');
 

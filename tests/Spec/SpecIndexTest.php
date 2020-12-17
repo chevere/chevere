@@ -17,7 +17,6 @@ use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RouteName;
-use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\SpecIndex;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -42,8 +41,8 @@ final class SpecIndexTest extends TestCase
         $routeName = new RouteName('repo:/path/');
         $method = new GetMethod();
         $routeEndpoint = new RouteEndpoint($method, new TestController());
-        $specPath = new SpecDir(dirForPath('/spec/group/route/'));
-        $routeEndpointSpec = new RouteEndpointSpec($specPath, $routeEndpoint);
+        $specDir = dirForPath('/spec/group/route/');
+        $routeEndpointSpec = new RouteEndpointSpec($specDir, $routeEndpoint);
         $specIndex = (new SpecIndex())->withAddedRoute(
             $routeName->toString(),
             $routeEndpointSpec
@@ -55,7 +54,7 @@ final class SpecIndexTest extends TestCase
         ));
         $this->assertCount(1, $specIndex);
         $this->assertSame(
-            $specPath->getChild($method->name() . '/')->toString() . '.json',
+            $specDir->getChild($method->name() . '/')->path()->toString() . '.json',
             $specIndex->get(
                 $routeName->toString(),
                 $method->name()
@@ -63,7 +62,7 @@ final class SpecIndexTest extends TestCase
         );
         $method2 = new PutMethod();
         $routeEndpoint2 = new RouteEndpoint($method2, new TestController());
-        $routeEndpointSpec2 = new RouteEndpointSpec($specPath, $routeEndpoint2);
+        $routeEndpointSpec2 = new RouteEndpointSpec($specDir, $routeEndpoint2);
         $specIndex = $specIndex->withAddedRoute(
             $routeName->toString(),
             $routeEndpointSpec2
@@ -78,7 +77,8 @@ final class SpecIndexTest extends TestCase
         ));
         $this->assertCount(1, $specIndex);
         $this->assertSame(
-            $specPath->getChild($method2->name() . '/')->toString() . '.json',
+            $specDir->getChild($method2->name() . '/')
+                ->path()->toString() . '.json',
             $specIndex->get($routeName->toString(), $method2->name())
         );
     }

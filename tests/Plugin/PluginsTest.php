@@ -60,7 +60,7 @@ final class PluginsTest extends TestCase
     public function testRegisteredWrongReturnType(): void
     {
         $pluggable = 'stdClass';
-        $map = $this->resourcesPath->getChild('invalid.php')->absolute();
+        $map = $this->resourcesPath->getChild('invalid.php')->toString();
         $plugins = new Plugins(
             (new ClassMap())
                 ->withPut($pluggable, $map)
@@ -72,7 +72,7 @@ final class PluginsTest extends TestCase
     public function testRegisteredCorrupted(): void
     {
         $pluggable = 'stdClass';
-        $map = $this->resourcesPath->getChild('corrupted.php')->absolute();
+        $map = $this->resourcesPath->getChild('corrupted.php')->toString();
         $plugins = new Plugins(
             (new ClassMap())
                 ->withPut($pluggable, $map)
@@ -84,7 +84,7 @@ final class PluginsTest extends TestCase
     public function testRegisteredHooks(): void
     {
         $pluggable = 'stdClass';
-        $map = $this->resourcesPath->getChild('hooks.php')->absolute();
+        $map = $this->resourcesPath->getChild('hooks.php')->toString();
         $plugins = new Plugins(
             (new ClassMap())
                 ->withPut($pluggable, $map)

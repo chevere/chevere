@@ -42,7 +42,7 @@ final class FilePhp implements FilePhpInterface
     public function cache(): void
     {
         $this->file->assertExists();
-        $path = $this->file->path()->absolute();
+        $path = $this->file->path()->toString();
         $past = stat($path)['mtime'] - 10;
         touch($path, $past);
 
@@ -66,10 +66,10 @@ final class FilePhp implements FilePhpInterface
      */
     public function flush(): void
     {
-        if (!opcache_is_script_cached($this->file->path()->absolute())) {
+        if (!opcache_is_script_cached($this->file->path()->toString())) {
             return;
         }
-        if (!opcache_invalidate($this->file->path()->absolute())) {
+        if (!opcache_invalidate($this->file->path()->toString())) {
             throw new RuntimeException(
                 (new Message('OPCache is disabled'))
             );
@@ -82,7 +82,7 @@ final class FilePhp implements FilePhpInterface
             throw new FileNotPhpException(
                 (new Message('Instance of %className% must represents a PHP script in the path %path%'))
                     ->code('%className%', get_class($this->file))
-                    ->code('%path%', $this->file->path()->absolute())
+                    ->code('%path%', $this->file->path()->toString())
             );
         }
     }

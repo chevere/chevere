@@ -18,7 +18,6 @@ use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Spec\SpecDir;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\IndexSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
@@ -30,7 +29,7 @@ final class IndexSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $spec = new IndexSpec(new SpecDir(dirForPath('/spec/')));
+        $spec = new IndexSpec(dirForPath('/spec/'));
         $this->assertSame([
             'groups' => []
         ], $spec->toArray());
@@ -39,7 +38,7 @@ final class IndexSpecTest extends TestCase
     public function testWithAddedGroup(): void
     {
         $routePath = new RoutePath('/route/path');
-        $specPath = new SpecDir(dirForPath('/spec/'));
+        $specDir = dirForPath('/spec/');
         $repository = 'repo';
         $route = (new Route($routePath))
             ->withAddedEndpoint(
@@ -47,9 +46,12 @@ final class IndexSpecTest extends TestCase
             );
         $objectStorage = new SplObjectStorage();
         $objectStorage->attach(new Routable($route));
-        $groupSpec = new GroupSpec($specPath, $repository);
-        $spec = (new IndexSpec($specPath))->withAddedGroup($groupSpec);
-        $this->assertSame($specPath->toString() . 'index.json', $spec->jsonPath());
+        $groupSpec = new GroupSpec($specDir, $repository);
+        $spec = (new IndexSpec($specDir))->withAddedGroup($groupSpec);
+        $this->assertSame(
+            $specDir->path()->toString() . 'index.json',
+            $spec->jsonPath()
+        );
         $this->assertSame(
             [
                 'groups' => [
