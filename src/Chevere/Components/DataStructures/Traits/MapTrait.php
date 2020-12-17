@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\DataStructures\Traits;
 
+use function DeepCopy\deep_copy;
 use Ds\Map;
 use Generator;
-use function DeepCopy\deep_copy;
 
 trait MapTrait
 {

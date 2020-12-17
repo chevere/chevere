@@ -17,19 +17,23 @@ use Chevere\Components\DataStructures\Traits\MapToArrayTrait;
 use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Router\Route\WildcardsInterface;
+use function DeepCopy\deep_copy;
 use Ds\Map;
 use RangeException;
-use function DeepCopy\deep_copy;
 
 final class Wildcards implements WildcardsInterface
 {
     use MapTrait;
     use MapToArrayTrait;
 
-    /** int => RouteWildcardInterface $route */
+    /**
+     * int => RouteWildcardInterface $route
+     */
     private Map $map;
 
-    /** name => int $pos */
+    /**
+     * name => int $pos
+     */
     private Map $index;
 
     private int $pos = -1;
@@ -70,7 +74,9 @@ final class Wildcards implements WildcardsInterface
         $pos = $this->index->get($wildcardName);
         $get = $this->map->get($pos);
         if ($get === null) {
-            throw new RangeException(); // @codeCoverageIgnore
+            // @codeCoverageIgnoreStart
+            throw new RangeException();
+            // @codeCoverageIgnoreEnd
         }
 
         return $get;

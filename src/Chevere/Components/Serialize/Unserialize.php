@@ -15,10 +15,10 @@ namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
+use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Serialize\UnserializeInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use function Chevere\Components\Type\varType;
 
 final class Unserialize implements UnserializeInterface
 {

@@ -24,7 +24,7 @@ trait PluggableEventsTrait
 
     public function withEventListenersRunner(EventListenersRunnerInterface $eventsRunner): PluggableEventsInterface
     {
-        if (!($this instanceof PluggableEventsInterface)) {
+        if (! ($this instanceof PluggableEventsInterface)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('This method applies only for %interface%'))

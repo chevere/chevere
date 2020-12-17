@@ -37,7 +37,7 @@ interface ParametersInterface extends MappedInterface
      *
      * @throws OverflowException
      */
-    public function withAddedRequired(ParameterInterface ...$parameter): ParametersInterface;
+    public function withAddedRequired(ParameterInterface ...$parameter): self;
 
     /**
      * Return an instance with the specified optional `$parameter` instance added.
@@ -47,7 +47,7 @@ interface ParametersInterface extends MappedInterface
      *
      * @throws OverflowException
      */
-    public function withAddedOptional(ParameterInterface ...$parameter): ParametersInterface;
+    public function withAddedOptional(ParameterInterface ...$parameter): self;
 
     /**
      * Return an instance with the specified `$parameter` modifying an already added parameter.
@@ -57,7 +57,7 @@ interface ParametersInterface extends MappedInterface
      *
      * @throws OutOfBoundsException
      */
-    public function withModify(ParameterInterface ...$parameter): ParametersInterface;
+    public function withModify(ParameterInterface ...$parameter): self;
 
     /**
      * Indicates whether the instance has a parameter by name.

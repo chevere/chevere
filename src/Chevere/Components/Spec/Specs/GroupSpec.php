@@ -28,7 +28,7 @@ final class GroupSpec implements GroupSpecInterface
     public function __construct(DirInterface $specDir, string $groupName)
     {
         $this->jsonPath = $specDir
-            ->getChild("$groupName/")
+            ->getChild("${groupName}/")
             ->path()
             ->toString() . 'routes.json';
         $this->key = $groupName;

@@ -23,8 +23,8 @@ interface VarDumpProcessorInterface
     public const MAX_DEPTH = 10;
 
     /**
-    * @throws InvalidArgumentException
-    */
+     * @throws InvalidArgumentException
+     */
     public function __construct(VarDumperInterface $varDumper);
 
     /**

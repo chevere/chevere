@@ -29,5 +29,5 @@ interface GroupSpecInterface extends SpecInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$routableSpec`.
      */
-    public function withAddedRoutableSpec(RoutableSpecInterface $routableSpec): GroupSpecInterface;
+    public function withAddedRoutableSpec(RoutableSpecInterface $routableSpec): self;
 }

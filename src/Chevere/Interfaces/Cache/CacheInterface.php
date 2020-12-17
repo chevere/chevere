@@ -47,7 +47,7 @@ interface CacheInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified put.
      */
-    public function withPut(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface;
+    public function withPut(CacheKeyInterface $key, VarExportableInterface $varExportable): self;
 
     /**
      * Remove item from cache.
@@ -59,7 +59,7 @@ interface CacheInterface
      *
      * @throws FileUnableToRemoveException if unable to remove the cache file
      */
-    public function without(CacheKeyInterface $key): CacheInterface;
+    public function without(CacheKeyInterface $key): self;
 
     /**
      * Indicates whether the cache exists for the given key.

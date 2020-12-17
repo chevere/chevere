@@ -30,10 +30,14 @@ final class Route implements RouteInterface
 {
     private RoutePathInterface $routePath;
 
-    /** @var array details about the instance maker */
+    /**
+     * @var array details about the instance maker
+     */
     private array $maker;
 
-    /** @var array [wildcardName => $endpoint] */
+    /**
+     * @var array [wildcardName =>]
+     */
     private array $wildcards;
 
     private ?RouteEndpointInterface $firstEndpoint;
@@ -68,7 +72,7 @@ final class Route implements RouteInterface
             /** @var StringParameterInterface $controllerParamMatch */
             $controllerParamMatch = $endpoint->controller()->parameters()->get($wildcard->toString());
             $controllerParamMatch = $controllerParamMatch->regex()->toNoDelimitersNoAnchors();
-            if (!isset($knownWildcardMatch)) {
+            if (! isset($knownWildcardMatch)) {
                 if ($controllerParamMatch !== $wildcard->match()->toString()) {
                     throw new RouteWildcardConflictException(
                         (new Message('Wildcard %parameter% matches against %match% which is incompatible with the match %controllerMatch% defined for %controller%'))
@@ -105,7 +109,7 @@ final class Route implements RouteInterface
 
     private function assertNoConflict(RouteEndpointInterface $endpoint): void
     {
-        if (!isset($this->firstEndpoint)) {
+        if (! isset($this->firstEndpoint)) {
             $this->firstEndpoint = $endpoint;
         } else {
             foreach ($this->firstEndpoint->parameters() as $name => $parameter) {

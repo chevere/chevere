@@ -23,6 +23,7 @@ abstract class ControllerWorkflow extends Controller implements WorkflowProvider
     public function __construct()
     {
         parent::__construct();
+
         $this->workflow = $this->getWorkflow();
     }
 

@@ -27,15 +27,17 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
 
     protected array $sections = self::SECTIONS;
 
-    /** @var array [$sectionName => $value, ] */
+    /**
+     * @var array [$sectionName =>, ]
+     */
     protected array $template;
 
-    /** @var array [$tag => $value, ] */
+    /**
+     * @var array [$tag =>, ]
+     */
     private array $tags;
 
     private int $verbosity = 0;
-
-    abstract public function getFormatter(): ThrowableHandlerFormatterInterface;
 
     final public function __construct(ThrowableHandlerInterface $throwableHandler)
     {
@@ -43,6 +45,8 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
         $this->formatter = $this->getFormatter();
         $this->template = $this->getTemplate();
     }
+
+    abstract public function getFormatter(): ThrowableHandlerFormatterInterface;
 
     final public function withVerbosity(int $verbosity): ThrowableHandlerDocumentInterface
     {
@@ -174,7 +178,7 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
         foreach ($this->sections as $sectionName) {
             $verbosityLevel = $sectionsVerbosity[$sectionName] ?? 0;
             if ($this->verbosity < $verbosityLevel) {
-                $key = array_search($sectionName, $this->sections);
+                $key = array_search($sectionName, $this->sections, true);
                 unset($this->sections[$key]);
             }
         }

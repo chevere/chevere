@@ -32,7 +32,7 @@ interface RouterIndexInterface extends ToArrayInterface
      * @throws InvalidArgumentException
      * @throws OverflowException
      */
-    public function withAddedRoutable(RoutableInterface $routable, string $group): RouterIndexInterface;
+    public function withAddedRoutable(RoutableInterface $routable, string $group): self;
 
     /**
      * Indicates whether the instance has a route identified by its `$name`.

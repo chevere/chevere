@@ -70,7 +70,7 @@ final class PlugsQueue implements PlugsQueueInterface
     private function assertInterface(PlugInterface $plug): void
     {
         $instanceof = $this->plugType->interface();
-        if (!($plug instanceof $instanceof)) {
+        if (! ($plug instanceof $instanceof)) {
             throw new PlugInterfaceException(
                 (new Message("Plug %provided% doesn't implements the %expected% interface"))
                     ->code('%provided%', get_class($plug))

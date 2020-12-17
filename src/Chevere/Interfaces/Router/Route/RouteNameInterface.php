@@ -21,7 +21,9 @@ use Chevere\Interfaces\To\ToStringInterface;
  */
 interface RouteNameInterface extends ToStringInterface
 {
-    /** Regex pattern used to match repo:path */
+    /**
+     * Regex pattern used to match repo:path
+     */
     public const REGEX = '/^([\w\-]+)\:(\/.+\/|\/)$/i';
 
     /**

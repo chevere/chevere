@@ -56,7 +56,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws ArgumentRegexMatchException
      * @throws OutOfBoundsException If `$name` is not a known controller parameter.
      */
-    public function withArgument(string $name, $value): ArgumentsInterface;
+    public function withArgument(string $name, $value): self;
 
     /**
      * Indicates whether the instance has an argument for the parameter `$name`.

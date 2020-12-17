@@ -15,9 +15,9 @@ namespace Chevere\Components\VarDump\Processors\Traits;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
+use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
-use function Chevere\Components\Type\varType;
 
 trait ProcessorTrait
 {
@@ -35,13 +35,13 @@ trait ProcessorTrait
     public function typeHighlighted(): string
     {
         return $this->varDumper->formatter()
-                ->highlight($this->type(), $this->type());
+            ->highlight($this->type(), $this->type());
     }
 
     public function highlightOperator(string $string): string
     {
         return $this->varDumper->formatter()
-                ->highlight(
+            ->highlight(
                     VarDumperInterface::OPERATOR,
                     $string
                 );
@@ -49,7 +49,7 @@ trait ProcessorTrait
 
     public function highlightParentheses(string $string): string
     {
-        return $this->varDumper->formatter()->emphasis("($string)");
+        return $this->varDumper->formatter()->emphasis("(${string})");
     }
 
     public function circularReference(): string
@@ -65,7 +65,7 @@ trait ProcessorTrait
     private function assertType(): void
     {
         $type = new Type($this->type());
-        if (!$type->validate($this->varDumper->dumpable()->var())) {
+        if (! $type->validate($this->varDumper->dumpable()->var())) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %className% expects a type %expected% for the return value of %method%, type %provided% returned'))
                     ->code('%className%', static::class)

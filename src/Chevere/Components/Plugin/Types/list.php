@@ -18,5 +18,5 @@ namespace Chevere\Components\Plugin\Types;
  */
 return [
     new HookPlugType(),
-    new EventListenerPlugType()
+    new EventListenerPlugType(),
 ];

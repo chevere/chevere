@@ -80,7 +80,7 @@ final class RoutableSpec implements RoutableSpecInterface
             'path' => $this->path,
             'regex' => $this->regex,
             'wildcards' => $wildcards,
-            'endpoints' => $endpoints
+            'endpoints' => $endpoints,
         ];
     }
 }

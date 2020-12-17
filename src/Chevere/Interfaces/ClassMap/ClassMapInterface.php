@@ -33,7 +33,7 @@ interface ClassMapInterface extends MappedInterface
      * @throws ClassNotExistsException
      * @throws StringMappedException
      */
-    public function withPut(string $className, string $key): ClassMapInterface;
+    public function withPut(string $className, string $key): self;
 
     /**
      * Indicates whether the instance is mapping the given class name.

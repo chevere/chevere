@@ -24,11 +24,11 @@ use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Throwable;
 use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\filesize;
 use function Safe\unlink;
+use Throwable;
 
 final class File implements FileInterface
 {
@@ -60,7 +60,7 @@ final class File implements FileInterface
 
     public function assertExists(): void
     {
-        if (!$this->exists()) {
+        if (! $this->exists()) {
             throw new FileNotExistsException(
                 (new Message("File %path% doesn't exists"))
                     ->code('%path%', $this->path->toString())
@@ -163,7 +163,7 @@ final class File implements FileInterface
     {
         $dirname = dirname($this->path->toString());
         $path = new Path($dirname . '/');
-        if (!$path->exists()) {
+        if (! $path->exists()) {
             (new Dir($path))->create();
         }
     }

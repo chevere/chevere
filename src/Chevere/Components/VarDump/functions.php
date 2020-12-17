@@ -11,6 +11,8 @@
 
 declare(strict_types=1);
 
+// @codeCoverageIgnoreStart
+
 namespace Chevere\Components\VarDump {
     use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter;
     use Chevere\Components\VarDump\Formatters\VarDumpHtmlFormatter;
@@ -20,9 +22,6 @@ namespace Chevere\Components\VarDump {
     use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
     use Chevere\Interfaces\VarDump\VarDumpInterface;
 
-    /**
-     * @codeCoverageIgnore
-     */
     function varDumpPlain(): VarDumpInterface
     {
         return
@@ -32,9 +31,6 @@ namespace Chevere\Components\VarDump {
             );
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     function varDumpConsole(): VarDumpInterface
     {
         return
@@ -44,9 +40,6 @@ namespace Chevere\Components\VarDump {
             );
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     function varDumpHtml(): VarDumpInterface
     {
         return
@@ -60,15 +53,14 @@ namespace Chevere\Components\VarDump {
 namespace {
     use Chevere\Components\Instances\VarDumpInstance;
     use Chevere\Components\Instances\WritersInstance;
-    use Chevere\Components\Writer\StreamWriter;
-    use Chevere\Components\Writer\Writers;
     use function Chevere\Components\VarDump\varDumpConsole;
     use function Chevere\Components\Writer\streamFor;
+    use Chevere\Components\Writer\StreamWriter;
+    use Chevere\Components\Writer\Writers;
 
-    if (function_exists('xd') === false) { // @codeCoverageIgnore
+    if (function_exists('xd') === false) {
         /**
          * Dumps information about one or more variables to the output stream
-         * @codeCoverageIgnore
          */
         function xd(...$vars)
         {
@@ -92,7 +84,7 @@ namespace {
             $varDump->withShift(1)->withVars(...$vars)->process($writers->out());
         }
     }
-    if (function_exists('xdd') === false) { // @codeCoverageIgnore
+    if (function_exists('xdd') === false) {
         /**
          * Dumps information about one or more variables to the output stream and die()
          * @codeCoverageIgnore
@@ -121,3 +113,4 @@ namespace {
         }
     }
 }
+// @codeCoverageIgnoreEnd

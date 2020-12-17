@@ -149,7 +149,7 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
                     ->highlight(
                         VarDumperInterface::VARIABLE,
                         '$' . $this->varDumper->formatter()->filterEncodedChars($name)
-                    ), ''
+                    ), '',
             ])
         );
         (new VarDumper(

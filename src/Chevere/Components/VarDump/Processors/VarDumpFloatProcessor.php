@@ -43,7 +43,7 @@ final class VarDumpFloatProcessor implements VarDumpProcessorInterface
             implode(' ', [
                 $this->typeHighlighted(),
                 $this->varDumper->formatter()->filterEncodedChars($this->stringVar),
-                $this->highlightParentheses($this->info)
+                $this->highlightParentheses($this->info),
             ])
         );
     }

@@ -30,6 +30,7 @@ class Exception extends \Exception
     public function __construct(MessageInterface $message, int $code = 0, Throwable $previous = null)
     {
         $this->_message = $message;
+
         parent::__construct($this->_message->toString(), $code, $previous);
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Routing;
 
+use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
@@ -37,7 +38,6 @@ use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointsInterface;
 use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsInterface;
-use function Chevere\Components\Filesystem\filePhpReturnForPath;
 
 /**
  * @codeCoverageIgnore
@@ -86,7 +86,7 @@ function routeEndpointsForDir(DirInterface $dir): RouteEndpointsInterface
     $path = $dir->path();
     foreach (RouteEndpointInterface::KNOWN_METHODS as $name => $methodClass) {
         $controllerPath = $path->getChild($name . '.php');
-        if (!$controllerPath->exists()) {
+        if (! $controllerPath->exists()) {
             continue;
         }
 

@@ -28,13 +28,19 @@ use TypeError;
 
 final class RouterIndex implements RouterIndexInterface
 {
-    /** @var Map [<string>routeName => RouteIdentifier,] */
+    /**
+     * @var Map [<string>routeName => RouteIdentifier,]
+     */
     private Map $identifiersMap;
 
-    /** @var Map [<string>routeName => <string>groupName,] */
+    /**
+     * @var Map [<string>routeName => <string>groupName,]
+     */
     private Map $groupsIndex;
 
-    /** @var Map [<string>groupName => [<string>routeName],] */
+    /**
+     * @var Map [<string>groupName => [<string>routeName],]
+     */
     private Map $groupsMap;
 
     public function __construct()
@@ -63,7 +69,7 @@ final class RouterIndex implements RouterIndexInterface
         $routeName = $routable->route()->path()->toString();
         $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeKey)) {
-            /** @var string $groupName*/
+            /** @var string $groupName */
             $groupName = $new->groupsIndex->get($routeName);
 
             throw new OverflowException(

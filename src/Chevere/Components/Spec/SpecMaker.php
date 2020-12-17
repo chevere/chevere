@@ -63,11 +63,11 @@ final class SpecMaker implements SpecMakerInterface
         $groups = [];
         foreach ($routes->getGenerator() as $routeName => $routable) {
             $repository = $router->index()->getRouteGroup($routeName);
-            if (!isset($groups[$repository])) {
+            if (! isset($groups[$repository])) {
                 $groups[$repository] = new GroupSpec($specDir, $repository);
             }
             $routableSpec = new RoutableSpec(
-                $specDir->getChild("$repository/"),
+                $specDir->getChild("${repository}/"),
                 $routable,
                 $repository
             );
@@ -108,11 +108,11 @@ final class SpecMaker implements SpecMakerInterface
     private function assertDir(): void
     {
         try {
-            if (!$this->workingDir->exists()) {
+            if (! $this->workingDir->exists()) {
                 $this->workingDir->create(0755);
             }
             $this->workingDir->assertExists();
-            if (!$this->workingDir->path()->isWritable()) {
+            if (! $this->workingDir->path()->isWritable()) {
                 throw new Exception(
                     (new Message('Directory %pathName% is not writable'))
                         ->code('%pathName%', $this->workingDir->path()->toString())
@@ -144,7 +144,9 @@ final class SpecMaker implements SpecMakerInterface
         try {
             $file = new File($filePath);
             if ($file->exists()) {
-                $file->remove(); // @codeCoverageIgnore
+                // @codeCoverageIgnoreStart
+                $file->remove();
+                // @codeCoverageIgnoreEnd
             }
             $file->create();
             $file->put($this->toJson($spec->toArray()));

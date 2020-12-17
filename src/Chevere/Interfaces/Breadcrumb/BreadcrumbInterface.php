@@ -39,7 +39,7 @@ interface BreadcrumbInterface extends ToArrayInterface, ToStringInterface, Count
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified added item.
      */
-    public function withAddedItem(string $item): BreadcrumbInterface;
+    public function withAddedItem(string $item): self;
 
     /**
      * Return an instance with the specified pos removed.
@@ -49,7 +49,7 @@ interface BreadcrumbInterface extends ToArrayInterface, ToStringInterface, Count
      *
      * @throws OutOfBoundsException
      */
-    public function withRemovedItem(int $pos): BreadcrumbInterface;
+    public function withRemovedItem(int $pos): self;
 
     /**
      * Returns an array representation of the object.

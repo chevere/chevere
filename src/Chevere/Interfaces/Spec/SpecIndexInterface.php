@@ -28,7 +28,7 @@ interface SpecIndexInterface extends MappedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$routeEndpointSpec` for `$routeName`.
      */
-    public function withAddedRoute(string $routeName, RouteEndpointSpecInterface $routeEndpointSpec): SpecIndexInterface;
+    public function withAddedRoute(string $routeName, RouteEndpointSpecInterface $routeEndpointSpec): self;
 
     /**
      * Indicates whether the instance has a route endpoint spec for `$routeName` at the given `$methodName`.

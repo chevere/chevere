@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Components\Message\Message;
+use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\VarDump\VarDumpableInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
-use function Chevere\Components\Type\varType;
 
 final class VarDumpable implements VarDumpableInterface
 {
@@ -53,7 +53,7 @@ final class VarDumpable implements VarDumpableInterface
     private function assertSetProcessorName(): void
     {
         $processorName = VarDumperInterface::PROCESSORS[$this->type] ?? null;
-        if (!isset($processorName)) {
+        if (! isset($processorName)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('No processor for variable of type %type%'))
@@ -61,7 +61,7 @@ final class VarDumpable implements VarDumpableInterface
             );
             // @codeCoverageIgnoreEnd
         }
-        if (!is_subclass_of($processorName, VarDumpProcessorInterface::class, true)) {
+        if (! is_subclass_of($processorName, VarDumpProcessorInterface::class, true)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('Processor %processorName% must implement the %interfaceName% interface'))

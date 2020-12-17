@@ -64,7 +64,6 @@ interface TypeInterface
     ];
 
     /**
-     *
      * @param string $type A
      * @throws TypeNotFoundException if the type doesn't exists
      */

@@ -20,10 +20,10 @@ use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Writer\WritersInterface;
 use Laminas\Diactoros\Stream;
 use Psr\Http\Message\StreamInterface;
-use Throwable;
 use function Safe\fopen;
 use function Safe\fwrite;
 use function Safe\rewind;
+use Throwable;
 
 /**
  * @codeCoverageIgnore
@@ -75,7 +75,7 @@ function streamForString(string $content = ''): StreamInterface
             $e
         );
     }
-    if (!is_resource($resource)) {
+    if (! is_resource($resource)) {
         throw new RuntimeException(
             (new Message('Unable to create resource at %stream%'))
                 ->code('%stream%', $stream)

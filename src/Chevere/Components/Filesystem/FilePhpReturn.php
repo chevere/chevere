@@ -16,6 +16,7 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
+use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FileHandleException;
 use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
@@ -29,13 +30,14 @@ use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 use Throwable;
-use function Chevere\Components\Type\varType;
 
 final class FilePhpReturn implements FilePhpReturnInterface
 {
     private FilePhpInterface $filePhp;
 
-    /** @var bool True for strict validation (self::PHP_RETURN_CHARS), false for regex validation (return <algo>) */
+    /**
+     * @var bool True for strict validation (self::PHP_RETURN_CHARS), false for regex validation (return <algo>)
+     */
     private bool $strict = true;
 
     public function __construct(FilePhpInterface $filePhp)
@@ -58,7 +60,6 @@ final class FilePhpReturn implements FilePhpReturnInterface
     }
 
     /**
-     *
      * @throws FileNotExistsException
      * @throws FileHandleException
      * @throws FileWithoutContentsException
@@ -119,7 +120,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
 
     private function getReturnVar($var)
     {
-        if (is_string($var) && !ctype_space($var)) {
+        if (is_string($var) && ! ctype_space($var)) {
             try {
                 $unserialize = new Unserialize($var);
                 $var = $unserialize->var();
@@ -146,7 +147,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         $this->filePhp->file()->assertExists();
         $filename = $this->filePhp->file()->path()->toString();
         $handle = fopen($filename, 'r');
-        if (false === $handle) {
+        if ($handle === false) {
             // @codeCoverageIgnoreStart
             throw new FileHandleException(
                 (new Message('Unable to open %path% in %mode% mode'))
@@ -163,7 +164,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
                     ->code('%path%', $filename)
             );
         }
-        if (self::PHP_RETURN !== $contents) {
+        if ($contents !== self::PHP_RETURN) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path%, strict validation requires a file return in the form of %expected%'))
                     ->code('%path%', $filename)

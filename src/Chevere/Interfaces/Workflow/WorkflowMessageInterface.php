@@ -24,7 +24,7 @@ interface WorkflowMessageInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$priority`.
      */
-    public function withPriority(int $priority): WorkflowMessageInterface;
+    public function withPriority(int $priority): self;
 
     /**
      * Return an instance with the specified delay in `$seconds`.
@@ -32,7 +32,7 @@ interface WorkflowMessageInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified delay in `$seconds`.
      */
-    public function withDelay(int $seconds): WorkflowMessageInterface;
+    public function withDelay(int $seconds): self;
 
     /**
      * Return an instance with the specified expiration in `$seconds`.
@@ -40,7 +40,7 @@ interface WorkflowMessageInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified expiration in `$seconds`.
      */
-    public function withExpiration(int $seconds): WorkflowMessageInterface;
+    public function withExpiration(int $seconds): self;
 
     /**
      * Provides access to the instance WorkflowRunInterface.

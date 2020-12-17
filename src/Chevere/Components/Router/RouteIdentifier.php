@@ -57,7 +57,7 @@ final class RouteIdentifier implements RouteIdentifierInterface
     private function assertString(string $argumentName): void
     {
         try {
-            (new StrAssert($this->$argumentName))
+            (new StrAssert($this->{$argumentName}))
                 ->notEmpty()
                 ->notCtypeSpace();
         } catch (Throwable $e) {

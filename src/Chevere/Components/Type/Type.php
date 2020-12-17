@@ -32,9 +32,9 @@ final class Type implements TypeInterface
         $this->type = $type;
         $this->setPrimitive();
         $this->assertHasPrimitive();
-        $this->validator = Type::TYPE_VALIDATORS[$this->primitive];
+        $this->validator = self::TYPE_VALIDATORS[$this->primitive];
         $this->typeHinting = $this->primitive;
-        if (in_array($this->primitive, [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME])) {
+        if (in_array($this->primitive, [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME], true)) {
             $this->typeHinting = $this->type;
         }
     }
@@ -66,14 +66,14 @@ final class Type implements TypeInterface
 
     public function isScalar(): bool
     {
-        return in_array($this->primitive, ['boolean', 'integer', 'float', 'string']);
+        return in_array($this->primitive, ['boolean', 'integer', 'float', 'string'], true);
     }
 
     private function isAbleToValidateObjects(): bool
     {
         return in_array(
             $this->primitive,
-            [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME]
+            [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME], true
         );
     }
 
@@ -101,7 +101,7 @@ final class Type implements TypeInterface
 
     private function setPrimitive(): void
     {
-        if (isset(Type::TYPE_VALIDATORS[$this->type])) {
+        if (isset(self::TYPE_VALIDATORS[$this->type])) {
             $this->primitive = $this->type;
 
             return;
@@ -116,7 +116,7 @@ final class Type implements TypeInterface
 
     private function assertHasPrimitive(): void
     {
-        if ('' === $this->primitive) {
+        if ($this->primitive === '') {
             throw new TypeNotFoundException(
                 (new Message('Type %type% not found'))
                     ->code('%type%', $this->type)

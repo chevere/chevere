@@ -28,7 +28,7 @@ interface RouteEndpointsInterface extends MappedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$routeEndpoint`.
      */
-    public function withPut(RouteEndpointInterface $routeEndpoint): RouteEndpointsInterface;
+    public function withPut(RouteEndpointInterface $routeEndpoint): self;
 
     /**
      * Returns a boolean indicating whether the instance has `$key`.

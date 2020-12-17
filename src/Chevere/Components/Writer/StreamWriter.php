@@ -28,7 +28,7 @@ final class StreamWriter implements WriterInterface
 
     public function __construct(StreamInterface $stream)
     {
-        if (!$stream->isWritable()) {
+        if (! $stream->isWritable()) {
             throw new InvalidArgumentException(
                 (new Message('Stream provided is not writable'))
             );

@@ -57,7 +57,7 @@ final class RoutePath implements RoutePathInterface
         // @codeCoverageIgnoreEnd
         $routerData = array_values(array_filter($dataGenerator->getData()));
         foreach ($this->data as $value) {
-            if (!is_array($value)) {
+            if (! is_array($value)) {
                 continue;
             }
             $this->wildcards = $this->wildcards

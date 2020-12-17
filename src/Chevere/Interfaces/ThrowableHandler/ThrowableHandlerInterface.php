@@ -32,7 +32,7 @@ interface ThrowableHandlerInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$debug` flag.
      */
-    public function withIsDebug(bool $isDebug): ThrowableHandlerInterface;
+    public function withIsDebug(bool $isDebug): self;
 
     /**
      * Indicates whether the instance has `debug=true`.

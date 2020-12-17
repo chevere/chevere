@@ -48,14 +48,14 @@ final class StrBool implements StrBoolInterface
     {
         $needleLen = mb_strlen($needle);
 
-        return 0 === substr_compare($this->string, $needle, 0, $needleLen);
+        return substr_compare($this->string, $needle, 0, $needleLen) === 0;
     }
 
     public function endsWith(string $needle): bool
     {
         $needleLen = mb_strlen($needle);
 
-        return 0 === substr_compare($this->string, $needle, -$needleLen);
+        return substr_compare($this->string, $needle, -$needleLen) === 0;
     }
 
     public function same(string $string): bool

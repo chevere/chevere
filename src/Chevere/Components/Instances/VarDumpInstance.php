@@ -31,7 +31,7 @@ final class VarDumpInstance
 
     public static function get(): VarDumpInterface
     {
-        if (!isset(self::$instance)) {
+        if (! isset(self::$instance)) {
             throw new LogicException(
                 new Message('No VarDump instance present')
             );

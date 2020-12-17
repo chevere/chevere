@@ -24,5 +24,5 @@ interface ResponseFailureInterface extends ResponseInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified data.
      */
-    public function withData(array $data): ResponseFailureInterface;
+    public function withData(array $data): self;
 }

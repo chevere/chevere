@@ -20,12 +20,22 @@ final class Message implements MessageInterface
 {
     private string $template;
 
-    /** @var array Translation table [search => [format, replace]] */
+    /**
+     * @var array Translation table [search => [format, replace]]
+     */
     private array $trTable = [];
 
     public function __construct(string $template)
     {
         $this->template = $template;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 
     public function template(): string
@@ -45,11 +55,11 @@ final class Message implements MessageInterface
         $colorStyles = [];
         foreach ($this->trTable as $search => $formatting) {
             $format = $formatting[0];
-            if (!in_array($format, $colorStyles)) {
+            if (! in_array($format, $colorStyles, true)) {
                 array_push($colorStyles, $format);
                 Color::style($format, self::CLI_TABLE[$format]);
             }
-            $tr[$search] = $color->$format($formatting[1]);
+            $tr[$search] = $color->{$format}($formatting[1]);
         }
 
         return strtr($this->template, $tr);
@@ -65,7 +75,7 @@ final class Message implements MessageInterface
                 $tag = $html;
             }
             $replace = $format[1];
-            $tr[$search] = "<$tag>$replace</$tag>";
+            $tr[$search] = "<${tag}>${replace}</${tag}>";
         }
 
         return strtr($this->template, $tr);
@@ -79,14 +89,6 @@ final class Message implements MessageInterface
         }
 
         return strtr($this->template, $tr);
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 
     public function strtr(string $search, string $replace): MessageInterface

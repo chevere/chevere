@@ -78,7 +78,7 @@ interface MessageInterface extends ToStringInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified string translation.
      */
-    public function strtr(string $search, string $replace): MessageInterface;
+    public function strtr(string $search, string $replace): self;
 
     /**
      * Return an instance with the specified `$search` replaced with `$replace` emphasis tag.
@@ -86,7 +86,7 @@ interface MessageInterface extends ToStringInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$search` replaced with `$replace` emphasis tag.
      */
-    public function emphasis(string $search, string $replace): MessageInterface;
+    public function emphasis(string $search, string $replace): self;
 
     /**
      * Return an instance with the specified `$search` replaced with `$replace` as strong tag.
@@ -94,7 +94,7 @@ interface MessageInterface extends ToStringInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$search` replaced with `$replace` as strong tag.
      */
-    public function strong(string $search, string $replace): MessageInterface;
+    public function strong(string $search, string $replace): self;
 
     /**
      * Return an instance with the specified underline.
@@ -102,7 +102,7 @@ interface MessageInterface extends ToStringInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified underline.
      */
-    public function underline(string $search, string $replace): MessageInterface;
+    public function underline(string $search, string $replace): self;
 
     /**
      * Return an instance with the specified `$search` replaced with `$replace` as code tag.
@@ -110,5 +110,5 @@ interface MessageInterface extends ToStringInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$search` replaced with `$replace` as code tag.
      */
-    public function code(string $search, string $replace): MessageInterface;
+    public function code(string $search, string $replace): self;
 }

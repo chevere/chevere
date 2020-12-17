@@ -31,7 +31,7 @@ interface VarDumpInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$vars`.
      */
-    public function withVars(...$vars): VarDumpInterface;
+    public function withVars(...$vars): self;
 
     /**
      * Return an instance with the specified `$shift` traces shifted.
@@ -41,7 +41,7 @@ interface VarDumpInterface
      *
      * This method removes `$shift` traces from `\debug_backtrace()`
      */
-    public function withShift(int $shift): VarDumpInterface;
+    public function withShift(int $shift): self;
 
     /**
      * Process the dump writing

@@ -18,9 +18,11 @@ use Chevere\Exceptions\Core\OutOfRangeException;
 
 trait AssertKeyTrait
 {
+    abstract public function pallet(): array;
+
     protected function assertKey(string $key): void
     {
-        if (!array_key_exists($key, $this->pallet())) {
+        if (! array_key_exists($key, $this->pallet())) {
             throw new OutOfRangeException(
                 (new Message('Invalid key %keyName%, expecting one of the following pallet keys: %keys%'))
                     ->code('%keyName%', $key)
@@ -28,6 +30,4 @@ trait AssertKeyTrait
             );
         }
     }
-
-    abstract public function pallet(): array;
 }

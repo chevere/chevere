@@ -32,7 +32,9 @@ final class Cache implements CacheInterface
 {
     private DirInterface $dir;
 
-    /** @var array An array [key => [checksum => , path =>]] containing information about the cache items */
+    /**
+     * @var array An array [key => [checksum => , path =>]] containing information about the cache items
+     */
     private array $puts;
 
     /**
@@ -42,7 +44,8 @@ final class Cache implements CacheInterface
     {
         $this->dir = $dir;
         if ($this->dir->exists() === false) {
-            $this->dir->create(); // @codeCoverageIgnore
+            // @codeCoverageIgnore
+            $this->dir->create();
         }
         $this->puts = [];
     }
@@ -58,7 +61,7 @@ final class Cache implements CacheInterface
 
         try {
             $file = new File($path);
-            if (!$file->exists()) {
+            if (! $file->exists()) {
                 $file->create();
             }
             $file->assertExists();
@@ -90,7 +93,9 @@ final class Cache implements CacheInterface
 
         try {
             if ($path->exists() === false) {
-                return $new; // @codeCoverageIgnore
+                // @codeCoverageIgnoreStart
+                return $new;
+                // @codeCoverageIgnoreEnd
             }
             $filePhp = new FilePhp(new File($path));
             $filePhp->flush();
@@ -116,7 +121,7 @@ final class Cache implements CacheInterface
     public function get(CacheKeyInterface $cacheKey): CacheItemInterface
     {
         $path = $this->getPath($cacheKey->toString());
-        if (!$path->exists()) {
+        if (! $path->exists()) {
             throw new CacheKeyNotFoundException(
                 (new Message('No cache for key %key%'))
                     ->code('%key%', $cacheKey->toString())

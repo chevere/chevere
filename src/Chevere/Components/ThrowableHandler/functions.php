@@ -18,6 +18,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerConsoleDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerHtmlDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
+use function Chevere\Components\Writer\streamFor;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Exceptions\Core\ErrorException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
@@ -25,7 +26,6 @@ use LogicException;
 use ReflectionClass;
 use RuntimeException;
 use Throwable;
-use function Chevere\Components\Writer\streamFor;
 
 /**
  * @codeCoverageIgnore
@@ -71,7 +71,7 @@ function handleExceptionAs(Throwable $throwable, string $document): void
 {
     /** @var class-string $document */
     $reflection = new ReflectionClass($document);
-    if (!$reflection->implementsInterface(ThrowableHandlerDocumentInterface::class)) {
+    if (! $reflection->implementsInterface(ThrowableHandlerDocumentInterface::class)) {
         trigger_error(
             (new Message('Document %document% must implement %interface%'))
                 ->code('%document%', $document)

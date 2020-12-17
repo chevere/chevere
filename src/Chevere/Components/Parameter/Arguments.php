@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Parameter;
 
 use Chevere\Components\Message\Message;
+use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -24,13 +25,12 @@ use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Throwable;
-use function Chevere\Components\Type\varType;
 
 final class Arguments implements ArgumentsInterface
 {
-    private ParametersInterface $parameters;
-
     public array $arguments;
+
+    private ParametersInterface $parameters;
 
     private array $errors;
 
@@ -47,20 +47,6 @@ final class Arguments implements ArgumentsInterface
         if (count($this->errors) !== 0) {
             throw new InvalidArgumentException(
                 (new Message(implode(', ', $this->errors)))
-            );
-        }
-    }
-
-    private function assertCount(): void
-    {
-        $numRequired = $this->parameters->required()->count();
-        $numArguments = count($this->arguments);
-        if (($numRequired == 0 && $numArguments > 0) || $numRequired > $numArguments) {
-            throw new ArgumentCountException(
-                (new Message('Expecting %numParameters% (%expected%) required arguments, %numArguments% provided'))
-                    ->code('%numParameters%', (string) $numRequired)
-                    ->code('%expected%', implode(', ', $this->parameters->required()->toArray()))
-                    ->code('%numArguments%', (string) $numArguments)
             );
         }
     }
@@ -127,11 +113,25 @@ final class Arguments implements ArgumentsInterface
         return $this->get($array);
     }
 
+    private function assertCount(): void
+    {
+        $numRequired = $this->parameters->required()->count();
+        $numArguments = count($this->arguments);
+        if (($numRequired === 0 && $numArguments > 0) || $numRequired > $numArguments) {
+            throw new ArgumentCountException(
+                (new Message('Expecting %numParameters% (%expected%) required arguments, %numArguments% provided'))
+                    ->code('%numParameters%', (string) $numRequired)
+                    ->code('%expected%', implode(', ', $this->parameters->required()->toArray()))
+                    ->code('%numArguments%', (string) $numArguments)
+            );
+        }
+    }
+
     private function assertType(string $name, $value): void
     {
         $parameter = $this->parameters->get($name);
         $type = $parameter->type();
-        if (!$type->validate($value)) {
+        if (! $type->validate($value)) {
             throw new InvalidArgumentException(
                 (new Message('Parameter %name%: Expecting value of type %expected%, %provided% provided'))
                     ->strong('%name%', $name)
@@ -180,7 +180,7 @@ final class Arguments implements ArgumentsInterface
         if ($this->parameters->isOptional($name)) {
             return;
         }
-        if (!$this->has($name)) {
+        if (! $this->has($name)) {
             $this->errors[] = (new Message('Parameter %name%: Missing required argument of type %type%'))
                 ->code('%type%', $parameter->type()->typeHinting())
                 ->code('%name%', $name)
@@ -198,7 +198,7 @@ final class Arguments implements ArgumentsInterface
 
     private function handleParameterDefault(string $name, ParameterInterface $parameter): void
     {
-        if (!$this->has($name)
+        if (! $this->has($name)
             && $parameter instanceof StringParameterInterface
             && $parameter->default() !== ''
         ) {

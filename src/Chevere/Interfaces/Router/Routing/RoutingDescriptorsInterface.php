@@ -31,7 +31,7 @@ interface RoutingDescriptorsInterface extends Countable
      *
      * @throws OverflowException
      */
-    public function withAdded(RoutingDescriptorInterface $descriptor): RoutingDescriptorsInterface;
+    public function withAdded(RoutingDescriptorInterface $descriptor): self;
 
     /**
      * Indicates whether the instance has the given `$descriptor`.

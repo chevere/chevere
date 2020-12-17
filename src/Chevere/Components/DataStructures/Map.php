@@ -17,8 +17,8 @@ use Chevere\Components\DataStructures\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructures\MapInterface;
-use Ds\Map as InternalMap;
 use function DeepCopy\deep_copy;
+use Ds\Map as InternalMap;
 
 final class Map implements MapInterface
 {
@@ -52,7 +52,7 @@ final class Map implements MapInterface
     {
         $missing = [];
         foreach ($key as $k) {
-            if (!$this->map->hasKey($k)) {
+            if (! $this->map->hasKey($k)) {
                 $missing[] = $k;
             }
         }

@@ -34,7 +34,7 @@ trait ParameterTrait
         $this->attributes = new Set($this->attributes->toArray());
     }
 
-    public function withDescription(string $description): ParameterInterface
+    public function withDescription(string $description): self
     {
         $new = clone $this;
         $new->description = $description;
@@ -42,7 +42,7 @@ trait ParameterTrait
         return $new;
     }
 
-    public function withAddedAttribute(string ...$attribute): ParameterInterface
+    public function withAddedAttribute(string ...$attribute): self
     {
         $new = clone $this;
         foreach ($attribute as $attr) {
@@ -62,7 +62,7 @@ trait ParameterTrait
     {
         $new = clone $this;
         foreach ($attribute as $attr) {
-            if (!$this->hasAttribute($attr)) {
+            if (! $this->hasAttribute($attr)) {
                 throw new OutOfBoundsException(
                     (new Message("Attribute %attribute% doesn't exists"))
                         ->strong('%attribute%', $attr)

@@ -38,7 +38,6 @@ final class Routable implements RoutableInterface
     }
 
     /**
-     *
      * @throws RouteNotRoutableException
      */
     private function assertExportable(): void

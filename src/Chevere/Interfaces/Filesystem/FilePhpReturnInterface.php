@@ -46,7 +46,7 @@ interface FilePhpReturnInterface
      * Strict validation refers to match the beginning of the file contents
      * against `FilePhpReturnInterface::PHP_RETURN`
      */
-    public function withStrict(bool $strict): FilePhpReturnInterface;
+    public function withStrict(bool $strict): self;
 
     /**
      * Provides access to the FilePhpInterface instance.

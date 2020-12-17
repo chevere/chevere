@@ -28,7 +28,7 @@ interface BooleanParameterInterface extends ParameterInterface
      *
      * @throws InvalidArgumentException
      */
-    public function withDefault(bool $default): BooleanParameterInterface;
+    public function withDefault(bool $default): self;
 
     /**
      * Provides access to the default value.

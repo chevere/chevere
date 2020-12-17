@@ -17,6 +17,11 @@ final class VarDumpPlainOutputter extends VarDumpAbstractOutputter
 {
     private string $outputHr = '------------------------------------------------------------';
 
+    public function tearDown(): void
+    {
+        $this->writer()->write("\n" . $this->outputHr . "\n");
+    }
+
     public function prepare(): void
     {
         $this->writer()->write(
@@ -26,10 +31,5 @@ final class VarDumpPlainOutputter extends VarDumpAbstractOutputter
                 $this->outputHr,
             ])
         );
-    }
-
-    public function tearDown(): void
-    {
-        $this->writer()->write("\n" . $this->outputHr . "\n");
     }
 }

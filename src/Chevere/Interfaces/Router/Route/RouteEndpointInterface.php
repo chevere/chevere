@@ -34,7 +34,9 @@ use Chevere\Interfaces\Http\MethodInterface;
  */
 interface RouteEndpointInterface extends DescriptionInterface
 {
-    /** Known HTTP methods */
+    /**
+     * Known HTTP methods
+     */
     public const KNOWN_METHODS = [
         'CONNECT' => ConnectMethod::class,
         'DELETE' => DeleteMethod::class,
@@ -68,7 +70,7 @@ interface RouteEndpointInterface extends DescriptionInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$description`.
      */
-    public function withDescription(string $description): RouteEndpointInterface;
+    public function withDescription(string $description): self;
 
     /**
      * Return an instance with the specified `$parameter` removed.
@@ -78,7 +80,7 @@ interface RouteEndpointInterface extends DescriptionInterface
      *
      * @throws OutOfBoundsException
      */
-    public function withoutParameter(string $parameter): RouteEndpointInterface;
+    public function withoutParameter(string $parameter): self;
 
     /**
      * Provides access to the parameters.

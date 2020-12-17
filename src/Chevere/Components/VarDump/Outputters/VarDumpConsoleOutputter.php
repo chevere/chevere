@@ -19,6 +19,11 @@ final class VarDumpConsoleOutputter extends VarDumpAbstractOutputter
 {
     private string $outputHr;
 
+    public function tearDown(): void
+    {
+        $this->writer()->write("\n" . $this->outputHr . "\n");
+    }
+
     public function prepare(): void
     {
         $color = new Color();
@@ -30,10 +35,5 @@ final class VarDumpConsoleOutputter extends VarDumpAbstractOutputter
                 $this->outputHr,
             ])
         );
-    }
-
-    public function tearDown(): void
-    {
-        $this->writer()->write("\n" . $this->outputHr . "\n");
     }
 }

@@ -45,7 +45,7 @@ final class VarDumpResourceProcessor implements VarDumpProcessorInterface
         $this->varDumper->writer()->write(
             implode(' ', [
                 $this->stringVar,
-                $this->highlightParentheses($this->info)
+                $this->highlightParentheses($this->info),
             ])
         );
     }

@@ -34,7 +34,7 @@ interface PlugsMapCacheInterface
      *
      * @throws RuntimeException
      */
-    public function withPut(PlugsMapInterface $plugsMap): PlugsMapCacheInterface;
+    public function withPut(PlugsMapInterface $plugsMap): self;
 
     /**
      * Indicates whether the instance has a plugs queue typed for `$className`.

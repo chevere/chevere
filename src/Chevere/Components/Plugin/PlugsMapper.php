@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
+use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Plugin\PlugInterface;
@@ -21,7 +22,6 @@ use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
-use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use function Safe\file_get_contents;
 
 final class PlugsMapper
@@ -64,9 +64,9 @@ final class PlugsMapper
         $namespace = $matches[1];
         $className = $matches[2];
         /** @var class-string */
-        $classString = "$namespace\\$className";
+        $classString = "${namespace}\\${className}";
         $reflection = new ReflectionClass($classString);
-        if (!$reflection->isInterface() && $reflection->implementsInterface(PlugInterface::class)) {
+        if (! $reflection->isInterface() && $reflection->implementsInterface(PlugInterface::class)) {
             $plugName = $reflection->getName();
             /** @var PlugInterface $plug */
             $plug = new $plugName();

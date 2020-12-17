@@ -47,7 +47,7 @@ final class StringParameter implements StringParameterInterface
 
     public function withDefault(string $default): StringParameterInterface
     {
-        if ($this->regex->match($default) == []) {
+        if ($this->regex->match($default) === []) {
             throw new InvalidArgumentException(
                 (new Message('Default value must match the parameter regex %regexString%'))
                     ->code('%regexString%', $this->regex->toString())

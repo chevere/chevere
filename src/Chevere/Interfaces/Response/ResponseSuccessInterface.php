@@ -26,7 +26,7 @@ interface ResponseSuccessInterface extends ResponseInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified data.
      */
-    public function withData(array $data): ResponseSuccessInterface;
+    public function withData(array $data): self;
 
     /**
      * Return an instance with the specified workflow message.
@@ -34,7 +34,7 @@ interface ResponseSuccessInterface extends ResponseInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified workflow message.
      */
-    public function withWorkflowMessage(WorkflowMessageInterface $workflowMessage): ResponseSuccessInterface;
+    public function withWorkflowMessage(WorkflowMessageInterface $workflowMessage): self;
 
     public function workflowMessage(): WorkflowMessageInterface;
 }

@@ -31,7 +31,7 @@ final class WritersInstance
 
     public static function get(): WritersInterface
     {
-        if (!isset(self::$instance)) {
+        if (! isset(self::$instance)) {
             throw new LogicException(
                 new Message('No writers instance present')
             );

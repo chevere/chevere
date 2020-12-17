@@ -28,8 +28,8 @@ use Ds\Map;
 use Ds\Vector;
 use Generator;
 use Safe\Exceptions\PcreException;
-use TypeError;
 use function Safe\preg_match;
+use TypeError;
 
 final class Workflow implements WorkflowInterface
 {
@@ -246,7 +246,7 @@ final class Workflow implements WorkflowInterface
 
     private function assertHasStepByName(string $step): void
     {
-        if (!$this->map->hasKey($step)) {
+        if (! $this->map->hasKey($step)) {
             throw new OutOfBoundsException(
                 (new Message("Task name %name% doesn't exists"))
                     ->code('%name%', $step)
@@ -264,17 +264,21 @@ final class Workflow implements WorkflowInterface
     {
         if ($this->parameters->has($name)) {
             $this->parameters = $this->parameters
-                ->withModify(...[$name => $parameter]);
+                ->withModify(...[
+                    $name => $parameter,
+                ]);
 
             return;
         }
         $this->parameters = $this->parameters
-            ->withAddedRequired(...[$name => $parameter]);
+            ->withAddedRequired(...[
+                $name => $parameter,
+            ]);
     }
 
     private function assertStepExists(string $step, array $matches): void
     {
-        if (!$this->map->hasKey($matches[1])) {
+        if (! $this->map->hasKey($matches[1])) {
             throw new OutOfBoundsException(
                 (new Message("Step %step% references parameter %parameter% from previous step %prevStep% which doesn't exists"))
                     ->code('%step%', $step)

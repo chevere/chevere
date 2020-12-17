@@ -16,8 +16,8 @@ namespace Chevere\Components\Plugin;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
-use Ds\Set;
 use function DeepCopy\deep_copy;
+use Ds\Set;
 
 final class PluggableAnchors implements PluggableAnchorsInterface
 {

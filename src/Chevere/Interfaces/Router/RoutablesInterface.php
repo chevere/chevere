@@ -28,7 +28,7 @@ interface RoutablesInterface extends MappedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$routable`.
      */
-    public function withPut(RoutableInterface $routable): RoutablesInterface;
+    public function withPut(RoutableInterface $routable): self;
 
     /**
      * Indicates whether the instance has a routable identified by its `$name`.

@@ -54,13 +54,13 @@ final class ControllerName implements ControllerNameInterface
 
     private function assertController(): void
     {
-        if (!class_exists($this->string)) {
+        if (! class_exists($this->string)) {
             throw new ControllerNotExistsException(
                 (new Message("Controller %controllerName% doesn't exists"))
                     ->code('%controllerName%', $this->string)
             );
         }
-        if (!is_subclass_of($this->string, ControllerInterface::class)) {
+        if (! is_subclass_of($this->string, ControllerInterface::class)) {
             throw new ControllerInterfaceException(
                 (new Message('Controller %controllerName% must implement the %interface% interface'))
                     ->code('%controllerName%', $this->string)

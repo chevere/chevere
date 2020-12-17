@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Routing;
 
+use function Chevere\Components\Filesystem\dirForPath;
+use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteDecorator;
@@ -28,8 +30,6 @@ use Ds\Set;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
-use function Chevere\Components\Filesystem\dirForPath;
-use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
@@ -84,7 +84,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                 $route = $route->withAddedEndpoint($routeEndpoint);
             }
             $this->descriptors = $this->descriptors
-                    ->withAdded(
+                ->withAdded(
                         new RoutingDescriptor(
                             dirForPath($dirName),
                             new RoutePath($path),
@@ -99,7 +99,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
     {
         foreach ($parameters as $key => $param) {
             $regex = (new Regex($param['regex']))->toNoDelimitersNoAnchors();
-            $path = $path->withReplaceAll("{$key}", "$key:$regex");
+            $path = $path->withReplaceAll("{$key}", "${key}:${regex}");
         }
 
         return $path->toString();
@@ -115,10 +115,11 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             public function __construct(RecursiveDirectoryIterator $iterator)
             {
                 parent::__construct($iterator);
+
                 $this->methodFilenames = new Set();
                 $this->knownPaths = new Set();
                 foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $method) {
-                    $this->methodFilenames->add("$method.php");
+                    $this->methodFilenames->add("${method}.php");
                 }
             }
 

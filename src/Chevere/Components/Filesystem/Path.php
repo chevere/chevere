@@ -37,12 +37,12 @@ final class Path implements PathInterface
     {
         $this->clearStatCache();
 
-        return false !== stream_resolve_include_path($this->absolute);
+        return stream_resolve_include_path($this->absolute) !== false;
     }
 
     public function assertExists(): void
     {
-        if (!$this->exists()) {
+        if (! $this->exists()) {
             throw new PathNotExistsException(
                 (new Message("Path %path% doesn't exists"))
                     ->code('%path%', $this->absolute)
@@ -104,7 +104,7 @@ final class Path implements PathInterface
         $parent = $this->absolute;
         $childPath = rtrim($parent, '/');
 
-        return new Path($childPath . '/' . $path);
+        return new self($childPath . '/' . $path);
     }
 
     private function clearStatCache(): void

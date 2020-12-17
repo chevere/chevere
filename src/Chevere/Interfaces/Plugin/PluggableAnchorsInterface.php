@@ -29,7 +29,7 @@ interface PluggableAnchorsInterface
      *
      * @throws OverflowException
      */
-    public function withAdded(string $anchor): PluggableAnchorsInterface;
+    public function withAdded(string $anchor): self;
 
     /**
      * Indicates whether the instance has the given `$anchor`.

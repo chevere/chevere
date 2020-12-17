@@ -26,6 +26,11 @@ interface VarDumpOutputterInterface
     public function setUp(WriterInterface $writer, array $backtrace);
 
     /**
+     * Ends the outputter.
+     */
+    public function tearDown(): void;
+
+    /**
      * Provides access to the instance backtrace.
      */
     public function backtrace(): array;
@@ -39,9 +44,4 @@ interface VarDumpOutputterInterface
      * This method is executed before `tearDown()`.
      */
     public function prepare(): void;
-
-    /**
-     * Ends the outputter.
-     */
-    public function tearDown(): void;
 }

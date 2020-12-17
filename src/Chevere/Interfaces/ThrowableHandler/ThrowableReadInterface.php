@@ -25,7 +25,9 @@ interface ThrowableReadInterface
 {
     public const DEFAULT_ERROR_TYPE = E_ERROR;
 
-    /** @var string[] Readable PHP error mapping */
+    /**
+     * @var string[] Readable PHP error mapping
+     */
     public const ERROR_TYPES = [
         E_ERROR => 'Fatal error',
         E_WARNING => 'Warning',
@@ -44,7 +46,9 @@ interface ThrowableReadInterface
         E_USER_DEPRECATED => 'Deprecated',
     ];
 
-    /** @var string[] PHP error code LogLevel table. Stripped from Monolog\ErrorHandler::defaultErrorLevelMap */
+    /**
+     * @var string[] PHP error code LogLevel table. Stripped from Monolog\ErrorHandler::defaultErrorLevelMap
+     */
     public const ERROR_LEVELS = [
         E_ERROR => LogLevel::CRITICAL,
         E_WARNING => LogLevel::WARNING,

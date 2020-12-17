@@ -19,11 +19,21 @@ final class VarDumpHtmlOutputter extends VarDumpAbstractOutputter
 
     public const BACKGROUND_SHADE = '#132537';
 
-    /** @var string Dump style, no double quotes. */
+    /**
+     * @var string Dump style, no double quotes.
+     */
     public const STYLE = "font: 14px 'Fira Code Retina', 'Operator Mono', Inconsolata, Consolas,
     monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: " . self::BACKGROUND . '; display: block; text-align: left; border: none; border-radius: 4px;';
 
     private bool $hasHeader = false;
+
+    public function tearDown(): void
+    {
+        $this->writer()->write('</pre>');
+        if ($this->hasHeader) {
+            $this->writer()->write('</body></html>');
+        }
+    }
 
     public function prepare(): void
     {
@@ -42,13 +52,5 @@ final class VarDumpHtmlOutputter extends VarDumpAbstractOutputter
                 '<pre style="' . self::STYLE . '">',
             ])
         );
-    }
-
-    public function tearDown(): void
-    {
-        $this->writer()->write('</pre>');
-        if ($this->hasHeader) {
-            $this->writer()->write('</body></html>');
-        }
     }
 }

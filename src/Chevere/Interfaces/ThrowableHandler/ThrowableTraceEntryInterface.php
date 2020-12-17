@@ -20,10 +20,14 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
  */
 interface ThrowableTraceEntryInterface
 {
-    /** Known key properties */
+    /**
+     * Known key properties
+     */
     public const KEYS = ['file', 'line', 'function', 'class', 'type'];
 
-    /** Keys that MUST be present */
+    /**
+     * Keys that MUST be present
+     */
     public const MUST_HAVE_KEYS = ['function'];
 
     /**

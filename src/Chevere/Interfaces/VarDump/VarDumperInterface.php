@@ -46,7 +46,9 @@ interface VarDumperInterface
 
     public const EMPHASIS = '_emphasis';
 
-    /** @var array [ProcessorInterface $processor,] */
+    /**
+     * @var array [ProcessorInterface,]
+     */
     public const PROCESSORS = [
         TypeInterface::BOOLEAN => VarDumpBooleanProcessor::class,
         TypeInterface::ARRAY => VarDumpArrayProcessor::class,
@@ -85,7 +87,7 @@ interface VarDumperInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$indent`.
      */
-    public function withIndent(int $indent): VarDumperInterface;
+    public function withIndent(int $indent): self;
 
     /**
      * Provides access to the instance indent value.
@@ -103,7 +105,7 @@ interface VarDumperInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$depth`.
      */
-    public function withDepth(int $depth): VarDumperInterface;
+    public function withDepth(int $depth): self;
 
     /**
      * Provides access to the instance `$depth`.
@@ -116,7 +118,7 @@ interface VarDumperInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$known` object IDs.
      */
-    public function withKnownObjects(Set $known): VarDumperInterface;
+    public function withKnownObjects(Set $known): self;
 
     /**
      * Provides access to the known object ids.
@@ -126,5 +128,5 @@ interface VarDumperInterface
     /**
      * Process the dump.
      */
-    public function withProcess(): VarDumperInterface;
+    public function withProcess(): self;
 }

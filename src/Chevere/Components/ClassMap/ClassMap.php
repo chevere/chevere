@@ -27,10 +27,14 @@ final class ClassMap implements ClassMapInterface
     use MapTrait;
     use MapToArrayTrait;
 
-    /** @var Map [className => key] */
+    /**
+     * @var Map [className => key]
+     */
     private Map $map;
 
-    /** @var Map [key => className] */
+    /**
+     * @var Map [key => className]
+     */
     private Map $flip;
 
     public function __construct()
@@ -47,7 +51,7 @@ final class ClassMap implements ClassMapInterface
 
     public function withPut(string $className, string $key): ClassMapInterface
     {
-        if (!class_exists($className)) {
+        if (! class_exists($className)) {
             throw new ClassNotExistsException(
                 (new Message("Class name %className% doesn't exists"))
                     ->strong('%className%', $className)
@@ -81,7 +85,7 @@ final class ClassMap implements ClassMapInterface
 
     public function get(string $className): string
     {
-        if (!$this->has($className)) {
+        if (! $this->has($className)) {
             throw new ClassNotMappedException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
@@ -93,7 +97,7 @@ final class ClassMap implements ClassMapInterface
 
     public function getClass(string $key): string
     {
-        if (!$this->hasKey($key)) {
+        if (! $this->hasKey($key)) {
             throw new ClassNotMappedException(
                 (new Message("Key %key% doesn't map any class"))
                     ->code('%key%', $key)

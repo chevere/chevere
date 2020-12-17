@@ -19,7 +19,9 @@ use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
 
 final class Breadcrumb implements BreadcrumbInterface
 {
-    /** @var array [pos => $item] */
+    /**
+     * @var array [pos =>]
+     */
     private array $items = [];
 
     private int $pos = -1;
@@ -53,7 +55,7 @@ final class Breadcrumb implements BreadcrumbInterface
 
     public function withRemovedItem(int $pos): BreadcrumbInterface
     {
-        if (!array_key_exists($pos, $this->items)) {
+        if (! array_key_exists($pos, $this->items)) {
             throw new OutOfBoundsException(
                 (new Message('Pos %pos% not found'))
                     ->code('%pos%', (string) $pos)

@@ -28,7 +28,7 @@ interface GroupSpecsInterface extends MappedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$groupSpec`.
      */
-    public function withPut(GroupSpecInterface $groupSpec): GroupSpecsInterface;
+    public function withPut(GroupSpecInterface $groupSpec): self;
 
     /**
      * Indicates whether the instance has a group spec identified by its `$groupName`.

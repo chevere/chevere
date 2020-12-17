@@ -31,7 +31,7 @@ interface RouterInterface
      * @throws InvalidArgumentException if `$group` is invalid.
      * @throws OverflowException if `$routable` has been already added.
      */
-    public function withAddedRoutable(RoutableInterface $routable, string $group): RouterInterface;
+    public function withAddedRoutable(RoutableInterface $routable, string $group): self;
 
     /**
      * Provides access to the index instance.

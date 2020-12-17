@@ -30,13 +30,13 @@ use TypeError;
 
 final class WorkflowRun implements WorkflowRunInterface
 {
+    public Map $steps;
+
     private string $uuid;
 
     private WorkflowInterface $workflow;
 
     private ArgumentsInterface $arguments;
-
-    public Map $steps;
 
     public function __construct(WorkflowInterface $workflow, mixed ...$namedArguments)
     {
@@ -74,7 +74,7 @@ final class WorkflowRun implements WorkflowRunInterface
 
         $missing = [];
         foreach ($expected as $expectParamName) {
-            if (!isset($response->data()[$expectParamName])) {
+            if (! isset($response->data()[$expectParamName])) {
                 $missing[] = $expectParamName;
             }
         }

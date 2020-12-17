@@ -19,6 +19,8 @@ use Chevere\Interfaces\Regex\RegexInterface;
 
 /**
  * Describes the component in charge of defining a parameter of type string.
+ *
+ * @method StringParameterInterface withDescription(string $description)
  */
 interface StringParameterInterface extends ParameterInterface
 {
@@ -35,7 +37,7 @@ interface StringParameterInterface extends ParameterInterface
      *
      * @throws BadFunctionCallException
      */
-    public function withRegex(RegexInterface $regex): StringParameterInterface;
+    public function withRegex(RegexInterface $regex): self;
 
     /**
      * Return an instance with the specified `$default` value.
@@ -45,7 +47,7 @@ interface StringParameterInterface extends ParameterInterface
      *
      * @throws InvalidArgumentException
      */
-    public function withDefault(string $default): StringParameterInterface;
+    public function withDefault(string $default): self;
 
     /**
      * Provides access to the default value.

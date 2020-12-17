@@ -21,7 +21,9 @@ use Chevere\Interfaces\To\ToStringInterface;
  */
 interface RouteWildcardInterface extends ToStringInterface
 {
-    /** Regex pattern used by default (no explicit where). */
+    /**
+     * Regex pattern used by default (no explicit where).
+     */
     public const REGEX_MATCH_DEFAULT = '[A-z0-9\\_\\-\\%]+';
 
     public const ACCEPT_CHARS = '([a-z\_][\w_]*?)';

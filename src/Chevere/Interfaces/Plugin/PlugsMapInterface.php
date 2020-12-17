@@ -40,7 +40,7 @@ interface PlugsMapInterface extends Countable
      * @throws InvalidArgumentException
      * @throws OverflowException
      */
-    public function withAdded(PlugInterface $plug): PlugsMapInterface;
+    public function withAdded(PlugInterface $plug): self;
 
     /**
      * Indicates whether the instance has the given `$plug`.

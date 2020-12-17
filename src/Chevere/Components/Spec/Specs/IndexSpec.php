@@ -46,6 +46,8 @@ final class IndexSpec implements IndexSpecInterface
             $groups[$key] = $groupSpec->toArray();
         }
 
-        return ['groups' => $groups];
+        return [
+            'groups' => $groups,
+        ];
     }
 }

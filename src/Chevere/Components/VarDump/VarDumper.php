@@ -22,6 +22,8 @@ use Ds\Set;
 
 final class VarDumper implements VarDumperInterface
 {
+    public Set $known;
+
     private WriterInterface $writer;
 
     private VarDumpFormatterInterface $formatter;
@@ -33,8 +35,6 @@ final class VarDumper implements VarDumperInterface
     private string $indentString = '';
 
     private int $depth = -1;
-
-    public Set $known;
 
     public function __construct(
         WriterInterface $writer,
@@ -112,7 +112,7 @@ final class VarDumper implements VarDumperInterface
     {
         $new = clone $this;
         $processorName = $new->dumpable->processorName();
-        if (in_array($new->dumpable->type(), [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
+        if (in_array($new->dumpable->type(), [TypeInterface::ARRAY, TypeInterface::OBJECT], true)) {
             ++$new->indent;
         }
         (new $processorName($new))->write();

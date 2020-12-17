@@ -29,5 +29,5 @@ interface IndexSpecInterface extends SpecInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$groupSpec`.
      */
-    public function withAddedGroup(GroupSpecInterface $groupSpec): IndexSpecInterface;
+    public function withAddedGroup(GroupSpecInterface $groupSpec): self;
 }

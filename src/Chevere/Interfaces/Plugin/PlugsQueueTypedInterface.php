@@ -18,7 +18,7 @@ namespace Chevere\Interfaces\Plugin;
  */
 interface PlugsQueueTypedInterface
 {
-    public function withAdded(PlugInterface $plug): PlugsQueueTypedInterface;
+    public function withAdded(PlugInterface $plug): self;
 
     /**
      * Returns the interface name of plug members.

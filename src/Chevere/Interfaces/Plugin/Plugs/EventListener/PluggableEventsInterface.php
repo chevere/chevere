@@ -33,7 +33,7 @@ interface PluggableEventsInterface
      *
      * This method should be implemented in the runtime strategy before running events.
      */
-    public function withEventListenersRunner(EventListenersRunnerInterface $runner): PluggableEventsInterface;
+    public function withEventListenersRunner(EventListenersRunnerInterface $runner): self;
 
     /**
      * Run events for the given anchor (if-any).

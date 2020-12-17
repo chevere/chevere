@@ -38,7 +38,7 @@ interface ActionExecutedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified throwable, with its exit code.
      */
-    public function withThrowable(Throwable $throwable, int $code): ActionExecutedInterface;
+    public function withThrowable(Throwable $throwable, int $code): self;
 
     /**
      * Indicates whether the instance has a `\Throwable`.

@@ -25,7 +25,9 @@ use Throwable;
 
 final class VarExportable implements VarExportableInterface
 {
-    /** @var mixed */
+    /**
+     * @var mixed
+     */
     private $var;
 
     private BreadcrumbInterface $breadcrumb;

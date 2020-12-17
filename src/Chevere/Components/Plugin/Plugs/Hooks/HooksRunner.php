@@ -47,7 +47,7 @@ final class HooksRunner implements HooksRunnerInterface
                 $this->setHook($entry);
                 $hook = $this->hook;
                 $hook($argument);
-                if (!$type->validate($argument)) {
+                if (! $type->validate($argument)) {
                     throw new InvalidArgumentException(
                         (new Message('Hook argument of type %passed% has been altered to type %altered% by %hook%'))
                             ->code('%passed%', $gettype)

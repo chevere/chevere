@@ -28,7 +28,7 @@ interface RoutableSpecsInterface extends MappedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$routableSpec`.
      */
-    public function withPut(RoutableSpecInterface $routableSpec): RoutableSpecsInterface;
+    public function withPut(RoutableSpecInterface $routableSpec): self;
 
     /**
      * Indicates whether the instance has a routable spec identified by its `$routeName`.

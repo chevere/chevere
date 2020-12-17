@@ -28,7 +28,7 @@ interface SpecEndpointsInterface extends MappedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$routeEndpointSpec`.
      */
-    public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): SpecEndpointsInterface;
+    public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): self;
 
     /**
      * Indicates whether the instance has a route endpoint identified by its `$methodName`.

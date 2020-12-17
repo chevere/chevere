@@ -19,9 +19,9 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
+use function DeepCopy\deep_copy;
 use Ds\Map;
 use Ds\Set;
-use function DeepCopy\deep_copy;
 
 final class Parameters implements ParametersInterface
 {
@@ -76,7 +76,7 @@ final class Parameters implements ParametersInterface
         $new = clone $this;
         foreach ($parameter as $name => $param) {
             $name = (string) $name;
-            if (!$new->map->hasKey($name)) {
+            if (! $new->map->hasKey($name)) {
                 throw new OutOfBoundsException(
                     (new Message("Parameter %name% doesn't exists"))
                         ->code('%name%', $name)
@@ -104,7 +104,7 @@ final class Parameters implements ParametersInterface
     {
         $this->assertNoOutOfBounds($parameter);
 
-        return !$this->required->contains($parameter);
+        return ! $this->required->contains($parameter);
     }
 
     public function get(string $name): ParameterInterface
@@ -131,7 +131,7 @@ final class Parameters implements ParametersInterface
 
     private function assertNoOutOfBounds(string $parameter): void
     {
-        if (!$this->has($parameter)) {
+        if (! $this->has($parameter)) {
             throw new OutOfBoundsException(
                 (new Message("Parameter %name% doesn't exists"))
                     ->code('%name%', $parameter)

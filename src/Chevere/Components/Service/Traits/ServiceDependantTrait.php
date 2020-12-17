@@ -15,12 +15,12 @@ namespace Chevere\Components\Service\Traits;
 
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Message\Message;
+use function Chevere\Components\Type\debugType;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use ReflectionObject;
 use TypeError;
-use function Chevere\Components\Type\debugType;
 
 trait ServiceDependantTrait
 {
@@ -38,7 +38,7 @@ trait ServiceDependantTrait
         $new->dependencies = $new->getDependencies();
         foreach ($new->dependencies->getGenerator() as $className => $key) {
             $value = $namedArguments[$key] ?? null;
-            if (!isset($value)) {
+            if (! isset($value)) {
                 $missing[] = $key;
 
                 continue;
@@ -66,7 +66,7 @@ trait ServiceDependantTrait
         $dependencies = $this->dependencies ?? $this->getDependencies();
         $missing = [];
         foreach ($dependencies->keys() as $variable) {
-            if (!isset($this->{$variable})) {
+            if (! isset($this->{$variable})) {
                 $missing[] = $variable;
             }
         }
@@ -75,7 +75,7 @@ trait ServiceDependantTrait
 
     private function assertType(string $className, string $key, $value): void
     {
-        if (!is_object($value)) {
+        if (! is_object($value)) {
             throw new TypeException(
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
                     ->strong('%key%', $key)
@@ -84,7 +84,7 @@ trait ServiceDependantTrait
                 100
             );
         }
-        if (!(new ReflectionObject($value))->isSubclassOf($className)) {
+        if (! (new ReflectionObject($value))->isSubclassOf($className)) {
             throw new TypeException(
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
                     ->strong('%key%', $key)

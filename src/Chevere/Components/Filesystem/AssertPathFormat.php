@@ -52,7 +52,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
 
     private function assertNoDoubleDots(): void
     {
-        if (false !== strpos($this->path, '../')) {
+        if (strpos($this->path, '../') !== false) {
             throw new PathDoubleDotsDashException(
                 (new Message('Must omit %chars% for path %path%'))
                     ->code('%chars%', '../')
@@ -63,7 +63,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
 
     private function assertNoDots(): void
     {
-        if (false !== strpos($this->path, './')) {
+        if (strpos($this->path, './') !== false) {
             throw new PathDotSlashException(
                 (new Message('Must omit %chars% for path %path%'))
                     ->code('%chars%', './')
@@ -74,7 +74,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
 
     private function assertNoExtraSlashes(): void
     {
-        if (false !== strpos($this->path, '//')) {
+        if (strpos($this->path, '//') !== false) {
             throw new PathExtraSlashesException(
                 (new Message('Path %path% contains extra-slashes'))
                     ->code('%path%', $this->path)

@@ -31,7 +31,7 @@ final class PlugTypesList implements PlugTypesListInterface
         $this->map = new Map($list);
         foreach ($this->map->pairs() as $pair) {
             // @codeCoverageIgnoreStart
-            if (!($pair->value instanceof PlugTypeInterface)) {
+            if (! ($pair->value instanceof PlugTypeInterface)) {
                 throw new RangeException(
                     (new Message('List source (%path%) contains an invalid type not implementing %interface% at %pos% index'))
                         ->code('%path%', $path)

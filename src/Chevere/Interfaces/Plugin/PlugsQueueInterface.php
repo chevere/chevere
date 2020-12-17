@@ -33,7 +33,7 @@ interface PlugsQueueInterface extends ToArrayInterface
      * @throws PlugInterfaceException
      * @throws OverflowException
      */
-    public function withAdded(PlugInterface $plug): PlugsQueueInterface;
+    public function withAdded(PlugInterface $plug): self;
 
     /**
      * Provides access to the plug type instance.
@@ -41,7 +41,6 @@ interface PlugsQueueInterface extends ToArrayInterface
     public function plugType(): PlugTypeInterface;
 
     /**
-     *
      * ```php
      * return [
      *     'for' => [0 => 'plugName',],

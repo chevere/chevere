@@ -24,7 +24,7 @@ trait PluggableHooksTrait
 
     public function withHooksRunner(HooksRunnerInterface $hooksRunner): PluggableHooksInterface
     {
-        if (!($this instanceof PluggableHooksInterface)) {
+        if (! ($this instanceof PluggableHooksInterface)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message("Instance doesn't implements %type%"))

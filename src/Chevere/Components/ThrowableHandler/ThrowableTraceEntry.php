@@ -92,7 +92,7 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
     {
         $missing = [];
         foreach (self::MUST_HAVE_KEYS as $key) {
-            if (!array_key_exists($key, $this->entry)) {
+            if (! array_key_exists($key, $this->entry)) {
                 $missing[] = $key;
             }
         }
@@ -109,10 +109,10 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
         $this->line = $this->entry['line'] ?? 0;
         $this->args = $this->entry['args'] ?? [];
         foreach (self::KEYS as $propName) {
-            if (in_array($propName, ['line', 'args'])) {
+            if (in_array($propName, ['line', 'args'], true)) {
                 continue;
             }
-            $this->$propName = $this->entry[$propName] ?? '';
+            $this->{$propName} = $this->entry[$propName] ?? '';
         }
     }
 
@@ -122,7 +122,7 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
             /** @var class-string $this->class */
             $reflector = new ReflectionMethod($this->class, $this->function);
             $filename = $reflector->getFileName();
-            if (false !== $filename) {
+            if ($filename !== false) {
                 $this->file = $filename;
                 $this->line = $reflector->getStartLine();
             }

@@ -33,7 +33,7 @@ interface PluggableHooksInterface
      *
      * This method should be implemented in the runtime strategy before running hooks.
      */
-    public function withHooksRunner(HooksRunnerInterface $runner): PluggableHooksInterface;
+    public function withHooksRunner(HooksRunnerInterface $runner): self;
 
     /**
      * Run hooks for the given anchor (if-any).

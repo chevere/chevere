@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirTailException;
@@ -24,10 +25,9 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use Throwable;
-use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use function Safe\mkdir;
 use function Safe\rmdir;
+use Throwable;
 
 final class Dir implements DirInterface
 {
@@ -42,7 +42,7 @@ final class Dir implements DirInterface
 
     public function getChild(string $path): DirInterface
     {
-        return new Dir($this->path->getChild($path));
+        return new self($this->path->getChild($path));
     }
 
     public function path(): PathInterface
@@ -57,7 +57,7 @@ final class Dir implements DirInterface
 
     public function assertExists(): void
     {
-        if (!$this->exists()) {
+        if (! $this->exists()) {
             throw new DirNotExistsException(
                 (new Message("Dir %path% doesn't exists"))
                     ->code('%path%', $this->path->toString())
@@ -97,13 +97,13 @@ final class Dir implements DirInterface
         foreach ($files as $fileInfo) {
             if ($fileInfo->isDir()) {
                 $path = new Path(rtrim($fileInfo->getRealPath(), '/') . '/');
-                (new Dir($path))->rmdir();
+                (new self($path))->rmdir();
                 $removed[] = $path->toString();
 
                 continue;
-            } else {
+            } 
                 $path = new Path($fileInfo->getRealPath());
-            }
+
             (new File($path))->remove();
             $removed[] = $path->toString();
         }
@@ -136,7 +136,7 @@ final class Dir implements DirInterface
 
     private function assertIsDir(): void
     {
-        if (!$this->path->isDir()) {
+        if (! $this->path->isDir()) {
             throw new PathIsNotDirectoryException(
                 (new Message('Path %path% is not a directory'))
                     ->code('%path%', $this->path->toString())

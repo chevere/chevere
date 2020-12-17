@@ -96,7 +96,7 @@ final class VarDumpArrayProcessor implements VarDumpProcessorInterface
                     "\n" . $this->varDumper->indentString() .
                     $this->varDumper->formatter()->filterEncodedChars((string) $key),
                     $operator,
-                    ''
+                    '',
                 ])
             );
             $this->handleDepth($var);
@@ -107,7 +107,7 @@ final class VarDumpArrayProcessor implements VarDumpProcessorInterface
     {
         $deep = $this->depth;
         if (is_scalar($var)) {
-            $deep -= 1;
+            --$deep;
         }
         (new VarDumper(
             $this->varDumper->writer(),

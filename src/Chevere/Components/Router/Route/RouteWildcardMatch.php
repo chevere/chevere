@@ -41,6 +41,19 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
         return '^' . $this->string . '$';
     }
 
+    public function assertRegexNoCapture(): void
+    {
+        $regex = new Regex('#' . $this->string . '#');
+        $string = $regex->toString();
+        $regex = str_replace(['\(', '\)'], '', $string);
+        if (strpos($regex, '(') !== false || strpos($regex, ')') !== false) {
+            throw new RegexException(
+                (new Message('Provided expression %match% contains capture groups'))
+                    ->code('%match%', $string)
+            );
+        }
+    }
+
     private function assertFormat(): void
     {
         if ((new StrBool($this->string))->startsWith('^')) {
@@ -55,19 +68,6 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
                 (new Message('String %string% must omit the ending anchor %char%'))
                     ->code('%string%', $this->string)
                     ->code('%char%', '$')
-            );
-        }
-    }
-
-    public function assertRegexNoCapture(): void
-    {
-        $regex = new Regex('#' . $this->string . '#');
-        $string = $regex->toString();
-        $regex = str_replace(['\(', '\)'], '', $string);
-        if (false !== strpos($regex, '(') || false !== strpos($regex, ')')) {
-            throw new RegexException(
-                (new Message('Provided expression %match% contains capture groups'))
-                    ->code('%match%', $string)
             );
         }
     }

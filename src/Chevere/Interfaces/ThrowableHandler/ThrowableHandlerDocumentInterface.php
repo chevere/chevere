@@ -78,7 +78,7 @@ interface ThrowableHandlerDocumentInterface extends ToStringInterface
      *
      * Calling this method will reset the document sections to fit the target verbosity.
      */
-    public function withVerbosity(int $verbosity): ThrowableHandlerDocumentInterface;
+    public function withVerbosity(int $verbosity): self;
 
     /**
      * Provides access to the instance verbosity.

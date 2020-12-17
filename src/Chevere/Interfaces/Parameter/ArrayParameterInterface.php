@@ -28,7 +28,7 @@ interface ArrayParameterInterface extends ParameterInterface
      *
      * @throws InvalidArgumentException
      */
-    public function withDefault(array $default): ArrayParameterInterface;
+    public function withDefault(array $default): self;
 
     /**
      * Provides access to the default value.

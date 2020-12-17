@@ -50,7 +50,7 @@ interface RouteInterface
      * @throws OutOfBoundsException
      * @throws RouteWildcardConflictException
      */
-    public function withAddedEndpoint(RouteEndpointInterface $routeEndpoint): RouteInterface;
+    public function withAddedEndpoint(RouteEndpointInterface $routeEndpoint): self;
 
     /**
      * Provides access to the endpoints instance.

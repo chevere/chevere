@@ -25,7 +25,9 @@ use Error;
 
 final class AssertPlug implements AssertPlugInterface
 {
-    /** @var PlugTypesList PlugTypeInterface[] */
+    /**
+     * @var PlugTypesList PlugTypeInterface[]
+     */
     private PlugTypesList $plugTypesList;
 
     private PlugInterface $plug;
@@ -75,7 +77,7 @@ final class AssertPlug implements AssertPlugInterface
     private function assertType(): void
     {
         /** @psalm-suppress RedundantPropertyInitializationCheck */
-        if (!isset($this->plugType)) {
+        if (! isset($this->plugType)) {
             $accept = [];
             /**
              * @var PlugTypeInterface $plugType

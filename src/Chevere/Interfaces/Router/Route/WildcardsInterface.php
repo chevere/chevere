@@ -30,7 +30,7 @@ interface WildcardsInterface extends MappedInterface, ToArrayInterface
      *
      * This method should overrides existing wildcards.
      */
-    public function withAddedWildcard(RouteWildcardInterface $wildcard): WildcardsInterface;
+    public function withAddedWildcard(RouteWildcardInterface $wildcard): self;
 
     /**
      * Returns a boolean indicating whether the instance has a given RouteWildcardInterface.

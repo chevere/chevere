@@ -38,7 +38,7 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
     public function highlight(string $dump): string
     {
         foreach ($this->style as $style) {
-            $dump = $this->color->apply("color[$style]", $dump);
+            $dump = $this->color->apply("color[${style}]", $dump);
         }
 
         return $dump;
@@ -47,21 +47,30 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
     public function pallet(): array
     {
         return [
-            TypeInterface::STRING => '208', // orange
+            // orange
+            TypeInterface::STRING => '208',
             TypeInterface::FLOAT => '208',
             TypeInterface::INTEGER => '208',
             TypeInterface::BOOLEAN => '208',
             TypeInterface::NULL => '208',
-            TypeInterface::OBJECT => '220', // yellow
-            TypeInterface::ARRAY => '41', // green
-            TypeInterface::RESOURCE => '196', // red
-            VarDumperInterface::FILE => '4', // blue
-            VarDumperInterface::CLASS_REG => '221', // light yellow
-            VarDumperInterface::OPERATOR => '242', // dark gray
+            // yellow
+            TypeInterface::OBJECT => '220',
+            // green
+            TypeInterface::ARRAY => '41',
+            // red
+            TypeInterface::RESOURCE => '196',
+            // blue
+            VarDumperInterface::FILE => '4',
+            // light yellow
+            VarDumperInterface::CLASS_REG => '221',
+            // dark gray
+            VarDumperInterface::OPERATOR => '242',
             VarDumperInterface::FUNCTION => '39',
-            VarDumperInterface::MODIFIERS => '207', // purple
+            // purple
+            VarDumperInterface::MODIFIERS => '207',
             VarDumperInterface::VARIABLE => '208',
-            VarDumperInterface::EMPHASIS => ['242', '3'] // dark gray italic
+            // dark gray italic
+            VarDumperInterface::EMPHASIS => ['242', '3'],
         ];
     }
 }

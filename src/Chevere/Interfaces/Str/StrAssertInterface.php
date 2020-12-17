@@ -42,110 +42,110 @@ interface StrAssertInterface
      *
      * @throws StrNotEmptyException
      */
-    public function empty(): StrAssertInterface;
+    public function empty(): self;
 
     /**
      * Asserts that the string is not empty.
      *
      * @throws StrEmptyException
      */
-    public function notEmpty(): StrAssertInterface;
+    public function notEmpty(): self;
 
     /**
      * Asserts that the string is ctype space.
      *
      * @throws StrNotCtypeSpaceException
      */
-    public function ctypeSpace(): StrAssertInterface;
+    public function ctypeSpace(): self;
 
     /**
      * Asserts that the string is not ctype space.
      *
      * @throws StrCtypeSpaceException
      */
-    public function notCtypeSpace(): StrAssertInterface;
+    public function notCtypeSpace(): self;
 
     /**
      * Asserts that the string is ctype digit.
      *
      * @throws StrNotCtypeDigitException
      */
-    public function ctypeDigit(): StrAssertInterface;
+    public function ctypeDigit(): self;
 
     /**
      * Asserts that the string is not ctype digit.
      *
      * @throws StrCtypeDigitException
      */
-    public function notCtypeDigit(): StrAssertInterface;
+    public function notCtypeDigit(): self;
 
     /**
      * Asserts that the string is starts with ctype digit.
      *
      * @throws StrNotStartsWithCtypeDigitException
      */
-    public function startsWithCtypeDigit(): StrAssertInterface;
+    public function startsWithCtypeDigit(): self;
 
     /**
      * Asserts that the string not starts with ctype digit.
      *
      * @throws StrStartsWithCtypeDigitException
      */
-    public function notStartsWithCtypeDigit(): StrAssertInterface;
+    public function notStartsWithCtypeDigit(): self;
 
     /**
      * Asserts that the string is starts with `$needle`.
      *
      * @throws StrNotStartsWithException
      */
-    public function startsWith(string $needle): StrAssertInterface;
+    public function startsWith(string $needle): self;
 
     /**
      * Asserts that the string not starts with `$needle`.
      *
      * @throws StrStartsWithException
      */
-    public function notStartsWith(string $needle): StrAssertInterface;
+    public function notStartsWith(string $needle): self;
 
     /**
      * Asserts that the string ends with `$needle`.
      *
      * @throws StrNotEndsWithException
      */
-    public function endsWith(string $needle): StrAssertInterface;
+    public function endsWith(string $needle): self;
 
     /**
      * Asserts that the string not ends with `$needle`.
      *
      * @throws StrEndsWithException
      */
-    public function notEndsWith(string $needle): StrAssertInterface;
+    public function notEndsWith(string $needle): self;
 
     /**
      * Asserts that the string is same as `$string`.
      *
      * @throws StrNotSameException
      */
-    public function same(string $string): StrAssertInterface;
+    public function same(string $string): self;
 
     /**
      * Asserts that the string is not same as `$string`.
      *
      * @throws StrSameException
      */
-    public function notSame(string $string): StrAssertInterface;
+    public function notSame(string $string): self;
 
     /**
      * Asserts that the string contains `$string`.
      *
      * @throws StrNotContainsException
      */
-    public function contains(string $string): StrAssertInterface;
+    public function contains(string $string): self;
 
     /**
      * Asserts that the string not contains `$string`.
      *
      * @throws StrContainsException
      */
-    public function notContains(string $string): StrAssertInterface;
+    public function notContains(string $string): self;
 }

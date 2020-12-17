@@ -85,5 +85,5 @@ interface PathInterface extends ToStringInterface
      * @throws PathExtraSlashesException
      * @throws PathNotAbsoluteException
      */
-    public function getChild(string $path): PathInterface;
+    public function getChild(string $path): self;
 }

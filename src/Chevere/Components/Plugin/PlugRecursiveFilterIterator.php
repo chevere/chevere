@@ -29,6 +29,7 @@ final class PlugRecursiveFilterIterator extends RecursiveFilterIterator
         string $trailingName
     ) {
         $this->trailingName = $trailingName;
+
         parent::__construct($recursiveIterator);
     }
 

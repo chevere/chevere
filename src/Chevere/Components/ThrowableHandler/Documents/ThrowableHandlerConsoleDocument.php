@@ -28,7 +28,7 @@ final class ThrowableHandlerConsoleDocument extends ThrowableHandlerAbstractDocu
     {
         return strtr('%t in %f', [
             '%t' => (string) (new Color(self::TAG_TITLE))->bold()->red(),
-            '%f' => $this->formatter->wrapLink(self::TAG_FILE_LINE)
+            '%f' => $this->formatter->wrapLink(self::TAG_FILE_LINE),
         ]);
     }
 }

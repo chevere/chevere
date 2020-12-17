@@ -70,7 +70,7 @@ final class PlugsMap implements PlugsMapInterface
             );
         }
         // @codeCoverageIgnoreEnd
-        if (!($assert->plugType() instanceof $this->type)) {
+        if (! ($assert->plugType() instanceof $this->type)) {
             throw new InvalidArgumentException(
                 (new Message('Argument passed must be an instance of type %type%'))
                     ->code('%type%', get_class($this->type))

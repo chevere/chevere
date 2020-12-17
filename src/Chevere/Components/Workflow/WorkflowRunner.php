@@ -45,7 +45,8 @@ final class WorkflowRunner implements WorkflowRunnerInterface
          */
         foreach ($this->workflowRun->workflow()->getGenerator() as $name => $step) {
             if ($this->workflowRun->has($name)) {
-                continue; // @codeCoverageIgnore
+                // @codeCoverageIgnore
+                continue;
             }
             $actionName = $step->action();
             /** @var ActionInterface $action */
@@ -78,7 +79,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
     {
         $arguments = [];
         foreach ($step->arguments() as $name => $taskArgument) {
-            if (!$this->workflowRun->workflow()->hasVar($taskArgument)) {
+            if (! $this->workflowRun->workflow()->hasVar($taskArgument)) {
                 // @codeCoverageIgnoreStart
                 $arguments[$name] = $taskArgument;
 

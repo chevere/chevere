@@ -24,8 +24,8 @@ interface CacheKeyInterface extends ToStringInterface
     public const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
     /**
-    * @throws CacheInvalidKeyException
-    */
+     * @throws CacheInvalidKeyException
+     */
     public function __construct(string $key);
 
     /**

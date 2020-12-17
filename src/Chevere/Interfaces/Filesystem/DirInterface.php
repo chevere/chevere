@@ -57,7 +57,7 @@ interface DirInterface
      *
      * @return array an array with all the dir contents removed
      *
-     * @throws DirUnableToRemoveException  if unable to remove the directory
+     * @throws DirUnableToRemoveException if unable to remove the directory
      * @throws FileUnableToRemoveException if unable to remove a file in the directory
      */
     public function removeContents(): array;
@@ -76,5 +76,5 @@ interface DirInterface
      *
      * @throws PathInvalidException
      */
-    public function getChild(string $path): DirInterface;
+    public function getChild(string $path): self;
 }

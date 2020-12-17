@@ -31,17 +31,18 @@ abstract class Controller extends Action implements ControllerInterface
 
     protected TypeInterface $parametersType;
 
-    public function getContextParameters(): ParametersInterface
-    {
-        return new Parameters();
-    }
-
     public function __construct()
     {
         parent::__construct();
+
         $this->contextParameters = $this->getContextParameters();
         $this->parametersType = new Type(self::PARAMETER_TYPE);
         $this->assertParametersType();
+    }
+
+    public function getContextParameters(): ParametersInterface
+    {
+        return new Parameters();
     }
 
     final public function withContextArguments(mixed ...$namedArguments): self
@@ -74,7 +75,7 @@ abstract class Controller extends Action implements ControllerInterface
     {
         $invalid = [];
         foreach ($this->parameters()->getGenerator() as $name => $parameter) {
-            if ($parameter->type() != $this->parametersType) {
+            if ($parameter->type()->validator() !== $this->parametersType->validator()) {
                 $invalid[] = $name;
             }
         }
