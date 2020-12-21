@@ -27,6 +27,7 @@ final class Map implements MapInterface
     public function __construct(mixed ...$namedArguments)
     {
         $this->map = new InternalMap();
+        /** @var array $namedArguments */
         if (count($namedArguments) > 0) {
             $this->map->putAll($namedArguments);
         }

@@ -139,7 +139,7 @@ final class SpecMaker implements SpecMakerInterface
     private function makeJsonFile(SpecInterface $spec): void
     {
         $filePath = $this->getPathFor($spec->jsonPath());
-        $this->files[$spec->jsonPath()] = $filePath;
+        $this->files->put($spec->jsonPath(), $filePath);
 
         try {
             $file = new File($filePath);

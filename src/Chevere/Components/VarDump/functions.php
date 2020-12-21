@@ -62,7 +62,7 @@ namespace {
         /**
          * Dumps information about one or more variables to the output stream
          */
-        function xd(...$vars)
+        function xd(...$vars): void
         {
             try {
                 $varDump = VarDumpInstance::get();
@@ -89,7 +89,7 @@ namespace {
          * Dumps information about one or more variables to the output stream and die()
          * @codeCoverageIgnore
          */
-        function xdd(...$vars)
+        function xdd(...$vars): void
         {
             try {
                 $varDump = VarDumpInstance::get();

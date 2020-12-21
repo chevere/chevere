@@ -4,32 +4,52 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ["8.0"]
+    env:
+      extensions: opcache, mbstring, ds, pcov
+      tools: composer
+      ini-values: opcache.enable_cli = 1, precision=16, default_charset='UTF-8', pcov.directory=components
+      key: cache-1608571128502
+    name: PHP ${{ matrix.php-versions }} test on ${{ matrix.operating-system }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup PHP Action
+      - name: Setup cache environment
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.key }}
+
+      - name: Cache extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
-          extensions: opcache, mbstring
-          ini-values: opcache.enable_cli = 1, precision=16, default_charset='UTF-8', extension=pcov.so, pcov.directory=components
+          php-version: ${{ matrix.php-versions }}
+          extensions: ${{ env.extensions }}
+          ini-values: ${{ env.ini-values }}
+          coverage: pcov
+          tools: ${{ env.tools }}
+        env:
+          fail-fast: true
 
-      - name: Install PEAR
-        run: sudo apt-get -y install php-pear
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Install ds
-        run: sudo pecl install ds
-
-      - name: Install PCOV
-        run: sudo pecl install pcov
-
-      - name: Validate composer.json and composer.lock
+      - name: Validate composer
         run: composer validate
-
-      - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --classmap-authoritative
 
       - name: Get composer cache directory
         id: composer-cache
@@ -41,6 +61,12 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --classmap-authoritative
+
+      # - name: Run Psalm
+      #   run: vendor/bin/psalm --output-format=github
 
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
