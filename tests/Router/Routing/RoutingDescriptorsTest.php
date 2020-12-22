@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Routing;
 
+use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Router\Route\RouteDecorator;
-use Chevere\Components\Router\Route\RouteName;
+use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Router\Routing\RoutingDescriptor;
 use Chevere\Components\Router\Routing\RoutingDescriptors;
@@ -24,22 +25,9 @@ use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\Route\RouteDecoratorInterface;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Filesystem\dirForPath;
 
 final class RoutingDescriptorsTest extends TestCase
 {
-    private function getDir(): DirInterface
-    {
-        return dirForPath(__DIR__ . '/');
-    }
-
-    private function getRouteDecorator(string $path): RouteDecoratorInterface
-    {
-        return new RouteDecorator(
-            new RouteName("repository:$path")
-        );
-    }
-
     public function testConstruct(): void
     {
         $descriptors = new RoutingDescriptors();
@@ -55,7 +43,7 @@ final class RoutingDescriptorsTest extends TestCase
         $objects = [];
         $count = 0;
         $pos = '';
-        foreach (['/path/', '/path-alt/'] as $pos => $path) {
+        foreach (['/path', '/path-alt'] as $pos => $path) {
             $objects[$pos] = new RoutingDescriptor(
                 $this->getDir(),
                 new RoutePath($path),
@@ -76,13 +64,13 @@ final class RoutingDescriptorsTest extends TestCase
     {
         $fs1 = new RoutingDescriptor(
             $this->getDir(),
-            new RoutePath('/path/'),
-            $this->getRouteDecorator('/path/')
+            new RoutePath('/path'),
+            $this->getRouteDecorator('/path')
         );
         $fs2 = new RoutingDescriptor(
             $this->getDir(),
-            new RoutePath('/path-alt/'),
-            $this->getRouteDecorator('/path/')
+            new RoutePath('/path-alt'),
+            $this->getRouteDecorator('/path')
         );
         $descriptors = (new RoutingDescriptors())->withAdded($fs1);
         $this->expectException(InvalidArgumentException::class);
@@ -93,13 +81,13 @@ final class RoutingDescriptorsTest extends TestCase
     {
         $fs1 = new RoutingDescriptor(
             $this->getDir(),
-            new RoutePath('/path/'),
-            $this->getRouteDecorator('/path/')
+            new RoutePath('/path'),
+            $this->getRouteDecorator('/path')
         );
         $fs2 = new RoutingDescriptor(
             $this->getDir(),
-            new RoutePath('/path/'),
-            $this->getRouteDecorator('/path/')
+            new RoutePath('/path'),
+            $this->getRouteDecorator('/path')
         );
         $descriptors = (new RoutingDescriptors())->withAdded($fs1);
         $this->expectException(InvalidArgumentException::class);
@@ -112,16 +100,28 @@ final class RoutingDescriptorsTest extends TestCase
             ->withAdded(
                 new RoutingDescriptor(
                     $this->getDir(),
-                    new RoutePath('/path/'),
-                    $this->getRouteDecorator('/path/')
+                    new RoutePath('/path'),
+                    $this->getRouteDecorator('/path')
                 )
             );
         $nameConflict = new RoutingDescriptor(
             $this->getDir(),
-            new RoutePath('/path-alt/'),
-            $this->getRouteDecorator('/path/')
+            new RoutePath('/path-alt'),
+            $this->getRouteDecorator('/path')
         );
         $this->expectException(InvalidArgumentException::class);
         $descriptors->withAdded($nameConflict);
+    }
+
+    private function getDir(): DirInterface
+    {
+        return dirForPath(__DIR__ . '/');
+    }
+
+    private function getRouteDecorator(string $path): RouteDecoratorInterface
+    {
+        return new RouteDecorator(
+            new RouteLocator('repository', $path)
+        );
     }
 }

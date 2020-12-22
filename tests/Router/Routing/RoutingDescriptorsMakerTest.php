@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Routing;
 
+use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Router\Routing\RoutingDescriptorsMaker;
 use Chevere\Exceptions\Router\Routing\ExpectingControllerException;
 use Chevere\Interfaces\Router\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Router\Route\RoutePathInterface;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Filesystem\dirForPath;
 
 final class RoutingDescriptorsMakerTest extends TestCase
 {
@@ -27,7 +27,7 @@ final class RoutingDescriptorsMakerTest extends TestCase
         $dir = dirForPath(__DIR__ . '/_resources/routes/');
         $fsRoutesMaker = new RoutingDescriptorsMaker('routes', $dir);
         $fsRoutes = $fsRoutesMaker->descriptors();
-        $this->assertCount(2, $fsRoutes);
+        $this->assertCount(3, $fsRoutes);
         for ($i = 0; $i < $fsRoutes->count(); ++$i) {
             $fsRoute = $fsRoutes->get($i);
             $this->assertInstanceOf(

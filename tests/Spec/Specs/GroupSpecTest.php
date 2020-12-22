@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec\Specs;
 
+use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Router\Route\RouteName;
+use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Filesystem\dirForPath;
 
 final class GroupSpecTest extends TestCase
 {
@@ -32,7 +32,7 @@ final class GroupSpecTest extends TestCase
         $specDir = dirForPath('/spec/');
         $repository = 'repo';
         $specGroupPathJson = $specDir
-            ->getChild("$repository/")
+            ->getChild("${repository}/")
             ->path()
             ->toString() . 'routes.json';
         $spec = new GroupSpec($specDir, $repository);
@@ -41,7 +41,7 @@ final class GroupSpecTest extends TestCase
             [
                 'name' => $repository,
                 'spec' => $specGroupPathJson,
-                'routes' => []
+                'routes' => [],
             ],
             $spec->toArray()
         );
@@ -50,19 +50,17 @@ final class GroupSpecTest extends TestCase
     public function testWithAddedRoutable(): void
     {
         $repository = 'repo';
-        $routeName = new RouteName($repository . ':/path/');
+        $routeLocator = new RouteLocator($repository, '/path');
         $specDir = dirForPath('/spec/');
         $repository = 'repo';
-        $groupSpecDir = $specDir->getChild("$repository/");
+        $groupSpecDir = $specDir->getChild("${repository}/");
         $routesSpecPathJson = $groupSpecDir->path()->toString() . 'routes.json';
-        $route = (new Route(new RoutePath('/route/path/')))
+        $route = (new Route(new RoutePath('/route/path')))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())
             );
         $routableSpec = new RoutableSpec(
-            $groupSpecDir->getChild(
-                ltrim($routeName->path(), '/')
-            ),
+            $groupSpecDir->getChild(ltrim($routeLocator->path(), '/') . '/'),
             new Routable($route),
             $repository
         );
@@ -72,7 +70,9 @@ final class GroupSpecTest extends TestCase
             [
                 'name' => $repository,
                 'spec' => $routesSpecPathJson,
-                'routes' => [$routableSpec->key() => $routableSpec->toArray()],
+                'routes' => [
+                    $routableSpec->key() => $routableSpec->toArray(),
+                ],
             ],
             $spec->toArray()
         );

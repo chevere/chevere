@@ -27,7 +27,7 @@ interface RoutePathInterface extends ToStringInterface
      * @throws InvalidArgumentException
      * @throws LogicException
      */
-    public function __construct(string $path);
+    public function __construct(string $route);
 
     /**
      * Provides access to the wildcards instance.

@@ -18,7 +18,7 @@ use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteDecorator;
-use Chevere\Components\Router\Route\RouteName;
+use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Str\Str;
 use Chevere\Interfaces\Filesystem\DirInterface;
@@ -65,8 +65,11 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         while ($iterator->valid()) {
             $pathName = $iterator->current()->getPathName();
             $dirName = rtrim(dirname($pathName), '/') . '/';
-            $path = str_replace($this->dir->path()->toString(), '/', $dirName);
-            $routeName = new RouteName($this->repository . ':' . $path);
+            $route = rtrim(
+                str_replace($this->dir->path()->toString(), '/', $dirName),
+                '/'
+            ) . '/';
+            $routeLocator = new RouteLocator($this->repository, $route);
             $endpoints = routeEndpointsForDir(dirForPath($dirName));
             $generator = $endpoints->getGenerator();
             $routeEndpoint = $generator->current();
@@ -88,7 +91,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                         new RoutingDescriptor(
                             dirForPath($dirName),
                             new RoutePath($path),
-                            new RouteDecorator($routeName)
+                            new RouteDecorator($routeLocator)
                         )
                     );
             $iterator->next();
@@ -101,8 +104,11 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $regex = (new Regex($param['regex']))->toNoDelimitersNoAnchors();
             $path = $path->withReplaceAll("{$key}", "${key}:${regex}");
         }
+        if($path->toString() === '/') {
+            return $path->toString();
+        }
 
-        return $path->toString();
+        return $path->withReplaceLast('/', '')->toString();
     }
 
     private function getRecursiveFilterIterator(RecursiveDirectoryIterator $recursiveDirectoryIterator): RecursiveFilterIterator

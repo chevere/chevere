@@ -25,6 +25,8 @@ final class RoutableSpec implements RoutableSpecInterface
 {
     use SpecsTrait;
 
+    private string $name;
+
     private RouteEndpointSpecsInterface $routeEndpointSpecs;
 
     private string $path;
@@ -36,10 +38,11 @@ final class RoutableSpec implements RoutableSpecInterface
     public function __construct(DirInterface $specDir, RoutableInterface $routable, string $repository)
     {
         $path = $routable->route()->path()->toString();
-        $this->key = $repository . ':' . $path;
+        $this->key = $path;
+        $this->name = $repository . ':' . $path;
         $this->routeEndpointSpecs = new RouteEndpointSpecs();
         $specGroupRoute = $specDir
-            ->getChild(ltrim($path, '/'));
+            ->getChild(ltrim($path, '/') . '/');
         $this->jsonPath = $specGroupRoute->path()->toString() . 'route.json';
         $path = $routable->route()->path();
         $this->path = $path->toString();
@@ -75,7 +78,7 @@ final class RoutableSpec implements RoutableSpecInterface
         }
 
         return [
-            'name' => $this->key,
+            'name' => $this->name,
             'spec' => $this->jsonPath,
             'path' => $this->path,
             'regex' => $this->regex,

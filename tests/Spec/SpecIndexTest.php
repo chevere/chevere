@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec;
 
+use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Router\Route\RouteName;
+use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Spec\SpecIndex;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Filesystem\dirForPath;
 
 final class SpecIndexTest extends TestCase
 {
@@ -38,48 +38,48 @@ final class SpecIndexTest extends TestCase
 
     public function testWithOffset(): void
     {
-        $routeName = new RouteName('repo:/path/');
-        $method = new GetMethod();
-        $routeEndpoint = new RouteEndpoint($method, new TestController());
+        $routeLocator = new RouteLocator('repo', '/path');
+        $getMethod = new GetMethod();
+        $routeEndpoint = new RouteEndpoint($getMethod, new TestController());
         $specDir = dirForPath('/spec/group/route/');
         $routeEndpointSpec = new RouteEndpointSpec($specDir, $routeEndpoint);
         $specIndex = (new SpecIndex())->withAddedRoute(
-            $routeName->toString(),
+            $routeLocator->toString(),
             $routeEndpointSpec
         );
-        $this->assertFalse($specIndex->has('404', $method->name()));
+        $this->assertFalse($specIndex->has('404', $getMethod->name()));
         $this->assertTrue($specIndex->has(
-            $routeName->toString(),
-            $method->name()
+            $routeLocator->toString(),
+            $getMethod->name()
         ));
         $this->assertCount(1, $specIndex);
         $this->assertSame(
-            $specDir->getChild($method->name() . '/')->path()->toString() . '.json',
+            $specDir->getChild($getMethod->name() . '/')->path()->toString() . '.json',
             $specIndex->get(
-                $routeName->toString(),
-                $method->name()
+                $routeLocator->toString(),
+                $getMethod->name()
             )
         );
         $method2 = new PutMethod();
         $routeEndpoint2 = new RouteEndpoint($method2, new TestController());
         $routeEndpointSpec2 = new RouteEndpointSpec($specDir, $routeEndpoint2);
         $specIndex = $specIndex->withAddedRoute(
-            $routeName->toString(),
+            $routeLocator->toString(),
             $routeEndpointSpec2
         );
         $this->assertTrue($specIndex->has(
-            $routeName->toString(),
-            $method->name()
+            $routeLocator->toString(),
+            $getMethod->name()
         ));
         $this->assertTrue($specIndex->has(
-            $routeName->toString(),
+            $routeLocator->toString(),
             $method2->name()
         ));
         $this->assertCount(1, $specIndex);
         $this->assertSame(
             $specDir->getChild($method2->name() . '/')
                 ->path()->toString() . '.json',
-            $specIndex->get($routeName->toString(), $method2->name())
+            $specIndex->get($routeLocator->toString(), $method2->name())
         );
     }
 }

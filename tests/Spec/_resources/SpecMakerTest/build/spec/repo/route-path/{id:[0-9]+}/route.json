@@ -1,8 +1,8 @@
 {
-    "name": "repo:\/route-path\/{id:[0-9]+}\/",
+    "name": "repo:\/route-path\/{id:[0-9]+}",
     "spec": "\/spec\/repo\/route-path\/{id:[0-9]+}\/route.json",
-    "path": "\/route-path\/{id:[0-9]+}\/",
-    "regex": "~^(?|\/route\\-path\/([0-9]+)\/)$~",
+    "path": "\/route-path\/{id:[0-9]+}",
+    "regex": "~^(?|\/route\\-path\/([0-9]+))$~",
     "wildcards": {
         "id": "^[0-9]+$"
     },

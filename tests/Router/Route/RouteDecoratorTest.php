@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router\Route;
 
 use Chevere\Components\Router\Route\RouteDecorator;
-use Chevere\Components\Router\Route\RouteName;
+use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Router\Route\Wildcards;
 use PHPUnit\Framework\TestCase;
 
@@ -22,9 +22,9 @@ final class RouteDecoratorTest extends TestCase
 {
     public function testConstructor(): void
     {
-        $routeName = new RouteName('repo:/path/');
-        $routeDecorator = new RouteDecorator($routeName);
-        $this->assertSame($routeName, $routeDecorator->name());
+        $routeLocator = new RouteLocator('repo', '/path');
+        $routeDecorator = new RouteDecorator($routeLocator);
+        $this->assertSame($routeLocator, $routeDecorator->locator());
         $this->assertCount(0, $routeDecorator->wildcards());
     }
 
@@ -32,7 +32,7 @@ final class RouteDecoratorTest extends TestCase
     {
         $routeWildcards = new Wildcards();
         $routeDecorator = (new RouteDecorator(
-            new RouteName('repo:/path/')
+            new RouteLocator('repo', '/path')
         ))
             ->withWildcards($routeWildcards);
         $this->assertSame($routeWildcards, $routeDecorator->wildcards());

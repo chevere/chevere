@@ -33,10 +33,15 @@ final class RoutePathTest extends TestCase
 
     public function testConstruct(): void
     {
-        $string = 'my-path/{here}';
+        $string = '/path/{id:\d+}/it/{var}';
         $routePath = new RoutePath($string);
-        $this->assertTrue($routePath->wildcards()->has('here'));
-        $this->assertSame('~^(?|my\-path/([^/]+))$~', $routePath->regex()->toString());
+        $this->assertTrue($routePath->wildcards()->has('id'));
+        $this->assertTrue($routePath->wildcards()->has('var'));
+        $this->assertSame('/path/{id}/it/{var}', $routePath->name());
+        $this->assertSame(
+            '~^(?|/path/(\d+)/it/([^/]+))$~',
+            $routePath->regex()->toString()
+        );
         $this->assertSame($string, $routePath->toString());
     }
 }

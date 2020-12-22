@@ -18,12 +18,12 @@ namespace Chevere\Interfaces\Router\Route;
  */
 interface RouteDecoratorInterface
 {
-    public function __construct(RouteNameInterface $name);
+    public function __construct(RouteLocatorInterface $locator);
 
     /**
      * Provides access to the route name.
      */
-    public function name(): RouteNameInterface;
+    public function locator(): RouteLocatorInterface;
 
     /**
      * Return an instance with the specified `$wildcards` instance.

@@ -64,7 +64,7 @@ function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors): 
         $router = $router
             ->withAddedRoutable(
                 new Routable($route),
-                $descriptor->decorator()->name()->repository()
+                $descriptor->decorator()->locator()->repository()
             );
     }
 

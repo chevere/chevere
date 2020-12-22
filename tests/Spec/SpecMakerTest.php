@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec;
 
+use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Router\Routable;
@@ -28,7 +29,6 @@ use Chevere\Tests\Spec\_resources\src\SpecMakerTestGetController;
 use Chevere\Tests\Spec\_resources\src\SpecMakerTestPutController;
 use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Filesystem\dirForPath;
 
 final class SpecMakerTest extends TestCase
 {
@@ -36,7 +36,7 @@ final class SpecMakerTest extends TestCase
 
     private DirInterface $buildDir;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->dirHelper = new DirHelper($this);
         $this->buildDir = $this->dirHelper->dir()->getChild('build/');
@@ -57,7 +57,7 @@ final class SpecMakerTest extends TestCase
         $putMethod = new PutMethod();
         $getMethod = new GetMethod();
         $route = new Route(
-            new RoutePath('/route-path/{id:[0-9]+}/')
+            new RoutePath('/route-path/{id:[0-9]+}')
         );
         $route = $route
             ->withAddedEndpoint(
