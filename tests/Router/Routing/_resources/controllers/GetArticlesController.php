@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Routing\_resources\controllers;
+namespace Chevere\Tests\Router\Routing\_resources\controllers;
 
 use Chevere\Components\Action\Controller;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
