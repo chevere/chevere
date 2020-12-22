@@ -27,9 +27,31 @@ final class CacheItemTest extends TestCase
 {
     private PathInterface $resourcesPath;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->resourcesPath = (new Path(__DIR__))->getChild('_resources');
+    }
+
+    public function testNotSerialized(): void
+    {
+        $path = $this->resourcesPath->getChild('return.php');
+        $cacheItem = $this->getCacheItem($path);
+        $var = include $path->toString();
+        $this->assertSame($var, $cacheItem->raw());
+        $this->assertSame($var, $cacheItem->var());
+    }
+
+    public function testSerialized(): void
+    {
+        $path = $this->resourcesPath->getChild('return-serialized.php');
+        $this->writeSerialized($path);
+        $cacheItem = $this->getCacheItem($path);
+        $var = include $path->toString();
+        $this->assertSame($var, $cacheItem->raw());
+        $this->assertEqualsCanonicalizing(
+            unserialize($var),
+            $cacheItem->var()
+        );
     }
 
     private function getCacheItem(PathInterface $path): CacheItemInterface
@@ -53,24 +75,5 @@ final class CacheItemTest extends TestCase
         $fileReturn->put(
             new VarExportable($path)
         );
-    }
-
-    public function testNotSerialized(): void
-    {
-        $path = $this->resourcesPath->getChild('return.php');
-        $cacheItem = $this->getCacheItem($path);
-        $var = include $path->toString();
-        $this->assertSame($var, $cacheItem->raw());
-        $this->assertSame($var, $cacheItem->var());
-    }
-
-    public function testSerialized(): void
-    {
-        $path = $this->resourcesPath->getChild('return-serialized.php');
-        $this->writeSerialized($path);
-        $cacheItem = $this->getCacheItem($path);
-        $var = include $path->toString();
-        $this->assertSame($var, $cacheItem->raw());
-        $this->assertEquals(unserialize($var), $cacheItem->var());
     }
 }

@@ -111,12 +111,14 @@ final class ObjectProcessorTest extends TestCase
     {
         $key = 'key';
         $value = 'value';
-        $object = new Map([$key => $value]);
+        $object = new Map([
+            $key => $value,
+        ]);
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
         $processor->write();
         $this->assertStringContainsString(
-            "$key => string $value",
+            "${key} => string ${value}",
             $varDumper->writer()->toString()
         );
     }
@@ -124,11 +126,11 @@ final class ObjectProcessorTest extends TestCase
 
 final class DummyClass
 {
+    public object $public;
+
     private object $private;
 
     private object $protected;
-
-    public object $public;
 
     private object $circularReference;
 
@@ -173,9 +175,13 @@ final class DummyClass
     public function withDeep(int $deep): self
     {
         $new = clone $this;
-        $array = ['deep' => []];
+        $array = [
+            'deep' => [],
+        ];
         for ($i = 0; $i <= $deep; $i++) {
-            $array = ['deep' => $array];
+            $array = [
+                'deep' => $array,
+            ];
         }
         $object = json_encode($array);
         $new->deep = json_decode($object);

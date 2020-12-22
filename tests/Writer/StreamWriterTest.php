@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Writer;
 
+use function Chevere\Components\Writer\streamFor;
+use function Chevere\Components\Writer\streamForString;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Writer\streamFor;
-use function Chevere\Components\Writer\streamForString;
 
 final class StreamWriterTest extends TestCase
 {

@@ -67,7 +67,7 @@ final class WorkflowTest extends TestCase
         $this->assertSame([
             'stepBefore',
             'stepAfter',
-            'step'
+            'step',
         ], $workflow->order());
         $this->expectException(ArgumentRequiredException::class);
         $workflow->withAdded(
@@ -115,7 +115,7 @@ final class WorkflowTest extends TestCase
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
                 step1: (new Step(WorkflowTestStep1::class))
-                    ->withArguments(foo:  '${foo}')
+                    ->withArguments(foo: '${foo}')
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));

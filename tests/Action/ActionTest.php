@@ -14,22 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action;
 
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\Parameters;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
-use Chevere\Tests\Action\_resources\src\ActionTestEmptyAction;
 use PHPUnit\Framework\TestCase;
 
 final class ActionTest extends TestCase
 {
-    // public function testConstructEmpty(): void
-    // {
-    //     $action = new ActionTestEmptyAction;
-    //     $parameters = new Parameters;
-    //     $this->assertEquals($parameters, $action->getParameters());
-    //     $this->assertEquals($parameters, $action->parameters());
-    //     $arguments = new Arguments($parameters);
-    // }
-
     public function testConstruct(): void
     {
         $action = new ActionTestAction();

@@ -43,7 +43,7 @@ final class TraceEntryTest extends TestCase
             'type',
         ];
         foreach ($strings as $method) {
-            $this->assertSame('', $traceEntry->$method());
+            $this->assertSame('', $traceEntry->{$method}());
         }
         $this->assertSame([], $traceEntry->args());
         $this->assertSame(0, $traceEntry->line());
@@ -60,11 +60,11 @@ final class TraceEntryTest extends TestCase
             'function' => __FUNCTION__,
             'class' => __CLASS__,
             'type' => '->',
-            'args' => [1, '2']
+            'args' => [1, '2'],
         ];
         $traceEntry = new ThrowableTraceEntry($entry);
         foreach ($entry as $method => $val) {
-            $this->assertSame($val, $traceEntry->$method());
+            $this->assertSame($val, $traceEntry->{$method}());
         }
         $this->assertSame($filename . ':' . $line, $traceEntry->fileLine());
     }
@@ -78,7 +78,7 @@ final class TraceEntryTest extends TestCase
             'function' => 'method',
             'class' => VarDumperInterface::CLASS_ANON . $fileLine . '$a3',
             'type' => '->',
-            'args' => []
+            'args' => [],
         ];
         $traceEntry = new ThrowableTraceEntry($entry);
         $this->assertSame(VarDumperInterface::CLASS_ANON, $traceEntry->class());
@@ -87,14 +87,14 @@ final class TraceEntryTest extends TestCase
 
     public function testMissingClassFile(): void
     {
-        $line = __LINE__ - 2; // Refers to the line of declaring __FUNCTION__
+        $line = __LINE__ - 2;
         $entry = [
             'file' => null,
             'line' => $line,
             'function' => __FUNCTION__,
             'class' => __CLASS__,
             'type' => '->',
-            'args' => [1, '2']
+            'args' => [1, '2'],
         ];
         $traceEntry = new ThrowableTraceEntry($entry);
         $this->assertSame(__FILE__ . ':' . $line, $traceEntry->fileLine());

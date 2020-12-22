@@ -19,15 +19,6 @@ use PHPUnit\Framework\TestCase;
 
 final class BreadcrumbTest extends TestCase
 {
-    private function getItems(): array
-    {
-        return [
-            'test-0',
-            'test-1',
-            'test-2',
-        ];
-    }
-
     public function testConstruct(): void
     {
         $breadcrumb = new Breadcrumb();
@@ -75,5 +66,14 @@ final class BreadcrumbTest extends TestCase
         $this->assertEmpty($breadcrumb->toString());
         $this->expectException(OutOfBoundsException::class);
         $breadcrumb->withRemovedItem($pos);
+    }
+
+    private function getItems(): array
+    {
+        return [
+            'test-0',
+            'test-1',
+            'test-2',
+        ];
     }
 }

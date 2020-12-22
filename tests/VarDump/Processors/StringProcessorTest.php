@@ -28,12 +28,12 @@ final class StringProcessorTest extends TestCase
             $varDumper = $this->getVarDumper($var);
             $processor = new VarDumpStringProcessor($varDumper);
             $expectedInfo = 'length=' . mb_strlen($var);
-            $this->assertSame($expectedInfo, $processor->info(), "info:$var");
+            $this->assertSame($expectedInfo, $processor->info(), "info:${var}");
             $processor->write();
             $this->assertSame(
-                "string $var ($expectedInfo)",
+                "string ${var} (${expectedInfo})",
                 $varDumper->writer()->toString(),
-                "string:$var"
+                "string:${var}"
             );
         }
     }

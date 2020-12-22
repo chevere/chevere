@@ -37,25 +37,33 @@ final class WorkflowRunnerTest extends TestCase
                         bar: '${bar}'
                     )
             );
-        $arguments = ['foo' => $foo, 'bar' => $bar];
+        $arguments = [
+            'foo' => $foo,
+            'bar' => $bar,
+        ];
         $workflowRun = new WorkflowRun($workflow, ...$arguments);
         $container = [];
         $workflowRunner = new WorkflowRunner($workflowRun);
         $workflowRun = $workflowRunner->run($container);
         $this->assertSame($workflowRun, $workflowRunner->workflowRun());
         $action1 = new WorkflowRunnerFunctionTestStep1();
-        $this->assertEquals(
+        $this->assertSame(
             $action1->run(
-                $action1->getArguments(...['foo' => $foo])
+                $action1->getArguments(...[
+                    'foo' => $foo,
+                ])
             )->data(),
             $workflowRun->get('step1')->data()
         );
         $foo = $workflowRun->get('step1')->data()['response1'];
         $action2 = new WorkflowRunnerFunctionTestStep2();
-        $this->assertEquals(
+        $this->assertSame(
             $action2
                 ->run(
-                    $action2->getArguments(...['foo' => $foo, 'bar' => $bar])
+                    $action2->getArguments(...[
+                        'foo' => $foo,
+                        'bar' => $bar,
+                    ])
                 )
                 ->data(),
             $workflowRun->get('step2')->data()

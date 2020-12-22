@@ -27,7 +27,7 @@ final class WritersTest extends TestCase
         foreach (['out', 'error', 'debug', 'log'] as $fnName) {
             $this->assertInstanceOf(
                 WriterInterface::class,
-                $writers->$fnName()
+                $writers->{$fnName}()
             );
         }
     }
@@ -36,18 +36,18 @@ final class WritersTest extends TestCase
     {
         $writer = new StreamWriter((new StreamFactory())->createStream(''));
         $writers = (new Writers())->with($writer);
-        foreach (['out', 'error', 'debug', 'log']  as $name) {
+        foreach (['out', 'error', 'debug', 'log'] as $name) {
             $this->assertSame($writer, $writers->{$name}());
         }
     }
 
     public function testWithX(): void
     {
-        foreach (['out', 'error', 'debug', 'log']  as $name) {
+        foreach (['out', 'error', 'debug', 'log'] as $name) {
             $writer = new StreamWriter((new StreamFactory())->createStream(''));
             $withFn = 'with' . ucfirst($name);
-            $writers = (new Writers())->$withFn($writer);
-            $this->assertSame($writer, $writers->$name());
+            $writers = (new Writers())->{$withFn}($writer);
+            $this->assertSame($writer, $writers->{$name}());
         }
     }
 }

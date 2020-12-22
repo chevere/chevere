@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
-use Chevere\Interfaces\Type\TypeInterface;
-use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 use function Chevere\Components\Type\varType;
+use Chevere\Interfaces\Type\TypeInterface;
+use PHPUnit\Framework\TestCase;
 
 final class FunctionsTest extends TestCase
 {
@@ -44,7 +44,7 @@ final class FunctionsTest extends TestCase
     {
         $expected = 'string';
         $message = returnTypeExceptionMessage($expected, $expected);
-        $this->assertSame("Expecting return type $expected, type $expected provided", $message->toString());
+        $this->assertSame("Expecting return type ${expected}, type ${expected} provided", $message->toString());
     }
 
     public function testTypeFunctions(): void

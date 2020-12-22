@@ -27,7 +27,7 @@ final class CacheTest extends TestCase
 {
     private DirInterface $dir;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->dir = new Dir(
             new Path(__DIR__ . '/_resources/CacheTest/cache/')

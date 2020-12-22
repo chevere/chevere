@@ -20,6 +20,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::SKIP, [
         __DIR__ . '/tests/Cache/_resources/*',
         __DIR__ . '/tests/Filesystem/_resources/*',
-        __DIR__ . '/tests/Plugin/_resources/*',
+        __DIR__ . '/tests/Pluggable/_resources/*',
     ]);
 };

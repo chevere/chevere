@@ -52,7 +52,7 @@ final class MapTest extends TestCase
         $map = new Map(...[]);
         $mapCloned = $map->withPut($key, $value);
         $this->assertNotSame($map, $mapCloned);
-        $this->assertNotEquals($map->keys(), $mapCloned->keys());
+        $this->assertNotSame($map->keys(), $mapCloned->keys());
         $this->assertSame($value, $mapCloned->get($key));
         $mapCloned->assertHasKey($key);
     }

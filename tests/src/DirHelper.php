@@ -28,7 +28,7 @@ final class DirHelper
         $reflection = new ReflectionObject($object);
         $dir = dirname($reflection->getFileName());
         $shortName = $reflection->getShortName();
-        $this->dir = new Dir(new Path("$dir/_resources/$shortName/"));
+        $this->dir = new Dir(new Path("${dir}/_resources/${shortName}/"));
     }
 
     public function dir(): DirInterface

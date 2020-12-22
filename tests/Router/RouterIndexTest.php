@@ -76,7 +76,7 @@ final class RouterIndexTest extends TestCase
             $path => [
                 'group' => $groupName,
                 'name' => $path,
-            ]
+            ],
         ], $routerIndex->toArray());
         $path2 = '/path-2';
         $route2 = new Route(new RoutePath($path2));

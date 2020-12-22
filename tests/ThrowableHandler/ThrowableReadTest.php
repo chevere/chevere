@@ -37,7 +37,7 @@ final class ThrowableReadTest extends TestCase
         $this->assertSame($exception->getFile(), $read->file());
         $this->assertSame($exception->getLine(), $read->line());
         $this->assertSame($exception->getTrace(), $read->trace());
-        $this->assertEquals($message, $read->message());
+        $this->assertSame($message->toString(), $read->message()->toString());
     }
 
     public function testErrorException(): void

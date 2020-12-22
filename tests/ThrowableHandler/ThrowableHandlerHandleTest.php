@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
+use function Chevere\Components\ThrowableHandler\errorsAsExceptions;
 use ErrorException;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\ThrowableHandler\errorsAsExceptions;
 
 final class ThrowableHandlerHandleTest extends TestCase
 {

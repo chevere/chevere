@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec\Specs;
 
+use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\GroupSpecs;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Filesystem\dirForPath;
 
 final class GroupsSpecsTest extends TestCase
 {

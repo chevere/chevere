@@ -51,7 +51,10 @@ final class StepTest extends TestCase
         $task = new Step($action);
         $this->assertSame($action, $task->action());
         $this->assertSame([], $task->arguments());
-        $arguments = ['foo' => '1', 'bar' => 123];
+        $arguments = [
+            'foo' => '1',
+            'bar' => 123,
+        ];
         $task = $task->withArguments(...$arguments);
         $this->assertSame($arguments, $task->arguments());
     }

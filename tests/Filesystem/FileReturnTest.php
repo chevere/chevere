@@ -32,18 +32,11 @@ final class FileReturnTest extends TestCase
 {
     private PathInterface $path;
 
-    /** @var FileInterface */
     private FileInterface $file;
 
-    /** @var FilePhpReturnInterface */
     private FilePhpReturnInterface $phpFileReturn;
 
-    private function getFileName(): string
-    {
-        return 'var/FileReturnTest_' . uniqid() . '.php';
-    }
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->path = new Path(__DIR__ . '/_resources/FileReturnTest/');
         $this->file = new File(
@@ -56,7 +49,7 @@ final class FileReturnTest extends TestCase
         $this->assertSame($this->file, $this->phpFileReturn->filePhp()->file());
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         if ($this->file->exists()) {
             $this->file->remove();
@@ -153,14 +146,17 @@ final class FileReturnTest extends TestCase
 
         $types = [
             Type::OBJECT => $this->path->getChild('test'),
-            Type::ARRAY => ['test', [1, false], 1.1, null]
+            Type::ARRAY => ['test', [1, false], 1.1, null],
         ];
         foreach ($types as $type => $val) {
             $this->phpFileReturn->put(
                 new VarExportable($val)
             );
-            $this->assertEquals($val, $this->phpFileReturn->var());
-            $this->assertEquals(
+            $this->assertEqualsCanonicalizing(
+                $val,
+                $this->phpFileReturn->var()
+            );
+            $this->assertEqualsCanonicalizing(
                 $val,
                 $this->phpFileReturn->varType(new Type($type))
             );
@@ -191,5 +187,10 @@ final class FileReturnTest extends TestCase
         $this->file->put('<?php $var = __FILE__;');
         $this->expectException(FileInvalidContentsException::class);
         $this->phpFileReturn->raw();
+    }
+
+    private function getFileName(): string
+    {
+        return 'var/FileReturnTest_' . uniqid() . '.php';
     }
 }

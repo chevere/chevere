@@ -36,7 +36,9 @@ final class WorkflowRunTest extends TestCase
                 step: (new Step(WorkflowRunTestStep1::class))
                     ->withArguments(foo: '${foo}')
             );
-        $arguments = ['foo' => 'bar'];
+        $arguments = [
+            'foo' => 'bar',
+        ];
         $workflowRun = new WorkflowRun($workflow, ...$arguments);
         $this->assertMatchesRegularExpression(
             '/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i',
@@ -62,9 +64,11 @@ final class WorkflowRunTest extends TestCase
             );
         $arguments = [
             'foo' => 'hola',
-            'bar' => 'mundo'
+            'bar' => 'mundo',
         ];
-        $responseData = ['response0' => 'value'];
+        $responseData = [
+            'response0' => 'value',
+        ];
         $workflowRun = (new WorkflowRun($workflow, ...$arguments))
             ->withStepResponse(
                 'step0',
@@ -86,7 +90,9 @@ final class WorkflowRunTest extends TestCase
                 step0: (new Step(WorkflowRunTestStep1::class))
                     ->withArguments(foo: '${foo}')
             );
-        $arguments = ['foo' => 'hola'];
+        $arguments = [
+            'foo' => 'hola',
+        ];
         $this->expectException(OutOfBoundsException::class);
         (new WorkflowRun($workflow, ...$arguments))
             ->withStepResponse(

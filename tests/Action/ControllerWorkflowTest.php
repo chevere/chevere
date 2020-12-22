@@ -36,6 +36,9 @@ final class ControllerWorkflowTest extends TestCase
             }
         };
         $this->assertNotSame($controller->getWorkflow(), $controller->workflow());
-        $this->assertEquals($controller->getWorkflow(), $controller->workflow());
+        $this->assertEqualsCanonicalizing(
+            $controller->getWorkflow(),
+            $controller->workflow()
+        );
     }
 }

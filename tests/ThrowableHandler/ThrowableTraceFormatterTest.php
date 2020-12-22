@@ -37,11 +37,13 @@ final class ThrowableTraceFormatterTest extends TestCase
                 'function' => null,
                 'class' => null,
                 'type' => null,
-                'args' => [0, null]
-            ]
+                'args' => [0, null],
+            ],
         ];
         $trace = new ThrowableTraceFormatter($trace, new ThrowableHandlerPlainFormatter());
-        $this->assertSame([0 => "#0 \n()"], $trace->toArray());
+        $this->assertSame([
+            0 => "#0 \n()",
+        ], $trace->toArray());
         $this->assertSame(
             '------------------------------------------------------------' .
             "\n#0 " .
@@ -65,18 +67,20 @@ final class ThrowableTraceFormatterTest extends TestCase
                 'function' => $method,
                 'class' => $fqn,
                 'type' => $type,
-                'args' => []
-            ]
+                'args' => [],
+            ],
         ];
         $trace = new ThrowableTraceFormatter($trace, new ThrowableHandlerPlainFormatter());
         $this->assertSame(
-            [0 => "#0 $file:$line\n$fqn$type$method()"],
+            [
+                0 => "#0 ${file}:${line}\n${fqn}${type}${method}()",
+            ],
             $trace->toArray()
         );
         $this->assertSame(
             '------------------------------------------------------------' .
-            "\n#0 $file:$line" .
-            "\n$fqn$type$method()" .
+            "\n#0 ${file}:${line}" .
+            "\n${fqn}${type}${method}()" .
             "\n------------------------------------------------------------",
             $trace->toString()
         );

@@ -24,7 +24,7 @@ trait DebugBacktraceTrait
                 'function' => 'function@handler',
                 'class' => 'class@handler',
                 'type' => '->',
-                'args' => []
+                'args' => [],
             ],
             1 => [
                 'file' => __FILE__,
@@ -32,8 +32,8 @@ trait DebugBacktraceTrait
                 'function' => __FUNCTION__,
                 'class' => __CLASS__,
                 'type' => '->',
-                'args' => []
-            ]
+                'args' => [],
+            ],
         ];
     }
 }

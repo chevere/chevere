@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
-use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Tests\Action\_resources\src\ControllerTestContextController;
@@ -35,9 +34,9 @@ final class ControllerTest extends TestCase
         $this->assertFalse($controller->hasContextArguments());
         $this->assertSame(Type::STRING, $controller::PARAMETER_TYPE);
         $newController = $controller->withContextArguments(...[]);
-        $this->assertNotEquals($controller, $newController);
+        $this->assertNotSame($controller, $newController);
         $this->assertTrue($newController->hasContextArguments());
-        $this->assertEquals(new Parameters(), $newController->contextParameters());
+        $this->assertCount(0, $newController->contextParameters());
     }
 
     public function testContextController(): void
@@ -47,11 +46,15 @@ final class ControllerTest extends TestCase
         $runArgument = 'userId';
         $runValue = '321';
         $controller = (new ControllerTestContextController())
-            ->withContextArguments(...[$contextArgument => $contextValue]);
+            ->withContextArguments(...[
+                $contextArgument => $contextValue,
+            ]);
         $this->assertTrue($controller->contextArguments()->has($contextArgument));
         $this->assertSame($contextValue, $controller->contextArguments()->get($contextArgument));
         $response = $controller
-            ->run($controller->getArguments(...[$runArgument => $runValue]));
+            ->run($controller->getArguments(...[
+                $runArgument => $runValue,
+            ]));
         $this->assertSame([
             $runArgument => (int) $runValue,
             $contextArgument => $contextValue,

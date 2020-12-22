@@ -16,14 +16,14 @@ namespace Chevere\Tests\Spec\_resources\src;
 use Chevere\Components\Action\Controller;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Plugin\PluggableAnchors;
-use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
+use Chevere\Components\Pluggable\PluggableAnchors;
+use Chevere\Components\Pluggable\Plugs\Hooks\Traits\PluggableHooksTrait;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
-use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
+use Chevere\Interfaces\Pluggable\Plugs\Hooks\PluggableHooksInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
 class TestController extends Controller implements PluggableHooksInterface
@@ -60,7 +60,7 @@ class TestController extends Controller implements PluggableHooksInterface
         $response = new ResponseSuccess($this->getResponseDataParameters(), []);
         $data = [
             'userName' => $arguments->get('name'),
-            'userId' => $arguments->get('id')
+            'userId' => $arguments->get('id'),
         ];
         $response = $response->withData($data);
         $this->hook('run:after', $response);

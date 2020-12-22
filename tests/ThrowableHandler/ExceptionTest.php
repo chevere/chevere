@@ -28,11 +28,12 @@ final class ExceptionTest extends TestCase
         $message = new Message('test');
         $code = 12345;
         $exceptionName = Exception::class;
-        $throw = new $exceptionName($message, $code); // LINE
+        // LINE
+        $throw = new $exceptionName($message, $code);
         $line = __LINE__ - 1;
         $exception = new ThrowableRead($throw);
         $this->assertSame($exceptionName, $exception->className());
-        $this->assertEquals($message, $exception->message());
+        $this->assertSame($message, $exception->message());
         $this->assertSame((string) $code, $exception->code());
         $this->assertSame(__FILE__, $exception->file());
         $this->assertSame($line, $exception->line());

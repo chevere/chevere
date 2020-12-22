@@ -37,7 +37,9 @@ final class ParametersTest extends TestCase
     {
         $name = 'name';
         $parameter = new StringParameter();
-        $parameters = (new Parameters())->withAddedRequired(...[$name => $parameter]);
+        $parameters = (new Parameters())->withAddedRequired(...[
+            $name => $parameter,
+        ]);
         $this->assertCount(1, $parameters);
         $this->assertCount(0, $parameters->optional());
         $this->assertCount(1, $parameters->required());
@@ -45,7 +47,9 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
         $this->expectException(OverflowException::class);
-        $parameters->withAddedRequired(...[$name => $parameter]);
+        $parameters->withAddedRequired(...[
+            $name => $parameter,
+        ]);
     }
 
     public function testWithAddedOptional(): void

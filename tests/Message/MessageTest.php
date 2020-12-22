@@ -34,10 +34,12 @@ final class MessageTest extends TestCase
         $replace = '1';
         $var = 'string ' . $search;
         $message = (new Message($var))->strtr($search, $replace);
-        $varTr = strtr($var, [$search => $replace]);
+        $varTr = strtr($var, [
+            $search => $replace,
+        ]);
         $this->assertSame($var, $message->template());
         $this->assertSame([
-            '%translate%' => ['', $replace]
+            '%translate%' => ['', $replace],
         ], $message->trTable());
         $this->assertSame($varTr, $message->toString());
     }
@@ -49,14 +51,14 @@ final class MessageTest extends TestCase
             'emphasis' => ['%emphasis%', 'Emphasis,Italic'],
             'strong' => ['%bold%', 'Strong,Bold'],
             'underline' => ['%underline%', 'Underline'],
-            'code' => ['%code%', 'Throw new ThisIsTheThing 100']
+            'code' => ['%code%', 'Throw new ThisIsTheThing 100'],
         ];
         $message = new Message($var);
         $tr = [];
         foreach ($tags as $tag => $value) {
-            $message = $message->$tag(...$value);
+            $message = $message->{$tag}(...$value);
             $tag = MessageInterface::HTML_TABLE[$tag] ?? $tag;
-            $tr[$value[0]] = "<$tag>" . $value[1] . "</$tag>";
+            $tr[$value[0]] = "<${tag}>" . $value[1] . "</${tag}>";
         }
         $this->assertSame($var, $message->template());
         $html = strtr($var, $tr);

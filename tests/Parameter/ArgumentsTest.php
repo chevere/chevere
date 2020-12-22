@@ -98,7 +98,9 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $parameters = (new Parameters())
             ->withAddedRequired(test: new StringParameter());
-        $arguments = new Arguments($parameters, ...[$name => '123']);
+        $arguments = new Arguments($parameters, ...[
+            $name => '123',
+        ]);
         $this->expectException(ArgumentRequiredException::class);
         $arguments->withArgument('not-found', 1234);
     }
@@ -114,7 +116,9 @@ final class ArgumentsTest extends TestCase
                     id: (new StringParameter())
                         ->withRegex(new Regex('/^[0-9]+$/'))
                 ),
-            ...[$name => $value]
+            ...[
+                $name => $value,
+            ]
         );
         $this->assertTrue($arguments->has($name));
         $this->assertSame($value, $arguments->get($name));
@@ -129,7 +133,7 @@ final class ArgumentsTest extends TestCase
         $parameters = (new Parameters())
             ->withAddedRequired(
                 id: (new StringParameter())
-                        ->withRegex(new Regex('/^[0-9]+$/'))
+                    ->withRegex(new Regex('/^[0-9]+$/'))
             );
         $this->expectException(ArgumentCountException::class);
         new Arguments($parameters, ...[]);
@@ -147,7 +151,9 @@ final class ArgumentsTest extends TestCase
                 ->withAddedOptional(
                     name: new StringParameter()
                 ),
-            ...[$required => '123']
+            ...[
+                $required => '123',
+            ]
         );
         $this->assertFalse($arguments->has($optional));
     }
@@ -163,10 +169,12 @@ final class ArgumentsTest extends TestCase
                 )
                 ->withAddedOptional(
                     name: (new StringParameter())
-                            ->withRegex(new Regex('/^a|b$/'))
-                            ->withDefault('a')
+                        ->withRegex(new Regex('/^a|b$/'))
+                        ->withDefault('a')
                 ),
-            ...[$required => '123']
+            ...[
+                $required => '123',
+            ]
         );
         $this->assertTrue($arguments->has($optional));
     }
@@ -193,12 +201,16 @@ final class ArgumentsTest extends TestCase
             $arguments = new Arguments(
                 (new Parameters())
                     ->withAddedRequired(
-                        ...[$name => new Parameter(new Type($type))]
+                        ...[
+                            $name => new Parameter(new Type($type)),
+                        ]
                     ),
-                ...[$name => $value]
+                ...[
+                    $name => $value,
+                ]
             );
             $this->assertSame($value, $arguments->get($name));
-            if (in_array($type, $getters)) {
+            if (in_array($type, $getters, true)) {
                 $getter = 'get' . ucfirst($type);
                 $this->assertSame($value, $arguments->{$getter}($name));
             }
@@ -214,7 +226,9 @@ final class ArgumentsTest extends TestCase
         $arguments = new Arguments(
             (new Parameters())
                 ->withAddedRequired(test: new BooleanParameter()),
-            ...[$name => $var]
+            ...[
+                $name => $var,
+            ]
         );
         $this->assertSame($var, $arguments->getBoolean($name));
         $this->expectException(TypeError::class);
@@ -228,7 +242,9 @@ final class ArgumentsTest extends TestCase
         $arguments = new Arguments(
             (new Parameters())
                 ->withAddedRequired(test: new StringParameter()),
-            ...[$name => $var]
+            ...[
+                $name => $var,
+            ]
         );
         $this->assertSame($var, $arguments->getString($name));
         $this->expectException(TypeError::class);
@@ -244,7 +260,9 @@ final class ArgumentsTest extends TestCase
                 ->withAddedRequired(
                     test: new IntegerParameter()
                 ),
-            ...[$name => $var]
+            ...[
+                $name => $var,
+            ]
         );
         $this->assertSame($var, $arguments->getInteger($name));
         $this->expectException(TypeError::class);
@@ -260,7 +278,9 @@ final class ArgumentsTest extends TestCase
                 ->withAddedRequired(
                     test: new FloatParameter($name)
                 ),
-            ...[$name => $var]
+            ...[
+                $name => $var,
+            ]
         );
         $this->assertSame($var, $arguments->getFloat($name));
         $this->expectException(TypeError::class);
@@ -276,7 +296,9 @@ final class ArgumentsTest extends TestCase
                 ->withAddedRequired(
                     test: new ArrayParameter()
                 ),
-            ...[$name => $var]
+            ...[
+                $name => $var,
+            ]
         );
         $this->assertSame($var, $arguments->getArray($name));
         $this->expectException(TypeError::class);

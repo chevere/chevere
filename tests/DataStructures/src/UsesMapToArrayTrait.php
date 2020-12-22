@@ -22,7 +22,9 @@ final class UsesMapToArrayTrait
 
     public function __construct()
     {
-        $this->map = new Map([0 => 'test']);
+        $this->map = new Map([
+            0 => 'test',
+        ]);
     }
 
     public function map(): Map

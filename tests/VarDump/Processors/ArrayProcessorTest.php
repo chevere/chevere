@@ -32,7 +32,7 @@ final class ArrayProcessorTest extends TestCase
         $this->assertSame($expectInfo, $processor->info());
         $processor->write();
         $this->assertSame(
-            "array ($expectInfo)",
+            "array (${expectInfo})",
             $varProcess->writer()->toString()
         );
     }
@@ -64,7 +64,7 @@ final class ArrayProcessorTest extends TestCase
         $this->assertSame($expectInfo, $processor->info());
         $processor->write();
         $this->assertSame(
-            "array ($expectInfo) " . $processor->circularReference(),
+            "array (${expectInfo}) " . $processor->circularReference(),
             $varProcess->writer()->toString()
         );
     }

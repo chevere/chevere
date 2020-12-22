@@ -48,7 +48,7 @@ final class ControllerTestContextController extends Controller
     {
         return $this->getResponseSuccess([
             'userId' => (int) $arguments->getString('userId'),
-            'contextId' => $this->contextArguments()->getInteger('contextId')
+            'contextId' => $this->contextArguments()->getInteger('contextId'),
         ]);
     }
 }

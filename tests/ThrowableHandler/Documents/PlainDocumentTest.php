@@ -26,7 +26,7 @@ final class PlainDocumentTest extends TestCase
 {
     private ThrowableHandlerInterface $exceptionHandler;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->exceptionHandler = new ThrowableHandler(new ThrowableRead(
             new LogicException('Ups', 100)

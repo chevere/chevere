@@ -22,37 +22,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ServiceDependantTraitTest extends TestCase
 {
-    private function getTestDependant(): ServiceDependantInterface
-    {
-        return new class() implements ServiceDependantInterface {
-            use ServiceDependantTrait;
-
-            public TestCase $testCase;
-
-            public function getDependencies(): ClassMap
-            {
-                return (new ClassMap())
-                    ->withPut(TestCase::class, 'testCase');
-            }
-        };
-    }
-
-    private function getTestDependantMismatch(): ServiceDependantInterface
-    {
-        return new class() implements ServiceDependantInterface {
-            use ServiceDependantTrait;
-
-            /** $testCase won't match getDependencies */
-            public int $testCase;
-
-            public function getDependencies(): ClassMap
-            {
-                return (new ClassMap())
-                    ->withPut(TestCase::class, 'testCase');
-            }
-        };
-    }
-
     public function testAssertEmpty(): void
     {
         $dependable = new class() implements ServiceDependantInterface {
@@ -105,8 +74,43 @@ final class ServiceDependantTraitTest extends TestCase
     {
         $property = 'testCase';
         $dependable = $this->getTestDependant();
-        $dependable = $dependable->withDependencies(...[$property => $this]);
+        $dependable = $dependable->withDependencies(...[
+            $property => $this,
+        ]);
         $this->assertObjectHasAttribute($property, $dependable);
         $this->assertSame($this, $dependable->testCase);
+    }
+
+    private function getTestDependant(): ServiceDependantInterface
+    {
+        return new class() implements ServiceDependantInterface {
+            use ServiceDependantTrait;
+
+            public TestCase $testCase;
+
+            public function getDependencies(): ClassMap
+            {
+                return (new ClassMap())
+                    ->withPut(TestCase::class, 'testCase');
+            }
+        };
+    }
+
+    private function getTestDependantMismatch(): ServiceDependantInterface
+    {
+        return new class() implements ServiceDependantInterface {
+            use ServiceDependantTrait;
+
+            /**
+             * $testCase won't match getDependencies
+             */
+            public int $testCase;
+
+            public function getDependencies(): ClassMap
+            {
+                return (new ClassMap())
+                    ->withPut(TestCase::class, 'testCase');
+            }
+        };
     }
 }

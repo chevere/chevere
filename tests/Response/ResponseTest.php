@@ -17,16 +17,18 @@ use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseFailure;
 use Chevere\Components\Response\ResponseSuccess;
+use function Chevere\Components\Workflow\getWorkflowMessage;
 use Chevere\Components\Workflow\Workflow;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Rfc4122\Validator;
-use function Chevere\Components\Workflow\getWorkflowMessage;
 
 final class ResponseTest extends TestCase
 {
     public function testConstructResponseSuccess(): void
     {
-        $data = ['param' => 'data'];
+        $data = [
+            'param' => 'data',
+        ];
         $response = new ResponseSuccess(
             (new Parameters())
                 ->withAddedRequired(param: new StringParameter()),
@@ -51,7 +53,9 @@ final class ResponseTest extends TestCase
 
     public function testConstructResponseFailure(): void
     {
-        $data = ['param' => 'data'];
+        $data = [
+            'param' => 'data',
+        ];
         $response = new ResponseFailure(
             (new Parameters())
                 ->withAddedRequired(param: new StringParameter()),

@@ -45,7 +45,7 @@ final class RouteTest extends TestCase
             'line' => $line,
             'function' => '__construct',
             'class' => Route::class,
-            'type' => '->'
+            'type' => '->',
         ], $route->maker());
     }
 

@@ -25,16 +25,6 @@ use stdClass;
 
 final class VarDumpTest extends TestCase
 {
-    private function getVarDump(): VarDumpInterface
-    {
-        return new VarDump(new VarDumpPlainFormatter(), new VarDumpPlainOutputter());
-    }
-
-    private function getStream(): StreamInterface
-    {
-        return (new StreamFactory())->createStream('');
-    }
-
     public function testConstruct(): void
     {
         $varDump = $this->getVarDump();
@@ -48,7 +38,7 @@ final class VarDumpTest extends TestCase
         $writer = new StreamWriter($stream);
         $var = new stdClass();
         $varDump = $this->getVarDump()->withVars($var);
-        $this->assertEquals([$var], $varDump->vars());
+        $this->assertEqualsCanonicalizing([$var], $varDump->vars());
         $varDump->process($writer);
     }
 
@@ -57,7 +47,17 @@ final class VarDumpTest extends TestCase
         $stream = $this->getStream();
         $writer = new StreamWriter($stream);
         $varDump = $this->getVarDump()->withShift(1);
-        $this->assertEquals(1, $varDump->shift());
+        $this->assertSame(1, $varDump->shift());
         $varDump->process($writer);
+    }
+
+    private function getVarDump(): VarDumpInterface
+    {
+        return new VarDump(new VarDumpPlainFormatter(), new VarDumpPlainOutputter());
+    }
+
+    private function getStream(): StreamInterface
+    {
+        return (new StreamFactory())->createStream('');
     }
 }

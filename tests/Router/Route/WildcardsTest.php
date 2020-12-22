@@ -56,7 +56,10 @@ final class WildcardsTest extends TestCase
         foreach ($wildcards as $pos => $wildcard) {
             $this->assertTrue($routeWildcards->hasPos($pos));
             $this->assertTrue($routeWildcards->has($wildcard->toString()));
-            $this->assertEquals($wildcard, $routeWildcards->get($wildcard->toString()));
+            $this->assertEqualsCanonicalizing(
+                $wildcard,
+                $routeWildcards->get($wildcard->toString())
+            );
         }
     }
 }

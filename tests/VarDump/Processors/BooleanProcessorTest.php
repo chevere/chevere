@@ -26,14 +26,14 @@ final class BooleanProcessorTest extends TestCase
     {
         foreach ([
             'true' => true,
-            'false' => false
+            'false' => false,
         ] as $info => $var) {
             $varDumper = $this->getVarDumper($var);
             $processor = new VarDumpBooleanProcessor($varDumper);
             $this->assertSame($info, $processor->info(), 'info');
             $processor->write();
             $this->assertSame(
-                "boolean $info",
+                "boolean ${info}",
                 $varDumper->writer()->toString(),
             );
         }

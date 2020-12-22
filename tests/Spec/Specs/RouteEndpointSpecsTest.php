@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec\Specs;
 
+use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\PatchMethod;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
@@ -20,7 +21,6 @@ use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Components\Filesystem\dirForPath;
 
 final class RouteEndpointSpecsTest extends TestCase
 {

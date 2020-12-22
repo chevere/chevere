@@ -32,30 +32,30 @@ final class VarDumpableTest extends TestCase
     {
         $variables = [
             TypeInterface::ARRAY => [
-                [], VarDumpArrayProcessor::class
+                [], VarDumpArrayProcessor::class,
             ],
             TypeInterface::BOOLEAN => [
-                true, VarDumpBooleanProcessor::class
+                true, VarDumpBooleanProcessor::class,
             ],
             TypeInterface::FLOAT => [
-                1.1, VarDumpFloatProcessor::class
+                1.1, VarDumpFloatProcessor::class,
             ],
             TypeInterface::INTEGER => [
-                1, VarDumpIntegerProcessor::class
+                1, VarDumpIntegerProcessor::class,
             ],
             TypeInterface::NULL => [
-                null, VarDumpNullProcessor::class
+                null, VarDumpNullProcessor::class,
             ],
             TypeInterface::OBJECT => [
-                new stdClass(), VarDumpObjectProcessor::class
+                new stdClass(), VarDumpObjectProcessor::class,
             ],
             TypeInterface::RESOURCE => [
                 fopen(__FILE__, 'r'),
-                VarDumpResourceProcessor::class
+                VarDumpResourceProcessor::class,
             ],
             TypeInterface::STRING => [
                 '',
-                VarDumpStringProcessor::class
+                VarDumpStringProcessor::class,
             ],
         ];
         foreach ($variables as $type => $var) {

@@ -64,12 +64,12 @@ final class PathTest extends TestCase
     {
         $path = $this->getPath('var/PathTest_dir_' . uniqid());
         $this->assertFalse($path->exists());
-        if (!mkdir($path->toString(), 0777, true)) {
+        if (! mkdir($path->toString(), 0777, true)) {
             throw new RuntimeException('Unable to create dir ' . $path->toString());
         }
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isDir());
-        if (!rmdir($path->toString())) {
+        if (! rmdir($path->toString())) {
             throw new RuntimeException('Unable to remove dir ' . $path->toString());
         }
         $this->assertFalse($path->exists());
@@ -80,12 +80,12 @@ final class PathTest extends TestCase
     {
         $path = $this->getPath('var/PathTest_file_' . uniqid() . '.jpg');
         $this->assertFalse($path->exists());
-        if (false === file_put_contents($path->toString(), 'file put contents')) {
+        if (file_put_contents($path->toString(), 'file put contents') === false) {
             throw new RuntimeException('Unable to create file ' . $path->toString());
         }
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isFile());
-        if (!unlink($path->toString())) {
+        if (! unlink($path->toString())) {
             throw new RuntimeException('Unable to remove file ' . $path->toString());
         }
         $this->assertFalse($path->exists());

@@ -35,7 +35,7 @@ final class ResourceProcessorTest extends TestCase
         $this->assertSame($expectedInfo, $processor->info());
         $processor->write();
         $this->assertSame(
-            $resourceString . " ($expectedInfo)",
+            $resourceString . " (${expectedInfo})",
             $varDumper->writer()->toString()
         );
         /** @var resource $resource */

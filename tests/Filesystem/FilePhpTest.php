@@ -25,7 +25,7 @@ final class FilePhpTest extends TestCase
 {
     private PathInterface $path;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->path = new Path(__DIR__ . '/_resources/FilePhpTest/');
     }

@@ -23,16 +23,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ThrowableHandlerTest extends TestCase
 {
-    private function getExceptionHandler(): ThrowableHandlerInterface
-    {
-        return
-            new ThrowableHandler(
-                new ThrowableRead(
-                    new Exception(new Message('Ups'), 100)
-                )
-            );
-    }
-
     public function testConstruct(): void
     {
         $handler = $this->getExceptionHandler();
@@ -47,5 +37,15 @@ final class ThrowableHandlerTest extends TestCase
         $this->assertTrue(
             $this->getExceptionHandler()->withIsDebug(true)->isDebug()
         );
+    }
+
+    private function getExceptionHandler(): ThrowableHandlerInterface
+    {
+        return
+            new ThrowableHandler(
+                new ThrowableRead(
+                    new Exception(new Message('Ups'), 100)
+                )
+            );
     }
 }

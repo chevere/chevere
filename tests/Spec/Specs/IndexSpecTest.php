@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec\Specs;
 
+use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
@@ -23,7 +24,6 @@ use Chevere\Components\Spec\Specs\IndexSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 use SplObjectStorage;
-use function Chevere\Components\Filesystem\dirForPath;
 
 final class IndexSpecTest extends TestCase
 {
@@ -31,7 +31,7 @@ final class IndexSpecTest extends TestCase
     {
         $spec = new IndexSpec(dirForPath('/spec/'));
         $this->assertSame([
-            'groups' => []
+            'groups' => [],
         ], $spec->toArray());
     }
 
@@ -55,7 +55,7 @@ final class IndexSpecTest extends TestCase
         $this->assertSame(
             [
                 'groups' => [
-                    $groupSpec->key() => $groupSpec->toArray()
+                    $groupSpec->key() => $groupSpec->toArray(),
                 ],
             ],
             $spec->toArray()

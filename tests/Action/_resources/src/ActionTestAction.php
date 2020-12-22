@@ -35,6 +35,8 @@ final class ActionTestAction extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess(['id' => 123, ]);
+        return $this->getResponseSuccess([
+            'id' => 123,
+        ]);
     }
 }

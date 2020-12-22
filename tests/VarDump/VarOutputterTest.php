@@ -30,17 +30,6 @@ final class VarOutputterTest extends TestCase
 {
     use DebugBacktraceTrait;
 
-    private function getParsed(array $backtrace, string $name): string
-    {
-        return strtr(include "_resources/$name.php", [
-            '%handlerClassName%' => $backtrace[0]['class'],
-            '%handlerFunctionName%' => $backtrace[0]['function'],
-            '%fileLine%' => $backtrace[0]['file'] . ':' . $backtrace[0]['line'],
-            '%className%' => $backtrace[1]['class'],
-            '%functionName%' => $backtrace[1]['function'],
-        ]);
-    }
-
     public function testPlainOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
@@ -87,5 +76,16 @@ final class VarOutputterTest extends TestCase
         $parsed = $this->getParsed($backtrace, 'output-html');
 
         $this->assertSame($parsed, $writer->toString());
+    }
+
+    private function getParsed(array $backtrace, string $name): string
+    {
+        return strtr(include "_resources/${name}.php", [
+            '%handlerClassName%' => $backtrace[0]['class'],
+            '%handlerFunctionName%' => $backtrace[0]['function'],
+            '%fileLine%' => $backtrace[0]['file'] . ':' . $backtrace[0]['line'],
+            '%className%' => $backtrace[1]['class'],
+            '%functionName%' => $backtrace[1]['function'],
+        ]);
     }
 }

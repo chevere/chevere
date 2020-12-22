@@ -22,11 +22,6 @@ use PHPUnit\Framework\TestCase;
 
 final class ActionRunnerTest extends TestCase
 {
-    private function getFailedRan(ControllerInterface $controller): ActionExecutedInterface
-    {
-        return (new ActionRunner($controller))->execute(...[]);
-    }
-
     public function testControllerRunFailure(): void
     {
         $controller = new ActionRunnerTestControllerRunFail();
@@ -41,9 +36,18 @@ final class ActionRunnerTest extends TestCase
         $parameter = 'name';
         $value = 'PeoplesHernandez';
         $controller = new ActionRunnerTestController();
-        $arguments = [$parameter => $value];
+        $arguments = [
+            $parameter => $value,
+        ];
         $execute = (new ActionRunner($controller))->execute(...$arguments);
         $this->assertSame(0, $execute->code());
-        $this->assertSame(['user' => $value], $execute->data());
+        $this->assertSame([
+            'user' => $value,
+        ], $execute->data());
+    }
+
+    private function getFailedRan(ControllerInterface $controller): ActionExecutedInterface
+    {
+        return (new ActionRunner($controller))->execute(...[]);
     }
 }

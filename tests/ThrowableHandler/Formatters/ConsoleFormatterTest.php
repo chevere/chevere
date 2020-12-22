@@ -32,8 +32,8 @@ final class ConsoleFormatterTest extends TestCase
             'wrapSectionTitle' => ['value'],
         ];
         foreach ($array as $methodName => $args) {
-            $plain = $plainFormatter->$methodName(...$args);
-            $console = $consoleFormatter->$methodName(...$args);
+            $plain = $plainFormatter->{$methodName}(...$args);
+            $console = $consoleFormatter->{$methodName}(...$args);
             $this->assertSame(
                 $plain,
                 (new Str($console))->withStripANSIColors()->toString()
