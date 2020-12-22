@@ -25,7 +25,7 @@ final class RoutableSpec implements RoutableSpecInterface
 {
     use SpecsTrait;
 
-    private string $name;
+    private string $locator;
 
     private RouteEndpointSpecsInterface $routeEndpointSpecs;
 
@@ -37,15 +37,15 @@ final class RoutableSpec implements RoutableSpecInterface
 
     public function __construct(DirInterface $specDir, RoutableInterface $routable, string $repository)
     {
-        $path = $routable->route()->path()->toString();
-        $this->key = $path;
-        $this->name = $repository . ':' . $path;
+        $path = $routable->route()->path();
+        $this->path = $path->name();
+        $this->key = $path->name();
+        $this->locator = $repository . ':' . $this->key;
         $this->routeEndpointSpecs = new RouteEndpointSpecs();
         $specGroupRoute = $specDir
-            ->getChild(ltrim($path, '/') . '/');
+            ->getChild(ltrim($this->path, '/') . '/');
         $this->jsonPath = $specGroupRoute->path()->toString() . 'route.json';
-        $path = $routable->route()->path();
-        $this->path = $path->toString();
+
         $this->regex = $path->regex()->toString();
         $this->wildcards = $path->wildcards()->toArray();
         $routeEndpoints = $routable->route()->endpoints();
@@ -78,9 +78,9 @@ final class RoutableSpec implements RoutableSpecInterface
         }
 
         return [
-            'name' => $this->name,
+            'name' => $this->key,
+            'locator' => $this->locator,
             'spec' => $this->jsonPath,
-            'path' => $this->path,
             'regex' => $this->regex,
             'wildcards' => $wildcards,
             'endpoints' => $endpoints,

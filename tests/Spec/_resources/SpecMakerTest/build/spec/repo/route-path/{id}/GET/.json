@@ -1,6 +1,6 @@
 {
     "method": "GET",
-    "spec": "\/spec\/repo\/route-path\/{id:[0-9]+}\/GET\/.json",
+    "spec": "\/spec\/repo\/route-path\/{id}\/GET\/.json",
     "description": "Transfer a current representation of the target resource",
     "parameters": {
         "name": {

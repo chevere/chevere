@@ -51,9 +51,9 @@ final class RoutableSpecTest extends TestCase
         $this->assertSame($routeSpecPath, $spec->jsonPath());
         $this->assertSame(
             [
-                'name' => $routeLocator->toString(),
+                'name' => $routePath->name(),
+                'locator' => $routeLocator->toString(),
                 'spec' => $routeSpecPath,
-                'path' => $routePath->toString(),
                 'regex' => $routePath->regex()->toString(),
                 'wildcards' => $routePath->wildcards()->toArray(),
                 'endpoints' => [
