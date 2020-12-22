@@ -11,25 +11,26 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Pluggable\_resources\src;
+namespace Chevere\Tests\Pluggable\Plug\Event\_resources;
 
-use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
+use Chevere\Interfaces\Pluggable\Plug\Event\EventInterface;
+use Chevere\Interfaces\Writer\WritersInterface;
 
-class TestHook implements HookInterface
+final class TestEvent implements EventInterface
 {
-    public function __invoke(&$argument): void
+    public function __invoke(array $data, WritersInterface $writers): void
     {
-        $argument = "(hooked ${argument})";
+        $writers->debug()->write(implode(' ', $data));
     }
 
     public function anchor(): string
     {
-        return 'hook-anchor-1';
+        return 'setString:after';
     }
 
     public function at(): string
     {
-        return TestHookable::class;
+        return TestEventable::class;
     }
 
     public function priority(): int

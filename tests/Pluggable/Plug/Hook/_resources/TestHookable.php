@@ -11,38 +11,29 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Pluggable\_resources\src;
+namespace Chevere\Tests\Pluggable\Plug\Hook\_resources;
 
-use Chevere\Components\Pluggable\PluggableAnchors;
 use Chevere\Components\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
-use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
+use Chevere\Components\Pluggable\PluggableAnchors;
 use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
+use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
 
 class TestHookable implements PluggableHooksInterface
 {
     use PluggableHooksTrait;
 
-    private string $string;
-
-    public function __construct()
-    {
-        $string = '';
-        $this->hook('hook-anchor-1', $string);
-
-        $this->string = $string;
-    }
+    private string $string = '';
 
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
         return (new PluggableAnchors())
-            ->withAdded('hook-anchor-1')
-            ->withAdded('hook-anchor-2');
+            ->withAdded('setString:after');
     }
 
     public function setString(string $string): void
     {
         $this->string = $string;
-        $this->hook('hook-anchor-2', $string);
+        $this->hook('setString:after', $string);
         $this->string = $string;
     }
 

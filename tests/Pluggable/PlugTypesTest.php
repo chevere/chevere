@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable;
 
-use Chevere\Components\Pluggable\Types\EventListenerPlugType;
+use Chevere\Components\Pluggable\Types\EventPlugType;
 use Chevere\Components\Pluggable\Types\HookPlugType;
-use Chevere\Interfaces\Pluggable\Plugs\EventListener\EventListenerInterface;
-use Chevere\Interfaces\Pluggable\Plugs\EventListener\EventListenersQueueInterface;
-use Chevere\Interfaces\Pluggable\Plugs\EventListener\PluggableEventsInterface;
-use Chevere\Interfaces\Pluggable\Plugs\Hooks\HookInterface;
-use Chevere\Interfaces\Pluggable\Plugs\Hooks\HooksQueueInterface;
-use Chevere\Interfaces\Pluggable\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Interfaces\Pluggable\Plug\Event\EventInterface;
+use Chevere\Interfaces\Pluggable\Plug\Event\EventQueueInterface;
+use Chevere\Interfaces\Pluggable\Plug\Event\PluggableEventsInterface;
+use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
+use Chevere\Interfaces\Pluggable\Plug\Hook\HooksQueueInterface;
+use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
 use Chevere\Interfaces\Pluggable\PlugTypeInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -37,14 +37,14 @@ final class PlugTypesTest extends TestCase
         );
     }
 
-    public function testEventListenerPlugType(): void
+    public function testEventPlugType(): void
     {
         $this->plugTypeTester(
-            new EventListenerPlugType(),
-            EventListenerInterface::class,
+            new EventPlugType(),
+            EventInterface::class,
             PluggableEventsInterface::class,
-            EventListenersQueueInterface::class,
-            'EventListener.php',
+            EventQueueInterface::class,
+            'Event.php',
         );
     }
 

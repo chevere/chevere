@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Pluggable\Types;
 
-use Chevere\Components\Pluggable\Plugs\Hooks\HooksQueue;
-use Chevere\Interfaces\Pluggable\Plugs\Hooks\HookInterface;
-use Chevere\Interfaces\Pluggable\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
+use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
+use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
 use Chevere\Interfaces\Pluggable\PlugsQueueTypedInterface;
 use Chevere\Interfaces\Pluggable\PlugTypeInterface;
 

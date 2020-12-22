@@ -11,12 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Pluggable\Types;
+namespace Chevere\Tests\Pluggable\Plug\Hook\_resources;
 
 /**
- * @codeCoverageIgnore
+ * Same as TestHookable but this should miss hooks.
  */
-return [
-    new HookPlugType(),
-    new EventPlugType(),
-];
+final class TestHookableWithMissingHooks extends TestHookable
+{
+}

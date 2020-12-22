@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Pluggable;
 
 use Chevere\Components\Cache\Cache;
-use Chevere\Components\Pluggable\Plugs\Hooks\HooksQueue;
+use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
 use Chevere\Components\Pluggable\PlugsMap;
 use Chevere\Components\Pluggable\PlugsMapCache;
 use Chevere\Components\Pluggable\Types\HookPlugType;

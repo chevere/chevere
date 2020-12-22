@@ -11,12 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Pluggable\Types;
+use Chevere\Components\Pluggable\PlugsQueue;
+use Chevere\Components\Pluggable\Types\HookPlugType;
+use Chevere\Tests\Pluggable\Plug\Hook\_resources\TestHook;
 
-/**
- * @codeCoverageIgnore
- */
-return [
-    new HookPlugType(),
-    new EventPlugType(),
-];
+return (new PlugsQueue(new HookPlugType()))
+    ->withAdded(new TestHook());

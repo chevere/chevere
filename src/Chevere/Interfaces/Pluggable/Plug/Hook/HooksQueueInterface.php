@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Pluggable\Types;
+namespace Chevere\Interfaces\Pluggable\Plug\Hook;
+
+use Chevere\Interfaces\Pluggable\PlugsQueueTypedInterface;
 
 /**
- * @codeCoverageIgnore
+ * Describes the component in charge of type-hint a hooks queue.
  */
-return [
-    new HookPlugType(),
-    new EventPlugType(),
-];
+interface HooksQueueInterface extends PlugsQueueTypedInterface
+{
+}

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Pluggable;
 
 use Chevere\Components\Pluggable\PlugsQueue;
-use Chevere\Components\Pluggable\Types\EventListenerPlugType;
+use Chevere\Components\Pluggable\Types\EventPlugType;
 use Chevere\Components\Pluggable\Types\HookPlugType;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Pluggable\PlugInterfaceException;
@@ -34,7 +34,7 @@ final class PlugsQueueTest extends TestCase
     public function testWithWrongPlug(): void
     {
         $hook = new TestHook();
-        $plugType = new EventListenerPlugType();
+        $plugType = new EventPlugType();
         $plugsQueue = new PlugsQueue($plugType);
         $this->expectException(PlugInterfaceException::class);
         $plugsQueue->withAdded($hook);

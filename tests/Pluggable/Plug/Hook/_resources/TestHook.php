@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Pluggable\_resources\src;
+namespace Chevere\Tests\Pluggable\Plug\Hook\_resources;
 
 use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
 
@@ -24,7 +24,7 @@ class TestHook implements HookInterface
 
     public function anchor(): string
     {
-        return 'hook-anchor-1';
+        return 'setString:after';
     }
 
     public function at(): string

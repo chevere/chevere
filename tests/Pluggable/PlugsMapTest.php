@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\Pluggable;
 
 use Chevere\Components\Pluggable\PlugsMap;
-use Chevere\Components\Pluggable\Types\EventListenerPlugType;
+use Chevere\Components\Pluggable\Types\EventPlugType;
 use Chevere\Components\Pluggable\Types\HookPlugType;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Pluggable\Plugs\Hooks\HooksQueueInterface;
+use Chevere\Interfaces\Pluggable\Plug\Hook\HooksQueueInterface;
 use Chevere\Tests\Pluggable\_resources\src\TestHook;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +37,7 @@ final class PlugsMapTest extends TestCase
 
     public function testWithInvalidAddedPlug(): void
     {
-        $plugType = new EventListenerPlugType();
+        $plugType = new EventPlugType();
         $plugsMap = new PlugsMap($plugType);
         $hook = new TestHook();
         $this->expectException(InvalidArgumentException::class);

@@ -11,38 +11,38 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Pluggable\_resources\src;
+namespace Chevere\Tests\Pluggable\Plug\Event\_resources;
 
+use Chevere\Components\Pluggable\Plug\Event\Traits\PluggableEventsTrait;
 use Chevere\Components\Pluggable\PluggableAnchors;
-use Chevere\Components\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
+use Chevere\Interfaces\Pluggable\Plug\Event\PluggableEventsInterface;
 use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
-use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
 
-class TestHookable implements PluggableHooksInterface
+class TestEventable implements PluggableEventsInterface
 {
-    use PluggableHooksTrait;
+    use PluggableEventsTrait;
 
     private string $string;
 
     public function __construct()
     {
         $string = '';
-        $this->hook('hook-anchor-1', $string);
+        $this->event('construct:before', [$string]);
 
         $this->string = $string;
     }
 
-    public static function getHookAnchors(): PluggableAnchorsInterface
+    public static function getEventAnchors(): PluggableAnchorsInterface
     {
         return (new PluggableAnchors())
-            ->withAdded('hook-anchor-1')
-            ->withAdded('hook-anchor-2');
+            ->withAdded('construct:before')
+            ->withAdded('setString:after');
     }
 
     public function setString(string $string): void
     {
         $this->string = $string;
-        $this->hook('hook-anchor-2', $string);
+        $this->event('setString:after', [$string]);
         $this->string = $string;
     }
 

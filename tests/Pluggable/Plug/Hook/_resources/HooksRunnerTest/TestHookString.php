@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Pluggable\_resources\src;
+namespace Chevere\Tests\Pluggable\Plug\Hook\_resources\HooksRunnerTest;
 
 use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
 
-class TestHook implements HookInterface
+class TestHookString implements HookInterface
 {
     public function __invoke(&$argument): void
     {
@@ -24,7 +24,7 @@ class TestHook implements HookInterface
 
     public function anchor(): string
     {
-        return 'hook-anchor-1';
+        return 'string';
     }
 
     public function at(): string

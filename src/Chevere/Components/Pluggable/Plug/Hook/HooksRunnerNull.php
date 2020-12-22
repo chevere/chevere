@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Pluggable\Types;
+namespace Chevere\Components\Pluggable\Plug\Hook;
 
-/**
- * @codeCoverageIgnore
- */
-return [
-    new HookPlugType(),
-    new EventPlugType(),
-];
+use Chevere\Interfaces\Pluggable\Plug\Hook\HooksRunnerInterface;
+
+final class HooksRunnerNull implements HooksRunnerInterface
+{
+    public function run(string $anchor, &$argument): void
+    {
+    }
+}

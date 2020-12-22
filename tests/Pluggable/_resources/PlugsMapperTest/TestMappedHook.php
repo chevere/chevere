@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\_resources\PlugsMapperTest;
 
-use Chevere\Interfaces\Pluggable\Plugs\Hooks\HookInterface;
+use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
 
 final class TestMappedHook implements HookInterface
 {

@@ -16,14 +16,14 @@ namespace Chevere\Tests\Spec\_resources\src;
 use Chevere\Components\Action\Controller;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
+use Chevere\Components\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
 use Chevere\Components\Pluggable\PluggableAnchors;
-use Chevere\Components\Pluggable\Plugs\Hooks\Traits\PluggableHooksTrait;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Response\ResponseSuccess;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
+use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
 use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
-use Chevere\Interfaces\Pluggable\Plugs\Hooks\PluggableHooksInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
 class TestController extends Controller implements PluggableHooksInterface

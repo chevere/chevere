@@ -11,12 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Pluggable\_resources\src;
+namespace Chevere\Tests\Pluggable\Plug\Hook\_resources\HooksRunnerTest;
 
-use Chevere\Components\Pluggable\PluggableAnchors;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
-use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
+use Chevere\Components\Pluggable\PluggableAnchors;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
+use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
 
 class TestHookable implements PluggableHooksInterface
 {
@@ -24,30 +26,42 @@ class TestHookable implements PluggableHooksInterface
 
     private string $string;
 
+    private PathInterface $path;
+
     public function __construct()
     {
-        $string = '';
-        $this->hook('hook-anchor-1', $string);
-
-        $this->string = $string;
+        $this->string = '';
     }
 
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
         return (new PluggableAnchors())
-            ->withAdded('hook-anchor-1')
-            ->withAdded('hook-anchor-2');
+            ->withAdded('string')
+            ->withAdded('path')
+            ->withAdded('type');
     }
 
     public function setString(string $string): void
     {
         $this->string = $string;
-        $this->hook('hook-anchor-2', $string);
+        $this->hook('string', $string);
+        $this->hook('type', $string);
         $this->string = $string;
+    }
+
+    public function setPath(PathInterface $path): void
+    {
+        $this->hook('path', $path);
+        $this->path = $path;
     }
 
     public function string(): string
     {
         return $this->string;
+    }
+
+    public function path(): PathInterface
+    {
+        return $this->path;
     }
 }
