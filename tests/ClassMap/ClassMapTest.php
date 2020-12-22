@@ -28,7 +28,7 @@ final class ClassMapTest extends TestCase
         $this->assertCount(0, $classMap);
         $this->assertFalse($classMap->has($test));
         $this->expectException(ClassNotMappedException::class);
-        $classMap->get($test);
+        $classMap->key($test);
     }
 
     public function testConstructGetClass(): void
@@ -36,7 +36,7 @@ final class ClassMapTest extends TestCase
         $key = 'test';
         $classMap = new ClassMap();
         $this->expectException(ClassNotMappedException::class);
-        $classMap->getClass($key);
+        $classMap->className($key);
     }
 
     public function testWithPut(): void
@@ -47,9 +47,11 @@ final class ClassMapTest extends TestCase
         $this->assertCount(1, $classMap);
         $this->assertTrue($classMap->has($className));
         $this->assertTrue($classMap->hasKey($key));
-        $this->assertSame([$className => $key], $classMap->toArray());
-        $this->assertSame($key, $classMap->get($className));
-        $this->assertSame($className, $classMap->getClass($key));
+        $this->assertSame([
+            $className => $key,
+        ], $classMap->toArray());
+        $this->assertSame($key, $classMap->key($className));
+        $this->assertSame($className, $classMap->className($key));
     }
 
     public function testWithPutSameMapping(): void

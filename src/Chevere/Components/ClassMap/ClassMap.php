@@ -83,7 +83,7 @@ final class ClassMap implements ClassMapInterface
         return $this->flip->hasKey($key);
     }
 
-    public function get(string $className): string
+    public function key(string $className): string
     {
         if (! $this->has($className)) {
             throw new ClassNotMappedException(
@@ -95,7 +95,7 @@ final class ClassMap implements ClassMapInterface
         return $this->map[$className];
     }
 
-    public function getClass(string $key): string
+    public function className(string $key): string
     {
         if (! $this->hasKey($key)) {
             throw new ClassNotMappedException(

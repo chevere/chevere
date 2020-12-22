@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Action;
 
-use Chevere\Components\Description\Traits\DescriptionTrait;
+use Chevere\Components\Common\Traits\DescriptionTrait;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Response\ResponseSuccess;

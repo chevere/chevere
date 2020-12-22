@@ -50,14 +50,14 @@ interface ClassMapInterface extends MappedInterface
      *
      * @throws ClassNotMappedException
      */
-    public function get(string $className): string;
+    public function key(string $className): string;
 
     /**
      * Provides access to the class name mapped by key.
      *
      * @throws ClassNotMappedException
      */
-    public function getClass(string $key): string;
+    public function className(string $key): string;
 
     /**
      * Provides a generator with `className => key`

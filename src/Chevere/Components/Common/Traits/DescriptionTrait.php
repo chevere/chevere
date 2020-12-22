@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Description\Traits;
+namespace Chevere\Components\Common\Traits;
 
 /**
  * @codeCoverageIgnore

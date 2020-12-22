@@ -59,7 +59,7 @@ final class Plugins implements PluginsInterface
     private function assertSetPlugsPath(string $pluggableName): void
     {
         try {
-            $this->plugsPath = $this->classMap->get($pluggableName);
+            $this->plugsPath = $this->classMap->key($pluggableName);
         } catch (ClassNotMappedException $e) {
             throw new PluggableNotRegisteredException($e->message());
         }

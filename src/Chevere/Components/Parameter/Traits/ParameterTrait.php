@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter\Traits;
 
-use Chevere\Components\Description\Traits\DescriptionTrait;
+use Chevere\Components\Common\Traits\DescriptionTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
