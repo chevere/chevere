@@ -41,13 +41,13 @@ final class IndexSpec implements IndexSpecInterface
 
     public function toArray(): array
     {
-        $groups = [];
+        $repositories = [];
         foreach ($this->groupSpecs->getGenerator() as $key => $groupSpec) {
-            $groups[$key] = $groupSpec->toArray();
+            $repositories[$key] = $groupSpec->toArray();
         }
 
         return [
-            'groups' => $groups,
+            'repositories' => $repositories,
         ];
     }
 }

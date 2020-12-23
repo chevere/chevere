@@ -1,5 +1,5 @@
 {
-    "groups": {
+    "repositories": {
         "repo": {
             "name": "repo",
             "spec": "\/spec\/repo\/routes.json",

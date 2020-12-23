@@ -31,7 +31,7 @@ final class IndexSpecTest extends TestCase
     {
         $spec = new IndexSpec(dirForPath('/spec/'));
         $this->assertSame([
-            'groups' => [],
+            'repositories' => [],
         ], $spec->toArray());
     }
 
@@ -54,7 +54,7 @@ final class IndexSpecTest extends TestCase
         );
         $this->assertSame(
             [
-                'groups' => [
+                'repositories' => [
                     $groupSpec->key() => $groupSpec->toArray(),
                 ],
             ],
