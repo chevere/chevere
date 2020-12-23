@@ -36,7 +36,7 @@ interface RegexInterface extends ToStringInterface
     /**
      * @throws RegexInvalidException
      */
-    public function __construct(string $string);
+    public function __construct(string $pattern);
 
     /**
      * Provides access to the the regex string without delimiters.

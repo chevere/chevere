@@ -23,7 +23,7 @@ use function Safe\preg_match_all;
 
 final class Regex implements RegexInterface
 {
-    private string $string;
+    private string $pattern;
 
     private string $noDelimiters;
 
@@ -32,18 +32,18 @@ final class Regex implements RegexInterface
     /**
      * @throws RegexInvalidException
      */
-    public function __construct(string $string)
+    public function __construct(string $pattern)
     {
-        $this->string = $string;
+        $this->pattern = $pattern;
         $this->assertRegex();
-        $delimiter = $this->string[0];
-        $this->noDelimiters = trim($this->string, $delimiter);
+        $delimiter = $this->pattern[0];
+        $this->noDelimiters = trim($this->pattern, $delimiter);
         $this->noDelimitersNoAnchors = (string) preg_replace('#^\^(.*)\$$#', '$1', $this->noDelimiters);
     }
 
     public function toString(): string
     {
-        return $this->string;
+        return $this->pattern;
     }
 
     public function toNoDelimiters(): string
@@ -62,7 +62,7 @@ final class Regex implements RegexInterface
     public function match(string $string): array
     {
         try {
-            $match = preg_match($this->string, $string, $matches);
+            $match = preg_match($this->pattern, $string, $matches);
         } catch (PcreException $e) {
             throw new RuntimeException(
                 (new Message('Unable to %function%'))
@@ -80,7 +80,7 @@ final class Regex implements RegexInterface
     public function matchAll(string $string): array
     {
         try {
-            $match = preg_match_all($this->string, $string, $matches);
+            $match = preg_match_all($this->pattern, $string, $matches);
         } catch (\Exception $e) {
             throw new RuntimeException(
                 (new Message('Unable to %function%'))
@@ -95,11 +95,11 @@ final class Regex implements RegexInterface
     private function assertRegex(): void
     {
         try {
-            preg_match($this->string, '');
+            preg_match($this->pattern, '');
         } catch (\Exception $e) {
             throw new RegexInvalidException(
                 (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
-                    ->code('%regex%', $this->string)
+                    ->code('%regex%', $this->pattern)
                     ->code('%error%', $e->getMessage())
                     ->strtr('%preg%', static::ERRORS[preg_last_error()]),
                 0,
