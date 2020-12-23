@@ -36,7 +36,7 @@ final class SpecMaker implements SpecMakerInterface
 {
     private DirInterface $specDir;
 
-    private DirInterface $workingDir;
+    private DirInterface $outputDir;
 
     private RouterInterface $router;
 
@@ -48,11 +48,11 @@ final class SpecMaker implements SpecMakerInterface
 
     public function __construct(
         DirInterface $specDir,
-        DirInterface $workingDir,
+        DirInterface $outputDir,
         RouterInterface $router
     ) {
         $this->specDir = $specDir;
-        $this->workingDir = $workingDir;
+        $this->outputDir = $outputDir;
         $this->assertDir();
         $this->router = $router;
         $this->assertRouter();
@@ -108,17 +108,17 @@ final class SpecMaker implements SpecMakerInterface
     private function assertDir(): void
     {
         try {
-            if (! $this->workingDir->exists()) {
-                $this->workingDir->create(0755);
+            if (! $this->outputDir->exists()) {
+                $this->outputDir->create(0755);
             }
-            $this->workingDir->assertExists();
-            if (! $this->workingDir->path()->isWritable()) {
+            $this->outputDir->assertExists();
+            if (! $this->outputDir->path()->isWritable()) {
                 throw new Exception(
                     (new Message('Directory %pathName% is not writable'))
-                        ->code('%pathName%', $this->workingDir->path()->toString())
+                        ->code('%pathName%', $this->outputDir->path()->toString())
                 );
             }
-            $this->workingDir->removeContents();
+            $this->outputDir->removeContents();
         } catch (Throwable $e) {
             throw new FilesystemException(
                 new Message($e->getMessage())
@@ -166,7 +166,7 @@ final class SpecMaker implements SpecMakerInterface
     private function getPathFor(string $jsonPath): PathInterface
     {
         try {
-            $dirPath = $this->workingDir->path();
+            $dirPath = $this->outputDir->path();
             $child = (new Str($jsonPath))
                 ->withReplaceFirst($this->specDir->path()->toString(), '')
                 ->toString();

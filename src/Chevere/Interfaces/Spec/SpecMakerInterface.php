@@ -25,12 +25,15 @@ use Ds\Map;
 interface SpecMakerInterface
 {
     /**
+     * @param DirInterface $specDir Directory to reference `/spec/`
+     * @param DirInterface $outputDir Directory to output `/var/public/spec/`
+     *
      * @throws FilesystemException
      * @throws InvalidArgumentException
      */
     public function __construct(
         DirInterface $specDir,
-        DirInterface $workingDir,
+        DirInterface $outputDir,
         RouterInterface $router
     );
 

@@ -27,10 +27,7 @@ final class RouteEndpointSpec implements RouteEndpointSpecInterface
     public function __construct(DirInterface $specDir, RouteEndpointInterface $routeEndpoint)
     {
         $this->key = $routeEndpoint->method()->name();
-        $this->jsonPath = $specDir
-            ->getChild($this->key . '/')
-            ->path()
-            ->toString() . '.json';
+        $this->jsonPath = $specDir->path()->toString() . $this->key . '.json';
         $this->array = [
             'method' => $this->key,
             'spec' => $this->jsonPath,

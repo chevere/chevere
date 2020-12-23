@@ -15,7 +15,7 @@
                     "endpoints": {
                         "PUT": {
                             "method": "PUT",
-                            "spec": "\/spec\/repo\/route-path\/{id}\/PUT\/.json",
+                            "spec": "\/spec\/repo\/route-path\/{id}\/PUT.json",
                             "description": "Replace all current representations of the target resource with the request payload",
                             "parameters": {
                                 "name": {
@@ -28,7 +28,7 @@
                         },
                         "GET": {
                             "method": "GET",
-                            "spec": "\/spec\/repo\/route-path\/{id}\/GET\/.json",
+                            "spec": "\/spec\/repo\/route-path\/{id}\/GET.json",
                             "description": "Transfer a current representation of the target resource",
                             "parameters": {
                                 "name": {

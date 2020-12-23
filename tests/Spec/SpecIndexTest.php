@@ -54,7 +54,7 @@ final class SpecIndexTest extends TestCase
         ));
         $this->assertCount(1, $specIndex);
         $this->assertSame(
-            $specDir->getChild($getMethod->name() . '/')->path()->toString() . '.json',
+            $specDir->path()->toString() . $getMethod->name() . '.json',
             $specIndex->get(
                 $routeLocator->toString(),
                 $getMethod->name()
@@ -77,8 +77,7 @@ final class SpecIndexTest extends TestCase
         ));
         $this->assertCount(1, $specIndex);
         $this->assertSame(
-            $specDir->getChild($method2->name() . '/')
-                ->path()->toString() . '.json',
+            $specDir->path()->toString() . $method2->name() . '.json',
             $specIndex->get($routeLocator->toString(), $method2->name())
         );
     }
