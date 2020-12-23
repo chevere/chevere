@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router\Route;
 
-use Chevere\Interfaces\DataStructures\MappedInterface;
+use Chevere\Interfaces\DataStructure\MappedInterface;
 use Chevere\Interfaces\To\ToArrayInterface;
 use Generator;
 

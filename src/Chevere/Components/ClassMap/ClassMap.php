@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ClassMap;
 
-use Chevere\Components\DataStructures\Traits\MapToArrayTrait;
-use Chevere\Components\DataStructures\Traits\MapTrait;
+use Chevere\Components\DataStructure\Traits\MapToArrayTrait;
+use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\ClassMap\ClassNotExistsException;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;

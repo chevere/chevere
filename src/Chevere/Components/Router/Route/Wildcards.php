@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Route;
 
-use Chevere\Components\DataStructures\Traits\MapToArrayTrait;
-use Chevere\Components\DataStructures\Traits\MapTrait;
+use Chevere\Components\DataStructure\Traits\MapToArrayTrait;
+use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Router\Route\WildcardsInterface;
 use function DeepCopy\deep_copy;

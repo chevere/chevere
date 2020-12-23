@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\DataStructures\Traits;
+namespace Chevere\Components\DataStructure\Traits;
 
 use function DeepCopy\deep_copy;
 use Ds\Map;

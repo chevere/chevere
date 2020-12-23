@@ -32,7 +32,7 @@ final class RouteEndpointSpecTest extends TestCase
         $this->assertSame($specPathJson, $spec->jsonPath());
         $this->assertSame(
             [
-                'method' => $routeEndpoint->method()->name(),
+                'name' => $routeEndpoint->method()->name(),
                 'spec' => $specDir->path()->toString() . $routeEndpoint->method()->name() . '.json',
                 'description' => $routeEndpoint->method()->description(),
                 'parameters' => $routeEndpoint->parameters(),

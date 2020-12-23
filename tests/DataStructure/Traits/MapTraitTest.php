@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\DataStructures\Traits;
+namespace Chevere\Tests\DataStructure\Traits;
 
-use Chevere\Tests\DataStructures\src\UsesMapTrait;
+use Chevere\Tests\DataStructure\src\UsesMapTrait;
 use function DeepCopy\deep_copy;
 use PHPUnit\Framework\TestCase;
 use stdClass;

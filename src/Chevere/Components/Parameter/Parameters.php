@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter;
 
-use Chevere\Components\DataStructures\Traits\MapTrait;
+use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;

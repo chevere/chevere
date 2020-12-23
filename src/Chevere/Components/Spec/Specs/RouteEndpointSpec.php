@@ -29,7 +29,7 @@ final class RouteEndpointSpec implements RouteEndpointSpecInterface
         $this->key = $routeEndpoint->method()->name();
         $this->jsonPath = $specDir->path()->toString() . $this->key . '.json';
         $this->array = [
-            'method' => $this->key,
+            'name' => $this->key,
             'spec' => $this->jsonPath,
             'description' => $routeEndpoint->description(),
             'parameters' => $routeEndpoint->parameters(),

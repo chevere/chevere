@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\DataStructures\Traits;
+namespace Chevere\Tests\DataStructure\Traits;
 
-use Chevere\Tests\DataStructures\src\UsesMapToArrayTrait;
+use Chevere\Tests\DataStructure\src\UsesMapToArrayTrait;
 use PHPUnit\Framework\TestCase;
 
 final class MapToArrayTraitTest extends TestCase

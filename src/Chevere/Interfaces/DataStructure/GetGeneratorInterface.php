@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\DataStructures;
+namespace Chevere\Interfaces\DataStructure;
 
 use Generator;
 

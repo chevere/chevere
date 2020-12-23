@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\ClassMap;
 use Chevere\Exceptions\ClassMap\ClassNotExistsException;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;
 use Chevere\Exceptions\ClassMap\StringMappedException;
-use Chevere\Interfaces\DataStructures\MappedInterface;
+use Chevere\Interfaces\DataStructure\MappedInterface;
 use Generator;
 
 /**

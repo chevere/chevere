@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Workflow;
 
-use Chevere\Components\DataStructures\Map;
+use Chevere\Components\DataStructure\Map;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\ArgumentCountException;

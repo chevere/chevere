@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Router\Route;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\DataStructures\MappedInterface;
+use Chevere\Interfaces\DataStructure\MappedInterface;
 use Generator;
 
 /**

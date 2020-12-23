@@ -11,19 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\DataStructures\Traits;
+namespace Chevere\Interfaces\DataStructure;
 
-use Ds\Map;
-
-trait MapToArrayTrait
+/**
+ * Describes the component in charge of providing an interface exposing object keys.
+ */
+interface KeysInterface
 {
-    private Map $map;
-
     /**
-     * @psalm-suppress LessSpecificImplementedReturnType
+     * Provides access to the object keys.
+     *
+     * @return string[]
      */
-    public function toArray(): array
-    {
-        return $this->map->toArray();
-    }
+    public function keys(): array;
 }

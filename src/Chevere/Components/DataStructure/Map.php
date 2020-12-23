@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\DataStructures;
+namespace Chevere\Components\DataStructure;
 
-use Chevere\Components\DataStructures\Traits\MapTrait;
+use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\DataStructures\MapInterface;
+use Chevere\Interfaces\DataStructure\MapInterface;
 use function DeepCopy\deep_copy;
 use Ds\Map as InternalMap;
 

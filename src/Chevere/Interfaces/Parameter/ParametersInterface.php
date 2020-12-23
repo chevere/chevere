@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Parameter;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\DataStructures\MappedInterface;
+use Chevere\Interfaces\DataStructure\MappedInterface;
 use Ds\Set;
 use Generator;
 

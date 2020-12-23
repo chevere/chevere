@@ -1,5 +1,5 @@
 {
-    "method": "PUT",
+    "name": "PUT",
     "spec": "\/spec\/repo\/route-path\/{id}\/PUT.json",
     "description": "Replace all current representations of the target resource with the request payload",
     "parameters": {
