@@ -27,6 +27,6 @@ final class DeleteMethod implements MethodInterface
 
     public static function description(): string
     {
-        return 'Remove all current representations of the target resource';
+        return 'Remove all current representations of the target resource.';
     }
 }

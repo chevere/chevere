@@ -27,6 +27,6 @@ final class TraceMethod implements MethodInterface
 
     public static function description(): string
     {
-        return 'Perform a message loop-back test along the path to the target resource';
+        return 'Perform a message loop-back test along the path to the target resource.';
     }
 }

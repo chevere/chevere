@@ -27,6 +27,6 @@ final class GetMethod implements MethodInterface
 
     public static function description(): string
     {
-        return 'Transfer a current representation of the target resource';
+        return 'Transfer a current representation of the target resource.';
     }
 }

@@ -27,6 +27,6 @@ final class ConnectMethod implements MethodInterface
 
     public static function description(): string
     {
-        return 'Establish a tunnel to the server identified by the target resource';
+        return 'Establish a tunnel to the server identified by the target resource.';
     }
 }

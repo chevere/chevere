@@ -27,6 +27,6 @@ final class PostMethod implements MethodInterface
 
     public static function description(): string
     {
-        return 'Perform resource-specific processing on the request payload';
+        return 'Perform resource-specific processing on the request payload.';
     }
 }

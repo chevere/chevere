@@ -27,6 +27,6 @@ final class PutMethod implements MethodInterface
 
     public static function description(): string
     {
-        return 'Replace all current representations of the target resource with the request payload';
+        return 'Replace all current representations of the target resource with the request payload.';
     }
 }
