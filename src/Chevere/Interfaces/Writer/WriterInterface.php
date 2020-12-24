@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Writer;
 
 use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Interfaces\To\ToStringInterface;
+use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
  * Describes the component in charge of writing strings.

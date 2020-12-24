@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\Router;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\To\ToArrayInterface;
+use Chevere\Interfaces\Common\ToArrayInterface;
 
 /**
  * Describes the component in charge of indexing named routes.

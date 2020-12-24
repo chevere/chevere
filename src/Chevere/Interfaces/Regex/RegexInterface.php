@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Regex;
 
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Regex\RegexInvalidException;
-use Chevere\Interfaces\To\ToStringInterface;
+use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
  * Describes the component in charge of interacting with PCRE - Perl Compatible Regular Expressions.

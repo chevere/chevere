@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Iterator;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\To\ToArrayInterface;
-use Chevere\Interfaces\To\ToStringInterface;
+use Chevere\Interfaces\Common\ToArrayInterface;
+use Chevere\Interfaces\Common\ToStringInterface;
 use Countable;
 
 /**

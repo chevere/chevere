@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Pluggable;
 
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Pluggable\PlugInterfaceException;
-use Chevere\Interfaces\To\ToArrayInterface;
+use Chevere\Interfaces\Common\ToArrayInterface;
 
 /**
  * Describes the component in charge of defining a generic plugs queue.

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Cache;
 
 use Chevere\Exceptions\Cache\CacheInvalidKeyException;
-use Chevere\Interfaces\To\ToStringInterface;
+use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
  * Describes the component in charge of defining a cache key.

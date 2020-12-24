@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\Parameter;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
-use Chevere\Interfaces\To\ToArrayInterface;
+use Chevere\Interfaces\Common\ToArrayInterface;
 use TypeError;
 
 /**

@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Identifier;
+namespace Chevere\Interfaces\Common;
 
 /**
- * Describes the component in charge of providing an interface for identifier.
+ * Describes the component that implements `toArray()` method.
  */
-interface IdentifierInterface
+interface ToStringInterface
 {
     /**
-     * Provides access to the identifier.
+     * Returns a string, representing the object itself or some of its data/properties.
      */
-    public function identifier(): string;
+    public function toString(): string;
 }

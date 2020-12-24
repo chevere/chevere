@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Spec;
 
-use Chevere\Interfaces\To\ToArrayInterface;
+use Chevere\Interfaces\Common\ToArrayInterface;
 
 /**
  * Describes the component in charge of defining an ambiguous spec.

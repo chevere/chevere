@@ -15,8 +15,8 @@ namespace Chevere\Interfaces\Router\Route;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
+use Chevere\Interfaces\Common\ToStringInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
-use Chevere\Interfaces\To\ToStringInterface;
 
 /**
  * Describes the component in charge of handling route paths.

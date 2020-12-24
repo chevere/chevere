@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Message;
 
 use Ahc\Cli\Output\Color;
-use Chevere\Interfaces\To\ToStringInterface;
+use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
  * Describes the component in charge of handling rich system messages for CLI and HTML.

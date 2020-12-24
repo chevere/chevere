@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Description;
+namespace Chevere\Interfaces\Common;
 
 /**
- * Describes the component in charge of providing an interface for description.
+ * Describes the component in charge of providing an interface for its description.
  */
 interface DescriptionInterface
 {

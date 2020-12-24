@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Router;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\To\ToArrayInterface;
+use Chevere\Interfaces\Common\ToArrayInterface;
 
 /**
  * Describes the component in charge of describing the route identifier.

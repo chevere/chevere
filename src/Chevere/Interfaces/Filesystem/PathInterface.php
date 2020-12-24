@@ -20,7 +20,7 @@ use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
 use Chevere\Exceptions\Filesystem\PathNotExistsException;
 use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
-use Chevere\Interfaces\To\ToStringInterface;
+use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
  * Describes the component in charge of interact with filesystem paths.
