@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Breadcrumb;
+namespace Chevere\Interfaces\Iterator;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\To\ToArrayInterface;

@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarStorable;
 
-use Chevere\Components\Breadcrumb\Breadcrumb;
+use Chevere\Components\Iterator\Breadcrumb;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\VarStorable\VarStorableException;
-use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
+use Chevere\Interfaces\Iterator\BreadcrumbInterface;
 use Chevere\Interfaces\VarStorable\VarStorableInterface;
 use ReflectionObject;
-use ReflectionProperty;
 
 final class VarStorable implements VarStorableInterface
 {
@@ -103,9 +102,6 @@ final class VarStorable implements VarStorableInterface
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($var);
         $properties = $reflection->getProperties();
-        /**
-         * @var ReflectionProperty $property
-         */
         foreach ($properties as $property) {
             $property->setAccessible(true);
             $this->breadcrumb = $this->breadcrumb

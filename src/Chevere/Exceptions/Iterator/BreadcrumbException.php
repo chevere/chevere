@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Breadcrumb;
+namespace Chevere\Exceptions\Iterator;
 
 use Chevere\Exceptions\Core\Exception;
 

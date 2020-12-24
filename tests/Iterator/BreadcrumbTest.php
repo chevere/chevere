@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Breadcrumb;
+namespace Chevere\Tests\Iterator;
 
-use Chevere\Components\Breadcrumb\Breadcrumb;
-use OutOfBoundsException;
+use Chevere\Components\Iterator\Breadcrumb;
+use Chevere\Exceptions\Iterator\BreadcrumbException;
 use PHPUnit\Framework\TestCase;
 
 final class BreadcrumbTest extends TestCase
@@ -31,7 +31,11 @@ final class BreadcrumbTest extends TestCase
 
     public function testWithAddedItems(): void
     {
-        $items = $this->getItems();
+        $items = [
+            'test-0',
+            'test-1',
+            'test-2',
+        ];
         $breadcrumb = new Breadcrumb();
         foreach ($items as $pos => $item) {
             $breadcrumb = $breadcrumb
@@ -42,6 +46,10 @@ final class BreadcrumbTest extends TestCase
             $this->assertStringContainsString($item, $breadcrumb->toString());
         }
         $this->assertSame($items, $breadcrumb->toArray());
+        $this->assertSame(
+            '[' . implode('][', $items) . ']',
+            $breadcrumb->toString()
+        );
         $breadcrumb = $breadcrumb
             ->withRemovedItem(1);
         $this->assertNotContains($items[1], $breadcrumb->toArray());
@@ -50,7 +58,11 @@ final class BreadcrumbTest extends TestCase
 
     public function testWithRemovedItems(): void
     {
-        $items = $this->getItems();
+        $items = [
+            'test-0',
+            'test-1',
+            'test-2',
+        ];
         $breadcrumb = new Breadcrumb();
         $pos = 0;
         foreach ($items as $pos => $item) {
@@ -64,16 +76,7 @@ final class BreadcrumbTest extends TestCase
         $this->assertCount(0, $breadcrumb);
         $this->assertEmpty($breadcrumb->toArray());
         $this->assertEmpty($breadcrumb->toString());
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(BreadcrumbException::class);
         $breadcrumb->withRemovedItem($pos);
-    }
-
-    private function getItems(): array
-    {
-        return [
-            'test-0',
-            'test-1',
-            'test-2',
-        ];
     }
 }

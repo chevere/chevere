@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Breadcrumb;
+namespace Chevere\Components\Iterator;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
+use Chevere\Exceptions\Iterator\BreadcrumbException;
+use Chevere\Interfaces\Iterator\BreadcrumbInterface;
 
 final class Breadcrumb implements BreadcrumbInterface
 {
@@ -56,7 +56,7 @@ final class Breadcrumb implements BreadcrumbInterface
     public function withRemovedItem(int $pos): BreadcrumbInterface
     {
         if (! array_key_exists($pos, $this->items)) {
-            throw new OutOfBoundsException(
+            throw new BreadcrumbException(
                 (new Message('Pos %pos% not found'))
                     ->code('%pos%', (string) $pos)
             );
