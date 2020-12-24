@@ -19,7 +19,7 @@ use Chevere\Components\ClassMap\ClassMap;
 use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
-use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Components\VarStorable\VarStorable;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
@@ -62,7 +62,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
                 $queueName = (new ReflectionClass($plugsQueueTyped))->getShortName();
                 $cacheAt = $cacheAt->withPut(
                     new CacheKey($queueName),
-                    new VarExportable($plugsQueueTyped)
+                    new VarStorable($plugsQueueTyped)
                 );
                 $new->classMap = $new->classMap
                     ->withPut(
@@ -73,7 +73,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
             $new->cache = $new->cache
                 ->withPut(
                     $new->classMapKey,
-                    new VarExportable($new->classMap)
+                    new VarStorable($new->classMap)
                 );
         }
         // @codeCoverageIgnoreStart

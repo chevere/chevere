@@ -28,7 +28,7 @@ use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarExportable\VarExportableInterface;
+use Chevere\Interfaces\VarStorable\VarStorableInterface;
 use Throwable;
 
 final class FilePhpReturn implements FilePhpReturnInterface
@@ -108,7 +108,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return $var;
     }
 
-    public function put(VarExportableInterface $varExportable): void
+    public function put(VarStorableInterface $varExportable): void
     {
         $var = $varExportable->var();
         $var = $this->getFileReturnVar($var);

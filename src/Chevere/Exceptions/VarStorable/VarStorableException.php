@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\VarExportable;
+namespace Chevere\Exceptions\VarStorable;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when the var exportable is a resource.
+ * Exception thrown by the component implementing `VarStorableInterface`.
  */
-final class VarExportableIsResourceException extends Exception
+final class VarStorableException extends Exception
 {
 }

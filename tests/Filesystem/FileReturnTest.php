@@ -18,7 +18,7 @@ use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Type\Type;
-use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Components\VarStorable\VarStorable;
 use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
@@ -124,7 +124,7 @@ final class FileReturnTest extends TestCase
     {
         $this->file->remove();
         $this->expectException(FileNotExistsException::class);
-        $this->phpFileReturn->put(new VarExportable('test'));
+        $this->phpFileReturn->put(new VarStorable('test'));
     }
 
     public function testPut(): void
@@ -139,7 +139,7 @@ final class FileReturnTest extends TestCase
             [[1, 1.1, true, 'test']],
         ] as $val) {
             $this->phpFileReturn->put(
-                new VarExportable($val)
+                new VarStorable($val)
             );
             $this->assertSame($val, $this->phpFileReturn->var());
         }
@@ -150,7 +150,7 @@ final class FileReturnTest extends TestCase
         ];
         foreach ($types as $type => $val) {
             $this->phpFileReturn->put(
-                new VarExportable($val)
+                new VarStorable($val)
             );
             $this->assertEqualsCanonicalizing(
                 $val,

@@ -17,7 +17,7 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Components\VarStorable\VarStorable;
 use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
@@ -58,7 +58,7 @@ final class CacheTest extends TestCase
     {
         $key = uniqid();
         $var = [time(), false, 'test', $this->dir->getChild('test/'), 13.13];
-        $varExportable = new VarExportable($var);
+        $varExportable = new VarStorable($var);
         $cacheKey = new CacheKey($key);
         $cache = (new Cache($this->dir))
             ->withPut($cacheKey, $varExportable);

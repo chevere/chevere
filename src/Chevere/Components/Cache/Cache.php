@@ -26,7 +26,7 @@ use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Interfaces\VarExportable\VarExportableInterface;
+use Chevere\Interfaces\VarStorable\VarStorableInterface;
 
 final class Cache implements CacheInterface
 {
@@ -55,7 +55,7 @@ final class Cache implements CacheInterface
         return $this->dir;
     }
 
-    public function withPut(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface
+    public function withPut(CacheKeyInterface $key, VarStorableInterface $varExportable): CacheInterface
     {
         $path = $this->getPath($key->toString());
 

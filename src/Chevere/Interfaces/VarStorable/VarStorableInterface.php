@@ -11,29 +11,29 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\VarExportable;
+namespace Chevere\Interfaces\VarStorable;
 
-use Chevere\Exceptions\VarExportable\VarExportableException;
+use Chevere\Exceptions\VarStorable\VarStorableException;
 
 /**
- * Describes the component in charge of handling exportable variables.
+ * Describes the component in charge of handling storable variables.
  */
-interface VarExportableInterface
+interface VarStorableInterface
 {
     /**
-     * @throws VarExportableException if `$var` can't be exported.
+     * @throws VarStorableException if `$var` can't be exported.
      */
     public function __construct($var);
 
     /**
      * Provides access to `$var`.
      */
-    public function var();
+    public function var(): mixed;
 
     /**
      * Shorthand for `\var_export($var)`.
      */
-    public function toExport();
+    public function toExport(): string;
 
     /**
      * Shorthand for `\serialize($var)`.

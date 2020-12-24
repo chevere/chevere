@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Components\VarStorable\VarStorable;
 use Chevere\Exceptions\Router\RouteNotRoutableException;
 use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
 use Chevere\Interfaces\Router\RoutableInterface;
@@ -43,7 +43,7 @@ final class Routable implements RoutableInterface
     private function assertExportable(): void
     {
         try {
-            $varExportable = new VarExportable($this->route);
+            $varExportable = new VarStorable($this->route);
             $varExportable->toExport();
         } catch (Throwable $e) {
             throw new RouteNotRoutableException(

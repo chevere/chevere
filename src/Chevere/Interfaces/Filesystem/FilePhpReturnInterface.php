@@ -22,7 +22,7 @@ use Chevere\Exceptions\Filesystem\FileUnableToGetException;
 use Chevere\Exceptions\Filesystem\FileUnableToPutException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarExportable\VarExportableInterface;
+use Chevere\Interfaces\VarStorable\VarStorableInterface;
 
 /**
  * Describes the component in charge of interact with `.php` files that return a variable.
@@ -96,5 +96,5 @@ interface FilePhpReturnInterface
      * @throws FileNotExistsException
      * @throws FileUnableToPutException
      */
-    public function put(VarExportableInterface $varExportable): void;
+    public function put(VarStorableInterface $varExportable): void;
 }

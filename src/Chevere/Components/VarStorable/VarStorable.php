@@ -11,42 +11,30 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarExportable;
+namespace Chevere\Components\VarStorable;
 
 use Chevere\Components\Breadcrumb\Breadcrumb;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\VarExportable\VarExportableException;
-use Chevere\Exceptions\VarExportable\VarExportableIsResourceException;
+use Chevere\Exceptions\VarStorable\VarStorableException;
 use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
-use Chevere\Interfaces\VarExportable\VarExportableInterface;
+use Chevere\Interfaces\VarStorable\VarStorableInterface;
 use ReflectionObject;
 use ReflectionProperty;
-use Throwable;
 
-final class VarExportable implements VarExportableInterface
+final class VarStorable implements VarStorableInterface
 {
-    /**
-     * @var mixed
-     */
-    private $var;
+    private mixed $var;
 
     private BreadcrumbInterface $breadcrumb;
 
-    public function __construct($var)
+    public function __construct(mixed $var)
     {
         $this->var = $var;
         $this->breadcrumb = new Breadcrumb();
-
-        try {
-            $this->assertExportable($this->var);
-        } catch (Throwable $e) {
-            throw new VarExportableException(
-                new Message($e->getMessage()),
-            );
-        }
+        $this->assertExportable($this->var);
     }
 
-    public function var()
+    public function var(): mixed
     {
         return $this->var;
     }
@@ -72,7 +60,7 @@ final class VarExportable implements VarExportableInterface
     }
 
     /**
-     * @throws VarExportableIsResourceException
+     * @throws VarStorableException
      */
     private function assertIsNotResource($var): void
     {
@@ -84,7 +72,7 @@ final class VarExportable implements VarExportableInterface
                 $message = new Message("Argument is a resource which can't be exported");
             }
 
-            throw new VarExportableIsResourceException($message);
+            throw new VarStorableException($message);
         }
     }
 

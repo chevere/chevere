@@ -17,7 +17,7 @@ use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\VarExportable\VarExportableInterface;
+use Chevere\Interfaces\VarStorable\VarStorableInterface;
 
 /**
  * Describes the component in charge of caching PHP variables.
@@ -47,7 +47,7 @@ interface CacheInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified put.
      */
-    public function withPut(CacheKeyInterface $key, VarExportableInterface $varExportable): self;
+    public function withPut(CacheKeyInterface $key, VarStorableInterface $varExportable): self;
 
     /**
      * Remove item from cache.

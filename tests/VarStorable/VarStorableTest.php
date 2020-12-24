@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarExportable;
 
-use Chevere\Components\VarExportable\VarExportable;
-use Chevere\Exceptions\VarExportable\VarExportableException;
+use Chevere\Components\VarStorable\VarStorable;
+use Chevere\Exceptions\VarStorable\VarStorableException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class VarExportableTest extends TestCase
+final class VarStorableTest extends TestCase
 {
     public function testNotExportable(): void
     {
-        $this->expectException(VarExportableException::class);
+        $this->expectException(VarStorableException::class);
         $resource = fopen(__FILE__, 'r');
         if (is_resource($resource) === false) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         /** @var resource $resource */
-        new VarExportable($resource);
+        new VarStorable($resource);
         fclose($resource);
     }
 
@@ -40,8 +40,8 @@ final class VarExportableTest extends TestCase
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         $object->array = [1, 2, 3, $resource];
-        $this->expectException(VarExportableException::class);
-        new VarExportable($object);
+        $this->expectException(VarStorableException::class);
+        new VarStorable($object);
         /** @var resource $resource */
         fclose($resource);
     }
@@ -59,7 +59,7 @@ final class VarExportableTest extends TestCase
             new stdClass(),
             ['test', [1, false], new stdClass()],
         ] as $val) {
-            $varExportable = new VarExportable($val);
+            $varExportable = new VarStorable($val);
             $this->assertSame($val, $varExportable->var());
             $this->assertSame(serialize($val), $varExportable->toSerialize());
             $this->assertSame(var_export($val, true), $varExportable->toExport());
