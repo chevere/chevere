@@ -10,7 +10,7 @@
         "PUT": {
             "name": "PUT",
             "spec": "\/spec\/repo\/route-path\/{id}\/PUT.json",
-            "description": "Replace all current representations of the target resource with the request payload",
+            "description": "Replace all current representations of the target resource with the request payload.",
             "parameters": {
                 "name": {
                     "name": "name",
@@ -23,7 +23,7 @@
         "GET": {
             "name": "GET",
             "spec": "\/spec\/repo\/route-path\/{id}\/GET.json",
-            "description": "Transfer a current representation of the target resource",
+            "description": "Transfer a current representation of the target resource.",
             "parameters": {
                 "name": {
                     "name": "name",

@@ -27,6 +27,6 @@ final class OptionsMethod implements MethodInterface
 
     public static function description(): string
     {
-        return 'Describe the communication options for the target resource';
+        return 'Describe the communication options for the target resource.';
     }
 }

@@ -1,7 +1,7 @@
 {
     "name": "GET",
     "spec": "\/spec\/repo\/route-path\/{id}\/GET.json",
-    "description": "Transfer a current representation of the target resource",
+    "description": "Transfer a current representation of the target resource.",
     "parameters": {
         "name": {
             "name": "name",

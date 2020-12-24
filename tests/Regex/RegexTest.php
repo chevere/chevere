@@ -38,11 +38,11 @@ final class RegexTest extends TestCase
 
     public function testMatch(): void
     {
-        $pattern = '/\w+/';
-        $test = 'aa bb';
+        $test = 'Hello World!';
+        $pattern = '/^' . $test . '$/';
         $regex = new Regex($pattern);
-        $this->assertSame(['aa'], $regex->match($test));
-        $this->assertSame([['aa', 'bb']], $regex->matchAll($test));
+        $this->assertSame([$test], $regex->match($test));
+        $this->assertSame([[$test]], $regex->matchAll($test));
     }
 
     public function testMatchRegex(): void

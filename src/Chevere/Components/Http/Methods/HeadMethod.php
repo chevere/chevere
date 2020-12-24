@@ -27,6 +27,6 @@ final class HeadMethod implements MethodInterface
 
     public static function description(): string
     {
-        return 'Same as GET, but only transfer the status line and header section';
+        return 'Same as GET, but only transfer the status line and header section.';
     }
 }

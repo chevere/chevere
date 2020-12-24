@@ -27,6 +27,6 @@ final class PatchMethod implements MethodInterface
 
     public static function description(): string
     {
-        return 'Apply partial modifications described in the request entity to the target resource';
+        return 'Apply partial modifications described in the request entity to the target resource.';
     }
 }
