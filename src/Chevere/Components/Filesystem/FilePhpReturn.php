@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
 use function Chevere\Components\Type\varType;
@@ -108,9 +109,9 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return $var;
     }
 
-    public function put(VarStorableInterface $varExportable): void
+    public function put(VarStorableInterface $varStorable): void
     {
-        $var = $varExportable->var();
+        $var = $varStorable->var();
         $var = $this->getFileReturnVar($var);
         $varExport = var_export($var, true);
         $this->filePhp->file()->put(
@@ -202,7 +203,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     private function getFileReturnVar($var)
     {
         if (is_object($var)) {
-            return serialize($var);
+            return (new Serialize($var))->toString();
         }
 
         return $var;

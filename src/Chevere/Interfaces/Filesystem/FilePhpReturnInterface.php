@@ -96,5 +96,5 @@ interface FilePhpReturnInterface
      * @throws FileNotExistsException
      * @throws FileUnableToPutException
      */
-    public function put(VarStorableInterface $varExportable): void;
+    public function put(VarStorableInterface $varStorable): void;
 }

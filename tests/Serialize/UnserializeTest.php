@@ -15,6 +15,7 @@ namespace Chevere\Tests\Serialize;
 
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Exceptions\Serialize\UnserializeException;
+use Chevere\Tests\Serialize\_resources\TestUnserializeException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -33,6 +34,14 @@ final class UnserializeTest extends TestCase
     {
         $this->expectException(UnserializeException::class);
         new Unserialize('84()/*');
+    }
+
+    public function testThrowableUnserializeHandler(): void
+    {
+        $object = new TestUnserializeException();
+        $serialize = serialize($object);
+        $this->expectException(UnserializeException::class);
+        new Unserialize($serialize);
     }
 
     public function testConstruct(): void

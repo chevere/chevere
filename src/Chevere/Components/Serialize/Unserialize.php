@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Message\Message;
+use function Chevere\Components\Type\debugType;
 use Chevere\Components\Type\Type;
-use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Serialize\UnserializeInterface;
 use Chevere\Interfaces\Type\TypeInterface;
+use Throwable;
 
 final class Unserialize implements UnserializeInterface
 {
@@ -28,14 +29,19 @@ final class Unserialize implements UnserializeInterface
 
     public function __construct(string $serialized)
     {
-        $this->var = @unserialize($serialized);
+        try {
+            $this->var = @unserialize($serialized);
+        } catch (Throwable $e) {
+            throw new UnserializeException(
+                new Message($e->getMessage())
+            );
+        }
         if ($this->var === false) {
             throw new UnserializeException(
                 new Message('Unable to unserialize provided string.')
             );
         }
-        $type = is_object($this->var) ? get_class($this->var) : varType($this->var);
-        $this->type = new Type($type);
+        $this->type = new Type(debugType($this->var));
     }
 
     public function var()

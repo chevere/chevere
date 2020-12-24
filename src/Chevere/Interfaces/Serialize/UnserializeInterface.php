@@ -17,7 +17,7 @@ use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Type\TypeInterface;
 
 /**
- * Describes the component in charge of handling unserialize.
+ * Describes the component in charge of handling `unserialize()`.
  */
 interface UnserializeInterface
 {
@@ -27,12 +27,12 @@ interface UnserializeInterface
     public function __construct(string $serialized);
 
     /**
-     * Provides access to the unserialized variable.
+     * Provides access to the unserialize variable.
      */
     public function var();
 
     /**
-     * Provides access to the TypeInterface instance for the unserialized variable.
+     * Provides access to the TypeInterface instance for the unserialize variable.
      */
     public function type(): TypeInterface;
 }

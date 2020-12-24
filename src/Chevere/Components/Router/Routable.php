@@ -43,8 +43,8 @@ final class Routable implements RoutableInterface
     private function assertExportable(): void
     {
         try {
-            $varExportable = new VarStorable($this->route);
-            $varExportable->toExport();
+            $varStorable = new VarStorable($this->route);
+            $varStorable->toExport();
         } catch (Throwable $e) {
             throw new RouteNotRoutableException(
                 new Message($e->getMessage()),

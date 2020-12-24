@@ -59,10 +59,10 @@ final class VarStorableTest extends TestCase
             new stdClass(),
             ['test', [1, false], new stdClass()],
         ] as $val) {
-            $varExportable = new VarStorable($val);
-            $this->assertSame($val, $varExportable->var());
-            $this->assertSame(serialize($val), $varExportable->toSerialize());
-            $this->assertSame(var_export($val, true), $varExportable->toExport());
+            $varStorable = new VarStorable($val);
+            $this->assertSame($val, $varStorable->var());
+            $this->assertSame(serialize($val), $varStorable->toSerialize());
+            $this->assertSame(var_export($val, true), $varStorable->toExport());
         }
     }
 }

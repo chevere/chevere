@@ -55,7 +55,7 @@ final class Cache implements CacheInterface
         return $this->dir;
     }
 
-    public function withPut(CacheKeyInterface $key, VarStorableInterface $varExportable): CacheInterface
+    public function withPut(CacheKeyInterface $key, VarStorableInterface $varStorable): CacheInterface
     {
         $path = $this->getPath($key->toString());
 
@@ -67,7 +67,7 @@ final class Cache implements CacheInterface
             $file->assertExists();
             $filePhp = new FilePhp($file);
             $fileReturn = new FilePhpReturn($filePhp);
-            $fileReturn->put($varExportable);
+            $fileReturn->put($varStorable);
             $filePhp->cache();
             $new = clone $this;
             $new->puts[$key->toString()] = [

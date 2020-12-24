@@ -58,10 +58,10 @@ final class CacheTest extends TestCase
     {
         $key = uniqid();
         $var = [time(), false, 'test', $this->dir->getChild('test/'), 13.13];
-        $varExportable = new VarStorable($var);
+        $varStorable = new VarStorable($var);
         $cacheKey = new CacheKey($key);
         $cache = (new Cache($this->dir))
-            ->withPut($cacheKey, $varExportable);
+            ->withPut($cacheKey, $varStorable);
         $this->assertArrayHasKey($key, $cache->puts());
         $this->assertTrue($cache->exists($cacheKey));
         $this->assertInstanceOf(CacheItemInterface::class, $cache->get($cacheKey));
