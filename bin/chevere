@@ -11,16 +11,12 @@
  */
 
 use Ahc\Cli\IO\Interactor;
-use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Console\Application;
 use Chevere\Components\Console\Commands\ControllerInspectCommand;
 use Chevere\Components\Console\Commands\ControllerListCommand;
 use Chevere\Components\Console\Commands\ControllerRunCommand;
-use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Instances\WritersInstance;
-use Chevere\Components\Writer\StreamWriter;
 use Chevere\Components\Writer\Writers;
-use Laminas\Diactoros\StreamFactory;
 use function Chevere\Components\Filesystem\dirForString;
 
 foreach ([

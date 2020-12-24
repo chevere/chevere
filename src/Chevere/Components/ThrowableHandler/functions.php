@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler;
 
-use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerConsoleDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerHtmlDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
 use function Chevere\Components\Writer\streamFor;
 use Chevere\Components\Writer\StreamWriter;
+use Chevere\Components\Writer\WritersInstance;
 use Chevere\Exceptions\Core\ErrorException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
 use LogicException;

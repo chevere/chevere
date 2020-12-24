@@ -11,29 +11,26 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Instances;
+namespace Chevere\Components\Writer;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Interfaces\VarDump\VarDumpInterface;
+use Chevere\Interfaces\Writer\WritersInterface;
 
-/**
- * @codeCoverageIgnore
- */
-final class VarDumpInstance
+final class WritersInstance
 {
-    private static ?VarDumpInterface $instance;
+    private static ?WritersInterface $instance;
 
-    public function __construct(VarDumpInterface $varDump)
+    public function __construct(WritersInterface $writers)
     {
-        self::$instance = $varDump;
+        self::$instance = $writers;
     }
 
-    public static function get(): VarDumpInterface
+    public static function get(): WritersInterface
     {
         if (! isset(self::$instance)) {
             throw new LogicException(
-                new Message('No VarDump instance present')
+                new Message('No writers instance present')
             );
         }
 

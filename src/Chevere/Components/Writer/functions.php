@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writer;
 
-use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;

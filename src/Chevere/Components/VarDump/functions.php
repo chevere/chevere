@@ -51,12 +51,12 @@ namespace Chevere\Components\VarDump {
 }
 
 namespace {
-    use Chevere\Components\Instances\VarDumpInstance;
-    use Chevere\Components\Instances\WritersInstance;
     use function Chevere\Components\VarDump\varDumpConsole;
-    use function Chevere\Components\Writer\streamFor;
+    use Chevere\Components\VarDump\VarDumpInstance;
+use function Chevere\Components\Writer\streamFor;
     use Chevere\Components\Writer\StreamWriter;
     use Chevere\Components\Writer\Writers;
+    use Chevere\Components\Writer\WritersInstance;
 
     if (function_exists('xd') === false) {
         /**
