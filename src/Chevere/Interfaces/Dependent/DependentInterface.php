@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Service;
+namespace Chevere\Interfaces\Dependent;
 
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
@@ -19,17 +19,28 @@ use Chevere\Interfaces\ClassMap\ClassMapInterface;
 /**
  * Describes the component in charge of defining a class with explicit dependencies.
  */
-interface ServiceDependantInterface
+interface DependentInterface
 {
     /**
-     * Return an instance with the specified dependencies.
+     * Dependencies must be passed on construct for this interface.
      *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified dependencies.
+     * Each named argument value will be assigned to a property of the
+     * same name.
      *
-     * Each named argument value will be assigned to an object property of the same name.
+     * ```php
+     * class Dependent Implements DependentInterface
+     * {
+     *      private FooType $foo;
+     *      private BatType $bar;
+     *      // ...
+     * }
+     *
+     * new Dependent(foo: $fooInstance, bar: $barInstance);
+     * ```
+     *
+     * @param mixed $namedDependency Named dependency `name: $var,`
      */
-    public function withDependencies(mixed ...$namedArguments): self;
+    public function __construct(mixed ...$namedDependency);
 
     /**
      * Declares required dependencies as class name -> property name.

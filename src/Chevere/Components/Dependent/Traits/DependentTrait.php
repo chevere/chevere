@@ -11,32 +11,48 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Service\Traits;
+namespace Chevere\Components\Dependent\Traits;
 
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Message\Message;
 use function Chevere\Components\Type\debugType;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\TypeException;
+use Chevere\Exceptions\Dependent\DependentException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use ReflectionObject;
 use TypeError;
 
-trait ServiceDependantTrait
+trait DependentTrait
 {
     private ClassMapInterface $dependencies;
+
+    public function __construct(mixed ...$namedDependency)
+    {
+        $this->setDependency(...$namedDependency);
+    }
 
     public function getDependencies(): ClassMapInterface
     {
         return new ClassMap();
     }
 
-    public function withDependencies(mixed ...$namedArguments): self
+    final public function assertDependencies(): void
+    {
+        $dependencies = $this->dependencies ?? $this->getDependencies();
+        $missing = [];
+        foreach ($dependencies->keys() as $property) {
+            if (! isset($this->{$property})) {
+                $missing[] = $property;
+            }
+        }
+        $this->assertNotMissing($missing);
+    }
+
+    private function setDependency(mixed ...$namedArguments): void
     {
         $missing = [];
-        $new = clone $this;
-        $new->dependencies = $new->getDependencies();
-        foreach ($new->dependencies->getGenerator() as $className => $key) {
+        $this->dependencies = $this->getDependencies();
+        foreach ($this->dependencies->getGenerator() as $className => $key) {
             $value = $namedArguments[$key] ?? null;
             if (! isset($value)) {
                 $missing[] = $key;
@@ -46,7 +62,7 @@ trait ServiceDependantTrait
             $this->assertType($className, $key, $value);
 
             try {
-                $new->{$key} = $value;
+                $this->{$key} = $value;
             } catch (TypeError $e) {
                 throw new TypeException(
                     (new Message('Dependency %key% type declaration mismatch'))
@@ -55,20 +71,7 @@ trait ServiceDependantTrait
                 );
             }
         }
-        $new->assertNotMissing($missing);
 
-        return $new;
-    }
-
-    final public function assertDependencies(): void
-    {
-        $dependencies = $this->dependencies ?? $this->getDependencies();
-        $missing = [];
-        foreach ($dependencies->keys() as $variable) {
-            if (! isset($this->{$variable})) {
-                $missing[] = $variable;
-            }
-        }
         $this->assertNotMissing($missing);
     }
 
@@ -97,7 +100,7 @@ trait ServiceDependantTrait
     private function assertNotMissing(array $missing): void
     {
         if ($missing !== []) {
-            throw new InvalidArgumentException(
+            throw new DependentException(
                 (new Message('Missing dependencies %missing%'))
                     ->code('%missing%', implode(', ', $missing))
             );

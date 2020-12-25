@@ -17,8 +17,8 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
+use Chevere\Interfaces\Dependent\DependentInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
-use Chevere\Interfaces\Service\ServiceDependantInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunnerInterface;
@@ -70,7 +70,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
 
     private function injectDependencies(ActionInterface $action, $container): void
     {
-        if ($action instanceof ServiceDependantInterface) {
+        if ($action instanceof DependentInterface) {
             // Inject the services required by the action
         }
     }
