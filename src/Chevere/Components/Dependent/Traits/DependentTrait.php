@@ -28,7 +28,7 @@ trait DependentTrait
 
     public function __construct(mixed ...$namedDependency)
     {
-        $this->setDependency(...$namedDependency);
+        $this->setDependencies(...$namedDependency);
     }
 
     public function getDependencies(): ClassMapInterface
@@ -48,12 +48,12 @@ trait DependentTrait
         $this->assertNotMissing($missing);
     }
 
-    private function setDependency(mixed ...$namedArguments): void
+    private function setDependencies(mixed ...$namedDependency): void
     {
         $missing = [];
         $this->dependencies = $this->getDependencies();
         foreach ($this->dependencies->getGenerator() as $className => $key) {
-            $value = $namedArguments[$key] ?? null;
+            $value = $namedDependency[$key] ?? null;
             if (! isset($value)) {
                 $missing[] = $key;
 
