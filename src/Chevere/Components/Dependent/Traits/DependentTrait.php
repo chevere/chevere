@@ -26,7 +26,7 @@ trait DependentTrait
 {
     private DependenciesInterface $dependencies;
 
-    public function __construct(mixed ...$namedDependency)
+    public function __construct(object ...$namedDependency)
     {
         $this->setDependencies(...$namedDependency);
     }
@@ -48,7 +48,7 @@ trait DependentTrait
         $this->assertNotMissing($missing);
     }
 
-    private function setDependencies(mixed ...$namedDependency): void
+    private function setDependencies(object ...$namedDependency): void
     {
         $missing = [];
         $this->dependencies = $this->getDependencies();
@@ -59,6 +59,7 @@ trait DependentTrait
 
                 continue;
             }
+            /** @var object $value */
             $this->assertType($className, $name, $value);
 
             try {
@@ -72,27 +73,17 @@ trait DependentTrait
             }
         }
         $this->assertNotMissing($missing);
-        $this->assertDependencies();
     }
 
-    private function assertType(string $className, string $name, $value): void
+    private function assertType(string $className, string $name, object $value): void
     {
-        if (! is_object($value)) {
-            throw new TypeException(
-                (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
-                    ->strong('%key%', $name)
-                    ->code('%expected%', $className)
-                    ->code('%provided%', debugType($name)),
-                100
-            );
-        }
         if (! (new ReflectionObject($value))->isSubclassOf($className)) {
             throw new TypeException(
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
                     ->strong('%key%', $name)
                     ->code('%expected%', $className)
                     ->code('%provided%', debugType($value)),
-                101
+                100
             );
         }
     }

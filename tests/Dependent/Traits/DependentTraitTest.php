@@ -44,17 +44,10 @@ final class DependentTraitTest extends TestCase
         $this->getTestDependent(...[]);
     }
 
-    public function testWithWrongDependencyType(): void
-    {
-        $this->expectException(TypeException::class);
-        $this->expectExceptionCode(100);
-        $this->getTestDependent(testCase: 'e');
-    }
-
     public function testWithWrongDependencyClass(): void
     {
         $this->expectException(TypeException::class);
-        $this->expectExceptionCode(101);
+        $this->expectExceptionCode(100);
         $this->getTestDependent(testCase: new \stdClass());
     }
 

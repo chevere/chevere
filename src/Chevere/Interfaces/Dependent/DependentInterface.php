@@ -37,9 +37,9 @@ interface DependentInterface
      * new Dependent(foo: $fooInstance, bar: $barInstance);
      * ```
      *
-     * @param mixed $namedDependency Named dependency `name: $var,`
+     * @param object $namedDependency Named dependency `name: $var,`
      */
-    public function __construct(mixed ...$namedDependency);
+    public function __construct(object ...$namedDependency);
 
     /**
      * Declares required dependencies as class name -> property name.
