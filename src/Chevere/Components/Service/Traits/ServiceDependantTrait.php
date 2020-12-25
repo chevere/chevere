@@ -55,7 +55,6 @@ trait ServiceDependantTrait
                 );
             }
         }
-
         $new->assertNotMissing($missing);
 
         return $new;

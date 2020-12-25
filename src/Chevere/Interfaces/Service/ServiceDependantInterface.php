@@ -21,14 +21,24 @@ use Chevere\Interfaces\ClassMap\ClassMapInterface;
  */
 interface ServiceDependantInterface
 {
+    /**
+     * Return an instance with the specified dependencies.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified dependencies.
+     *
+     * Each named argument value will be assigned to an object property of the same name.
+     */
     public function withDependencies(mixed ...$namedArguments): self;
 
     /**
-     * A class mapping for class name -> construct argument name
+     * Declares required dependencies as class name -> property name.
      */
     public function getDependencies(): ClassMapInterface;
 
     /**
+     * Asserts that the instance meets all dependencies.
+     *
      * @throws LogicException
      */
     public function assertDependencies(): void;
