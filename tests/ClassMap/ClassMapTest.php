@@ -41,7 +41,7 @@ final class ClassMapTest extends TestCase
 
     public function testWithPut(): void
     {
-        $className = __CLASS__;
+        $className = self::class;
         $key = 'self';
         $classMap = (new ClassMap())->withPut($className, $key);
         $this->assertCount(1, $classMap);
@@ -52,6 +52,7 @@ final class ClassMapTest extends TestCase
         ], $classMap->toArray());
         $this->assertSame($key, $classMap->key($className));
         $this->assertSame($className, $classMap->className($key));
+        $this->assertSame([$key], $classMap->keys());
     }
 
     public function testWithPutSameMapping(): void
@@ -59,7 +60,7 @@ final class ClassMapTest extends TestCase
         $mapping = 'self';
         $this->expectException(StringMappedException::class);
         (new ClassMap())
-            ->withPut(__CLASS__, $mapping)
+            ->withPut(self::class, $mapping)
             ->withPut(TestCase::class, $mapping);
     }
 

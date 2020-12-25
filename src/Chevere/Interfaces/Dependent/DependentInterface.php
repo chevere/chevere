@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Dependent;
 
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Interfaces\ClassMap\ClassMapInterface;
 
 /**
  * Describes the component in charge of defining a class with explicit dependencies.
@@ -31,7 +30,7 @@ interface DependentInterface
      * class Dependent Implements DependentInterface
      * {
      *      private FooType $foo;
-     *      private BatType $bar;
+     *      private BarType $bar;
      *      // ...
      * }
      *
@@ -45,7 +44,7 @@ interface DependentInterface
     /**
      * Declares required dependencies as class name -> property name.
      */
-    public function getDependencies(): ClassMapInterface;
+    public function getDependencies(): DependenciesInterface;
 
     /**
      * Asserts that the instance meets all dependencies.

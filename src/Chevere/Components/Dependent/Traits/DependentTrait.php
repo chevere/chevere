@@ -13,27 +13,27 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Dependent\Traits;
 
-use Chevere\Components\ClassMap\ClassMap;
+use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Message\Message;
 use function Chevere\Components\Type\debugType;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Exceptions\Dependent\DependentException;
-use Chevere\Interfaces\ClassMap\ClassMapInterface;
+use Chevere\Interfaces\Dependent\DependenciesInterface;
 use ReflectionObject;
 use TypeError;
 
 trait DependentTrait
 {
-    private ClassMapInterface $dependencies;
+    private DependenciesInterface $dependencies;
 
     public function __construct(mixed ...$namedDependency)
     {
         $this->setDependencies(...$namedDependency);
     }
 
-    public function getDependencies(): ClassMapInterface
+    public function getDependencies(): DependenciesInterface
     {
-        return new ClassMap();
+        return new Dependencies();
     }
 
     final public function assertDependencies(): void
@@ -52,44 +52,44 @@ trait DependentTrait
     {
         $missing = [];
         $this->dependencies = $this->getDependencies();
-        foreach ($this->dependencies->getGenerator() as $className => $key) {
-            $value = $namedDependency[$key] ?? null;
+        foreach ($this->dependencies->getGenerator() as $name => $className) {
+            $value = $namedDependency[$name] ?? null;
             if (! isset($value)) {
-                $missing[] = $key;
+                $missing[] = $name;
 
                 continue;
             }
-            $this->assertType($className, $key, $value);
+            $this->assertType($className, $name, $value);
 
             try {
-                $this->{$key} = $value;
+                $this->{$name} = $value;
             } catch (TypeError $e) {
                 throw new TypeException(
                     (new Message('Dependency %key% type declaration mismatch'))
-                        ->strong('%key%', $key),
+                        ->strong('%key%', $name),
                     102
                 );
             }
         }
-
         $this->assertNotMissing($missing);
+        $this->assertDependencies();
     }
 
-    private function assertType(string $className, string $key, $value): void
+    private function assertType(string $className, string $name, $value): void
     {
         if (! is_object($value)) {
             throw new TypeException(
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
-                    ->strong('%key%', $key)
+                    ->strong('%key%', $name)
                     ->code('%expected%', $className)
-                    ->code('%provided%', debugType($key)),
+                    ->code('%provided%', debugType($name)),
                 100
             );
         }
         if (! (new ReflectionObject($value))->isSubclassOf($className)) {
             throw new TypeException(
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
-                    ->strong('%key%', $key)
+                    ->strong('%key%', $name)
                     ->code('%expected%', $className)
                     ->code('%provided%', debugType($value)),
                 101

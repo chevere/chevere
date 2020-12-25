@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Dependent\Traits;
 
-use Chevere\Components\ClassMap\ClassMap;
+use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Dependent\Traits\DependentTrait;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Exceptions\Dependent\DependentException;
+use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Chevere\Interfaces\Dependent\DependentInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -82,10 +83,10 @@ final class DependentTraitTest extends TestCase
 
             public ?TestCase $testCase;
 
-            public function getDependencies(): ClassMap
+            public function getDependencies(): DependenciesInterface
             {
-                return (new ClassMap())
-                    ->withPut(TestCase::class, 'testCase');
+                return (new Dependencies())
+                    ->withPut(testCase: TestCase::class);
             }
         };
     }
@@ -100,10 +101,10 @@ final class DependentTraitTest extends TestCase
              */
             public int $testCase;
 
-            public function getDependencies(): ClassMap
+            public function getDependencies(): DependenciesInterface
             {
-                return (new ClassMap())
-                    ->withPut(TestCase::class, 'testCase');
+                return (new Dependencies())
+                    ->withPut(testCase: TestCase::class);
             }
         };
     }
