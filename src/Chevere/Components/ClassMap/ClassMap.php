@@ -95,6 +95,11 @@ final class ClassMap implements ClassMapInterface
         return $this->map[$className];
     }
 
+    public function keys(): array
+    {
+        return $this->flip->keys()->toArray();
+    }
+
     public function className(string $key): string
     {
         if (! $this->hasKey($key)) {
