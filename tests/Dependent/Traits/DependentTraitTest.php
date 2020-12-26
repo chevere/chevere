@@ -16,7 +16,7 @@ namespace Chevere\Tests\Dependent\Traits;
 use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Dependent\Traits\DependentTrait;
 use Chevere\Exceptions\Core\TypeException;
-use Chevere\Exceptions\Dependent\DependentException;
+use Chevere\Exceptions\Dependent\MissingDependenciesException;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Chevere\Interfaces\Dependent\DependentInterface;
 use PHPUnit\Framework\TestCase;
@@ -34,13 +34,13 @@ final class DependentTraitTest extends TestCase
 
     public function testConstructMissing(): void
     {
-        $this->expectException(DependentException::class);
+        $this->expectException(MissingDependenciesException::class);
         $this->getTestDependent();
     }
 
     public function testWithMissingDependency(): void
     {
-        $this->expectException(DependentException::class);
+        $this->expectException(MissingDependenciesException::class);
         $this->getTestDependent(...[]);
     }
 
@@ -74,7 +74,7 @@ final class DependentTraitTest extends TestCase
         $dependent = $this->getTestDependent(testCase: $this);
         $dependent->assertDependencies();
         $dependent->testCase = null;
-        $this->expectException(DependentException::class);
+        $this->expectException(MissingDependenciesException::class);
         $dependent->assertDependencies();
     }
 

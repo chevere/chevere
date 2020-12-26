@@ -17,7 +17,7 @@ use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Message\Message;
 use function Chevere\Components\Type\debugType;
 use Chevere\Exceptions\Core\TypeException;
-use Chevere\Exceptions\Dependent\DependentException;
+use Chevere\Exceptions\Dependent\MissingDependenciesException;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
 use ReflectionObject;
 use TypeError;
@@ -94,7 +94,7 @@ trait DependentTrait
     private function assertNotMissing(array $missing): void
     {
         if ($missing !== []) {
-            throw new DependentException(
+            throw new MissingDependenciesException(
                 (new Message('Missing dependencies %missing%'))
                     ->code('%missing%', implode(', ', $missing))
             );

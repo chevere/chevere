@@ -18,6 +18,6 @@ use Chevere\Exceptions\Core\Exception;
 /**
  * Exception thrown when missing dependencies.
  */
-final class DependentException extends Exception
+final class MissingDependenciesException extends Exception
 {
 }
