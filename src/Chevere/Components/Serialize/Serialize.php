@@ -15,7 +15,7 @@ namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Serialize\SerializeException;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Serialize\SerializeInterface;
 use Throwable;
 
@@ -35,7 +35,7 @@ final class Serialize implements SerializeInterface
         try {
             $this->serialize = serialize($var);
         } catch (Throwable $e) {
-            throw new SerializeException(
+            throw new LogicException(
                 new Message($e->getMessage())
             );
         }
