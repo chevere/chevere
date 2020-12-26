@@ -17,10 +17,10 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
-use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
+use Chevere\Exceptions\Filesystem\PathTailException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use PHPUnit\Framework\TestCase;
 use Throwable;
@@ -50,7 +50,7 @@ final class DirTest extends TestCase
     public function testWithFilePath(): void
     {
         $path = new Path(__DIR__ . '/no-tail');
-        $this->expectException(DirTailException::class);
+        $this->expectException(PathTailException::class);
         new Dir($path);
     }
 

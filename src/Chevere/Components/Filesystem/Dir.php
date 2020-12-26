@@ -16,11 +16,11 @@ namespace Chevere\Components\Filesystem;
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
-use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
+use Chevere\Exceptions\Filesystem\PathTailException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use RecursiveDirectoryIterator;
@@ -101,8 +101,8 @@ final class Dir implements DirInterface
                 $removed[] = $path->toString();
 
                 continue;
-            } 
-                $path = new Path($fileInfo->getRealPath());
+            }
+            $path = new Path($fileInfo->getRealPath());
 
             (new File($path))->remove();
             $removed[] = $path->toString();
@@ -125,7 +125,7 @@ final class Dir implements DirInterface
     {
         $absolute = $this->path->toString();
         if ($absolute[-1] !== '/') {
-            throw new DirTailException(
+            throw new PathTailException(
                 (new Message('Instance of %className% must provide an absolute path ending with %tailChar%, path %provided% provided'))
                     ->code('%className%', get_class($this->path))
                     ->code('%tailChar%', '/')
