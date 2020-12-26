@@ -57,7 +57,7 @@ class TestController extends Controller implements PluggableHooksInterface
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
         $this->hook('run:before', $arguments);
-        $response = new ResponseSuccess($this->getResponseDataParameters(), []);
+        $response = new ResponseSuccess([]);
         $data = [
             'userName' => $arguments->get('name'),
             'userId' => $arguments->get('id'),

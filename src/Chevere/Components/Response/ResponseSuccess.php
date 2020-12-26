@@ -23,22 +23,10 @@ final class ResponseSuccess implements ResponseSuccessInterface
 
     private WorkflowMessageInterface $workflowMessage;
 
-    public function withData(array $data): ResponseSuccessInterface
-    {
-        $new = clone $this;
-        $new->data = $data;
-
-        return $new;
-    }
-
     public function withWorkflowMessage(WorkflowMessageInterface $workflowMessage): ResponseSuccessInterface
     {
         $new = clone $this;
         $new->workflowMessage = $workflowMessage;
-        $new->data = array_merge($new->data, [
-            'delay' => $workflowMessage->delay(),
-            'expiration' => $workflowMessage->expiration(),
-        ]);
 
         return $new;
     }

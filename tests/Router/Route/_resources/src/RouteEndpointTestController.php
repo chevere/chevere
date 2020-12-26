@@ -39,6 +39,6 @@ final class RouteEndpointTestController extends Controller
 
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }

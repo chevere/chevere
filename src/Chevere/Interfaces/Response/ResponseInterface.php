@@ -13,14 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Response;
 
-use Chevere\Interfaces\Parameter\ParametersInterface;
-
 /**
  * Describes the component in charge of handling the response.
  */
 interface ResponseInterface
 {
-    public function __construct(ParametersInterface $parameters, array $data);
+    public function __construct(array $data);
+
+    /**
+     * Return an instance with the specified data.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified data.
+     */
+    public function withData(array $data): self;
 
     /**
      * Provides access to response uuid.

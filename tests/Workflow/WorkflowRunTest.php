@@ -72,11 +72,7 @@ final class WorkflowRunTest extends TestCase
         $workflowRun = (new WorkflowRun($workflow, ...$arguments))
             ->withStepResponse(
                 'step0',
-                new ResponseSuccess(
-                    (new Parameters())
-                        ->withAddedRequired(response0: new StringParameter()),
-                    $responseData
-                )
+                new ResponseSuccess($responseData)
             );
         $this->assertTrue($workflow->hasVar('${step0:response0}'));
         $this->assertTrue($workflowRun->has('step0'));
@@ -97,7 +93,7 @@ final class WorkflowRunTest extends TestCase
         (new WorkflowRun($workflow, ...$arguments))
             ->withStepResponse(
                 'not-found',
-                new ResponseSuccess(new Parameters(), [])
+                new ResponseSuccess([])
             );
     }
 
@@ -113,7 +109,7 @@ final class WorkflowRunTest extends TestCase
         (new WorkflowRun($workflow))
             ->withStepResponse(
                 'step0',
-                new ResponseSuccess(new Parameters(), [])
+                new ResponseSuccess([])
             );
     }
 }
@@ -122,7 +118,7 @@ class WorkflowRunTestStep0 extends Action
 {
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }
 
@@ -136,7 +132,7 @@ class WorkflowRunTestStep1 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }
 
@@ -153,6 +149,6 @@ class WorkflowRunTestStep2 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }

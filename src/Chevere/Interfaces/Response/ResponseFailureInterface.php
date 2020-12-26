@@ -18,11 +18,4 @@ namespace Chevere\Interfaces\Response;
  */
 interface ResponseFailureInterface extends ResponseInterface
 {
-    /**
-     * Return an instance with the specified data.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified data.
-     */
-    public function withData(array $data): self;
 }

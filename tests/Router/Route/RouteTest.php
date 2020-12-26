@@ -135,7 +135,7 @@ final class RouteTestController extends Controller
 
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }
 
@@ -143,7 +143,7 @@ final class RouteTestControllerNoParams extends Controller
 {
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }
 
@@ -160,6 +160,6 @@ final class RouteTestControllerRegexConflict extends Controller
 
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }

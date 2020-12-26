@@ -57,5 +57,5 @@ interface ActionInterface extends DescriptionInterface
      *
      * @param array<string, mixed> $data
      */
-    public function getResponseSuccess(array $data): ResponseSuccessInterface;
+    public function getResponseSuccess(mixed ...$data): ResponseSuccessInterface;
 }

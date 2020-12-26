@@ -21,6 +21,6 @@ final class ActionTestEmptyAction extends Action
 {
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }

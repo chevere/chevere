@@ -19,12 +19,4 @@ use Chevere\Interfaces\Response\ResponseFailureInterface;
 final class ResponseFailure implements ResponseFailureInterface
 {
     use ResponseTrait;
-
-    public function withData(array $data): ResponseFailureInterface
-    {
-        $new = clone $this;
-        $new->data = $data;
-
-        return $new;
-    }
 }

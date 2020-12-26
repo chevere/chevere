@@ -32,7 +32,7 @@ final class ControllerWorkflowTest extends TestCase
 
             public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
             {
-                return $this->getResponseSuccess([]);
+                return $this->getResponseSuccess();
             }
         };
         $this->assertNotSame($controller->getWorkflow(), $controller->workflow());

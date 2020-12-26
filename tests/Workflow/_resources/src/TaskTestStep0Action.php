@@ -21,6 +21,6 @@ class TaskTestStep0Action extends Action
 {
     public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }

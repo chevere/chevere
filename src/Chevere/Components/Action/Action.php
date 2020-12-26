@@ -64,8 +64,10 @@ abstract class Action implements ActionInterface
         return new Arguments($this->parameters(), ...$arguments);
     }
 
-    final public function getResponseSuccess(array $data): ResponseSuccessInterface
+    final public function getResponseSuccess(mixed ...$data): ResponseSuccessInterface
     {
-        return new ResponseSuccess($this->responseDataParameters, $data);
+        new Arguments($this->responseDataParameters, ...$data);
+
+        return new ResponseSuccess($data);
     }
 }

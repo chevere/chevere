@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Response;
 
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\ResponseFailure;
 use Chevere\Components\Response\ResponseSuccess;
 use function Chevere\Components\Workflow\getWorkflowMessage;
@@ -29,11 +27,7 @@ final class ResponseTest extends TestCase
         $data = [
             'param' => 'data',
         ];
-        $response = new ResponseSuccess(
-            (new Parameters())
-                ->withAddedRequired(param: new StringParameter()),
-            $data
-        );
+        $response = new ResponseSuccess($data);
         $this->assertSame($data, $response->data());
         $this->assertTrue(
             (new Validator())->validate($response->uuid()),
@@ -44,7 +38,7 @@ final class ResponseTest extends TestCase
 
     public function testResponseSuccessWithData(): void
     {
-        $response = new ResponseSuccess(new Parameters(), []);
+        $response = new ResponseSuccess([]);
         $this->assertSame([], $response->data());
         $data = ['data'];
         $response = $response->withData($data);
@@ -56,17 +50,13 @@ final class ResponseTest extends TestCase
         $data = [
             'param' => 'data',
         ];
-        $response = new ResponseFailure(
-            (new Parameters())
-                ->withAddedRequired(param: new StringParameter()),
-            $data
-        );
+        $response = new ResponseFailure($data);
         $this->assertSame($data, $response->data());
     }
 
     public function testResponseFailureWithData(): void
     {
-        $response = new ResponseFailure(new Parameters(), []);
+        $response = new ResponseFailure([]);
         $this->assertSame([], $response->data());
         $data = ['data'];
         $response = $response->withData($data);
@@ -75,15 +65,12 @@ final class ResponseTest extends TestCase
 
     public function testResponseSuccessWithWorkflowMessage(): void
     {
-        $data = [
-            'delay' => 123,
-            'expiration' => 111,
-        ];
+        $data = [];
         $workflowMessage = getWorkflowMessage(new Workflow('name'))
-            ->withDelay($data['delay'])
-            ->withExpiration($data['expiration'])
+            ->withDelay(123)
+            ->withExpiration(111)
             ->withPriority(10);
-        $response = (new ResponseSuccess(new Parameters(), []))
+        $response = (new ResponseSuccess($data))
             ->withWorkflowMessage($workflowMessage);
         $this->assertSame($workflowMessage, $response->workflowMessage());
         $this->assertSame($data, $response->data());
