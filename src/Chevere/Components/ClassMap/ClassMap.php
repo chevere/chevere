@@ -16,7 +16,7 @@ namespace Chevere\Components\ClassMap;
 use Chevere\Components\DataStructure\Traits\MapToArrayTrait;
 use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\ClassMap\ClassNotExistsException;
+use Chevere\Exceptions\Core\ClassNotExistsException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;

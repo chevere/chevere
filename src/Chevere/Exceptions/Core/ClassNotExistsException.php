@@ -11,13 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Pluggable;
-
-use Chevere\Exceptions\Core\Exception;
+namespace Chevere\Exceptions\Core;
 
 /**
- * Exception thrown when the plug doesn't implement an accepted interface.
+ * Exception thrown when a class doesn't exists.
  */
-final class PlugInterfaceException extends Exception
+final class ClassNotExistsException extends Exception
 {
 }
