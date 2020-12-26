@@ -17,8 +17,8 @@ use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Interfaces\Cache\CacheInterface;
@@ -122,7 +122,7 @@ final class Cache implements CacheInterface
     {
         $path = $this->getPath($cacheKey->toString());
         if (! $path->exists()) {
-            throw new CacheKeyNotFoundException(
+            throw new OutOfBoundsException(
                 (new Message('No cache for key %key%'))
                     ->code('%key%', $cacheKey->toString())
             );

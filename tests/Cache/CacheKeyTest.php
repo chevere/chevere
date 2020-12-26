@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Tests\Cache;
 
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Exceptions\Cache\CacheInvalidKeyException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class CacheKeyTest extends TestCase
 {
     public function testInvalidArgumentConstruct()
     {
-        $this->expectException(CacheInvalidKeyException::class);
+        $this->expectException(InvalidArgumentException::class);
         new CacheKey('./\\~:');
     }
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Cache;
 
-use Chevere\Exceptions\Cache\CacheInvalidKeyException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
@@ -24,7 +24,7 @@ interface CacheKeyInterface extends ToStringInterface
     public const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
     /**
-     * @throws CacheInvalidKeyException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $key);
 
