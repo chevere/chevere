@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router\Route;
 
-use Chevere\Exceptions\Regex\RegexException;
+use Chevere\Exceptions\Core\UnexpectedValueException;
 use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
@@ -23,7 +23,7 @@ interface RouteWildcardMatchInterface extends ToStringInterface
 {
     /**
      * @param string $string A regular expression match statement.
-     * @throws RegexException If `$string` is an invalid regex matcher.
+     * @throws UnexpectedValueException If `$string` is an invalid regex matcher.
      */
     public function __construct(string $string);
 

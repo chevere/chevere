@@ -15,21 +15,20 @@ namespace Chevere\Tests\Router\Route;
 
 use Chevere\Components\Router\Route\RouteWildcardMatch;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Regex\RegexException;
-use Chevere\Exceptions\Regex\RegexInvalidException;
+use Chevere\Exceptions\Core\UnexpectedValueException;
 use PHPUnit\Framework\TestCase;
 
 final class RouteWildcardMatchTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
-        $this->expectException(RegexInvalidException::class);
+        $this->expectException(InvalidArgumentException::class);
         new RouteWildcardMatch('#');
     }
 
     public function testConstructInvalidArgument2(): void
     {
-        $this->expectException(RegexException::class);
+        $this->expectException(UnexpectedValueException::class);
         new RouteWildcardMatch('te(s)t');
     }
 

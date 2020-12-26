@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Regex;
 
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Exceptions\Regex\RegexInvalidException;
 use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
@@ -34,7 +34,7 @@ interface RegexInterface extends ToStringInterface
     ];
 
     /**
-     * @throws RegexInvalidException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $pattern);
 
