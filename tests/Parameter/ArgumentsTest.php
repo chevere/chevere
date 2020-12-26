@@ -26,8 +26,6 @@ use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
-use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use Chevere\Interfaces\Type\TypeInterface;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -101,7 +99,7 @@ final class ArgumentsTest extends TestCase
         $arguments = new Arguments($parameters, ...[
             $name => '123',
         ]);
-        $this->expectException(ArgumentRequiredException::class);
+        $this->expectException(OutOfBoundsException::class);
         $arguments->withArgument('not-found', 1234);
     }
 
@@ -124,7 +122,7 @@ final class ArgumentsTest extends TestCase
         $this->assertSame($value, $arguments->get($name));
         $arguments = $arguments->withArgument($name, $valueAlt);
         $this->assertSame($valueAlt, $arguments->get($name));
-        $this->expectException(ArgumentRegexMatchException::class);
+        $this->expectException(InvalidArgumentException::class);
         $arguments->withArgument($name, 'invalid');
     }
 

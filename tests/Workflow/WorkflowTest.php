@@ -18,9 +18,9 @@ use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Workflow\Step;
 use Chevere\Components\Workflow\Workflow;
+use Chevere\Exceptions\Core\BadMethodCallException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseSuccessInterface;
@@ -69,7 +69,7 @@ final class WorkflowTest extends TestCase
             'stepAfter',
             'step',
         ], $workflow->order());
-        $this->expectException(ArgumentRequiredException::class);
+        $this->expectException(BadMethodCallException::class);
         $workflow->withAdded(
             step3: (new Step(WorkflowTestStep1::class))
                 ->withArguments(missing: '${not-found:reference}')
