@@ -17,7 +17,7 @@ use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use function Chevere\Components\Filesystem\varForFilePhpReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
-use Chevere\Exceptions\ClassMap\ClassNotMappedException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Pluggable\PluggableNotRegisteredException;
 use Chevere\Exceptions\Pluggable\PlugsFileNotExistsException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
@@ -60,7 +60,7 @@ final class Plugins implements PluginsInterface
     {
         try {
             $this->plugsPath = $this->classMap->key($pluggableName);
-        } catch (ClassNotMappedException $e) {
+        } catch (OutOfBoundsException $e) {
             throw new PluggableNotRegisteredException($e->message());
         }
     }

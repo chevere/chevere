@@ -17,8 +17,8 @@ use Chevere\Components\DataStructure\Traits\MapToArrayTrait;
 use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\ClassMap\ClassNotExistsException;
-use Chevere\Exceptions\ClassMap\ClassNotMappedException;
-use Chevere\Exceptions\ClassMap\StringMappedException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Ds\Map;
 
@@ -59,7 +59,7 @@ final class ClassMap implements ClassMapInterface
         }
         $known = $this->flip[$key] ?? null;
         if ($known && $known !== $className) {
-            throw new StringMappedException(
+            throw new OverflowException(
                 (new Message('Attempting to map %className% to the same mapping of %known% -> %string%'))
                     ->code('%className%', $className)
                     ->code('%known%', $known)
@@ -86,7 +86,7 @@ final class ClassMap implements ClassMapInterface
     public function key(string $className): string
     {
         if (! $this->has($className)) {
-            throw new ClassNotMappedException(
+            throw new OutOfBoundsException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
             );
@@ -103,7 +103,7 @@ final class ClassMap implements ClassMapInterface
     public function className(string $key): string
     {
         if (! $this->hasKey($key)) {
-            throw new ClassNotMappedException(
+            throw new OutOfBoundsException(
                 (new Message("Key %key% doesn't map any class"))
                     ->code('%key%', $key)
             );
