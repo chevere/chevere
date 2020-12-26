@@ -52,4 +52,9 @@ interface DependentInterface
      * @throws LogicException
      */
     public function assertDependencies(): void;
+
+    /**
+     * Provides access to the dependencies instance.
+     */
+    public function dependencies(): DependenciesInterface;
 }

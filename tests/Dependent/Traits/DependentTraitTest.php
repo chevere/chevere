@@ -47,22 +47,31 @@ final class DependentTraitTest extends TestCase
     public function testWithWrongDependencyClass(): void
     {
         $this->expectException(TypeException::class);
-        $this->expectExceptionCode(100);
         $this->getTestDependent(testCase: new \stdClass());
     }
 
     public function testWithDependencyMismatch(): void
     {
         $this->expectException(TypeException::class);
-        $this->expectExceptionCode(102);
         $this->getTestDependentMismatch(testCase: $this);
     }
 
     public function testWithDependency(): void
     {
-        $dependent = $this->getTestDependent(testCase: $this);
-        $this->assertObjectHasAttribute('testCase', $dependent);
+        $property = 'testCase';
+        $dependent = $this->getTestDependent(...[
+            $property => $this,
+        ]);
+        $this->assertObjectHasAttribute($property, $dependent);
         $this->assertSame($this, $dependent->testCase);
+        $this->assertCount(1, $dependent->dependencies());
+        $this->assertSame([$property], $dependent->dependencies()->keys());
+        $dependent->assertDependencies();
+    }
+
+    public function testAssertDependencies(): void
+    {
+        $dependent = $this->getTestDependent(testCase: $this);
         $dependent->assertDependencies();
         $dependent->testCase = null;
         $this->expectException(DependentException::class);

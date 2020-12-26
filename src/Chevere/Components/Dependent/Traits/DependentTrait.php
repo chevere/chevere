@@ -38,9 +38,9 @@ trait DependentTrait
 
     final public function assertDependencies(): void
     {
-        $dependencies = $this->dependencies ?? $this->getDependencies();
+        $this->dependencies ??= $this->getDependencies();
         $missing = [];
-        foreach ($dependencies->keys() as $property) {
+        foreach ($this->dependencies->keys() as $property) {
             if (! isset($this->{$property})) {
                 $missing[] = $property;
             }
@@ -48,10 +48,15 @@ trait DependentTrait
         $this->assertNotMissing($missing);
     }
 
+    final public function dependencies(): DependenciesInterface
+    {
+        return $this->dependencies;
+    }
+
     private function setDependencies(object ...$namedDependency): void
     {
         $missing = [];
-        $this->dependencies = $this->getDependencies();
+        $this->dependencies ??= $this->getDependencies();
         foreach ($this->dependencies->getGenerator() as $name => $className) {
             $value = $namedDependency[$name] ?? null;
             if (! isset($value)) {
@@ -67,8 +72,7 @@ trait DependentTrait
             } catch (TypeError $e) {
                 throw new TypeException(
                     (new Message('Dependency %key% type declaration mismatch'))
-                        ->strong('%key%', $name),
-                    102
+                        ->strong('%key%', $name)
                 );
             }
         }
@@ -83,7 +87,6 @@ trait DependentTrait
                     ->strong('%key%', $name)
                     ->code('%expected%', $className)
                     ->code('%provided%', debugType($value)),
-                100
             );
         }
     }
