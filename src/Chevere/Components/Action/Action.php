@@ -68,6 +68,6 @@ abstract class Action implements ActionInterface
     {
         new Arguments($this->responseDataParameters, ...$data);
 
-        return new ResponseSuccess($data);
+        return new ResponseSuccess(...$data);
     }
 }

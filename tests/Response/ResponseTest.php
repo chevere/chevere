@@ -27,7 +27,7 @@ final class ResponseTest extends TestCase
         $data = [
             'param' => 'data',
         ];
-        $response = new ResponseSuccess($data);
+        $response = new ResponseSuccess(...$data);
         $this->assertSame($data, $response->data());
         $this->assertTrue(
             (new Validator())->validate($response->uuid()),
@@ -38,10 +38,10 @@ final class ResponseTest extends TestCase
 
     public function testResponseSuccessWithData(): void
     {
-        $response = new ResponseSuccess([]);
+        $response = new ResponseSuccess();
         $this->assertSame([], $response->data());
         $data = ['data'];
-        $response = $response->withData($data);
+        $response = $response->withData(...$data);
         $this->assertSame($data, $response->data());
     }
 
@@ -50,16 +50,16 @@ final class ResponseTest extends TestCase
         $data = [
             'param' => 'data',
         ];
-        $response = new ResponseFailure($data);
+        $response = new ResponseFailure(...$data);
         $this->assertSame($data, $response->data());
     }
 
     public function testResponseFailureWithData(): void
     {
-        $response = new ResponseFailure([]);
+        $response = new ResponseFailure();
         $this->assertSame([], $response->data());
         $data = ['data'];
-        $response = $response->withData($data);
+        $response = $response->withData(...$data);
         $this->assertSame($data, $response->data());
     }
 
@@ -70,7 +70,7 @@ final class ResponseTest extends TestCase
             ->withDelay(123)
             ->withExpiration(111)
             ->withPriority(10);
-        $response = (new ResponseSuccess($data))
+        $response = (new ResponseSuccess())
             ->withWorkflowMessage($workflowMessage);
         $this->assertSame($workflowMessage, $response->workflowMessage());
         $this->assertSame($data, $response->data());

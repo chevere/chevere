@@ -23,14 +23,14 @@ trait ResponseTrait
 
     private array $data;
 
-    public function __construct(array $data)
+    public function __construct(mixed ...$data)
     {
         $this->data = $data;
         $this->uuid = Uuid::uuid4()->toString();
         $this->token = bin2hex(random_bytes(128));
     }
 
-    public function withData(array $data): self
+    public function withData(mixed ...$data): self
     {
         $new = clone $this;
         $new->data = $data;

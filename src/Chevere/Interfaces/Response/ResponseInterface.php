@@ -18,15 +18,20 @@ namespace Chevere\Interfaces\Response;
  */
 interface ResponseInterface
 {
-    public function __construct(array $data);
+    /**
+     * @param mixed $data Named arguments for response data (name to data key)
+     */
+    public function __construct(mixed ...$data);
 
     /**
      * Return an instance with the specified data.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified data.
+     *
+     * @param mixed $data Named arguments for response data (name to data key)
      */
-    public function withData(array $data): self;
+    public function withData(mixed ...$data): self;
 
     /**
      * Provides access to response uuid.
