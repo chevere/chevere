@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Type;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Type\TypeNotFoundException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Type\TypeInterface;
 
 final class Type implements TypeInterface
@@ -117,8 +117,8 @@ final class Type implements TypeInterface
     private function assertHasPrimitive(): void
     {
         if ($this->primitive === '') {
-            throw new TypeNotFoundException(
-                (new Message('Type %type% not found'))
+            throw new InvalidArgumentException(
+                (new Message("Type %type% doesn't exists"))
                     ->code('%type%', $this->type)
             );
         }
