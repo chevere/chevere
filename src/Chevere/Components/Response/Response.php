@@ -11,11 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Response;
+namespace Chevere\Components\Response;
 
-/**
- * Describes the component in charge of defining a failure controller response.
- */
-interface ResponseFailureInterface extends ResponseInterface
+use Chevere\Components\Response\Traits\ResponseTrait;
+use Chevere\Interfaces\Response\ResponseInterface;
+
+final class Response implements ResponseInterface
 {
+    use ResponseTrait;
 }

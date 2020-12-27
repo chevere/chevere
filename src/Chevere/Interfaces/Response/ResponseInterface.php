@@ -14,14 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Response;
 
 /**
- * Describes the component in charge of handling the response.
+ * Describes the component in charge of defining a success response.
  */
 interface ResponseInterface
 {
     /**
-     * @param mixed $data Named arguments for response data (name to data key)
+     * Return an instance with the specified status.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified status.
      */
-    public function __construct(mixed ...$data);
+    public function withStatus(int $code): self;
 
     /**
      * Return an instance with the specified data.
@@ -34,17 +37,22 @@ interface ResponseInterface
     public function withData(mixed ...$data): self;
 
     /**
-     * Provides access to response uuid.
+     * Provides access to uuid.
      */
     public function uuid(): string;
 
     /**
-     * Provides access to response token.
+     * Provides access to token.
      */
     public function token(): string;
 
     /**
-     * Provides access to response data.
+     * Provides access to data.
      */
     public function data(): array;
+
+    /**
+     * Provides access to status.
+     */
+    public function status(): int;
 }

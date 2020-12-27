@@ -16,11 +16,11 @@ namespace Chevere\Components\Action;
 use Chevere\Components\Common\Traits\DescriptionTrait;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Response\ResponseSuccess;
+use Chevere\Components\Response\Response;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 abstract class Action implements ActionInterface
 {
@@ -47,7 +47,7 @@ abstract class Action implements ActionInterface
         return new Parameters();
     }
 
-    abstract public function run(ArgumentsInterface $arguments): ResponseSuccessInterface;
+    abstract public function run(ArgumentsInterface $arguments): ResponseInterface;
 
     final public function parameters(): ParametersInterface
     {
@@ -64,10 +64,10 @@ abstract class Action implements ActionInterface
         return new Arguments($this->parameters(), ...$arguments);
     }
 
-    final public function getResponseSuccess(mixed ...$data): ResponseSuccessInterface
+    final public function getResponseSuccess(mixed ...$data): ResponseInterface
     {
         new Arguments($this->responseDataParameters, ...$data);
 
-        return new ResponseSuccess(...$data);
+        return (new Response())->withData(...$data);
     }
 }

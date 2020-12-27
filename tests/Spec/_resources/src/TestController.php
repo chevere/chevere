@@ -19,12 +19,12 @@ use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
 use Chevere\Components\Pluggable\PluggableAnchors;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Response\ResponseSuccess;
+use Chevere\Components\Response\Response;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
 use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 class TestController extends Controller implements PluggableHooksInterface
 {
@@ -54,10 +54,10 @@ class TestController extends Controller implements PluggableHooksInterface
         return $parameters;
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         $this->hook('run:before', $arguments);
-        $response = new ResponseSuccess();
+        $response = new Response();
         $data = [
             'userName' => $arguments->get('name'),
             'userId' => $arguments->get('id'),

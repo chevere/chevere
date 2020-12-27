@@ -29,7 +29,7 @@ use Chevere\Exceptions\Router\Route\RouteEndpointConflictException;
 use Chevere\Exceptions\Router\Route\RouteWildcardConflictException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
 final class RouteTest extends TestCase
@@ -133,7 +133,7 @@ final class RouteTestController extends Controller
             );
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return $this->getResponseSuccess();
     }
@@ -141,7 +141,7 @@ final class RouteTestController extends Controller
 
 final class RouteTestControllerNoParams extends Controller
 {
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return $this->getResponseSuccess();
     }
@@ -158,7 +158,7 @@ final class RouteTestControllerRegexConflict extends Controller
             );
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return $this->getResponseSuccess();
     }

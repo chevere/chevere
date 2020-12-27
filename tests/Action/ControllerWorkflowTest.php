@@ -16,7 +16,7 @@ namespace Chevere\Tests\Action;
 use Chevere\Components\Action\ControllerWorkflow;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,7 @@ final class ControllerWorkflowTest extends TestCase
                 return new Workflow('test');
             }
 
-            public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+            public function run(ArgumentsInterface $arguments): ResponseInterface
             {
                 return $this->getResponseSuccess();
             }

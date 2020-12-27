@@ -15,11 +15,11 @@ namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Components\Action\Controller;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 final class ControllerTestController extends Controller
 {
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return $this->getResponseSuccess();
     }

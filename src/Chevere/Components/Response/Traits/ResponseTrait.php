@@ -21,13 +21,22 @@ trait ResponseTrait
 
     private string $token;
 
-    private array $data;
+    private array $data = [];
 
-    public function __construct(mixed ...$data)
+    private int $status = 0;
+
+    public function __construct()
     {
-        $this->data = $data;
         $this->uuid = Uuid::uuid4()->toString();
         $this->token = bin2hex(random_bytes(128));
+    }
+
+    public function withStatus(int $code): self
+    {
+        $new = clone $this;
+        $new->status = $code;
+
+        return $new;
     }
 
     public function withData(mixed ...$data): self
@@ -51,5 +60,10 @@ trait ResponseTrait
     public function data(): array
     {
         return $this->data;
+    }
+
+    public function status(): int
+    {
+        return $this->status;
     }
 }

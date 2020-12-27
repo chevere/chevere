@@ -13,22 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Response;
 
-use Chevere\Components\Response\ResponseFailure;
-use Chevere\Components\Response\ResponseSuccess;
-use function Chevere\Components\Workflow\getWorkflowMessage;
-use Chevere\Components\Workflow\Workflow;
+use Chevere\Components\Response\Response;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Rfc4122\Validator;
 
 final class ResponseTest extends TestCase
 {
-    public function testConstructResponseSuccess(): void
+    public function testConstruct(): void
     {
-        $data = [
-            'param' => 'data',
-        ];
-        $response = new ResponseSuccess(...$data);
-        $this->assertSame($data, $response->data());
+        $response = new Response();
+        $this->assertSame([], $response->data());
+        $this->assertSame(0, $response->status());
         $this->assertTrue(
             (new Validator())->validate($response->uuid()),
             'Invalid UUID'
@@ -36,43 +31,23 @@ final class ResponseTest extends TestCase
         $this->assertIsString($response->token());
     }
 
-    public function testResponseSuccessWithData(): void
+    public function testWithData(): void
     {
-        $response = new ResponseSuccess();
+        $response = new Response();
         $this->assertSame([], $response->data());
         $data = ['data'];
         $response = $response->withData(...$data);
         $this->assertSame($data, $response->data());
     }
 
-    public function testConstructResponseFailure(): void
+    public function testWithStatus(): void
     {
-        $data = [
-            'param' => 'data',
-        ];
-        $response = new ResponseFailure(...$data);
-        $this->assertSame($data, $response->data());
-    }
-
-    public function testResponseFailureWithData(): void
-    {
-        $response = new ResponseFailure();
-        $this->assertSame([], $response->data());
         $data = ['data'];
-        $response = $response->withData(...$data);
+        $status = 123;
+        $response = (new Response())
+            ->withData(...$data)
+            ->withStatus($status);
         $this->assertSame($data, $response->data());
-    }
-
-    public function testResponseSuccessWithWorkflowMessage(): void
-    {
-        $data = [];
-        $workflowMessage = getWorkflowMessage(new Workflow('name'))
-            ->withDelay(123)
-            ->withExpiration(111)
-            ->withPriority(10);
-        $response = (new ResponseSuccess())
-            ->withWorkflowMessage($workflowMessage);
-        $this->assertSame($workflowMessage, $response->workflowMessage());
-        $this->assertSame($data, $response->data());
+        $this->assertSame($status, $response->status());
     }
 }

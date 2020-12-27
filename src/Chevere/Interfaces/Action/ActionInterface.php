@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\Action;
 use Chevere\Interfaces\Common\DescriptionInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 /**
  * Describes the component in charge of defining a single action.
@@ -38,7 +38,7 @@ interface ActionInterface extends DescriptionInterface
     /**
      * Method called when running the action.
      */
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface;
+    public function run(ArgumentsInterface $arguments): ResponseInterface;
 
     /**
      * Provides access to the parameters.
@@ -57,5 +57,5 @@ interface ActionInterface extends DescriptionInterface
      *
      * @param array<string, mixed> $data
      */
-    public function getResponseSuccess(mixed ...$data): ResponseSuccessInterface;
+    public function getResponseSuccess(mixed ...$data): ResponseInterface;
 }

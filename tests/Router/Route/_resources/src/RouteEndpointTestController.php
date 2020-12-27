@@ -19,7 +19,7 @@ use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 final class RouteEndpointTestController extends Controller
 {
@@ -37,7 +37,7 @@ final class RouteEndpointTestController extends Controller
             );
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return $this->getResponseSuccess();
     }

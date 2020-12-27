@@ -19,7 +19,7 @@ use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 final class ActionRunnerTestController extends Controller
 {
@@ -38,7 +38,7 @@ final class ActionRunnerTestController extends Controller
             ->withAddedRequired(user: new StringParameter());
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return $this->getResponseSuccess(user: 'PeoplesHernandez');
     }

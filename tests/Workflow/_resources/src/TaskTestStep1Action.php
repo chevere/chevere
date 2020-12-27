@@ -19,7 +19,7 @@ use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 class TaskTestStep1Action extends Action
 {
@@ -32,7 +32,7 @@ class TaskTestStep1Action extends Action
             );
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return $this->getResponseSuccess();
     }

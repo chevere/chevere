@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Response;
+namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Response\Traits\ResponseTrait;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
+use Chevere\Interfaces\Workflow\WorkflowResponseInterface;
 
-final class ResponseSuccess implements ResponseSuccessInterface
+final class WorkflowResponse implements WorkflowResponseInterface
 {
     use ResponseTrait;
 
     private WorkflowMessageInterface $workflowMessage;
 
-    public function withWorkflowMessage(WorkflowMessageInterface $workflowMessage): ResponseSuccessInterface
+    public function withWorkflowMessage(WorkflowMessageInterface $workflowMessage): self
     {
         $new = clone $this;
         $new->workflowMessage = $workflowMessage;
