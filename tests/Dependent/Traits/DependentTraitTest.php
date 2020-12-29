@@ -21,7 +21,7 @@ use Chevere\Exceptions\Dependent\MissingDependenciesException;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Chevere\Interfaces\Dependent\DependentInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
 final class DependentTraitTest extends TestCase
@@ -137,7 +137,7 @@ final class DependentTraitTest extends TestCase
                     ->withPut(testCase: TestCase::class);
             }
 
-            public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+            public function run(ArgumentsInterface $arguments): ResponseInterface
             {
                 return $this->getResponseSuccess([]);
             }
