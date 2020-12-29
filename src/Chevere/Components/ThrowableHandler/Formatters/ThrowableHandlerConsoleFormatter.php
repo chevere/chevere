@@ -18,7 +18,7 @@ use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Colors\Color;
 
-final class ThrowableHandlerConsoleFormatter extends ThrowableHandlerAbstractFormatter
+final class ThrowableHandlerConsoleFormatter extends ThrowableHandlerFormatter
 {
     public function getVarDumpFormatter(): VarDumpFormatterInterface
     {

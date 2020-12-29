@@ -24,6 +24,8 @@ interface ThrowableHandlerDocumentInterface extends ToStringInterface
 
     public const SECTION_MESSAGE = 'message';
 
+    public const SECTION_CHAIN = 'chain';
+
     public const SECTION_ID = 'id';
 
     public const SECTION_TIME = 'time';
@@ -50,8 +52,11 @@ interface ThrowableHandlerDocumentInterface extends ToStringInterface
 
     public const TAG_PHP_UNAME = '%phpUname%';
 
+    public const TAG_CHAIN = '%chain%';
+
     public const SECTIONS = [
         self::SECTION_TITLE,
+        self::SECTION_CHAIN,
         self::SECTION_MESSAGE,
         self::SECTION_ID,
         self::SECTION_TIME,
@@ -61,6 +66,7 @@ interface ThrowableHandlerDocumentInterface extends ToStringInterface
 
     public const SECTIONS_VERBOSITY = [
         self::SECTION_TITLE => 16,
+        self::SECTION_CHAIN => 16,
         self::SECTION_MESSAGE => 16,
         self::SECTION_ID => 16,
         self::SECTION_TIME => 64,
@@ -94,6 +100,11 @@ interface ThrowableHandlerDocumentInterface extends ToStringInterface
      * Returns the document message section.
      */
     public function getSectionMessage(): string;
+
+    /**
+     * Returns the document chain section.
+     */
+    public function getSectionChain(): string;
 
     /**
      * Returns the document id section.

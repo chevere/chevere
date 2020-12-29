@@ -18,24 +18,21 @@ use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerPlainFormatte
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
-use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class PlainDocumentTest extends TestCase
 {
-    private ThrowableHandlerInterface $exceptionHandler;
-
-    protected function setUp(): void
-    {
-        $this->exceptionHandler = new ThrowableHandler(new ThrowableRead(
-            new LogicException('Ups', 100)
-        ));
-    }
-
     public function testConstruct(): void
     {
-        $document = new ThrowableHandlerPlainDocument($this->exceptionHandler);
+        $document = new ThrowableHandlerPlainDocument(
+            new ThrowableHandler(new ThrowableRead(
+                new LogicException(
+                    'Ups',
+                    1000,
+                )
+            ))
+        );
         $verbosity = 0;
         $this->assertInstanceOf(ThrowableHandlerPlainFormatter::class, $document->getFormatter());
         $this->assertSame($verbosity, $document->verbosity());
@@ -47,14 +44,4 @@ final class PlainDocumentTest extends TestCase
         $this->assertSame(ThrowableHandlerDocumentInterface::SECTIONS, array_keys($getTemplate));
         $document->toString();
     }
-
-    // public function testHandlerWithRequest(): void
-    // {
-    //     $pathUri = new PathUri('/' . uniqid('', true));
-    //     $request = new Request(new GetMethod, $pathUri);
-    //     $this->exceptionHandler = $this->exceptionHandler
-    //         ->withRequest($request);
-    //     $document = new PlainDocument($this->exceptionHandler);
-    //     $this->assertStringContainsString($pathUri->toString(), $document->toString());
-    // }
 }

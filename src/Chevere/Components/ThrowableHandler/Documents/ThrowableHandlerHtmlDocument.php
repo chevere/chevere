@@ -16,7 +16,7 @@ namespace Chevere\Components\ThrowableHandler\Documents;
 use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerHtmlFormatter;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 
-final class ThrowableHandlerHtmlDocument extends ThrowableHandlerAbstractDocument
+final class ThrowableHandlerHtmlDocument extends ThrowableHandlerDocument
 {
     /**
      * @var string Title used when debug=0

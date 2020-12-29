@@ -17,7 +17,7 @@ use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerConsoleFormat
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 use Colors\Color;
 
-final class ThrowableHandlerConsoleDocument extends ThrowableHandlerAbstractDocument
+final class ThrowableHandlerConsoleDocument extends ThrowableHandlerDocument
 {
     public function getFormatter(): ThrowableHandlerFormatterInterface
     {

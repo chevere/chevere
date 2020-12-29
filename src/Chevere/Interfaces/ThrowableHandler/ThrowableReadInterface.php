@@ -17,6 +17,7 @@ use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\Message\MessageInterface;
 use Psr\Log\LogLevel;
 use Throwable;
+use TypeError;
 
 /**
  * Describes the component in charge of reading a throwable.
@@ -73,47 +74,59 @@ interface ThrowableReadInterface
     public function __construct(Throwable $throwable);
 
     /**
-     * Provides access to the exception class name.
+     * Provides access to the throwable class name.
      */
     public function className(): string;
 
     /**
-     * Provides access to the exception code.
+     * Provides access to the throwable code.
      */
     public function code(): string;
 
     /**
-     * Provides access to the exception severity.
+     * Provides access to the throwable severity.
      */
     public function severity(): int;
 
     /**
-     * Provides access to the exception logger level.
+     * Provides access to the throwable logger level.
      */
     public function loggerLevel(): string;
 
     /**
-     * Provides access to the exception type.
+     * Provides access to the throwable type.
      */
     public function type(): string;
 
     /**
-     * Provides access to the exception message.
+     * Provides access to the throwable message.
      */
     public function message(): MessageInterface;
 
     /**
-     * Provides access to the exception file.
+     * Provides access to the throwable file.
      */
     public function file(): string;
 
     /**
-     * Provides access to the exception line.
+     * Provides access to the throwable line.
      */
     public function line(): int;
 
     /**
-     * Provides access to the exception trace.
+     * Provides access to the throwable trace.
      */
     public function trace(): array;
+
+    /**
+     * Indicates whether the instance has a previous throwable.
+     */
+    public function hasPrevious(): bool;
+
+    /**
+     * Provides access to previous throwable.
+     *
+     * @throws TypeError
+     */
+    public function previous(): Throwable;
 }

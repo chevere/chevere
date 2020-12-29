@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Documents;
 
+use function Chevere\Components\Filesystem\fileForPath;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerHtmlDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
 use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerHtmlFormatter;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
+use Exception;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +31,15 @@ final class HtmlDocumentTest extends TestCase
     protected function setUp(): void
     {
         $this->exceptionHandler = new ThrowableHandler(new ThrowableRead(
-            new LogicException('Ups', 100)
+            new LogicException(
+                'Ups',
+                1000,
+                new Exception(
+                    'Previous',
+                    100,
+                    new Exception('Pre-previous', 10)
+                )
+            )
         ));
     }
 
@@ -44,6 +54,8 @@ final class HtmlDocumentTest extends TestCase
         $string = $document->toString();
         $this->assertStringContainsString('<html><head><meta charset="utf-8">', $string);
         $this->assertStringContainsString('<main class="main--stack">', $string);
+        // $file = fileForPath(__DIR__ . '/html.html');
+        // $file->put($string);
     }
 
     public function testHandlerDebugOff(): void

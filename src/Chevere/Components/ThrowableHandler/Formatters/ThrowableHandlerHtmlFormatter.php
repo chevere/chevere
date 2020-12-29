@@ -17,7 +17,7 @@ use Chevere\Components\VarDump\Formatters\VarDumpHtmlFormatter;
 use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
-final class ThrowableHandlerHtmlFormatter extends ThrowableHandlerAbstractFormatter
+final class ThrowableHandlerHtmlFormatter extends ThrowableHandlerFormatter
 {
     public function getVarDumpFormatter(): VarDumpFormatterInterface
     {

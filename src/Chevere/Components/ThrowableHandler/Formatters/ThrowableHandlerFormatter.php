@@ -17,7 +17,7 @@ use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
-abstract class ThrowableHandlerAbstractFormatter implements ThrowableHandlerFormatterInterface
+abstract class ThrowableHandlerFormatter implements ThrowableHandlerFormatterInterface
 {
     protected VarDumpFormatterInterface $varDumpFormatter;
 

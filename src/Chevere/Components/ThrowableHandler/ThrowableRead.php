@@ -41,6 +41,8 @@ final class ThrowableRead implements ThrowableReadInterface
 
     private array $trace;
 
+    private ?Throwable $previous;
+
     public function __construct(Throwable $throwable)
     {
         $this->className = get_class($throwable);
@@ -64,6 +66,7 @@ final class ThrowableRead implements ThrowableReadInterface
         $this->file = $throwable->getFile();
         $this->line = $throwable->getLine();
         $this->trace = $throwable->getTrace();
+        $this->previous = $throwable->getPrevious();
     }
 
     public function className(): string
@@ -109,6 +112,16 @@ final class ThrowableRead implements ThrowableReadInterface
     public function trace(): array
     {
         return $this->trace;
+    }
+
+    public function hasPrevious(): bool
+    {
+        return $this->previous !== null;
+    }
+
+    public function previous(): Throwable
+    {
+        return $this->previous;
     }
 
     private function assertSeverity(): void

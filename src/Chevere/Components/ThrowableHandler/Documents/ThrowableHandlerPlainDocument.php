@@ -16,7 +16,7 @@ namespace Chevere\Components\ThrowableHandler\Documents;
 use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerPlainFormatter;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 
-final class ThrowableHandlerPlainDocument extends ThrowableHandlerAbstractDocument
+final class ThrowableHandlerPlainDocument extends ThrowableHandlerDocument
 {
     public function getFormatter(): ThrowableHandlerFormatterInterface
     {

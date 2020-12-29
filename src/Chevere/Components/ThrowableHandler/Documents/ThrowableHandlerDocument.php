@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Documents;
 
+use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Chevere\Components\ThrowableHandler\ThrowableTraceFormatter;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableReadInterface;
 use DateTimeInterface;
 
-abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocumentInterface
+abstract class ThrowableHandlerDocument implements ThrowableHandlerDocumentInterface
 {
     protected ThrowableHandlerInterface $handler;
 
@@ -35,9 +37,9 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
     /**
      * @var array [$tag =>, ]
      */
-    private array $tags;
+    protected array $tags;
 
-    private int $verbosity = 0;
+    protected int $verbosity = 0;
 
     final public function __construct(ThrowableHandlerInterface $throwableHandler)
     {
@@ -66,13 +68,13 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
         if ($this->verbosity > 0) {
             $this->handleVerbositySections();
         }
-        $exception = $this->handler->throwableRead();
+        $throwableRead = $this->handler->throwableRead();
         $dateTimeUtc = $this->handler->dateTimeUtc();
         $this->tags = [
-            static::TAG_TITLE => $exception->className() . ' thrown',
-            static::TAG_MESSAGE => $exception->message(),
-            static::TAG_CODE_WRAP => $this->getExceptionCode(),
-            static::TAG_FILE_LINE => $exception->file() . ':' . $exception->line(),
+            static::TAG_TITLE => $throwableRead->className() . ' thrown',
+            static::TAG_MESSAGE => $throwableRead->message(),
+            static::TAG_CODE_WRAP => $this->getThrowableReadCode($throwableRead),
+            static::TAG_FILE_LINE => $throwableRead->file() . ':' . $throwableRead->line(),
             static::TAG_ID => $this->handler->id(),
             static::TAG_DATE_TIME_UTC_ATOM => $dateTimeUtc->format(DateTimeInterface::ATOM),
             static::TAG_TIMESTAMP => $dateTimeUtc->getTimestamp(),
@@ -94,6 +96,7 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
     {
         return [
             static::SECTION_TITLE => $this->getSectionTitle(),
+            static::SECTION_CHAIN => $this->getSectionChain(),
             static::SECTION_MESSAGE => $this->getSectionMessage(),
             static::SECTION_ID => $this->getSectionId(),
             static::SECTION_TIME => $this->getSectionTime(),
@@ -118,6 +121,32 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
         return $this->formatter
             ->wrapSectionTitle('# Message ' . static::TAG_CODE_WRAP) .
             "\n" . $this->getContent(static::TAG_MESSAGE);
+    }
+
+    public function getSectionChain(): string
+    {
+        if (! $this->handler->throwableRead()->hasPrevious()) {
+            return '';
+        }
+        $throwable = $this->handler->throwableRead()->previous();
+        $return = '';
+        do {
+            $throwableRead = new ThrowableRead($throwable);
+            $return .= $this->formatter->wrapSectionTitle(
+                '# └ ' . $throwableRead->className() . ' thrown ' .
+                $this->getThrowableReadCode($throwableRead) .
+                "\n"
+            );
+            $return .= $this->getContent(
+                $throwable->getMessage() .
+                ' in ' . $this->formatter->wrapLink($throwableRead->file() . ':' . $throwableRead->line())
+            );
+            if ($throwable->getPrevious() !== null) {
+                $return .= $this->formatter->getLineBreak();
+            }
+        } while ($throwable = $throwable->getPrevious());
+
+        return $return;
     }
 
     public function getSectionId(): string
@@ -157,14 +186,14 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
         return $document;
     }
 
-    private function getExceptionCode(): string
+    protected function getThrowableReadCode(ThrowableReadInterface $throwableRead): string
     {
-        return $this->handler->throwableRead()->code() !== '0'
-            ? '[Code #' . $this->handler->throwableRead()->code() . ']'
+        return $throwableRead->code() !== '0'
+            ? '[Code #' . $throwableRead->code() . ']'
             : '';
     }
 
-    private function getStackTrace(): string
+    protected function getStackTrace(): string
     {
         return (new ThrowableTraceFormatter(
             $this->handler->throwableRead()->trace(),
@@ -172,7 +201,7 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
         ))->toString();
     }
 
-    private function handleVerbositySections(): void
+    protected function handleVerbositySections(): void
     {
         $sectionsVerbosity = static::SECTIONS_VERBOSITY;
         foreach ($this->sections as $sectionName) {

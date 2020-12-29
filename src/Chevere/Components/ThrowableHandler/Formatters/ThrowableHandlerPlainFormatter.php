@@ -16,7 +16,7 @@ namespace Chevere\Components\ThrowableHandler\Formatters;
 use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter as VarDumpFormatter;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
-final class ThrowableHandlerPlainFormatter extends ThrowableHandlerAbstractFormatter
+final class ThrowableHandlerPlainFormatter extends ThrowableHandlerFormatter
 {
     public function getVarDumpFormatter(): VarDumpFormatterInterface
     {

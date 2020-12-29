@@ -18,6 +18,7 @@ use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
 use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerConsoleFormatter;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
+use Exception;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
@@ -26,12 +27,21 @@ final class ConsoleDocumentTest extends TestCase
     public function testConstruct(): void
     {
         $handler = new ThrowableHandler(new ThrowableRead(
-            new LogicException('Ups', 100)
+            new LogicException(
+                'Ups',
+                1000,
+                new Exception(
+                    'Previous',
+                    100,
+                    new Exception('Pre-previous', 10)
+                )
+            )
         ));
         $document = new ThrowableHandlerConsoleDocument($handler);
         $this->assertInstanceOf(ThrowableHandlerConsoleFormatter::class, $document->getFormatter());
         $sectionTitle = $document->getSectionTitle();
         $plainDocument = new ThrowableHandlerPlainDocument($handler);
         $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());
+        $document->toString();
     }
 }
