@@ -39,7 +39,7 @@ interface DependentInterface
      *
      * @param object $namedDependency Named dependency `name: $var,`
      */
-    public function __construct(object ...$namedDependency);
+    public function withDependencies(object ...$namedDependency);
 
     /**
      * Declares required dependencies as class name -> property name.

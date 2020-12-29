@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Dependent\Traits;
 
+use Chevere\Components\Action\Action;
 use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Dependent\Traits\DependentTrait;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Exceptions\Dependent\DependentException;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Chevere\Interfaces\Dependent\DependentInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use PHPUnit\Framework\TestCase;
 
 final class DependentTraitTest extends TestCase
@@ -56,6 +59,12 @@ final class DependentTraitTest extends TestCase
         $this->getTestDependentMismatch(testCase: $this);
     }
 
+    public function testWithParentConstruct(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $this->getTestDependentParentConstructor(testCase: $this);
+    }
+
     public function testWithDependency(): void
     {
         $property = 'testCase';
@@ -80,7 +89,7 @@ final class DependentTraitTest extends TestCase
 
     private function getTestDependent(mixed ...$dependencies): DependentInterface
     {
-        return new class(...$dependencies) implements DependentInterface {
+        $class = new class() implements DependentInterface {
             use DependentTrait;
 
             public ?TestCase $testCase;
@@ -91,11 +100,13 @@ final class DependentTraitTest extends TestCase
                     ->withPut(testCase: TestCase::class);
             }
         };
+
+        return $class->withDependencies(...$dependencies);
     }
 
     private function getTestDependentMismatch(mixed ...$dependencies): DependentInterface
     {
-        return new class(...$dependencies) implements DependentInterface {
+        $class = new class() implements DependentInterface {
             use DependentTrait;
 
             /**
@@ -109,5 +120,29 @@ final class DependentTraitTest extends TestCase
                     ->withPut(testCase: TestCase::class);
             }
         };
+
+        return $class->withDependencies(...$dependencies);
+    }
+
+    private function getTestDependentParentConstructor(mixed ...$dependencies): DependentInterface
+    {
+        $class = new class() extends Action implements DependentInterface {
+            use DependentTrait;
+
+            public testCase $testCase;
+
+            public function getDependencies(): DependenciesInterface
+            {
+                return (new Dependencies())
+                    ->withPut(testCase: TestCase::class);
+            }
+
+            public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+            {
+                return $this->getResponseSuccess([]);
+            }
+        };
+
+        return $class->withDependencies(...$dependencies);
     }
 }

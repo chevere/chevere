@@ -26,9 +26,33 @@ trait DependentTrait
 {
     private DependenciesInterface $dependencies;
 
-    public function __construct(object ...$namedDependency)
+    public function withDependencies(object ...$namedDependency): self
     {
-        $this->setDependencies(...$namedDependency);
+        $new = clone $this;
+        $missing = [];
+        $new->dependencies ??= $new->getDependencies();
+        foreach ($new->dependencies->getGenerator() as $name => $className) {
+            $value = $namedDependency[$name] ?? null;
+            if (! isset($value)) {
+                $missing[] = $name;
+
+                continue;
+            }
+            /** @var object $value */
+            $new->assertType($className, $name, $value);
+
+            try {
+                $new->{$name} = $value;
+            } catch (TypeError $e) {
+                throw new TypeException(
+                    (new Message('Dependency %key% type declaration mismatch'))
+                        ->strong('%key%', $name)
+                );
+            }
+        }
+        $new->assertNotMissing($missing);
+
+        return $new;
     }
 
     public function getDependencies(): DependenciesInterface
@@ -51,32 +75,6 @@ trait DependentTrait
     final public function dependencies(): DependenciesInterface
     {
         return $this->dependencies;
-    }
-
-    private function setDependencies(object ...$namedDependency): void
-    {
-        $missing = [];
-        $this->dependencies ??= $this->getDependencies();
-        foreach ($this->dependencies->getGenerator() as $name => $className) {
-            $value = $namedDependency[$name] ?? null;
-            if (! isset($value)) {
-                $missing[] = $name;
-
-                continue;
-            }
-            /** @var object $value */
-            $this->assertType($className, $name, $value);
-
-            try {
-                $this->{$name} = $value;
-            } catch (TypeError $e) {
-                throw new TypeException(
-                    (new Message('Dependency %key% type declaration mismatch'))
-                        ->strong('%key%', $name)
-                );
-            }
-        }
-        $this->assertNotMissing($missing);
     }
 
     private function assertType(string $className, string $name, object $value): void

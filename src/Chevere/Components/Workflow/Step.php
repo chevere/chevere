@@ -23,6 +23,7 @@ use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use ReflectionClass;
+use ReflectionException;
 
 final class Step implements StepInterface
 {
@@ -39,7 +40,7 @@ final class Step implements StepInterface
 
         try {
             $reflection = new ReflectionClass($this->action);
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new InvalidArgumentException(
                 (new Message("Class %action% doesn't exists"))
                     ->code('%action%', $this->action)
@@ -52,7 +53,7 @@ final class Step implements StepInterface
                     ->code('%interface%', ActionInterface::class)
             );
         }
-        $this->parameters = $reflection->newInstance()->parameters();
+        $this->parameters = $reflection->newInstance()->getParameters();
         $this->arguments = [];
     }
 
