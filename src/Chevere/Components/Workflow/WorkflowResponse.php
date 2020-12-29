@@ -11,34 +11,22 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Response;
+namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Response\Traits\ResponseTrait;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
+use Chevere\Interfaces\Workflow\WorkflowResponseInterface;
 
-final class ResponseSuccess implements ResponseSuccessInterface
+final class WorkflowResponse implements WorkflowResponseInterface
 {
     use ResponseTrait;
 
     private WorkflowMessageInterface $workflowMessage;
 
-    public function withData(array $data): ResponseSuccessInterface
-    {
-        $new = clone $this;
-        $new->data = $data;
-
-        return $new;
-    }
-
-    public function withWorkflowMessage(WorkflowMessageInterface $workflowMessage): ResponseSuccessInterface
+    public function withWorkflowMessage(WorkflowMessageInterface $workflowMessage): self
     {
         $new = clone $this;
         $new->workflowMessage = $workflowMessage;
-        $new->data = array_merge($new->data, [
-            'delay' => $workflowMessage->delay(),
-            'expiration' => $workflowMessage->expiration(),
-        ]);
 
         return $new;
     }

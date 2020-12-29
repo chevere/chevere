@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarStorable;
 
-use Chevere\Exceptions\VarStorable\VarStorableException;
+use Chevere\Exceptions\VarStorable\NotVarStorableException;
 
 /**
  * Describes the component in charge of handling storable variables.
@@ -21,7 +21,7 @@ use Chevere\Exceptions\VarStorable\VarStorableException;
 interface VarStorableInterface
 {
     /**
-     * @throws VarStorableException if `$var` can't be exported.
+     * @throws NotVarStorableException if `$var` can't be exported.
      */
     public function __construct($var);
 

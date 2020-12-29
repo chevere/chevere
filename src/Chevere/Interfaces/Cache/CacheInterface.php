@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Cache;
 
-use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Interfaces\Filesystem\DirInterface;
@@ -69,7 +69,7 @@ interface CacheInterface
     /**
      * Get a cache item.
      *
-     * @throws CacheKeyNotFoundException
+     * @throws OutOfBoundsException
      */
     public function get(CacheKeyInterface $key): CacheItemInterface;
 

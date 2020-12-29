@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Parameter;
 
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
 use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use Chevere\Interfaces\Common\ToArrayInterface;
 use TypeError;
@@ -27,7 +27,7 @@ interface ArgumentsInterface extends ToArrayInterface
     /**
      * @throws ArgumentRequiredException
      * @throws OutOfBoundsException
-     * @throws ArgumentRegexMatchException
+     * @throws InvalidArgumentException
      */
     public function __construct(ParametersInterface $parameters, mixed ...$namedArguments);
 
@@ -53,7 +53,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified controller argument.
      *
-     * @throws ArgumentRegexMatchException
+     * @throws ArgumentValueRegexMatchException
      * @throws OutOfBoundsException If `$name` is not a known controller parameter.
      */
     public function withArgument(string $name, $value): self;

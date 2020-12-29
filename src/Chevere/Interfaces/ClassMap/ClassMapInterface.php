@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ClassMap;
 
-use Chevere\Exceptions\ClassMap\ClassNotExistsException;
-use Chevere\Exceptions\ClassMap\ClassNotMappedException;
-use Chevere\Exceptions\ClassMap\StringMappedException;
+use Chevere\Exceptions\Core\ClassNotExistsException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
 use Generator;
 
@@ -31,7 +31,7 @@ interface ClassMapInterface extends MappedInterface
      * an instance that contains the specified className mapping.
      *
      * @throws ClassNotExistsException
-     * @throws StringMappedException
+     * @throws OverflowException
      */
     public function withPut(string $className, string $key): self;
 
@@ -48,14 +48,14 @@ interface ClassMapInterface extends MappedInterface
     /**
      * Provides access to the class name mapping.
      *
-     * @throws ClassNotMappedException
+     * @throws OutOfBoundsException
      */
     public function key(string $className): string;
 
     /**
      * Provides access to the class name mapped by key.
      *
-     * @throws ClassNotMappedException
+     * @throws OutOfBoundsException
      */
     public function className(string $key): string;
 

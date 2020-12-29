@@ -18,7 +18,7 @@ use Chevere\Components\Parameter\IntegerParameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 final class ControllerTestInvalidController extends Controller
 {
@@ -28,8 +28,8 @@ final class ControllerTestInvalidController extends Controller
             ->withAddedRequired(integer: new IntegerParameter());
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }

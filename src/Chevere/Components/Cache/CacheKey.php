@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Cache\CacheInvalidKeyException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
 
 final class CacheKey implements CacheKeyInterface
@@ -38,7 +38,7 @@ final class CacheKey implements CacheKeyInterface
             $matches = array_unique($matches[0]);
             $forbidden = implode(' ', $matches);
 
-            throw new CacheInvalidKeyException(
+            throw new InvalidArgumentException(
                 (new Message('Use of forbidden character(s) %character%'))
                     ->code('%character%', $forbidden)
             );

@@ -15,12 +15,12 @@ namespace Chevere\Tests\Workflow\_resources\src;
 
 use Chevere\Components\Action\Action;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 class TaskTestStep0Action extends Action
 {
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }

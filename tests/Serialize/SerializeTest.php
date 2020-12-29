@@ -15,7 +15,7 @@ namespace Chevere\Tests\Serialize;
 
 use Chevere\Components\Serialize\Serialize;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Serialize\SerializeException;
+use Chevere\Exceptions\Core\LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class SerializeTest extends TestCase
@@ -31,7 +31,7 @@ final class SerializeTest extends TestCase
     {
         $variable = new class() {
         };
-        $this->expectException(SerializeException::class);
+        $this->expectException(LogicException::class);
         new Serialize($variable);
     }
 

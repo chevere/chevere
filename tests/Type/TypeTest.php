@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Type;
 
 use Chevere\Components\Type\Type;
-use Chevere\Exceptions\Type\TypeNotFoundException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Type\TypeInterface;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -23,7 +23,7 @@ final class TypeTest extends TestCase
 {
     public function testInvalidArgument(): void
     {
-        $this->expectException(TypeNotFoundException::class);
+        $this->expectException(InvalidArgumentException::class);
         new Type('TypeSome');
     }
 
@@ -58,9 +58,9 @@ final class TypeTest extends TestCase
 
     public function testClassName(): void
     {
-        $type = new Type(__CLASS__);
+        $type = new Type(self::class);
         $this->assertSame(Type::PRIMITIVE_CLASS_NAME, $type->primitive());
-        $this->assertSame(__CLASS__, $type->typeHinting());
+        $this->assertSame(self::class, $type->typeHinting());
         $this->assertTrue($type->validate(new self()));
         $this->assertFalse($type->isScalar());
     }

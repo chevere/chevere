@@ -16,8 +16,8 @@ namespace Chevere\Exceptions\Filesystem;
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when a not allowed path is used.
+ * Exception thrown when the path tail (/) is missing.
  */
-final class PathNotAllowedException extends Exception
+final class PathTailException extends Exception
 {
 }

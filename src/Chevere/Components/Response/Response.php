@@ -11,13 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Router\Routing;
+namespace Chevere\Components\Response;
 
-use Chevere\Exceptions\Core\Exception;
+use Chevere\Components\Response\Traits\ResponseTrait;
+use Chevere\Interfaces\Response\ResponseInterface;
 
-/**
- * Exception thrown when failing to provide a RouteNameInterface.
- */
-final class ExpectingRouteNameException extends Exception
+final class Response implements ResponseInterface
 {
+    use ResponseTrait;
 }

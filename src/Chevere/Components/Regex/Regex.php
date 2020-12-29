@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Regex;
 
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Exceptions\Regex\RegexInvalidException;
 use Chevere\Interfaces\Regex\RegexInterface;
 use Safe\Exceptions\PcreException;
 use function Safe\preg_match;
@@ -30,7 +30,7 @@ final class Regex implements RegexInterface
     private string $noDelimitersNoAnchors;
 
     /**
-     * @throws RegexInvalidException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $pattern)
     {
@@ -97,7 +97,7 @@ final class Regex implements RegexInterface
         try {
             preg_match($this->pattern, '');
         } catch (\Exception $e) {
-            throw new RegexInvalidException(
+            throw new InvalidArgumentException(
                 (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
                     ->code('%regex%', $this->pattern)
                     ->code('%error%', $e->getMessage())

@@ -16,7 +16,6 @@ namespace Chevere\Interfaces\Pluggable;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Pluggable\PluggableNotRegisteredException;
 use Chevere\Exceptions\Pluggable\PlugsFileNotExistsException;
-use Chevere\Exceptions\Pluggable\PlugsQueueInterfaceException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 
 /**
@@ -37,7 +36,6 @@ interface PluginsInterface
      * @throws PluggableNotRegisteredException
      * @throws PlugsFileNotExistsException
      * @throws RuntimeException
-     * @throws PlugsQueueInterfaceException
      */
     public function getPlugsQueue(string $pluggableName): PlugsQueueInterface;
 }

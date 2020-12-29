@@ -18,7 +18,7 @@ use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 class WorkflowRunnerFunctionTestStep2 extends Action
 {
@@ -37,13 +37,11 @@ class WorkflowRunnerFunctionTestStep2 extends Action
             ->withAddedRequired(response2: new StringParameter());
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return $this->getResponseSuccess(
-            [
-                'response2' => $arguments->getString('foo') .
-                    ' ^ ' . $arguments->getString('bar'),
-            ]
+            response2: $arguments->getString('foo') .
+                    ' ^ ' . $arguments->getString('bar')
         );
     }
 }

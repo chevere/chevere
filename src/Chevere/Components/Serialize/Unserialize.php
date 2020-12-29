@@ -16,9 +16,10 @@ namespace Chevere\Components\Serialize;
 use Chevere\Components\Message\Message;
 use function Chevere\Components\Type\debugType;
 use Chevere\Components\Type\Type;
-use Chevere\Exceptions\Serialize\UnserializeException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Serialize\UnserializeInterface;
 use Chevere\Interfaces\Type\TypeInterface;
+use Exception;
 use Throwable;
 
 final class Unserialize implements UnserializeInterface
@@ -27,20 +28,19 @@ final class Unserialize implements UnserializeInterface
 
     private TypeInterface $type;
 
-    public function __construct(string $serialized)
+    public function __construct(string $unserializable)
     {
         try {
-            $this->var = @unserialize($serialized);
+            $this->var = @unserialize($unserializable);
+            if ($this->var === false) {
+                throw new Exception('Passed string is not unserializable');
+            }
         } catch (Throwable $e) {
-            throw new UnserializeException(
-                new Message($e->getMessage())
+            throw new InvalidArgumentException(
+                new Message($e->getMessage()),
             );
         }
-        if ($this->var === false) {
-            throw new UnserializeException(
-                new Message('Unable to unserialize provided string.')
-            );
-        }
+
         $this->type = new Type(debugType($this->var));
     }
 

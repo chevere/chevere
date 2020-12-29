@@ -16,8 +16,8 @@ namespace Chevere\Exceptions\VarStorable;
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown by the component implementing `VarStorableInterface`.
+ * Exception thrown when a `$var` can't be stored.
  */
-final class VarStorableException extends Exception
+final class NotVarStorableException extends Exception
 {
 }

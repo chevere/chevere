@@ -18,7 +18,7 @@ use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\VarStorable\VarStorable;
-use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +50,7 @@ final class CacheTest extends TestCase
     public function testGetNotExists(): void
     {
         $cacheKey = new CacheKey(uniqid());
-        $this->expectException(CacheKeyNotFoundException::class);
+        $this->expectException(OutOfBoundsException::class);
         (new Cache($this->dir))->get($cacheKey);
     }
 

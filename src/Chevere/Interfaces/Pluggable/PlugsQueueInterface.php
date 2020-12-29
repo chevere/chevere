@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Pluggable;
 
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Pluggable\PlugInterfaceException;
 use Chevere\Interfaces\Common\ToArrayInterface;
 
 /**
@@ -30,7 +29,7 @@ interface PlugsQueueInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$plug`.
      *
-     * @throws PlugInterfaceException
+     * @throws TypeException
      * @throws OverflowException
      */
     public function withAdded(PlugInterface $plug): self;

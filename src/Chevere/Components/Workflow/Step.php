@@ -15,9 +15,9 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\ArgumentCountException;
+use Chevere\Exceptions\Core\BadMethodCallException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\UnexpectedValueException;
-use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
@@ -75,7 +75,7 @@ final class Step implements StepInterface
             $store[$name] = $argument;
         }
         if ($missing !== []) {
-            throw new ArgumentRequiredException(
+            throw new BadMethodCallException(
                 (new Message('Missing argument(s): %message%'))
                     ->code('%message%', implode(', ', $missing))
             );

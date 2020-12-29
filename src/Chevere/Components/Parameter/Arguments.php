@@ -18,8 +18,6 @@ use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Parameter\ArgumentRegexMatchException;
-use Chevere\Exceptions\Parameter\ArgumentRequiredException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
@@ -146,12 +144,12 @@ final class Arguments implements ArgumentsInterface
     }
 
     /**
-     * @throws ArgumentRequiredException
+     * @throws OutOfBoundsException
      */
     private function assertHasParameter(string $name): void
     {
         if ($this->parameters->has($name) === false) {
-            throw new ArgumentRequiredException(
+            throw new OutOfBoundsException(
                 (new Message('Parameter %parameter% not found'))
                     ->code('%parameter%', $name)
             );
@@ -159,14 +157,14 @@ final class Arguments implements ArgumentsInterface
     }
 
     /**
-     * @throws ArgumentRegexMatchException
+     * @throws InvalidArgumentException
      */
     private function assertStringArgument(string $name, StringParameterInterface $parameter, string $argument): void
     {
         $regexString = $parameter->regex()->toString();
         if (preg_match($regexString, $argument) !== 1) {
-            throw new ArgumentRegexMatchException(
-                (new Message("Parameter %name%: Argument provided doesn't match the regex %regex%"))
+            throw new InvalidArgumentException(
+                (new Message("Parameter %name%: Argument value provided doesn't match the regex %regex%"))
                     ->strong('%name%', $name)
                     ->code('%parameter%', $name)
                     ->code('%regex%', $regexString)

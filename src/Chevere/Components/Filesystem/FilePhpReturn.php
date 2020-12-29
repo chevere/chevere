@@ -18,6 +18,7 @@ use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
 use function Chevere\Components\Type\varType;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FileHandleException;
 use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
@@ -25,7 +26,6 @@ use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Filesystem\FileUnableToGetException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
-use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Interfaces\Type\TypeInterface;
@@ -125,7 +125,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
             try {
                 $unserialize = new Unserialize($var);
                 $var = $unserialize->var();
-            } catch (UnserializeException $e) {
+            } catch (InvalidArgumentException $e) {
                 // $e
             }
         }

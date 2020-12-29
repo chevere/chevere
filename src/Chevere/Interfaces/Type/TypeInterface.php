@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Type;
 
-use Chevere\Exceptions\Type\TypeNotFoundException;
-
 /**
  * Describes the component in charge of dynamic type validation.
  */
@@ -64,8 +62,7 @@ interface TypeInterface
     ];
 
     /**
-     * @param string $type A
-     * @throws TypeNotFoundException if the type doesn't exists
+     * @throws InvalidArgumentException if the type doesn't exists
      */
     public function __construct(string $type);
 

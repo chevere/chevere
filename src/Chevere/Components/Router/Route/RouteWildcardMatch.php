@@ -17,7 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Regex\RegexException;
+use Chevere\Exceptions\Core\UnexpectedValueException;
 use Chevere\Interfaces\Router\Route\RouteWildcardMatchInterface;
 
 final class RouteWildcardMatch implements RouteWildcardMatchInterface
@@ -47,7 +47,7 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
         $string = $regex->toString();
         $regex = str_replace(['\(', '\)'], '', $string);
         if (strpos($regex, '(') !== false || strpos($regex, ')') !== false) {
-            throw new RegexException(
+            throw new UnexpectedValueException(
                 (new Message('Provided expression %match% contains capture groups'))
                     ->code('%match%', $string)
             );

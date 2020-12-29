@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Iterator;
 
 use Chevere\Components\Iterator\Breadcrumb;
-use Chevere\Exceptions\Iterator\BreadcrumbException;
+use Chevere\Exceptions\Core\OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 
 final class BreadcrumbTest extends TestCase
@@ -76,7 +76,7 @@ final class BreadcrumbTest extends TestCase
         $this->assertCount(0, $breadcrumb);
         $this->assertEmpty($breadcrumb->toArray());
         $this->assertEmpty($breadcrumb->toString());
-        $this->expectException(BreadcrumbException::class);
+        $this->expectException(OutOfRangeException::class);
         $breadcrumb->withRemovedItem($pos);
     }
 }

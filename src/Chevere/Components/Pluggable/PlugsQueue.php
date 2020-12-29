@@ -15,7 +15,7 @@ namespace Chevere\Components\Pluggable;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Pluggable\PlugInterfaceException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Pluggable\PlugInterface;
 use Chevere\Interfaces\Pluggable\PlugsQueueInterface;
 use Chevere\Interfaces\Pluggable\PlugTypeInterface;
@@ -71,7 +71,7 @@ final class PlugsQueue implements PlugsQueueInterface
     {
         $instanceof = $this->plugType->interface();
         if (! ($plug instanceof $instanceof)) {
-            throw new PlugInterfaceException(
+            throw new TypeException(
                 (new Message("Plug %provided% doesn't implements the %expected% interface"))
                     ->code('%provided%', get_class($plug))
                     ->code('%expected%', $this->plugType->interface())

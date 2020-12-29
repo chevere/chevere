@@ -16,7 +16,6 @@ namespace Chevere\Interfaces\Workflow;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
 
 /**
  * Describes the component in charge of defining a workflow run, with the arguments returned for each task.
@@ -44,7 +43,7 @@ interface WorkflowRunInterface
     /**
      * @throws ArgumentCountException
      */
-    public function withStepResponse(string $step, ResponseSuccessInterface $response): self;
+    public function withStepResponse(string $step, ResponseInterface $response): self;
 
     /**
      * Indicates whether the instance has the given `$step`. Will return `true` if step has ran.

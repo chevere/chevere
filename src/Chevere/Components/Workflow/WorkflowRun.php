@@ -21,7 +21,6 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Ramsey\Uuid\Uuid;
@@ -61,7 +60,7 @@ final class WorkflowRun implements WorkflowRunInterface
         return $this->arguments;
     }
 
-    public function withStepResponse(string $step, ResponseSuccessInterface $response): WorkflowRunInterface
+    public function withStepResponse(string $step, ResponseInterface $response): WorkflowRunInterface
     {
         $new = clone $this;
         $new->workflow->get($step);

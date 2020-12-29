@@ -11,23 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Response;
+namespace Chevere\Interfaces\Workflow;
 
-use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 
 /**
- * Describes the component in charge of defining a provisional response.
+ * Describes the component in charge of providing a workflow response.
  */
-interface ResponseSuccessInterface extends ResponseInterface
+interface WorkflowResponseInterface extends ResponseInterface
 {
-    /**
-     * Return an instance with the specified data.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified data.
-     */
-    public function withData(array $data): self;
-
     /**
      * Return an instance with the specified workflow message.
      *

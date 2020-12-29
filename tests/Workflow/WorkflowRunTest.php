@@ -16,7 +16,7 @@ namespace Chevere\Tests\Workflow;
 use Chevere\Components\Action\Action;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Response\ResponseSuccess;
+use Chevere\Components\Response\Response;
 use Chevere\Components\Workflow\Step;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
@@ -24,7 +24,7 @@ use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowRunTest extends TestCase
@@ -72,11 +72,8 @@ final class WorkflowRunTest extends TestCase
         $workflowRun = (new WorkflowRun($workflow, ...$arguments))
             ->withStepResponse(
                 'step0',
-                new ResponseSuccess(
-                    (new Parameters())
-                        ->withAddedRequired(response0: new StringParameter()),
-                    $responseData
-                )
+                (new Response())
+                    ->withData(...$responseData)
             );
         $this->assertTrue($workflow->hasVar('${step0:response0}'));
         $this->assertTrue($workflowRun->has('step0'));
@@ -97,7 +94,7 @@ final class WorkflowRunTest extends TestCase
         (new WorkflowRun($workflow, ...$arguments))
             ->withStepResponse(
                 'not-found',
-                new ResponseSuccess(new Parameters(), [])
+                new Response()
             );
     }
 
@@ -113,16 +110,16 @@ final class WorkflowRunTest extends TestCase
         (new WorkflowRun($workflow))
             ->withStepResponse(
                 'step0',
-                new ResponseSuccess(new Parameters(), [])
+                new Response()
             );
     }
 }
 
 class WorkflowRunTestStep0 extends Action
 {
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }
 
@@ -134,9 +131,9 @@ class WorkflowRunTestStep1 extends Action
             ->withAddedRequired(foo: new StringParameter());
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }
 
@@ -151,8 +148,8 @@ class WorkflowRunTestStep2 extends Action
             );
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseSuccessInterface
+    public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess([]);
+        return $this->getResponseSuccess();
     }
 }

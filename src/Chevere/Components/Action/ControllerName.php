@@ -14,11 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Action;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Str\StrAssert;
-use Chevere\Exceptions\Controller\ControllerInterfaceException;
-use Chevere\Exceptions\Controller\ControllerNameException;
-use Chevere\Exceptions\Controller\ControllerNotExistsException;
-use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Action\ControllerInterface;
 use Chevere\Interfaces\Action\ControllerNameInterface;
 
@@ -29,7 +25,6 @@ final class ControllerName implements ControllerNameInterface
     public function __construct(string $name)
     {
         $this->string = $name;
-        $this->assertName();
         $this->assertController();
     }
 
@@ -38,33 +33,21 @@ final class ControllerName implements ControllerNameInterface
         return $this->string;
     }
 
-    private function assertName(): void
-    {
-        try {
-            (new StrAssert($this->string))
-                ->notEmpty()
-                ->notCtypeSpace()
-                ->notContains(' ');
-        } catch (Exception $e) {
-            throw new ControllerNameException(
-                $e->message(),
-            );
-        }
-    }
-
     private function assertController(): void
     {
         if (! class_exists($this->string)) {
-            throw new ControllerNotExistsException(
+            throw new InvalidArgumentException(
                 (new Message("Controller %controllerName% doesn't exists"))
-                    ->code('%controllerName%', $this->string)
+                    ->code('%controllerName%', $this->string),
+                100
             );
         }
         if (! is_subclass_of($this->string, ControllerInterface::class)) {
-            throw new ControllerInterfaceException(
+            throw new InvalidArgumentException(
                 (new Message('Controller %controllerName% must implement the %interface% interface'))
                     ->code('%controllerName%', $this->string)
-                    ->code('%interface%', ControllerInterface::class)
+                    ->code('%interface%', ControllerInterface::class),
+                101
             );
         }
     }

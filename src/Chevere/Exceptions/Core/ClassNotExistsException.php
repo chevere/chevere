@@ -11,9 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\ClassMap;
-
-use Chevere\Exceptions\Core\Exception;
+namespace Chevere\Exceptions\Core;
 
 /**
  * Exception thrown when a class doesn't exists.

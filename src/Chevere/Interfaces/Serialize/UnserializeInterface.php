@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Serialize;
 
-use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Type\TypeInterface;
 
 /**
@@ -22,9 +21,9 @@ use Chevere\Interfaces\Type\TypeInterface;
 interface UnserializeInterface
 {
     /**
-     * @throws UnserializeException
+     * @throws LogicException
      */
-    public function __construct(string $serialized);
+    public function __construct(string $unserializable);
 
     /**
      * Provides access to the unserialize variable.

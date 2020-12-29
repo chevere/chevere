@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Action;
 
-use Chevere\Exceptions\Controller\ControllerInterfaceException;
-use Chevere\Exceptions\Controller\ControllerNameException;
-use Chevere\Exceptions\Controller\ControllerNotExistsException;
 use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
@@ -24,9 +21,7 @@ use Chevere\Interfaces\Common\ToStringInterface;
 interface ControllerNameInterface extends ToStringInterface
 {
     /**
-     * @throws ControllerNameException
-     * @throws ControllerNotExistsException
-     * @throws ControllerInterfaceException
+     * @throws InvalidArgumentException
      */
     public function __construct(string $name);
 }

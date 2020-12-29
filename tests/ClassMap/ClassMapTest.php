@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Tests\ClassMap;
 
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Exceptions\ClassMap\ClassNotExistsException;
-use Chevere\Exceptions\ClassMap\ClassNotMappedException;
-use Chevere\Exceptions\ClassMap\StringMappedException;
+use Chevere\Exceptions\Core\ClassNotExistsException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class ClassMapTest extends TestCase
@@ -27,7 +27,7 @@ final class ClassMapTest extends TestCase
         $classMap = new ClassMap();
         $this->assertCount(0, $classMap);
         $this->assertFalse($classMap->has($test));
-        $this->expectException(ClassNotMappedException::class);
+        $this->expectException(OutOfBoundsException::class);
         $classMap->key($test);
     }
 
@@ -35,7 +35,7 @@ final class ClassMapTest extends TestCase
     {
         $key = 'test';
         $classMap = new ClassMap();
-        $this->expectException(ClassNotMappedException::class);
+        $this->expectException(OutOfBoundsException::class);
         $classMap->className($key);
     }
 
@@ -58,7 +58,7 @@ final class ClassMapTest extends TestCase
     public function testWithPutSameMapping(): void
     {
         $mapping = 'self';
-        $this->expectException(StringMappedException::class);
+        $this->expectException(OverflowException::class);
         (new ClassMap())
             ->withPut(self::class, $mapping)
             ->withPut(TestCase::class, $mapping);

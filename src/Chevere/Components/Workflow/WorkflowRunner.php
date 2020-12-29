@@ -18,7 +18,7 @@ use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Dependent\DependentInterface;
-use Chevere\Interfaces\Response\ResponseSuccessInterface;
+use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunnerInterface;
@@ -99,7 +99,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         return $arguments;
     }
 
-    private function addStep(string $name, StepInterface $step, ResponseSuccessInterface $response): void
+    private function addStep(string $name, StepInterface $step, ResponseInterface $response): void
     {
         try {
             $this->workflowRun = $this->workflowRun->withStepResponse($name, $response);
