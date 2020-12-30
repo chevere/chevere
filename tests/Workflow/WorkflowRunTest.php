@@ -119,7 +119,7 @@ class WorkflowRunTestStep0 extends Action
 {
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess();
+        return $this->getResponse();
     }
 }
 
@@ -133,7 +133,7 @@ class WorkflowRunTestStep1 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess();
+        return $this->getResponse();
     }
 }
 
@@ -150,6 +150,6 @@ class WorkflowRunTestStep2 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess();
+        return $this->getResponse();
     }
 }

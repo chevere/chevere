@@ -40,6 +40,6 @@ final class ActionRunnerTestController extends Controller
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess(user: 'PeoplesHernandez');
+        return $this->getResponse(user: 'PeoplesHernandez');
     }
 }

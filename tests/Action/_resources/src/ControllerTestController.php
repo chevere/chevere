@@ -21,6 +21,6 @@ final class ControllerTestController extends Controller
 {
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess();
+        return $this->getResponse();
     }
 }

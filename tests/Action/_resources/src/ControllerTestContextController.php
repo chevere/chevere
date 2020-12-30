@@ -46,7 +46,7 @@ final class ControllerTestContextController extends Controller
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess(
+        return $this->getResponse(
             userId: (int) $arguments->getString('userId'),
             contextId: $this->contextArguments()->getInteger('contextId'),
         );

@@ -39,7 +39,7 @@ class WorkflowRunnerFunctionTestStep2 extends Action
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
-        return $this->getResponseSuccess(
+        return $this->getResponse(
             response2: $arguments->getString('foo') .
                     ' ^ ' . $arguments->getString('bar')
         );
