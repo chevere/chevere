@@ -50,12 +50,10 @@ interface ActionInterface extends DescriptionInterface
      */
     public function responseDataParameters(): ParametersInterface;
 
-    public function getArguments(mixed ...$arguments): ArgumentsInterface;
+    public function getArguments(mixed ...$namedArguments): ArgumentsInterface;
 
     /**
      * Retrieves a new success response with type-hinted data.
-     *
-     * @param array<string, mixed> $data
      */
-    public function getResponse(mixed ...$data): ResponseInterface;
+    public function getResponse(mixed ...$namedData): ResponseInterface;
 }

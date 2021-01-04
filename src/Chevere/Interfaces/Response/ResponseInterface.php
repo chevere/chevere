@@ -32,9 +32,9 @@ interface ResponseInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified data.
      *
-     * @param mixed $data Named arguments for response data (name to data key)
+     * @param mixed $namedData Named arguments for response data (name to data key)
      */
-    public function withData(mixed ...$data): self;
+    public function withData(mixed ...$namedData): self;
 
     /**
      * Provides access to uuid.

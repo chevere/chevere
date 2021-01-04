@@ -30,34 +30,34 @@ interface ParametersInterface extends MappedInterface
     public function getGenerator(): Generator;
 
     /**
-     * Return an instance with the specified required `$parameter` instance added.
+     * Return an instance with the specified required `$parameters` instance added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified required `$parameter` instance added.
+     * an instance that contains the specified required `$parameters` instance added.
      *
      * @throws OverflowException
      */
-    public function withAddedRequired(ParameterInterface ...$parameter): self;
+    public function withAddedRequired(ParameterInterface ...$parameters): self;
 
     /**
-     * Return an instance with the specified optional `$parameter` instance added.
+     * Return an instance with the specified optional `$parameters` instance added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified optional `$parameter` instance added.
+     * an instance that contains the specified optional `$parameters` instance added.
      *
      * @throws OverflowException
      */
-    public function withAddedOptional(ParameterInterface ...$parameter): self;
+    public function withAddedOptional(ParameterInterface ...$parameters): self;
 
     /**
-     * Return an instance with the specified `$parameter` modifying an already added parameter.
+     * Return an instance with the specified `$parameters` modifying an already added parameter.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$parameter` modifying an already added parameter.
+     * an instance that contains the specified `$parameters` modifying an already added parameter.
      *
      * @throws OutOfBoundsException
      */
-    public function withModify(ParameterInterface ...$parameter): self;
+    public function withModify(ParameterInterface ...$parameters): self;
 
     /**
      * Indicates whether the instance has a parameter by name.

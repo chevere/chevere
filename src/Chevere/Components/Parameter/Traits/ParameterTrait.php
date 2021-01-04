@@ -42,10 +42,10 @@ trait ParameterTrait
         return $new;
     }
 
-    public function withAddedAttribute(string ...$attribute): self
+    public function withAddedAttribute(string ...$attributes): self
     {
         $new = clone $this;
-        foreach ($attribute as $attr) {
+        foreach ($attributes as $attr) {
             if ($this->hasAttribute($attr)) {
                 throw new OverflowException(
                     (new Message('Attribute %attribute% has been already added'))

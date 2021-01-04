@@ -45,23 +45,23 @@ final class Parameters implements ParametersInterface
         $this->optional = new Set($this->optional->toArray());
     }
 
-    public function withAddedRequired(ParameterInterface ...$parameter): ParametersInterface
+    public function withAddedRequired(ParameterInterface ...$parameters): ParametersInterface
     {
         $new = clone $this;
-        foreach ($parameter as $name => $param) {
+        foreach ($parameters as $name => $parameter) {
             $name = (string) $name;
             $new->assertNoOverflow($name);
-            $new->map->put($name, $param);
+            $new->map->put($name, $parameter);
             $new->required->add($name);
         }
 
         return $new;
     }
 
-    public function withAddedOptional(ParameterInterface ...$parameter): ParametersInterface
+    public function withAddedOptional(ParameterInterface ...$parameters): ParametersInterface
     {
         $new = clone $this;
-        foreach ($parameter as $name => $param) {
+        foreach ($parameters as $name => $param) {
             $name = (string) $name;
             $new->assertNoOverflow($name);
             $new->map->put($name, $param);
@@ -71,10 +71,10 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    public function withModify(ParameterInterface ...$parameter): ParametersInterface
+    public function withModify(ParameterInterface ...$parameters): ParametersInterface
     {
         $new = clone $this;
-        foreach ($parameter as $name => $param) {
+        foreach ($parameters as $name => $param) {
             $name = (string) $name;
             if (! $new->map->hasKey($name)) {
                 throw new OutOfBoundsException(

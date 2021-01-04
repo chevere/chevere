@@ -31,11 +31,11 @@ final class Dependencies implements DependenciesInterface
         $this->keys = new Set();
     }
 
-    public function withPut(string ...$namedDependency): DependenciesInterface
+    public function withPut(string ...$namedDependencies): DependenciesInterface
     {
         $new = clone $this;
         $new->keys = new Set();
-        foreach ($namedDependency as $name => $className) {
+        foreach ($namedDependencies as $name => $className) {
             $new->classMap = $new->classMap
                 ->withPut($className, $name);
         }

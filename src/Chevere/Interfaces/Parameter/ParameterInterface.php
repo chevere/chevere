@@ -38,29 +38,29 @@ interface ParameterInterface extends DescriptionInterface
     public function withDescription(string $description): self;
 
     /**
-     * Return an instance with the specified `$attribute` added.
+     * Return an instance with the specified `$attributes` added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$attribute` added.
+     * an instance that contains the specified `$attributes` added.
      *
      * @throws OverflowException
      */
-    public function withAddedAttribute(string ...$attribute): self;
+    public function withAddedAttribute(string ...$attributes): self;
 
     /**
-     * Return an instance with the specified `$attribute` removed.
+     * Return an instance with the specified `$attributes` removed.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$attribute` removed.
+     * an instance that contains the specified `$attributes` removed.
      *
      * @throws OutOfBoundsException
      */
-    public function withRemovedAttribute(string ...$attribute): self;
+    public function withRemovedAttribute(string ...$attributes): self;
 
     /**
-     * Indicates whether the instance has the given `$attribute`.
+     * Indicates whether the instance has the given `$attributes`.
      */
-    public function hasAttribute(string ...$attribute): bool;
+    public function hasAttribute(string ...$attributes): bool;
 
     /**
      * Provides access to the attributes instance.

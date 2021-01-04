@@ -39,10 +39,10 @@ trait ResponseTrait
         return $new;
     }
 
-    public function withData(mixed ...$data): self
+    public function withData(mixed ...$namedData): self
     {
         $new = clone $this;
-        $new->data = $data;
+        $new->data = $namedData;
 
         return $new;
     }

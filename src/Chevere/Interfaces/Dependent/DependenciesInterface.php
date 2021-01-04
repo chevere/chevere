@@ -21,7 +21,7 @@ use Generator;
  */
 interface DependenciesInterface extends MappedInterface
 {
-    public function withPut(string ...$namedDependency): self;
+    public function withPut(string ...$namedDependencies): self;
 
     /**
      * @return Generator<string, string> Name to dependency class name

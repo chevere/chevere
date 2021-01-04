@@ -49,10 +49,10 @@ final class Map implements MapInterface
     /**
      * @throws OutOfBoundsException
      */
-    public function assertHasKey(string ...$key): void
+    public function assertHasKey(string ...$keys): void
     {
         $missing = [];
-        foreach ($key as $k) {
+        foreach ($keys as $k) {
             if (! $this->map->hasKey($k)) {
                 $missing[] = $k;
             }

@@ -26,13 +26,13 @@ trait DependentTrait
 {
     private DependenciesInterface $dependencies;
 
-    public function withDependencies(object ...$namedDependency): self
+    public function withDependencies(object ...$namedDependencies): self
     {
         $new = clone $this;
         $missing = [];
         $new->dependencies ??= $new->getDependencies();
         foreach ($new->dependencies->getGenerator() as $name => $className) {
-            $value = $namedDependency[$name] ?? null;
+            $value = $namedDependencies[$name] ?? null;
             if (! isset($value)) {
                 $missing[] = $name;
 
