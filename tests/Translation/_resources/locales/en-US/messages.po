@@ -13,7 +13,7 @@ msgstr ""
 
 #: single.php:1 at/path/single.php:1
 msgid "Language"
-msgstr "EEE"
+msgstr ""
 
 #: single.php:2 at/path/single.php:2
 #, php-format

@@ -13,31 +13,91 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Translation;
 
+use function Chevere\Components\Filesystem\dirForPath;
+use Chevere\Components\Translation\TranslationLoad;
+use Chevere\Components\Translation\TranslatorInstance;
 use Gettext\Generator\ArrayGenerator;
 use Gettext\Loader\PoLoader;
-use Gettext\Translator;
 use PHPUnit\Framework\TestCase;
 
 final class TranslationTest extends TestCase
 {
-    public function testConstruct(): void
+    public function testGenerateCompiled(): void
     {
         $this->expectNotToPerformAssertions();
-        $name = 'es-CL';
-        $translations = (new PoLoader())
-            ->loadFile(__DIR__ . "/_resources/locales/${name}/messages.po");
-        (new ArrayGenerator())
-            ->generateFile($translations, __DIR__ . "/_resources/array/${name}.php");
+        $codes = ['es-CL', 'en-US'];
+        foreach ($codes as $code) {
+            $translations = (new PoLoader())
+                ->loadFile(__DIR__ . "/_resources/locales/${code}/messages.po");
+            $dir = dirForPath(__DIR__ . "/_resources/compiled/${code}/");
+            if (! $dir->exists()) {
+                $dir->create();
+            }
+            (new ArrayGenerator())
+                ->generateFile($translations, $dir->path()->toString() . '/messages.php');
+        }
     }
 
-    public function testTranslate(): void
+    public function testConstruct(): void
     {
-        $name = 'es-CL';
-        $translator = (new Translator())
-            ->loadTranslations(
-            __DIR__ . "/_resources/array/${name}.php"
+        $code = 'es-CL';
+        $translations = (new PoLoader())
+            ->loadFile(__DIR__ . "/_resources/locales/${code}/messages.po");
+        $dir = dirForPath(__DIR__ . "/_resources/compiled/${code}/");
+        $string = (new ArrayGenerator())
+            ->generateString($translations);
+        $this->assertStringEqualsFile($dir->path()->toString() . '/messages.php', $string);
+    }
+
+    public function testNullTranslator(): void
+    {
+        $this->assertSame('Language', _s('Language'));
+        $username = 'Rodolfo';
+        $this->assertSame(
+            "${username}'s Images",
+            _sf("%s's Images", $username)
         );
-        $this->assertSame('Idiomas', $translator->gettext('Language'));
-        $this->assertSame('imágenes', $translator->ngettext('image', 'images', 2));
+        $username = 'Rudy';
+        $this->assertSame(
+            "${username}'s Images",
+            _st("%s's Images", [
+                '%s' => $username,
+            ])
+        );
+        $this->assertSame('image', _n('image', 'images', 1, 1));
+        $this->assertSame('2 seconds', _nf('%d second', '%d seconds', 2, 2));
+        $value = 123;
+        $this->assertSame(
+            "${value} seconds",
+            _nt('%d second', '%d seconds', $value, [
+                '%d' => $value,
+            ]));
+    }
+
+    public function testTranslator(): void
+    {
+        $translationLoad = new TranslationLoad(dirForPath(__DIR__ . '/_resources/compiled/'));
+        new TranslatorInstance($translationLoad->getTranslator('es-CL', 'messages'));
+        $this->assertSame('Idiomas', _s('Language'));
+        $username = 'Rodolfo';
+        $this->assertSame(
+            "Imágenes de ${username}",
+            _sf("%s's Images", $username)
+        );
+        $username = 'Rudy';
+        $this->assertSame(
+            "Imágenes de ${username}",
+            _st("%s's Images", [
+                '%s' => $username,
+            ])
+        );
+        $this->assertSame('imagen', _n('image', 'images', 1, 1));
+        $this->assertSame('2 segundos', _nf('%d second', '%d seconds', 2, 2));
+        $value = 123;
+        $this->assertSame(
+            "${value} segundos",
+            _nt('%d second', '%d segundos', $value, [
+                '%d' => $value,
+            ]));
     }
 }
