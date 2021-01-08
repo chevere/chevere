@@ -41,6 +41,13 @@ interface PathInterface extends ToStringInterface
     public function toString(): string;
 
     /**
+     * Asserts whether the path exists.
+     *
+     * @throws PathNotExistsException
+     */
+    public function assertExists(): void;
+
+    /**
      * Indicates whether the path exists.
      */
     public function exists(): bool;
