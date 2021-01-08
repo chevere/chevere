@@ -73,7 +73,7 @@ use function Chevere\Components\Translation\getTranslator;
         function _nf(string $singular, string $plural, int $count, ...$arguments)
         {
             return sprintf(
-                _n($singular, $plural, $count, ...$arguments),
+                _n($singular, $plural, $count),
                 ...$arguments
             );
         }
@@ -84,7 +84,7 @@ use function Chevere\Components\Translation\getTranslator;
          */
         function _nt(string $singular, string $plural, int $count, array $fromTo)
         {
-            return strtr(_n($singular, $plural, $count, $fromTo), $fromTo);
+            return strtr(_n($singular, $plural, $count), $fromTo);
         }
     }
 }
