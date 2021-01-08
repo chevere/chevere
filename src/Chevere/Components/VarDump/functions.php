@@ -60,7 +60,7 @@ use function Chevere\Components\Writer\streamFor;
 
     if (function_exists('xd') === false) {
         /**
-         * Dumps information about one or more variables to the output stream
+         * Dumps information about one or more variables to the registered output writer stream
          */
         function xd(...$vars): void
         {
@@ -86,7 +86,7 @@ use function Chevere\Components\Writer\streamFor;
     }
     if (function_exists('xdd') === false) {
         /**
-         * Dumps information about one or more variables to the output stream and die()
+         * Dumps information about one or more variables to the registered output writer stream and die()
          * @codeCoverageIgnore
          */
         function xdd(...$vars): void
