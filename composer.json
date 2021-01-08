@@ -19,6 +19,8 @@
         "ext-mbstring": "*",
         "ext-zend-opcache": "*",
         "adhocore/cli": "^0.8",
+        "gettext/gettext": "^5.5",
+        "gettext/translator": "^1.0",
         "kevinlebrun/colors.php": "^1.0",
         "laminas/laminas-diactoros": "^2.4",
         "league/container": "^3.3",
