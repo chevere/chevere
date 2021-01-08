@@ -20,15 +20,21 @@ namespace Chevere\Components\VarDump {
     use Chevere\Components\VarDump\Outputters\VarDumpConsoleOutputter;
     use Chevere\Components\VarDump\Outputters\VarDumpHtmlOutputter;
     use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
+    use function Chevere\Components\Writer\streamFor;
+    use Chevere\Components\Writer\StreamWriter;
+    use Chevere\Components\Writer\Writers;
+    use Chevere\Components\Writer\WritersInstance;
+    use Chevere\Exceptions\Core\LogicException;
     use Chevere\Interfaces\VarDump\VarDumpInterface;
+    use Chevere\Interfaces\Writer\WritersInterface;
 
     function varDumpPlain(): VarDumpInterface
     {
         return
-            new VarDump(
-                new VarDumpPlainFormatter(),
-                new VarDumpPlainOutputter()
-            );
+                new VarDump(
+                    new VarDumpPlainFormatter(),
+                    new VarDumpPlainOutputter()
+                );
     }
 
     function varDumpConsole(): VarDumpInterface
@@ -48,15 +54,35 @@ namespace Chevere\Components\VarDump {
                 new VarDumpHtmlOutputter()
             );
     }
+
+    function getVarDump(): VarDumpInterface
+    {
+        try {
+            return VarDumpInstance::get();
+        } catch (LogicException $e) {
+            return varDumpConsole();
+        }
+    }
+
+    function getVarDumpWriters(): WritersInterface
+    {
+        try {
+            return WritersInstance::get();
+        } catch (LogicException $e) {
+            return (new Writers())
+                ->withOut(
+                    new StreamWriter(streamFor('php://stdout', 'r+'))
+                )
+                ->withError(
+                    new StreamWriter(streamFor('php://stderr', 'r+'))
+                );
+        }
+    }
 }
 
 namespace {
-    use function Chevere\Components\VarDump\varDumpConsole;
-    use Chevere\Components\VarDump\VarDumpInstance;
-use function Chevere\Components\Writer\streamFor;
-    use Chevere\Components\Writer\StreamWriter;
-    use Chevere\Components\Writer\Writers;
-    use Chevere\Components\Writer\WritersInstance;
+    use function Chevere\Components\VarDump\getVarDump;
+    use function Chevere\Components\VarDump\getVarDumpWriters;
 
     if (function_exists('xd') === false) {
         /**
@@ -64,24 +90,10 @@ use function Chevere\Components\Writer\streamFor;
          */
         function xd(...$vars): void
         {
-            try {
-                $varDump = VarDumpInstance::get();
-            } catch (LogicException $e) {
-                $varDump = varDumpConsole();
-            }
-
-            try {
-                $writers = WritersInstance::get();
-            } catch (LogicException $e) {
-                $writers = (new Writers())
-                    ->withOut(
-                        new StreamWriter(streamFor('php://stdout', 'r+'))
-                    )
-                    ->withError(
-                        new StreamWriter(streamFor('php://stderr', 'r+'))
-                    );
-            }
-            $varDump->withShift(1)->withVars(...$vars)->process($writers->out());
+            getVarDump()
+                ->withShift(1)
+                ->withVars(...$vars)
+                ->process(getVarDumpWriters()->out());
         }
     }
     if (function_exists('xdd') === false) {
@@ -91,24 +103,10 @@ use function Chevere\Components\Writer\streamFor;
          */
         function xdd(...$vars): void
         {
-            try {
-                $varDump = VarDumpInstance::get();
-            } catch (LogicException $e) {
-                $varDump = varDumpConsole();
-            }
-
-            try {
-                $writers = WritersInstance::get();
-            } catch (LogicException $e) {
-                $writers = (new Writers())
-                    ->withOut(
-                        new StreamWriter(streamFor('php://stdout', 'r+'))
-                    )
-                    ->withError(
-                        new StreamWriter(streamFor('php://stderr', 'r+'))
-                    );
-            }
-            $varDump->withShift(1)->withVars(...$vars)->process($writers->out());
+            getVarDump()
+                ->withShift(1)
+                ->withVars(...$vars)
+                ->process(getVarDumpWriters()->out());
             die(0);
         }
     }
