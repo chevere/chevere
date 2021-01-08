@@ -26,10 +26,10 @@ interface StepInterface
     public function __construct(string $action);
 
     /**
-     * Return an instance with the specified named `$namedArguments`.
+     * Return an instance with the specified `$namedArguments`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified named `$namedArguments`.
+     * an instance that contains the specified `$namedArguments`.
      */
     public function withArguments(mixed ...$namedArguments): self;
 
