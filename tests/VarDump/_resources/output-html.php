@@ -16,4 +16,4 @@ return '<html style="background: #132537;"><head></head><body>%handlerClassName%
 <span style="color:#3498db">%className%</span>-><span style="color:#9b59b6">%functionName%()</span>
 <span style="color:inherit">%fileLine%</span>
 
-Arg#1 <span style="color:#7f8c8d">null</span></pre></body></html>';
+Arg:name <span style="color:#7f8c8d">null</span></pre></body></html>';

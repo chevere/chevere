@@ -20,7 +20,7 @@ trait DebugBacktraceTrait
         return [
             0 => [
                 'file' => 'file@handler',
-                'line' => 101,
+                'line' => 100,
                 'function' => 'function@handler',
                 'class' => 'class@handler',
                 'type' => '->',

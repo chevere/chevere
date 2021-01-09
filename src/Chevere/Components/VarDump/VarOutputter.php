@@ -90,16 +90,14 @@ final class VarOutputter implements VarOutputterInterface
 
     private function handleArgs(): void
     {
-        $pos = 1;
-        foreach ($this->vars as $value) {
+        foreach ($this->vars as $name => $value) {
             $varDumper = new VarDumper(
                 $this->writer,
                 $this->formatter,
                 new VarDumpable($value)
             );
-            $this->writer->write("\n\nArg#" . $pos . ' ');
+            $this->writer->write("\n\nArg:" . (string) $name . ' ');
             $varDumper->withProcess();
-            ++$pos;
         }
     }
 }

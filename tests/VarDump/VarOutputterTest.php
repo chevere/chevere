@@ -38,10 +38,13 @@ final class VarOutputterTest extends TestCase
             $writer,
             $backtrace,
             new VarDumpPlainFormatter(),
-            null,
+            name: null,
         );
         $varOutputter->process(new VarDumpPlainOutputter());
-        $this->assertSame($this->getParsed($backtrace, 'output-plain'), $writer->toString());
+        $this->assertSame(
+            $this->getParsed($backtrace, 'output-plain'),
+            $writer->toString(),
+        );
     }
 
     public function testConsoleOutputter(): void
@@ -52,7 +55,7 @@ final class VarOutputterTest extends TestCase
             $writer,
             $backtrace,
             new VarDumpConsoleFormatter(),
-            null,
+            name: null,
         );
         $varOutputter->process(new VarDumpConsoleOutputter());
         $parsed = $this->getParsed($backtrace, 'output-console-color');
@@ -70,7 +73,7 @@ final class VarOutputterTest extends TestCase
             $writer,
             $backtrace,
             new VarDumpHtmlFormatter(),
-            null,
+            name: null,
         );
         $varOutputter->process(new VarDumpHtmlOutputter());
         $parsed = $this->getParsed($backtrace, 'output-html');
