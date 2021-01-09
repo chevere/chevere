@@ -15,18 +15,18 @@ namespace Chevere\Components\Translation;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
-use Gettext\Translator;
+use Gettext\TranslatorInterface;
 
 final class TranslatorInstance
 {
-    private static ?Translator $instance;
+    private static ?TranslatorInterface $instance;
 
-    public function __construct(Translator $translator)
+    public function __construct(TranslatorInterface $translator)
     {
         self::$instance = $translator;
     }
 
-    public static function get(): Translator
+    public static function get(): TranslatorInterface
     {
         if (! isset(self::$instance)) {
             throw new LogicException(

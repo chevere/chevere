@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Translation;
 
 use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Translation\TranslationLoad;
 use Chevere\Components\Translation\TranslatorInstance;
+use Chevere\Components\Translation\TranslatorLoader;
 use Gettext\Generator\ArrayGenerator;
 use Gettext\Loader\PoLoader;
 use PHPUnit\Framework\TestCase;
@@ -76,8 +76,8 @@ final class TranslationTest extends TestCase
 
     public function testTranslator(): void
     {
-        $translationLoad = new TranslationLoad(dirForPath(__DIR__ . '/_resources/compiled/'));
-        new TranslatorInstance($translationLoad->getTranslator('es-CL', 'messages'));
+        $loader = new TranslatorLoader(dirForPath(__DIR__ . '/_resources/compiled/'));
+        new TranslatorInstance($loader->getTranslator('es-CL', 'messages'));
         $this->assertSame('Idiomas', _s('Language'));
         $username = 'Rodolfo';
         $this->assertSame(

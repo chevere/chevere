@@ -15,22 +15,18 @@ namespace Chevere\Components\Translation;
 
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\DomainException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Gettext\Translator;
+use Gettext\TranslatorInterface;
 
-final class TranslationLoad
+final class TranslatorLoader
 {
     private DirInterface $dir;
 
     public function __construct(DirInterface $dir)
     {
-        if (! $dir->exists()) {
-            throw new InvalidArgumentException(
-                (new Message("Directory %dir% doesn't exists"))
-                    ->code('%dir%', $dir->path()->toString())
-            );
-        }
+        $dir->assertExists();
         $this->dir = $dir;
     }
 
@@ -39,15 +35,22 @@ final class TranslationLoad
         return $this->dir;
     }
 
-    public function getTranslator(string $languageCode, string $messages): Translator
+    public function getTranslator(string $locale, string $domain): TranslatorInterface
     {
-        $dir = $this->dir->getChild($languageCode . '/');
+        $dir = $this->dir->getChild($locale . '/');
         $dir->assertExists();
         $file = new File(
-            $dir->path()->getChild("${messages}.php")
+            $dir->path()->getChild("${domain}.php")
         );
         $file->assertExists();
 
-        return (new Translator())->loadTranslations($file->path()->toString());
+        try {
+            return (new Translator())
+                ->loadTranslations($file->path()->toString());
+        } catch (\InvalidArgumentException $e) {
+            throw new DomainException(
+                (new Message($e->getMessage()))
+            );
+        }
     }
 }

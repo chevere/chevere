@@ -16,15 +16,16 @@ declare(strict_types=1);
 namespace Chevere\Components\Translation {
     use Chevere\Exceptions\Core\LogicException;
     use Gettext\Translator;
+    use Gettext\TranslatorInterface;
 
-    function getTranslator(): Translator
-    {
-        try {
-            return TranslatorInstance::get();
-        } catch (LogicException $e) {
-            return new Translator();
-        }
+function getTranslator(): TranslatorInterface
+{
+    try {
+        return TranslatorInstance::get();
+    } catch (LogicException $e) {
+        return new Translator();
     }
+}
 }
 
 namespace {
