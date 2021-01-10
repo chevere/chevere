@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Translator;
+namespace Chevere\Tests\Translation;
 
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Translator\TranslatorLoader;

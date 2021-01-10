@@ -11,44 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Translator;
+namespace Chevere\Tests\Translation;
 
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Translator\TranslatorInstance;
 use Chevere\Components\Translator\TranslatorLoader;
-use Gettext\Generator\ArrayGenerator;
-use Gettext\Loader\PoLoader;
 use PHPUnit\Framework\TestCase;
 
-final class TranslationTest extends TestCase
+final class TranslatorFunctionsTest extends TestCase
 {
-    public function testGenerateCompiled(): void
-    {
-        $this->expectNotToPerformAssertions();
-        $codes = ['es-CL', 'en-US'];
-        foreach ($codes as $code) {
-            $translations = (new PoLoader())
-                ->loadFile(__DIR__ . "/_resources/locales/${code}/messages.po");
-            $dir = dirForPath(__DIR__ . "/_resources/compiled/${code}/");
-            if (! $dir->exists()) {
-                $dir->create();
-            }
-            (new ArrayGenerator())
-                ->generateFile($translations, $dir->path()->toString() . '/messages.php');
-        }
-    }
-
-    public function testConstruct(): void
-    {
-        $code = 'es-CL';
-        $translations = (new PoLoader())
-            ->loadFile(__DIR__ . "/_resources/locales/${code}/messages.po");
-        $dir = dirForPath(__DIR__ . "/_resources/compiled/${code}/");
-        $string = (new ArrayGenerator())
-            ->generateString($translations);
-        $this->assertStringEqualsFile($dir->path()->toString() . '/messages.php', $string);
-    }
-
     public function testNullTranslator(): void
     {
         $this->assertSame('Language', _t('Language'));
