@@ -85,6 +85,7 @@ final class FileTest extends TestCase
     public function testRemoveNonExistentPath(): void
     {
         $file = $this->getChildFile('.php');
+        $file->removeIfExists();
         $this->expectException(FileNotExistsException::class);
         $file->remove();
     }
@@ -92,6 +93,8 @@ final class FileTest extends TestCase
     public function testRemoveExistentPath(): void
     {
         $file = $this->getChildFile('.test');
+        $file->create();
+        $file->removeIfExists();
         $file->create();
         $file->remove();
         $this->assertFalse($file->exists());

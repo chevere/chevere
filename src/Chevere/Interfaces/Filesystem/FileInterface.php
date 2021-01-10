@@ -86,6 +86,11 @@ interface FileInterface
     public function remove(): void;
 
     /**
+     * @throws FileUnableToRemoveException
+     */
+    public function removeIfExists(): void;
+
+    /**
      * Create the file.
      *
      * @throws FileExistsException

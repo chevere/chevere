@@ -106,17 +106,15 @@ final class File implements FileInterface
     public function remove(): void
     {
         $this->assertExists();
+        $this->assertUnlink($this->path->toString());
+    }
 
-        try {
-            unlink($this->path->toString());
+    public function removeIfExists(): void
+    {
+        if (! $this->exists()) {
+            return;
         }
-        // @codeCoverageIgnoreStart
-        catch (Throwable $e) {
-            throw new FileUnableToRemoveException(
-                new Message($e->getMessage())
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        $this->assertUnlink($this->path->toString());
     }
 
     public function create(): void
@@ -176,5 +174,19 @@ final class File implements FileInterface
                     ->code('%path%', $this->path->toString())
             );
         }
+    }
+
+    private function assertUnlink(string $path): void
+    {
+        try {
+            unlink($path);
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
+            throw new FileUnableToRemoveException(
+                new Message($e->getMessage())
+            );
+        }
+        // @codeCoverageIgnoreEnd
     }
 }

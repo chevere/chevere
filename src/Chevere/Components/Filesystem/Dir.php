@@ -15,6 +15,7 @@ namespace Chevere\Components\Filesystem;
 
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Filesystem\DirExistsException;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
@@ -67,13 +68,21 @@ final class Dir implements DirInterface
 
     public function create(int $mode = 0755): void
     {
-        try {
-            mkdir($this->path->toString(), $mode, true);
-        } catch (Throwable $e) {
-            throw new DirUnableToCreateException(
-                (new Message($e->getMessage())),
+        if ($this->exists()) {
+            throw new DirExistsException(
+                (new Message('Directory %path% already exists'))
+                    ->code('%path%', $this->path->toString())
             );
         }
+        $this->assertCreate($mode);
+    }
+
+    public function createIfNotExists(int $mode = 0755): void
+    {
+        if ($this->exists()) {
+            return;
+        }
+        $this->assertCreate($mode);
     }
 
     public function remove(): array
@@ -141,6 +150,18 @@ final class Dir implements DirInterface
                 (new Message('Path %path% is not a directory'))
                     ->code('%path%', $this->path->toString())
             );
+        }
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    private function assertCreate(int $mode = 0755): void
+    {
+        try {
+            mkdir($this->path->toString(), $mode, true);
+        } catch (Throwable $e) {
+            throw new DirUnableToCreateException(previous: $e, );
         }
     }
 

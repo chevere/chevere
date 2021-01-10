@@ -46,6 +46,15 @@ interface DirInterface
     public function create(int $mode = 0755): void;
 
     /**
+     * Creates the directory if it doesn't exists.
+     *
+     * @param int $mode Octal mask
+     *
+     * @throws DirUnableToCreateException
+     */
+    public function createIfNotExists(int $mode = 0755): void;
+
+    /**
      * Returns a boolean indicating whether the directory exists.
      */
     public function exists(): bool;
