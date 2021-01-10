@@ -18,6 +18,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->import(__DIR__ . '/ecs-chevere.php');
     $parameters = $containerConfigurator->parameters();
     $parameters->set(Option::SKIP, [
+        __DIR__ . '/vendor/*',
         __DIR__ . '/tests/Cache/_resources/*',
         __DIR__ . '/tests/Filesystem/_resources/*',
         __DIR__ . '/tests/Pluggable/_resources/*',
