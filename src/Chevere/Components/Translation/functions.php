@@ -31,36 +31,36 @@ function getTranslator(): TranslatorInterface
 namespace {
 use function Chevere\Components\Translation\getTranslator;
 
-    if (function_exists('_s') === false) {
+    if (function_exists('_t') === false) {
         /**
-         * Alias for `gettext`.
+         * Translates a string.
          */
-        function _s(string $message)
+        function _t(string $message)
         {
             return getTranslator()->gettext($message);
         }
     }
-    if (function_exists('_sf') === false) {
+    if (function_exists('_tf') === false) {
         /**
-         * Alias for `gettext` with `sprintf` handling.
+         * Translates a formatted string with `sprintf`.
          */
-        function _sf(string $message, ...$arguments)
+        function _tf(string $message, ...$arguments)
         {
-            return sprintf(_s($message), ...$arguments);
+            return sprintf(_t($message), ...$arguments);
         }
     }
-    if (function_exists('_st') === false) {
+    if (function_exists('_tt') === false) {
         /**
-         * Alias for `gettext` with `strtr` handling.
+         * Translates a formatted string with `strtr`.
          */
-        function _st(string $message, array $fromTo = [])
+        function _tt(string $message, array $fromTo = [])
         {
-            return strtr(_s($message), $fromTo);
+            return strtr(_t($message), $fromTo);
         }
     }
     if (function_exists('_n') === false) {
         /**
-         * Alias for `ngettext`.
+         * Translates a formatted plural string.
          */
         function _n(string $singular, string $plural, int $count)
         {
@@ -69,7 +69,7 @@ use function Chevere\Components\Translation\getTranslator;
     }
     if (function_exists('_nf') === false) {
         /**
-         * Alias for `ngettext` with `sprintf` handling.
+         * Translates a formatted plural string with `sprintf`.
          */
         function _nf(string $singular, string $plural, int $count, ...$arguments)
         {

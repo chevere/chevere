@@ -51,16 +51,16 @@ final class TranslationTest extends TestCase
 
     public function testNullTranslator(): void
     {
-        $this->assertSame('Language', _s('Language'));
+        $this->assertSame('Language', _t('Language'));
         $username = 'Rodolfo';
         $this->assertSame(
             "${username}'s Images",
-            _sf("%s's Images", $username)
+            _tf("%s's Images", $username)
         );
         $username = 'Rudy';
         $this->assertSame(
             "${username}'s Images",
-            _st("%s's Images", [
+            _tt("%s's Images", [
                 '%s' => $username,
             ])
         );
@@ -78,16 +78,16 @@ final class TranslationTest extends TestCase
     {
         $loader = new TranslatorLoader(dirForPath(__DIR__ . '/_resources/compiled/'));
         new TranslatorInstance($loader->getTranslator('es-CL', 'messages'));
-        $this->assertSame('Idiomas', _s('Language'));
+        $this->assertSame('Idiomas', _t('Language'));
         $username = 'Rodolfo';
         $this->assertSame(
             "Imágenes de ${username}",
-            _sf("%s's Images", $username)
+            _tf("%s's Images", $username)
         );
         $username = 'Rudy';
         $this->assertSame(
             "Imágenes de ${username}",
-            _st("%s's Images", [
+            _tt("%s's Images", [
                 '%s' => $username,
             ])
         );
