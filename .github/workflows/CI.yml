@@ -63,7 +63,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --classmap-authoritative
+        run: composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
 
       # - name: Run Psalm
       #   run: vendor/bin/psalm --output-format=github

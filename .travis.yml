@@ -18,7 +18,7 @@ before_install:
   - composer validate
 
 install:
-  - composer install --prefer-dist --no-progress --classmap-authoritative
+  - composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
 
 script:
   - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml

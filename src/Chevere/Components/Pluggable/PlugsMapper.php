@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Pluggable;
 
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
+use Chevere\Components\Iterator\RecursiveFileFilterIterator;
 use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Pluggable\PlugInterface;
@@ -39,7 +40,7 @@ final class PlugsMapper
         $this->dir = $dir;
         $dirIteratorFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
         $this->recursiveIterator = new RecursiveIteratorIterator(
-            new PlugRecursiveFilterIterator(
+            new RecursiveFileFilterIterator(
                 recursiveDirectoryIteratorFor($this->dir, $dirIteratorFlags),
                 $plugType->trailingName()
             )

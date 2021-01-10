@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Pluggable;
+namespace Chevere\Components\Iterator;
 
 use Chevere\Components\Str\StrBool;
 use RecursiveFilterIterator;
@@ -20,7 +20,7 @@ use RecursiveIterator;
 /**
  * @codeCoverageIgnore
  */
-final class PlugRecursiveFilterIterator extends RecursiveFilterIterator
+final class RecursiveFileFilterIterator extends RecursiveFilterIterator
 {
     protected string $trailingName;
 

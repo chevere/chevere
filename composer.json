@@ -20,6 +20,7 @@
         "ext-zend-opcache": "*",
         "adhocore/cli": "^0.8",
         "gettext/gettext": "^5.5",
+        "gettext/php-scanner": "^1.2",
         "gettext/translator": "^1.0",
         "kevinlebrun/colors.php": "^1.0",
         "laminas/laminas-diactoros": "^2.4",

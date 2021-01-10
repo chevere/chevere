@@ -1,0 +1,59 @@
+msgid ""
+msgstr ""
+"Language: en-US\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Domain: messages\n"
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/dir/file.php:14
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/dir/file.php:19
+msgid "foo"
+msgid_plural "foos"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/dir/file.php:15
+msgid "%s foo"
+msgstr ""
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/dir/file.php:16
+msgid "foo %t"
+msgstr ""
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/dir/file.php:20
+msgid "%d foo"
+msgid_plural "%d foos"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/dir/file.php:21
+msgid "%v foo"
+msgid_plural "%v foos"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/file.php:14
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/file.php:19
+msgid "var"
+msgid_plural "vars"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/file.php:15
+msgid "%s var"
+msgstr ""
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/file.php:16
+msgid "var %t"
+msgstr ""
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/file.php:20
+msgid "%d var"
+msgid_plural "%d vars"
+msgstr[0] ""
+msgstr[1] ""
+
+#: /home/rodolfo/git/chevere/chevere/tests/Translator/_resources/user/file.php:21
+msgid "%v var"
+msgid_plural "%v vars"
+msgstr[0] ""
+msgstr[1] ""

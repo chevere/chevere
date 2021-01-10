@@ -26,9 +26,7 @@ use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsMakerInterface;
 use Chevere\Interfaces\Str\StrInterface;
-use Ds\Set;
 use RecursiveDirectoryIterator;
-use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
@@ -47,9 +45,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         $dirFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
         $this->iterate(
             new RecursiveIteratorIterator(
-                $this->getRecursiveFilterIterator(
-                    recursiveDirectoryIteratorFor($dir, $dirFlags),
-                )
+                new RoutingDescriptorsIterator(recursiveDirectoryIteratorFor($dir, $dirFlags))
             )
         );
     }
@@ -104,48 +100,10 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $regex = (new Regex($param['regex']))->toNoDelimitersNoAnchors();
             $path = $path->withReplaceAll("{$key}", "${key}:${regex}");
         }
-        if($path->toString() === '/') {
+        if ($path->toString() === '/') {
             return $path->toString();
         }
 
         return $path->withReplaceLast('/', '')->toString();
-    }
-
-    private function getRecursiveFilterIterator(RecursiveDirectoryIterator $recursiveDirectoryIterator): RecursiveFilterIterator
-    {
-        return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator {
-            private Set $methodFilenames;
-
-            private Set $knownPaths;
-
-            public function __construct(RecursiveDirectoryIterator $iterator)
-            {
-                parent::__construct($iterator);
-
-                $this->methodFilenames = new Set();
-                $this->knownPaths = new Set();
-                foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $method) {
-                    $this->methodFilenames->add("${method}.php");
-                }
-            }
-
-            public function accept(): bool
-            {
-                if ($this->hasChildren()) {
-                    return true;
-                }
-                $dirname = dirname((string) $this->current());
-                if ($this->knownPaths->contains($dirname)) {
-                    return false;
-                }
-                if ($this->methodFilenames->contains($this->current()->getFilename())) {
-                    $this->knownPaths->add($dirname);
-
-                    return true;
-                }
-
-                return false;
-            }
-        };
     }
 }
