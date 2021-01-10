@@ -18,74 +18,74 @@ namespace Chevere\Components\Translator {
     use Gettext\Translator;
     use Gettext\TranslatorInterface;
 
-function getTranslator(): TranslatorInterface
-{
-    try {
-        return TranslatorInstance::get();
-    } catch (LogicException $e) {
-        return new Translator();
+    function getTranslator(): TranslatorInterface
+    {
+        try {
+            return TranslatorInstance::get();
+        } catch (LogicException $e) {
+            return new Translator();
+        }
     }
-}
 }
 
 namespace {
-use function Chevere\Components\Translator\getTranslator;
+    use function Chevere\Components\Translator\getTranslator;
 
-    if (function_exists('_t') === false) {
+    if (function_exists('__') === false) {
         /**
          * Translates a string.
          */
-        function _t(string $message)
+        function __(string $message)
         {
             return getTranslator()->gettext($message);
         }
     }
-    if (function_exists('_tf') === false) {
+    if (function_exists('__f') === false) {
         /**
          * Translates a formatted string with `sprintf`.
          */
-        function _tf(string $message, ...$arguments)
+        function __f(string $message, ...$arguments)
         {
-            return sprintf(_t($message), ...$arguments);
+            return sprintf(__($message), ...$arguments);
         }
     }
-    if (function_exists('_tt') === false) {
+    if (function_exists('__t') === false) {
         /**
          * Translates a formatted string with `strtr`.
          */
-        function _tt(string $message, array $fromTo = [])
+        function __t(string $message, array $fromTo = [])
         {
-            return strtr(_t($message), $fromTo);
+            return strtr(__($message), $fromTo);
         }
     }
-    if (function_exists('_n') === false) {
+    if (function_exists('__n') === false) {
         /**
          * Translates a formatted plural string.
          */
-        function _n(string $singular, string $plural, int $count)
+        function __n(string $singular, string $plural, int $count)
         {
             return getTranslator()->ngettext($singular, $plural, $count);
         }
     }
-    if (function_exists('_nf') === false) {
+    if (function_exists('__nf') === false) {
         /**
          * Translates a formatted plural string with `sprintf`.
          */
-        function _nf(string $singular, string $plural, int $count, ...$arguments)
+        function __nf(string $singular, string $plural, int $count, ...$arguments)
         {
             return sprintf(
-                _n($singular, $plural, $count),
+                __n($singular, $plural, $count),
                 ...$arguments
             );
         }
     }
-    if (function_exists('_nt') === false) {
+    if (function_exists('__nt') === false) {
         /**
-         * Alias for `ngettext` with `strtr` handling.
+         * Translates a formatted plural string with `strtr`.
          */
-        function _nt(string $singular, string $plural, int $count, array $fromTo)
+        function __nt(string $singular, string $plural, int $count, array $fromTo)
         {
-            return strtr(_n($singular, $plural, $count), $fromTo);
+            return strtr(__n($singular, $plural, $count), $fromTo);
         }
     }
 }

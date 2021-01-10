@@ -22,25 +22,25 @@ final class TranslatorFunctionsTest extends TestCase
 {
     public function testNullTranslator(): void
     {
-        $this->assertSame('Language', _t('Language'));
+        $this->assertSame('Language', __('Language'));
         $username = 'Rodolfo';
         $this->assertSame(
             "${username}'s Images",
-            _tf("%s's Images", $username)
+            __f("%s's Images", $username)
         );
         $username = 'Rudy';
         $this->assertSame(
             "${username}'s Images",
-            _tt("%s's Images", [
+            __t("%s's Images", [
                 '%s' => $username,
             ])
         );
-        $this->assertSame('image', _n('image', 'images', 1, 1));
-        $this->assertSame('2 seconds', _nf('%d second', '%d seconds', 2, 2));
+        $this->assertSame('image', __n('image', 'images', 1, 1));
+        $this->assertSame('2 seconds', __nf('%d second', '%d seconds', 2, 2));
         $value = 123;
         $this->assertSame(
             "${value} seconds",
-            _nt('%d second', '%d seconds', $value, [
+            __nt('%d second', '%d seconds', $value, [
                 '%d' => $value,
             ]));
     }
@@ -49,25 +49,25 @@ final class TranslatorFunctionsTest extends TestCase
     {
         $loader = new TranslatorLoader(dirForPath(__DIR__ . '/_resources/compiled/'));
         new TranslatorInstance($loader->getTranslator('es-CL', 'messages'));
-        $this->assertSame('Idiomas', _t('Language'));
+        $this->assertSame('Idiomas', __('Language'));
         $username = 'Rodolfo';
         $this->assertSame(
             "Imágenes de ${username}",
-            _tf("%s's Images", $username)
+            __f("%s's Images", $username)
         );
         $username = 'Rudy';
         $this->assertSame(
             "Imágenes de ${username}",
-            _tt("%s's Images", [
+            __t("%s's Images", [
                 '%s' => $username,
             ])
         );
-        $this->assertSame('imagen', _n('image', 'images', 1, 1));
-        $this->assertSame('2 segundos', _nf('%d second', '%d seconds', 2, 2));
+        $this->assertSame('imagen', __n('image', 'images', 1, 1));
+        $this->assertSame('2 segundos', __nf('%d second', '%d seconds', 2, 2));
         $value = 123;
         $this->assertSame(
             "${value} segundos",
-            _nt('%d second', '%d segundos', $value, [
+            __nt('%d second', '%d segundos', $value, [
                 '%d' => $value,
             ]));
     }
