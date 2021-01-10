@@ -53,7 +53,7 @@ interface VarDumpHighlightInterface
     public function highlight(string $string): string;
 
     /**
-     * Provide access to the color pallet.
+     * Provide access to the color palette.
      *
      * ```php
      * return [
@@ -62,5 +62,5 @@ interface VarDumpHighlightInterface
      * ];
      * ```
      */
-    public function pallet(): array;
+    public function palette(): array;
 }

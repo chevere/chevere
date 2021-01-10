@@ -31,7 +31,7 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
     {
         $this->assertKey($key);
         $this->color = new Color();
-        $color = $this->pallet()[$key] ?? 'reset';
+        $color = $this->palette()[$key] ?? 'reset';
         $this->style = is_string($color) ? [$color] : $color;
     }
 
@@ -44,8 +44,13 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
         return $dump;
     }
 
-    public function pallet(): array
+    public function palette(): array
     {
+        // string text ffd76d
+        // number null reference c39ac9
+        // boolean ff657a
+        // object namespace 9cd1bb
+        // file b2b9bd
         return [
             // orange
             TypeInterface::STRING => '208',
@@ -68,7 +73,7 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
             VarDumperInterface::FUNCTION => '39',
             // purple
             VarDumperInterface::MODIFIERS => '207',
-            VarDumperInterface::VARIABLE => '208',
+            VarDumperInterface::VARIABLE => '39',
             // dark gray italic
             VarDumperInterface::EMPHASIS => ['242', '3'],
         ];

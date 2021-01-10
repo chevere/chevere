@@ -30,7 +30,7 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
     {
         $this->assertKey($key);
         $this->key = $key;
-        $this->color = $this->pallet()[$this->key] ?? 'inherit';
+        $this->color = $this->palette()[$this->key] ?? 'inherit';
     }
 
     public function highlight(string $dump): string
@@ -38,7 +38,7 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
         return '<span style="color:' . $this->color . '">' . $dump . '</span>';
     }
 
-    public function pallet(): array
+    public function palette(): array
     {
         return [
             // orange
