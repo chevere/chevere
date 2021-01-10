@@ -106,7 +106,7 @@ final class File implements FileInterface
     public function remove(): void
     {
         $this->assertExists();
-        $this->assertUnlink($this->path->toString());
+        $this->assertUnlink();
     }
 
     public function removeIfExists(): void
@@ -114,7 +114,7 @@ final class File implements FileInterface
         if (! $this->exists()) {
             return;
         }
-        $this->assertUnlink($this->path->toString());
+        $this->assertUnlink();
     }
 
     public function create(): void
@@ -176,10 +176,10 @@ final class File implements FileInterface
         }
     }
 
-    private function assertUnlink(string $path): void
+    private function assertUnlink(): void
     {
         try {
-            unlink($path);
+            unlink($this->path->toString());
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
