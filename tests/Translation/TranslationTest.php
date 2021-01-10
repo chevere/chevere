@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Translation;
+namespace Chevere\Tests\Translator;
 
 use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Translation\TranslatorInstance;
-use Chevere\Components\Translation\TranslatorLoader;
+use Chevere\Components\Translator\TranslatorInstance;
+use Chevere\Components\Translator\TranslatorLoader;
 use Gettext\Generator\ArrayGenerator;
 use Gettext\Loader\PoLoader;
 use PHPUnit\Framework\TestCase;

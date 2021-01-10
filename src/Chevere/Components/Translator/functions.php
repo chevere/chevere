@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 // @codeCoverageIgnoreStart
 
-namespace Chevere\Components\Translation {
+namespace Chevere\Components\Translator {
     use Chevere\Exceptions\Core\LogicException;
     use Gettext\Translator;
     use Gettext\TranslatorInterface;
@@ -29,7 +29,7 @@ function getTranslator(): TranslatorInterface
 }
 
 namespace {
-use function Chevere\Components\Translation\getTranslator;
+use function Chevere\Components\Translator\getTranslator;
 
     if (function_exists('_t') === false) {
         /**

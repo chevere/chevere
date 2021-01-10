@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Translation;
+namespace Chevere\Tests\Translator;
 
 use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Translation\TranslatorLoader;
-use Chevere\Exceptions\Core\DomainException;
+use Chevere\Components\Translator\TranslatorLoader;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
-use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use DomainException;
 use Gettext\Translator;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class TranslatorLoaderTest extends TestCase
@@ -38,21 +38,14 @@ final class TranslatorLoaderTest extends TestCase
         $this->assertSame($dir, $loader->dir());
     }
 
-    public function testGetTranslatorMissingDir(): void
+    public function testGetTranslatorInvalidLocale(): void
     {
         $loader = $this->getTranslationLoad();
-        $this->expectException(DirNotExistsException::class);
+        $this->expectException(InvalidArgumentException::class);
         $loader->getTranslator('es-404', 'messages');
     }
 
-    public function testGetTranslatorMissingFile(): void
-    {
-        $loader = $this->getTranslationLoad();
-        $this->expectException(FileNotExistsException::class);
-        $loader->getTranslator('es-CL', '404');
-    }
-
-    public function testGetTranslatorInvalidFile(): void
+    public function testGetTranslatorInvalidDomain(): void
     {
         $loader = $this->getTranslationLoad();
         $this->expectException(DomainException::class);

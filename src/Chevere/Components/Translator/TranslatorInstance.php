@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Translation;
+namespace Chevere\Components\Translator;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
