@@ -19,11 +19,12 @@ use Chevere\Exceptions\Core\BadMethodCallException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Translator\TranslatorMakerInterface;
 use Gettext\Generator\ArrayGenerator;
 use Gettext\Loader\PoLoader;
 use Throwable;
 
-final class TranslatorMaker
+final class TranslatorMaker implements TranslatorMakerInterface
 {
     private DirInterface $sourceDir;
 
@@ -89,7 +90,7 @@ final class TranslatorMaker
         return $new;
     }
 
-    public function make(string $domain): void
+    public function make(string $domain): string
     {
         $this->assertHasLocale(__METHOD__);
         $this->localeSourceDir->assertExists();
@@ -122,6 +123,8 @@ final class TranslatorMaker
         }
         // @codeCoverageIgnoreEnd
         $phpFile->assertExists();
+
+        return $phpFile->path()->toString();
     }
 
     private function assertHasLocale(string $method): void

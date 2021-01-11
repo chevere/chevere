@@ -19,6 +19,7 @@ use Chevere\Components\Translator\TranslatorMaker;
 use Chevere\Exceptions\Core\BadMethodCallException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Translator\TranslatorMakerInterface;
 use PHPUnit\Framework\TestCase;
 
 final class TranslatorMakerTest extends TestCase
@@ -56,15 +57,17 @@ final class TranslatorMakerTest extends TestCase
     {
         $translatorMaker = $this->getTranslatorMaker();
         $path = $translatorMaker->targetDir()->path();
+        $domain = 'messages';
         foreach (['en-US', 'es-CL'] as $locale) {
-            $file = new File($path->getChild("${locale}/messages.php"));
+            $file = new File($path->getChild("${locale}/${domain}.php"));
             $file->removeIfExists();
-            $translatorMaker->withLocale($locale)->make('messages');
+            $poFilename = $translatorMaker->withLocale($locale)->make($domain);
+            $this->assertSame($file->path()->toString(), $poFilename);
             $this->assertFileExists($file->path()->toString());
         }
     }
 
-    private function getTranslatorMaker(): TranslatorMaker
+    private function getTranslatorMaker(): TranslatorMakerInterface
     {
         return new TranslatorMaker($this->getDir('locales/'), $this->getDir('compiled/'));
     }

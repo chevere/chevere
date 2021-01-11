@@ -25,7 +25,7 @@ final class PoMakerTest extends TestCase
     {
         $this->expectException(BadMethodCallException::class);
         (new PoMaker('en-US', 'messages'))
-            ->makeAt(dirForPath(__DIR__ . '/_resources/404/'));
+            ->makeAt(dirForPath(__DIR__ . '/'));
     }
 
     public function testMakePo(): void

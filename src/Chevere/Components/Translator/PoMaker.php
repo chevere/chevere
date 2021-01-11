@@ -18,14 +18,17 @@ use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Iterator\RecursiveFileFilterIterator;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\BadMethodCallException;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Translator\PoMakerInterface;
 use Gettext\Generator\PoGenerator;
 use Gettext\Scanner\PhpScanner;
 use Gettext\Translations;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Throwable;
 
-final class PoMaker
+final class PoMaker implements PoMakerInterface
 {
     public const FUNCTIONS = [
         '__' => 'gettext',
@@ -62,7 +65,18 @@ final class PoMaker
         $iterator->rewind();
         while ($iterator->valid()) {
             $pathName = $iterator->current()->getPathName();
-            $new->phpScanner->scanFile($pathName);
+
+            try {
+                $new->phpScanner->scanFile($pathName);
+            }
+            // @codeCoverageIgnoreStart
+            catch (Throwable $e) {
+                throw new LogicException(
+                    previous: $e,
+                    message: new Message('Unable to scan file.')
+                );
+            }
+            // @codeCoverageIgnoreEnd
             $iterator->next();
         }
 
@@ -87,7 +101,18 @@ final class PoMaker
          */
         foreach ($this->phpScanner->getTranslations() as $domain => $translations) {
             $translations->setLanguage($this->locale);
-            $generator->generateFile($translations, $poFile->path()->toString());
+
+            try {
+                $generator->generateFile($translations, $poFile->path()->toString());
+            }
+            // @codeCoverageIgnoreStart
+            catch (\InvalidArgumentException $e) {
+                throw new LogicException(
+                    previous: $e,
+                    message: new Message('Unable to make translation.')
+                );
+            }
+            // @codeCoverageIgnoreEnd
 
             break;
         }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Filesystem;
 
+use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
@@ -59,6 +60,9 @@ interface DirInterface
      */
     public function exists(): bool;
 
+    /**
+     * @throws DirNotExistsException
+     */
     public function assertExists(): void;
 
     /**

@@ -18,11 +18,12 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\DomainException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Translator\TranslatorLoaderInterface;
 use Gettext\Translator;
 use Gettext\TranslatorInterface;
 use LogicException;
 
-final class TranslatorLoader
+final class TranslatorLoader implements TranslatorLoaderInterface
 {
     private DirInterface $dir;
 

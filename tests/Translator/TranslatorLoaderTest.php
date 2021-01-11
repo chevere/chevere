@@ -16,6 +16,7 @@ namespace Chevere\Tests\Translator;
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Translator\TranslatorLoader;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
+use Chevere\Interfaces\Translator\TranslatorLoaderInterface;
 use DomainException;
 use Gettext\Translator;
 use InvalidArgumentException;
@@ -61,7 +62,7 @@ final class TranslatorLoaderTest extends TestCase
         );
     }
 
-    private function getTranslationLoad(): TranslatorLoader
+    private function getTranslationLoad(): TranslatorLoaderInterface
     {
         return new TranslatorLoader(
             dirForPath(__DIR__ . '/_resources/compiled/')
