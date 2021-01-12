@@ -24,12 +24,13 @@ function getType($var): string
 {
     $type = \gettype($var);
 
-    return [
+    return match ($type) {
         'integer' => 'int',
         'double' => 'float',
         'boolean' => 'bool',
         'NULL' => 'null',
-    ][$type] ?? $type;
+        default => $type,
+    };
 }
 
 function returnTypeExceptionMessage(string $expected, $provided): MessageInterface
