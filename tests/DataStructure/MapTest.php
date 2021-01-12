@@ -33,13 +33,14 @@ final class MapTest extends TestCase
         $map->get('not-found');
     }
 
-    public function testConstructPutAll(): void
+    public function testConstructWithArguments(): void
     {
         $arguments = [
             'test' => 123,
             'some' => 'thing',
         ];
         $map = new Map(...$arguments);
+        $this->assertSame($arguments, $map->map()->toArray());
         foreach ($arguments as $name => $value) {
             $this->assertSame($value, $map->get($name));
         }
@@ -50,10 +51,14 @@ final class MapTest extends TestCase
         $key = 'key';
         $value = 1234;
         $map = new Map(...[]);
-        $mapCloned = $map->withPut($key, $value);
-        $this->assertNotSame($map, $mapCloned);
-        $this->assertNotSame($map->keys(), $mapCloned->keys());
-        $this->assertSame($value, $mapCloned->get($key));
-        $mapCloned->assertHasKey($key);
+        $dsMap = $map->map();
+        $immutable = $map->withPut(...[
+            $key => $value,
+        ]);
+        $this->assertNotSame($dsMap, $immutable->map());
+        $this->assertNotSame($map, $immutable);
+        $this->assertNotSame($map->keys(), $immutable->keys());
+        $this->assertSame($value, $immutable->get($key));
+        $immutable->assertHasKey($key);
     }
 }

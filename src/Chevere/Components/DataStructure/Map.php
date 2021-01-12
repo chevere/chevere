@@ -38,10 +38,17 @@ final class Map implements MapInterface
         $this->map = new DsMap(deep_copy($this->map->toArray()));
     }
 
-    public function withPut(string $key, $value): self
+    public function map(): DsMap
+    {
+        return $this->map;
+    }
+
+    public function withPut(mixed ...$namedValues): self
     {
         $new = clone $this;
-        $new->map->put($key, $value);
+        foreach ($namedValues as $name => $value) {
+            $new->map->put($name, $value);
+        }
 
         return $new;
     }

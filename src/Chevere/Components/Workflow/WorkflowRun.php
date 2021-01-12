@@ -84,7 +84,9 @@ final class WorkflowRun implements WorkflowRunInterface
             );
         }
 
-        $new->steps = $new->steps->withPut($step, $response);
+        $new->steps = $new->steps->withPut(...[
+            $step => $response,
+        ]);
 
         return $new;
     }

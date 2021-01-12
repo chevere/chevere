@@ -13,14 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\DataStructure;
 
+use Ds\Map;
+
 /**
- * Describes the component in charge of defining an immutable map.
+ * Describes the component in charge of providing an immutable Ds\Map proxy.
  */
 interface MapInterface extends MappedInterface
 {
     public function __construct(mixed ...$namedArguments);
 
-    public function withPut(string $key, $value): self;
+    public function map(): Map;
+
+    public function withPut(mixed ...$namedValues): self;
 
     public function assertHasKey(string ...$keys): void;
 
