@@ -93,7 +93,7 @@ final class StrAssertTest extends TestCase
 
     public function testStartsWith(): void
     {
-        (new StrAssert('string'))->startsWith('st');
+        (new StrAssert('á string'))->startsWith('á');
         $this->expectException(StrNotStartsWithException::class);
         (new StrAssert('string'))->startsWith('some');
     }

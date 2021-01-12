@@ -46,16 +46,12 @@ final class StrBool implements StrBoolInterface
 
     public function startsWith(string $needle): bool
     {
-        $needleLen = mb_strlen($needle);
-
-        return substr_compare($this->string, $needle, 0, $needleLen) === 0;
+        return str_starts_with($this->string, $needle);
     }
 
     public function endsWith(string $needle): bool
     {
-        $needleLen = mb_strlen($needle);
-
-        return substr_compare($this->string, $needle, -$needleLen) === 0;
+        return str_ends_with($this->string, $needle);
     }
 
     public function same(string $string): bool
@@ -75,6 +71,6 @@ final class StrBool implements StrBoolInterface
 
     public function contains(string $string): bool
     {
-        return strpos($this->string, $string) !== false;
+        return str_contains($this->string, $string);
     }
 }

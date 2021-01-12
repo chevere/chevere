@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Components\Message\Message;
-use function Chevere\Components\Type\varType;
+use function Chevere\Components\Type\getType;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\VarDump\VarDumpableInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
@@ -31,7 +31,7 @@ final class VarDumpable implements VarDumpableInterface
     public function __construct($var)
     {
         $this->var = $var;
-        $this->type = varType($this->var);
+        $this->type = getType($this->var);
         $this->assertSetProcessorName();
     }
 

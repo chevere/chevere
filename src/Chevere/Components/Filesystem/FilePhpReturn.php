@@ -17,7 +17,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
-use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FileHandleException;

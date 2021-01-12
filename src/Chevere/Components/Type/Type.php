@@ -73,7 +73,8 @@ final class Type implements TypeInterface
     {
         return in_array(
             $this->primitive,
-            [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME], true
+            [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME],
+            true
         );
     }
 

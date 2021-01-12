@@ -17,9 +17,12 @@ use Chevere\Components\Message\Message;
 use Chevere\Interfaces\Message\MessageInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 
-function varType($var): string
+/**
+ * Same as `gettype` but more "standard" towards `get_debug_type`.
+ */
+function getType($var): string
 {
-    $type = gettype($var);
+    $type = \gettype($var);
 
     return [
         'integer' => 'int',
@@ -33,7 +36,7 @@ function returnTypeExceptionMessage(string $expected, $provided): MessageInterfa
 {
     return (new Message('Expecting return type %expected%, type %provided% provided'))
         ->code('%expected%', $expected)
-        ->code('%provided%', varType($provided));
+        ->code('%provided%', getType($provided));
 }
 
 function typeBool(): TypeInterface
