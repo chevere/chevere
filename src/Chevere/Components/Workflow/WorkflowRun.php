@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Workflow;
 
-use Chevere\Components\DataStructure\Map;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\ArgumentCountException;
@@ -23,13 +22,14 @@ use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
+use function DeepCopy\deep_copy;
+use Ds\Map;
 use Ramsey\Uuid\Uuid;
-use Throwable;
 use TypeError;
 
 final class WorkflowRun implements WorkflowRunInterface
 {
-    public Map $steps;
+    private Map $steps;
 
     private string $uuid;
 
@@ -43,6 +43,11 @@ final class WorkflowRun implements WorkflowRunInterface
         $this->arguments = new Arguments($workflow->parameters(), ...$namedArguments);
         $this->workflow = $workflow;
         $this->steps = new Map();
+    }
+
+    public function __clone()
+    {
+        $this->steps = deep_copy($this->steps);
     }
 
     public function uuid(): string
@@ -83,23 +88,14 @@ final class WorkflowRun implements WorkflowRunInterface
                     ->code('%arguments%', implode(', ', $missing))
             );
         }
-
-        $new->steps = $new->steps->withPut(...[
-            $step => $response,
-        ]);
+        $new->steps->put($step, $response);
 
         return $new;
     }
 
     public function has(string $name): bool
     {
-        try {
-            $this->steps->assertHasKey($name);
-
-            return true;
-        } catch (Throwable $e) {
-            return false;
-        }
+        return $this->steps->hasKey($name);
     }
 
     /**

@@ -40,7 +40,6 @@ final class MapTest extends TestCase
             'some' => 'thing',
         ];
         $map = new Map(...$arguments);
-        $this->assertSame($arguments, $map->map()->toArray());
         foreach ($arguments as $name => $value) {
             $this->assertSame($value, $map->get($name));
         }
@@ -51,11 +50,9 @@ final class MapTest extends TestCase
         $key = 'key';
         $value = 1234;
         $map = new Map(...[]);
-        $dsMap = $map->map();
         $immutable = $map->withPut(...[
             $key => $value,
         ]);
-        $this->assertNotSame($dsMap, $immutable->map());
         $this->assertNotSame($map, $immutable);
         $this->assertNotSame($map->keys(), $immutable->keys());
         $this->assertSame($value, $immutable->get($key));
