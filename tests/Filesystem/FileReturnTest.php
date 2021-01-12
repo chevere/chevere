@@ -162,7 +162,7 @@ final class FileReturnTest extends TestCase
             );
         }
         $this->expectException(FileReturnInvalidTypeException::class);
-        $this->phpFileReturn->varType(new Type(Type::INTEGER));
+        $this->phpFileReturn->varType(new Type(Type::INT));
     }
 
     public function testFileWithoutContentsException(): void

@@ -19,12 +19,14 @@ use Chevere\Interfaces\Type\TypeInterface;
 
 function varType($var): string
 {
-    $type = strtolower(gettype($var));
-    if ($type === 'double') {
-        return 'float';
-    }
+    $type = gettype($var);
 
-    return $type;
+    return [
+        'integer' => 'int',
+        'double' => 'float',
+        'boolean' => 'bool',
+        'NULL' => 'null',
+    ][$type] ?? $type;
 }
 
 function debugType($var): string
@@ -44,14 +46,14 @@ function returnTypeExceptionMessage(string $expected, $provided): MessageInterfa
         ->code('%provided%', varType($provided));
 }
 
-function typeBoolean(): TypeInterface
+function typeBool(): TypeInterface
 {
-    return new Type(Type::BOOLEAN);
+    return new Type(Type::BOOL);
 }
 
-function typeInteger(): TypeInterface
+function typeInt(): TypeInterface
 {
-    return new Type(Type::INTEGER);
+    return new Type(Type::INT);
 }
 
 function typeFloat(): TypeInterface

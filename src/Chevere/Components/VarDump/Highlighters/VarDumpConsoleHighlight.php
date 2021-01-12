@@ -55,8 +55,8 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
             // orange
             TypeInterface::STRING => '208',
             TypeInterface::FLOAT => '208',
-            TypeInterface::INTEGER => '208',
-            TypeInterface::BOOLEAN => '208',
+            TypeInterface::INT => '208',
+            TypeInterface::BOOL => '208',
             TypeInterface::NULL => '208',
             // yellow
             TypeInterface::OBJECT => '220',

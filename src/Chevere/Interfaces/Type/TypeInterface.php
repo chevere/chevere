@@ -18,9 +18,9 @@ namespace Chevere\Interfaces\Type;
  */
 interface TypeInterface
 {
-    public const BOOLEAN = 'boolean';
+    public const BOOL = 'bool';
 
-    public const INTEGER = 'integer';
+    public const INT = 'int';
 
     public const FLOAT = 'float';
 
@@ -48,10 +48,10 @@ interface TypeInterface
      */
     public const TYPE_VALIDATORS = [
         self::ARRAY => 'is_array',
-        self::BOOLEAN => 'is_bool',
+        self::BOOL => 'is_bool',
         self::CALLABLE => 'is_callable',
         self::FLOAT => 'is_float',
-        self::INTEGER => 'is_integer',
+        self::INT => 'is_integer',
         self::ITERABLE => 'is_iterable',
         self::NULL => 'is_null',
         self::OBJECT => 'is_object',
@@ -62,6 +62,7 @@ interface TypeInterface
     ];
 
     /**
+     * @param string $type A debug type.
      * @throws InvalidArgumentException if the type doesn't exists
      */
     public function __construct(string $type);

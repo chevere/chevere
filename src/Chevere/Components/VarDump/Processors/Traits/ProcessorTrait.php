@@ -15,7 +15,6 @@ namespace Chevere\Components\VarDump\Processors\Traits;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
-use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 
@@ -71,7 +70,7 @@ trait ProcessorTrait
                     ->code('%className%', static::class)
                     ->code('%expected%', $this->type())
                     ->code('%method%', get_class($this->varDumper) . '::var()')
-                    ->code('%provided%', varType($this->varDumper->dumpable()->var()))
+                    ->code('%provided%', get_debug_type($this->varDumper->dumpable()->var()))
             );
         }
     }

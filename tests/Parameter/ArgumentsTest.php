@@ -185,8 +185,8 @@ final class ArgumentsTest extends TestCase
         }
         $getters = ['boolean', 'string', 'integer', 'float', 'array'];
         foreach ([
-            TypeInterface::BOOLEAN => true,
-            TypeInterface::INTEGER => 1,
+            TypeInterface::BOOL => true,
+            TypeInterface::INT => 1,
             TypeInterface::FLOAT => 13.13,
             TypeInterface::STRING => 'test',
             TypeInterface::ARRAY => ['test'],

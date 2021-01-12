@@ -50,10 +50,10 @@ interface VarDumperInterface
      * @var array [ProcessorInterface,]
      */
     public const PROCESSORS = [
-        TypeInterface::BOOLEAN => VarDumpBooleanProcessor::class,
+        TypeInterface::BOOL => VarDumpBooleanProcessor::class,
         TypeInterface::ARRAY => VarDumpArrayProcessor::class,
         TypeInterface::OBJECT => VarDumpObjectProcessor::class,
-        TypeInterface::INTEGER => VarDumpIntegerProcessor::class,
+        TypeInterface::INT => VarDumpIntegerProcessor::class,
         TypeInterface::STRING => VarDumpStringProcessor::class,
         TypeInterface::FLOAT => VarDumpFloatProcessor::class,
         TypeInterface::NULL => VarDumpNullProcessor::class,

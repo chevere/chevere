@@ -15,7 +15,6 @@ namespace Chevere\Components\Dependent\Traits;
 
 use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Message\Message;
-use function Chevere\Components\Type\debugType;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Exceptions\Dependent\MissingDependenciesException;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
@@ -84,7 +83,7 @@ trait DependentTrait
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
                     ->strong('%key%', $name)
                     ->code('%expected%', $className)
-                    ->code('%provided%', debugType($value)),
+                    ->code('%provided%', get_debug_type($value)),
             );
         }
     }

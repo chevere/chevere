@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Parameter;
 
 use Chevere\Components\Message\Message;
-use function Chevere\Components\Type\varType;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -134,7 +133,7 @@ final class Arguments implements ArgumentsInterface
                 (new Message('Parameter %name%: Expecting value of type %expected%, %provided% provided'))
                     ->strong('%name%', $name)
                     ->strong('%expected%', $type->typeHinting())
-                    ->code('%provided%', varType($value))
+                    ->code('%provided%', get_debug_type($value))
             );
         }
         if ($parameter instanceof StringParameterInterface) {

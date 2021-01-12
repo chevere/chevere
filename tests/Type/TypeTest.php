@@ -35,8 +35,8 @@ final class TypeTest extends TestCase
         }
         $scalars = ['boolean', 'integer', 'float', 'string'];
         foreach ([
-            Type::BOOLEAN => true,
-            Type::INTEGER => 1,
+            Type::BOOL => true,
+            Type::INT => 1,
             Type::FLOAT => 13.13,
             Type::STRING => 'test',
             Type::ARRAY => ['test'],

@@ -34,13 +34,13 @@ final class VarDumpableTest extends TestCase
             TypeInterface::ARRAY => [
                 [], VarDumpArrayProcessor::class,
             ],
-            TypeInterface::BOOLEAN => [
+            TypeInterface::BOOL => [
                 true, VarDumpBooleanProcessor::class,
             ],
             TypeInterface::FLOAT => [
                 1.1, VarDumpFloatProcessor::class,
             ],
-            TypeInterface::INTEGER => [
+            TypeInterface::INT => [
                 1, VarDumpIntegerProcessor::class,
             ],
             TypeInterface::NULL => [
