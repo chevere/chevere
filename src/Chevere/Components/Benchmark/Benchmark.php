@@ -17,6 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Benchmark\BenchmarkInterface;
+use Ds\Set;
 use ReflectionFunction;
 
 final class Benchmark implements BenchmarkInterface
@@ -25,11 +26,9 @@ final class Benchmark implements BenchmarkInterface
 
     private int $argumentsCount = 0;
 
-    private array $index;
+    private Set $index;
 
-    private array $callables;
-
-    private $callable;
+    private Set $callables;
 
     private string $callableName;
 
@@ -37,8 +36,14 @@ final class Benchmark implements BenchmarkInterface
 
     public function __construct()
     {
-        $this->index = [];
-        $this->callables = [];
+        $this->index = new Set();
+        $this->callables = new Set();
+    }
+
+    public function __clone()
+    {
+        $this->index = clone $this->index;
+        $this->callables = clone $this->callables;
     }
 
     public function arguments(): array
@@ -59,39 +64,38 @@ final class Benchmark implements BenchmarkInterface
     {
         $new = clone $this;
         foreach ($namedCallable as $name => $callable) {
-            $new->callable = $callable;
-            $new->callableName = $name;
-            $new->assertUniqueCallableName();
-            $new->reflection = new ReflectionFunction($new->callable);
-            $new->assertCallableArgumentsCount();
-            $new->index[] = $new->callableName;
-            $new->callables[] = $callable;
+            $name = (string) $name;
+            $new->assertUniqueCallableName($name);
+            $new->reflection = new ReflectionFunction($callable);
+            $new->assertCallableArgumentsCount($name);
+            $new->index->add($name);
+            $new->callables->add($callable);
         }
 
         return $new;
     }
 
-    public function callables(): array
+    public function callables(): Set
     {
         return $this->callables;
     }
 
-    public function index(): array
+    public function index(): Set
     {
         return $this->index;
     }
 
-    private function assertUniqueCallableName(): void
+    private function assertUniqueCallableName(string $name): void
     {
-        if (isset($this->index) && in_array($this->callableName, $this->index, true)) {
+        if ($this->index->contains($name)) {
             throw new OverflowException(
                 (new Message('Duplicate callable declaration %name%'))
-                    ->code('%name%', $this->callableName)
+                    ->code('%name%', $name)
             );
         }
     }
 
-    private function assertCallableArgumentsCount(): void
+    private function assertCallableArgumentsCount(string $name): void
     {
         $parametersCount = $this->reflection->getNumberOfParameters();
         if ($this->argumentsCount !== $parametersCount) {
@@ -100,7 +104,7 @@ final class Benchmark implements BenchmarkInterface
                     ->code('%className%', __CLASS__)
                     ->code('%argumentsCount%', (string) $this->argumentsCount)
                     ->code('%parametersCount%', (string) $parametersCount)
-                    ->code('%callableName%', $this->callableName)
+                    ->code('%callableName%', $name)
             );
         }
     }

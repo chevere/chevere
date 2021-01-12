@@ -81,10 +81,9 @@ final class BenchmarkRunTest extends TestCase
                 Multiply: function (int $a, int $b) {
                     return $a * $b;
                 });
-        $string = (new BenchmarkRun($benchmark))
+        (new BenchmarkRun($benchmark))
             ->withTimes(1000)
             ->exec()
             ->toString();
-        // xdd($string);
     }
 }

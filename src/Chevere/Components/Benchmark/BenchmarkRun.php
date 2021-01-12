@@ -23,6 +23,7 @@ use Chevere\Interfaces\Benchmark\BenchmarkInterface;
 use Chevere\Interfaces\Benchmark\BenchmarkRunInterface;
 use Chevere\Interfaces\Message\MessageInterface;
 use DateTime;
+use Ds\Map;
 use TypeError;
 
 /**
@@ -42,9 +43,9 @@ final class BenchmarkRun implements BenchmarkRunInterface
 
     private int $times;
 
-    private array $records;
+    private Map $records;
 
-    private array $results;
+    private Map $results;
 
     private bool $isAborted;
 
@@ -78,7 +79,7 @@ final class BenchmarkRun implements BenchmarkRunInterface
     {
         if (empty($benchmark->index())) {
             throw new InvalidArgumentException(
-                (new Message('No callables defined for object of class %className%, declare callables using the %method% method'))
+                (new Message('No callable defined for object of class %className%, declare callables using the %method% method'))
                     ->code('%className%', $benchmark::class)
                     ->code('%method%', $benchmark::class . '::withAddedCallable')
             );
@@ -90,6 +91,12 @@ final class BenchmarkRun implements BenchmarkRunInterface
         $this->constructTime = (int) $this->requestTime;
         $this->times = 1;
         $this->timeTaken = 0;
+        $this->records = new Map();
+        $this->results = new Map();
+        $this->isAborted = false;
+        $this->isPHPAborted = false;
+        $this->isSelfAborted = false;
+        $this->recordsProcessed = 0;
     }
 
     public function withRequestTime(float $time): self
@@ -128,14 +135,9 @@ final class BenchmarkRun implements BenchmarkRunInterface
 
     public function exec()
     {
-        $this->records = [];
-        $this->results = [];
-        $this->isAborted = false;
-        $this->isPHPAborted = false;
-        $this->isSelfAborted = false;
         $this->startupTime = (int) hrtime(true);
         $this->handleCallables();
-        $this->processCallablesStats();
+        $this->processCallableStats();
         $title = __CLASS__ . ' results';
         $this->lineSeparator = str_repeat('-', self::COLUMNS);
         $pipe = '|';
@@ -168,7 +170,11 @@ final class BenchmarkRun implements BenchmarkRunInterface
 
     private function handleCallables(): void
     {
-        foreach (array_keys($this->benchmark->index()) as $id) {
+        /**
+         * @var int $pos
+         * @var string $name
+         */
+        foreach ($this->benchmark->index() as $pos => $name) {
             if ($this->isAborted) {
                 $this->timeTaken = $this->timeTaken ?? (int) hrtime(true) - $this->startupTime;
 
@@ -176,22 +182,22 @@ final class BenchmarkRun implements BenchmarkRunInterface
             }
             $timeInit = (int) hrtime(true);
             $this->runs = 0;
-            $this->runCallable($this->benchmark->callables()[$id]);
+            $this->runCallableAt($pos);
             $timeFinish = (int) hrtime(true);
             $timeTaken = intval($timeFinish - $timeInit);
-            $this->records[$id] = $timeTaken;
-            $this->results[$id] = [
+            $this->records->put($name, $timeTaken);
+            $this->results->put($name, [
                 'time' => $timeTaken,
                 'runs' => $this->runs,
-            ];
+            ]);
             $this->timeTaken += $timeTaken;
         }
     }
 
-    private function runCallable(callable $callable): void
+    private function runCallableAt(int $pos): void
     {
-        $key = array_search($callable, $this->benchmark->callables(), true);
-        $name = $this->benchmark->index()[$key];
+        $callable = $this->benchmark->callables()->get($pos);
+        $name = $this->benchmark->index()->get($pos);
         for ($i = 0; $i < $this->times; ++$i) {
             $this->isPHPAborted = ! $this->canPHPKeepGoing();
             $this->isSelfAborted = ! $this->canSelfKeepGoing();
@@ -223,16 +229,23 @@ final class BenchmarkRun implements BenchmarkRunInterface
             ->strtr('%message%', $message);
     }
 
-    private function processCallablesStats(): void
+    private function processCallableStats(): void
     {
-        asort($this->records);
+        $this->records->sort();
         $this->recordsCount = count($this->records);
         if ($this->recordsCount > 1) {
-            foreach ($this->records as $id => $timeTaken) {
+            /**
+             * @var string $name
+             * @var int $timeTaken
+             */
+            foreach ($this->records as $name => $timeTaken) {
                 if (! isset($fastestTime)) {
                     $fastestTime = $timeTaken;
                 } else {
-                    $this->results[$id]['adds'] = number_format(100 * ($timeTaken - $fastestTime) / $fastestTime, 2) . '%';
+                    /** @var array $results */
+                    $results = $this->results->get($name);
+                    $results['adds'] = number_format(100 * ($timeTaken - $fastestTime) / $fastestTime, 2) . '%';
+                    $this->results->put($name, $results);
                 }
             }
         }
@@ -240,14 +253,17 @@ final class BenchmarkRun implements BenchmarkRunInterface
 
     private function processResults(): void
     {
-        $this->recordsProcessed = 0;
-        foreach (array_keys($this->records) as $id) {
-            $this->lines[] = $this->getResultTitle($id);
-            $number = $this->results[$id]['runs'];
+        /**
+         * @var string $name
+         * @var int $time
+         */
+        foreach ($this->records as $name => $time) {
+            $this->lines[] = $this->getResultTitle($name);
+            $number = $this->results->get($name)['runs'];
             $resRuns = $number . ' runs';
-            $resRuns .= ' in ' . (new HrTime($this->results[$id]['time']))->toReadMs();
-            if ($this->results[$id]['runs'] !== $this->times) {
-                $resRuns .= ' ~ missed ' . ($this->times - $this->results[$id]['runs']) . ' runs';
+            $resRuns .= ' in ' . (new HrTime($time))->toReadMs();
+            if ($number !== $this->times) {
+                $resRuns .= ' ~ missed ' . ($this->times - $this->results->get($name)['runs']) . ' runs';
             }
             $this->lines[] = $resRuns;
             $this->lines[] = $this->lineSeparator;
@@ -263,16 +279,15 @@ final class BenchmarkRun implements BenchmarkRunInterface
         }
     }
 
-    private function getResultTitle(int $id): string
+    private function getResultTitle(string $name): string
     {
-        $name = $this->benchmark->index()[$id];
         $resultTitle = $name;
         if ($this->recordsProcessed === 0) {
             if ($this->recordsCount > 0) {
                 $resultTitle .= ' (fastest)';
             }
         } else {
-            $resultTitle .= ' (' . $this->results[$id]['adds'] . ' slower)';
+            $resultTitle .= ' (' . $this->results->get($name)['adds'] . ' slower)';
         }
         if (isset($this->consoleColor)) {
             $resultTitle = $this->consoleColor->apply($this->recordsProcessed === 0 ? 'green' : 'red', $resultTitle);

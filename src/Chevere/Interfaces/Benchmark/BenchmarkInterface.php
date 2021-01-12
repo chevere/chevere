@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Benchmark;
 
+use Ds\Set;
+
 /**
- * Describes the component in charge of defining a Benchmark for callable.
+ * Describes the component in charge of providing a Benchmark for type callable.
  */
 interface BenchmarkInterface
 {
@@ -26,7 +28,7 @@ interface BenchmarkInterface
 
     public function arguments(): array;
 
-    public function callables(): array;
+    public function callables(): Set;
 
-    public function index(): array;
+    public function index(): Set;
 }

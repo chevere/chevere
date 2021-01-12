@@ -24,8 +24,8 @@ final class BenchmarkTest extends TestCase
     {
         $benchmark = new Benchmark();
         $this->assertSame([], $benchmark->arguments());
-        $this->assertSame([], $benchmark->index());
-        $this->assertSame([], $benchmark->callables());
+        $this->assertSame([], $benchmark->index()->toArray());
+        $this->assertSame([], $benchmark->callables()->toArray());
     }
 
     public function testConstructArguments(): void
@@ -61,8 +61,8 @@ final class BenchmarkTest extends TestCase
             $this->assertContains($callable, $benchmark->callables());
             $this->assertContains($name, $benchmark->index());
         }
-        $this->assertSame(array_keys($callables), $benchmark->callables());
-        $this->assertSame(array_values($callables), $benchmark->index());
+        $this->assertSame(array_keys($callables), $benchmark->callables()->toArray());
+        $this->assertSame(array_values($callables), $benchmark->index()->toArray());
     }
 
     public function testWithDuplicatedCallable(): void
