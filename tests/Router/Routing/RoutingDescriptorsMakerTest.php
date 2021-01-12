@@ -27,7 +27,7 @@ final class RoutingDescriptorsMakerTest extends TestCase
         $dir = dirForPath(__DIR__ . '/_resources/routes/');
         $fsRoutesMaker = new RoutingDescriptorsMaker('routes', $dir);
         $fsRoutes = $fsRoutesMaker->descriptors();
-        $this->assertCount(3, $fsRoutes);
+        $this->assertCount(4, $fsRoutes);
         for ($i = 0; $i < $fsRoutes->count(); ++$i) {
             $fsRoute = $fsRoutes->get($i);
             $this->assertInstanceOf(
