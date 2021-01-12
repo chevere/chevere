@@ -29,16 +29,6 @@ function varType($var): string
     ][$type] ?? $type;
 }
 
-function debugType($var): string
-{
-    $type = varType($var);
-    if ($type === 'object') {
-        return get_class($var);
-    }
-
-    return $type;
-}
-
 function returnTypeExceptionMessage(string $expected, $provided): MessageInterface
 {
     return (new Message('Expecting return type %expected%, type %provided% provided'))

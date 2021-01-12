@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Message\Message;
-use function Chevere\Components\Type\debugType;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Serialize\UnserializeInterface;
@@ -41,7 +40,7 @@ final class Unserialize implements UnserializeInterface
             );
         }
 
-        $this->type = new Type(debugType($this->var));
+        $this->type = new Type(get_debug_type($this->var));
     }
 
     public function var()

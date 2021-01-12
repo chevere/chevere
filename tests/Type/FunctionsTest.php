@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
-use function Chevere\Components\Type\debugType;
 use function Chevere\Components\Type\returnTypeExceptionMessage;
 use function Chevere\Components\Type\varType;
 use Chevere\Interfaces\Type\TypeInterface;
@@ -30,14 +29,6 @@ final class FunctionsTest extends TestCase
         foreach ($table as $type => $var) {
             $this->assertSame($type, varType($var));
         }
-    }
-
-    public function testDebugType(): void
-    {
-        $debugType = debugType($this);
-        $this->assertSame(__CLASS__, $debugType);
-        $typeScalar = debugType('integer');
-        $this->assertSame('string', $typeScalar);
     }
 
     public function testReturnTypeExceptionMessage(): void
