@@ -53,7 +53,7 @@ final class PoMaker implements PoMakerInterface
         $this->domain = $domain;
     }
 
-    public function withScannerFor(DirInterface $sourceDir): self
+    public function withScanFor(DirInterface $sourceDir): self
     {
         $new = clone $this;
         $sourceDir->assertExists();
@@ -83,7 +83,7 @@ final class PoMaker implements PoMakerInterface
         return $new;
     }
 
-    public function makeAt(DirInterface $targetDir): void
+    public function make(DirInterface $targetDir): void
     {
         if (! isset($this->phpScanner)) {
             throw new BadMethodCallException(
@@ -93,6 +93,7 @@ final class PoMaker implements PoMakerInterface
             );
         }
         $generator = new PoGenerator();
+        $targetDir = $targetDir->getChild($this->locale . '/');
         $targetDir->createIfNotExists();
         $poFile = new File($targetDir->path()->getChild($this->domain . '.po'));
         $poFile->removeIfExists();

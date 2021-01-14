@@ -22,13 +22,9 @@ interface TranslatorMakerInterface
 {
     public function __construct(DirInterface $sourceDir, DirInterface $targetDir);
 
-    public function locale(): string;
-
     public function sourceDir(): DirInterface;
 
     public function targetDir(): DirInterface;
 
-    public function withLocale(string $locale): self;
-
-    public function make(string $domain): string;
+    public function withMakeTranslation(string $locale, string $domain): self;
 }

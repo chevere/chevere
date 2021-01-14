@@ -25,17 +25,18 @@ final class PoMakerTest extends TestCase
     {
         $this->expectException(BadMethodCallException::class);
         (new PoMaker('en-US', 'messages'))
-            ->makeAt(dirForPath(__DIR__ . '/'));
+            ->make(dirForPath(__DIR__ . '/'));
     }
 
     public function testMakePo(): void
     {
-        $poFile = fileForPath(__DIR__ . '/_resources/make/messages.po');
+        $locale = 'en-US';
+        $poFile = fileForPath(__DIR__ . "/_resources/make/${locale}/messages.po");
         $poFile->removeIfExists();
         $dir = dirForPath(__DIR__ . '/_resources/');
-        $poMaker = (new PoMaker('en-US', 'messages'))
-            ->withScannerFor($dir->getChild('user/'));
-        $poMaker->makeAt($dir->getChild('make/'));
+        $poMaker = (new PoMaker($locale, 'messages'))
+            ->withScanFor($dir->getChild('user/'));
+        $poMaker->make($dir->getChild('make/'));
         $this->assertFileExists($poFile->path()->toString());
     }
 }

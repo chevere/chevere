@@ -31,7 +31,7 @@ interface PoMakerInterface
      * @throws InvalidArgumentException
      * @throws LogicException
      */
-    public function withScannerFor(DirInterface $sourceDir): self;
+    public function withScanFor(DirInterface $sourceDir): self;
 
     /**
      * @throws BadMethodCallException If called without scanner.
@@ -39,5 +39,5 @@ interface PoMakerInterface
      * @throws FileUnableToRemoveException If unable to remove existing `.po` at target dir.
      * @throws LogicException If unable to create the translation file.
      */
-    public function makeAt(DirInterface $targetDir): void;
+    public function make(DirInterface $targetDir): void;
 }

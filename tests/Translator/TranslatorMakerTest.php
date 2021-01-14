@@ -16,7 +16,6 @@ namespace Chevere\Tests\Translator;
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Translator\TranslatorMaker;
-use Chevere\Exceptions\Core\BadMethodCallException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Translator\TranslatorMakerInterface;
@@ -37,20 +36,13 @@ final class TranslatorMakerTest extends TestCase
         $translatorMaker = new TranslatorMaker($sourceDir, $targetDir);
         $this->assertSame($sourceDir, $translatorMaker->sourceDir());
         $this->assertSame($targetDir, $translatorMaker->targetDir());
-        $this->expectException(BadMethodCallException::class);
-        $translatorMaker->locale();
     }
 
     public function testWithLocaleInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->getTranslatorMaker()->withLocale('404');
-    }
-
-    public function testWithLocale(): void
-    {
-        $translatorMaker = $this->getTranslatorMaker()->withLocale('en-US');
-        $this->assertSame('en-US', $translatorMaker->locale());
+        $this->getTranslatorMaker()
+            ->withMakeTranslation(locale: '404', domain: 'messages');
     }
 
     public function testMake(): void
@@ -61,8 +53,8 @@ final class TranslatorMakerTest extends TestCase
         foreach (['en-US', 'es-CL'] as $locale) {
             $file = new File($path->getChild("${locale}/${domain}.php"));
             $file->removeIfExists();
-            $poFilename = $translatorMaker->withLocale($locale)->make($domain);
-            $this->assertSame($file->path()->toString(), $poFilename);
+            $translatorMaker = $translatorMaker
+                ->withMakeTranslation(locale: $locale, domain: $domain);
             $this->assertFileExists($file->path()->toString());
         }
     }
