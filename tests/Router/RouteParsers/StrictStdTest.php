@@ -19,24 +19,36 @@ use PHPUnit\Framework\TestCase;
 
 final class StrictStdTest extends TestCase
 {
-    public function testInvalidRoute(): void
+    public function testRoutes(): void
     {
-        $routeParser = new StrictStd();
-        $this->expectException(InvalidArgumentException::class);
-        $routeParser->parse('/hello-error/');
+        $this->expectNotToPerformAssertions();
+        $strictStd = new StrictStd();
+        foreach ([
+            '/',
+            '/file',
+            '/{var}',
+            '/{var:\d+}',
+            '/folder/',
+            '/folder/file',
+            '/folder/{var}',
+            '/folder/{var:\d+}',
+            '/folder/folder/',
+        ] as $route) {
+            $strictStd->parse($route);
+        }
     }
 
     public function testInvalidOptionalVariable(): void
     {
-        $routeParser = new StrictStd();
+        $strictStd = new StrictStd();
         $this->expectException(InvalidArgumentException::class);
-        $routeParser->parse('/hello-error/[optional]');
+        $strictStd->parse('/hello-error/[optional]');
     }
 
     public function testParse(): void
     {
-        $routeParser = new StrictStd();
-        $datas = $routeParser->parse('/hello-world');
+        $strictStd = new StrictStd();
+        $datas = $strictStd->parse('/hello-world');
         $this->assertSame([
             0 => ['/hello-world'],
         ], $datas);

@@ -59,18 +59,17 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
     {
         $iterator->rewind();
         while ($iterator->valid()) {
-            $pathName = $iterator->current()->getPathName();
-            $dirName = rtrim(dirname($pathName), '/') . '/';
-            $route = rtrim(
+            $dirName = rtrim(dirname($iterator->current()->getPathName()), '/') . '/';
+            $routePath = rtrim(
                 str_replace($this->dir->path()->toString(), '/', $dirName),
                 '/'
             ) . '/';
-            $routeLocator = new RouteLocator($this->repository, $route);
+            $routeLocator = new RouteLocator($this->repository, $routePath);
             $endpoints = routeEndpointsForDir(dirForPath($dirName));
             $generator = $endpoints->getGenerator();
-            $routeEndpoint = $generator->current();
             /** @var RouteEndpointInterface $routeEndpoint */
-            $path = $this->getPathForParameters(
+            $routeEndpoint = $generator->current();
+            $pathParams = $this->getPathForParameters(
                 (new Str($dirName))
                     ->withReplaceFirst(
                         rtrim($this->dir->path()->toString(), '/'),
@@ -78,18 +77,18 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                     ),
                 $routeEndpoint->parameters()
             );
-            $route = new Route(new RoutePath($path));
+            $route = new Route(new RoutePath($pathParams));
             foreach ($generator as $routeEndpoint) {
                 $route = $route->withAddedEndpoint($routeEndpoint);
             }
             $this->descriptors = $this->descriptors
                 ->withAdded(
-                        new RoutingDescriptor(
-                            dirForPath($dirName),
-                            new RoutePath($path),
-                            new RouteDecorator($routeLocator)
-                        )
-                    );
+                    new RoutingDescriptor(
+                        dirForPath($dirName),
+                        new RoutePath($pathParams),
+                        new RouteDecorator($routeLocator)
+                    )
+                );
             $iterator->next();
         }
     }
@@ -101,9 +100,10 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $path = $path->withReplaceAll("{$key}", "${key}:${regex}");
         }
         if ($path->toString() === '/') {
-            return $path->toString();
         }
 
-        return $path->withReplaceLast('/', '')->toString();
+        return $path->toString();
+
+        // return $path->withReplaceLast('/', '')->toString();
     }
 }
