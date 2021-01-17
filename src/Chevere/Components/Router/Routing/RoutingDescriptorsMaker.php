@@ -21,33 +21,83 @@ use Chevere\Components\Router\Route\RouteDecorator;
 use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Str\Str;
+use Chevere\Components\Writer\NullWriter;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsMakerInterface;
 use Chevere\Interfaces\Str\StrInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
+    private WriterInterface $writer;
+
     private string $repository;
 
     private DirInterface $dir;
 
     private RoutingDescriptorsInterface $descriptors;
 
-    public function __construct(string $repository, DirInterface $dir)
+    private bool $useTrailingSlash;
+
+    public function __construct(string $repository)
     {
+        $this->writer = new NullWriter();
         $this->repository = $repository;
-        $this->dir = $dir;
         $this->descriptors = new RoutingDescriptors();
-        $dirFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
-        $this->iterate(
+        $this->useTrailingSlash = false;
+    }
+
+    public function withWriter(WriterInterface $writer): self
+    {
+        $new = clone $this;
+        $new->writer = $writer;
+
+        return $new;
+    }
+
+    public function withTrailingSlash(bool $bool): self
+    {
+        $new = clone $this;
+        $new->useTrailingSlash = $bool;
+
+        return $new;
+    }
+
+    public function withDescriptorsFor(DirInterface $dir): self
+    {
+        $new = clone $this;
+        $new->dir = $dir;
+        $new->iterate(
             new RecursiveIteratorIterator(
-                new RoutingDescriptorsIterator(recursiveDirectoryIteratorFor($dir, $dirFlags))
+                new RoutingDescriptorsIterator(
+                    recursiveDirectoryIteratorFor(
+                        $new->dir,
+                        RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME
+                    )
+                )
             )
         );
+
+        return $new;
+    }
+
+    public function repository(): string
+    {
+        return $this->repository;
+    }
+
+    public function writer(): WriterInterface
+    {
+        return $this->writer;
+    }
+
+    public function useTrailingSlash(): bool
+    {
+        return $this->useTrailingSlash;
     }
 
     public function descriptors(): RoutingDescriptorsInterface
@@ -60,33 +110,29 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         $iterator->rewind();
         while ($iterator->valid()) {
             $dirName = rtrim(dirname($iterator->current()->getPathName()), '/') . '/';
-            $routePath = rtrim(
-                str_replace($this->dir->path()->toString(), '/', $dirName),
-                '/'
-            ) . '/';
-            $routeLocator = new RouteLocator($this->repository, $routePath);
+            $routePath = str_replace($this->dir->path()->toString(), '/', $dirName);
+            if (! $this->useTrailingSlash && $routePath !== '/') {
+                $routePath = rtrim($routePath, '/');
+            }
+            $locator = new RouteLocator($this->repository, $routePath);
             $endpoints = routeEndpointsForDir(dirForPath($dirName));
             $generator = $endpoints->getGenerator();
             /** @var RouteEndpointInterface $routeEndpoint */
-            $routeEndpoint = $generator->current();
-            $pathParams = $this->getPathForParameters(
-                (new Str($dirName))
-                    ->withReplaceFirst(
-                        rtrim($this->dir->path()->toString(), '/'),
-                        ''
-                    ),
-                $routeEndpoint->parameters()
+            $endpoint = $generator->current();
+            $routePath = $this->getPathForParameters(
+                (new Str($routePath)),
+                $endpoint->parameters()
             );
-            $route = new Route(new RoutePath($pathParams));
-            foreach ($generator as $routeEndpoint) {
-                $route = $route->withAddedEndpoint($routeEndpoint);
+            $route = new Route(new RoutePath($routePath));
+            foreach ($generator as $endpoint) {
+                $route = $route->withAddedEndpoint($endpoint);
             }
             $this->descriptors = $this->descriptors
                 ->withAdded(
                     new RoutingDescriptor(
                         dirForPath($dirName),
-                        new RoutePath($pathParams),
-                        new RouteDecorator($routeLocator)
+                        new RoutePath($routePath),
+                        new RouteDecorator($locator)
                     )
                 );
             $iterator->next();
@@ -98,8 +144,6 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         foreach ($parameters as $key => $param) {
             $regex = (new Regex($param['regex']))->toNoDelimitersNoAnchors();
             $path = $path->withReplaceAll("{$key}", "${key}:${regex}");
-        }
-        if ($path->toString() === '/') {
         }
 
         return $path->toString();
