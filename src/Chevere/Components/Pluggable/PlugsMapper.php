@@ -16,6 +16,8 @@ namespace Chevere\Components\Pluggable;
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Iterator\RecursiveFileFilterIterator;
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Writer\NullWriter;
+use Chevere\Components\Writer\traits\WriterTrait;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Pluggable\PlugInterface;
 use Chevere\Interfaces\Pluggable\PlugsMapInterface;
@@ -25,32 +27,48 @@ use RecursiveIteratorIterator;
 use ReflectionClass;
 use function Safe\file_get_contents;
 
+/**
+ * @method self withWriter(WriterInterface $writer)
+ */
 final class PlugsMapper
 {
-    private DirInterface $dir;
+    use WriterTrait;
+
+    private PlugTypeInterface $plugType;
 
     private PlugsMapInterface $plugsMap;
 
-    private RecursiveIteratorIterator $recursiveIterator;
+    public function __construct(PlugTypeInterface $plugType)
+    {
+        $this->writer = new NullWriter();
+        $this->plugType = $plugType;
+        $this->plugsMap = new PlugsMap($plugType);
+    }
 
-    public function __construct(DirInterface $dir, PlugTypeInterface $plugType)
+    public function withPlugsMapFor(DirInterface $dir): self
     {
         $dir->assertExists();
-        $this->plugsMap = new PlugsMap($plugType);
-        $this->dir = $dir;
-        $dirIteratorFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
-        $this->recursiveIterator = new RecursiveIteratorIterator(
+        $new = clone $this;
+        $iterator = new RecursiveIteratorIterator(
             new RecursiveFileFilterIterator(
-                recursiveDirectoryIteratorFor($this->dir, $dirIteratorFlags),
-                $plugType->trailingName()
+                recursiveDirectoryIteratorFor(
+                    $dir,
+                    RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME
+                ),
+                $new->plugType->trailingName()
             )
         );
-        $this->recursiveIterator->rewind();
-        while ($this->recursiveIterator->valid()) {
-            $pathName = $this->recursiveIterator->current()->getPathName();
-            $this->classAnalyze($pathName);
-            $this->recursiveIterator->next();
+        $this->writer->write(
+            sprintf("📂 Starting dir %s iteration\n", $dir->path()->toString())
+        );
+        $iterator->rewind();
+        while ($iterator->valid()) {
+            $pathName = $iterator->current()->getPathName();
+            $new->classAnalyze($pathName);
+            $iterator->next();
         }
+
+        return $new;
     }
 
     public function plugsMap(): PlugsMapInterface
@@ -60,6 +78,8 @@ final class PlugsMapper
 
     private function classAnalyze(string $filename): void
     {
+        $this->writer->write("- File {$filename}\n");
+        $flag = '(skip)';
         $regex = new Regex('/namespace (.*);[\S\s]* class (\S*) .*/');
         $matches = $regex->match(file_get_contents($filename));
         $namespace = $matches[1];
@@ -73,6 +93,8 @@ final class PlugsMapper
             $plug = new $plugName();
             $this->plugsMap = $this->plugsMap
                 ->withAdded($plug);
+            $flag = "> ${plugName}";
         }
+        $this->writer->write(" ${flag}\n");
     }
 }

@@ -53,7 +53,9 @@ final class RoutingDescriptorsMakerTest extends TestCase
     public function testObjects(): void
     {
         $dir = dirForPath(__DIR__ . '/_resources/routes/');
+        $writer = new StreamWriter(streamForString(''));
         $fsRoutesMaker = (new RoutingDescriptorsMaker('routes'))
+            ->withWriter($writer)
             ->withDescriptorsFor($dir);
         $fsRoutes = $fsRoutesMaker->descriptors();
         $this->assertCount(4, $fsRoutes);

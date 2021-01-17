@@ -22,6 +22,7 @@ use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Writer\NullWriter;
+use Chevere\Components\Writer\traits\WriterTrait;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsInterface;
@@ -31,9 +32,12 @@ use Chevere\Interfaces\Writer\WriterInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
+/**
+ * @method self withWriter(WriterInterface $writer)
+ */
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
-    private WriterInterface $writer;
+    use WriterTrait;
 
     private string $repository;
 
@@ -49,14 +53,6 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         $this->repository = $repository;
         $this->descriptors = new RoutingDescriptors();
         $this->useTrailingSlash = false;
-    }
-
-    public function withWriter(WriterInterface $writer): self
-    {
-        $new = clone $this;
-        $new->writer = $writer;
-
-        return $new;
     }
 
     public function withTrailingSlash(bool $bool): self
@@ -107,6 +103,9 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 
     private function iterate(RecursiveIteratorIterator $iterator): void
     {
+        $this->writer->write(
+            sprintf("📂 Starting dir %s iteration\n", $this->dir->path()->toString())
+        );
         $iterator->rewind();
         while ($iterator->valid()) {
             $dirName = rtrim(dirname($iterator->current()->getPathName()), '/') . '/';
@@ -114,6 +113,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             if (! $this->useTrailingSlash && $routePath !== '/') {
                 $routePath = rtrim($routePath, '/');
             }
+            $this->writer->write("- Dir ${dirName} > ${routePath}\n");
             $locator = new RouteLocator($this->repository, $routePath);
             $endpoints = routeEndpointsForDir(dirForPath($dirName));
             $generator = $endpoints->getGenerator();
@@ -137,6 +137,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                 );
             $iterator->next();
         }
+        $this->writer->write("💯 Done!\n");
     }
 
     private function getPathForParameters(StrInterface $path, array $parameters): string
