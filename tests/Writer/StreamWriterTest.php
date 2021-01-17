@@ -16,19 +16,14 @@ namespace Chevere\Tests\Writer;
 use function Chevere\Components\Writer\streamFor;
 use function Chevere\Components\Writer\streamForString;
 use Chevere\Components\Writer\StreamWriter;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class StreamWriterTest extends TestCase
 {
     public function testInvalidArgument(): void
     {
-        /**
-         * The streams seems to not worry that much about the mode. Seems that it needs to be handled before runtime.
-         */
         $this->expectNotToPerformAssertions();
         $stream = streamFor('php://output', 'r');
-        // $this->expectException(InvalidArgumentException::class);
         new StreamWriter($stream);
     }
 
