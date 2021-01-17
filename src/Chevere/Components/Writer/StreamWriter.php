@@ -42,9 +42,8 @@ final class StreamWriter implements WriterInterface
             $this->stream->write($string);
         } catch (\RuntimeException $e) {
             throw new RuntimeException(
-                (new Message('Unable to write provided string')),
-                0,
-                $e
+                previous: $e,
+                message: (new Message('Unable to write provided string')),
             );
         }
     }

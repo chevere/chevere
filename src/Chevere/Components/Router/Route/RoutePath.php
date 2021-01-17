@@ -47,10 +47,9 @@ final class RoutePath implements RoutePathInterface
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new LogicException(
-                (new Message('Unable to add route %path%'))
+                previous: $e,
+                message: (new Message('Unable to add route %path%'))
                     ->code('%path%', $route),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd
@@ -98,7 +97,7 @@ final class RoutePath implements RoutePathInterface
         /**
          * @var string|string[] $el
          */
-        foreach($this->data as $el) {
+        foreach ($this->data as $el) {
             $this->name .= is_string($el)
                 ? $el
                 : '{' . $el[0] . '}';

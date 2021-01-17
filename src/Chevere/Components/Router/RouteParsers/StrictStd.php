@@ -52,10 +52,9 @@ final class StrictStd extends Std
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new InvalidArgumentException(
-                (new Message('Unable to parse route %route%'))
+                previous: $e,
+                message: (new Message('Unable to parse route %route%'))
                     ->code('%route%', $route),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd

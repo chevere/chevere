@@ -152,11 +152,10 @@ final class Cache implements CacheInterface
         // @codeCoverageIgnoreStart
         catch (Exception $e) {
             throw new RuntimeException(
-                (new Message('Unable to get cache for child %child% at path %path%'))
+                previous: $e,
+                message: (new Message('Unable to get cache for child %child% at path %path%'))
                     ->code('%child%', $child)
                     ->code('%path%', $this->dir->path()->toString()),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd

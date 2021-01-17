@@ -79,9 +79,8 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new RuntimeException(
-                (new Message('Unable to put provided plugs map')),
-                0,
-                $e
+                previous: $e,
+                message: (new Message('Unable to put provided plugs map')),
             );
         }
         // @codeCoverageIgnoreEnd
@@ -122,11 +121,10 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new RuntimeException(
-                (new Message('Unable to retrieve cached variable for %className% cache at path %path%'))
+                previous: $e,
+                message: (new Message('Unable to retrieve cached variable for %className% cache at path %path%'))
                     ->code('%className%', $className)
                     ->code('%path%', $path ?? '<unmapped>'),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd
@@ -142,10 +140,9 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         // @codeCoverageIgnoreStart
         catch (Exception $e) {
             throw new RuntimeException(
-                (new Message('Unable to retrieve cache for key %key%'))
+                previous: $e,
+                message: (new Message('Unable to retrieve cache for key %key%'))
                     ->code('%key%', $this->classMapKey->toString()),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd

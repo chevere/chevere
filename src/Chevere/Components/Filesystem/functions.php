@@ -45,9 +45,8 @@ function dirForPath(string $path): DirInterface
         return new Dir(new Path($path));
     } catch (Exception $e) {
         throw new FilesystemException(
-            getFilesystemInstanceMessage(Dir::class, $path),
-            0,
-            $e
+            previous: $e,
+            message: getFilesystemInstanceMessage(Dir::class, $path),
         );
     }
 }
@@ -62,9 +61,8 @@ function fileForPath(string $path): FileInterface
         return new File(new Path($path));
     } catch (Exception $e) {
         throw new FilesystemException(
-            getFilesystemInstanceMessage(File::class, $path),
-            0,
-            $e
+            previous: $e,
+            message: getFilesystemInstanceMessage(File::class, $path),
         );
     }
 }
@@ -79,9 +77,8 @@ function filePhpForPath(string $path): FilePhpInterface
         return new FilePhp(fileForPath($path));
     } catch (Exception $e) {
         throw new FilesystemException(
-            getFilesystemInstanceMessage(FilePhp::class, $path),
-            0,
-            $e
+            previous: $e,
+            message: getFilesystemInstanceMessage(FilePhp::class, $path),
         );
     }
 }
@@ -96,9 +93,8 @@ function filePhpReturnForPath(string $path): FilePhpReturn
         return new FilePhpReturn(filePhpForPath($path));
     } catch (Exception $e) {
         throw new FilesystemException(
-            getFilesystemInstanceMessage(FilePhpReturn::class, $path),
-            0,
-            $e
+            previous: $e,
+            message: getFilesystemInstanceMessage(FilePhpReturn::class, $path),
         );
     }
 }
@@ -113,10 +109,9 @@ function varForFilePhpReturn(FilePhpReturnInterface $filePhpReturn, TypeInterfac
         return $filePhpReturn->varType($type);
     } catch (Throwable $e) {
         throw new LogicException(
-            (new Message('Unable to retrieve the expected variable of type %type%'))
+            previous: $e,
+            message: (new Message('Unable to retrieve the expected variable of type %type%'))
                 ->code('%type%', $type->typeHinting()),
-            0,
-            $e
         );
     }
 }

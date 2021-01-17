@@ -98,12 +98,11 @@ final class Regex implements RegexInterface
             preg_match($this->pattern, '');
         } catch (\Exception $e) {
             throw new InvalidArgumentException(
-                (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
+                previous: $e,
+                message: (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
                     ->code('%regex%', $this->pattern)
                     ->code('%error%', $e->getMessage())
                     ->strtr('%preg%', static::ERRORS[preg_last_error()]),
-                0,
-                $e
             );
         }
     }
