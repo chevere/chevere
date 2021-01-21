@@ -154,10 +154,9 @@ final class SpecMaker implements SpecMakerInterface
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new FilesystemException(
-                (new Message('Unable to make file %filename%'))
+                previous: $e,
+                message: (new Message('Unable to make file %filename%'))
                     ->code('%filename%', $filePath->toString()),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd
@@ -177,10 +176,9 @@ final class SpecMaker implements SpecMakerInterface
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new FilesystemException(
-                (new Message('Unable to retrieve path for %argument%'))
+                previous: $e,
+                message: (new Message('Unable to retrieve path for %argument%'))
                     ->code('%argument%', $jsonPath),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd

@@ -63,10 +63,9 @@ final class PlugsMap implements PlugsMapInterface
         // @codeCoverageIgnoreStart
         catch (Exception $e) {
             throw new InvalidArgumentException(
-                (new Message('Invalid argument %argument% provided'))
+                previous: $e,
+                message: (new Message('Invalid argument %argument% provided'))
                     ->code('%argument%', '$plug'),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd

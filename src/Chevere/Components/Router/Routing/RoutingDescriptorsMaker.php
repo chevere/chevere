@@ -21,33 +21,79 @@ use Chevere\Components\Router\Route\RouteDecorator;
 use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Str\Str;
+use Chevere\Components\Writer\NullWriter;
+use Chevere\Components\Writer\traits\WriterTrait;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsInterface;
 use Chevere\Interfaces\Router\Routing\RoutingDescriptorsMakerInterface;
 use Chevere\Interfaces\Str\StrInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
+/**
+ * @method self withWriter(WriterInterface $writer)
+ */
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
+    use WriterTrait;
+
     private string $repository;
 
     private DirInterface $dir;
 
     private RoutingDescriptorsInterface $descriptors;
 
-    public function __construct(string $repository, DirInterface $dir)
+    private bool $useTrailingSlash;
+
+    public function __construct(string $repository)
     {
+        $this->writer = new NullWriter();
         $this->repository = $repository;
-        $this->dir = $dir;
         $this->descriptors = new RoutingDescriptors();
-        $dirFlags = RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME;
-        $this->iterate(
+        $this->useTrailingSlash = false;
+    }
+
+    public function withTrailingSlash(bool $bool): self
+    {
+        $new = clone $this;
+        $new->useTrailingSlash = $bool;
+
+        return $new;
+    }
+
+    public function withDescriptorsFor(DirInterface $dir): self
+    {
+        $new = clone $this;
+        $new->dir = $dir;
+        $new->iterate(
             new RecursiveIteratorIterator(
-                new RoutingDescriptorsIterator(recursiveDirectoryIteratorFor($dir, $dirFlags))
+                new RoutingDescriptorsIterator(
+                    recursiveDirectoryIteratorFor(
+                        $new->dir,
+                        RecursiveDirectoryIterator::SKIP_DOTS | RecursiveDirectoryIterator::KEY_AS_PATHNAME
+                    )
+                )
             )
         );
+
+        return $new;
+    }
+
+    public function repository(): string
+    {
+        return $this->repository;
+    }
+
+    public function writer(): WriterInterface
+    {
+        return $this->writer;
+    }
+
+    public function useTrailingSlash(): bool
+    {
+        return $this->useTrailingSlash;
     }
 
     public function descriptors(): RoutingDescriptorsInterface
@@ -57,41 +103,41 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 
     private function iterate(RecursiveIteratorIterator $iterator): void
     {
+        $this->writer->write(
+            sprintf("📂 Starting dir %s iteration\n", $this->dir->path()->toString())
+        );
         $iterator->rewind();
         while ($iterator->valid()) {
-            $pathName = $iterator->current()->getPathName();
-            $dirName = rtrim(dirname($pathName), '/') . '/';
-            $route = rtrim(
-                str_replace($this->dir->path()->toString(), '/', $dirName),
-                '/'
-            ) . '/';
-            $routeLocator = new RouteLocator($this->repository, $route);
+            $dirName = rtrim(dirname($iterator->current()->getPathName()), '/') . '/';
+            $routePath = str_replace($this->dir->path()->toString(), '/', $dirName);
+            if (! $this->useTrailingSlash && $routePath !== '/') {
+                $routePath = rtrim($routePath, '/');
+            }
+            $this->writer->write("- Dir ${dirName} > ${routePath}\n");
+            $locator = new RouteLocator($this->repository, $routePath);
             $endpoints = routeEndpointsForDir(dirForPath($dirName));
             $generator = $endpoints->getGenerator();
-            $routeEndpoint = $generator->current();
             /** @var RouteEndpointInterface $routeEndpoint */
-            $path = $this->getPathForParameters(
-                (new Str($dirName))
-                    ->withReplaceFirst(
-                        rtrim($this->dir->path()->toString(), '/'),
-                        ''
-                    ),
-                $routeEndpoint->parameters()
+            $endpoint = $generator->current();
+            $routePath = $this->getPathForParameters(
+                (new Str($routePath)),
+                $endpoint->parameters()
             );
-            $route = new Route(new RoutePath($path));
-            foreach ($generator as $routeEndpoint) {
-                $route = $route->withAddedEndpoint($routeEndpoint);
+            $route = new Route(new RoutePath($routePath));
+            foreach ($generator as $endpoint) {
+                $route = $route->withAddedEndpoint($endpoint);
             }
             $this->descriptors = $this->descriptors
                 ->withAdded(
-                        new RoutingDescriptor(
-                            dirForPath($dirName),
-                            new RoutePath($path),
-                            new RouteDecorator($routeLocator)
-                        )
-                    );
+                    new RoutingDescriptor(
+                        dirForPath($dirName),
+                        new RoutePath($routePath),
+                        new RouteDecorator($locator)
+                    )
+                );
             $iterator->next();
         }
+        $this->writer->write("💯 Done!\n");
     }
 
     private function getPathForParameters(StrInterface $path, array $parameters): string
@@ -100,10 +146,9 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
             $regex = (new Regex($param['regex']))->toNoDelimitersNoAnchors();
             $path = $path->withReplaceAll("{$key}", "${key}:${regex}");
         }
-        if ($path->toString() === '/') {
-            return $path->toString();
-        }
 
-        return $path->withReplaceLast('/', '')->toString();
+        return $path->toString();
+
+        // return $path->withReplaceLast('/', '')->toString();
     }
 }

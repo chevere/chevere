@@ -15,6 +15,7 @@ namespace Chevere\Interfaces\Router\Routing;
 
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 
 /**
  * Describes the component in charge of generating routing descriptors from a given directory.
@@ -24,7 +25,19 @@ interface RoutingDescriptorsMakerInterface
     /**
      * @throws LogicException
      */
-    public function __construct(string $repository, DirInterface $dir);
+    public function __construct(string $repository);
+
+    public function withWriter(WriterInterface $writer): self;
+
+    public function withTrailingSlash(bool $bool): self;
+
+    public function withDescriptorsFor(DirInterface $dir): self;
+
+    public function writer(): WriterInterface;
+
+    public function useTrailingSlash(): bool;
+
+    public function repository(): string;
 
     /**
      * Provides access to the generated routing descriptors.

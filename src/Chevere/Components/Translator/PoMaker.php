@@ -17,6 +17,8 @@ use Chevere\Components\Filesystem\File;
 use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Iterator\RecursiveFileFilterIterator;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Writer\NullWriter;
+use Chevere\Components\Writer\traits\WriterTrait;
 use Chevere\Exceptions\Core\BadMethodCallException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Filesystem\DirInterface;
@@ -28,8 +30,13 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 
+/**
+ * @method self withWriter(WriterInterface $writer)
+ */
 final class PoMaker implements PoMakerInterface
 {
+    use WriterTrait;
+
     public const FUNCTIONS = [
         '__' => 'gettext',
         '__f' => 'gettext',
@@ -49,6 +56,7 @@ final class PoMaker implements PoMakerInterface
 
     public function __construct(string $locale, string $domain)
     {
+        $this->writer = new NullWriter();
         $this->locale = $locale;
         $this->domain = $domain;
     }
@@ -62,9 +70,13 @@ final class PoMaker implements PoMakerInterface
         $new->phpScanner->setDefaultDomain($new->domain);
         $new->phpScanner->setFunctions(self::FUNCTIONS);
         $iterator = $new->getIterator();
+        $this->writer->write(
+            sprintf("📂 Starting dir %s iteration\n", $new->sourceDir->path()->toString())
+        );
         $iterator->rewind();
         while ($iterator->valid()) {
             $pathName = $iterator->current()->getPathName();
+            $new->writer->write("- File ${pathName}\n");
 
             try {
                 $new->phpScanner->scanFile($pathName);
@@ -79,6 +91,7 @@ final class PoMaker implements PoMakerInterface
             // @codeCoverageIgnoreEnd
             $iterator->next();
         }
+        $this->writer->write("💯 Done!\n");
 
         return $new;
     }

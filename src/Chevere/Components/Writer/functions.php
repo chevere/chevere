@@ -43,11 +43,10 @@ function streamFor(string $stream, string $mode): StreamInterface
         return new Stream($stream, $mode);
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
-            (new Message('Unable to create a stream for %stream% %mode%'))
+            previous: $e,
+            message: (new Message('Unable to create a stream for %stream% %mode%'))
                 ->code('%stream%', $stream)
                 ->code('%mode%', $mode),
-            0,
-            $e
         );
     }
 }
@@ -68,10 +67,9 @@ function streamForString(string $content = ''): StreamInterface
         rewind($resource);
     } catch (Throwable $e) {
         throw new RuntimeException(
-            (new Message('Unable to handle %stream% as stream resource'))
+            previous: $e,
+            message: (new Message('Unable to handle %stream% as stream resource'))
                 ->code('%stream%', $stream),
-            0,
-            $e
         );
     }
     if (! is_resource($resource)) {

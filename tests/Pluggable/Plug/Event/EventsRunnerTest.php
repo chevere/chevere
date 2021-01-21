@@ -15,10 +15,10 @@ namespace Chevere\Tests\Pluggable\Plug\Event;
 
 use Chevere\Components\Pluggable\Plug\Event\EventsQueue;
 use Chevere\Components\Pluggable\Plug\Event\EventsRunner;
+use function Chevere\Components\Writer\streamForString;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Components\Writer\Writers;
 use Chevere\Tests\Pluggable\Plug\Event\_resources\TestEvent;
-use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
 
 final class EventsRunnerTest extends TestCase
@@ -32,8 +32,7 @@ final class EventsRunnerTest extends TestCase
 
     public function testRun(): void
     {
-        $stream = (new StreamFactory())->createStream('');
-        $writer = new StreamWriter($stream);
+        $writer = new StreamWriter(streamForString(''));
         $writers = (new Writers())->with($writer);
         $event = new TestEvent();
         $eventsQueue = (new EventsQueue())

@@ -58,10 +58,9 @@ final class RouterIndex implements RouterIndexInterface
         // @codeCoverageIgnoreStart
         catch (Exception $e) {
             throw new InvalidArgumentException(
-                (new Message('Invalid argument %argument% provided'))
+                previous: $e,
+                message: (new Message('Invalid argument %argument% provided'))
                     ->code('%argument%', $group),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd

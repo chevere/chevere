@@ -38,9 +38,8 @@ final class Writers implements WritersInterface
         // @codeCoverageIgnoreStart
         catch (InvalidArgumentException $e) {
             throw new LogicException(
-                new Message('Unable to create default streams'),
-                0,
-                $e
+                previous: $e,
+                message: new Message('Unable to create default streams'),
             );
         }
         // @codeCoverageIgnoreEnd

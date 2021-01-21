@@ -16,16 +16,16 @@ namespace Chevere\Tests\VarDump\Traits;
 use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
+use function Chevere\Components\Writer\streamForString;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Laminas\Diactoros\StreamFactory;
 
 trait VarDumperTrait
 {
     private function getVarDumper($var): VarDumperInterface
     {
         return new VarDumper(
-            new StreamWriter((new StreamFactory())->createStream('')),
+            new StreamWriter(streamForString('')),
             new VarDumpPlainFormatter(),
             new VarDumpable($var)
         );

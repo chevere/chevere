@@ -59,13 +59,12 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
             $new->assertPushName($descriptor->decorator()->locator()->toString());
         } catch (Throwable $e) {
             throw new InvalidArgumentException(
-                (new Message('Routing conflict affecting previously declared %route%'))
+                previous: $e,
+                message: (new Message('Routing conflict affecting previously declared %route%'))
                     ->code(
                         '%route%',
                         $this->get((int) $e->getCode())->dir()->path()->toString()
                     ),
-                0,
-                $e
             );
         }
 

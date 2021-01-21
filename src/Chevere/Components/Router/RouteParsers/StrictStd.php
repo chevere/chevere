@@ -25,16 +25,22 @@ use Throwable;
 final class StrictStd extends Std
 {
     /**
-     * https://regexr.com/5j24s
+     * Matches:
+     * - `/`
+     * - `/file`
+     * - `/folder/`
+     * - `/{var}`
+     * - `/{var:\d+}`
+     * - `/folder/*`
      */
-    const REGEX_PATH = '#^\/$|^\/(?:[^\/]+\/)*[^\/]*[^\/]$#';
+    public const REGEX_PATH = '#^\/$|^\/(?:[^\/]+\/)*[^\/]*$#';
 
     public function parse($route)
     {
         $matches = (new Regex(self::REGEX_PATH))->match($route);
-        if($matches === []) {
+        if ($matches === []) {
             throw new InvalidArgumentException(
-                (new Message("Route provided %provided% doesn't match regex %regex%"))
+                (new Message("Route %provided% doesn't match regex %regex%"))
                     ->code('%provided%', $route)
                     ->code('%regex%', self::REGEX_PATH)
             );
@@ -46,10 +52,9 @@ final class StrictStd extends Std
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new InvalidArgumentException(
-                (new Message('Unable to parse route %route%'))
+                previous: $e,
+                message: (new Message('Unable to parse route %route%'))
                     ->code('%route%', $route),
-                0,
-                $e
             );
         }
         // @codeCoverageIgnoreEnd
