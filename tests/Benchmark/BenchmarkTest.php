@@ -31,13 +31,13 @@ final class BenchmarkTest extends TestCase
     public function testConstructArguments(): void
     {
         $arguments = [1, false, '', null, 1.1];
-        $benchmark = (new Benchmark())->withArguments(...$arguments);
+        $benchmark = (new Benchmark(...$arguments));
         $this->assertSame($arguments, $benchmark->arguments());
     }
 
     public function testWithBadAddedCallable(): void
     {
-        $benchmark = (new Benchmark())->withArguments(1, 2, 3);
+        $benchmark = (new Benchmark(1, 2, 3));
         $this->expectException(ArgumentCountException::class);
         $benchmark->withAddedCallable(
             one: function (int $one) {
@@ -46,14 +46,28 @@ final class BenchmarkTest extends TestCase
         );
     }
 
+    public function testNamedArguments(): void
+    {
+        $arguments = [
+            'one' => 1,
+            'two' => '2',
+        ];
+        $benchmark = (new Benchmark(...$arguments))
+            ->withAddedCallable(
+                callable: function (int $one, string $two) {
+                    return (string) $one . $two;
+                },
+            );
+        $this->assertSame($arguments, $benchmark->arguments());
+    }
+
     public function testWithAddedCallables(): void
     {
         $callables = [
             'is_int' => 'is int',
             'is_string' => 'is string',
         ];
-        $benchmark = (new Benchmark())
-            ->withArguments('value');
+        $benchmark = new Benchmark('value');
         foreach ($callables as $callable => $name) {
             $benchmark = $benchmark->withAddedCallable(...[
                 $name => $callable,
@@ -68,8 +82,7 @@ final class BenchmarkTest extends TestCase
     public function testWithDuplicatedCallable(): void
     {
         $this->expectException(OverflowException::class);
-        (new Benchmark())
-            ->withArguments('value')
+        (new Benchmark('value'))
             ->withAddedCallable(int: 'is_int')
             ->withAddedCallable(int: 'is_int');
     }

@@ -20,15 +20,13 @@ use Ds\Set;
  */
 interface BenchmarkInterface
 {
-    public function __construct();
-
-    public function withArguments(...$namedArguments): self;
-
-    public function withAddedCallable(callable ...$namedCallable): self;
+    public function __construct(...$namedArguments);
 
     public function arguments(): array;
 
     public function callables(): Set;
 
     public function index(): Set;
+
+    public function withAddedCallable(callable ...$namedCallable): self;
 }

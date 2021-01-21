@@ -23,8 +23,7 @@ final class BenchmarkRunTest extends TestCase
 {
     public function getBenchmark(): BenchmarkInterface
     {
-        return (new Benchmark())
-            ->withArguments(100)
+        return (new Benchmark(100))
             ->withAddedCallable(int: 'is_int');
     }
 
@@ -54,8 +53,7 @@ final class BenchmarkRunTest extends TestCase
     public function testExecBadArgumentType(): void
     {
         $this->expectException(TypeException::class);
-        $benchmark = (new Benchmark())
-            ->withArguments('string')
+        $benchmark = (new Benchmark('string'))
             ->withAddedCallable(
                 int: function (int $int) {
                     return $int;
@@ -67,20 +65,18 @@ final class BenchmarkRunTest extends TestCase
     public function testExec(): void
     {
         $this->expectNotToPerformAssertions();
-        $benchmark = (new Benchmark())
-            ->withArguments(500, 3000)
+        $benchmark = (new Benchmark(500, 3000))
             ->withAddedCallable(
                 Add: function (int $a, int $b) {
                     return $a + $b;
-                })
-            ->withAddedCallable(
+                },
                 Divide: function (int $a, int $b) {
                     return $a / $b;
-                })
-            ->withAddedCallable(
+                },
                 Multiply: function (int $a, int $b) {
                     return $a * $b;
-                });
+                }
+            );
         (new BenchmarkRun($benchmark))
             ->withTimes(1000)
             ->exec()

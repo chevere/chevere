@@ -34,10 +34,12 @@ final class Benchmark implements BenchmarkInterface
 
     private ReflectionFunction $reflection;
 
-    public function __construct()
+    public function __construct(...$namedArguments)
     {
-        $this->index = new Set();
+        $this->arguments = $namedArguments;
+        $this->argumentsCount = count($namedArguments);
         $this->callables = new Set();
+        $this->index = new Set();
     }
 
     public function __clone()
@@ -51,13 +53,14 @@ final class Benchmark implements BenchmarkInterface
         return $this->arguments;
     }
 
-    public function withArguments(...$namedArguments): self
+    public function callables(): Set
     {
-        $new = clone $this;
-        $new->arguments = $namedArguments;
-        $new->argumentsCount = count($namedArguments);
+        return $this->callables;
+    }
 
-        return $new;
+    public function index(): Set
+    {
+        return $this->index;
     }
 
     public function withAddedCallable(callable ...$namedCallable): self
@@ -73,16 +76,6 @@ final class Benchmark implements BenchmarkInterface
         }
 
         return $new;
-    }
-
-    public function callables(): Set
-    {
-        return $this->callables;
-    }
-
-    public function index(): Set
-    {
-        return $this->index;
     }
 
     private function assertUniqueCallableName(string $name): void
