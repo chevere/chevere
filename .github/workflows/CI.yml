@@ -82,4 +82,5 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}}
         with:
+          prefix: build/coverage/
           coverageLocations: build/coverage/clover.xml:clover
