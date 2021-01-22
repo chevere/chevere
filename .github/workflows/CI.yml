@@ -76,10 +76,9 @@ jobs:
         with:
           file: build/coverage/clover.xml
           fail_ci_if_error: false
-
-      - name: Upload coverage to Code Climate
-        uses: paambaati/codeclimate-action@v2.7.5
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}}
-        with:
-          coverageLocations: ${{ github.workspace }}/build/coverage/clover.xml:clover
+      # - name: Upload coverage to Code Climate
+      #   uses: paambaati/codeclimate-action@v2.7.5
+      #   env:
+      #     CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}}
+      #   with:
+      #     coverageLocations: ${{ github.workspace }}/build/coverage/clover.xml:clover
