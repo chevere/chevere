@@ -12,11 +12,11 @@
 
 ![Chevere](LOGO.svg)
 
-The Chevere Framework for building pluggable server-side applications.
+This is the Chevere Framework, a PHP software for building pluggable server-side applications intended to be implemented in the context of PHP application runners.
 
-Chevere is the custom made, tailored framework that powers [Chevereto V4](https://github.com/chevereto/chevereto) onwards. It follows clean code principles, with PHP 8 syntax and strong typed code.
+It is the custom-made tailored framework that powers the next-gen [Chevereto V4](https://github.com/chevereto/chevereto) and it was entirely designed around the existing needs and goals of [Chevereto V3](https://chevereto.com/pricing) and [Chevereto-Free](https://github.com/Chevereto/Chevereto-Free) users.
 
-The project is under beta development and is still not recommended to use it for production yet. You are welcome to join the project and help to build it.
+The project is still under development and using it in production is highly experimental.
 
 ## Documentation
 
@@ -28,12 +28,10 @@ Refer to [Installation documentation](https://chevere.org/get-started/installati
 
 ## Contribution
 
-You can contribute to Chevere in different ways (not only with code!). Any help will be welcome, from testing, documenting, typos, etc. Of course, you can also [donate](https://paypal.me/RodolfoBerrios) to support my work.
+You are welcome to join the project and help to build it in any scope. Although Chevere is made with a clear context and background, it is open for any kind of improvement that you can bring. _Please do!_
+
+❤ You can also [donate](https://paypal.me/RodolfoBerrios) to support my work.
 
 ## License
 
 Copyright [Rodolfo Berrios A.](https://rodolfoberrios.com/) Chevere is licensed under the [MIT license](LICENSE).
-
-## Contact
-
-Feel free to contact me at `rodolfo@chevere.org` for anything Chevereto related. Kindly note that I'm not providing this email address for tech support concerns.
