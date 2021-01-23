@@ -12,9 +12,9 @@
 
 ![Chevere](LOGO.svg)
 
-This is the Chevere Framework, a PHP software for building pluggable server-side applications intended to be implemented in the context of PHP application runners.
+This is the Chevere Framework for building pluggable server-side applications intended to be implemented in the context of [PHP](https://www.php.net/) application runners.
 
-It is the custom-made tailored framework that powers the next-gen [Chevereto V4](https://github.com/chevereto/chevereto) and it was entirely designed around the existing needs and goals of [Chevereto V3](https://chevereto.com/pricing) and [Chevereto-Free](https://github.com/Chevereto/Chevereto-Free) users.
+Chevere is the custom-made tailored framework that powers the next-gen [Chevereto V4](https://github.com/chevereto/chevereto) and it was entirely designed around the existing needs and goals of [Chevereto V3](https://chevereto.com/pricing) and [Chevereto-Free](https://github.com/Chevereto/Chevereto-Free) users.
 
 The project is still under development and using it in production is highly experimental.
 
