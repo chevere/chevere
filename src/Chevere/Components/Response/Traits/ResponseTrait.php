@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Response\Traits;
 
+use Chevere\Interfaces\Response\ResponseInterface;
 use Ramsey\Uuid\Uuid;
 
 trait ResponseTrait
@@ -31,7 +32,7 @@ trait ResponseTrait
         $this->token = bin2hex(random_bytes(128));
     }
 
-    public function withStatus(int $code): self
+    public function withStatus(int $code): ResponseInterface
     {
         $new = clone $this;
         $new->status = $code;
@@ -39,7 +40,7 @@ trait ResponseTrait
         return $new;
     }
 
-    public function withData(mixed ...$namedData): self
+    public function withData(mixed ...$namedData): ResponseInterface
     {
         $new = clone $this;
         $new->data = $namedData;
