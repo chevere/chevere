@@ -13,11 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Exceptions\Core\Traits;
 
+use Chevere\Components\Message\Message;
 use Chevere\Interfaces\Message\MessageInterface;
+use Throwable;
 
 trait ExceptionTrait
 {
     private MessageInterface $_message;
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function __construct(?MessageInterface $message = null, int $code = 0, Throwable $previous = null)
+    {
+        $this->_message = $message ?? new Message('');
+
+        parent::__construct($this->_message->toString(), $code, $previous);
+    }
 
     public function message(): MessageInterface
     {

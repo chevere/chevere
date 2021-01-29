@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Exceptions\Core;
 
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Traits\ExceptionTrait;
-use Chevere\Interfaces\Message\MessageInterface;
-use Throwable;
 
 /**
  * Extends \Exception with Message support.
@@ -23,14 +22,4 @@ use Throwable;
 class Exception extends \Exception
 {
     use ExceptionTrait;
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function __construct(MessageInterface $message, int $code = 0, Throwable $previous = null)
-    {
-        $this->_message = $message;
-
-        parent::__construct($this->_message->toString(), $code, $previous);
-    }
 }

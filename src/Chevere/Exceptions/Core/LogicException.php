@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Exceptions\Core;
 
 use Chevere\Exceptions\Core\Traits\ExceptionTrait;
-use Chevere\Interfaces\Message\MessageInterface;
-use Throwable;
 
 /**
  * Exception that represents error in the program logic. This kind of exception should lead directly to a fix in your code.
@@ -23,14 +21,4 @@ use Throwable;
 class LogicException extends \LogicException
 {
     use ExceptionTrait;
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function __construct(MessageInterface $message, int $code = 0, Throwable $previous = null)
-    {
-        $this->_message = $message;
-
-        parent::__construct($this->_message->toString(), $code, $previous);
-    }
 }
