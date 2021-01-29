@@ -43,7 +43,9 @@ final class RouterTest extends TestCase
             )
         );
         $routable = new Routable($route);
-        $router = (new Router())->withAddedRoutable($routable, 'my-group');
+        $router = (new Router())
+            ->withAddedRoutable($routable, 'my-group');
+        $this->assertCount(1, $router->routables());
         $this->assertInstanceOf(RouteCollector::class, $router->routeCollector());
     }
 }
