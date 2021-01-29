@@ -133,9 +133,7 @@ final class File implements FileInterface
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
-            throw new FileUnableToCreateException(
-                new Message($e->getMessage())
-            );
+            throw new FileUnableToCreateException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
     }
@@ -183,9 +181,7 @@ final class File implements FileInterface
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
-            throw new FileUnableToRemoveException(
-                new Message($e->getMessage())
-            );
+            throw new FileUnableToRemoveException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
     }

@@ -173,9 +173,7 @@ final class Dir implements DirInterface
         try {
             rmdir($this->path->toString());
         } catch (Throwable $e) {
-            throw new DirUnableToRemoveException(
-                new Message($e->getMessage())
-            );
+            throw new DirUnableToRemoveException(previous: $e);
         }
     }
 }

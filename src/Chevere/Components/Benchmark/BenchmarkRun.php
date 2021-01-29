@@ -211,12 +211,18 @@ final class BenchmarkRun implements BenchmarkRunInterface
                 $callable(...$this->benchmark->arguments());
             } catch (ArgumentCountError $e) {
                 throw new ArgumentCountException(
-                    $this->getErrorMessage($name, $e->getMessage()
-                ));
+                    $this->getErrorMessage(
+                        $name,
+                        $e->getMessage()
+                    )
+                );
             } catch (TypeError $e) {
                 throw new TypeException(
-                    $this->getErrorMessage($name, $e->getMessage()
-                ));
+                    $this->getErrorMessage(
+                        $name,
+                        $e->getMessage()
+                    )
+                );
             }
             ++$this->runs;
         }

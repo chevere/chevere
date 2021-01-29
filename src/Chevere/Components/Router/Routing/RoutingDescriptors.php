@@ -100,7 +100,7 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
         }
         // @codeCoverageIgnoreStart
         catch (\TypeError $e) {
-            throw new TypeException(new Message($e->getMessage()));
+            throw new TypeException(previous: $e);
         } catch (\OutOfRangeException $e) {
             throw new OutOfRangeException(
                 (new Message('Position %pos% does not exists'))

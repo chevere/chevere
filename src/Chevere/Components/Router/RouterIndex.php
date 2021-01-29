@@ -112,7 +112,7 @@ final class RouterIndex implements RouterIndexInterface
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(new Message($e->getMessage()));
+            throw new TypeException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {
@@ -139,7 +139,7 @@ final class RouterIndex implements RouterIndexInterface
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(new Message($e->getMessage()));
+            throw new TypeException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {
@@ -161,7 +161,7 @@ final class RouterIndex implements RouterIndexInterface
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(new Message($e->getMessage()));
+            throw new TypeException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {

@@ -120,9 +120,7 @@ final class SpecMaker implements SpecMakerInterface
             }
             $this->outputDir->removeContents();
         } catch (Throwable $e) {
-            throw new FilesystemException(
-                new Message($e->getMessage())
-            );
+            throw new FilesystemException(previous: $e);
         }
     }
 

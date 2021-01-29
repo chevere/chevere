@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Serialize;
 
-use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Serialize\UnserializeInterface;
@@ -35,9 +34,7 @@ final class Unserialize implements UnserializeInterface
                 throw new Exception('Passed string is not unserializable');
             }
         } catch (Throwable $e) {
-            throw new InvalidArgumentException(
-                new Message($e->getMessage()),
-            );
+            throw new InvalidArgumentException(previous: $e);
         }
 
         $this->type = new Type(get_debug_type($this->var));

@@ -49,7 +49,7 @@ final class GroupSpecs implements GroupSpecsInterface
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
-            throw new TypeException(new Message($e->getMessage()));
+            throw new TypeException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {

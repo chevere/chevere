@@ -77,9 +77,7 @@ final class Cache implements CacheInterface
         }
         // @codeCoverageIgnoreStart
         catch (Exception $e) {
-            throw new RuntimeException(
-                new Message($e->getMessage())
-            );
+            throw new RuntimeException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
 

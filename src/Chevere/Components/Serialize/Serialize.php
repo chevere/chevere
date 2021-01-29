@@ -35,9 +35,7 @@ final class Serialize implements SerializeInterface
         try {
             $this->serialize = serialize($var);
         } catch (Throwable $e) {
-            throw new LogicException(
-                new Message($e->getMessage())
-            );
+            throw new LogicException(previous: $e);
         }
     }
 

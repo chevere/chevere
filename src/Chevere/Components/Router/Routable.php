@@ -46,9 +46,7 @@ final class Routable implements RoutableInterface
             $varStorable = new VarStorable($this->route);
             $varStorable->toExport();
         } catch (Throwable $e) {
-            throw new RouteNotRoutableException(
-                new Message($e->getMessage()),
-            );
+            throw new RouteNotRoutableException(previous: $e);
         }
     }
 
