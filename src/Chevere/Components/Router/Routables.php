@@ -36,9 +36,7 @@ final class Routables implements RoutablesInterface
 
     public function has(string $name): bool
     {
-        $key = $name;
-
-        return $this->map->hasKey($key);
+        return $this->map->hasKey($name);
     }
 
     /**
