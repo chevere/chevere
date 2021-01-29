@@ -65,9 +65,6 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
 
-      # - name: Run Psalm
-      #   run: vendor/bin/psalm --output-format=github
-
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
 
@@ -81,4 +78,10 @@ jobs:
       #   env:
       #     CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}}
       #   with:
-      #     coverageLocations: ${{ github.workspace }}/build/coverage/clover.xml:clover
+      #     coverageLocations: ${{ github.worksWpace }}/build/coverage/clover.xml:clover
+
+      - name: Upload coverage to Codacy
+        uses: codacy/codacy-coverage-reporter-action@master
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: build/coverage/clover.xml
