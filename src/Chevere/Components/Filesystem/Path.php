@@ -14,9 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Filesystem\FilesystemException;
 use Chevere\Exceptions\Filesystem\PathNotExistsException;
 use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
 use Chevere\Interfaces\Filesystem\PathInterface;
+use function Safe\fclose;
+use function Safe\fopen;
+use function Safe\fwrite;
+use function Safe\unlink;
+use Throwable;
 
 final class Path implements PathInterface
 {
@@ -85,8 +91,22 @@ final class Path implements PathInterface
     public function isWritable(): bool
     {
         $this->assertExists();
+        if (is_writable($this->absolute)) {
+            return true;
+        }
+        $testFile = sprintf('%s/%s.tmp', $this->absolute, uniqid('data_write_test_'));
 
-        return is_writable($this->absolute);
+        try {
+            $handle = fopen($testFile, 'w');
+            if (! $handle || fwrite($handle, 'Test write operation') === false) {
+                return false;
+            }
+            fclose($handle);
+
+            return unlink($testFile);
+        } catch (Throwable $e) {
+            throw new FilesystemException(previous: $e);
+        }
     }
 
     /**
