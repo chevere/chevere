@@ -76,7 +76,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getBoolean(string $boolean): bool;
+    public function getBoolean(string $name): bool;
 
     /**
      * Provides access to the argument value for the parameter `$string` type-hinted as string.
@@ -84,7 +84,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getString(string $string): string;
+    public function getString(string $name): string;
 
     /**
      * Provides access to the argument value for the parameter `$integer` type-hinted as integer.
@@ -92,7 +92,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getInteger(string $integer): int;
+    public function getInteger(string $name): int;
 
     /**
      * Provides access to the argument value for the parameter `$float` type-hinted as float.
@@ -100,7 +100,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getFloat(string $float): float;
+    public function getFloat(string $name): float;
 
     /**
      * Provides access to the argument value for the parameter `$array` type-hinted as array.
@@ -108,5 +108,5 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws OutOfBoundsException
      * @throws TypeError
      */
-    public function getArray(string $array): array;
+    public function getArray(string $name): array;
 }

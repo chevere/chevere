@@ -85,29 +85,29 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    public function getBoolean(string $boolean): bool
+    public function getBoolean(string $name): bool
     {
-        return $this->get($boolean);
+        return $this->get($name);
     }
 
-    public function getString(string $string): string
+    public function getString(string $name): string
     {
-        return $this->get($string);
+        return $this->get($name);
     }
 
-    public function getInteger(string $integer): int
+    public function getInteger(string $name): int
     {
-        return $this->get($integer);
+        return $this->get($name);
     }
 
-    public function getFloat(string $float): float
+    public function getFloat(string $name): float
     {
-        return $this->get($float);
+        return $this->get($name);
     }
 
-    public function getArray(string $array): array
+    public function getArray(string $name): array
     {
-        return $this->get($array);
+        return $this->get($name);
     }
 
     private function assertCount(): void
