@@ -28,7 +28,7 @@ interface FloatParameterInterface extends ParameterInterface
      *
      * @throws InvalidArgumentException
      */
-    public function withDefault(float $default): self;
+    public function withDefault(float $value): self;
 
     /**
      * Provides access to the default value.

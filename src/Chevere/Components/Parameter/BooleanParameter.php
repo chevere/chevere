@@ -30,10 +30,10 @@ final class BooleanParameter implements BooleanParameterInterface
         $this->attributes = new Set();
     }
 
-    public function withDefault(bool $default): BooleanParameterInterface
+    public function withDefault(bool $value): BooleanParameterInterface
     {
         $new = clone $this;
-        $new->default = $default;
+        $new->default = $value;
 
         return $new;
     }

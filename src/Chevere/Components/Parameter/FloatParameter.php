@@ -30,10 +30,10 @@ final class FloatParameter implements FloatParameterInterface
         $this->attributes = new Set();
     }
 
-    public function withDefault(float $default): FloatParameterInterface
+    public function withDefault(float $value): FloatParameterInterface
     {
         $new = clone $this;
-        $new->default = $default;
+        $new->default = $value;
 
         return $new;
     }

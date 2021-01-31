@@ -28,7 +28,7 @@ interface IntegerParameterInterface extends ParameterInterface
      *
      * @throws InvalidArgumentException
      */
-    public function withDefault(int $default): self;
+    public function withDefault(int $value): self;
 
     /**
      * Provides access to the default value.

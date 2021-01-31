@@ -30,10 +30,10 @@ final class ArrayParameter implements ArrayParameterInterface
         $this->attributes = new Set();
     }
 
-    public function withDefault(array $default): ArrayParameterInterface
+    public function withDefault(array $value): ArrayParameterInterface
     {
         $new = clone $this;
-        $new->default = $default;
+        $new->default = $value;
 
         return $new;
     }

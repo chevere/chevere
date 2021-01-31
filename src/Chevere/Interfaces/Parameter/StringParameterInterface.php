@@ -47,7 +47,7 @@ interface StringParameterInterface extends ParameterInterface
      *
      * @throws InvalidArgumentException
      */
-    public function withDefault(string $default): self;
+    public function withDefault(string $value): self;
 
     /**
      * Provides access to the default value.

@@ -30,10 +30,10 @@ final class IntegerParameter implements IntegerParameterInterface
         $this->attributes = new Set();
     }
 
-    public function withDefault(int $default): IntegerParameterInterface
+    public function withDefault(int $value): IntegerParameterInterface
     {
         $new = clone $this;
-        $new->default = $default;
+        $new->default = $value;
 
         return $new;
     }
