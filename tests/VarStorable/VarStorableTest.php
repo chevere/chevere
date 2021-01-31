@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\VarExportable;
+namespace Chevere\Tests\VarStorable;
 
 use Chevere\Components\VarStorable\VarStorable;
 use Chevere\Exceptions\VarStorable\NotVarStorableException;

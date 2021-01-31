@@ -47,7 +47,7 @@ interface CacheInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified put.
      */
-    public function withPut(CacheKeyInterface $key, VarStorableInterface $varStorable): self;
+    public function withPut(CacheKeyInterface $key, VarStorableInterface $var): self;
 
     /**
      * Remove item from cache.
