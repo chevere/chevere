@@ -70,7 +70,7 @@ namespace Chevere\Components\VarDump {
             return WritersInstance::get();
         } catch (LogicException $e) {
             return (new Writers())
-                ->withOut(
+                ->withOutput(
                     new StreamWriter(streamFor('php://stdout', 'r+'))
                 )
                 ->withError(
@@ -93,7 +93,7 @@ namespace {
             getVarDump()
                 ->withShift(1)
                 ->withVars(...$vars)
-                ->process(getVarDumpWriters()->out());
+                ->process(getVarDumpWriters()->output());
         }
     }
     if (function_exists('xdd') === false) {
@@ -106,7 +106,7 @@ namespace {
             getVarDump()
                 ->withShift(1)
                 ->withVars(...$vars)
-                ->process(getVarDumpWriters()->out());
+                ->process(getVarDumpWriters()->output());
             die(0);
         }
     }

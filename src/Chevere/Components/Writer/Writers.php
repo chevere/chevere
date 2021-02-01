@@ -21,7 +21,7 @@ use Laminas\Diactoros\Exception\InvalidArgumentException;
 
 final class Writers implements WritersInterface
 {
-    private WriterInterface $out;
+    private WriterInterface $output;
 
     private WriterInterface $error;
 
@@ -32,7 +32,7 @@ final class Writers implements WritersInterface
     public function __construct()
     {
         try {
-            $this->out = new StreamWriter(streamForString(''));
+            $this->output = new StreamWriter(streamForString(''));
             $this->error = new StreamWriter(streamForString(''));
         }
         // @codeCoverageIgnoreStart
@@ -50,7 +50,7 @@ final class Writers implements WritersInterface
     public function with(WriterInterface $writer): WritersInterface
     {
         $new = clone $this;
-        $new->out = $writer;
+        $new->output = $writer;
         $new->error = $writer;
         $new->debug = $writer;
         $new->log = $writer;
@@ -58,10 +58,10 @@ final class Writers implements WritersInterface
         return $new;
     }
 
-    public function withOut(WriterInterface $writer): WritersInterface
+    public function withOutput(WriterInterface $writer): WritersInterface
     {
         $new = clone $this;
-        $new->out = $writer;
+        $new->output = $writer;
 
         return $new;
     }
@@ -90,9 +90,9 @@ final class Writers implements WritersInterface
         return $new;
     }
 
-    public function out(): WriterInterface
+    public function output(): WriterInterface
     {
-        return $this->out;
+        return $this->output;
     }
 
     public function error(): WriterInterface

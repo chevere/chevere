@@ -36,9 +36,9 @@ interface WritersInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified out WriterInterface.
      */
-    public function withOut(WriterInterface $writer): self;
+    public function withOutput(WriterInterface $writer): self;
 
-    public function out(): WriterInterface;
+    public function output(): WriterInterface;
 
     /**
      * Return an instance with the specified error WriterInterface.
