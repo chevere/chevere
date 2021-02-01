@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Serialize\Deserialize;
 use Chevere\Components\Serialize\Serialize;
-use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;
@@ -122,7 +122,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     {
         if (is_string($var) && ! ctype_space($var)) {
             try {
-                $unserialize = new Unserialize($var);
+                $unserialize = new Deserialize($var);
                 $var = $unserialize->var();
             } catch (InvalidArgumentException $e) {
                 // $e

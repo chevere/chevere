@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Serialize;
 
-use Chevere\Components\Serialize\Unserialize;
+use Chevere\Components\Serialize\Deserialize;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Tests\Serialize\_resources\TestUnserializeException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class UnserializeTest extends TestCase
+final class DeserializeTest extends TestCase
 {
     public function getStdClass(): object
     {
@@ -33,7 +33,7 @@ final class UnserializeTest extends TestCase
     public function testConstructUnserializeException(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new Unserialize('84()/*');
+        new Deserialize('84()/*');
     }
 
     public function testThrowableUnserializeHandler(): void
@@ -41,7 +41,7 @@ final class UnserializeTest extends TestCase
         $object = new TestUnserializeException();
         $serialize = serialize($object);
         $this->expectException(InvalidArgumentException::class);
-        new Unserialize($serialize);
+        new Deserialize($serialize);
     }
 
     public function testConstruct(): void
@@ -49,7 +49,7 @@ final class UnserializeTest extends TestCase
         $object = $this->getStdClass();
         $objectClass = get_class($object);
         $serialized = serialize($object);
-        $unserialize = new Unserialize($serialized);
+        $unserialize = new Deserialize($serialized);
         $this->assertSame($objectClass, $unserialize->type()->typeHinting());
         $this->assertEqualsCanonicalizing($object, $unserialize->var());
         $this->assertInstanceOf($objectClass, $unserialize->var());
