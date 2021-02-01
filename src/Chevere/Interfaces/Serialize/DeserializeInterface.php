@@ -18,7 +18,7 @@ use Chevere\Interfaces\Type\TypeInterface;
 /**
  * Describes the component in charge of handling `unserialize()`.
  */
-interface UnserializeInterface
+interface DeserializeInterface
 {
     /**
      * @throws LogicException

@@ -15,12 +15,12 @@ namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Serialize\UnserializeInterface;
+use Chevere\Interfaces\Serialize\DeserializeInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Exception;
 use Throwable;
 
-final class Unserialize implements UnserializeInterface
+final class Deserialize implements DeserializeInterface
 {
     private $var;
 
