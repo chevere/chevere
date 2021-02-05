@@ -81,8 +81,12 @@ final class Type implements TypeInterface
     private function validateObject(object $object): bool
     {
         $objectClass = get_class($object);
-        if ($this->primitive === $this->isClassName($objectClass)) {
-            return $this->isClassName($objectClass);
+        switch ($this->primitive) {
+            case self::PRIMITIVE_CLASS_NAME:
+                return $this->isClassName($objectClass);
+            case self::PRIMITIVE_INTERFACE_NAME:
+            default:
+                return $this->isInterfaceImplemented($object);
         }
 
         return $this->isInterfaceImplemented($object);

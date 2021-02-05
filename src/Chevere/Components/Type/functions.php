@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Type;
 
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Message\MessageInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 
@@ -65,11 +66,6 @@ function typeArray(): TypeInterface
     return new Type(Type::ARRAY);
 }
 
-function typeObject(): TypeInterface
-{
-    return new Type(Type::OBJECT);
-}
-
 function typeCallable(): TypeInterface
 {
     return new Type(Type::CALLABLE);
@@ -88,4 +84,20 @@ function typeResource(): TypeInterface
 function typeNull(): TypeInterface
 {
     return new Type(Type::NULL);
+}
+
+/**
+ * @throws InvalidArgumentException
+ */
+function typeObject(string $className): TypeInterface
+{
+    $type = new Type($className);
+    if ($type->primitive() !== TypeInterface::PRIMITIVE_CLASS_NAME) {
+        throw new InvalidArgumentException(
+            (new Message("Class %className% doesn't exists"))
+                ->code('%className%', $className)
+        );
+    }
+
+    return $type;
 }
