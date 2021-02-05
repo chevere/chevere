@@ -19,8 +19,6 @@ use Chevere\Interfaces\Regex\RegexInterface;
 
 /**
  * Describes the component in charge of defining a parameter of type string.
- *
- * @method StringParameterInterface withDescription(string $description)
  */
 interface StringParameterInterface extends ParameterInterface
 {

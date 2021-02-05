@@ -18,6 +18,11 @@ use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Parameter\IntegerParameterInterface;
 use Ds\Set;
 
+/**
+ * @method IntegerParameterInterface withDescription(string $description)
+ * @method IntegerParameterInterface withAddedAttribute(string ...$attributes)
+ * @method IntegerParameterInterface withRemovedAttribute(string ...$attribute)
+ */
 final class IntegerParameter implements IntegerParameterInterface
 {
     use ParameterTrait;

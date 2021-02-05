@@ -18,6 +18,11 @@ use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Ds\Set;
 
+/**
+ * @method ParameterInterface withDescription(string $description)
+ * @method ParameterInterface withAddedAttribute(string ...$attributes)
+ * @method ParameterInterface withRemovedAttribute(string ...$attribute)
+ */
 final class Parameter implements ParameterInterface
 {
     use ParameterTrait;

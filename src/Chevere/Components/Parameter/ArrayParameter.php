@@ -18,6 +18,11 @@ use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Parameter\ArrayParameterInterface;
 use Ds\Set;
 
+/**
+ * @method ArrayParameterInterface withDescription(string $description)
+ * @method ArrayParameterInterface withAddedAttribute(string ...$attributes)
+ * @method ArrayParameterInterface withRemovedAttribute(string ...$attribute)
+ */
 final class ArrayParameter implements ArrayParameterInterface
 {
     use ParameterTrait;

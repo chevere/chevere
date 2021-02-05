@@ -18,6 +18,11 @@ use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Parameter\BooleanParameterInterface;
 use Ds\Set;
 
+/**
+ * @method BooleanParameterInterface withDescription(string $description)
+ * @method BooleanParameterInterface withAddedAttribute(string ...$attributes)
+ * @method BooleanParameterInterface withRemovedAttribute(string ...$attribute)
+ */
 final class BooleanParameter implements BooleanParameterInterface
 {
     use ParameterTrait;

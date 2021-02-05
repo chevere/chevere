@@ -22,6 +22,10 @@ use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
 use Ds\Set;
 
+/**
+ * @method StringParameterInterface withDescription(string $description)
+ * @method StringParameterInterface withAddedAttribute(string ...$attributes)
+ */
 final class StringParameter implements StringParameterInterface
 {
     use ParameterTrait;

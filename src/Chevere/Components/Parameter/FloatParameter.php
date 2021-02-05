@@ -18,6 +18,11 @@ use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Parameter\FloatParameterInterface;
 use Ds\Set;
 
+/**
+ * @method FloatParameterInterface withDescription(string $description)
+ * @method FloatParameterInterface withAddedAttribute(string ...$attributes)
+ * @method FloatParameterInterface withRemovedAttribute(string ...$attribute)
+ */
 final class FloatParameter implements FloatParameterInterface
 {
     use ParameterTrait;

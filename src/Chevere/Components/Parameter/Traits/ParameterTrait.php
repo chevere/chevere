@@ -17,7 +17,6 @@ use Chevere\Components\Common\Traits\DescriptionTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Ds\Set;
 
@@ -58,7 +57,7 @@ trait ParameterTrait
         return $new;
     }
 
-    public function withRemovedAttribute(string ...$attribute): ParameterInterface
+    public function withRemovedAttribute(string ...$attribute): self
     {
         $new = clone $this;
         foreach ($attribute as $attr) {
