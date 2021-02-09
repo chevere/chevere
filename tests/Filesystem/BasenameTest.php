@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Filesystem;
 
 use Chevere\Components\Filesystem\Basename;
+use function Chevere\Components\Str\randomStr;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\UnexpectedValueException;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +30,7 @@ final class BasenameTest extends TestCase
     public function testInvalidArgument(): void
     {
         $this->expectException(UnexpectedValueException::class);
-        new Basename(bin2hex(random_bytes(256)));
+        new Basename(randomStr(256));
     }
 
     public function testWithExtension(): void

@@ -46,6 +46,7 @@
             "src/Chevere/Components/Filesystem/functions.php",
             "src/Chevere/Components/Iterator/functions.php",
             "src/Chevere/Components/Router/Routing/functions.php",
+            "src/Chevere/Components/Str/functions.php",
             "src/Chevere/Components/ThrowableHandler/functions.php",
             "src/Chevere/Components/Translator/functions.php",
             "src/Chevere/Components/Type/functions.php",
