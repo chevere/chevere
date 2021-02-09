@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Str;
 
-function randomStr(int $length): string
+function randomString(int $length): string
 {
     return substr(bin2hex(random_bytes($length)), 0, $length);
 }
