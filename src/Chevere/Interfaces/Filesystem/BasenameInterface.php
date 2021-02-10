@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Filesystem;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\LengthException;
 
 /**
  * Describes the component in charge of providing basename handling.
@@ -23,7 +24,8 @@ interface BasenameInterface
     public const MAX_LENGTH_BYTES = 255;
 
     /**
-     * @throws InvalidArgumentException if $basename exceed MAX_LENGTH_BYTES
+     * @throws InvalidArgumentException if $basename is invalid string
+     * @throws LengthException if $basename exceed MAX_LENGTH_BYTES
      */
     public function __construct(string $basename);
 

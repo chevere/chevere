@@ -16,20 +16,20 @@ namespace Chevere\Tests\Filesystem;
 use Chevere\Components\Filesystem\Basename;
 use function Chevere\Components\Str\randomString;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\UnexpectedValueException;
+use Chevere\Exceptions\Core\LengthException;
 use PHPUnit\Framework\TestCase;
 
 final class BasenameTest extends TestCase
 {
-    public function testUnexpectedValue(): void
+    public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new Basename(' ');
     }
 
-    public function testInvalidArgument(): void
+    public function testInvalidLength(): void
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(LengthException::class);
         new Basename(randomString(256));
     }
 

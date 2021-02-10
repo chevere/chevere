@@ -16,7 +16,7 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\UnexpectedValueException;
+use Chevere\Exceptions\Core\LengthException;
 use Chevere\Interfaces\Filesystem\BasenameInterface;
 use Throwable;
 
@@ -30,20 +30,7 @@ final class Basename implements BasenameInterface
 
     public function __construct(string $basename)
     {
-        try {
-            (new StrAssert($basename))
-                ->notEmpty()
-                ->notCtypeSpace();
-        } catch (Throwable $e) {
-            throw new InvalidArgumentException();
-        }
-        if (mb_strlen($basename) > self::MAX_LENGTH_BYTES) {
-            throw new UnexpectedValueException(
-                message: (new Message('String %string% provided exceed the limit of %bytes% bytes'))
-                    ->code('%string%', $basename)
-                    ->code('%bytes%', (string) self::MAX_LENGTH_BYTES),
-            );
-        }
+        $this->assertBasename($basename);
         $this->basename = $basename;
         $this->extension = pathinfo($this->basename, PATHINFO_EXTENSION);
         $this->name = pathinfo($this->basename, PATHINFO_FILENAME);
@@ -62,5 +49,24 @@ final class Basename implements BasenameInterface
     public function name(): string
     {
         return $this->name;
+    }
+
+    private function assertBasename(string $basename): void
+    {
+        try {
+            (new StrAssert($basename))
+                ->notEmpty()
+                ->notCtypeSpace();
+        } catch (Throwable $e) {
+            throw new InvalidArgumentException(code: 100);
+        }
+        if (mb_strlen($basename) > self::MAX_LENGTH_BYTES) {
+            throw new LengthException(
+                message: (new Message('String %string% provided exceed the limit of %bytes% bytes'))
+                    ->code('%string%', $basename)
+                    ->code('%bytes%', (string) self::MAX_LENGTH_BYTES),
+                code: 110
+            );
+        }
     }
 }
