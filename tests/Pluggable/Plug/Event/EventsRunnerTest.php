@@ -15,7 +15,7 @@ namespace Chevere\Tests\Pluggable\Plug\Event;
 
 use Chevere\Components\Pluggable\Plug\Event\EventsQueue;
 use Chevere\Components\Pluggable\Plug\Event\EventsRunner;
-use function Chevere\Components\Writer\streamForString;
+use function Chevere\Components\Writer\streamTemp;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Components\Writer\Writers;
 use Chevere\Tests\Pluggable\Plug\Event\_resources\TestEvent;
@@ -32,7 +32,7 @@ final class EventsRunnerTest extends TestCase
 
     public function testRun(): void
     {
-        $writer = new StreamWriter(streamForString(''));
+        $writer = new StreamWriter(streamTemp(''));
         $writers = (new Writers())->with($writer);
         $event = new TestEvent();
         $eventsQueue = (new EventsQueue())

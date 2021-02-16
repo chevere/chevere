@@ -32,8 +32,8 @@ final class Writers implements WritersInterface
     public function __construct()
     {
         try {
-            $this->output = new StreamWriter(streamForString(''));
-            $this->error = new StreamWriter(streamForString(''));
+            $this->output = new StreamWriter(streamTemp(''));
+            $this->error = new StreamWriter(streamTemp(''));
         }
         // @codeCoverageIgnoreStart
         catch (InvalidArgumentException $e) {

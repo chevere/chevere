@@ -21,7 +21,7 @@ use Chevere\Components\VarDump\Outputters\VarDumpConsoleOutputter;
 use Chevere\Components\VarDump\Outputters\VarDumpHtmlOutputter;
 use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
 use Chevere\Components\VarDump\VarOutputter;
-use function Chevere\Components\Writer\streamForString;
+use function Chevere\Components\Writer\streamTemp;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Tests\VarDump\Traits\DebugBacktraceTrait;
 use PHPUnit\Framework\TestCase;
@@ -33,7 +33,7 @@ final class VarOutputterTest extends TestCase
     public function testPlainOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
-        $writer = new StreamWriter(streamForString(''));
+        $writer = new StreamWriter(streamTemp(''));
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
@@ -50,7 +50,7 @@ final class VarOutputterTest extends TestCase
     public function testConsoleOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
-        $writer = new StreamWriter(streamForString(''));
+        $writer = new StreamWriter(streamTemp(''));
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
@@ -68,7 +68,7 @@ final class VarOutputterTest extends TestCase
     public function testHtmlOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
-        $writer = new StreamWriter(streamForString(''));
+        $writer = new StreamWriter(streamTemp(''));
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,

@@ -56,9 +56,8 @@ function streamFor(string $stream, string $mode): StreamInterface
  *
  * @throws RuntimeException
  */
-function streamForString(string $content = ''): StreamInterface
+function streamTemp(string $content = ''): StreamInterface
 {
-    $type = 'stream';
     $stream = 'php://temp';
 
     try {
@@ -78,11 +77,11 @@ function streamForString(string $content = ''): StreamInterface
                 ->code('%stream%', $stream)
         );
     }
-    if (get_resource_type($resource) !== $type) {
+    if (get_resource_type($resource) !== 'stream') {
         throw new RuntimeException(
             (new Message('Resource at %stream% is not of type %type%'))
                 ->code('%stream%', $stream)
-                ->code('%type%', $type)
+                ->code('%type%', 'stream')
         );
     }
 

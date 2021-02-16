@@ -16,7 +16,7 @@ namespace Chevere\Tests\VarDump;
 use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter;
 use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
 use Chevere\Components\VarDump\VarDump;
-use function Chevere\Components\Writer\streamForString;
+use function Chevere\Components\Writer\streamTemp;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
 use PHPUnit\Framework\TestCase;
@@ -58,6 +58,6 @@ final class VarDumpTest extends TestCase
 
     private function getStream(): StreamInterface
     {
-        return streamForString('');
+        return streamTemp('');
     }
 }

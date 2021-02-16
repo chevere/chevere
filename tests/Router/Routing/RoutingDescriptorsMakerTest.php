@@ -16,7 +16,7 @@ namespace Chevere\Tests\Router\Routing;
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Router\Routing\RoutingDescriptorsMaker;
 use Chevere\Components\Writer\NullWriter;
-use function Chevere\Components\Writer\streamForString;
+use function Chevere\Components\Writer\streamTemp;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Exceptions\Router\Routing\ExpectingControllerException;
 use Chevere\Interfaces\Router\Route\RouteDecoratorInterface;
@@ -37,7 +37,7 @@ final class RoutingDescriptorsMakerTest extends TestCase
 
     public function testWithWriter(): void
     {
-        $writer = new StreamWriter(streamForString(''));
+        $writer = new StreamWriter(streamTemp(''));
         $fsRoutesMaker = (new RoutingDescriptorsMaker(''))
             ->withWriter($writer);
         $this->assertSame($writer, $fsRoutesMaker->writer());
@@ -53,7 +53,7 @@ final class RoutingDescriptorsMakerTest extends TestCase
     public function testObjects(): void
     {
         $dir = dirForPath(__DIR__ . '/_resources/routes/');
-        $writer = new StreamWriter(streamForString(''));
+        $writer = new StreamWriter(streamTemp(''));
         $fsRoutesMaker = (new RoutingDescriptorsMaker('routes'))
             ->withWriter($writer)
             ->withDescriptorsFor($dir);
