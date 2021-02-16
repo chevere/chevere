@@ -178,9 +178,9 @@ final class Arguments implements ArgumentsInterface
             return;
         }
         if (! $this->has($name)) {
-            $this->errors[] = (new Message('Parameter %name%: Missing required argument of type %type%'))
+            $this->errors[] = (new Message('Missing required argument of type %type% for parameter "%name%"'))
                 ->code('%type%', $parameter->type()->typeHinting())
-                ->code('%name%', $name)
+                ->strong('%name%', $name)
                 ->toString();
 
             return;
