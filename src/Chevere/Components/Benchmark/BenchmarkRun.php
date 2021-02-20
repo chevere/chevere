@@ -77,7 +77,7 @@ final class BenchmarkRun implements BenchmarkRunInterface
      */
     public function __construct(BenchmarkInterface $benchmark)
     {
-        if (empty($benchmark->index())) {
+        if (count($benchmark->index()) === 0) {
             throw new InvalidArgumentException(
                 (new Message('No callable defined for object of class %className%, declare callables using the %method% method'))
                     ->code('%className%', $benchmark::class)

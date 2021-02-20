@@ -68,9 +68,6 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
         $array = $trValues;
         foreach (self::HIGHLIGHT_TAGS as $tag => $key) {
             $val = $trValues[$tag];
-            if (empty($val)) {
-                continue;
-            }
             $array[$tag] = $this->formatter->varDumpFormatter()
                 ->highlight($key, (string) $val);
         }
