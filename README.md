@@ -1,5 +1,7 @@
 # Chevere
 
+> 🔔 Subscribe to the [newsletter](https://newsletter.chevereto.com/subscription?f=gTmksA6763vPCG763763kYCOTgWu6Kx4BPohVDY97aHddrqis6B763cHay8dhtmMKlI6r3vUfGREZmSvDNNGj3MlrRJV7A) to don't miss any update regarding Chevere.
+
 [![Build](https://img.shields.io/github/workflow/status/chevere/chevere/CI/master?style=flat-square)](https://github.com/chevere/chevere/actions)
 [![Quality Gate Status](https://img.shields.io/sonar/alert_status/chevere_chevere?server=https%3A%2F%2Fsonarcloud.io&style=flat-square
 )](https://sonarcloud.io/dashboard?id=chevere_chevere)
