@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Time;
+namespace Chevere\Tests\HrTime;
 
 use Chevere\Components\HrTime\HrTime;
 use PHPUnit\Framework\TestCase;
