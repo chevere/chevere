@@ -13,17 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Action\Action;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Workflow\Step;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Exceptions\Core\BadMethodCallException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep0;
+use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep1;
+use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep2;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowTest extends TestCase
@@ -137,44 +134,5 @@ final class WorkflowTest extends TestCase
             ->withArguments(foo: '${not:found}');
         $this->expectException(OutOfBoundsException::class);
         $workflow->withAdded($step);
-    }
-}
-
-class WorkflowTestStep0 extends Action
-{
-    public function run(ArgumentsInterface $arguments): ResponseInterface
-    {
-        return $this->getResponse();
-    }
-}
-
-class WorkflowTestStep1 extends Action
-{
-    public function getParameters(): ParametersInterface
-    {
-        return (new Parameters())
-            ->withAddedRequired(foo: new StringParameter());
-    }
-
-    public function run(ArgumentsInterface $arguments): ResponseInterface
-    {
-        return $this->getResponse();
-    }
-}
-
-class WorkflowTestStep2 extends Action
-{
-    public function getParameters(): ParametersInterface
-    {
-        return (new Parameters())
-            ->withAddedRequired(
-                foo: new StringParameter(),
-                bar: new StringParameter()
-            );
-    }
-
-    public function run(ArgumentsInterface $arguments): ResponseInterface
-    {
-        return $this->getResponse();
     }
 }

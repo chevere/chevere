@@ -17,7 +17,7 @@ use Chevere\Components\Action\Action;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 
-class TaskTestStep0Action extends Action
+class WorkflowTestStep0 extends Action
 {
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {

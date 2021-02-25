@@ -21,7 +21,7 @@ use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 
-class TaskTestStep1Action extends Action
+class TaskTestStep1 extends Action
 {
     public function getParameters(): ParametersInterface
     {
