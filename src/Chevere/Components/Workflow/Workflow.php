@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Workflow;
 
+use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Exceptions\Core\LogicException;
@@ -20,6 +21,8 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Action\ActionInterface;
+use Chevere\Interfaces\Dependent\DependenciesInterface;
+use Chevere\Interfaces\Dependent\DependentInterface;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
@@ -45,6 +48,8 @@ final class Workflow implements WorkflowInterface
 
     private Map $expected;
 
+    private DependenciesInterface $dependencies;
+
     public function __construct(string $name)
     {
         $this->name = $name;
@@ -53,6 +58,7 @@ final class Workflow implements WorkflowInterface
         $this->parameters = new Parameters();
         $this->vars = new Map();
         $this->expected = new Map();
+        $this->dependencies = new Dependencies();
     }
 
     public function name(): string
@@ -68,27 +74,35 @@ final class Workflow implements WorkflowInterface
     public function withAdded(StepInterface ...$step): WorkflowInterface
     {
         $new = clone $this;
-        foreach ($step as $stepName => $stepTask) {
+        foreach ($step as $stepName => $stepEl) {
+            $new->handleStepDependencies($stepEl);
             $stepName = (string) $stepName;
-            $new->assertNoOverflow($stepName);
-            $new->setParameters($stepName, $stepTask);
-            $new->map->put($stepName, $stepTask);
+            $new->putMap($stepName, $stepEl);
             $new->steps->push($stepName);
         }
 
         return $new;
     }
 
+    public function handleStepDependencies(StepInterface $step): void
+    {
+        $actionName = $step->action();
+        /** @var ActionInterface $action */
+        $action = new $actionName();
+        if ($action instanceof DependentInterface) {
+            $this->putDependencies($action->dependencies());
+        }
+    }
+
     public function withAddedBefore(string $before, StepInterface ...$step): WorkflowInterface
     {
         $new = clone $this;
         $new->assertHasStepByName($before);
-        foreach ($step as $stepName => $stepTask) {
-            $stepName = (string) $stepName;
-            $new->assertNoOverflow($stepName);
-            $new->setParameters($stepName, $stepTask);
-            $new->map->put($stepName, $stepTask);
-            $new->steps->insert($new->getPosByName($before), $stepName);
+        foreach ($step as $name => $stepEl) {
+            $new->handleStepDependencies($stepEl);
+            $name = (string) $name;
+            $new->putMap($name, $stepEl);
+            $new->steps->insert($new->getPosByName($before), $name);
         }
 
         return $new;
@@ -98,12 +112,11 @@ final class Workflow implements WorkflowInterface
     {
         $new = clone $this;
         $new->assertHasStepByName($after);
-        foreach ($step as $stepName => $stepTask) {
-            $stepName = (string) $stepName;
-            $new->assertNoOverflow($stepName);
-            $new->setParameters($stepName, $stepTask);
-            $new->map->put($stepName, $stepTask);
-            $new->steps->insert($new->getPosByName($after) + 1, $stepName);
+        foreach ($step as $name => $stepEl) {
+            $new->handleStepDependencies($stepEl);
+            $name = (string) $name;
+            $new->putMap($name, $stepEl);
+            $new->steps->insert($new->getPosByName($after) + 1, $name);
         }
 
         return $new;
@@ -134,6 +147,11 @@ final class Workflow implements WorkflowInterface
                     ->code('%name%', $step)
             );
         }
+    }
+
+    public function dependencies(): DependenciesInterface
+    {
+        return $this->dependencies;
     }
 
     public function parameters(): ParametersInterface
@@ -202,12 +220,39 @@ final class Workflow implements WorkflowInterface
         }
     }
 
-    private function assertNoOverflow(string $step): void
+    private function putDependencies(DependenciesInterface $dependencies): void
     {
-        if ($this->map->hasKey($step)) {
+        foreach ($dependencies->getGenerator() as $key => $type) {
+            if ($this->dependencies->hasKey($key)) {
+                $expected = $this->dependencies->key($key);
+                if ($expected !== $type) {
+                    throw new OverflowException(
+                        message: (new Message('Attempting to re-declare named dependency %named% type from %expected% to %provided%'))
+                            ->strong('%named%', $key)
+                            ->code('%expected%', $expected)
+                            ->code('%provided%', $type)
+                    );
+                }
+            }
+            $this->dependencies = $this->dependencies->withPut(...[
+                $key => $type,
+            ]);
+        }
+    }
+
+    private function putMap(string $name, StepInterface $step): void
+    {
+        $this->assertNoOverflow($name);
+        $this->setParameters($name, $step);
+        $this->map->put($name, $step);
+    }
+
+    private function assertNoOverflow(string $name): void
+    {
+        if ($this->map->hasKey($name)) {
             throw new OverflowException(
                 (new Message('Step name %name% has been already added.'))
-                    ->code('%name%', $step)
+                    ->code('%name%', $name)
             );
         }
     }

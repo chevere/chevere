@@ -51,9 +51,9 @@ final class ClassMap implements ClassMapInterface
 
     public function withPut(string $className, string $key): ClassMapInterface
     {
-        if (! class_exists($className)) {
+        if (! class_exists($className) && ! interface_exists($className)) {
             throw new ClassNotExistsException(
-                (new Message("Class name %className% doesn't exists"))
+                (new Message("Class name or interface %className% doesn't exists"))
                     ->strong('%className%', $className)
             );
         }

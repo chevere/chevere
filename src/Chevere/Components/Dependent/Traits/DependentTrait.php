@@ -73,7 +73,7 @@ trait DependentTrait
 
     final public function dependencies(): DependenciesInterface
     {
-        return $this->dependencies;
+        return $this->dependencies ??= $this->getDependencies();
     }
 
     private function assertType(string $className, string $name, object $value): void

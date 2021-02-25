@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Dependent;
 
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
 use Generator;
 
@@ -22,6 +23,18 @@ use Generator;
 interface DependenciesInterface extends MappedInterface
 {
     public function withPut(string ...$namedDependencies): self;
+
+    /**
+     * Indicates whether the instance declares a dependency for the given key.
+     */
+    public function hasKey(string $key): bool;
+
+    /**
+     * Provides access to the dependency class name.
+     *
+     * @throws OutOfBoundsException
+     */
+    public function key(string $key): string;
 
     /**
      * @return Generator<string, string> Name to dependency class name

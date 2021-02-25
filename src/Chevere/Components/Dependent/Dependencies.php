@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Dependent;
 
 use Chevere\Components\ClassMap\ClassMap;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Ds\Set;
@@ -44,6 +45,19 @@ final class Dependencies implements DependenciesInterface
         }
 
         return $new;
+    }
+
+    public function hasKey(string $key): bool
+    {
+        return $this->keys->contains($key);
+    }
+
+    /**
+     * @throws OutOfBoundsException
+     */
+    public function key(string $key): string
+    {
+        return $this->classMap->className($key);
     }
 
     public function keys(): array

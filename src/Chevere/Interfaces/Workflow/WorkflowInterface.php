@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Workflow;
 
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Countable;
 use Generator;
@@ -67,6 +68,8 @@ interface WorkflowInterface extends Countable
     public function has(string $step): bool;
 
     public function get(string $step): StepInterface;
+
+    public function dependencies(): DependenciesInterface;
 
     public function parameters(): ParametersInterface;
 

@@ -21,6 +21,8 @@ use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep0;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep1;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep2;
+use Chevere\Tests\Workflow\_resources\src\WorkflowTestStepDeps0;
+use Chevere\Tests\Workflow\_resources\src\WorkflowTestStepDeps1;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowTest extends TestCase
@@ -134,5 +136,20 @@ final class WorkflowTest extends TestCase
             ->withArguments(foo: '${not:found}');
         $this->expectException(OutOfBoundsException::class);
         $workflow->withAdded($step);
+    }
+
+    public function testConflictingTypeDependentActions(): void
+    {
+        $workflow = (new Workflow('test-workflow'))
+            ->withAdded(
+                step1: new Step(WorkflowTestStepDeps0::class),
+            );
+        foreach ((new WorkflowTestStepDeps0())->dependencies()->getGenerator() as $key => $className) {
+            $this->assertSame($className, $workflow->dependencies()->key($key));
+        }
+        $this->expectException(OverflowException::class);
+        $workflow->withAdded(
+            step2: new Step(WorkflowTestStepDeps1::class)
+        );
     }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Exceptions\Core;
 
 /**
- * Exception thrown when a class doesn't exists.
+ * Exception thrown when a class name doesn't exists.
  */
 final class ClassNotExistsException extends Exception
 {
