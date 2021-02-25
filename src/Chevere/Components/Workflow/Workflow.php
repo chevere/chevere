@@ -90,7 +90,8 @@ final class Workflow implements WorkflowInterface
         /** @var ActionInterface $action */
         $action = new $actionName();
         if ($action instanceof DependentInterface) {
-            $this->putDependencies($action->dependencies());
+            $this->dependencies = $this->dependencies
+                ->withMerge($action->dependencies());
         }
     }
 
@@ -217,26 +218,6 @@ final class Workflow implements WorkflowInterface
     {
         foreach ($this->steps as $step) {
             yield $step => $this->get($step);
-        }
-    }
-
-    private function putDependencies(DependenciesInterface $dependencies): void
-    {
-        foreach ($dependencies->getGenerator() as $key => $type) {
-            if ($this->dependencies->hasKey($key)) {
-                $expected = $this->dependencies->key($key);
-                if ($expected !== $type) {
-                    throw new OverflowException(
-                        message: (new Message('Attempting to re-declare named dependency %named% type from %expected% to %provided%'))
-                            ->strong('%named%', $key)
-                            ->code('%expected%', $expected)
-                            ->code('%provided%', $type)
-                    );
-                }
-            }
-            $this->dependencies = $this->dependencies->withPut(...[
-                $key => $type,
-            ]);
         }
     }
 

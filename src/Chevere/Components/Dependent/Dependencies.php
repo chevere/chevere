@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Dependent;
 
 use Chevere\Components\ClassMap\ClassMap;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Ds\Set;
@@ -40,9 +42,32 @@ final class Dependencies implements DependenciesInterface
             $new->classMap = $new->classMap
                 ->withPut($className, $name);
         }
-        foreach ($new->classMap->getGenerator() as $key) {
-            $new->keys->add($key);
+        $new->addKeys();
+
+        return $new;
+    }
+
+    public function withMerge(DependenciesInterface $dependencies): DependenciesInterface
+    {
+        $new = clone $this;
+        foreach ($dependencies->getGenerator() as $name => $className) {
+            if ($new->keys->contains($name)) {
+                $expected = $new->key($name);
+                if ($expected !== $className) {
+                    throw new OverflowException(
+                        message: (new Message('Attempting to re-declare named dependency %named% type from %expected% to %provided%'))
+                            ->strong('%named%', $name)
+                            ->code('%expected%', $expected)
+                            ->code('%provided%', $className)
+                    );
+                }
+            } else {
+                $new->classMap = $new->classMap
+                    ->withPut($className, $name);
+            }
         }
+        $new->keys = new Set();
+        $new->addKeys();
 
         return $new;
     }
@@ -74,6 +99,13 @@ final class Dependencies implements DependenciesInterface
     {
         foreach ($this->classMap->getGenerator() as $className => $key) {
             yield $key => $className;
+        }
+    }
+
+    private function addKeys(): void
+    {
+        foreach ($this->classMap->getGenerator() as $key) {
+            $this->keys->add($key);
         }
     }
 }

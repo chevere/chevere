@@ -15,6 +15,7 @@ namespace Chevere\Tests\Dependent;
 
 use Chevere\Components\Dependent\Dependencies;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use PHPUnit\Framework\TestCase;
@@ -43,7 +44,29 @@ final class DependenciesTest extends TestCase
         $this->assertCount(2, $dependencies);
         $this->assertSame(PathInterface::class, $dependencies->getGenerator()->current());
         $this->assertSame(['path', 'dir'], $dependencies->keys());
-        $this->assertTrue($dependencies->hasKey('path'));
-        $this->assertTrue($dependencies->hasKey('dir'));
+        $this->assertSame(PathInterface::class, $dependencies->key('path'));
+        $this->assertSame(DirInterface::class, $dependencies->key('dir'));
+    }
+
+    public function testWithMerge(): void
+    {
+        $dependencies = (new Dependencies())
+            ->withPut(path: PathInterface::class);
+        $merge = (new Dependencies())
+            ->withPut(dir: DirInterface::class);
+        $merged = $dependencies->withMerge($merge);
+        $this->assertSame(['path', 'dir'], $merged->keys());
+        $this->assertSame(PathInterface::class, $merged->key('path'));
+        $this->assertSame(DirInterface::class, $merged->key('dir'));
+    }
+
+    public function testWithMergeConflict(): void
+    {
+        $dependencies = (new Dependencies())
+            ->withPut(path: PathInterface::class, );
+        $merge = (new Dependencies())
+            ->withPut(path: __CLASS__);
+        $this->expectException(OverflowException::class);
+        $dependencies->withMerge($merge);
     }
 }

@@ -24,6 +24,8 @@ interface DependenciesInterface extends MappedInterface
 {
     public function withPut(string ...$namedDependencies): self;
 
+    public function withMerge(self $dependencies): self;
+
     /**
      * Indicates whether the instance declares a dependency for the given key.
      */
