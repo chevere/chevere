@@ -27,7 +27,7 @@ final class WorkflowRunnerTest extends TestCase
     {
         $foo = 'hola';
         $bar = 'mundo';
-        $workflow = (new Workflow('test-workflow'))
+        $workflow = (new Workflow())
             ->withAdded(
                 step1: (new Step(WorkflowRunnerFunctionTestStep1::class))
                     ->withArguments(foo: '${foo}'),

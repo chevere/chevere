@@ -31,7 +31,7 @@ final class WorkflowRunTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $workflow = (new Workflow('test-workflow'))
+        $workflow = (new Workflow())
             ->withAdded(
                 steps: (new Step(WorkflowRunTestStep1::class))
                     ->withArguments(foo: '${foo}')
@@ -52,7 +52,7 @@ final class WorkflowRunTest extends TestCase
 
     public function testWithAdded(): void
     {
-        $workflow = (new Workflow('test-workflow'))
+        $workflow = (new Workflow())
             ->withAdded(
                 step0: (new Step(WorkflowRunTestStep1::class))
                     ->withArguments(foo: '${foo}'),
@@ -82,7 +82,7 @@ final class WorkflowRunTest extends TestCase
 
     public function testWithAddedNotFound(): void
     {
-        $workflow = (new Workflow('test-workflow'))
+        $workflow = (new Workflow())
             ->withAdded(
                 step0: (new Step(WorkflowRunTestStep1::class))
                     ->withArguments(foo: '${foo}')
@@ -100,7 +100,7 @@ final class WorkflowRunTest extends TestCase
 
     public function testWithAddedMissingArguments(): void
     {
-        $workflow = (new Workflow('test-workflow'))
+        $workflow = (new Workflow())
             ->withAdded(
                 step0: new Step(WorkflowRunTestStep0::class),
                 step1: (new Step(WorkflowRunTestStep1::class))

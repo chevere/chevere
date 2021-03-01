@@ -50,9 +50,8 @@ final class Workflow implements WorkflowInterface
 
     private DependenciesInterface $dependencies;
 
-    public function __construct(string $name, StepInterface ...$steps)
+    public function __construct(StepInterface ...$steps)
     {
-        $this->name = $name;
         $this->map = new Map();
         $this->steps = new Vector();
         $this->parameters = new Parameters();
@@ -60,11 +59,6 @@ final class Workflow implements WorkflowInterface
         $this->expected = new Map();
         $this->dependencies = new Dependencies();
         $this->putAdded(...$steps);
-    }
-
-    public function name(): string
-    {
-        return $this->name;
     }
 
     public function count(): int

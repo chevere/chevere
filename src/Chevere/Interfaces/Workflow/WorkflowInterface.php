@@ -28,12 +28,7 @@ interface WorkflowInterface extends Countable
 
     public const REGEX_STEP_REFERENCE = '/^\${([\w-]*)\:([\w-]*)}$/';
 
-    public function __construct(string $name, StepInterface ...$steps);
-
-    /**
-     * Provides access to the instance name.
-     */
-    public function name(): string;
+    public function __construct(StepInterface ...$steps);
 
     /**
      * Return an instance with the specified `$step`.

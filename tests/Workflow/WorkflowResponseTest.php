@@ -23,7 +23,7 @@ final class WorkflowResponseTest extends TestCase
     public function testWithWorkflowMessage(): void
     {
         $data = [];
-        $workflowMessage = getWorkflowMessage(new Workflow('name'))
+        $workflowMessage = getWorkflowMessage(new Workflow())
             ->withDelay(123)
             ->withExpiration(111)
             ->withPriority(10);

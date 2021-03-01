@@ -29,9 +29,7 @@ final class WorkflowTest extends TestCase
 {
     public function testConstructEmpty(): void
     {
-        $name = 'test-workflow';
-        $workflow = new Workflow($name);
-        $this->assertSame($name, $workflow->name());
+        $workflow = new Workflow();
         $this->assertCount(0, $workflow);
         $this->expectException(OutOfBoundsException::class);
         $workflow->getVar('not-found');
@@ -41,7 +39,6 @@ final class WorkflowTest extends TestCase
     {
         $step = new Step(WorkflowTestStep0::class);
         $workflow = new Workflow(
-            'test-workflow',
             step: $step
         );
         $this->assertCount(1, $workflow);
@@ -51,7 +48,7 @@ final class WorkflowTest extends TestCase
 
     public function testWithAdded(): void
     {
-        $workflow = new Workflow('test-workflow');
+        $workflow = new Workflow();
         $step = new Step(WorkflowTestStep0::class);
         $workflow = $workflow->withAdded(step: $step);
         $this->assertCount(1, $workflow);
@@ -63,7 +60,7 @@ final class WorkflowTest extends TestCase
 
     public function testWithAddedBeforeAndAfter(): void
     {
-        $workflow = (new Workflow('test-workflow'))
+        $workflow = (new Workflow())
             ->withAdded(step: new Step(WorkflowTestStep0::class))
             ->withAddedBefore(
                 'step',
@@ -89,7 +86,7 @@ final class WorkflowTest extends TestCase
 
     public function testWithAddedBeforeOutOfBounds(): void
     {
-        $workflow = (new Workflow('test-workflow'))
+        $workflow = (new Workflow())
             ->withAdded(
                 found: new Step(WorkflowTestStep0::class)
             );
@@ -103,7 +100,7 @@ final class WorkflowTest extends TestCase
     public function testWithAddedAfterOutOfBounds(): void
     {
         $step = new Step(WorkflowTestStep0::class);
-        $workflow = (new Workflow('test-workflow'))
+        $workflow = (new Workflow())
             ->withAdded(found: $step);
         $this->expectException(OutOfBoundsException::class);
         $workflow->withAddedAfter(
@@ -116,18 +113,17 @@ final class WorkflowTest extends TestCase
     {
         $step = (new Step(WorkflowTestStep1::class))
             ->withArguments(foo: 'foo');
-        $workflow = (new Workflow('test-workflow'))
+        $workflow = (new Workflow())
             ->withAdded(name: $step);
         $this->assertSame($step, $workflow->get('name'));
     }
 
     public function testWithAddedTaskWithReferenceArguments(): void
     {
-        $workflow = (new Workflow('test-workflow'))
-            ->withAdded(
-                step1: (new Step(WorkflowTestStep1::class))
-                    ->withArguments(foo: '${foo}')
-            );
+        $workflow = new Workflow(
+            step1: (new Step(WorkflowTestStep1::class))
+                ->withArguments(foo: '${foo}')
+        );
         $this->assertTrue($workflow->hasVar('${foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
@@ -152,10 +148,9 @@ final class WorkflowTest extends TestCase
 
     public function testConflictingTypeDependentActions(): void
     {
-        $workflow = (new Workflow('test-workflow'))
-            ->withAdded(
-                step1: new Step(WorkflowTestStepDeps0::class),
-            );
+        $workflow = new Workflow(
+            step1: new Step(WorkflowTestStepDeps0::class)
+        );
         foreach ((new WorkflowTestStepDeps0())->dependencies()->getGenerator() as $key => $className) {
             $this->assertSame($className, $workflow->dependencies()->key($key));
         }

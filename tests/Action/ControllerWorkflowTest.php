@@ -27,7 +27,7 @@ final class ControllerWorkflowTest extends TestCase
         $controller = new class() extends ControllerWorkflow {
             public function getWorkflow(): WorkflowInterface
             {
-                return new Workflow('test');
+                return new Workflow();
             }
 
             public function run(ArgumentsInterface $arguments): ResponseInterface
