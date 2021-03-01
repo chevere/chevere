@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DependenciesTest extends TestCase
 {
-    public function testConstruct(): void
+    public function testConstructEmpty(): void
     {
         $dependencies = new Dependencies();
         $key = 'key';
@@ -32,6 +32,19 @@ final class DependenciesTest extends TestCase
         $this->assertFalse($dependencies->hasKey($key));
         $this->expectException(OutOfBoundsException::class);
         $dependencies->key($key);
+    }
+
+    public function testConstruct(): void
+    {
+        $dependencies = new Dependencies(
+            path: PathInterface::class,
+            dir: DirInterface::class,
+        );
+        $this->assertCount(2, $dependencies);
+        $this->assertSame(PathInterface::class, $dependencies->getGenerator()->current());
+        $this->assertSame(['path', 'dir'], $dependencies->keys());
+        $this->assertSame(PathInterface::class, $dependencies->key('path'));
+        $this->assertSame(DirInterface::class, $dependencies->key('dir'));
     }
 
     public function testWithPut(): void

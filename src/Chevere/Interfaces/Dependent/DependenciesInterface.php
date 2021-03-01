@@ -22,7 +22,9 @@ use Generator;
  */
 interface DependenciesInterface extends MappedInterface
 {
-    public function withPut(string ...$namedDependencies): self;
+    public function __construct(string ...$dependencies);
+
+    public function withPut(string ...$dependencies): self;
 
     public function withMerge(self $dependencies): self;
 

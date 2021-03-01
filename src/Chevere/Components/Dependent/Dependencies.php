@@ -28,21 +28,17 @@ final class Dependencies implements DependenciesInterface
 
     private Set $keys;
 
-    public function __construct()
+    public function __construct(string ...$dependencies)
     {
         $this->classMap = new ClassMap();
         $this->keys = new Set();
+        $this->putDependencies(...$dependencies);
     }
 
-    public function withPut(string ...$namedDependencies): DependenciesInterface
+    public function withPut(string ...$dependencies): DependenciesInterface
     {
         $new = clone $this;
-        $new->keys = new Set();
-        foreach ($namedDependencies as $name => $className) {
-            $new->classMap = $new->classMap
-                ->withPut($className, $name);
-        }
-        $new->addKeys();
+        $new->putDependencies(...$dependencies);
 
         return $new;
     }
@@ -62,12 +58,9 @@ final class Dependencies implements DependenciesInterface
                     );
                 }
             } else {
-                $new->classMap = $new->classMap
-                    ->withPut($className, $name);
+                $new->putDependency($className, $name);
             }
         }
-        $new->keys = new Set();
-        $new->addKeys();
 
         return $new;
     }
@@ -102,10 +95,17 @@ final class Dependencies implements DependenciesInterface
         }
     }
 
-    private function addKeys(): void
+    private function putDependencies(string ...$dependencies): void
     {
-        foreach ($this->classMap->getGenerator() as $key) {
-            $this->keys->add($key);
+        foreach ($dependencies as $name => $className) {
+            $this->putDependency($className, $name);
         }
+    }
+
+    private function putDependency(string $className, string $name): void
+    {
+        $this->classMap = $this->classMap
+            ->withPut($className, $name);
+        $this->keys->add($name);
     }
 }
