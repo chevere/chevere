@@ -33,7 +33,7 @@ final class WorkflowRunTest extends TestCase
     {
         $workflow = (new Workflow('test-workflow'))
             ->withAdded(
-                step: (new Step(WorkflowRunTestStep1::class))
+                steps: (new Step(WorkflowRunTestStep1::class))
                     ->withArguments(foo: '${foo}')
             );
         $arguments = [

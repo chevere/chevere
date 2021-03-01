@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
 
 final class WorkflowTest extends TestCase
 {
-    public function testConstruct(): void
+    public function testConstructEmpty(): void
     {
         $name = 'test-workflow';
         $workflow = new Workflow($name);
@@ -35,6 +35,18 @@ final class WorkflowTest extends TestCase
         $this->assertCount(0, $workflow);
         $this->expectException(OutOfBoundsException::class);
         $workflow->getVar('not-found');
+    }
+
+    public function testConstruct(): void
+    {
+        $step = new Step(WorkflowTestStep0::class);
+        $workflow = new Workflow(
+            'test-workflow',
+            step: $step
+        );
+        $this->assertCount(1, $workflow);
+        $this->assertTrue($workflow->has('step'));
+        $this->assertSame(['step'], $workflow->order());
     }
 
     public function testWithAdded(): void

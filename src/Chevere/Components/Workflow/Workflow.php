@@ -50,7 +50,7 @@ final class Workflow implements WorkflowInterface
 
     private DependenciesInterface $dependencies;
 
-    public function __construct(string $name)
+    public function __construct(string $name, StepInterface ...$steps)
     {
         $this->name = $name;
         $this->map = new Map();
@@ -59,6 +59,7 @@ final class Workflow implements WorkflowInterface
         $this->vars = new Map();
         $this->expected = new Map();
         $this->dependencies = new Dependencies();
+        $this->putAdded(...$steps);
     }
 
     public function name(): string
@@ -71,28 +72,12 @@ final class Workflow implements WorkflowInterface
         return $this->steps->count();
     }
 
-    public function withAdded(StepInterface ...$step): WorkflowInterface
+    public function withAdded(StepInterface ...$steps): WorkflowInterface
     {
         $new = clone $this;
-        foreach ($step as $stepName => $stepEl) {
-            $new->handleStepDependencies($stepEl);
-            $stepName = (string) $stepName;
-            $new->putMap($stepName, $stepEl);
-            $new->steps->push($stepName);
-        }
+        $new->putAdded(...$steps);
 
         return $new;
-    }
-
-    public function handleStepDependencies(StepInterface $step): void
-    {
-        $actionName = $step->action();
-        /** @var ActionInterface $action */
-        $action = new $actionName();
-        if ($action instanceof DependentInterface) {
-            $this->dependencies = $this->dependencies
-                ->withMerge($action->dependencies());
-        }
     }
 
     public function withAddedBefore(string $before, StepInterface ...$step): WorkflowInterface
@@ -218,6 +203,27 @@ final class Workflow implements WorkflowInterface
     {
         foreach ($this->steps as $step) {
             yield $step => $this->get($step);
+        }
+    }
+
+    private function putAdded(StepInterface ...$steps): void
+    {
+        foreach ($steps as $name => $step) {
+            $this->handleStepDependencies($step);
+            $name = (string) $name;
+            $this->putMap($name, $step);
+            $this->steps->push($name);
+        }
+    }
+
+    private function handleStepDependencies(StepInterface $step): void
+    {
+        $actionName = $step->action();
+        /** @var ActionInterface $action */
+        $action = new $actionName();
+        if ($action instanceof DependentInterface) {
+            $this->dependencies = $this->dependencies
+                ->withMerge($action->dependencies());
         }
     }
 

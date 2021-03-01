@@ -52,7 +52,7 @@ final class ParametersTest extends TestCase
         ]);
     }
 
-    public function testWithAddedRequired(): void
+    public function testWithAdded(): void
     {
         $name = 'name';
         $parameter = new StringParameter();
