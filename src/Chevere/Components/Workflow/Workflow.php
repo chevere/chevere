@@ -297,7 +297,7 @@ final class Workflow implements WorkflowInterface
             return;
         }
         $this->parameters = $this->parameters
-            ->withAddedRequired(...[
+            ->withAdded(...[
                 $name => $parameter,
             ]);
     }

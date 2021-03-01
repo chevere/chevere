@@ -37,7 +37,7 @@ final class ParametersTest extends TestCase
     {
         $name = 'name';
         $parameter = new StringParameter();
-        $parameters = (new Parameters())->withAddedRequired(...[
+        $parameters = (new Parameters())->withAdded(...[
             $name => $parameter,
         ]);
         $this->assertCount(1, $parameters);
@@ -47,7 +47,7 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
         $this->expectException(OverflowException::class);
-        $parameters->withAddedRequired(...[
+        $parameters->withAdded(...[
             $name => $parameter,
         ]);
     }
@@ -84,7 +84,7 @@ final class ParametersTest extends TestCase
     public function testWithModified(): void
     {
         $name = 'name';
-        $parameters = (new Parameters())->withAddedRequired(name: new StringParameter());
+        $parameters = (new Parameters())->withAdded(name: new StringParameter());
         $parameters = $parameters
             ->withModify(
                 name: (new StringParameter())->withDescription('modify')

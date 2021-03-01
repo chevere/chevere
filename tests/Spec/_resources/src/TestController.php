@@ -43,7 +43,7 @@ class TestController extends Controller implements PluggableHooksInterface
     public function getParameters(): ParametersInterface
     {
         $parameters = (new Parameters())
-            ->withAddedRequired(
+            ->withAdded(
                 name: (new StringParameter())
                     ->withRegex(new Regex('/^[\w]+$/')),
                 id: (new StringParameter())

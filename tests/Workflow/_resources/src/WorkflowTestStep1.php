@@ -25,7 +25,7 @@ class WorkflowTestStep1 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters())
-            ->withAddedRequired(foo: new StringParameter());
+            ->withAdded(foo: new StringParameter());
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

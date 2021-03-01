@@ -26,11 +26,11 @@ final class TestController extends Controller
     public function getParameters(): ParametersInterface
     {
         return (new Parameters())
-            ->withAddedRequired(
+            ->withAdded(
                 name: (new StringParameter())
                     ->withRegex(new Regex('/\w+/')),
             )
-            ->withAddedRequired(
+            ->withAdded(
                 id: (new StringParameter())
                     ->withRegex(new Regex('/\d+/')),
             );

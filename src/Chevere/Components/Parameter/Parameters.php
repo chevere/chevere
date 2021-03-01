@@ -45,7 +45,7 @@ final class Parameters implements ParametersInterface
         $this->optional = new Set($this->optional->toArray());
     }
 
-    public function withAddedRequired(ParameterInterface ...$parameters): ParametersInterface
+    public function withAdded(ParameterInterface ...$parameters): ParametersInterface
     {
         $new = clone $this;
         foreach ($parameters as $name => $parameter) {

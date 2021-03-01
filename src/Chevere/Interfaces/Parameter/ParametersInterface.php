@@ -37,7 +37,7 @@ interface ParametersInterface extends MappedInterface
      *
      * @throws OverflowException
      */
-    public function withAddedRequired(ParameterInterface ...$parameters): self;
+    public function withAdded(ParameterInterface ...$parameters): self;
 
     /**
      * Return an instance with the specified optional `$parameters` instance added.

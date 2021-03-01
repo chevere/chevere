@@ -128,7 +128,7 @@ class WorkflowRunTestStep1 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters())
-            ->withAddedRequired(foo: new StringParameter());
+            ->withAdded(foo: new StringParameter());
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
@@ -142,7 +142,7 @@ class WorkflowRunTestStep2 extends Action
     public function getParameters(): ParametersInterface
     {
         return (new Parameters())
-            ->withAddedRequired(
+            ->withAdded(
                 foo: new StringParameter(),
                 bar: new StringParameter()
             );
