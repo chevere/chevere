@@ -31,11 +31,12 @@ final class Parameters implements ParametersInterface
 
     private Set $optional;
 
-    public function __construct()
+    public function __construct(ParameterInterface ...$parameters)
     {
         $this->map = new Map();
         $this->required = new Set();
         $this->optional = new Set();
+        $this->putAdded(...$parameters);
     }
 
     public function __clone()
@@ -48,12 +49,7 @@ final class Parameters implements ParametersInterface
     public function withAdded(ParameterInterface ...$parameters): ParametersInterface
     {
         $new = clone $this;
-        foreach ($parameters as $name => $parameter) {
-            $name = (string) $name;
-            $new->assertNoOverflow($name);
-            $new->map->put($name, $parameter);
-            $new->required->add($name);
-        }
+        $new->putAdded(...$parameters);
 
         return $new;
     }
@@ -127,6 +123,16 @@ final class Parameters implements ParametersInterface
     public function optional(): Set
     {
         return new Set($this->optional->toArray());
+    }
+
+    private function putAdded(ParameterInterface ...$parameters): void
+    {
+        foreach ($parameters as $name => $parameter) {
+            $name = (string) $name;
+            $this->assertNoOverflow($name);
+            $this->map->put($name, $parameter);
+            $this->required->add($name);
+        }
     }
 
     private function assertNoOutOfBounds(string $parameter): void

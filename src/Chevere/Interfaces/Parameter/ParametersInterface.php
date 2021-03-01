@@ -24,6 +24,8 @@ use Generator;
  */
 interface ParametersInterface extends MappedInterface
 {
+    public function __construct(ParameterInterface ...$parameters);
+
     /**
      * @return Generator<string, ParameterInterface>
      */

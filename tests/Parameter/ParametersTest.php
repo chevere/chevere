@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase
 {
-    public function testEmpty(): void
+    public function testConstructEmpty(): void
     {
         $name = 'name';
         $parameters = new Parameters();
@@ -31,6 +31,25 @@ final class ParametersTest extends TestCase
         $this->assertFalse($parameters->has($name));
         $this->expectException(OutOfBoundsException::class);
         $parameters->get($name);
+    }
+
+    public function testConstruct(): void
+    {
+        $name = 'name';
+        $parameter = new StringParameter();
+        $parameters = new Parameters(...[
+            $name => $parameter,
+        ]);
+        $this->assertCount(1, $parameters);
+        $this->assertCount(0, $parameters->optional());
+        $this->assertCount(1, $parameters->required());
+        $this->assertTrue($parameters->has($name));
+        $this->assertTrue($parameters->isRequired($name));
+        $this->assertSame($parameter, $parameters->get($name));
+        $this->expectException(OverflowException::class);
+        $parameters->withAdded(...[
+            $name => $parameter,
+        ]);
     }
 
     public function testWithAddedRequired(): void
