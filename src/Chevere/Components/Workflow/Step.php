@@ -33,7 +33,7 @@ final class Step implements StepInterface
 
     private ParametersInterface $parameters;
 
-    public function __construct(string $action)
+    public function __construct(string $action, mixed ...$namedArguments)
     {
         /** @var class-string $action */
         $this->action = $action;
@@ -55,16 +55,36 @@ final class Step implements StepInterface
         }
         $this->parameters = $reflection->newInstance()->getParameters();
         $this->arguments = [];
+        if ($namedArguments !== []) {
+            $this->setArguments(...$namedArguments);
+        }
     }
 
     public function withArguments(mixed ...$namedArguments): StepInterface
     {
-        /** @var array<string, mixed> $namedArguments */
         $new = clone $this;
-        $new->assertArgumentsCount($namedArguments);
+        $new->setArguments(...$namedArguments);
+
+        return $new;
+    }
+
+    public function action(): string
+    {
+        return $this->action;
+    }
+
+    public function arguments(): array
+    {
+        return $this->arguments;
+    }
+
+    private function setArguments(mixed ...$namedArguments): void
+    {
+        /** @var array<string, mixed> $namedArguments */
+        $this->assertArgumentsCount($namedArguments);
         $store = [];
         $missing = [];
-        foreach ($new->parameters->getGenerator() as $name => $parameter) {
+        foreach ($this->parameters->getGenerator() as $name => $parameter) {
             $parameter->description();
             $argument = $namedArguments[$name] ?? null;
             if ($argument === null) {
@@ -80,19 +100,7 @@ final class Step implements StepInterface
                     ->code('%message%', implode(', ', $missing))
             );
         }
-        $new->arguments = $store;
-
-        return $new;
-    }
-
-    public function action(): string
-    {
-        return $this->action;
-    }
-
-    public function arguments(): array
-    {
-        return $this->arguments;
+        $this->arguments = $store;
     }
 
     private function assertArgumentsCount(array $arguments): void

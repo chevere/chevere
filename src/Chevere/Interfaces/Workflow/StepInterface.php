@@ -23,7 +23,7 @@ interface StepInterface
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(string $action);
+    public function __construct(string $action, mixed ...$namedArguments);
 
     /**
      * Return an instance with the specified `$namedArguments`.

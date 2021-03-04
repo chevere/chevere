@@ -26,7 +26,7 @@ interface ActionInterface extends DescriptionInterface
     public function __construct();
 
     /**
-     * Defines parameters.
+     * Defines action parameters.
      */
     public function getParameters(): ParametersInterface;
 
