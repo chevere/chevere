@@ -115,11 +115,14 @@ final class Arguments implements ArgumentsInterface
         $numRequired = $this->parameters->required()->count();
         $numArguments = count($this->arguments);
         if (($numRequired === 0 && $numArguments > 0) || $numRequired > $numArguments) {
+            $diff = array_diff(
+                $this->parameters->required()->toArray(),
+                array_keys($this->arguments)
+            );
+
             throw new ArgumentCountException(
-                (new Message('Expecting %numParameters% (%expected%) required arguments, %numArguments% provided'))
-                    ->code('%numParameters%', (string) $numRequired)
-                    ->code('%expected%', implode(', ', $this->parameters->required()->toArray()))
-                    ->code('%numArguments%', (string) $numArguments)
+                (new Message('Missing %missing% argument(s)'))
+                    ->code('%missing%', implode(', ', $diff))
             );
         }
     }
