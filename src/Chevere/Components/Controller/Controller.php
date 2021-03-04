@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Action\Action;
-use Chevere\Components\Dependent\Traits\DependentTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameters;
@@ -22,15 +21,12 @@ use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Dependent\DependentInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 
-abstract class Controller extends Action implements ControllerInterface, DependentInterface
+abstract class Controller extends Action implements ControllerInterface
 {
-    use DependentTrait;
-
     protected ParametersInterface $contextParameters;
 
     protected ArgumentsInterface $contextArguments;
