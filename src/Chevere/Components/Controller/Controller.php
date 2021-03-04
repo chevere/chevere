@@ -11,15 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Action;
+namespace Chevere\Components\Controller;
 
+use Chevere\Components\Action\Action;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Type\TypeInterface;

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Action;
+namespace Chevere\Interfaces\Controller;
 
 use Chevere\Interfaces\Common\ToStringInterface;
 

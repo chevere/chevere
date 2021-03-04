@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Action;
 
+use Chevere\Interfaces\Controller\ControllerInterface;
+
 /**
  * Describes the component in charge of running the controller.
  */

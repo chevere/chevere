@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use Chevere\Components\Action\ControllerName;
+use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Router\Routed;
-use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Tests\Router\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 

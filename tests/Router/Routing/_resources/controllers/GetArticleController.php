@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Routing\_resources\controllers;
 
-use Chevere\Components\Action\Controller;
+use Chevere\Components\Controller\Controller;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;

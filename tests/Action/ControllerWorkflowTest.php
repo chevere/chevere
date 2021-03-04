@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
-use Chevere\Components\Action\ControllerWorkflow;
+use Chevere\Components\Controller\ControllerWorkflow;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;

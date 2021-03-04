@@ -15,7 +15,7 @@ namespace Chevere\Tests\Action;
 
 use Chevere\Components\Action\ActionRunner;
 use Chevere\Interfaces\Action\ActionExecutedInterface;
-use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Tests\Action\_resources\src\ActionRunnerTestController;
 use Chevere\Tests\Action\_resources\src\ActionRunnerTestControllerRunFail;
 use PHPUnit\Framework\TestCase;

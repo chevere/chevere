@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Action;
+namespace Chevere\Components\Controller;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Action\ControllerInterface;
-use Chevere\Interfaces\Action\ControllerNameInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerNameInterface;
 
 final class ControllerName implements ControllerNameInterface
 {

@@ -32,7 +32,7 @@ use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
 use Chevere\Exceptions\Router\Route\RouteEndpointConflictException;
 use Chevere\Exceptions\Router\Route\RouteWildcardConflictException;
 use Chevere\Exceptions\Router\Routing\ExpectingControllerException;
-use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointsInterface;

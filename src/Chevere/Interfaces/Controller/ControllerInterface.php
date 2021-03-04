@@ -11,9 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Action;
+namespace Chevere\Interfaces\Controller;
 
 use Chevere\Components\Type\Type;
+use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 

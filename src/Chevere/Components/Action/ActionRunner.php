@@ -15,7 +15,7 @@ namespace Chevere\Components\Action;
 
 use Chevere\Interfaces\Action\ActionExecutedInterface;
 use Chevere\Interfaces\Action\ActionRunnerInterface;
-use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Throwable;
 
 final class ActionRunner implements ActionRunnerInterface

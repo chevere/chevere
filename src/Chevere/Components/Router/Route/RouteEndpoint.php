@@ -16,7 +16,7 @@ namespace Chevere\Components\Router\Route;
 use Chevere\Components\Common\Traits\DescriptionTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\Action\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
 use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
