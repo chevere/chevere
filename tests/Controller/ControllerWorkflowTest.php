@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action;
+namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerWorkflow;
 use Chevere\Components\Workflow\Workflow;

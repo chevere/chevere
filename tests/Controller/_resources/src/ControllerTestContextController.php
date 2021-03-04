@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources\src;
+namespace Chevere\Tests\Controller\_resources\src;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Parameter\IntegerParameter;

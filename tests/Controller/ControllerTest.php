@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action;
+namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Tests\Action\_resources\src\ControllerTestContextController;
-use Chevere\Tests\Action\_resources\src\ControllerTestController;
-use Chevere\Tests\Action\_resources\src\ControllerTestInvalidController;
+use Chevere\Tests\Controller\_resources\src\ControllerTestContextController;
+use Chevere\Tests\Controller\_resources\src\ControllerTestController;
+use Chevere\Tests\Controller\_resources\src\ControllerTestInvalidController;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerTest extends TestCase

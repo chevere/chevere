@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources\src;
+namespace Chevere\Tests\Controller\_resources\src;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 
-final class ControllerNameTestController extends Controller
+final class ControllerTestController extends Controller
 {
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
