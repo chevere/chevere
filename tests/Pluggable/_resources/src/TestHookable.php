@@ -34,9 +34,10 @@ class TestHookable implements PluggableHooksInterface
 
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
-        return (new PluggableAnchors())
-            ->withAdded('hook-anchor-1')
-            ->withAdded('hook-anchor-2');
+        return new PluggableAnchors(
+            'hook-anchor-1',
+            'hook-anchor-2'
+        );
     }
 
     public function setString(string $string): void

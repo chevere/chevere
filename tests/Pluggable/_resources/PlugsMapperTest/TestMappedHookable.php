@@ -34,8 +34,7 @@ class TestMappedHookable implements PluggableHooksInterface
 
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
-        return (new PluggableAnchors())
-            ->withAdded('hook-anchor-1');
+        return new PluggableAnchors('hook-anchor-1');
     }
 
     public function string(): string

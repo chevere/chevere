@@ -23,28 +23,30 @@ final class PluggableAnchors implements PluggableAnchorsInterface
 {
     private Set $set;
 
-    public function __construct()
+    public function __construct(string ...$anchors)
     {
-        $this->set = new Set();
+        $this->set = new Set($anchors);
     }
 
-    public function withAdded(string $anchor): PluggableAnchorsInterface
+    public function withAdded(string ...$anchors): PluggableAnchorsInterface
     {
-        if ($this->has($anchor)) {
-            throw new OverflowException(
-                (new Message('Anchor %anchor% has been already added'))
-                    ->code('%anchor%', $anchor)
-            );
-        }
         $new = clone $this;
-        $new->set->add($anchor);
+        foreach ($anchors as $anchor) {
+            if ($new->has($anchor)) {
+                throw new OverflowException(
+                    (new Message('Anchor %anchor% has been already added'))
+                        ->code('%anchor%', $anchor)
+                );
+            }
+            $new->set->add($anchor);
+        }
 
         return $new;
     }
 
-    public function has(string $anchor): bool
+    public function has(string ...$anchors): bool
     {
-        return $this->set->contains($anchor);
+        return $this->set->contains(...$anchors);
     }
 
     public function clonedSet(): Set

@@ -21,6 +21,8 @@ use Ds\Set;
  */
 interface PluggableAnchorsInterface
 {
+    public function __construct(string ...$anchors);
+
     /**
      * Return an instance with the specified added `$anchor`.
      *
@@ -29,12 +31,12 @@ interface PluggableAnchorsInterface
      *
      * @throws OverflowException
      */
-    public function withAdded(string $anchor): self;
+    public function withAdded(string ...$anchors): self;
 
     /**
-     * Indicates whether the instance has the given `$anchor`.
+     * Indicates whether the instance has the given `$anchors`.
      */
-    public function has(string $anchor): bool;
+    public function has(string ...$anchors): bool;
 
     /**
      * Provides access to a cloned set instance.

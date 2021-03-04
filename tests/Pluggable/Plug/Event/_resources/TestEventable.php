@@ -34,9 +34,10 @@ class TestEventable implements PluggableEventsInterface
 
     public static function getEventAnchors(): PluggableAnchorsInterface
     {
-        return (new PluggableAnchors())
-            ->withAdded('construct:before')
-            ->withAdded('setString:after');
+        return new PluggableAnchors(
+            'construct:before',
+            'setString:after'
+        );
     }
 
     public function setString(string $string): void
