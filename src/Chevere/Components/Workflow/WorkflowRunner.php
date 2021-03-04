@@ -38,7 +38,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         return $this->workflowRun;
     }
 
-    public function run($container): WorkflowRunInterface
+    public function run($serviceContainer): WorkflowRunInterface
     {
         /**
          * @var StepInterface $task
@@ -51,7 +51,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             $actionName = $step->action();
             /** @var ActionInterface $action */
             $action = new $actionName();
-            $this->injectDependencies($action, $container);
+            $this->injectDependencies($action, $serviceContainer);
             // try {
             $responseSuccess = $action->run(
                 new Arguments($action->parameters(), ...$this->getArguments($step))
@@ -68,7 +68,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         return $this->workflowRun;
     }
 
-    private function injectDependencies(ActionInterface $action, $container): void
+    private function injectDependencies(ActionInterface $action, $serviceContainer): void
     {
         if ($action instanceof DependentInterface) {
             // Inject the services required by the action

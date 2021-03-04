@@ -22,5 +22,5 @@ interface WorkflowRunnerInterface
 
     public function workflowRun(): WorkflowRunInterface;
 
-    public function run($container): WorkflowRunInterface;
+    public function run($serviceContainer): WorkflowRunInterface;
 }
