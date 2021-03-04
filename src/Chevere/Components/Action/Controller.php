@@ -18,6 +18,7 @@ use Chevere\Components\Parameter\Arguments;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ControllerInterface;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
@@ -64,6 +65,15 @@ abstract class Controller extends Action implements ControllerInterface
     final public function hasContextArguments(): bool
     {
         return isset($this->contextArguments);
+    }
+
+    final public function assertContextArguments(): void
+    {
+        if (count($this->contextParameters) > 0 && ! isset($this->contextArguments)) {
+            throw new LogicException(
+                message: new Message('Missing context arguments')
+            );
+        }
     }
 
     final public function contextParameters(): ParametersInterface

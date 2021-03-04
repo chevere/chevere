@@ -15,6 +15,7 @@ namespace Chevere\Tests\Action;
 
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Tests\Action\_resources\src\ControllerTestContextController;
 use Chevere\Tests\Action\_resources\src\ControllerTestController;
 use Chevere\Tests\Action\_resources\src\ControllerTestInvalidController;
@@ -31,12 +32,21 @@ final class ControllerTest extends TestCase
     public function testController(): void
     {
         $controller = new ControllerTestController();
+        $controller->assertContextArguments();
         $this->assertFalse($controller->hasContextArguments());
         $this->assertSame(Type::STRING, $controller::PARAMETER_TYPE);
         $newController = $controller->withContextArguments(...[]);
         $this->assertNotSame($controller, $newController);
         $this->assertTrue($newController->hasContextArguments());
         $this->assertCount(0, $newController->contextParameters());
+        $newController->assertContextArguments();
+    }
+
+    public function testWithoutContextArguments(): void
+    {
+        $controller = new ControllerTestContextController();
+        $this->expectException(LogicException::class);
+        $controller->assertContextArguments();
     }
 
     public function testContextController(): void

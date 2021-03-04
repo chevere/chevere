@@ -39,6 +39,8 @@ interface ControllerInterface extends ActionInterface
 
     public function hasContextArguments(): bool;
 
+    public function assertContextArguments(): void;
+
     /**
      * Provides access to context parameters.
      */
