@@ -33,8 +33,10 @@ final class WorkflowRunTest extends TestCase
     {
         $workflow = (new Workflow())
             ->withAdded(
-                steps: (new Step(WorkflowRunTestStep1::class))
-                    ->withArguments(foo: '${foo}')
+                steps: new Step(
+                    WorkflowRunTestStep1::class,
+                    foo: '${foo}'
+                )
             );
         $arguments = [
             'foo' => 'bar',
@@ -54,13 +56,15 @@ final class WorkflowRunTest extends TestCase
     {
         $workflow = (new Workflow())
             ->withAdded(
-                step0: (new Step(WorkflowRunTestStep1::class))
-                    ->withArguments(foo: '${foo}'),
-                step1: (new Step(WorkflowRunTestStep2::class))
-                    ->withArguments(
-                        foo: '${step0:response0}',
-                        bar: '${bar}'
-                    )
+                step0: new Step(
+                    WorkflowRunTestStep1::class,
+                    foo: '${foo}'
+                ),
+                step1: new Step(
+                    WorkflowRunTestStep2::class,
+                    foo: '${step0:response0}',
+                    bar: '${bar}'
+                )
             );
         $arguments = [
             'foo' => 'hola',
@@ -84,8 +88,10 @@ final class WorkflowRunTest extends TestCase
     {
         $workflow = (new Workflow())
             ->withAdded(
-                step0: (new Step(WorkflowRunTestStep1::class))
-                    ->withArguments(foo: '${foo}')
+                step0: new Step(
+                    WorkflowRunTestStep1::class,
+                    foo: '${foo}'
+                )
             );
         $arguments = [
             'foo' => 'hola',
@@ -103,8 +109,10 @@ final class WorkflowRunTest extends TestCase
         $workflow = (new Workflow())
             ->withAdded(
                 step0: new Step(WorkflowRunTestStep0::class),
-                step1: (new Step(WorkflowRunTestStep1::class))
-                    ->withArguments(foo: '${step0:response0}')
+                step1: new Step(
+                    WorkflowRunTestStep1::class,
+                    foo: '${step0:response0}'
+                )
             );
         $this->expectException(ArgumentCountException::class);
         (new WorkflowRun($workflow))

@@ -35,13 +35,15 @@ final class WorkflowRunnerTest extends TestCase
         $bar = 'mundo';
         $workflow = (new Workflow())
             ->withAdded(
-                step1: (new Step(WorkflowRunnerTestStep1::class))
-                    ->withArguments(foo: '${foo}'),
-                step2: (new Step(WorkflowRunnerTestStep2::class))
-                    ->withArguments(
-                        foo: '${step1:response1}',
-                        bar: '${bar}'
-                    )
+                step1: new Step(
+                    WorkflowRunnerTestStep1::class,
+                    foo: '${foo}'
+                ),
+                step2: new Step(
+                    WorkflowRunnerTestStep2::class,
+                    foo: '${step1:response1}',
+                    bar: '${bar}'
+                )
             );
         $arguments = [
             'foo' => $foo,
@@ -82,19 +84,21 @@ final class WorkflowRunnerTest extends TestCase
         $bar = 'mundo';
         $workflow = (new Workflow())
             ->withAdded(
-                step1: (new Step(WorkflowRunnerTestDependentStep1::class))
-                    ->withArguments(foo: '${foo}'),
-                step2: (new Step(WorkflowRunnerTestDependentStep2::class))
-                    ->withArguments(
-                        foo: '${step1:response1}',
-                        bar: '${bar}'
-                    )
+                step1: new Step(
+                    WorkflowRunnerTestDependentStep1::class,
+                    foo: '${foo}'
+                ),
+                step2: new Step(
+                    WorkflowRunnerTestDependentStep2::class,
+                    foo: '${step1:response1}',
+                    bar: '${bar}'
+                )
             );
-        $arguments = [
-            'foo' => $foo,
-            'bar' => $bar,
-        ];
-        $workflowRun = new WorkflowRun($workflow, ...$arguments);
+        $workflowRun = new WorkflowRun(
+            $workflow,
+            foo: $foo,
+            bar: $bar,
+        );
         $container = new Map(
             path: new Path(__FILE__),
             dir: dirForPath(__DIR__ . '/')

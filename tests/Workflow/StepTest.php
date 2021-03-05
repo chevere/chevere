@@ -48,11 +48,11 @@ final class StepTest extends TestCase
     public function testWithArgumentCountError(): void
     {
         $this->expectException(ArgumentCountException::class);
-        (new Step(TaskTestStep0::class))
-            ->withArguments(
-                foo: 'foo',
-                bar: 'invalid extra argument'
-            );
+        new Step(
+            TaskTestStep0::class,
+            foo: 'foo',
+            bar: 'invalid extra argument'
+        );
     }
 
     public function testConstruct(): void
