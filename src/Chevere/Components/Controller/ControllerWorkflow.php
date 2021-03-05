@@ -13,24 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Interfaces\Workflow\WorkflowInterface;
+use Chevere\Components\Workflow\Traits\WorkflowProviderTrait;
 use Chevere\Interfaces\Workflow\WorkflowProviderInterface;
 
 abstract class ControllerWorkflow extends Controller implements WorkflowProviderInterface
 {
-    protected WorkflowInterface $workflow;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->workflow = $this->getWorkflow();
-    }
-
-    abstract public function getWorkflow(): WorkflowInterface;
-
-    public function workflow(): WorkflowInterface
-    {
-        return $this->workflow;
-    }
+    use WorkflowProviderTrait;
 }

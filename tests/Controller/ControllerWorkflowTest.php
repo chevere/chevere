@@ -15,6 +15,7 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerWorkflow;
 use Chevere\Components\Workflow\Workflow;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
@@ -22,9 +23,28 @@ use PHPUnit\Framework\TestCase;
 
 final class ControllerWorkflowTest extends TestCase
 {
+    public function testNoWorkflow(): void
+    {
+        $this->expectException(LogicException::class);
+        $this->getController()->assertWorkflow();
+    }
+
     public function testConstruct(): void
     {
-        $controller = new class() extends ControllerWorkflow {
+        $controller = $this->getController();
+        $workflow = $controller->getWorkflow();
+        $controller = $controller->withWorkflow($workflow);
+        $controller->assertWorkflow();
+        $this->assertSame($workflow, $controller->workflow());
+        $this->assertEqualsCanonicalizing(
+            $workflow,
+            $controller->workflow()
+        );
+    }
+
+    private function getController(): ControllerWorkflow
+    {
+        return new class() extends ControllerWorkflow {
             public function getWorkflow(): WorkflowInterface
             {
                 return new Workflow();
@@ -35,10 +55,5 @@ final class ControllerWorkflowTest extends TestCase
                 return $this->getResponse();
             }
         };
-        $this->assertNotSame($controller->getWorkflow(), $controller->workflow());
-        $this->assertEqualsCanonicalizing(
-            $controller->getWorkflow(),
-            $controller->workflow()
-        );
     }
 }

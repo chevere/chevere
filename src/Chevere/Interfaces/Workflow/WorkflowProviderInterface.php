@@ -13,12 +13,33 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Workflow;
 
+use Chevere\Exceptions\Core\LogicException;
+
 /**
- * Describes the component in charge of providing a workflow.
+ * Describes the component in charge of providing Workflow.
  */
 interface WorkflowProviderInterface
 {
+    /**
+     * Defines the Workflow.
+     */
     public function getWorkflow(): WorkflowInterface;
 
+    /**
+     * Return an instance with the specified Workflow.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified Workflow.
+     */
+    public function withWorkflow(WorkflowInterface $workflow): static;
+
+    /**
+     * Provides access to the Workflow instance.
+     */
     public function workflow(): WorkflowInterface;
+
+    /**
+     * @throws LogicException
+     */
+    public function assertWorkflow(): void;
 }
