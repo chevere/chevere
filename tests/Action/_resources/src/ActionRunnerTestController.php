@@ -31,7 +31,7 @@ final class ActionRunnerTestController extends Controller
         );
     }
 
-    public function getResponseDataParameters(): ParametersInterface
+    public function getResponseParameters(): ParametersInterface
     {
         return new Parameters(user: new StringParameter());
     }

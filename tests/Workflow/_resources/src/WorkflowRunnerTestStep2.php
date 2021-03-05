@@ -30,7 +30,7 @@ class WorkflowRunnerTestStep2 extends Action
         );
     }
 
-    public function getResponseDataParameters(): ParametersInterface
+    public function getResponseParameters(): ParametersInterface
     {
         return new Parameters(response2: new StringParameter());
     }

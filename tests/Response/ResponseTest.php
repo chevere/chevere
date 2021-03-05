@@ -36,7 +36,7 @@ final class ResponseTest extends TestCase
         $response = new Response();
         $this->assertSame([], $response->data());
         $data = ['data'];
-        $response = $response->withData(...$data);
+        $response = new Response(...$data);
         $this->assertSame($data, $response->data());
     }
 

@@ -33,7 +33,7 @@ interface ActionInterface extends DescriptionInterface
     /**
      * Defines expected response data parameters when executing `run` method.
      */
-    public function getResponseDataParameters(): ParametersInterface;
+    public function getResponseParameters(): ParametersInterface;
 
     /**
      * Method called when running the action.
@@ -48,7 +48,7 @@ interface ActionInterface extends DescriptionInterface
     /**
      * Provides access to the expected response data parameters.
      */
-    public function responseDataParameters(): ParametersInterface;
+    public function responseParameters(): ParametersInterface;
 
     public function getArguments(mixed ...$namedArguments): ArgumentsInterface;
 

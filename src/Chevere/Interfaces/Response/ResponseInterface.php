@@ -18,6 +18,8 @@ namespace Chevere\Interfaces\Response;
  */
 interface ResponseInterface
 {
+    public function __construct(mixed ...$namedData);
+
     /**
      * Return an instance with the specified status.
      *

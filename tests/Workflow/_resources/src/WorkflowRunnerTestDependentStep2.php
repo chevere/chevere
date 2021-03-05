@@ -44,7 +44,7 @@ class WorkflowRunnerTestDependentStep2 extends Action implements DependentInterf
         );
     }
 
-    public function getResponseDataParameters(): ParametersInterface
+    public function getResponseParameters(): ParametersInterface
     {
         return new Parameters(response2: new StringParameter());
     }

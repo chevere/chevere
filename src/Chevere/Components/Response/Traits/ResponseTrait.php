@@ -26,10 +26,11 @@ trait ResponseTrait
 
     private int $status = 0;
 
-    public function __construct()
+    public function __construct(mixed ...$namedData)
     {
         $this->uuid = Uuid::uuid4()->toString();
         $this->token = bin2hex(random_bytes(128));
+        $this->data = $namedData;
     }
 
     public function withStatus(int $code): ResponseInterface

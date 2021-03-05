@@ -28,7 +28,7 @@ abstract class Action implements ActionInterface
 
     protected ParametersInterface $parameters;
 
-    protected ParametersInterface $responseDataParameters;
+    protected ParametersInterface $responseParameters;
 
     public function __construct()
     {
@@ -39,7 +39,7 @@ abstract class Action implements ActionInterface
     {
         $this->description = $this->getDescription();
         $this->parameters = $this->getParameters();
-        $this->responseDataParameters = $this->getResponseDataParameters();
+        $this->responseParameters = $this->getResponseParameters();
     }
 
     public function getParameters(): ParametersInterface
@@ -47,7 +47,7 @@ abstract class Action implements ActionInterface
         return new Parameters();
     }
 
-    public function getResponseDataParameters(): ParametersInterface
+    public function getResponseParameters(): ParametersInterface
     {
         return new Parameters();
     }
@@ -59,9 +59,9 @@ abstract class Action implements ActionInterface
         return $this->parameters;
     }
 
-    final public function responseDataParameters(): ParametersInterface
+    final public function responseParameters(): ParametersInterface
     {
-        return $this->responseDataParameters;
+        return $this->responseParameters;
     }
 
     final public function getArguments(mixed ...$namedArguments): ArgumentsInterface
@@ -71,7 +71,7 @@ abstract class Action implements ActionInterface
 
     final public function getResponse(mixed ...$namedData): ResponseInterface
     {
-        new Arguments($this->responseDataParameters, ...$namedData);
+        new Arguments($this->responseParameters, ...$namedData);
 
         return (new Response())->withData(...$namedData);
     }

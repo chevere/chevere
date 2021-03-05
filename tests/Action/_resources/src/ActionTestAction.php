@@ -27,7 +27,7 @@ final class ActionTestAction extends Action
         return 'test';
     }
 
-    public function getResponseDataParameters(): ParametersInterface
+    public function getResponseParameters(): ParametersInterface
     {
         return new Parameters(id: new IntegerParameter());
     }

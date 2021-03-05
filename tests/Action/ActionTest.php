@@ -24,7 +24,7 @@ final class ActionTest extends TestCase
         $action = new ActionTestAction();
         $this->assertSame('test', $action->description());
         $this->assertCount(0, $action->parameters());
-        $this->assertCount(1, $action->responseDataParameters());
+        $this->assertCount(1, $action->responseParameters());
         $arguments = new Arguments($action->parameters());
         $action->run($arguments);
     }
