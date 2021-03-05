@@ -48,6 +48,17 @@ final class Map implements MapInterface
         return $new;
     }
 
+    public function hasKey(string ...$keys): bool
+    {
+        try {
+            $this->assertHasKey(...$keys);
+
+            return true;
+        } catch (OutOfBoundsException) {
+            return false;
+        }
+    }
+
     /**
      * @throws OutOfBoundsException
      */
@@ -70,7 +81,7 @@ final class Map implements MapInterface
     /**
      * @throws OutOfBoundsException
      */
-    public function get(string $key)
+    public function getKey(string $key)
     {
         try {
             return $this->map->get($key);

@@ -18,7 +18,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Exceptions\Dependent\MissingDependenciesException;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
-use ReflectionObject;
 use TypeError;
 
 trait DependentTrait
@@ -78,7 +77,7 @@ trait DependentTrait
 
     private function assertType(string $className, string $name, object $value): void
     {
-        if (! (new ReflectionObject($value))->isSubclassOf($className)) {
+        if (! is_a($value, $className, false)) {
             throw new TypeException(
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
                     ->strong('%key%', $name)

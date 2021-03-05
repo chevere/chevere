@@ -17,6 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Action\ActionInterface;
+use Chevere\Interfaces\DataStructure\MapInterface;
 use Chevere\Interfaces\Dependent\DependentInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
@@ -38,11 +39,9 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         return $this->workflowRun;
     }
 
-    public function run($serviceContainer): WorkflowRunInterface
+    public function run(MapInterface $serviceContainer): WorkflowRunInterface
     {
-        /**
-         * @var StepInterface $task
-         */
+        $this->assertDependencies($serviceContainer);
         foreach ($this->workflowRun->workflow()->getGenerator() as $name => $step) {
             if ($this->workflowRun->has($name)) {
                 // @codeCoverageIgnore
@@ -68,10 +67,36 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         return $this->workflowRun;
     }
 
-    private function injectDependencies(ActionInterface $action, $serviceContainer): void
+    private function assertDependencies(MapInterface $serviceContainer): void
+    {
+        $dependencies = $this->workflowRun->workflow()->dependencies();
+        $missing = [];
+        foreach ($dependencies->getGenerator() as $name => $className) {
+            $isMissing =
+                ! $serviceContainer->hasKey($name) ||
+                ! is_a($serviceContainer->getKey($name), $className, false);
+            if ($isMissing) {
+                $missing[] = "${name}:${className}";
+
+                continue;
+            }
+        }
+        if ($missing !== []) {
+            throw new LogicException(
+                message: (new Message('Missing %missing% dependency(ies)'))
+                    ->code('%missing%', implode(', ', $missing))
+            );
+        }
+    }
+
+    private function injectDependencies(ActionInterface &$action, MapInterface $serviceContainer): void
     {
         if ($action instanceof DependentInterface) {
-            // Inject the services required by the action
+            $instances = [];
+            foreach ($action->dependencies()->getGenerator() as $name => $className) {
+                $instances[$name] = $serviceContainer->getKey($name);
+            }
+            $action = $action->withDependencies(...$instances);
         }
     }
 

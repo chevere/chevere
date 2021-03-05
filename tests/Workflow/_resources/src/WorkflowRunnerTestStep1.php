@@ -20,7 +20,7 @@ use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 
-class WorkflowRunnerFunctionTestStep1 extends Action
+class WorkflowRunnerTestStep1 extends Action
 {
     public function getParameters(): ParametersInterface
     {

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Workflow;
 
+use Chevere\Interfaces\DataStructure\MapInterface;
+
 /**
  * Describes the component in charge of doing.
  */
@@ -22,5 +24,5 @@ interface WorkflowRunnerInterface
 
     public function workflowRun(): WorkflowRunInterface;
 
-    public function run($serviceContainer): WorkflowRunInterface;
+    public function run(MapInterface $serviceContainer): WorkflowRunInterface;
 }
