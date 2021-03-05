@@ -22,7 +22,7 @@ trait PluggableHooksTrait
 {
     private HooksRunnerInterface $hooksRunner;
 
-    public function withHooksRunner(HooksRunnerInterface $hooksRunner): PluggableHooksInterface
+    public function withHooksRunner(HooksRunnerInterface $hooksRunner): static
     {
         if (! ($this instanceof PluggableHooksInterface)) {
             // @codeCoverageIgnoreStart
@@ -34,9 +34,7 @@ trait PluggableHooksTrait
         }
         $new = clone $this;
         $new->hooksRunner = $hooksRunner;
-        /**
-         * @var PluggableHooksInterface $new
-         */
+
         return $new;
     }
 

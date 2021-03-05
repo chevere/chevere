@@ -32,6 +32,11 @@ abstract class Action implements ActionInterface
 
     public function __construct()
     {
+        $this->setUp();
+    }
+
+    protected function setUp(): void
+    {
         $this->description = $this->getDescription();
         $this->parameters = $this->getParameters();
         $this->responseDataParameters = $this->getResponseDataParameters();

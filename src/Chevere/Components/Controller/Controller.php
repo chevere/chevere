@@ -26,10 +26,27 @@ abstract class Controller extends Action implements ControllerInterface
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->parametersType = new Type(self::PARAMETER_TYPE);
+        $this->setUp();
         $this->assertParametersType();
+    }
+
+    public function withSetup(): static
+    {
+        $new = clone $this;
+        $new->setUp();
+        foreach ($this->parameters->getGenerator() as $name => $parameter) {
+            if (
+                ! $new->parameters->has($name)
+                || $parameter->type()->typeHinting() !== $new->parameters->get($name)->type()->typeHinting()
+            ) {
+                $new->assertParametersType();
+
+                break;
+            }
+        }
+
+        return $new;
     }
 
     private function assertParametersType(): void

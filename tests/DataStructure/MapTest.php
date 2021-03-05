@@ -23,14 +23,14 @@ final class MapTest extends TestCase
     {
         $map = new Map(...[]);
         $this->expectException(OutOfBoundsException::class);
-        $map->assertHasKey('not-found');
+        $map->assertHas('not-found');
     }
 
     public function testGetEmpty(): void
     {
         $map = new Map(...[]);
         $this->expectException(OutOfBoundsException::class);
-        $map->getKey('not-found');
+        $map->get('not-found');
     }
 
     public function testConstructWithArguments(): void
@@ -41,7 +41,7 @@ final class MapTest extends TestCase
         ];
         $map = new Map(...$arguments);
         foreach ($arguments as $name => $value) {
-            $this->assertSame($value, $map->getKey($name));
+            $this->assertSame($value, $map->get($name));
         }
     }
 
@@ -55,7 +55,7 @@ final class MapTest extends TestCase
         ]);
         $this->assertNotSame($map, $immutable);
         $this->assertNotSame($map->keys(), $immutable->keys());
-        $this->assertSame($value, $immutable->getKey($key));
-        $immutable->assertHasKey($key);
+        $this->assertSame($value, $immutable->get($key));
+        $immutable->assertHas($key);
     }
 }

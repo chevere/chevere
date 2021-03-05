@@ -73,8 +73,8 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         $missing = [];
         foreach ($dependencies->getGenerator() as $name => $className) {
             $isMissing =
-                ! $serviceContainer->hasKey($name) ||
-                ! is_a($serviceContainer->getKey($name), $className, false);
+                ! $serviceContainer->has($name) ||
+                ! is_a($serviceContainer->get($name), $className, false);
             if ($isMissing) {
                 $missing[] = "${name}:${className}";
 
@@ -94,7 +94,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         if ($action instanceof DependentInterface) {
             $instances = [];
             foreach ($action->dependencies()->getGenerator() as $name => $className) {
-                $instances[$name] = $serviceContainer->getKey($name);
+                $instances[$name] = $serviceContainer->get($name);
             }
             $action = $action->withDependencies(...$instances);
         }

@@ -26,4 +26,12 @@ use Chevere\Interfaces\Action\ActionInterface;
 interface ControllerInterface extends ActionInterface
 {
     public const PARAMETER_TYPE = Type::STRING;
+
+    /**
+     * Return an instance with setup (after plugins and dependency injection).
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains setup (after plugins and dependency injection).
+     */
+    public function withSetup(): static;
 }

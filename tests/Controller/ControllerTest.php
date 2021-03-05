@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
+use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
+use Chevere\Components\Pluggable\Plug\Hook\HooksRunner;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Tests\Controller\_resources\src\ControllerTestController;
 use Chevere\Tests\Controller\_resources\src\ControllerTestInvalidController;
+use Chevere\Tests\Controller\_resources\src\ControllerTestModifyParamConflictHook;
+use Chevere\Tests\Controller\_resources\src\ControllerTestModifyParamHook;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerTest extends TestCase
@@ -31,5 +35,34 @@ final class ControllerTest extends TestCase
     {
         $controller = new ControllerTestController();
         $this->assertSame(Type::STRING, $controller::PARAMETER_TYPE);
+    }
+
+    public function testHookedController(): void
+    {
+        $hook = new ControllerTestModifyParamHook();
+        $hooksQueue = (new HooksQueue())
+            ->withAdded($hook);
+        $controller = new ControllerTestController();
+        $controller = $controller->withHooksRunner(
+            new HooksRunner($hooksQueue)
+        );
+        $this->assertCount(1, $controller->parameters());
+        $controller = $controller->withSetup();
+        $this->assertCount(1, $controller->parameters());
+        $this->assertSame(['string'], $controller->parameters()->keys());
+    }
+
+    public function testHookedControllerParamConflict(): void
+    {
+        $hook = new ControllerTestModifyParamConflictHook();
+        $hooksQueue = (new HooksQueue())
+            ->withAdded($hook);
+        $controller = new ControllerTestController();
+        $controller = $controller->withHooksRunner(
+            new HooksRunner($hooksQueue)
+        );
+        $this->assertCount(1, $controller->parameters());
+        $this->expectException(InvalidArgumentException::class);
+        $controller->withSetup();
     }
 }

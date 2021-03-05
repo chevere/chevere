@@ -22,9 +22,9 @@ interface MapInterface extends MappedInterface
 
     public function withPut(mixed ...$namedValues): self;
 
-    public function hasKey(string ...$keys): bool;
+    public function has(string ...$keys): bool;
 
-    public function assertHasKey(string ...$keys): void;
+    public function assertHas(string ...$keys): void;
 
-    public function getKey(string $key);
+    public function get(string $key);
 }
