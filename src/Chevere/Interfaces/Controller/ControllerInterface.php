@@ -15,8 +15,6 @@ namespace Chevere\Interfaces\Controller;
 
 use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Action\ActionInterface;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
 
 /**
  * Describes the component in charge of defining a controller, which is an action
@@ -28,22 +26,4 @@ use Chevere\Interfaces\Parameter\ParametersInterface;
 interface ControllerInterface extends ActionInterface
 {
     public const PARAMETER_TYPE = Type::STRING;
-
-    /**
-     * Defines context parameters.
-     */
-    public function getContextParameters(): ParametersInterface;
-
-    public function withContextArguments(mixed ...$namedArguments): self;
-
-    public function contextArguments(): ArgumentsInterface;
-
-    public function hasContextArguments(): bool;
-
-    public function assertContextArguments(): void;
-
-    /**
-     * Provides access to context parameters.
-     */
-    public function contextParameters(): ParametersInterface;
 }

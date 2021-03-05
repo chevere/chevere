@@ -15,71 +15,21 @@ namespace Chevere\Components\Controller;
 
 use Chevere\Components\Action\Action;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 
 abstract class Controller extends Action implements ControllerInterface
 {
-    protected ParametersInterface $contextParameters;
-
-    protected ArgumentsInterface $contextArguments;
-
     protected TypeInterface $parametersType;
 
     public function __construct()
     {
         parent::__construct();
 
-        $this->contextParameters = $this->getContextParameters();
         $this->parametersType = new Type(self::PARAMETER_TYPE);
         $this->assertParametersType();
-    }
-
-    public function getContextParameters(): ParametersInterface
-    {
-        return new Parameters();
-    }
-
-    final public function withContextArguments(mixed ...$namedArguments): self
-    {
-        $new = clone $this;
-        $new->contextArguments = new Arguments(
-            $new->contextParameters,
-            ...$namedArguments
-        );
-
-        return $new;
-    }
-
-    final public function contextArguments(): ArgumentsInterface
-    {
-        return $this->contextArguments;
-    }
-
-    final public function hasContextArguments(): bool
-    {
-        return isset($this->contextArguments);
-    }
-
-    final public function assertContextArguments(): void
-    {
-        if (count($this->contextParameters) > 0 && ! isset($this->contextArguments)) {
-            throw new LogicException(
-                message: new Message('Missing context arguments')
-            );
-        }
-    }
-
-    final public function contextParameters(): ParametersInterface
-    {
-        return $this->contextParameters;
     }
 
     private function assertParametersType(): void

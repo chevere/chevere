@@ -15,8 +15,6 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\LogicException;
-use Chevere\Tests\Controller\_resources\src\ControllerTestContextController;
 use Chevere\Tests\Controller\_resources\src\ControllerTestController;
 use Chevere\Tests\Controller\_resources\src\ControllerTestInvalidController;
 use PHPUnit\Framework\TestCase;
@@ -32,42 +30,6 @@ final class ControllerTest extends TestCase
     public function testController(): void
     {
         $controller = new ControllerTestController();
-        $controller->assertContextArguments();
-        $this->assertFalse($controller->hasContextArguments());
         $this->assertSame(Type::STRING, $controller::PARAMETER_TYPE);
-        $newController = $controller->withContextArguments(...[]);
-        $this->assertNotSame($controller, $newController);
-        $this->assertTrue($newController->hasContextArguments());
-        $this->assertCount(0, $newController->contextParameters());
-        $newController->assertContextArguments();
-    }
-
-    public function testWithoutContextArguments(): void
-    {
-        $controller = new ControllerTestContextController();
-        $this->expectException(LogicException::class);
-        $controller->assertContextArguments();
-    }
-
-    public function testContextController(): void
-    {
-        $contextArgument = 'contextId';
-        $contextValue = 123;
-        $runArgument = 'userId';
-        $runValue = '321';
-        $controller = (new ControllerTestContextController())
-            ->withContextArguments(...[
-                $contextArgument => $contextValue,
-            ]);
-        $this->assertTrue($controller->contextArguments()->has($contextArgument));
-        $this->assertSame($contextValue, $controller->contextArguments()->get($contextArgument));
-        $response = $controller
-            ->run($controller->getArguments(...[
-                $runArgument => $runValue,
-            ]));
-        $this->assertSame([
-            $runArgument => (int) $runValue,
-            $contextArgument => $contextValue,
-        ], $response->data());
     }
 }
