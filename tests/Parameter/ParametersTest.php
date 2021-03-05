@@ -56,9 +56,11 @@ final class ParametersTest extends TestCase
     {
         $name = 'name';
         $parameter = new StringParameter();
-        $parameters = (new Parameters())->withAdded(...[
-            $name => $parameter,
-        ]);
+        $parameters = new Parameters(
+            ...[
+                $name => $parameter,
+            ]
+        );
         $this->assertCount(1, $parameters);
         $this->assertCount(0, $parameters->optional());
         $this->assertCount(1, $parameters->required());
@@ -103,7 +105,7 @@ final class ParametersTest extends TestCase
     public function testWithModified(): void
     {
         $name = 'name';
-        $parameters = (new Parameters())->withAdded(name: new StringParameter());
+        $parameters = new Parameters(name: new StringParameter());
         $parameters = $parameters
             ->withModify(
                 name: (new StringParameter())->withDescription('modify')

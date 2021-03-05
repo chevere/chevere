@@ -35,8 +35,7 @@ final class ArgumentsTest extends TestCase
 {
     public function testInvalidArgument(): void
     {
-        $parameters = (new Parameters())
-            ->withAdded(test: new StringParameter());
+        $parameters = new Parameters(test: new StringParameter());
         $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, test: 123);
     }
@@ -47,11 +46,10 @@ final class ArgumentsTest extends TestCase
             'id' => 1,
             'name' => 'someValue',
         ];
-        $parameters = (new Parameters())
-            ->withAdded(
-                id: new IntegerParameter(),
-                name: new StringParameter()
-            );
+        $parameters = new Parameters(
+            id: new IntegerParameter(),
+            name: new StringParameter()
+        );
         $arguments = new Arguments($parameters, ...$args);
         $this->assertSame($parameters, $arguments->parameters());
         $this->assertSame($args, $arguments->toArray());
@@ -74,19 +72,17 @@ final class ArgumentsTest extends TestCase
 
     public function testInvalidParameters(): void
     {
-        $parameters = (new Parameters())
-            ->withAdded(test: new StringParameter());
+        $parameters = new Parameters(test: new StringParameter());
         $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, id: '123');
     }
 
     public function testInvalidRegexArgument(): void
     {
-        $parameters = (new Parameters())
-            ->withAdded(
-                id: (new StringParameter())
-                    ->withRegex(new Regex('/^[0-9]+$/')),
-            );
+        $parameters = new Parameters(
+            id: (new StringParameter())
+                ->withRegex(new Regex('/^[0-9]+$/')),
+        );
         $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, id: 'abc');
     }
@@ -94,8 +90,7 @@ final class ArgumentsTest extends TestCase
     public function testWithMissingArgument(): void
     {
         $name = 'test';
-        $parameters = (new Parameters())
-            ->withAdded(test: new StringParameter());
+        $parameters = new Parameters(test: new StringParameter());
         $arguments = new Arguments($parameters, ...[
             $name => '123',
         ]);
@@ -109,11 +104,10 @@ final class ArgumentsTest extends TestCase
         $value = '123';
         $valueAlt = '321';
         $arguments = new Arguments(
-            (new Parameters())
-                ->withAdded(
-                    id: (new StringParameter())
-                        ->withRegex(new Regex('/^[0-9]+$/'))
-                ),
+            new Parameters(
+                id: (new StringParameter())
+                    ->withRegex(new Regex('/^[0-9]+$/'))
+            ),
             ...[
                 $name => $value,
             ]
@@ -128,11 +122,10 @@ final class ArgumentsTest extends TestCase
 
     public function testArgumentsRequiredException(): void
     {
-        $parameters = (new Parameters())
-            ->withAdded(
-                id: (new StringParameter())
-                    ->withRegex(new Regex('/^[0-9]+$/'))
-            );
+        $parameters = new Parameters(
+            id: (new StringParameter())
+                ->withRegex(new Regex('/^[0-9]+$/'))
+        );
         $this->expectException(ArgumentCountException::class);
         new Arguments($parameters, ...[]);
     }
@@ -142,10 +135,7 @@ final class ArgumentsTest extends TestCase
         $required = 'id';
         $optional = 'name';
         $arguments = new Arguments(
-            (new Parameters())
-                ->withAdded(
-                    id: new StringParameter()
-                )
+            (new Parameters(id: new StringParameter()))
                 ->withAddedOptional(
                     name: new StringParameter()
                 ),
@@ -161,10 +151,7 @@ final class ArgumentsTest extends TestCase
         $required = 'id';
         $optional = 'name';
         $arguments = new Arguments(
-            (new Parameters())
-                ->withAdded(
-                    id: new StringParameter()
-                )
+            (new Parameters(id: new StringParameter()))
                 ->withAddedOptional(
                     name: (new StringParameter())
                         ->withRegex(new Regex('/^a|b$/'))
@@ -197,12 +184,11 @@ final class ArgumentsTest extends TestCase
         ] as $type => $value) {
             $name = 'test-' . $type;
             $arguments = new Arguments(
-                (new Parameters())
-                    ->withAdded(
-                        ...[
-                            $name => new Parameter(new Type($type)),
-                        ]
-                    ),
+                new Parameters(
+                    ...[
+                        $name => new Parameter(new Type($type)),
+                    ]
+                ),
                 ...[
                     $name => $value,
                 ]
@@ -222,8 +208,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = true;
         $arguments = new Arguments(
-            (new Parameters())
-                ->withAdded(test: new BooleanParameter()),
+            new Parameters(test: new BooleanParameter()),
             ...[
                 $name => $var,
             ]
@@ -238,8 +223,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = 'string';
         $arguments = new Arguments(
-            (new Parameters())
-                ->withAdded(test: new StringParameter()),
+            new Parameters(test: new StringParameter()),
             ...[
                 $name => $var,
             ]
@@ -254,10 +238,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = 1234;
         $arguments = new Arguments(
-            (new Parameters())
-                ->withAdded(
-                    test: new IntegerParameter()
-                ),
+            new Parameters(test: new IntegerParameter()),
             ...[
                 $name => $var,
             ]
@@ -272,10 +253,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = 12.34;
         $arguments = new Arguments(
-            (new Parameters())
-                ->withAdded(
-                    test: new FloatParameter($name)
-                ),
+            new Parameters(test: new FloatParameter($name)),
             ...[
                 $name => $var,
             ]
@@ -290,10 +268,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = [1, 2, '3'];
         $arguments = new Arguments(
-            (new Parameters())
-                ->withAdded(
-                    test: new ArrayParameter()
-                ),
+            new Parameters(test: new ArrayParameter()),
             ...[
                 $name => $var,
             ]

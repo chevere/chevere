@@ -25,11 +25,10 @@ final class GetArticleController extends Controller
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(
-                id: (new StringParameter())
-                    ->withRegex(new Regex('/^\d+$/'))
-            );
+        return new Parameters(
+            id: (new StringParameter())
+                ->withRegex(new Regex('/^\d+$/'))
+        );
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

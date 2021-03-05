@@ -96,8 +96,7 @@ final class DependentTraitTest extends TestCase
 
             public function getDependencies(): DependenciesInterface
             {
-                return (new Dependencies())
-                    ->withPut(testCase: TestCase::class);
+                return new Dependencies(testCase: TestCase::class);
             }
         };
 
@@ -116,8 +115,7 @@ final class DependentTraitTest extends TestCase
 
             public function getDependencies(): DependenciesInterface
             {
-                return (new Dependencies())
-                    ->withPut(testCase: TestCase::class);
+                return new Dependencies(testCase: TestCase::class);
             }
         };
 
@@ -133,8 +131,7 @@ final class DependentTraitTest extends TestCase
 
             public function getDependencies(): DependenciesInterface
             {
-                return (new Dependencies())
-                    ->withPut(testCase: TestCase::class);
+                return new Dependencies(testCase: TestCase::class);
             }
 
             public function run(ArgumentsInterface $arguments): ResponseInterface

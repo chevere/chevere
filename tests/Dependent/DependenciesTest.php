@@ -49,11 +49,8 @@ final class DependenciesTest extends TestCase
 
     public function testWithPut(): void
     {
-        $dependencies = (new Dependencies())
-            ->withPut(
-                path: PathInterface::class,
-                dir: DirInterface::class,
-            );
+        $dependencies = new Dependencies(path: PathInterface::class);
+        $dependencies = $dependencies->withPut(dir: DirInterface::class);
         $this->assertCount(2, $dependencies);
         $this->assertSame(PathInterface::class, $dependencies->getGenerator()->current());
         $this->assertSame(['path', 'dir'], $dependencies->keys());
@@ -63,10 +60,8 @@ final class DependenciesTest extends TestCase
 
     public function testWithMerge(): void
     {
-        $dependencies = (new Dependencies())
-            ->withPut(path: PathInterface::class);
-        $merge = (new Dependencies())
-            ->withPut(dir: DirInterface::class);
+        $dependencies = new Dependencies(path: PathInterface::class);
+        $merge = new Dependencies(dir: DirInterface::class);
         $merged = $dependencies->withMerge($merge);
         $this->assertSame(['path', 'dir'], $merged->keys());
         $this->assertSame(PathInterface::class, $merged->key('path'));
@@ -75,10 +70,8 @@ final class DependenciesTest extends TestCase
 
     public function testWithMergeConflict(): void
     {
-        $dependencies = (new Dependencies())
-            ->withPut(path: PathInterface::class, );
-        $merge = (new Dependencies())
-            ->withPut(path: __CLASS__);
+        $dependencies = new Dependencies(path: PathInterface::class);
+        $merge = new Dependencies(path: __CLASS__);
         $this->expectException(OverflowException::class);
         $dependencies->withMerge($merge);
     }

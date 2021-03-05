@@ -25,11 +25,10 @@ class TaskTestStep1 extends Action
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(
-                foo: new StringParameter(),
-                bar: new IntegerParameter()
-            );
+        return new Parameters(
+            foo: new StringParameter(),
+            bar: new IntegerParameter()
+        );
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

@@ -25,15 +25,12 @@ final class TestController extends Controller
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(
-                name: (new StringParameter())
-                    ->withRegex(new Regex('/\w+/')),
-            )
-            ->withAdded(
-                id: (new StringParameter())
-                    ->withRegex(new Regex('/\d+/')),
-            );
+        return new Parameters(
+            name: (new StringParameter())
+                ->withRegex(new Regex('/\w+/')),
+            id: (new StringParameter())
+                ->withRegex(new Regex('/\d+/')),
+        );
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

@@ -25,7 +25,7 @@ trait DependentTrait
 {
     private DependenciesInterface $dependencies;
 
-    public function withDependencies(object ...$namedDependencies): self
+    public function withDependencies(object ...$namedDependencies): static
     {
         $new = clone $this;
         $missing = [];

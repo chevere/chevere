@@ -126,11 +126,10 @@ final class RouteTestController extends Controller
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(
-                id: (new StringParameter())
-                    ->withRegex(new Regex('/^[0-9]+$/'))
-            );
+        return new Parameters(
+            id: (new StringParameter())
+                ->withRegex(new Regex('/^[0-9]+$/'))
+        );
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
@@ -151,11 +150,10 @@ final class RouteTestControllerRegexConflict extends Controller
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(
-                id: (new StringParameter())
-                    ->withRegex(new Regex('/^\W+$/'))
-            );
+        return new Parameters(
+            id: (new StringParameter())
+                ->withRegex(new Regex('/^\W+$/'))
+        );
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

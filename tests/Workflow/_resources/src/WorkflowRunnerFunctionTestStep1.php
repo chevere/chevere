@@ -24,14 +24,12 @@ class WorkflowRunnerFunctionTestStep1 extends Action
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(foo: new StringParameter());
+        return new Parameters(foo: new StringParameter());
     }
 
     public function getResponseDataParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(response1: new StringParameter());
+        return new Parameters(response1: new StringParameter());
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

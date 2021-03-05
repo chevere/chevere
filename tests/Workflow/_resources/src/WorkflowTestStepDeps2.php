@@ -33,9 +33,10 @@ class WorkflowTestStepDeps2 extends Action implements DependentInterface
 
     public function getDependencies(): DependenciesInterface
     {
-        return (new Dependencies())
-            ->withPut(path: PathInterface::class)
-            ->withPut(dir: DirInterface::class);
+        return new Dependencies(
+            path: PathInterface::class,
+            dir: DirInterface::class
+        );
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface

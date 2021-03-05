@@ -25,23 +25,20 @@ final class ControllerTestContextController extends Controller
 {
     public function getParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(userId: new StringParameter());
+        return new Parameters(userId: new StringParameter());
     }
 
     public function getContextParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(contextId: new IntegerParameter());
+        return new Parameters(contextId: new IntegerParameter());
     }
 
     public function getResponseDataParameters(): ParametersInterface
     {
-        return (new Parameters())
-            ->withAdded(
-                userId: new IntegerParameter(),
-                contextId: new IntegerParameter()
-            );
+        return new Parameters(
+            userId: new IntegerParameter(),
+            contextId: new IntegerParameter()
+        );
     }
 
     public function run(ArgumentsInterface $arguments): ResponseInterface
