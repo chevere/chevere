@@ -20,7 +20,7 @@ final class UsesMapTrait
 {
     use MapTrait;
 
-    public function withPut(string $key, object $object): self
+    public function withPut(string $key, object $object): static
     {
         $new = clone $this;
         $new->map->put($key, $object);

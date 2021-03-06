@@ -22,7 +22,7 @@ trait PluggableEventsTrait
 {
     private EventsRunnerInterface $eventsRunner;
 
-    public function withEventsRunner(EventsRunnerInterface $eventsRunner): PluggableEventsInterface
+    public function withEventsRunner(EventsRunnerInterface $eventsRunner): static
     {
         if (! ($this instanceof PluggableEventsInterface)) {
             // @codeCoverageIgnoreStart
@@ -34,9 +34,7 @@ trait PluggableEventsTrait
         }
         $new = clone $this;
         $new->eventsRunner = $eventsRunner;
-        /**
-         * @var PluggableEventsInterface $new
-         */
+
         return $new;
     }
 

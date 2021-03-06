@@ -22,7 +22,7 @@ trait WriterTrait
 {
     private WriterInterface $writer;
 
-    public function withWriter(WriterInterface $writer): self
+    public function withWriter(WriterInterface $writer): static
     {
         $new = clone $this;
         $new->writer = $writer;

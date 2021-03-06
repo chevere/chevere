@@ -50,7 +50,7 @@ abstract class ThrowableHandlerDocument implements ThrowableHandlerDocumentInter
 
     abstract public function getFormatter(): ThrowableHandlerFormatterInterface;
 
-    final public function withVerbosity(int $verbosity): ThrowableHandlerDocumentInterface
+    final public function withVerbosity(int $verbosity): static
     {
         $new = clone $this;
         $new->verbosity = $verbosity;

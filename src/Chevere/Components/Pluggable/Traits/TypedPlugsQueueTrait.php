@@ -16,7 +16,6 @@ namespace Chevere\Components\Pluggable\Traits;
 use Chevere\Components\Pluggable\PlugsQueue;
 use Chevere\Interfaces\Pluggable\PlugInterface;
 use Chevere\Interfaces\Pluggable\PlugsQueueInterface;
-use Chevere\Interfaces\Pluggable\PlugsQueueTypedInterface;
 use Chevere\Interfaces\Pluggable\PlugTypeInterface;
 
 trait TypedPlugsQueueTrait
@@ -28,7 +27,7 @@ trait TypedPlugsQueueTrait
         $this->plugsQueue = new PlugsQueue($this->getPlugType());
     }
 
-    public function withAdded(PlugInterface $plug): PlugsQueueTypedInterface
+    public function withAdded(PlugInterface $plug): static
     {
         $new = clone $this;
         $new->plugsQueue = $new->plugsQueue->withAdded($plug);
