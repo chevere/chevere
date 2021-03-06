@@ -96,8 +96,8 @@ final class Step implements StepInterface
         }
         if ($missing !== []) {
             throw new BadMethodCallException(
-                (new Message('Missing argument(s): %message%'))
-                    ->code('%message%', implode(', ', $missing))
+                (new Message('Missing argument(s) %arguments%'))
+                    ->code('%arguments%', implode(', ', $missing))
             );
         }
         $this->arguments = $store;

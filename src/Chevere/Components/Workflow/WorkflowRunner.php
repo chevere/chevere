@@ -62,7 +62,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             catch (Throwable $e) {
                 throw new RuntimeException(
                     previous: $e,
-                    message: (new Message('Error running step %step%: %message%'))
+                    message: (new Message('Step %step%: %message%'))
                         ->code('%step%', $name)
                         ->strtr('%message%', $e->getMessage())
                 );
@@ -139,10 +139,11 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
             throw new LogicException(
-                (new Message('Unexpected response from method %method% at step %step%: %message%'))
+                previous: $e,
+                message: (new Message('Step %step%: Unmatched response from method %method%. %message%'))
                     ->code('%method%', $step->action() . '::run')
                     ->code('%step%', $name)
-                    ->code('%message%', $e->getMessage())
+                    ->strtr('%message%', $e->getMessage())
             );
         }
         // @codeCoverageIgnoreEnd

@@ -84,7 +84,8 @@ final class WorkflowRun implements WorkflowRunInterface
         }
         if ($missing !== []) {
             throw new ArgumentCountException(
-                (new Message('Missing argument(s) %arguments%'))
+                (new Message('Step %step%: Missing response argument(s) %arguments%'))
+                    ->strong('%step%', $step)
                     ->code('%arguments%', implode(', ', $missing))
             );
         }

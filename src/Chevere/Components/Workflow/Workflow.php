@@ -246,9 +246,7 @@ final class Workflow implements WorkflowInterface
         $parameters = $action->parameters();
         foreach ($step->arguments() as $argument) {
             try {
-                preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $argument, $matches);
-                // @codeCoverageIgnoreEnd
-                if ($matches !== []) {
+                if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $argument, $matches)) {
                     /** @var array $matches */
                     $this->putParameter($matches[1], $parameters->get($matches[1]));
                     $this->vars->put($argument, [$matches[1]]);
