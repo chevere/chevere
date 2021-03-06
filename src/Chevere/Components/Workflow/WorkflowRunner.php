@@ -16,6 +16,7 @@ namespace Chevere\Components\Workflow;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
 use Chevere\Exceptions\Core\LogicException;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\DataStructure\MapInterface;
 use Chevere\Interfaces\Dependent\DependentInterface;
@@ -51,15 +52,21 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             /** @var ActionInterface $action */
             $action = new $actionName();
             $this->injectDependencies($action, $serviceContainer);
-            // try {
-            $responseSuccess = $action->run(
-                new Arguments($action->parameters(), ...$this->getArguments($step))
-            );
-            // }
+
+            try {
+                $responseSuccess = $action->run(
+                    new Arguments($action->parameters(), ...$this->getArguments($step))
+                );
+            }
             // @codeCoverageIgnoreStart
-            // catch (Throwable $e) {
-            //     throw new LogicException(new Message($e->getMessage() . 'eee'), 100);
-            // }
+            catch (Throwable $e) {
+                throw new RuntimeException(
+                    previous: $e,
+                    message: (new Message('Error running step %step%: %message%'))
+                        ->code('%step%', $name)
+                        ->strtr('%message%', $e->getMessage())
+                );
+            }
             // @codeCoverageIgnoreEnd
             $this->addStep($name, $step, $responseSuccess);
         }
