@@ -152,7 +152,7 @@ final class WorkflowTest extends TestCase
             WorkflowTestStep1::class,
             foo: '${not:found}'
         );
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(InvalidArgumentException::class);
         $workflow->withAdded($step);
     }
 

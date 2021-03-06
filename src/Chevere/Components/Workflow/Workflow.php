@@ -17,7 +17,6 @@ use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\TypeException;
@@ -31,8 +30,8 @@ use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Ds\Map;
 use Ds\Vector;
 use Generator;
-use Safe\Exceptions\PcreException;
 use function Safe\preg_match;
+use Throwable;
 use TypeError;
 
 final class Workflow implements WorkflowInterface
@@ -247,7 +246,9 @@ final class Workflow implements WorkflowInterface
         $parameters = $action->parameters();
         foreach ($step->arguments() as $argument) {
             try {
-                if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $argument, $matches)) {
+                preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $argument, $matches);
+                // @codeCoverageIgnoreEnd
+                if ($matches !== []) {
                     /** @var array $matches */
                     $this->putParameter($matches[1], $parameters->get($matches[1]));
                     $this->vars->put($argument, [$matches[1]]);
@@ -259,15 +260,14 @@ final class Workflow implements WorkflowInterface
                     $this->expected->put($matches[1], $expected);
                     $this->vars->put($argument, [$matches[1], $matches[2]]);
                 }
-            }
-            // @codeCoverageIgnoreStart
-            catch (PcreException $e) {
-                throw new LogicException(
-                    (new Message('Invalid regex expression provided %regex%'))
-                        ->code('%regex%', self::REGEX_STEP_REFERENCE)
+            } catch (Throwable $e) {
+                throw new InvalidArgumentException(
+                    previous: $e,
+                    message: (new Message('Step %name%: %message%'))
+                        ->strong('%name%', $name)
+                        ->code('%message%', $e->getMessage())
                 );
             }
-            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -316,10 +316,10 @@ final class Workflow implements WorkflowInterface
     {
         if (! $this->map->hasKey($matches[1])) {
             throw new OutOfBoundsException(
-                (new Message("Step %step% references parameter %parameter% from previous step %prevStep% which doesn't exists"))
+                (new Message("Referenced parameter %previous%:%parameter% doesn't exists"))
                     ->code('%step%', $step)
-                    ->code('%parameter%', $matches[2])
-                    ->code('%prevStep%', $matches[1])
+                    ->code('%parameter%', (string) $matches[2])
+                    ->code('%previous%', (string) $matches[1])
             );
         }
     }
