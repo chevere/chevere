@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Response;
 
+use Chevere\Interfaces\Common\AttributesInterface;
+
 /**
  * Describes the component in charge of defining a success response.
  */
-interface ResponseInterface
+interface ResponseInterface extends AttributesInterface
 {
     public function __construct(mixed ...$namedData);
 

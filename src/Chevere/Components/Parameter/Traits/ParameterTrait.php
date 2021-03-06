@@ -13,63 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter\Traits;
 
+use Chevere\Components\Common\Traits\AttributesTrait;
 use Chevere\Components\Common\Traits\DescriptionTrait;
-use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Type\TypeInterface;
-use Ds\Set;
 
 trait ParameterTrait
 {
     use DescriptionTrait;
+    use AttributesTrait;
 
     private TypeInterface $type;
 
-    private Set $attributes;
-
-    public function __clone()
-    {
-        $this->attributes = new Set($this->attributes->toArray());
-    }
-
-    public function withDescription(string $description): self
+    public function withDescription(string $description): static
     {
         $new = clone $this;
         $new->description = $description;
-
-        return $new;
-    }
-
-    public function withAddedAttribute(string ...$attributes): self
-    {
-        $new = clone $this;
-        foreach ($attributes as $attr) {
-            if ($this->hasAttribute($attr)) {
-                throw new OverflowException(
-                    (new Message('Attribute %attribute% has been already added'))
-                        ->strong('%attribute%', $attr)
-                );
-            }
-            $new->attributes->add($attr);
-        }
-
-        return $new;
-    }
-
-    public function withRemovedAttribute(string ...$attribute): self
-    {
-        $new = clone $this;
-        foreach ($attribute as $attr) {
-            if (! $this->hasAttribute($attr)) {
-                throw new OutOfBoundsException(
-                    (new Message("Attribute %attribute% doesn't exists"))
-                        ->strong('%attribute%', $attr)
-                );
-            }
-
-            $new->attributes->remove($attr);
-        }
 
         return $new;
     }
@@ -82,15 +40,5 @@ trait ParameterTrait
     public function description(): string
     {
         return $this->description;
-    }
-
-    public function hasAttribute(string ...$attribute): bool
-    {
-        return $this->attributes->contains(...$attribute);
-    }
-
-    public function attributes(): Set
-    {
-        return $this->attributes;
     }
 }

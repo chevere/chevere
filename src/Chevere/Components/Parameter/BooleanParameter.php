@@ -21,7 +21,7 @@ use Ds\Set;
 /**
  * @method BooleanParameterInterface withDescription(string $description)
  * @method BooleanParameterInterface withAddedAttribute(string ...$attributes)
- * @method BooleanParameterInterface withRemovedAttribute(string ...$attribute)
+ * @method BooleanParameterInterface withoutAttribute(string ...$attribute)
  */
 final class BooleanParameter implements BooleanParameterInterface
 {

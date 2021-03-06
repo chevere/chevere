@@ -21,7 +21,7 @@ use Ds\Set;
 /**
  * @method ParameterInterface withDescription(string $description)
  * @method ParameterInterface withAddedAttribute(string ...$attributes)
- * @method ParameterInterface withRemovedAttribute(string ...$attribute)
+ * @method ParameterInterface withoutAttribute(string ...$attribute)
  */
 final class Parameter implements ParameterInterface
 {

@@ -21,7 +21,7 @@ use Ds\Set;
 /**
  * @method IntegerParameterInterface withDescription(string $description)
  * @method IntegerParameterInterface withAddedAttribute(string ...$attributes)
- * @method IntegerParameterInterface withRemovedAttribute(string ...$attribute)
+ * @method IntegerParameterInterface withoutAttribute(string ...$attribute)
  */
 final class IntegerParameter implements IntegerParameterInterface
 {

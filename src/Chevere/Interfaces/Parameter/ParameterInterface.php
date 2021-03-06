@@ -15,6 +15,7 @@ namespace Chevere\Interfaces\Parameter;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Interfaces\Common\AttributesInterface;
 use Chevere\Interfaces\Common\DescriptionInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Ds\Set;
@@ -22,7 +23,7 @@ use Ds\Set;
 /**
  * Describes the component in charge of defining a parameter.
  */
-interface ParameterInterface extends DescriptionInterface
+interface ParameterInterface extends DescriptionInterface, AttributesInterface
 {
     /**
      * Provides access to the type instance.
@@ -35,7 +36,7 @@ interface ParameterInterface extends DescriptionInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$description`.
      */
-    public function withDescription(string $description): self;
+    public function withDescription(string $description): static;
 
     /**
      * Return an instance with the specified `$attributes` added.
@@ -45,7 +46,7 @@ interface ParameterInterface extends DescriptionInterface
      *
      * @throws OverflowException
      */
-    public function withAddedAttribute(string ...$attributes): self;
+    public function withAddedAttribute(string ...$attributes): static;
 
     /**
      * Return an instance with the specified `$attributes` removed.
@@ -55,7 +56,7 @@ interface ParameterInterface extends DescriptionInterface
      *
      * @throws OutOfBoundsException
      */
-    public function withRemovedAttribute(string ...$attributes): self;
+    public function withoutAttribute(string ...$attributes): static;
 
     /**
      * Indicates whether the instance has the given `$attributes`.

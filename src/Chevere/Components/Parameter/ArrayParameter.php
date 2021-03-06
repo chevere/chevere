@@ -21,7 +21,7 @@ use Ds\Set;
 /**
  * @method ArrayParameterInterface withDescription(string $description)
  * @method ArrayParameterInterface withAddedAttribute(string ...$attributes)
- * @method ArrayParameterInterface withRemovedAttribute(string ...$attribute)
+ * @method ArrayParameterInterface withoutAttribute(string ...$attribute)
  */
 final class ArrayParameter implements ArrayParameterInterface
 {

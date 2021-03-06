@@ -21,7 +21,7 @@ use Ds\Set;
 /**
  * @method FloatParameterInterface withDescription(string $description)
  * @method FloatParameterInterface withAddedAttribute(string ...$attributes)
- * @method FloatParameterInterface withRemovedAttribute(string ...$attribute)
+ * @method FloatParameterInterface withoutAttribute(string ...$attribute)
  */
 final class FloatParameter implements FloatParameterInterface
 {

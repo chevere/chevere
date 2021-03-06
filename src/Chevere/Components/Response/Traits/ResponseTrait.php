@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Response\Traits;
 
+use Chevere\Components\Common\Traits\AttributesTrait;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Ramsey\Uuid\Uuid;
 
 trait ResponseTrait
 {
+    use AttributesTrait;
+
     private string $uuid;
 
     private string $token;

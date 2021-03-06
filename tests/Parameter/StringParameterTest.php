@@ -63,11 +63,11 @@ final class StringParameterTest extends TestCase
         $attribute = 'attribute';
         $parameter = (new StringParameter('test'))
             ->withAddedAttribute($attribute);
-        $parameter = $parameter->withRemovedAttribute($attribute);
+        $parameter = $parameter->withoutAttribute($attribute);
         $this->assertCount(0, $parameter->attributes());
         $this->assertFalse($parameter->hasAttribute($attribute));
         $this->expectException(OutOfBoundsException::class);
-        $parameter->withRemovedAttribute($attribute);
+        $parameter->withoutAttribute($attribute);
     }
 
     public function testWithDefault(): void
