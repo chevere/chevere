@@ -26,6 +26,11 @@ trait AttributesTrait
     {
         $new = clone $this;
         foreach ($attributes as $attribute) {
+            // @codeCoverageIgnoreStart
+            if (! isset($new->attributes)) {
+                $new->attributes = new Set();
+            }
+            // @codeCoverageIgnoreEnd
             if ($this->hasAttribute($attribute)) {
                 throw new OverflowException(
                     (new Message('Attribute %attribute% has been already added'))
@@ -57,7 +62,7 @@ trait AttributesTrait
 
     public function hasAttribute(string ...$attributes): bool
     {
-        return $this->attributes->contains(...$attributes);
+        return isset($this->attributes) && $this->attributes->contains(...$attributes);
     }
 
     public function attributes(): Set
