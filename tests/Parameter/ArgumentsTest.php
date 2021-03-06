@@ -63,18 +63,25 @@ final class ArgumentsTest extends TestCase
         $arguments->get($notFoundKey);
     }
 
-    public function testInvalidParameterCount(): void
+    public function testInvalidArgumentCount(): void
     {
         $parameters = new Parameters();
         $this->expectException(ArgumentCountException::class);
         new Arguments($parameters, id: '123');
     }
 
-    public function testInvalidParameters(): void
+    public function testInvalidExtraArguments(): void
+    {
+        $parameters = new Parameters(test: new StringParameter());
+        $this->expectException(ArgumentCountException::class);
+        new Arguments($parameters, test: '123', extra: 'nono');
+    }
+
+    public function testInvalidArgumentType(): void
     {
         $parameters = new Parameters(test: new StringParameter());
         $this->expectException(InvalidArgumentException::class);
-        new Arguments($parameters, id: '123');
+        new Arguments($parameters, test: 123);
     }
 
     public function testInvalidRegexArgument(): void

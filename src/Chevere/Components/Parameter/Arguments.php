@@ -112,17 +112,25 @@ final class Arguments implements ArgumentsInterface
 
     private function assertCount(): void
     {
-        $numRequired = $this->parameters->required()->count();
-        $numArguments = count($this->arguments);
-        if (($numRequired === 0 && $numArguments > 0) || $numRequired > $numArguments) {
-            $diff = array_diff(
-                $this->parameters->required()->toArray(),
-                array_keys($this->arguments)
-            );
-
+        $argumentsKeys = array_keys($this->arguments);
+        $diffRequired = array_diff(
+            $this->parameters->required()->toArray(),
+            $argumentsKeys
+        );
+        if ($diffRequired !== []) {
             throw new ArgumentCountException(
-                (new Message('Missing %missing% argument(s)'))
-                    ->code('%missing%', implode(', ', $diff))
+                (new Message('Missing required argument(s): %missing%'))
+                    ->code('%missing%', implode(', ', $diffRequired))
+            );
+        }
+        $diffExtra = array_diff(
+            $argumentsKeys,
+            $this->parameters->keys()
+        );
+        if ($diffExtra !== []) {
+            throw new ArgumentCountException(
+                (new Message('Passing extra arguments: %extra%'))
+                    ->code('%extra%', implode(', ', $diffExtra))
             );
         }
     }
@@ -178,14 +186,6 @@ final class Arguments implements ArgumentsInterface
     {
         $this->handleParameterDefault($name, $parameter);
         if ($this->parameters->isOptional($name)) {
-            return;
-        }
-        if (! $this->has($name)) {
-            $this->errors[] = (new Message('Missing required argument of type %type% for parameter "%name%"'))
-                ->code('%type%', $parameter->type()->typeHinting())
-                ->strong('%name%', $name)
-                ->toString();
-
             return;
         }
 
