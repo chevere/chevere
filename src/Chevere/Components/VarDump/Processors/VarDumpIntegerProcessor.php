@@ -34,7 +34,7 @@ final class VarDumpIntegerProcessor implements VarDumpProcessorInterface
 
     public function type(): string
     {
-        return TypeInterface::INT;
+        return TypeInterface::INTEGER;
     }
 
     public function write(): void

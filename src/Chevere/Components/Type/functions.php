@@ -26,9 +26,7 @@ function getType($var): string
     $type = \gettype($var);
 
     return match ($type) {
-        'integer' => 'int',
         'double' => 'float',
-        'boolean' => 'bool',
         'NULL' => 'null',
         default => $type,
     };
@@ -41,14 +39,14 @@ function returnTypeExceptionMessage(string $expected, $provided): MessageInterfa
         ->code('%provided%', getType($provided));
 }
 
-function typeBool(): TypeInterface
+function typeBoolean(): TypeInterface
 {
-    return new Type(Type::BOOL);
+    return new Type(Type::BOOLEAN);
 }
 
-function typeInt(): TypeInterface
+function typeInteger(): TypeInterface
 {
-    return new Type(Type::INT);
+    return new Type(Type::INTEGER);
 }
 
 function typeFloat(): TypeInterface
@@ -92,7 +90,7 @@ function typeNull(): TypeInterface
 function typeObject(string $className): TypeInterface
 {
     $type = new Type($className);
-    if ($type->primitive() !== TypeInterface::PRIMITIVE_CLASS_NAME) {
+    if (! in_array($type->primitive(), [TypeInterface::PRIMITIVE_CLASS_NAME, TypeInterface::PRIMITIVE_INTERFACE_NAME], true)) {
         throw new InvalidArgumentException(
             (new Message("Class %className% doesn't exists"))
                 ->code('%className%', $className)

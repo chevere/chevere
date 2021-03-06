@@ -24,8 +24,8 @@ interface VarDumpHighlightInterface
     public const KEYS = [
         TypeInterface::STRING,
         TypeInterface::FLOAT,
-        TypeInterface::INT,
-        TypeInterface::BOOL,
+        TypeInterface::INTEGER,
+        TypeInterface::BOOLEAN,
         TypeInterface::NULL,
         TypeInterface::OBJECT,
         TypeInterface::ARRAY,

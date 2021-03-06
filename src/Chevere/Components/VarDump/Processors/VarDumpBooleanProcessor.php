@@ -31,7 +31,7 @@ final class VarDumpBooleanProcessor implements VarDumpProcessorInterface
 
     public function type(): string
     {
-        return TypeInterface::BOOL;
+        return TypeInterface::BOOLEAN;
     }
 
     public function write(): void

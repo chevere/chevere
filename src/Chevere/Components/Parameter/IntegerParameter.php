@@ -31,7 +31,7 @@ final class IntegerParameter implements IntegerParameterInterface
 
     public function __construct()
     {
-        $this->type = new Type(Type::INT);
+        $this->type = new Type(Type::INTEGER);
         $this->attributes = new Set();
     }
 
