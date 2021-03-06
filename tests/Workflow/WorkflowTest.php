@@ -16,11 +16,13 @@ namespace Chevere\Tests\Workflow;
 use Chevere\Components\Workflow\Step;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Exceptions\Core\BadMethodCallException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep0;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep1;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep2;
+use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep2Conflict;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStepDeps0;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStepDeps1;
 use PHPUnit\Framework\TestCase;
@@ -157,14 +159,32 @@ final class WorkflowTest extends TestCase
     public function testConflictingTypeDependentActions(): void
     {
         $workflow = new Workflow(
-            step1: new Step(WorkflowTestStepDeps0::class)
+            step0: new Step(WorkflowTestStepDeps0::class)
         );
         foreach ((new WorkflowTestStepDeps0())->dependencies()->getGenerator() as $key => $className) {
             $this->assertSame($className, $workflow->dependencies()->key($key));
         }
         $this->expectException(OverflowException::class);
         $workflow->withAdded(
-            step2: new Step(WorkflowTestStepDeps1::class)
+            step1: new Step(WorkflowTestStepDeps1::class)
+        );
+    }
+
+    public function testConflictingParameterType(): void
+    {
+        $workflow = new Workflow(
+            step1: new Step(
+                WorkflowTestStep1::class,
+                foo: '${foo}'
+            )
+        );
+        $this->expectException(InvalidArgumentException::class);
+        $workflow->withAdded(
+            step2: new Step(
+                WorkflowTestStep2Conflict::class,
+                foo: '${foo}',
+                bar: 'test'
+            )
         );
     }
 }

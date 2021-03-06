@@ -16,6 +16,7 @@ namespace Chevere\Components\Workflow;
 use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Parameters;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
@@ -248,8 +249,8 @@ final class Workflow implements WorkflowInterface
             try {
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $argument, $matches)) {
                     /** @var array $matches */
-                    $this->vars->put($argument, [$matches[1]]);
                     $this->putParameter($matches[1], $parameters->get($matches[1]));
+                    $this->vars->put($argument, [$matches[1]]);
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $argument, $matches)) {
                     /** @var array $matches */
                     $this->assertStepExists($name, $matches);
@@ -289,6 +290,15 @@ final class Workflow implements WorkflowInterface
     private function putParameter(string $name, ParameterInterface $parameter): void
     {
         if ($this->parameters->has($name)) {
+            $existent = $this->parameters->get($name);
+            if ($existent::class !== $parameter::class) {
+                throw new InvalidArgumentException(
+                    message: (new Message('Expecting type %expected% for parameter %name%, type %provided% provided'))
+                        ->code('%expected%', $existent::class)
+                        ->strong('%name%', $name)
+                        ->code('%provided%', $parameter::class)
+                );
+            }
             $this->parameters = $this->parameters
                 ->withModify(...[
                     $name => $parameter,
