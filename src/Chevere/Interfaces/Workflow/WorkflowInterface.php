@@ -94,7 +94,7 @@ interface WorkflowInterface extends Countable
     /**
      * Provides access to the expected return arguments for the given `$step`.
      */
-    public function getExpected(string $step): array;
+    public function getProvided(string $step): ParametersInterface;
 
     /**
      * @return Generator<string, StepInterface>

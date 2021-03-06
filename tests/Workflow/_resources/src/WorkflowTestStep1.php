@@ -27,6 +27,13 @@ class WorkflowTestStep1 extends Action
         return new Parameters(foo: new StringParameter());
     }
 
+    public function getResponseParameters(): ParametersInterface
+    {
+        return new Parameters(
+            bar: new StringParameter()
+        );
+    }
+
     public function run(ArgumentsInterface $arguments): ResponseInterface
     {
         return $this->getResponse();

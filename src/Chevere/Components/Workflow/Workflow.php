@@ -48,6 +48,8 @@ final class Workflow implements WorkflowInterface
 
     private Map $expected;
 
+    private Map $provided;
+
     private DependenciesInterface $dependencies;
 
     public function __construct(StepInterface ...$steps)
@@ -57,6 +59,7 @@ final class Workflow implements WorkflowInterface
         $this->parameters = new Parameters();
         $this->vars = new Map();
         $this->expected = new Map();
+        $this->provided = new Map();
         $this->dependencies = new Dependencies();
         $this->putAdded(...$steps);
     }
@@ -171,26 +174,21 @@ final class Workflow implements WorkflowInterface
         }
     }
 
-    /**
-     * @throws TypeException
-     * @throws OutOfBoundsException
-     */
-    public function getExpected(string $step): array
+    public function getProvided(string $step): ParametersInterface
     {
         try {
-            return $this->expected->get($step);
+            return $this->provided->get($step);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
             throw new TypeException(previous: $e);
-        }
-        // @codeCoverageIgnoreEnd
-        catch (\OutOfBoundsException $e) {
+        } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Step %step% not found'))
                     ->code('%step%', $step)
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 
     public function getGenerator(): Generator
@@ -244,25 +242,35 @@ final class Workflow implements WorkflowInterface
         /** @var ActionInterface $action */
         $action = new $action();
         $parameters = $action->parameters();
-        foreach ($step->arguments() as $argument) {
+        $this->provided->put($name, $action->responseParameters());
+        foreach ($step->arguments() as $argument => $reference) {
+            $parameter = $parameters->get($argument);
+
             try {
-                if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $argument, $matches)) {
+                if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $reference, $matches)) {
                     /** @var array $matches */
-                    $this->putParameter($matches[1], $parameters->get($matches[1]));
-                    $this->vars->put($argument, [$matches[1]]);
-                } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $argument, $matches)) {
+                    if (! $this->parameters->has($matches[1])) {
+                        // $parameter = $parameters->get($matches[1]);
+                        $this->vars->put($reference, [$matches[1]]);
+                    }
+
+                    $this->putParameter($matches[1], $parameter);
+                } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $reference, $matches)) {
                     /** @var array $matches */
-                    $this->assertStepExists($name, $matches);
-                    $expected = $this->expected->get($matches[1], []);
-                    $expected[] = $matches[2];
-                    $this->expected->put($matches[1], $expected);
-                    $this->vars->put($argument, [$matches[1], $matches[2]]);
+                    $previousStep = (string) $matches[1];
+                    $previousResponseKey = (string) $matches[2];
+                    $this->assertPreviousReference($parameter, $previousStep, $previousResponseKey);
+                    $expected = $this->expected->get($previousStep, []);
+                    $expected[] = $previousResponseKey;
+                    $this->expected->put($previousStep, $expected);
+                    $this->vars->put($reference, [$previousStep, $previousResponseKey]);
                 }
             } catch (Throwable $e) {
                 throw new InvalidArgumentException(
                     previous: $e,
-                    message: (new Message('Step %name%: %message%'))
+                    message: (new Message('Incompatible declaration on %name%: %message% by %action%'))
                         ->strong('%name%', $name)
+                        ->strong('%action%', $action::class . ":${argument}")
                         ->code('%message%', $e->getMessage())
                 );
             }
@@ -285,18 +293,23 @@ final class Workflow implements WorkflowInterface
         return $this->steps->find($step);
     }
 
+    private function assertMatchesExistingParameter(string $name, ParameterInterface $existent, ParameterInterface $parameter): void
+    {
+        if ($existent::class !== $parameter::class) {
+            throw new InvalidArgumentException(
+                message: (new Message('Reference %name% of type %expected% is not compatible with the type %provided% provided'))
+                    ->code('%expected%', $existent::class)
+                    ->strong('%name%', $name)
+                    ->code('%provided%', $parameter::class)
+            );
+        }
+    }
+
     private function putParameter(string $name, ParameterInterface $parameter): void
     {
         if ($this->parameters->has($name)) {
             $existent = $this->parameters->get($name);
-            if ($existent::class !== $parameter::class) {
-                throw new InvalidArgumentException(
-                    message: (new Message('Expecting type %expected% for parameter %name%, type %provided% provided'))
-                        ->code('%expected%', $existent::class)
-                        ->strong('%name%', $name)
-                        ->code('%provided%', $parameter::class)
-                );
-            }
+            $this->assertMatchesExistingParameter('${' . $name . '}', $existent, $parameter);
             $this->parameters = $this->parameters
                 ->withModify(...[
                     $name => $parameter,
@@ -310,15 +323,30 @@ final class Workflow implements WorkflowInterface
             ]);
     }
 
-    private function assertStepExists(string $step, array $matches): void
+    private function assertPreviousReference(ParameterInterface $parameter, string $previousStep, string $responseKey): void
     {
-        if (! $this->map->hasKey($matches[1])) {
+        $reference = '${' . "${previousStep}:${responseKey}" . '}';
+        if (! $this->map->hasKey($previousStep)) {
             throw new OutOfBoundsException(
-                (new Message("Referenced parameter %previous%:%parameter% doesn't exists"))
-                    ->code('%step%', $step)
-                    ->code('%parameter%', (string) $matches[2])
-                    ->code('%previous%', (string) $matches[1])
+                (new Message("Reference %reference% not found, step %previous% doesn't exists"))
+                    ->code('%reference%', $reference)
+                    ->strong('%previous%', $previousStep)
             );
         }
+        /** @var ParametersInterface $responseParameters */
+        $responseParameters = $this->provided->get($previousStep);
+        if (! $responseParameters->has($responseKey)) {
+            throw new OutOfBoundsException(
+                (new Message('Reference %reference% not found, response parameter %parameter% is not declared by %previous%'))
+                    ->code('%reference%', $reference)
+                    ->strong('%parameter%', $responseKey)
+                    ->strong('%previous%', $previousStep)
+            );
+        }
+        $this->assertMatchesExistingParameter(
+            $reference,
+            $responseParameters->get($responseKey),
+            $parameter
+        );
     }
 }

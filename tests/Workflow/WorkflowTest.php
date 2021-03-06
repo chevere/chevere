@@ -113,7 +113,7 @@ final class WorkflowTest extends TestCase
         );
     }
 
-    public function testWithAddedTaskWithArguments(): void
+    public function testWithAddedStepWithArguments(): void
     {
         $step = new Step(
             WorkflowTestStep1::class,
@@ -124,7 +124,7 @@ final class WorkflowTest extends TestCase
         $this->assertSame($step, $workflow->get('name'));
     }
 
-    public function testWithAddedTaskWithReferenceArguments(): void
+    public function testWithReferencedParameters(): void
     {
         $workflow = new Workflow(
             step1: new Step(
@@ -139,15 +139,15 @@ final class WorkflowTest extends TestCase
             ->withAdded(
                 step2: new Step(
                     WorkflowTestStep2::class,
-                    foo: '${step1:foo}',
+                    foo: '${step1:bar}',
                     bar: '${foo}'
                 )
             );
         $this->assertTrue($workflow->hasVar('${foo}'));
-        $this->assertTrue($workflow->hasVar('${step1:foo}'));
+        $this->assertTrue($workflow->hasVar('${step1:bar}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
-        $this->assertSame(['step1', 'foo'], $workflow->getVar('${step1:foo}'));
+        $this->assertSame(['step1', 'bar'], $workflow->getVar('${step1:bar}'));
         $step = new Step(
             WorkflowTestStep1::class,
             foo: '${not:found}'
@@ -172,18 +172,48 @@ final class WorkflowTest extends TestCase
 
     public function testConflictingParameterType(): void
     {
-        $workflow = new Workflow(
+        $this->expectException(InvalidArgumentException::class);
+        new Workflow(
             step1: new Step(
                 WorkflowTestStep1::class,
                 foo: '${foo}'
-            )
-        );
-        $this->expectException(InvalidArgumentException::class);
-        $workflow->withAdded(
+            ),
             step2: new Step(
                 WorkflowTestStep2Conflict::class,
-                foo: '${foo}',
+                baz: '${foo}',
                 bar: 'test'
+            )
+        );
+    }
+
+    public function testWithConflictingReferencedParameters(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Workflow(
+            step1: new Step(
+                WorkflowTestStep1::class,
+                foo: '${foo}'
+            ),
+            step2: new Step(
+                WorkflowTestStep2::class,
+                foo: '${step1:missing}',
+                bar: '${foo}'
+            )
+        );
+    }
+
+    public function testWithConflictingTypeReferencedParameters(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new Workflow(
+            step1: new Step(
+                WorkflowTestStep1::class,
+                foo: '${foo}'
+            ),
+            step2: new Step(
+                WorkflowTestStep2Conflict::class,
+                baz: '${step1:bar}',
+                bar: '${foo}'
             )
         );
     }

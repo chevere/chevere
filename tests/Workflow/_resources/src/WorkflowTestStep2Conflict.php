@@ -27,7 +27,7 @@ class WorkflowTestStep2Conflict extends Action
     public function getParameters(): ParametersInterface
     {
         return new Parameters(
-            foo: new ObjectParameter(PathInterface::class),
+            baz: new ObjectParameter(PathInterface::class),
             bar: new StringParameter()
         );
     }

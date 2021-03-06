@@ -62,26 +62,23 @@ final class WorkflowRunTest extends TestCase
                 ),
                 step1: new Step(
                     WorkflowRunTestStep2::class,
-                    foo: '${step0:response0}',
+                    foo: '${baz}',
                     bar: '${bar}'
                 )
             );
         $arguments = [
             'foo' => 'hola',
             'bar' => 'mundo',
-        ];
-        $responseData = [
-            'response0' => 'value',
+            'baz' => 'ql',
         ];
         $workflowRun = (new WorkflowRun($workflow, ...$arguments))
-            ->withStepResponse(
-                'step0',
-                (new Response())
-                    ->withData(...$responseData)
-            );
-        $this->assertTrue($workflow->hasVar('${step0:response0}'));
+            ->withStepResponse('step0', new Response());
+        $this->assertTrue($workflow->hasVar('${foo}'));
+        $this->assertTrue($workflow->hasVar('${baz}'));
         $this->assertTrue($workflowRun->has('step0'));
-        $this->assertSame($responseData, $workflowRun->get('step0')->data());
+        $this->assertSame([], $workflowRun->get('step0')->data());
+        $this->expectException(ArgumentCountException::class);
+        $workflowRun->withStepResponse('step0', new Response(extra: 'not-allowed'));
     }
 
     public function testWithAddedNotFound(): void
@@ -111,7 +108,7 @@ final class WorkflowRunTest extends TestCase
                 step0: new Step(WorkflowRunTestStep0::class),
                 step1: new Step(
                     WorkflowRunTestStep1::class,
-                    foo: '${step0:response0}'
+                    foo: '${foo}'
                 )
             );
         $this->expectException(ArgumentCountException::class);

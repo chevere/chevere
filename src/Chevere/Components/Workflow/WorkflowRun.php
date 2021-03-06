@@ -15,7 +15,6 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
-use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
@@ -69,26 +68,10 @@ final class WorkflowRun implements WorkflowRunInterface
     {
         $new = clone $this;
         $new->workflow->get($step);
-
-        try {
-            $expected = $new->workflow->getExpected($step);
-        } catch (OutOfBoundsException $e) {
-            $expected = [];
-        }
-
-        $missing = [];
-        foreach ($expected as $expectParamName) {
-            if (! isset($response->data()[$expectParamName])) {
-                $missing[] = $expectParamName;
-            }
-        }
-        if ($missing !== []) {
-            throw new ArgumentCountException(
-                (new Message('Step %step%: Missing response argument(s) %arguments%'))
-                    ->strong('%step%', $step)
-                    ->code('%arguments%', implode(', ', $missing))
-            );
-        }
+        new Arguments(
+            $new->workflow->getProvided($step),
+            ...$response->data()
+        );
         $new->steps->put($step, $response);
 
         return $new;
