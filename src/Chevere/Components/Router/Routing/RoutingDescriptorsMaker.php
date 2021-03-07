@@ -148,7 +148,5 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
         }
 
         return $path->toString();
-
-        // return $path->withReplaceLast('/', '')->toString();
     }
 }

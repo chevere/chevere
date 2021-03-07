@@ -113,7 +113,7 @@ final class PoMaker implements PoMakerInterface
         /**
          * @var Translations $translations
          */
-        foreach ($this->phpScanner->getTranslations() as $domain => $translations) {
+        foreach ($this->phpScanner->getTranslations() as $translations) {
             $translations->setLanguage($this->locale);
 
             try {

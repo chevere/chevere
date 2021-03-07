@@ -43,11 +43,11 @@ final class EventsRunner implements EventsRunnerInterface
             foreach ($queue as $entries) {
                 foreach ($entries as $entry) {
                     // @codeCoverageIgnoreStart
-                    /** @var EventInterface */
+                    /** @var EventInterface $this */
                     $this->event = new $entry();
                     // @codeCoverageIgnoreEnd
-                    $event = $this->event;
-                    $event($data, $this->writers);
+                    $runEvent = $this->event;
+                    $runEvent($data, $this->writers);
                 }
             }
         }

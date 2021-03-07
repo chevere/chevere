@@ -184,13 +184,13 @@ final class BenchmarkRun implements BenchmarkRunInterface
             $this->runs = 0;
             $this->runCallableAt($pos);
             $timeFinish = (int) hrtime(true);
-            $timeTaken = intval($timeFinish - $timeInit);
-            $this->records->put($name, $timeTaken);
+            $timeTook = intval($timeFinish - $timeInit);
+            $this->records->put($name, $timeTook);
             $this->results->put($name, [
-                'time' => $timeTaken,
+                'time' => $timeTook,
                 'runs' => $this->runs,
             ]);
-            $this->timeTaken += $timeTaken;
+            $this->timeTaken += $timeTook;
         }
     }
 
@@ -248,10 +248,10 @@ final class BenchmarkRun implements BenchmarkRunInterface
                 if (! isset($fastestTime)) {
                     $fastestTime = $timeTaken;
                 } else {
-                    /** @var array $results */
-                    $results = $this->results->get($name);
-                    $results['adds'] = number_format(100 * ($timeTaken - $fastestTime) / $fastestTime, 2) . '%';
-                    $this->results->put($name, $results);
+                    /** @var array $resultsAdd */
+                    $resultsAdd = $this->results->get($name);
+                    $resultsAdd['adds'] = number_format(100 * ($timeTaken - $fastestTime) / $fastestTime, 2) . '%';
+                    $this->results->put($name, $resultsAdd);
                 }
             }
         }

@@ -30,8 +30,6 @@ final class Benchmark implements BenchmarkInterface
 
     private Set $callables;
 
-    private string $callableName;
-
     private ReflectionFunction $reflection;
 
     public function __construct(...$namedArguments)

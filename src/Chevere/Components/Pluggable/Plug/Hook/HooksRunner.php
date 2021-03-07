@@ -36,9 +36,6 @@ final class HooksRunner implements HooksRunnerInterface
 
     public function run(string $anchor, &$argument): void
     {
-        // if ($this->isLooping()) {
-        //     return;
-        // }
         $queue = $this->plugsQueue->toArray()[$anchor] ?? [];
         $gettype = $this->getType($argument);
         $type = new Type($gettype);
@@ -75,7 +72,7 @@ final class HooksRunner implements HooksRunnerInterface
     private function setHook(string $entry): void
     {
         try {
-            /** @var HookInterface */
+            /** @var HookInterface $this */
             $this->hook = new $entry();
         } catch (Throwable $e) {
             throw new RuntimeException(
@@ -83,13 +80,4 @@ final class HooksRunner implements HooksRunnerInterface
             );
         }
     }
-
-    // private function isLooping(): bool
-    // {
-    //     return is_a(
-    //         debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5)[4]['class'],
-    //         HookInterface::class,
-    //         true
-    //     );
-    // }
 }

@@ -17,7 +17,7 @@ use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Serialize\DeserializeInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use Exception;
+use LogicException;
 use Throwable;
 
 final class Deserialize implements DeserializeInterface
@@ -31,7 +31,7 @@ final class Deserialize implements DeserializeInterface
         try {
             $this->var = @unserialize($unserializable);
             if ($this->var === false) {
-                throw new Exception('Passed string is not unserializable');
+                throw new LogicException('Passed string is not unserializable');
             }
         } catch (Throwable $e) {
             throw new InvalidArgumentException(previous: $e);
