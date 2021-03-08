@@ -51,8 +51,10 @@ final class WorkflowRunnerTest extends TestCase
         ];
         $workflowRun = new WorkflowRun($workflow, ...$arguments);
         $container = new Map();
-        $workflowRunner = new WorkflowRunner($workflowRun);
-        $workflowRun = $workflowRunner->run($container);
+        $workflowRunner = (new WorkflowRunner($workflowRun))
+            ->withRun($container)
+            ->withRun($container);
+        $workflowRun = $workflowRunner->workflowRun();
         $this->assertSame($workflowRun, $workflowRunner->workflowRun());
         $action1 = new WorkflowRunnerTestStep1();
         $this->assertSame(
@@ -104,9 +106,9 @@ final class WorkflowRunnerTest extends TestCase
             dir: dirForPath(__DIR__ . '/')
         );
         (new WorkflowRunner($workflowRun))
-            ->run($container);
+            ->withRun($container);
         $this->expectException(LogicException::class);
         (new WorkflowRunner($workflowRun))
-            ->run(new Map());
+            ->withRun(new Map());
     }
 }

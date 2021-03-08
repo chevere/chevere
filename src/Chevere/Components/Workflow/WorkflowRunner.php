@@ -21,6 +21,7 @@ use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Action\ActionInterface;
 use Chevere\Interfaces\DataStructure\MapInterface;
 use Chevere\Interfaces\Dependent\DependentInterface;
+use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
@@ -41,11 +42,12 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         return $this->workflowRun;
     }
 
-    public function run(MapInterface $serviceContainer): WorkflowRunInterface
+    public function withRun(MapInterface $serviceContainer): static
     {
         $this->assertDependencies($serviceContainer);
-        foreach ($this->workflowRun->workflow()->getGenerator() as $name => $step) {
-            if ($this->workflowRun->has($name)) {
+        $new = clone $this;
+        foreach ($new->workflowRun->workflow()->getGenerator() as $name => $step) {
+            if ($new->workflowRun->has($name)) {
                 continue;
             }
 
@@ -53,43 +55,10 @@ final class WorkflowRunner implements WorkflowRunnerInterface
                 $actionName = $step->action();
                 /** @var ActionInterface $action */
                 $action = new $actionName();
-                $this->injectDependencies($action, $serviceContainer);
-                $stepArguments = $this->getArguments($step);
-
-                try {
-                    $arguments = new Arguments($action->parameters(), ...$stepArguments);
-                }
-                // @codeCoverageIgnoreStart
-                catch (Throwable $e) {
-                    throw new InvalidArgumentException(
-                        previous: $e,
-                        message: (new Message('Missing argument(s): %message%'))
-                            ->strtr('%message%', $e->getMessage())
-                    );
-                }
-                // @codeCoverageIgnoreEnd
-
-                try {
-                    $response = $action->run($arguments);
-                }
-                // @codeCoverageIgnoreStart
-                catch (Throwable $e) {
-                    $actionTrace = $e->getTrace()[1] ?? [];
-                    $fileLine = strtr('%file%:%line%', [
-                        '%file%' => $actionTrace['file'] ?? 'anon',
-                        '%line%' => $actionTrace['line'] ?? '0',
-                    ]);
-
-                    throw new InvalidArgumentException(
-                        previous: $e,
-                        message: (new Message('Missing argument(s): %message% at %fileLine%'))
-                            ->strtr('%message%', $e->getMessage())
-                            ->code('%fileLine%', $fileLine)
-                    );
-                }
-                // @codeCoverageIgnoreEnd
-
-                $this->addStep($name, $step, $response);
+                $new->injectDependencies($action, $serviceContainer);
+                $arguments = $new->getActionArguments($action, $step);
+                $response = $new->getActionRunResponse($action, $arguments);
+                $new->addStep($name, $step, $response);
             }
             // @codeCoverageIgnoreStart
             catch (Throwable $e) {
@@ -104,7 +73,48 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             // @codeCoverageIgnoreEnd
         }
 
-        return $this->workflowRun;
+        return $new;
+    }
+
+    private function getActionRunResponse(ActionInterface $action, ArgumentsInterface $arguments): ResponseInterface
+    {
+        try {
+            return $action->run($arguments);
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
+            $actionTrace = $e->getTrace()[1] ?? [];
+            $fileLine = strtr('%file%:%line%', [
+                '%file%' => $actionTrace['file'] ?? 'anon',
+                '%line%' => $actionTrace['line'] ?? '0',
+            ]);
+
+            throw new InvalidArgumentException(
+                previous: $e,
+                message: (new Message('Missing argument(s): %message% at %fileLine%'))
+                    ->strtr('%message%', $e->getMessage())
+                    ->code('%fileLine%', $fileLine)
+            );
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    private function getActionArguments(ActionInterface $action, StepInterface $step): ArgumentsInterface
+    {
+        $arguments = $this->getStepArguments($step);
+
+        try {
+            return new Arguments($action->parameters(), ...$arguments);
+        }
+        // @codeCoverageIgnoreStart
+        catch (Throwable $e) {
+            throw new InvalidArgumentException(
+                previous: $e,
+                message: (new Message('Missing argument(s): %message%'))
+                    ->strtr('%message%', $e->getMessage())
+            );
+        }
+        // @codeCoverageIgnoreEnd
     }
 
     private function assertDependencies(MapInterface $serviceContainer): void
@@ -140,7 +150,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         }
     }
 
-    private function getArguments(StepInterface $step): array
+    private function getStepArguments(StepInterface $step): array
     {
         $arguments = [];
         foreach ($step->arguments() as $name => $taskArgument) {
