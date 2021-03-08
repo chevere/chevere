@@ -15,6 +15,7 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Action\ActionInterface;
@@ -45,30 +46,62 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         $this->assertDependencies($serviceContainer);
         foreach ($this->workflowRun->workflow()->getGenerator() as $name => $step) {
             if ($this->workflowRun->has($name)) {
-                // @codeCoverageIgnore
                 continue;
             }
-            $actionName = $step->action();
-            /** @var ActionInterface $action */
-            $action = new $actionName();
-            $this->injectDependencies($action, $serviceContainer);
 
             try {
-                $responseSuccess = $action->run(
-                    new Arguments($action->parameters(), ...$this->getArguments($step))
-                );
+                $actionName = $step->action();
+                /** @var ActionInterface $action */
+                $action = new $actionName();
+                $this->injectDependencies($action, $serviceContainer);
+                $stepArguments = $this->getArguments($step);
+
+                try {
+                    $arguments = new Arguments($action->parameters(), ...$stepArguments);
+                }
+                // @codeCoverageIgnoreStart
+                catch (Throwable $e) {
+                    throw new InvalidArgumentException(
+                        previous: $e,
+                        message: (new Message('Missing argument(s): %message%'))
+                            ->strtr('%message%', $e->getMessage())
+                    );
+                }
+                // @codeCoverageIgnoreEnd
+
+                try {
+                    $response = $action->run($arguments);
+                }
+                // @codeCoverageIgnoreStart
+                catch (Throwable $e) {
+                    $actionTrace = $e->getTrace()[1] ?? [];
+                    $fileLine = strtr('%file%:%line%', [
+                        '%file%' => $actionTrace['file'] ?? 'anon',
+                        '%line%' => $actionTrace['line'] ?? '0',
+                    ]);
+
+                    throw new InvalidArgumentException(
+                        previous: $e,
+                        message: (new Message('Missing argument(s): %message% at %fileLine%'))
+                            ->strtr('%message%', $e->getMessage())
+                            ->code('%fileLine%', $fileLine)
+                    );
+                }
+                // @codeCoverageIgnoreEnd
+
+                $this->addStep($name, $step, $response);
             }
             // @codeCoverageIgnoreStart
             catch (Throwable $e) {
                 throw new RuntimeException(
                     previous: $e,
-                    message: (new Message('Step %step%: %message%'))
-                        ->code('%step%', $name)
+                    message: (new Message('Step %step% %action%: %message%'))
+                        ->strong('%step%', $name)
+                        ->code('%action%', $actionName)
                         ->strtr('%message%', $e->getMessage())
                 );
             }
             // @codeCoverageIgnoreEnd
-            $this->addStep($name, $step, $responseSuccess);
         }
 
         return $this->workflowRun;
@@ -140,9 +173,8 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         catch (Throwable $e) {
             throw new LogicException(
                 previous: $e,
-                message: (new Message('Step %step%: Unmatched response from method %method%. %message%'))
+                message: (new Message('Unmatched response from method %method%: %message%'))
                     ->code('%method%', $step->action() . '::run')
-                    ->code('%step%', $name)
                     ->strtr('%message%', $e->getMessage())
             );
         }
