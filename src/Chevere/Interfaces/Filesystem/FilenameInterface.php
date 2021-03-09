@@ -17,7 +17,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LengthException;
 
 /**
- * Describes the component in charge of providing basename handling.
+ * Describes the component in charge of providing filename handling.
  */
 interface FilenameInterface
 {
