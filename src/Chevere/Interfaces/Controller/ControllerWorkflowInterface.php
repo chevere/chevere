@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Controller;
 
 use Chevere\Interfaces\Workflow\WorkflowProviderInterface;
+use Chevere\Interfaces\Workflow\WorkflowResponseInterface;
 
 /**
  * Describes the component in charge of defining a Controller with Workflow.
  */
 interface ControllerWorkflowInterface extends ControllerInterface, WorkflowProviderInterface
 {
+    public function getWorkflowResponse(mixed ...$namedData): WorkflowResponseInterface;
 }

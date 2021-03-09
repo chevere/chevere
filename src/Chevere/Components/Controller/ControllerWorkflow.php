@@ -16,7 +16,7 @@ namespace Chevere\Components\Controller;
 use Chevere\Components\Workflow\Traits\WorkflowProviderTrait;
 use Chevere\Components\Workflow\WorkflowResponse;
 use Chevere\Interfaces\Controller\ControllerWorkflowInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Interfaces\Workflow\WorkflowResponseInterface;
 
 /**
  * @codeCoverageIgnore
@@ -25,7 +25,7 @@ abstract class ControllerWorkflow extends Controller implements ControllerWorkfl
 {
     use WorkflowProviderTrait;
 
-    final public function getResponse(mixed ...$namedData): ResponseInterface
+    final public function getWorkflowResponse(mixed ...$namedData): WorkflowResponseInterface
     {
         return new WorkflowResponse(...$namedData);
     }

@@ -69,7 +69,7 @@ abstract class Action implements ActionInterface
         return new Arguments($this->parameters(), ...$namedArguments);
     }
 
-    public function getResponse(mixed ...$namedData): ResponseInterface
+    final public function getResponse(mixed ...$namedData): ResponseInterface
     {
         new Arguments($this->responseParameters, ...$namedData);
 
