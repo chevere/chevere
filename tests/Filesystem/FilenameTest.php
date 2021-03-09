@@ -13,24 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Components\Filesystem\Basename;
+use Chevere\Components\Filesystem\Filename;
 use function Chevere\Components\Str\randomString;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LengthException;
 use PHPUnit\Framework\TestCase;
 
-final class BasenameTest extends TestCase
+final class FilenameTest extends TestCase
 {
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new Basename(' ');
+        new Filename(' ');
     }
 
     public function testInvalidLength(): void
     {
         $this->expectException(LengthException::class);
-        new Basename(randomString(256));
+        new Filename(randomString(256));
     }
 
     public function testWithExtension(): void
@@ -38,7 +38,7 @@ final class BasenameTest extends TestCase
         $name = 'test';
         $extension = 'JPEG';
         $filename = "${name}.${extension}";
-        $basename = new Basename($filename);
+        $basename = new Filename($filename);
         $this->assertSame($filename, $basename->toString());
         $this->assertSame($extension, $basename->extension());
         $this->assertSame($name, $basename->name());
@@ -49,7 +49,7 @@ final class BasenameTest extends TestCase
         $name = 'test';
         $extension = '';
         $filename = $name;
-        $basename = new Basename($filename);
+        $basename = new Filename($filename);
         $this->assertSame($filename, $basename->toString());
         $this->assertSame($extension, $basename->extension());
         $this->assertSame($name, $basename->name());
@@ -60,7 +60,7 @@ final class BasenameTest extends TestCase
         $name = '';
         $extension = 'png';
         $filename = $filename = "${name}.${extension}";
-        $basename = new Basename($filename);
+        $basename = new Filename($filename);
         $this->assertSame($filename, $basename->toString());
         $this->assertSame($extension, $basename->extension());
         $this->assertSame($name, $basename->name());

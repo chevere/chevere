@@ -19,7 +19,7 @@ use Chevere\Exceptions\Core\LengthException;
 /**
  * Describes the component in charge of providing basename handling.
  */
-interface BasenameInterface
+interface FilenameInterface
 {
     public const MAX_LENGTH_BYTES = 255;
 

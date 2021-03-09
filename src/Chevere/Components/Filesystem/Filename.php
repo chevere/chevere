@@ -17,10 +17,10 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LengthException;
-use Chevere\Interfaces\Filesystem\BasenameInterface;
+use Chevere\Interfaces\Filesystem\FilenameInterface;
 use Throwable;
 
-final class Basename implements BasenameInterface
+final class Filename implements FilenameInterface
 {
     private string $basename;
 
