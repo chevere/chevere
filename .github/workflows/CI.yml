@@ -67,9 +67,3 @@ jobs:
 
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
-        with:
-          file: build/coverage/clover.xml
-          fail_ci_if_error: false
