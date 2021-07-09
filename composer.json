@@ -3,7 +3,7 @@
     "description": "Chevere Framework",
     "homepage": "https://chevere.org",
     "type": "library",
-    "license": "MIT",
+    "license": "AGPL-3.0-only",
     "authors": [
         {
             "name": "Rodolfo Berrios",

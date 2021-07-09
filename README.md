@@ -5,7 +5,7 @@
 ![Chevere](LOGO.svg)
 
 [![Build](https://img.shields.io/github/workflow/status/chevere/chevere/CI/master?style=flat-square)](https://github.com/chevere/chevere/actions) [![Quality Gate Status](https://img.shields.io/sonar/alert_status/chevere_chevere?server=https%3A%2F%2Fsonarcloud.io&style=flat-square
-)](https://sonarcloud.io/dashboard?id=chevere_chevere) [![CodeFactor](https://img.shields.io/codefactor/grade/github/chevere/chevere?label=code%20grade&style=flat-square)](https://www.codefactor.io/repository/github/chevere/chevere) [![Codacy Badge](https://img.shields.io/codacy/grade/b956754f8ff04aaa9ca24a6e4cc21661?style=flat-square)](https://www.codacy.com/gh/chevere/chevere?utm_source=github.com&utm_medium=referral&utm_content=chevere/chevere&utm_campaign=Badge_Grade) [![Maintainability](https://img.shields.io/codeclimate/maintainability/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere) [![Tech Debt](https://img.shields.io/codeclimate/tech-debt/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere) [![MIT License](https://img.shields.io/github/license/chevere/chevere?style=flat-square)](LICENSE)
+)](https://sonarcloud.io/dashboard?id=chevere_chevere) [![CodeFactor](https://img.shields.io/codefactor/grade/github/chevere/chevere?label=code%20grade&style=flat-square)](https://www.codefactor.io/repository/github/chevere/chevere) [![Maintainability](https://img.shields.io/codeclimate/maintainability/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere) [![Tech Debt](https://img.shields.io/codeclimate/tech-debt/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere) [![AGPL-3.0-only](https://img.shields.io/github/license/chevere/chevere?style=flat-square)](LICENSE)
 
 Framework for building extensible server-side applications with [PHP](https://www.php.net/).
 
@@ -15,4 +15,4 @@ Documentation is available at [chevere.org](https://chevere.org/).
 
 ## License
 
-Copyright [Rodolfo Berrios A.](https://rodolfoberrios.com/) Chevere is licensed under the [MIT license](LICENSE).
+Copyright [Rodolfo Berrios A.](https://rodolfoberrios.com/) Chevere is licensed under the [AGPLv3](LICENSE).
