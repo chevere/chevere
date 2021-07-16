@@ -268,10 +268,9 @@ final class Workflow implements WorkflowInterface
             } catch (Throwable $e) {
                 throw new InvalidArgumentException(
                     previous: $e,
-                    message: (new Message('Incompatible declaration on %name%: %message% by %action%'))
+                    message: (new Message('Incompatible declaration on %name% by %action%'))
                         ->strong('%name%', $name)
                         ->strong('%action%', $action::class . ":${argument}")
-                        ->code('%message%', $e->getMessage())
                 );
             }
         }

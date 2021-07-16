@@ -99,9 +99,8 @@ final class Regex implements RegexInterface
         } catch (\Exception $e) {
             throw new InvalidArgumentException(
                 previous: $e,
-                message: (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
+                message: (new Message('Invalid regex string %regex% provided [%preg%]'))
                     ->code('%regex%', $this->pattern)
-                    ->code('%error%', $e->getMessage())
                     ->strtr('%preg%', static::ERRORS[preg_last_error()]),
             );
         }

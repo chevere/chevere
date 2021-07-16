@@ -64,10 +64,9 @@ final class WorkflowRunner implements WorkflowRunnerInterface
             catch (Throwable $e) {
                 throw new RuntimeException(
                     previous: $e,
-                    message: (new Message('Step %step% %action%: %message%'))
-                        ->strong('%step%', $name)
+                    message: (new Message('Step: %step% Action: %action%'))
+                        ->code('%step%', $name)
                         ->code('%action%', $actionName)
-                        ->strtr('%message%', $e->getMessage())
                 );
             }
             // @codeCoverageIgnoreEnd
@@ -91,8 +90,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
 
             throw new InvalidArgumentException(
                 previous: $e,
-                message: (new Message('Missing argument(s): %message% at %fileLine%'))
-                    ->strtr('%message%', $e->getMessage())
+                message: (new Message('Missing argument(s) at %fileLine%'))
                     ->code('%fileLine%', $fileLine)
             );
         }
@@ -110,8 +108,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         catch (Throwable $e) {
             throw new InvalidArgumentException(
                 previous: $e,
-                message: (new Message('Missing argument(s): %message%'))
-                    ->strtr('%message%', $e->getMessage())
+                message: (new Message('Missing argument(s)'))
             );
         }
         // @codeCoverageIgnoreEnd
@@ -183,9 +180,8 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         catch (Throwable $e) {
             throw new LogicException(
                 previous: $e,
-                message: (new Message('Unmatched response from method %method%: %message%'))
+                message: (new Message('Unmatched response from method %method%'))
                     ->code('%method%', $step->action() . '::run')
-                    ->strtr('%message%', $e->getMessage())
             );
         }
         // @codeCoverageIgnoreEnd

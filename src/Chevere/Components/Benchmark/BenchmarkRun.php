@@ -206,34 +206,28 @@ final class BenchmarkRun implements BenchmarkRunInterface
 
                 break;
             }
-
             try {
                 $callable(...$this->benchmark->arguments());
             } catch (ArgumentCountError $e) {
                 throw new ArgumentCountException(
-                    $this->getErrorMessage(
-                        $name,
-                        $e->getMessage()
-                    )
+                    previous: $e,
+                    message: $this->getErrorMessage($name),
                 );
             } catch (TypeError $e) {
                 throw new TypeException(
-                    $this->getErrorMessage(
-                        $name,
-                        $e->getMessage()
-                    )
+                    previous: $e,
+                    message: $this->getErrorMessage($name),
                 );
             }
             ++$this->runs;
         }
     }
 
-    private function getErrorMessage(string $name, string $message): MessageInterface
+    private function getErrorMessage(string $name): MessageInterface
     {
-        return (new Message('[Callable named %name%] %message%'))
-            ->code('%name%', $name)
-            ->strtr('%message%', $message);
-    }
+        return (new Message('Error running callable %name%'))
+            ->code('%name%', $name);
+        }
 
     private function processCallableStats(): void
     {

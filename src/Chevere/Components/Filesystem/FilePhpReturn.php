@@ -75,11 +75,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         try {
             return include $filePath;
         } catch (Throwable $e) {
-            throw new RuntimeException(
-                (new Message('Thrown %message% when including %path%'))
-                    ->code('%message%', $e->getMessage())
-                    ->code('%path%', $filePath)
-            );
+            throw new RuntimeException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
     }

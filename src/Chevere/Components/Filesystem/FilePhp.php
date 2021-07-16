@@ -54,9 +54,9 @@ final class FilePhp implements FilePhpInterface
             }
         } catch (Throwable $e) {
             throw new RuntimeException(
-                (new Message('Unable to compile cache for file %path% %thrown%'))
+                previous: $e,
+                message: (new Message('Unable to compile cache for file %path%'))
                     ->code('%path%', $path)
-                    ->code('%thrown%', $e->getMessage())
             );
         }
     }
