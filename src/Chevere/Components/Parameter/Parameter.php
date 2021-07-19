@@ -16,7 +16,7 @@ namespace Chevere\Components\Parameter;
 use Chevere\Components\Parameter\Traits\ParameterTrait;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use Ds\Set;
+use Ds\Map;
 
 /**
  * @method ParameterInterface withDescription(string $description)
@@ -30,6 +30,6 @@ final class Parameter implements ParameterInterface
     public function __construct(TypeInterface $type)
     {
         $this->type = $type;
-        $this->attributes = new Set();
+        $this->attributes = new Map();
     }
 }

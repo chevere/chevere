@@ -20,7 +20,7 @@ use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
-use Ds\Set;
+use Ds\Map;
 
 /**
  * @method StringParameterInterface withDescription(string $description)
@@ -37,7 +37,7 @@ final class StringParameter implements StringParameterInterface
     public function __construct()
     {
         $this->type = new Type(Type::STRING);
-        $this->attributes = new Set();
+        $this->attributes = new Map();
         $this->regex = new Regex('/^.*$/');
     }
 

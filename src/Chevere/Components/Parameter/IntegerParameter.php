@@ -16,7 +16,7 @@ namespace Chevere\Components\Parameter;
 use Chevere\Components\Parameter\Traits\ParameterTrait;
 use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Parameter\IntegerParameterInterface;
-use Ds\Set;
+use Ds\Map;
 
 /**
  * @method IntegerParameterInterface withDescription(string $description)
@@ -32,7 +32,7 @@ final class IntegerParameter implements IntegerParameterInterface
     public function __construct()
     {
         $this->type = new Type(Type::INTEGER);
-        $this->attributes = new Set();
+        $this->attributes = new Map();
     }
 
     public function withDefault(int $value): IntegerParameterInterface

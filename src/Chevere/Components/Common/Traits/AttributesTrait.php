@@ -16,28 +16,26 @@ namespace Chevere\Components\Common\Traits;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Ds\Set;
+use Ds\Map;
 
 trait AttributesTrait
 {
-    private Set $attributes;
+    private Map $attributes;
 
     public function withAddedAttribute(string ...$attributes): static
     {
         $new = clone $this;
-        foreach ($attributes as $attribute) {
-            // @codeCoverageIgnoreStart
-            if (! isset($new->attributes)) {
-                $new->attributes = new Set();
-            }
-            // @codeCoverageIgnoreEnd
-            if ($this->hasAttribute($attribute)) {
+        foreach ($attributes as $name => $attribute) {
+            $name = strval($name);
+            $new->attributes ??= new Map();
+            if ($new->hasAttribute($name)) {
                 throw new OverflowException(
                     (new Message('Attribute %attribute% has been already added'))
-                        ->strong('%attribute%', $attribute)
+                        ->strong('%attribute%', $name)
                 );
             }
-            $new->attributes->add($attribute);
+            $new->attributes = $new->attributes->copy();
+            $new->attributes->put($name, $attribute);
         }
 
         return $new;
@@ -46,15 +44,16 @@ trait AttributesTrait
     public function withoutAttribute(string ...$attributes): static
     {
         $new = clone $this;
-        foreach ($attributes as $attribute) {
-            if (! $this->hasAttribute($attribute)) {
+        foreach ($attributes as $name => $attribute) {
+            $name = strval($name);
+            if (! $new->hasAttribute($name)) {
                 throw new OutOfBoundsException(
                     (new Message("Attribute %attribute% doesn't exists"))
-                        ->strong('%attribute%', $attribute)
+                        ->strong('%attribute%', $name)
                 );
             }
 
-            $new->attributes->remove($attribute);
+            $new->attributes->remove($name);
         }
 
         return $new;
@@ -62,10 +61,19 @@ trait AttributesTrait
 
     public function hasAttribute(string ...$attributes): bool
     {
-        return isset($this->attributes) && $this->attributes->contains(...$attributes);
+        if (! isset($this->attributes)) {
+            return false;
+        }
+        foreach ($attributes as $attribute) {
+            if ($this->attributes->hasKey($attribute) === false) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    public function attributes(): Set
+    public function attributes(): Map
     {
         return $this->attributes;
     }

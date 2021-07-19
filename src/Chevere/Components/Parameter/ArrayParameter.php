@@ -16,7 +16,7 @@ namespace Chevere\Components\Parameter;
 use Chevere\Components\Parameter\Traits\ParameterTrait;
 use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Parameter\ArrayParameterInterface;
-use Ds\Set;
+use Ds\Map;
 
 /**
  * @method ArrayParameterInterface withDescription(string $description)
@@ -32,7 +32,7 @@ final class ArrayParameter implements ArrayParameterInterface
     public function __construct()
     {
         $this->type = new Type(Type::ARRAY);
-        $this->attributes = new Set();
+        $this->attributes = new Map();
     }
 
     public function withDefault(array $value): ArrayParameterInterface
