@@ -58,12 +58,15 @@ final class Arguments implements ArgumentsInterface
         return $this->arguments;
     }
 
-    public function withArgument(string $name, $value): ArgumentsInterface
+    public function withArgument(string ...$nameValue): ArgumentsInterface
     {
-        $this->assertHasParameter($name);
-        $this->assertType($name, $value);
         $new = clone $this;
-        $new->arguments[$name] = $value;
+        foreach ($nameValue as $name => $value) {
+            $name = strval($name);
+            $new->assertHasParameter($name);
+            $new->assertType($name, $value);
+            $new->arguments[$name] = $value;
+        }
 
         return $new;
     }
