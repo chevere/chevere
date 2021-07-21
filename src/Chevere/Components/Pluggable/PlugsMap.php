@@ -41,13 +41,11 @@ final class PlugsMap implements PlugsMapInterface
      */
     private Map $map;
 
-    private PlugTypeInterface $type;
-
-    public function __construct(PlugTypeInterface $type)
-    {
+    public function __construct(
+        private PlugTypeInterface $type
+    ) {
         $this->set = new Set();
         $this->map = new Map();
-        $this->type = $type;
     }
 
     public function plugType(): PlugTypeInterface

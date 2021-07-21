@@ -30,13 +30,11 @@ use function DeepCopy\deep_copy;
  */
 final class Plugins implements PluginsInterface
 {
-    private ClassMapInterface $classMap;
-
     private string $plugsPath;
 
-    public function __construct(ClassMapInterface $pluggablesToPlugs)
-    {
-        $this->classMap = $pluggablesToPlugs;
+    public function __construct(
+        private ClassMapInterface $classMap
+    ) {
     }
 
     public function clonedClassMap(): ClassMapInterface

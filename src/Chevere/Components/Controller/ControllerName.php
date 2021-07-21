@@ -20,32 +20,30 @@ use Chevere\Interfaces\Controller\ControllerNameInterface;
 
 final class ControllerName implements ControllerNameInterface
 {
-    private string $string;
-
-    public function __construct(string $name)
-    {
-        $this->string = $name;
+    public function __construct(
+        private string $name
+    ) {
         $this->assertController();
     }
 
     public function toString(): string
     {
-        return $this->string;
+        return $this->name;
     }
 
     private function assertController(): void
     {
-        if (! class_exists($this->string)) {
+        if (! class_exists($this->name)) {
             throw new InvalidArgumentException(
                 (new Message("Controller %controllerName% doesn't exists"))
-                    ->code('%controllerName%', $this->string),
+                    ->code('%controllerName%', $this->name),
                 100
             );
         }
-        if (! is_subclass_of($this->string, ControllerInterface::class)) {
+        if (! is_subclass_of($this->name, ControllerInterface::class)) {
             throw new InvalidArgumentException(
                 (new Message('Controller %controllerName% must implement the %interface% interface'))
-                    ->code('%controllerName%', $this->string)
+                    ->code('%controllerName%', $this->name)
                     ->code('%interface%', ControllerInterface::class),
                 101
             );

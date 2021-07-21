@@ -39,13 +39,11 @@ final class PlugsMapCache implements PlugsMapCacheInterface
      */
     private ClassMapInterface $classMap;
 
-    private CacheInterface $cache;
-
     private CacheKeyInterface $classMapKey;
 
-    public function __construct(CacheInterface $cache)
-    {
-        $this->cache = $cache;
+    public function __construct(
+        private CacheInterface $cache
+    ) {
         $this->classMapKey = new CacheKey(self::KEY_CLASS_MAP);
     }
 

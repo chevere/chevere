@@ -21,18 +21,14 @@ use Throwable;
 
 final class RouteIdentifier implements RouteIdentifierInterface
 {
-    private string $group;
-
-    private string $name;
-
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(string $group, string $name)
-    {
-        $this->group = $group;
+    public function __construct(
+        private string $group,
+        private string $name
+    ) {
         $this->assertString('group');
-        $this->name = $name;
         $this->assertString('name');
     }
 

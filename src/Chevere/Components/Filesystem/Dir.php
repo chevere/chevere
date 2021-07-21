@@ -32,11 +32,9 @@ use Throwable;
 
 final class Dir implements DirInterface
 {
-    private PathInterface $path;
-
-    public function __construct(PathInterface $path)
-    {
-        $this->path = $path;
+    public function __construct(
+        private PathInterface $path
+    ) {
         $this->assertIsNotFile();
         $this->assertTailDir();
     }

@@ -33,17 +33,15 @@ use Throwable;
 
 final class FilePhpReturn implements FilePhpReturnInterface
 {
-    private FilePhpInterface $filePhp;
-
     /**
      * @var bool True for strict validation (self::PHP_RETURN_CHARS), false for regex validation (return <algo>)
      */
     private bool $strict = true;
 
-    public function __construct(FilePhpInterface $filePhp)
-    {
-        $filePhp->file()->assertExists();
-        $this->filePhp = $filePhp;
+    public function __construct(
+        private FilePhpInterface $filePhp
+    ) {
+        $this->filePhp->file()->assertExists();
     }
 
     public function withStrict(bool $strict): FilePhpReturnInterface

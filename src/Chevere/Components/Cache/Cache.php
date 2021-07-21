@@ -30,8 +30,6 @@ use Chevere\Interfaces\VarStorable\VarStorableInterface;
 
 final class Cache implements CacheInterface
 {
-    private DirInterface $dir;
-
     /**
      * @var array An array [key => [checksum => , path =>]] containing information about the cache items
      */
@@ -40,9 +38,9 @@ final class Cache implements CacheInterface
     /**
      * @throws DirUnableToCreateException
      */
-    public function __construct(DirInterface $dir)
-    {
-        $this->dir = $dir;
+    public function __construct(
+        private DirInterface $dir
+    ) {
         if ($this->dir->exists() === false) {
             // @codeCoverageIgnore
             $this->dir->create();

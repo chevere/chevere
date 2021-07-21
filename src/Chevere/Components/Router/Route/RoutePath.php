@@ -25,8 +25,6 @@ use Throwable;
 
 final class RoutePath implements RoutePathInterface
 {
-    private string $route;
-
     private array $data;
 
     private RegexInterface $regex;
@@ -35,10 +33,11 @@ final class RoutePath implements RoutePathInterface
 
     private string $name;
 
-    public function __construct(string $route)
-    {
+    public function __construct(
+        private string $route
+    ) {
         $std = new StrictStd();
-        $this->data = $std->parse($route)[0];
+        $this->data = $std->parse($this->route)[0];
         $dataGenerator = new DataGenerator();
 
         try {
@@ -49,12 +48,11 @@ final class RoutePath implements RoutePathInterface
             throw new LogicException(
                 previous: $e,
                 message: (new Message('Unable to add route %path%'))
-                    ->code('%path%', $route),
+                    ->code('%path%', $this->route),
             );
         }
         // @codeCoverageIgnoreEnd
         $this->setName();
-        $this->route = $route;
         $this->wildcards = new Wildcards();
         $routerData = array_values(array_filter($dataGenerator->getData()));
         foreach ($this->data as $value) {

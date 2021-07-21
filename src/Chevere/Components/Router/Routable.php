@@ -23,11 +23,9 @@ use Throwable;
 
 final class Routable implements RoutableInterface
 {
-    private RouteInterface $route;
-
-    public function __construct(RouteInterface $route)
-    {
-        $this->route = $route;
+    public function __construct(
+        private RouteInterface $route
+    ) {
         $this->assertExportable();
         $this->assertMethodControllers();
     }

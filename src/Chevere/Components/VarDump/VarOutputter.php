@@ -21,23 +21,14 @@ use Chevere\Interfaces\Writer\WriterInterface;
 
 final class VarOutputter implements VarOutputterInterface
 {
-    private WriterInterface $writer;
-
-    private array $debugBacktrace;
-
-    private VarDumpFormatterInterface $formatter;
-
     private array $vars;
 
     public function __construct(
-        WriterInterface $writer,
-        array $debugBacktrace,
-        VarDumpFormatterInterface $formatter,
+        private WriterInterface $writer,
+        private array $debugBacktrace,
+        private VarDumpFormatterInterface $formatter,
         ...$vars
     ) {
-        $this->writer = $writer;
-        $this->debugBacktrace = $debugBacktrace;
-        $this->formatter = $formatter;
         $this->vars = $vars;
     }
 

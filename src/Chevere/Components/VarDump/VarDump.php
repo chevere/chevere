@@ -23,20 +23,14 @@ final class VarDump implements VarDumpInterface
 {
     private array $vars = [];
 
-    private VarDumpFormatterInterface $formatter;
-
-    private VarDumpOutputterInterface $outputter;
-
     private int $shift = 0;
 
     private array $debugBacktrace = [];
 
     public function __construct(
-        VarDumpFormatterInterface $formatter,
-        VarDumpOutputterInterface $outputter
+        private VarDumpFormatterInterface $formatter,
+        private VarDumpOutputterInterface $outputter
     ) {
-        $this->formatter = $formatter;
-        $this->outputter = $outputter;
     }
 
     public function withVars(...$vars): VarDumpInterface

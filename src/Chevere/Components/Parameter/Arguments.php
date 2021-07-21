@@ -27,13 +27,12 @@ final class Arguments implements ArgumentsInterface
 {
     public array $arguments;
 
-    private ParametersInterface $parameters;
-
     private array $errors;
 
-    public function __construct(ParametersInterface $parameters, mixed ...$namedArguments)
-    {
-        $this->parameters = $parameters;
+    public function __construct(
+        private ParametersInterface $parameters,
+        mixed ...$namedArguments
+    ) {
         /** @var array<string, mixed> $namedArguments */
         $this->arguments = $namedArguments;
         $this->assertCount();

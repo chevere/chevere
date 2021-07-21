@@ -27,9 +27,9 @@ final class Parameter implements ParameterInterface
 {
     use ParameterTrait;
 
-    public function __construct(TypeInterface $type)
-    {
-        $this->type = $type;
+    public function __construct(
+        private TypeInterface $type
+    ) {
         $this->attributes = new Map();
     }
 }

@@ -46,19 +46,15 @@ final class PoMaker implements PoMakerInterface
         '__nt' => 'ngettext',
     ];
 
-    private string $locale;
-
-    private string $domain;
-
     private DirInterface $sourceDir;
 
     private PhpScanner $phpScanner;
 
-    public function __construct(string $locale, string $domain)
-    {
+    public function __construct(
+        private string $locale,
+        private string $domain
+    ) {
         $this->writer = new NullWriter();
-        $this->locale = $locale;
-        $this->domain = $domain;
     }
 
     public function withScanFor(DirInterface $sourceDir): self

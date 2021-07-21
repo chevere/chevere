@@ -18,11 +18,6 @@ use Chevere\Interfaces\HrTime\HrTimeInterface;
 final class HrTime implements HrTimeInterface
 {
     /**
-     * @var int High-resolution time
-     */
-    private int $hrTime;
-
-    /**
      * @var string Readable time, in ms with its unit like `100 ms`
      */
     private string $hrTimeReadMs;
@@ -30,9 +25,9 @@ final class HrTime implements HrTimeInterface
     /**
      * @param int $hrTime High-resolution time.
      */
-    public function __construct(int $hrTime)
-    {
-        $this->hrTime = $hrTime;
+    public function __construct(
+        private int $hrTime
+    ) {
     }
 
     public function toReadMs(): string

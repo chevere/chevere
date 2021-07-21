@@ -22,9 +22,9 @@ final class VarDumpBooleanProcessor implements VarDumpProcessorInterface
 {
     use ProcessorTrait;
 
-    public function __construct(VarDumperInterface $varDumper)
-    {
-        $this->varDumper = $varDumper;
+    public function __construct(
+        private VarDumperInterface $varDumper
+    ) {
         $this->assertType();
         $this->info = $this->varDumper->dumpable()->var() ? 'true' : 'false';
     }

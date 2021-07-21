@@ -24,16 +24,14 @@ use Psr\Http\Message\StreamInterface;
  */
 final class StreamWriter implements WriterInterface
 {
-    private StreamInterface $stream;
-
-    public function __construct(StreamInterface $stream)
-    {
-        if (! $stream->isWritable()) {
+    public function __construct(
+        private StreamInterface $stream
+    ) {
+        if (! $this->stream->isWritable()) {
             throw new InvalidArgumentException(
                 (new Message('Stream provided is not writable'))
             );
         }
-        $this->stream = $stream;
     }
 
     public function write(string $string): void

@@ -19,14 +19,10 @@ use Chevere\Interfaces\Router\RoutedInterface;
 
 final class Routed implements RoutedInterface
 {
-    private ControllerNameInterface $controllerName;
-
-    private array $arguments;
-
-    public function __construct(ControllerNameInterface $controllerName, array $arguments)
-    {
-        $this->controllerName = $controllerName;
-        $this->arguments = $arguments;
+    public function __construct(
+        private ControllerNameInterface $controllerName,
+        private array $arguments
+    ) {
     }
 
     public function controllerName(): ControllerNameInterface

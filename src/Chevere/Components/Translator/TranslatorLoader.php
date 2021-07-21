@@ -25,12 +25,10 @@ use LogicException;
 
 final class TranslatorLoader implements TranslatorLoaderInterface
 {
-    private DirInterface $dir;
-
-    public function __construct(DirInterface $dir)
-    {
-        $dir->assertExists();
-        $this->dir = $dir;
+    public function __construct(
+        private DirInterface $dir
+    ) {
+        $this->dir->assertExists();
     }
 
     public function dir(): DirInterface

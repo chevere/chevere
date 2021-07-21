@@ -34,12 +34,6 @@ use Throwable;
 
 final class SpecMaker implements SpecMakerInterface
 {
-    private DirInterface $specDir;
-
-    private DirInterface $outputDir;
-
-    private RouterInterface $router;
-
     private SpecIndexInterface $specIndex;
 
     private IndexSpecInterface $indexSpec;
@@ -47,14 +41,11 @@ final class SpecMaker implements SpecMakerInterface
     private Map $files;
 
     public function __construct(
-        DirInterface $specDir,
-        DirInterface $outputDir,
-        RouterInterface $router
+        private DirInterface $specDir,
+        private DirInterface $outputDir,
+        private RouterInterface $router
     ) {
-        $this->specDir = $specDir;
-        $this->outputDir = $outputDir;
         $this->assertDir();
-        $this->router = $router;
         $this->assertRouter();
         $this->specIndex = new SpecIndex();
         $this->indexSpec = new IndexSpec($this->specDir);

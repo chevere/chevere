@@ -20,11 +20,9 @@ use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 
 final class CacheItem implements CacheItemInterface
 {
-    private FilePhpReturnInterface $phpFileReturn;
-
-    public function __construct(FilePhpReturnInterface $phpFileReturn)
-    {
-        $this->phpFileReturn = $phpFileReturn;
+    public function __construct(
+        private FilePhpReturnInterface $phpFileReturn
+    ) {
     }
 
     public function raw()

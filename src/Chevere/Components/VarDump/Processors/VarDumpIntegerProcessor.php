@@ -24,9 +24,9 @@ final class VarDumpIntegerProcessor implements VarDumpProcessorInterface
 
     private string $stringVar = '';
 
-    public function __construct(VarDumperInterface $varDumper)
-    {
-        $this->varDumper = $varDumper;
+    public function __construct(
+        private VarDumperInterface $varDumper
+    ) {
         $this->assertType();
         $this->stringVar = (string) $this->varDumper->dumpable()->var();
         $this->info = 'length=' . strlen($this->stringVar);

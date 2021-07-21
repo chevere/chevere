@@ -30,11 +30,9 @@ use Throwable;
 
 final class WorkflowRunner implements WorkflowRunnerInterface
 {
-    private WorkflowRunInterface $workflowRun;
-
-    public function __construct(WorkflowRunInterface $workflowRun)
-    {
-        $this->workflowRun = $workflowRun;
+    public function __construct(
+        private WorkflowRunInterface $workflowRun
+    ) {
     }
 
     public function workflowRun(): WorkflowRunInterface

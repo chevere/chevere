@@ -22,16 +22,14 @@ use Throwable;
 
 final class Filename implements FilenameInterface
 {
-    private string $basename;
-
     private string $extension;
 
     private string $name;
 
-    public function __construct(string $basename)
-    {
-        $this->assertBasename($basename);
-        $this->basename = $basename;
+    public function __construct(
+        private string $basename
+    ) {
+        $this->assertBasename();
         $this->extension = pathinfo($this->basename, PATHINFO_EXTENSION);
         $this->name = pathinfo($this->basename, PATHINFO_FILENAME);
     }
@@ -51,19 +49,19 @@ final class Filename implements FilenameInterface
         return $this->name;
     }
 
-    private function assertBasename(string $basename): void
+    private function assertBasename(): void
     {
         try {
-            (new StrAssert($basename))
+            (new StrAssert($this->basename))
                 ->notEmpty()
                 ->notCtypeSpace();
         } catch (Throwable $e) {
             throw new InvalidArgumentException(code: 100);
         }
-        if (mb_strlen($basename) > self::MAX_LENGTH_BYTES) {
+        if (mb_strlen($this->basename) > self::MAX_LENGTH_BYTES) {
             throw new LengthException(
                 message: (new Message('String %string% provided exceed the limit of %bytes% bytes'))
-                    ->code('%string%', $basename)
+                    ->code('%string%', $this->basename)
                     ->code('%bytes%', (string) self::MAX_LENGTH_BYTES),
                 code: 110
             );

@@ -28,11 +28,9 @@ use FastRoute\RouteCollector;
  */
 final class RouterDispatcher implements RouterDispatcherInterface
 {
-    private RouteCollector $routeCollector;
-
-    public function __construct(RouteCollector $routeCollector)
-    {
-        $this->routeCollector = $routeCollector;
+    public function __construct(
+        private RouteCollector $routeCollector
+    ) {
     }
 
     public function dispatch(string $httpMethod, string $uri): RoutedInterface

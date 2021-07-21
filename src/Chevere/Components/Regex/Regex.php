@@ -23,8 +23,6 @@ use function Safe\preg_match_all;
 
 final class Regex implements RegexInterface
 {
-    private string $pattern;
-
     private string $noDelimiters;
 
     private string $noDelimitersNoAnchors;
@@ -32,9 +30,9 @@ final class Regex implements RegexInterface
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(string $pattern)
-    {
-        $this->pattern = $pattern;
+    public function __construct(
+        private string $pattern
+    ) {
         $this->assertRegex();
         $delimiter = $this->pattern[0];
         $this->noDelimiters = trim($this->pattern, $delimiter);

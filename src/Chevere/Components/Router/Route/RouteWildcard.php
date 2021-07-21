@@ -21,15 +21,11 @@ use Chevere\Interfaces\Router\Route\RouteWildcardMatchInterface;
 
 final class RouteWildcard implements RouteWildcardInterface
 {
-    private string $name;
-
-    private RouteWildcardMatchInterface $match;
-
-    public function __construct(string $name, RouteWildcardMatchInterface $match)
-    {
-        $this->name = $name;
+    public function __construct(
+        private string $name,
+        private  RouteWildcardMatchInterface $match
+    ) {
         $this->assertName();
-        $this->match = $match;
     }
 
     public function toString(): string

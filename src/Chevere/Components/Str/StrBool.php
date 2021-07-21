@@ -17,11 +17,9 @@ use Chevere\Interfaces\Str\StrBoolInterface;
 
 final class StrBool implements StrBoolInterface
 {
-    private string $string;
-
-    public function __construct(string $string)
-    {
-        $this->string = $string;
+    public function __construct(
+        private string $string
+    ) {
     }
 
     public function empty(): bool

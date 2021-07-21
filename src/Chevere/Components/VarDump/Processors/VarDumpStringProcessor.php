@@ -22,9 +22,9 @@ final class VarDumpStringProcessor implements VarDumpProcessorInterface
 {
     use ProcessorTrait;
 
-    public function __construct(VarDumperInterface $varDumper)
-    {
-        $this->varDumper = $varDumper;
+    public function __construct(
+        private VarDumperInterface $varDumper
+    ) {
         $this->assertType();
         $this->info = 'length=' . mb_strlen($this->varDumper->dumpable()->var());
     }

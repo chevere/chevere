@@ -18,16 +18,14 @@ use Chevere\Interfaces\Message\MessageInterface;
 
 final class Message implements MessageInterface
 {
-    private string $template;
-
     /**
      * @var array Translation table [search => [format, replace]]
      */
     private array $trTable = [];
 
-    public function __construct(string $template)
-    {
-        $this->template = $template;
+    public function __construct(
+        private string $template
+    ) {
     }
 
     /**

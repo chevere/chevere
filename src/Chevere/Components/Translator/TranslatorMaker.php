@@ -26,28 +26,17 @@ use Throwable;
 
 final class TranslatorMaker implements TranslatorMakerInterface
 {
-    private DirInterface $sourceDir;
-
-    private DirInterface $targetDir;
-
     private DirInterface $localeSourceDir;
 
     private DirInterface $localeTargetDir;
 
     private PoLoader $poLoader;
 
-    public function __construct(DirInterface $sourceDir, DirInterface $targetDir)
-    {
-        try {
-            $sourceDir->assertExists();
-        } catch (Throwable $e) {
-            throw new InvalidArgumentException(
-                previous: $e,
-                message: new Message("Source directory doesn't exists")
-            );
-        }
-        $this->sourceDir = $sourceDir;
-        $this->targetDir = $targetDir;
+    public function __construct(
+        private DirInterface $sourceDir,
+        private DirInterface $targetDir
+    ) {
+        $this->sourceDir->assertExists();
         $this->poLoader = new PoLoader();
     }
 

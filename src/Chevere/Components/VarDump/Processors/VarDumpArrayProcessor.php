@@ -30,9 +30,9 @@ final class VarDumpArrayProcessor implements VarDumpProcessorInterface
 
     private int $count = 0;
 
-    public function __construct(VarDumperInterface $varDumper)
-    {
-        $this->varDumper = $varDumper;
+    public function __construct(
+        private VarDumperInterface $varDumper
+    ) {
         $this->assertType();
         $this->var = $this->varDumper->dumpable()->var();
         $this->depth = $this->varDumper->depth() + 1;

@@ -29,14 +29,12 @@ final class AssertPlug implements AssertPlugInterface
      */
     private PlugTypesList $plugTypesList;
 
-    private PlugInterface $plug;
-
     private PlugTypeInterface $plugType;
 
-    public function __construct(PlugInterface $plug)
-    {
+    public function __construct(
+        private PlugInterface $plug
+    ) {
         $this->plugTypesList = new PlugTypesList();
-        $this->plug = $plug;
         foreach ($this->plugTypesList->getGenerator() as $plugType) {
             $plugInterface = $plugType->interface();
             if ($this->plug instanceof $plugInterface) {

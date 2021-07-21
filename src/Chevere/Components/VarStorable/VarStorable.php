@@ -22,13 +22,11 @@ use ReflectionObject;
 
 final class VarStorable implements VarStorableInterface
 {
-    private mixed $var;
-
     private BreadcrumbInterface $breadcrumb;
 
-    public function __construct(mixed $var)
-    {
-        $this->var = $var;
+    public function __construct(
+        private mixed $var
+    ) {
         $this->breadcrumb = new Breadcrumb();
         $this->assertExportable($this->var);
     }

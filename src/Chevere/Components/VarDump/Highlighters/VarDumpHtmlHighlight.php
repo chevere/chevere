@@ -22,14 +22,12 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
 {
     use AssertKeyTrait;
 
-    private string $key;
-
     private string $color;
 
-    public function __construct(string $key)
-    {
+    public function __construct(
+        private string $key
+    ) {
         $this->assertKey($key);
-        $this->key = $key;
         $this->color = $this->palette()[$this->key] ?? 'inherit';
     }
 

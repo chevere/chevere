@@ -19,17 +19,15 @@ use Chevere\Interfaces\Type\TypeInterface;
 
 final class Type implements TypeInterface
 {
-    private string $type;
-
     private string $validator;
 
     private string $primitive = '';
 
     private string $typeHinting;
 
-    public function __construct(string $type)
-    {
-        $this->type = $type;
+    public function __construct(
+        private string $type
+    ) {
         $this->setPrimitive();
         $this->assertHasPrimitive();
         $this->validator = self::TYPE_VALIDATORS[$this->primitive];
