@@ -122,8 +122,6 @@ final class WorkflowRunner implements WorkflowRunnerInterface
                 ! is_a($serviceContainer->get($name), $className, false);
             if ($isMissing) {
                 $missing[] = "${name}:${className}";
-
-                continue;
             }
         }
         if ($missing !== []) {

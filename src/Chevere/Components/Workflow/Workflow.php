@@ -36,8 +36,6 @@ use TypeError;
 
 final class Workflow implements WorkflowInterface
 {
-    private string $name;
-
     private Map $map;
 
     private Vector $steps;
@@ -250,7 +248,6 @@ final class Workflow implements WorkflowInterface
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $reference, $matches)) {
                     /** @var array $matches */
                     if (! $this->parameters->has($matches[1])) {
-                        // $parameter = $parameters->get($matches[1]);
                         $this->vars->put($reference, [$matches[1]]);
                     }
 

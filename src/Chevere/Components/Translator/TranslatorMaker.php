@@ -21,7 +21,6 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Translator\TranslatorMakerInterface;
 use Gettext\Generator\ArrayGenerator;
 use Gettext\Loader\PoLoader;
-use LanguageServerProtocol\MessageActionItem;
 use Throwable;
 
 final class TranslatorMaker implements TranslatorMakerInterface
@@ -85,15 +84,13 @@ final class TranslatorMaker implements TranslatorMakerInterface
         catch (Throwable $e) {
             throw new LogicException(
                 previous: $e,
-                message: new MessageActionItem('Unable to generate translations.')
+                message: new Message('Unable to generate translations.')
             );
         }
         // @codeCoverageIgnoreEnd
         $phpFile->assertExists();
 
         return $new;
-
-        // return $phpFile->path()->toString();
     }
 
     private function handleLocale(string $locale): void
