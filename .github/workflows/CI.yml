@@ -72,7 +72,9 @@ jobs:
       #   working-directory: ./build/coverage/
       #   run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' clover.xml
 
-      - name: Codacy
+      - name: Upload coverage report to Codacy
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
         run: |
           bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r \
           build/coverage/clover.xml
