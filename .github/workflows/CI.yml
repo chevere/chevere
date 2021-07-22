@@ -67,10 +67,9 @@ jobs:
 
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
-
-      - name: Fix code coverage paths for Sonar
-        working-directory: ./build/coverage/
-        run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' clover.xml
+      # - name: Fix code coverage paths for Sonar
+      #   working-directory: ./build/coverage/
+      #   run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' clover.xml
       # - name: Set en_US.UTF-8
       #   run: |
       #     sudo localectl set-locale LANG="en_US.UTF-8"
