@@ -19,5 +19,6 @@ install:
   - composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
 script:
   - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
+  - cat build/coverage/clover.xml
   - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r build/coverage/clover.xml
   - sonar-scanner
