@@ -68,9 +68,9 @@ jobs:
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
 
-      # - name: Fix code coverage paths for Sonar
-      # working-directory: ./build/reports/
-      # run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' build/coverage/clover.xml
+      - name: Fix code coverage paths for Sonar
+        working-directory: ./build/coverage/
+        run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' clover.xml
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
