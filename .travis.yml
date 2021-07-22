@@ -15,6 +15,7 @@ before_install:
 addons:
   sonarcloud:
     organization: chevere
+  code_climate:
 install:
   - composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
 script:
@@ -22,3 +23,4 @@ script:
   - cat build/coverage/clover.xml
   - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r build/coverage/clover.xml
   - sonar-scanner
+  - cc-test-reporter after-build build/coverage/clover.xml -t clover
