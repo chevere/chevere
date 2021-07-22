@@ -1,6 +1,3 @@
-env:
-  global:
-    secure: JrCa4T0Ck0kDTAbvdwYZQaD93XErb60GzD26ea0VtjJqvu93hPR7yzIrSx3rBTsANzooZiEnbS2kCmQL3RToFQIG6oW5+1otYYXreykjpr37+aT11vS+QGTgS4ypWrnMveq/iYIVUJlwsCjfOoZydt8oAKzLKitpZen+oHVrxXaAPNhbYSG+uXtFhQxaaBRZsT2YJV0ZOmX5K/qvdfKdfGokfMvYtNwV0rDLyJB770t30qLV5zC8Q23an+mGmaPb+k0pjDm4lh2iIN+bSw2ZtWsaVn9DfdecSCbLMezqEaqFh8nEiqVeRgMcSLZv6iPu5zpWgBN+MKI3ktwz60lAtJgb9jM51sxg8jnZEiB4KPg0XKcohgJUSwoqRw23FQI70CAEa4vgoFR9AMlEKP/xUXy2WK31UHraf1h97EAPVP/3OiML+7jdcMXK7c3riAKK12zp+90kD325XZE5Bm1l3lNtDj0KF4YMxFpQkheZVp6TWvQzypJ2JnnSKwPCZIvTFknyQ3HbFpsSbAKJ3wmPUcwHj4pbShOoMKVSTxerryvI/xULtYtuu4UZkzHduhY8riUWPgegkBTkUVJkfbAh9+VhAQrNlGowmuQSFvB7KIqaFe17FxpXbAiLUjuqoLt3pi+uojovwZQrzWO4OH509y4OAIlwvrN1TF+slcLhkX0=
 dist: focal
 language: php
 php:
@@ -22,5 +19,5 @@ install:
   - composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
 script:
   - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
-  - sonar-scanner
   - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r build/coverage/clover.xml
+  - sonar-scanner
