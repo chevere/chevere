@@ -15,12 +15,15 @@ before_install:
 addons:
   sonarcloud:
     organization: chevere
-  code_climate:
 install:
   - composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
   - cat build/coverage/clover.xml
   - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r build/coverage/clover.xml
   - sonar-scanner
-  - cc-test-reporter after-build build/coverage/clover.xml -t clover
+  - ./cc-test-reporter after-build build/coverage/clover.xml -t clover
