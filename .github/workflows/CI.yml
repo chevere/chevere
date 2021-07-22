@@ -71,16 +71,14 @@ jobs:
       - name: Fix code coverage paths for Sonar
         working-directory: ./build/coverage/
         run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' clover.xml
-
-      - name: Set en_US.UTF-8
-        run: |
-          sudo localectl set-locale LANG="en_US.UTF-8"
-          export LANG="en_US.UTF-8"
-          sudo update-locale
-          locale
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # - name: Set en_US.UTF-8
+      #   run: |
+      #     sudo localectl set-locale LANG="en_US.UTF-8"
+      #     export LANG="en_US.UTF-8"
+      #     sudo update-locale
+      #     locale
+      # - name: SonarCloud Scan
+      #   uses: SonarSource/sonarcloud-github-action@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
