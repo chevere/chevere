@@ -22,6 +22,7 @@ install:
 script:
   - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
   - sonar-scanner
+  - export CODACY_PROJECT_TOKEN=$CODACY_PROJECT_TOKEN
   - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r build/coverage/clover.xml
 env:
   global:
