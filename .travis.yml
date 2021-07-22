@@ -22,8 +22,7 @@ before_script:
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
 script:
-  - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
-  - cat build/coverage/clover.xml
-  - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r build/coverage/clover.xml
+  - vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
+  - ./cc-test-reporter after-build build/logs/clover.xml -t clover
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r build/logs/clover.xml
   - sonar-scanner
-  - ./cc-test-reporter after-build build/coverage/clover.xml -t clover

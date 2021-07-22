@@ -13,8 +13,8 @@
             <directory suffix=".php">src/Chevere/Components/</directory>
         </include>
         <report>
-            <clover outputFile="build/coverage/clover.xml"/>
-            <html outputDirectory="build/coverage/html" lowUpperBound="50" highLowerBound="90"/>
+            <clover outputFile="build/logs/clover.xml"/>
+            <html outputDirectory="build/logs/html" lowUpperBound="50" highLowerBound="90"/>
         </report>
     </coverage>
 </phpunit>
