@@ -1,24 +1,24 @@
 dist: focal
 language: php
-
 php:
   - nightly
-
 matrix:
   allow_failures:
     - php: nightly
-
 cache:
   directories:
-    - $HOME/.composer/cache
-
+    - "$HOME/.composer/cache"
 before_install:
   - pecl install ds
   - phpenv config-add chevere.ini
   - composer validate
-
+addons:
+  sonarcloud:
+    organization: "chevere"
+    token:
+      secure: ZyQm649NeAzwWiPrfRC2XbV8gmUKI9AFUdTiMH6LVn9yN4jppKyf+BVLbfJbuLObEwbqHQe2+TQirA/IZ7P/3nP1VzxtwFRl3/sixhewM9mQy05kszHokpOdELrO9Bb9CtiwpsZc/bnpDqqjRTNsiFZkzrdz6MfVyq5qatVoAF9JIrSDA3mjbyQhvZ+qFRY+LRiwO42E16zUQSLUKQgYpvTFKkniq7vP5MnBaDvusEbJ7ZcwktH10pHqirdAhMmU4Lonsvc9T1+/Z4VICk10lAq6OnBEIdzD+BVZWRYw2dVVifnjpsKn2tLj2lCpXVNqy464wyIeq4YjVM2KDfI/VFnkU/CiLOalZSKyOOrZdaEKE+YXgXxvc+AwZMI7VsYe1VR4GV8squc2UXuLCTVUws3ejCul86l5zSyG/E0ZFsp0Doi4GgKs7s4/VuIan7ovDizLJ7cZIIfk41+qjnCKtN9fFxUDCSo2vIu0jDPrr8wyO+4cyY6vQITzie61oAlLheyhA5wDSmwYswlIzjGmYLZFzLeCEV0Gs6w0zTInqCEHOFyHnJ9U7OUMNRKGOd82PulVqJ8275CMa0pL8Rw3hfWMTeLZZDoExtx0URhM75fjIh2oy9t1EOSBlxIs0t8bT8gb4vgngI/8nvl6eHLW6f0mts0Nl7/6t+6d9SSbEE4=
 install:
   - composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
-
 script:
   - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
+  - sonar-scanner
