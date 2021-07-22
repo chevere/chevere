@@ -68,15 +68,17 @@ jobs:
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
 
+      - name: Fix code coverage paths for Codeclimate
+        working-directory: ./build/coverage/
+        run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' clover.xml
+
       - name: Upload coverage report to Codeclimate
+        continue-on-error: true
         uses: paambaati/codeclimate-action@v2.7.5
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:
           coverageLocations: ${{github.workspace}}/build/coverage/clover.xml:clover
-      # - name: Fix code coverage paths for Codacy
-      #   working-directory: ./build/coverage/
-      #   run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' clover.xml
       # - name: Upload coverage report to Codacy
       #   continue-on-error: true
       #   env:
