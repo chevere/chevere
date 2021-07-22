@@ -73,7 +73,7 @@ jobs:
         run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' clover.xml
 
       - name: Locale
-        run: locale
+        run: EXPORT LANG=en_US.UTF-8 && locale
       # - name: SonarCloud Scan
       #   uses: SonarSource/sonarcloud-github-action@master
       #   env:
