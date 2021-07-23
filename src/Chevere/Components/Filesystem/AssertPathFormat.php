@@ -23,11 +23,9 @@ use Chevere\Interfaces\Filesystem\AssertPathFormatInterface;
 
 final class AssertPathFormat implements AssertPathFormatInterface
 {
-    private string $path;
-
-    public function __construct(string $path)
-    {
-        $this->path = $path;
+    public function __construct(
+        private string $path
+    ) {
         $this->assertAbsolutePath();
         $this->assertNoDoubleDots();
         $this->assertNoDots();

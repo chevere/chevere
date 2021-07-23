@@ -23,11 +23,9 @@ use Throwable;
 
 final class FilePhp implements FilePhpInterface
 {
-    private FileInterface $file;
-
-    public function __construct(FileInterface $file)
-    {
-        $this->file = $file;
+    public function __construct(
+        private FileInterface $file
+    ) {
         $this->assertFilePhp();
     }
 

@@ -42,9 +42,9 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
 
     private int $objectId;
 
-    public function __construct(VarDumperInterface $varDumper)
-    {
-        $this->varDumper = $varDumper;
+    public function __construct(
+        private VarDumperInterface $varDumper
+    ) {
         $this->assertType();
         $this->var = $this->varDumper->dumpable()->var();
         $this->depth = $this->varDumper->depth() + 1;

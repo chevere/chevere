@@ -25,13 +25,11 @@ final class PlugsQueue implements PlugsQueueInterface
 {
     private array $array = [];
 
-    private PlugTypeInterface $plugType;
-
     private Set $set;
 
-    public function __construct(PlugTypeInterface $plugType)
-    {
-        $this->plugType = $plugType;
+    public function __construct(
+        private PlugTypeInterface $plugType
+    ) {
         $this->set = new Set();
     }
 

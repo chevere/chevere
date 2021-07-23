@@ -16,7 +16,7 @@ namespace Chevere\Components\Parameter;
 use Chevere\Components\Parameter\Traits\ParameterTrait;
 use function Chevere\Components\Type\typeObject;
 use Chevere\Interfaces\Parameter\ObjectParameterInterface;
-use Ds\Set;
+use Ds\Map;
 
 final class ObjectParameter implements ObjectParameterInterface
 {
@@ -25,6 +25,6 @@ final class ObjectParameter implements ObjectParameterInterface
     public function __construct(string $className)
     {
         $this->type = typeObject($className);
-        $this->attributes = new Set();
+        $this->attributes = new Map();
     }
 }

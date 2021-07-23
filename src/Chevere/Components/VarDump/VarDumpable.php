@@ -22,15 +22,13 @@ use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 
 final class VarDumpable implements VarDumpableInterface
 {
-    private $var;
-
     private string $type;
 
     private string $processorName;
 
-    public function __construct($var)
-    {
-        $this->var = $var;
+    public function __construct(
+        private $var
+    ) {
         $this->type = getType($this->var);
         $this->assertSetProcessorName();
     }

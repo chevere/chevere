@@ -20,11 +20,9 @@ use Throwable;
 
 final class ActionRunner implements ActionRunnerInterface
 {
-    private ControllerInterface $controller;
-
-    public function __construct(ControllerInterface $controller)
-    {
-        $this->controller = $controller;
+    public function __construct(
+        private ControllerInterface $controller
+    ) {
     }
 
     public function execute(mixed ...$arguments): ActionExecutedInterface

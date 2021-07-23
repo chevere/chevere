@@ -34,11 +34,9 @@ use Chevere\Interfaces\Str\StrAssertInterface;
 
 final class StrAssert implements StrAssertInterface
 {
-    private string $string;
-
-    public function __construct(string $string)
-    {
-        $this->string = $string;
+    public function __construct(
+        private string $string
+    ) {
     }
 
     public function empty(): StrAssertInterface

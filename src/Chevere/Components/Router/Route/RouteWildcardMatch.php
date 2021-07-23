@@ -22,11 +22,9 @@ use Chevere\Interfaces\Router\Route\RouteWildcardMatchInterface;
 
 final class RouteWildcardMatch implements RouteWildcardMatchInterface
 {
-    private string $string;
-
-    public function __construct(string $string)
-    {
-        $this->string = $string;
+    public function __construct(
+        private string $string
+    ) {
         $this->assertFormat();
         $this->assertRegexNoCapture();
     }

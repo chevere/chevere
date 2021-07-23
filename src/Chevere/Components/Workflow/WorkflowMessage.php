@@ -21,8 +21,6 @@ use Ramsey\Uuid\Uuid;
 
 final class WorkflowMessage implements WorkflowMessageInterface
 {
-    private WorkflowRunInterface $workflowRun;
-
     private string $uuid;
 
     private int $priority;
@@ -31,9 +29,9 @@ final class WorkflowMessage implements WorkflowMessageInterface
 
     private int $expiration;
 
-    public function __construct(WorkflowRunInterface $workflowRun)
-    {
-        $this->workflowRun = $workflowRun;
+    public function __construct(
+        private WorkflowRunInterface $workflowRun
+    ) {
         $this->uuid = Uuid::uuid4()->toString();
         $this->priority = 0;
         $this->delay = 0;

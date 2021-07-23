@@ -25,16 +25,12 @@ final class RouteEndpoint implements RouteEndpointInterface
 {
     use DescriptionTrait;
 
-    private MethodInterface $method;
-
-    private ControllerInterface $controller;
-
     private array $parameters = [];
 
-    public function __construct(MethodInterface $method, ControllerInterface $controller)
-    {
-        $this->method = $method;
-        $this->controller = $controller;
+    public function __construct(
+        private MethodInterface $method,
+        private ControllerInterface $controller
+    ) {
         $this->description = $controller->getDescription();
         if ($this->description === '') {
             $this->description = $method->description();

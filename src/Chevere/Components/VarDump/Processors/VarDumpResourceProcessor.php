@@ -24,9 +24,9 @@ final class VarDumpResourceProcessor implements VarDumpProcessorInterface
 
     private string $stringVar = '';
 
-    public function __construct(VarDumperInterface $varDumper)
-    {
-        $this->varDumper = $varDumper;
+    public function __construct(
+        private VarDumperInterface $varDumper
+    ) {
         $this->assertType();
         $this->info = 'type=' . get_resource_type($this->varDumper->dumpable()->var());
         $this->stringVar = $this->varDumper->formatter()->highlight(

@@ -17,6 +17,7 @@ use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Translator\TranslatorMaker;
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Translator\TranslatorMakerInterface;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,7 @@ final class TranslatorMakerTest extends TestCase
 {
     public function testConstructSourceDirNotExists(): void
     {
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(DirNotExistsException::class);
         new TranslatorMaker($this->getDir('404/'), $this->getDir('compiled/'));
     }
 

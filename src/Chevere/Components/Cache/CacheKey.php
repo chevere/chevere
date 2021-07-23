@@ -19,11 +19,9 @@ use Chevere\Interfaces\Cache\CacheKeyInterface;
 
 final class CacheKey implements CacheKeyInterface
 {
-    private string $key;
-
-    public function __construct(string $key)
-    {
-        $this->key = $key;
+    public function __construct(
+        private string $key
+    ) {
         $this->assertKey();
     }
 

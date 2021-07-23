@@ -32,13 +32,11 @@ use Throwable;
 
 final class File implements FileInterface
 {
-    private PathInterface $path;
-
     private bool $isPhp;
 
-    public function __construct(PathInterface $path)
-    {
-        $this->path = $path;
+    public function __construct(
+        private PathInterface $path
+    ) {
         $this->isPhp = (new StrBool($this->path->toString()))->endsWith('.php');
         $this->assertIsNotDir();
     }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Common;
 
-use Ds\Set;
+use Ds\Map;
 
 /**
  * Describes the component in charge of providing attributes.
@@ -26,5 +26,5 @@ interface AttributesInterface
 
     public function hasAttribute(string ...$attributes): bool;
 
-    public function attributes(): Set;
+    public function attributes(): Map;
 }

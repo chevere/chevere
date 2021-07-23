@@ -12,5 +12,8 @@
 /.phpunit.cache
 .phpunit.result.cache
 
+## Sonar
+/.scannerwork
+
 # IDE
 /.idea

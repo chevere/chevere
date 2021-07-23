@@ -34,14 +34,12 @@ final class PlugsMapper
 {
     use WriterTrait;
 
-    private PlugTypeInterface $plugType;
-
     private PlugsMapInterface $plugsMap;
 
-    public function __construct(PlugTypeInterface $plugType)
-    {
+    public function __construct(
+        private PlugTypeInterface $plugType
+    ) {
         $this->writer = new NullWriter();
-        $this->plugType = $plugType;
         $this->plugsMap = new PlugsMap($plugType);
     }
 

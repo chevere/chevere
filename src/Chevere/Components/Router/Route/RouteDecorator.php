@@ -19,13 +19,11 @@ use Chevere\Interfaces\Router\Route\WildcardsInterface;
 
 final class RouteDecorator implements RouteDecoratorInterface
 {
-    private RouteLocatorInterface $name;
-
     private WildcardsInterface $wildcards;
 
-    public function __construct(RouteLocatorInterface $name)
-    {
-        $this->name = $name;
+    public function __construct(
+        private RouteLocatorInterface $name
+    ) {
         $this->wildcards = new Wildcards();
     }
 

@@ -98,7 +98,7 @@ final class Dependencies implements DependenciesInterface
     private function putDependencies(string ...$dependencies): void
     {
         foreach ($dependencies as $name => $className) {
-            $this->putDependency($className, $name);
+            $this->putDependency($className, strval($name));
         }
     }
 

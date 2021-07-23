@@ -26,14 +26,13 @@ final class EventsRunner implements EventsRunnerInterface
 {
     private PlugsQueueInterface $plugsQueue;
 
-    private WritersInterface $writers;
-
     private EventInterface $event;
 
-    public function __construct(EventQueueInterface $queue, WritersInterface $writers)
-    {
+    public function __construct(
+        EventQueueInterface $queue,
+        private WritersInterface $writers
+    ) {
         $this->plugsQueue = $queue->plugsQueue();
-        $this->writers = $writers;
     }
 
     public function run(string $anchor, array $data): void

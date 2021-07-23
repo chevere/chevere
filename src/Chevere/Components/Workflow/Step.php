@@ -27,17 +27,14 @@ use ReflectionException;
 
 final class Step implements StepInterface
 {
-    private string $action;
-
     private array $arguments;
 
     private ParametersInterface $parameters;
 
-    public function __construct(string $action, mixed ...$namedArguments)
-    {
-        /** @var class-string $action */
-        $this->action = $action;
-
+    public function __construct(
+        private string $action,
+        mixed ...$namedArguments
+    ) {
         try {
             $reflection = new ReflectionClass($this->action);
         } catch (ReflectionException $e) {

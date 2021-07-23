@@ -17,11 +17,9 @@ use Chevere\Interfaces\Str\StrInterface;
 
 final class Str implements StrInterface
 {
-    private string $string;
-
-    public function __construct(string $string)
-    {
-        $this->string = $string;
+    public function __construct(
+        private string $string
+    ) {
     }
 
     public function toString(): string

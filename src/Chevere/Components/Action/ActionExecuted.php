@@ -20,13 +20,11 @@ final class ActionExecuted implements ActionExecutedInterface
 {
     private int $code = 0;
 
-    private array $data;
-
     private Throwable $throwable;
 
-    public function __construct(array $data)
-    {
-        $this->data = $data;
+    public function __construct(
+        private array $data
+    ) {
     }
 
     public function code(): int

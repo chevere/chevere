@@ -22,14 +22,10 @@ use RecursiveIterator;
  */
 final class RecursiveFileFilterIterator extends RecursiveFilterIterator
 {
-    protected string $trailingName;
-
     public function __construct(
         RecursiveIterator $recursiveIterator,
-        string $trailingName
+        protected string $trailingName
     ) {
-        $this->trailingName = $trailingName;
-
         parent::__construct($recursiveIterator);
     }
 

@@ -31,8 +31,6 @@ use TypeError;
  */
 final class BenchmarkRun implements BenchmarkRunInterface
 {
-    private BenchmarkInterface $benchmark;
-
     private int $timeLimit;
 
     private int $maxExecutionTime;
@@ -75,8 +73,9 @@ final class BenchmarkRun implements BenchmarkRunInterface
      * @throws ArgumentCountException if the argument count doesn't match the callable parameters
      * @throws TypeException if the argument types doesn't match
      */
-    public function __construct(BenchmarkInterface $benchmark)
-    {
+    public function __construct(
+        private BenchmarkInterface $benchmark
+    ) {
         if (count($benchmark->index()) === 0) {
             throw new InvalidArgumentException(
                 (new Message('No callable defined for object of class %className%, declare callables using the %method% method'))
@@ -84,7 +83,6 @@ final class BenchmarkRun implements BenchmarkRunInterface
                     ->code('%method%', $benchmark::class . '::withAddedCallable')
             );
         }
-        $this->benchmark = $benchmark;
         $this->maxExecutionTime = (int) ini_get('max_execution_time');
         $this->timeLimit = $this->maxExecutionTime;
         $this->requestTime = hrtime(true);
@@ -206,6 +204,7 @@ final class BenchmarkRun implements BenchmarkRunInterface
 
                 break;
             }
+
             try {
                 $callable(...$this->benchmark->arguments());
             } catch (ArgumentCountError $e) {
@@ -227,7 +226,7 @@ final class BenchmarkRun implements BenchmarkRunInterface
     {
         return (new Message('Error running callable %name%'))
             ->code('%name%', $name);
-        }
+    }
 
     private function processCallableStats(): void
     {

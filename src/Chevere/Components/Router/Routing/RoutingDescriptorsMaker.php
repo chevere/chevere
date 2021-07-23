@@ -39,18 +39,16 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
     use WriterTrait;
 
-    private string $repository;
-
     private DirInterface $dir;
 
     private RoutingDescriptorsInterface $descriptors;
 
     private bool $useTrailingSlash;
 
-    public function __construct(string $repository)
-    {
+    public function __construct(
+        private string $repository
+    ) {
         $this->writer = new NullWriter();
-        $this->repository = $repository;
         $this->descriptors = new RoutingDescriptors();
         $this->useTrailingSlash = false;
     }

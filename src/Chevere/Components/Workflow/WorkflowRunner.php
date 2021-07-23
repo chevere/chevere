@@ -30,11 +30,9 @@ use Throwable;
 
 final class WorkflowRunner implements WorkflowRunnerInterface
 {
-    private WorkflowRunInterface $workflowRun;
-
-    public function __construct(WorkflowRunInterface $workflowRun)
-    {
-        $this->workflowRun = $workflowRun;
+    public function __construct(
+        private WorkflowRunInterface $workflowRun
+    ) {
     }
 
     public function workflowRun(): WorkflowRunInterface
@@ -124,8 +122,6 @@ final class WorkflowRunner implements WorkflowRunnerInterface
                 ! is_a($serviceContainer->get($name), $className, false);
             if ($isMissing) {
                 $missing[] = "${name}:${className}";
-
-                continue;
             }
         }
         if ($missing !== []) {

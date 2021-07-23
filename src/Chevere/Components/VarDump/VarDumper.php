@@ -24,12 +24,6 @@ final class VarDumper implements VarDumperInterface
 {
     public Set $known;
 
-    private WriterInterface $writer;
-
-    private VarDumpFormatterInterface $formatter;
-
-    private VarDumpableInterface $dumpable;
-
     private int $indent = 0;
 
     private string $indentString = '';
@@ -37,13 +31,10 @@ final class VarDumper implements VarDumperInterface
     private int $depth = -1;
 
     public function __construct(
-        WriterInterface $writer,
-        VarDumpFormatterInterface $formatter,
-        VarDumpableInterface $dumpable
+        private WriterInterface $writer,
+        private VarDumpFormatterInterface $formatter,
+        private VarDumpableInterface $dumpable
     ) {
-        $this->writer = $writer;
-        $this->dumpable = $dumpable;
-        $this->formatter = $formatter;
         $this->known = new Set();
         ++$this->depth;
     }

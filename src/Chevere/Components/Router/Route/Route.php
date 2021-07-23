@@ -28,8 +28,6 @@ use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
 
 final class Route implements RouteInterface
 {
-    private RoutePathInterface $routePath;
-
     /**
      * @var array details about the instance maker
      */
@@ -44,9 +42,9 @@ final class Route implements RouteInterface
 
     private RouteEndpointsInterface $endpoints;
 
-    public function __construct(RoutePathInterface $routePath)
-    {
-        $this->routePath = $routePath;
+    public function __construct(
+        private RoutePathInterface $routePath
+    ) {
         $this->maker = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
         $this->endpoints = new RouteEndpoints();
     }

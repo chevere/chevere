@@ -19,14 +19,10 @@ final class RouteLocator implements RouteLocatorInterface
 {
     private string $name;
 
-    private string $repository;
-
-    private string $path;
-
-    public function __construct(string $repository, string $path)
-    {
-        $this->repository = $repository;
-        $this->path = $path;
+    public function __construct(
+        private string $repository,
+        private string $path
+    ) {
         $this->name = "${repository}:${path}";
     }
 

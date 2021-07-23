@@ -19,18 +19,14 @@ use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
 
 final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
 {
-    private array $trace;
-
-    private ThrowableHandlerFormatterInterface $formatter;
-
     private array $array = [];
 
     private string $string = '';
 
-    public function __construct(array $trace, ThrowableHandlerFormatterInterface $formatter)
-    {
-        $this->trace = $trace;
-        $this->formatter = $formatter;
+    public function __construct(
+        private array $trace,
+        private ThrowableHandlerFormatterInterface $formatter
+    ) {
         $this->string = '{main}';
         foreach ($this->trace as $pos => $entry) {
             $this->array[] = strtr(

@@ -26,14 +26,13 @@ final class ThrowableHandler implements ThrowableHandlerInterface
 {
     private DateTimeInterface $dateTimeUtc;
 
-    private ThrowableReadInterface $throwableRead;
-
     private string $id;
 
     private bool $isDebug = true;
 
-    public function __construct(ThrowableReadInterface $throwableRead)
-    {
+    public function __construct(
+        private ThrowableReadInterface $throwableRead
+    ) {
         try {
             $this->dateTimeUtc = new DateTimeImmutable(
                 'now',
@@ -49,7 +48,6 @@ final class ThrowableHandler implements ThrowableHandlerInterface
             );
         }
         // @codeCoverageIgnoreEnd
-        $this->throwableRead = $throwableRead;
         $this->id = uniqid('', false);
     }
 

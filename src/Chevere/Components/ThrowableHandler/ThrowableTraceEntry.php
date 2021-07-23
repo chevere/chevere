@@ -22,8 +22,6 @@ use ReflectionMethod;
 
 final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
 {
-    private array $entry;
-
     private string $file;
 
     private int $line;
@@ -38,9 +36,9 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
 
     private array $args;
 
-    public function __construct(array $entry)
-    {
-        $this->entry = $entry;
+    public function __construct(
+        private array $entry
+    ) {
         $this->assertEntry();
         $this->processEntry();
         $this->handleAnonClass();

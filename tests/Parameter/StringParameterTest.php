@@ -48,14 +48,20 @@ final class StringParameterTest extends TestCase
     public function testWithAddedAttribute(): void
     {
         $attribute = 'attribute';
+        $attributeValue = 'value';
         $parameter = new StringParameter('test');
         $this->assertCount(0, $parameter->attributes());
-        $parameter = $parameter->withAddedAttribute($attribute);
+        $this->assertFalse($parameter->hasAttribute('empty'));
+        $parameter = $parameter->withAddedAttribute(...[
+            $attribute => $attributeValue,
+        ]);
         $this->assertCount(1, $parameter->attributes());
         $this->assertTrue($parameter->hasAttribute($attribute));
         $this->assertFalse($parameter->hasAttribute('wrong-name'));
         $this->expectException(OverflowException::class);
-        $parameter->withAddedAttribute($attribute);
+        $parameter->withAddedAttribute(...[
+            $attribute => 'some-value',
+        ]);
     }
 
     public function testWithRemovedAttribute(): void

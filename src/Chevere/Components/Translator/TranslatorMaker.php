@@ -21,33 +21,21 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Translator\TranslatorMakerInterface;
 use Gettext\Generator\ArrayGenerator;
 use Gettext\Loader\PoLoader;
-use LanguageServerProtocol\MessageActionItem;
 use Throwable;
 
 final class TranslatorMaker implements TranslatorMakerInterface
 {
-    private DirInterface $sourceDir;
-
-    private DirInterface $targetDir;
-
     private DirInterface $localeSourceDir;
 
     private DirInterface $localeTargetDir;
 
     private PoLoader $poLoader;
 
-    public function __construct(DirInterface $sourceDir, DirInterface $targetDir)
-    {
-        try {
-            $sourceDir->assertExists();
-        } catch (Throwable $e) {
-            throw new InvalidArgumentException(
-                previous: $e,
-                message: new Message("Source directory doesn't exists")
-            );
-        }
-        $this->sourceDir = $sourceDir;
-        $this->targetDir = $targetDir;
+    public function __construct(
+        private DirInterface $sourceDir,
+        private DirInterface $targetDir
+    ) {
+        $this->sourceDir->assertExists();
         $this->poLoader = new PoLoader();
     }
 
@@ -96,15 +84,13 @@ final class TranslatorMaker implements TranslatorMakerInterface
         catch (Throwable $e) {
             throw new LogicException(
                 previous: $e,
-                message: new MessageActionItem('Unable to generate translations.')
+                message: new Message('Unable to generate translations.')
             );
         }
         // @codeCoverageIgnoreEnd
         $phpFile->assertExists();
 
         return $new;
-
-        // return $phpFile->path()->toString();
     }
 
     private function handleLocale(string $locale): void
