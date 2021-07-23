@@ -148,12 +148,13 @@ final class WorkflowTest extends TestCase
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $this->assertSame(['step1', 'bar'], $workflow->getVar('${step1:bar}'));
-        $step = new Step(
-            WorkflowTestStep1::class,
-            foo: '${not:found}'
-        );
         $this->expectException(InvalidArgumentException::class);
-        $workflow->withAdded($step);
+        $workflow->withAdded(
+            step: new Step(
+                WorkflowTestStep1::class,
+                foo: '${not:found}'
+            )
+        );
     }
 
     public function testConflictingTypeDependentActions(): void

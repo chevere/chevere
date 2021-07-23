@@ -253,7 +253,6 @@ final class Workflow implements WorkflowInterface
                         // $parameter = $parameters->get($matches[1]);
                         $this->vars->put($reference, [$matches[1]]);
                     }
-
                     $this->putParameter($matches[1], $parameter);
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $reference, $matches)) {
                     /** @var array $matches */
@@ -268,9 +267,10 @@ final class Workflow implements WorkflowInterface
             } catch (Throwable $e) {
                 throw new InvalidArgumentException(
                     previous: $e,
-                    message: (new Message('Incompatible declaration on %name% by %action%'))
+                    message: (new Message('Incompatible declaration on %name% by %action%: %message%'))
                         ->strong('%name%', $name)
                         ->strong('%action%', $action::class . ":${argument}")
+                        ->strtr('%message%', '[' . $e::class . '] ' . $e->getMessage())
                 );
             }
         }
