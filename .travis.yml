@@ -1,6 +1,7 @@
 dist: focal
 language: php
 php:
+  - 8.0
   - nightly
 matrix:
   allow_failures:
@@ -9,7 +10,9 @@ cache:
   directories:
     - "$HOME/.composer/cache"
 before_install:
+  - (phpenv config-rm xdebug.ini || exit 0)
   - pecl install ds
+  - pecl install pcov
   - phpenv config-add chevere.ini
   - composer validate
 addons:
