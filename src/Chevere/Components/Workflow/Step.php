@@ -84,12 +84,11 @@ final class Step implements StepInterface
         foreach ($this->parameters->getGenerator() as $name => $parameter) {
             $parameter->description();
             $argument = $namedArguments[$name] ?? null;
-            if ($argument === null) {
+            if ($argument !== null) {
+                $store[$name] = $argument;
+            } elseif ($this->parameters->isRequired($name)) {
                 $missing[] = $name;
-
-                continue;
             }
-            $store[$name] = $argument;
         }
         if ($missing !== []) {
             throw new BadMethodCallException(
@@ -102,14 +101,15 @@ final class Step implements StepInterface
 
     private function assertArgumentsCount(array $arguments): void
     {
-        $count = count($arguments);
-        if ($this->parameters->count() !== $count) {
+        $countPassed = count($arguments);
+        $countRequired = count($this->parameters->required());
+        if ($countRequired > $countPassed || $countRequired === 0 && $countPassed > 0) {
             throw new ArgumentCountException(
                 (new Message('Method %action% expects %interface% providing %parametersCount% arguments, %given% given'))
                     ->code('%action%', $this->action . '::run')
                     ->code('%interface%', ArgumentsInterface::class)
-                    ->code('%parametersCount%', (string) $this->parameters->count())
-                    ->code('%given%', (string) $count)
+                    ->code('%parametersCount%', (string) $countRequired)
+                    ->code('%given%', (string) $countPassed)
             );
         }
     }
