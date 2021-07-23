@@ -61,7 +61,7 @@ trait AttributesTrait
 
     public function hasAttribute(string ...$attributes): bool
     {
-        if (! isset($this->attributes)) {
+        if ($this->attributes->count() === 0) {
             return false;
         }
         foreach ($attributes as $attribute) {
@@ -75,6 +75,6 @@ trait AttributesTrait
 
     public function attributes(): Map
     {
-        return $this->attributes;
+        return $this->attributes ??= new Map();
     }
 }

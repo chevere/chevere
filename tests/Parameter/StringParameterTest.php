@@ -51,6 +51,7 @@ final class StringParameterTest extends TestCase
         $attributeValue = 'value';
         $parameter = new StringParameter('test');
         $this->assertCount(0, $parameter->attributes());
+        $this->assertFalse($parameter->hasAttribute('empty'));
         $parameter = $parameter->withAddedAttribute(...[
             $attribute => $attributeValue,
         ]);
