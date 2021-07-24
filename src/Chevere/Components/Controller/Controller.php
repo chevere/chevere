@@ -15,45 +15,32 @@ namespace Chevere\Components\Controller;
 
 use Chevere\Components\Action\Action;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Type\Type;
+use Chevere\Components\Parameter\StringParameter;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\Parameter\StringParameterInterface;
 
 abstract class Controller extends Action implements ControllerInterface
 {
-    protected TypeInterface $parametersType;
+    protected StringParameterInterface $parameterType;
 
-    public function __construct()
+    final public function __construct()
     {
-        $this->parametersType = new Type(self::PARAMETER_TYPE);
+        $this->parameterType ??= $this->parameter();
         $this->setUp();
         $this->assertParametersType();
     }
 
-    public function withSetup(): static
+    public function parameter(): StringParameterInterface
     {
-        $new = clone $this;
-        $new->setUp();
-        foreach ($this->parameters->getGenerator() as $name => $parameter) {
-            if (
-                ! $new->parameters->has($name)
-                || $parameter->type()->typeHinting() !== $new->parameters->get($name)->type()->typeHinting()
-            ) {
-                $new->assertParametersType();
-
-                break;
-            }
-        }
-
-        return $new;
+        return new StringParameter();
     }
 
     private function assertParametersType(): void
     {
         $invalid = [];
         foreach ($this->parameters()->getGenerator() as $name => $parameter) {
-            if ($parameter->type()->validator() !== $this->parametersType->validator()) {
+            if ($parameter->type()->validator() !== $this->parameterType->type()->validator()) {
                 $invalid[] = $name;
             }
         }
@@ -61,7 +48,7 @@ abstract class Controller extends Action implements ControllerInterface
             throw new InvalidArgumentException(
                 (new Message('Parameter %parameters% must be of type %type% for controller %className%.'))
                     ->code('%parameters%', implode(', ', $invalid))
-                    ->strong('%type%', $this->parametersType->typeHinting())
+                    ->strong('%type%', $this->parameterType->type()->typeHinting())
                     ->strong('%className%', static::class)
             );
         }

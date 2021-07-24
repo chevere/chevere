@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
-use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Action\ActionInterface;
+use Chevere\Interfaces\Parameter\StringParameterInterface;
 
 /**
  * Describes the component in charge of defining a controller, which is an action
@@ -25,13 +25,5 @@ use Chevere\Interfaces\Action\ActionInterface;
  */
 interface ControllerInterface extends ActionInterface
 {
-    public const PARAMETER_TYPE = Type::STRING;
-
-    /**
-     * Return an instance with setup (after plugins and dependency injection).
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains setup (after plugins and dependency injection).
-     */
-    public function withSetup(): static;
+    public function parameter(): StringParameterInterface;
 }

@@ -34,7 +34,7 @@ final class ControllerTest extends TestCase
     public function testController(): void
     {
         $controller = new ControllerTestController();
-        $this->assertSame(Type::STRING, $controller::PARAMETER_TYPE);
+        $this->assertSame(Type::STRING, $controller->parameter()->type()->primitive());
     }
 
     public function testHookedController(): void
@@ -46,8 +46,6 @@ final class ControllerTest extends TestCase
         $controller = $controller->withHooksRunner(
             new HooksRunner($hooksQueue)
         );
-        $this->assertCount(1, $controller->parameters());
-        $controller = $controller->withSetup();
         $this->assertCount(1, $controller->parameters());
         $this->assertSame(['string'], $controller->parameters()->keys());
     }
@@ -62,7 +60,5 @@ final class ControllerTest extends TestCase
             new HooksRunner($hooksQueue)
         );
         $this->assertCount(1, $controller->parameters());
-        $this->expectException(InvalidArgumentException::class);
-        $controller->withSetup();
     }
 }
