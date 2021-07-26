@@ -18,7 +18,7 @@ namespace Chevere\Components\Common\Traits;
  */
 trait DescriptionTrait
 {
-    protected string $description = '';
+    //private string $description = ''; @FLAG PHP BUG
 
     public function getDescription(): string
     {
@@ -27,6 +27,6 @@ trait DescriptionTrait
 
     public function description(): string
     {
-        return $this->description;
+        return $this->description ??= $this->getDescription();
     }
 }

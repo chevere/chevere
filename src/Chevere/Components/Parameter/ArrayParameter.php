@@ -29,8 +29,9 @@ final class ArrayParameter implements ArrayParameterInterface
 
     private array $default = [];
 
-    public function __construct()
-    {
+    public function __construct(
+        private string $description = ''
+    ) {
         $this->type = new Type(Type::ARRAY);
         $this->attributes = new Map();
     }

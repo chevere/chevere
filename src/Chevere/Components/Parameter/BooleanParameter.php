@@ -29,8 +29,9 @@ final class BooleanParameter implements BooleanParameterInterface
 
     private bool $default = false;
 
-    public function __construct()
-    {
+    public function __construct(
+        private string $description = ''
+    ) {
         $this->type = new Type(Type::BOOLEAN);
         $this->attributes = new Map();
     }

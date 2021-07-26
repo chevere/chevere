@@ -34,8 +34,9 @@ final class StringParameter implements StringParameterInterface
 
     private string $default = '';
 
-    public function __construct()
-    {
+    public function __construct(
+        private string $description = ''
+    ) {
         $this->type = new Type(Type::STRING);
         $this->attributes = new Map();
         $this->regex = new Regex('/^.*$/');

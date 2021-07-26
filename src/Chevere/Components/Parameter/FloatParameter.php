@@ -29,8 +29,9 @@ final class FloatParameter implements FloatParameterInterface
 
     private float $default = 0.0;
 
-    public function __construct()
-    {
+    public function __construct(
+        private string $description = ''
+    ) {
         $this->type = new Type(Type::FLOAT);
         $this->attributes = new Map();
     }

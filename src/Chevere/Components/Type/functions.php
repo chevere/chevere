@@ -89,13 +89,5 @@ function typeNull(): TypeInterface
  */
 function typeObject(string $className): TypeInterface
 {
-    $type = new Type($className);
-    if (! in_array($type->primitive(), [TypeInterface::PRIMITIVE_CLASS_NAME, TypeInterface::PRIMITIVE_INTERFACE_NAME], true)) {
-        throw new InvalidArgumentException(
-            (new Message("Class %className% doesn't exists"))
-                ->code('%className%', $className)
-        );
-    }
-
-    return $type;
+    return new Type($className);
 }

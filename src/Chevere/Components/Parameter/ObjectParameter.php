@@ -17,14 +17,33 @@ use Chevere\Components\Parameter\Traits\ParameterTrait;
 use function Chevere\Components\Type\typeObject;
 use Chevere\Interfaces\Parameter\ObjectParameterInterface;
 use Ds\Map;
+use stdClass;
 
 final class ObjectParameter implements ObjectParameterInterface
 {
     use ParameterTrait;
 
-    public function __construct(string $className)
-    {
-        $this->type = typeObject($className);
+    private string $className;
+
+    public function __construct(
+        private string $description = ''
+    ) {
+        $this->className = stdClass::class;
+        $this->type = typeObject(stdClass::class);
         $this->attributes = new Map();
+    }
+
+    public function className(): string
+    {
+        return $this->className;
+    }
+
+    public function withClassName(string $className): ObjectParameterInterface
+    {
+        $new = clone $this;
+        $new->className = $className;
+        $new->type = typeObject($className);
+
+        return $new;
     }
 }

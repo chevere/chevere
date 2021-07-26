@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Parameter;
 
-use Chevere\Exceptions\Core\InvalidArgumentException;
-
 /**
  * Describes the component in charge of defining a parameter of type object (typed).
  */
 interface ObjectParameterInterface extends ParameterInterface
 {
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function __construct(string $className);
+    public function className(): string;
+
+    public function withClassName(string $className): self;
 }
