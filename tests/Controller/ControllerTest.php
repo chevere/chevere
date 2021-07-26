@@ -35,6 +35,13 @@ final class ControllerTest extends TestCase
     {
         $controller = new ControllerTestController();
         $this->assertSame(Type::STRING, $controller->parameter()->type()->primitive());
+        $this->assertSame('', $controller->relation());
+    }
+
+    public function testControllerRelation(): void
+    {
+        $controller = new ControllerTestController('Some Relation');
+        $this->assertSame('Some Relation', $controller->relation());
     }
 
     public function testHookedController(): void

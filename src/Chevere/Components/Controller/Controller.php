@@ -24,8 +24,9 @@ abstract class Controller extends Action implements ControllerInterface
 {
     protected StringParameterInterface $parameterType;
 
-    final public function __construct()
-    {
+    final public function __construct(
+        protected string $relation = ''
+    ) {
         $this->parameterType ??= $this->parameter();
         $this->setUp();
         $this->assertParametersType();
@@ -34,6 +35,11 @@ abstract class Controller extends Action implements ControllerInterface
     public function parameter(): StringParameterInterface
     {
         return new StringParameter();
+    }
+
+    final public function relation(): string
+    {
+        return $this->relation;
     }
 
     private function assertParametersType(): void

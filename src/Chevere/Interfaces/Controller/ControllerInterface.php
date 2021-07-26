@@ -25,5 +25,7 @@ use Chevere\Interfaces\Parameter\StringParameterInterface;
  */
 interface ControllerInterface extends ActionInterface
 {
+    public function relation(): string;
+
     public function parameter(): StringParameterInterface;
 }
