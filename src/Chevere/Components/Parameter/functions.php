@@ -23,9 +23,9 @@ use Chevere\Interfaces\Parameter\StringParameterInterface;
  * @throws InvalidArgumentException
  */
 function stringParameter(
-    ?string $description,
-    ?string $default,
-    ?string $regex,
+    ?string $description = null,
+    ?string $default = null,
+    ?string $regex = null,
     string ...$attributes
 ): StringParameterInterface {
     $parameter = new StringParameter();
