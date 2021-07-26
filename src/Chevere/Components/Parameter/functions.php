@@ -23,15 +23,26 @@ use Chevere\Interfaces\Parameter\StringParameterInterface;
  * @throws InvalidArgumentException
  */
 function stringParameter(
-    string $description = '',
-    string $default = '',
-    string $regex = '',
+    ?string $description,
+    ?string $default,
+    ?string $regex,
     string ...$attributes
 ): StringParameterInterface {
-    return (new StringParameter($description))
-        ->withRegex(new Regex($regex === '' ? '/*/' : $regex))
-        ->withDefault($default)
-        ->withAddedAttribute(...$attributes);
+    $parameter = new StringParameter();
+    if (isset($description)) {
+        $parameter = $parameter->withDescription($description);
+    }
+    if (isset($default)) {
+        $parameter = $parameter->withDefault($default);
+    }
+    if (isset($regex)) {
+        $parameter = $parameter->withRegex(new Regex($regex));
+    }
+    if (isset($attributes)) {
+        $parameter = $parameter->withAddedAttribute(...$attributes);
+    }
+
+    return $parameter;
 }
 
 /**
