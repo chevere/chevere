@@ -50,8 +50,12 @@ function stringParameter(
  */
 function objectParameter(
     string $className,
-    string $description = ''
+    ?string $description = null
 ): ObjectParameterInterface {
-    return (new ObjectParameter($description))
-        ->withClassName($className);
+    $parameter = new ObjectParameter();
+    if (isset($description)) {
+        $parameter = $parameter->withDescription($description);
+    }
+
+    return $parameter->withClassName($className);
 }
