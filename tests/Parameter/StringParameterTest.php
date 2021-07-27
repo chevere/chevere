@@ -41,8 +41,6 @@ final class StringParameterTest extends TestCase
         $description = 'ola k ase';
         $parameter = new StringParameter('test');
         $this->assertSame('test', $parameter->description());
-        $parameter = $parameter->withDescription($description);
-        $this->assertSame($description, $parameter->description());
     }
 
     public function testWithAddedAttribute(): void

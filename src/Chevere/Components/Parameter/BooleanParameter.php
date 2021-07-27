@@ -19,7 +19,6 @@ use Chevere\Interfaces\Parameter\BooleanParameterInterface;
 use Ds\Map;
 
 /**
- * @method BooleanParameterInterface withDescription(string $description)
  * @method BooleanParameterInterface withAddedAttribute(string ...$attributes)
  * @method BooleanParameterInterface withoutAttribute(string ...$attribute)
  */

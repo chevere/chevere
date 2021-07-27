@@ -19,7 +19,6 @@ use Chevere\Interfaces\Parameter\IntegerParameterInterface;
 use Ds\Map;
 
 /**
- * @method IntegerParameterInterface withDescription(string $description)
  * @method IntegerParameterInterface withAddedAttribute(string ...$attributes)
  * @method IntegerParameterInterface withoutAttribute(string ...$attribute)
  */

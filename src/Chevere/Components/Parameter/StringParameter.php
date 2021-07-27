@@ -23,7 +23,6 @@ use Chevere\Interfaces\Regex\RegexInterface;
 use Ds\Map;
 
 /**
- * @method StringParameterInterface withDescription(string $description)
  * @method StringParameterInterface withAddedAttribute(string ...$attributes)
  */
 final class StringParameter implements StringParameterInterface

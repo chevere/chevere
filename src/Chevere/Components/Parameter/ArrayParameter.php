@@ -19,7 +19,6 @@ use Chevere\Interfaces\Parameter\ArrayParameterInterface;
 use Ds\Map;
 
 /**
- * @method ArrayParameterInterface withDescription(string $description)
  * @method ArrayParameterInterface withAddedAttribute(string ...$attributes)
  * @method ArrayParameterInterface withoutAttribute(string ...$attribute)
  */

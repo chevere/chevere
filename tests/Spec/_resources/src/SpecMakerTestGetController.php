@@ -16,7 +16,7 @@ namespace Chevere\Tests\Spec\_resources\src;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Regex\Regex;
+use function Chevere\Components\Parameter\stringParameter;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
@@ -26,14 +26,16 @@ class SpecMakerTestGetController extends Controller
     public function getParameters(): ParametersInterface
     {
         return (new Parameters(
-            id: (new StringParameter())
-                ->withRegex(new Regex('/^[0-9]+$/'))
-                ->withDescription('The user integer id')
+            id: stringParameter(
+                description: 'The user integer id',
+                regex: '/^[0-9]+$/'
+            )
         ))
             ->withAddedOptional(
-                name: (new StringParameter())
-                    ->withRegex(new Regex('/^[\w]+$/'))
-                    ->withDescription('The user name')
+                name: stringParameter(
+                    description: 'The user name',
+                    regex: '/^[\w]+$/'
+                )
             );
     }
 

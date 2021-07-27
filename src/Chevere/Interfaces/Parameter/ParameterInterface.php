@@ -22,20 +22,8 @@ use Chevere\Interfaces\Type\TypeInterface;
  */
 interface ParameterInterface extends DescriptionInterface, AttributesInterface
 {
-    public function __construct(
-        string $description = ''
-    );
-
     /**
      * Provides access to the type instance.
      */
     public function type(): TypeInterface;
-
-    /**W
-     * Return an instance with the specified `$description`.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$description`.
-     */
-    public function withDescription(string $description): static;
 }

@@ -28,10 +28,7 @@ function stringParameter(
     ?string $regex = null,
     string ...$attributes
 ): StringParameterInterface {
-    $parameter = new StringParameter();
-    if (isset($description)) {
-        $parameter = $parameter->withDescription($description);
-    }
+    $parameter = new StringParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
     }
@@ -52,10 +49,7 @@ function objectParameter(
     string $className,
     ?string $description = null
 ): ObjectParameterInterface {
-    $parameter = new ObjectParameter();
-    if (isset($description)) {
-        $parameter = $parameter->withDescription($description);
-    }
+    $parameter = new ObjectParameter($description ?? '');
 
     return $parameter->withClassName($className);
 }

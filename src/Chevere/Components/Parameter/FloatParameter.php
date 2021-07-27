@@ -19,7 +19,6 @@ use Chevere\Interfaces\Parameter\FloatParameterInterface;
 use Ds\Map;
 
 /**
- * @method FloatParameterInterface withDescription(string $description)
  * @method FloatParameterInterface withAddedAttribute(string ...$attributes)
  * @method FloatParameterInterface withoutAttribute(string ...$attribute)
  */

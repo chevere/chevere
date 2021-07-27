@@ -24,14 +24,6 @@ trait ParameterTrait
 
     private TypeInterface $type;
 
-    public function withDescription(string $description): static
-    {
-        $new = clone $this;
-        $new->description = $description;
-
-        return $new;
-    }
-
     public function type(): TypeInterface
     {
         return $this->type;
