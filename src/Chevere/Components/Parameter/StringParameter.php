@@ -20,7 +20,7 @@ use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Parameter\StringParameterInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
-use Ds\Map;
+use Chevere\Interfaces\Type\TypeInterface;
 
 /**
  * @method StringParameterInterface withAddedAttribute(string ...$attributes)
@@ -36,9 +36,13 @@ final class StringParameter implements StringParameterInterface
     public function __construct(
         private string $description = ''
     ) {
-        $this->type = new Type(Type::STRING);
-        $this->attributes = new Map();
         $this->regex = new Regex('/^.*$/');
+        $this->setUp();
+    }
+
+    public function getType(): TypeInterface
+    {
+        return new Type(Type::STRING);
     }
 
     public function withRegex(RegexInterface $regex): StringParameterInterface

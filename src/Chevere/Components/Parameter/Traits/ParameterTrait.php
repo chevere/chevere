@@ -16,6 +16,7 @@ namespace Chevere\Components\Parameter\Traits;
 use Chevere\Components\Common\Traits\AttributesTrait;
 use Chevere\Components\Common\Traits\DescriptionTrait;
 use Chevere\Interfaces\Type\TypeInterface;
+use Ds\Map;
 
 trait ParameterTrait
 {
@@ -24,12 +25,26 @@ trait ParameterTrait
 
     private TypeInterface $type;
 
-    public function type(): TypeInterface
+    abstract public function getType(): TypeInterface;
+
+    public function __construct(
+        private string $description = ''
+    ) {
+        $this->setUp();
+    }
+
+    public function setUp(): void
+    {
+        $this->type = $this->getType();
+        $this->attributes = new Map();
+    }
+
+    final public function type(): TypeInterface
     {
         return $this->type;
     }
 
-    public function description(): string
+    final public function description(): string
     {
         return $this->description;
     }

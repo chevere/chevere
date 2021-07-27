@@ -16,7 +16,7 @@ namespace Chevere\Components\Parameter;
 use Chevere\Components\Parameter\Traits\ParameterTrait;
 use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Parameter\FloatParameterInterface;
-use Ds\Map;
+use Chevere\Interfaces\Type\TypeInterface;
 
 /**
  * @method FloatParameterInterface withAddedAttribute(string ...$attributes)
@@ -28,11 +28,9 @@ final class FloatParameter implements FloatParameterInterface
 
     private float $default = 0.0;
 
-    public function __construct(
-        private string $description = ''
-    ) {
-        $this->type = new Type(Type::FLOAT);
-        $this->attributes = new Map();
+    public function getType(): TypeInterface
+    {
+        return new Type(Type::FLOAT);
     }
 
     public function withDefault(float $value): FloatParameterInterface

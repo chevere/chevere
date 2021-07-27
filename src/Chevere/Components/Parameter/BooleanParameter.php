@@ -16,7 +16,7 @@ namespace Chevere\Components\Parameter;
 use Chevere\Components\Parameter\Traits\ParameterTrait;
 use Chevere\Components\Type\Type;
 use Chevere\Interfaces\Parameter\BooleanParameterInterface;
-use Ds\Map;
+use Chevere\Interfaces\Type\TypeInterface;
 
 /**
  * @method BooleanParameterInterface withAddedAttribute(string ...$attributes)
@@ -28,11 +28,9 @@ final class BooleanParameter implements BooleanParameterInterface
 
     private bool $default = false;
 
-    public function __construct(
-        private string $description = ''
-    ) {
-        $this->type = new Type(Type::BOOLEAN);
-        $this->attributes = new Map();
+    public function getType(): TypeInterface
+    {
+        return new Type(Type::BOOLEAN);
     }
 
     public function withDefault(bool $value): BooleanParameterInterface

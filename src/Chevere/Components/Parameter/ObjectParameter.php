@@ -16,7 +16,7 @@ namespace Chevere\Components\Parameter;
 use Chevere\Components\Parameter\Traits\ParameterTrait;
 use function Chevere\Components\Type\typeObject;
 use Chevere\Interfaces\Parameter\ObjectParameterInterface;
-use Ds\Map;
+use Chevere\Interfaces\Type\TypeInterface;
 use stdClass;
 
 final class ObjectParameter implements ObjectParameterInterface
@@ -29,8 +29,12 @@ final class ObjectParameter implements ObjectParameterInterface
         private string $description = ''
     ) {
         $this->className = stdClass::class;
-        $this->type = typeObject(stdClass::class);
-        $this->attributes = new Map();
+        $this->setUp();
+    }
+
+    public function getType(): TypeInterface
+    {
+        return typeObject($this->className);
     }
 
     public function className(): string
