@@ -16,10 +16,11 @@ namespace Chevere\Components\Parameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Parameter\ObjectParameterInterface;
+use Chevere\Interfaces\Parameter\ParameterInterface;
+use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Parameter\StringParameterInterface;
 
 /**
- * @codeCoverageIgnore
  * @throws InvalidArgumentException
  */
 function stringParameter(
@@ -28,7 +29,9 @@ function stringParameter(
     ?string $regex = null,
     string ...$attributes
 ): StringParameterInterface {
-    $parameter = new StringParameter($description ?? '');
+    $parameter = isset($description)
+        ? new StringParameter($description)
+        : new StringParameter();
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
     }
@@ -43,13 +46,26 @@ function stringParameter(
 }
 
 /**
- * @codeCoverageIgnore
+ * @throws InvalidArgumentException
  */
 function objectParameter(
     string $className,
     ?string $description = null
 ): ObjectParameterInterface {
-    $parameter = new ObjectParameter($description ?? '');
+    $parameter = isset($description)
+        ? new ObjectParameter($description)
+        : new ObjectParameter();
 
     return $parameter->withClassName($className);
+}
+
+function parameters(
+    ?ParameterInterface ...$required,
+): ParametersInterface {
+    $parameters = new Parameters();
+    if (isset($required)) {
+        $parameters = $parameters->withAdded(...$required);
+    }
+
+    return $parameters;
 }
