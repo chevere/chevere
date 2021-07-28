@@ -98,7 +98,7 @@ final class Type implements TypeInterface
 
     private function setPrimitive(): void
     {
-        if (isset(self::TYPE_VALIDATORS[$this->type])) {
+        if (isset(self::TYPE_VALIDATORS[$this->type]) && in_array($this->type, self::TYPE_ARGUMENTS)) {
             $this->primitive = $this->type;
 
             return;

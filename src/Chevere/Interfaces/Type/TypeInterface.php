@@ -62,6 +62,22 @@ interface TypeInterface
     ];
 
     /**
+     * Type arguments accepted.
+     */
+    public const TYPE_ARGUMENTS = [
+        self::ARRAY,
+        self::BOOLEAN,
+        self::CALLABLE,
+        self::FLOAT,
+        self::INTEGER,
+        self::ITERABLE,
+        self::NULL,
+        self::OBJECT,
+        self::RESOURCE,
+        self::STRING,
+    ];
+
+    /**
      * @param string $type A debug type.
      * @throws InvalidArgumentException if the type doesn't exists
      */
