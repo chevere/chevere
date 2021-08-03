@@ -26,6 +26,7 @@ use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunnerInterface;
+use function DeepCopy\deep_copy;
 use Throwable;
 
 final class WorkflowRunner implements WorkflowRunnerInterface
@@ -56,13 +57,15 @@ final class WorkflowRunner implements WorkflowRunnerInterface
                 $new->injectDependencies($action, $serviceContainer);
                 $arguments = $new->getActionArguments($action, $step);
                 $response = $new->getActionRunResponse($action, $arguments);
-                $new->addStep($name, $step, $response);
+                deep_copy($response);
+                $new->addStep($name, $response);
             }
             // @codeCoverageIgnoreStart
             catch (Throwable $e) {
                 throw new RuntimeException(
                     previous: $e,
-                    message: (new Message('Step: %step% Action: %action%'))
+                    message: (new Message('Caught %throwable% at step:%step% when running action:%action%'))
+                        ->code('%throwable%', $e::class)
                         ->code('%step%', $name)
                         ->code('%action%', $actionName)
                 );
@@ -118,8 +121,8 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         $missing = [];
         foreach ($dependencies->getGenerator() as $name => $className) {
             $isMissing =
-                ! $serviceContainer->has($name) ||
-                ! is_a($serviceContainer->get($name), $className, false);
+                !$serviceContainer->has($name) ||
+                !is_a($serviceContainer->get($name), $className, false);
             if ($isMissing) {
                 $missing[] = "${name}:${className}";
             }
@@ -147,7 +150,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
     {
         $arguments = [];
         foreach ($step->arguments() as $name => $taskArgument) {
-            if (! $this->workflowRun->workflow()->hasVar($taskArgument)) {
+            if (!$this->workflowRun->workflow()->hasVar($taskArgument)) {
                 // @codeCoverageIgnoreStart
                 $arguments[$name] = $taskArgument;
 
@@ -167,19 +170,9 @@ final class WorkflowRunner implements WorkflowRunnerInterface
         return $arguments;
     }
 
-    private function addStep(string $name, StepInterface $step, ResponseInterface $response): void
+    private function addStep(string $name, ResponseInterface $response): void
     {
-        try {
-            $this->workflowRun = $this->workflowRun->withStepResponse($name, $response);
-        }
-        // @codeCoverageIgnoreStart
-        catch (Throwable $e) {
-            throw new LogicException(
-                previous: $e,
-                message: (new Message('Unmatched response from method %method%'))
-                    ->code('%method%', $step->action() . '::run')
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        $this->workflowRun = $this->workflowRun
+            ->withStepResponse($name, $response);
     }
 }
