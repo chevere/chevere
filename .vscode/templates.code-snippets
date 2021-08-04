@@ -4,6 +4,7 @@
         "prefix": "interface",
         "body": [
             "<?php",
+            "",
             "namespace Chevere\\Interfaces\\\\${TM_DIRECTORY/.*Interfaces\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
             "",
             "/**",
@@ -35,6 +36,7 @@
         "prefix": "component",
         "body": [
             "<?php",
+            "",
             "namespace Chevere\\Components\\\\${TM_DIRECTORY/.*Components\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
             "",
             "final class $TM_FILENAME_BASE",
@@ -48,6 +50,7 @@
         "prefix": "exception",
         "body": [
             "<?php",
+            "",
             "namespace Chevere\\Exceptions\\\\${TM_DIRECTORY/.*Exceptions\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
             "",
             "use Chevere\\Exceptions\\Core\\Exception;",
@@ -65,6 +68,7 @@
         "prefix": "trait",
         "body": [
             "<?php",
+            "",
             "namespace Chevere\\Components\\\\${TM_DIRECTORY/.*Components\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
             "",
             "trait $TM_FILENAME_BASE",
