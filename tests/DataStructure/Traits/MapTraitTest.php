@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructure\Traits;
 
+use function Chevere\Components\Var\deepCopy;
 use Chevere\Tests\DataStructure\src\UsesMapTrait;
-use function DeepCopy\deep_copy;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -50,7 +50,7 @@ final class MapTraitTest extends TestCase
         $mapClone = $mapClone->withPut($keyAdd, $object);
         $this->assertSame($object, $mapClone->map()->get($keyAdd));
         $this->assertNotSame($object, $mapClone->map()->get($key));
-        $mapClone = $mapClone->withPut($keyAdd, deep_copy($object));
+        $mapClone = $mapClone->withPut($keyAdd, deepCopy($object));
         $this->assertNotSame($object, $mapClone->map()->get($keyAdd));
     }
 }

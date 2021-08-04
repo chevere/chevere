@@ -15,13 +15,13 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
+use function Chevere\Components\Var\deepCopy;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
-use function DeepCopy\deep_copy;
 use Ds\Map;
 use Ramsey\Uuid\Uuid;
 use TypeError;
@@ -43,7 +43,7 @@ final class WorkflowRun implements WorkflowRunInterface
 
     public function __clone()
     {
-        $this->steps = deep_copy($this->steps);
+        $this->steps = deepCopy($this->steps);
     }
 
     public function uuid(): string

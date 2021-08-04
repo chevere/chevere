@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
+use function Chevere\Components\Var\deepCopy;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecsInterface;
-use function DeepCopy\deep_copy;
 
 final class RoutableSpec implements RoutableSpecInterface
 {
@@ -62,7 +62,7 @@ final class RoutableSpec implements RoutableSpecInterface
 
     public function clonedRouteEndpointSpecs(): RouteEndpointSpecs
     {
-        return deep_copy($this->routeEndpointSpecs);
+        return deepCopy($this->routeEndpointSpecs);
     }
 
     public function toArray(): array

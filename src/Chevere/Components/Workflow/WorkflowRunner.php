@@ -15,6 +15,7 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
+use function Chevere\Components\Var\deepCopy;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\RuntimeException;
@@ -26,7 +27,6 @@ use Chevere\Interfaces\Response\ResponseInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunInterface;
 use Chevere\Interfaces\Workflow\WorkflowRunnerInterface;
-use function DeepCopy\deep_copy;
 use Throwable;
 
 final class WorkflowRunner implements WorkflowRunnerInterface
@@ -57,7 +57,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
                 $new->injectDependencies($action, $serviceContainer);
                 $arguments = $new->getActionArguments($action, $step);
                 $response = $new->getActionRunResponse($action, $arguments);
-                deep_copy($response);
+                deepCopy($response);
                 $new->addStep($name, $response);
             }
             // @codeCoverageIgnoreStart

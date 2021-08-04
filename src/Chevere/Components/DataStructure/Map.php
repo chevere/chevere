@@ -15,9 +15,9 @@ namespace Chevere\Components\DataStructure;
 
 use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
+use function Chevere\Components\Var\deepCopy;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MapInterface;
-use function DeepCopy\deep_copy;
 use Ds\Map as DsMap;
 
 final class Map implements MapInterface
@@ -35,7 +35,7 @@ final class Map implements MapInterface
 
     public function __clone()
     {
-        $this->map = new DsMap(deep_copy($this->map->toArray()));
+        $this->map = new DsMap(deepCopy($this->map->toArray()));
     }
 
     public function withPut(mixed ...$namedValues): self
@@ -66,7 +66,7 @@ final class Map implements MapInterface
     {
         $missing = [];
         foreach ($keys as $k) {
-            if (! $this->map->hasKey($k)) {
+            if (!$this->map->hasKey($k)) {
                 $missing[] = $k;
             }
         }

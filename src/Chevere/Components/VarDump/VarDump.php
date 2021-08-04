@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
+use function Chevere\Components\Var\deepCopy;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
 use Chevere\Interfaces\VarDump\VarDumpOutputterInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
-use function DeepCopy\deep_copy;
 
 final class VarDump implements VarDumpInterface
 {
@@ -66,7 +66,7 @@ final class VarDump implements VarDumpInterface
 
     public function vars(): array
     {
-        return deep_copy($this->vars);
+        return deepCopy($this->vars);
     }
 
     public function shift(): int

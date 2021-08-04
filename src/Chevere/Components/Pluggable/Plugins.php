@@ -17,13 +17,13 @@ use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use function Chevere\Components\Filesystem\varForFilePhpReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
+use function Chevere\Components\Var\deepCopy;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Pluggable\PluggableNotRegisteredException;
 use Chevere\Exceptions\Pluggable\PlugsFileNotExistsException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Chevere\Interfaces\Pluggable\PluginsInterface;
 use Chevere\Interfaces\Pluggable\PlugsQueueInterface;
-use function DeepCopy\deep_copy;
 
 /**
  * Pluggable -> plugs.php interaction
@@ -39,7 +39,7 @@ final class Plugins implements PluginsInterface
 
     public function clonedClassMap(): ClassMapInterface
     {
-        return deep_copy($this->classMap);
+        return deepCopy($this->classMap);
     }
 
     public function getPlugsQueue(string $pluggableName): PlugsQueueInterface

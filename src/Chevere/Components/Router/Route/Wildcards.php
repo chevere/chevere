@@ -15,9 +15,9 @@ namespace Chevere\Components\Router\Route;
 
 use Chevere\Components\DataStructure\Traits\MapToArrayTrait;
 use Chevere\Components\DataStructure\Traits\MapTrait;
+use function Chevere\Components\Var\deepCopy;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Router\Route\WildcardsInterface;
-use function DeepCopy\deep_copy;
 use Ds\Map;
 use RangeException;
 
@@ -46,7 +46,7 @@ final class Wildcards implements WildcardsInterface
 
     public function __clone()
     {
-        $this->map = deep_copy($this->map);
+        $this->map = deepCopy($this->map);
         $this->index = new Map($this->index->toArray());
     }
 

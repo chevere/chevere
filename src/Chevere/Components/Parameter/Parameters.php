@@ -19,7 +19,8 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-use function DeepCopy\deep_copy;
+
+use function Chevere\Components\Var\deepCopy;
 use Ds\Map;
 use Ds\Set;
 
@@ -41,7 +42,7 @@ final class Parameters implements ParametersInterface
 
     public function __clone()
     {
-        $this->map = deep_copy($this->map);
+        $this->map = deepCopy($this->map);
         $this->required = new Set($this->required->toArray());
         $this->optional = new Set($this->optional->toArray());
     }

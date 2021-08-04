@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Pluggable;
 
 use Chevere\Components\Message\Message;
+use function Chevere\Components\Var\deepCopy;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
-use function DeepCopy\deep_copy;
 use Ds\Set;
 
 final class PluggableAnchors implements PluggableAnchorsInterface
@@ -51,6 +51,6 @@ final class PluggableAnchors implements PluggableAnchorsInterface
 
     public function clonedSet(): Set
     {
-        return deep_copy($this->set);
+        return deepCopy($this->set);
     }
 }
