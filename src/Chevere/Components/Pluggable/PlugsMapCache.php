@@ -19,7 +19,7 @@ use Chevere\Components\ClassMap\ClassMap;
 use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
-use Chevere\Components\VarStorable\VarStorable;
+use Chevere\Components\Var\VarStorable;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
@@ -88,7 +88,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
 
     public function hasPlugsQueueTypedFor(string $className): bool
     {
-        if (! $this->cache->exists($this->classMapKey)) {
+        if (!$this->cache->exists($this->classMapKey)) {
             return false;
         }
 
@@ -103,7 +103,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
     {
         $this->assertClassMap();
         $classMap = $this->getClassMapFromCache();
-        if (! $classMap->has($className)) {
+        if (!$classMap->has($className)) {
             throw new OutOfBoundsException(
                 (new Message('Class name %className% not found'))
                     ->code('%className%', $className),
@@ -148,7 +148,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
 
     private function assertClassMap(): void
     {
-        if (! $this->cache->exists($this->classMapKey)) {
+        if (!$this->cache->exists($this->classMapKey)) {
             throw new OutOfBoundsException(
                 (new Message('No cache exists at cache key %key%'))
                     ->code('%key%', $this->classMapKey->toString()),

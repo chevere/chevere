@@ -28,7 +28,7 @@ use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarStorable\VarStorableInterface;
+use Chevere\Interfaces\Var\VarStorableInterface;
 use Throwable;
 
 final class FilePhpReturn implements FilePhpReturnInterface
@@ -114,7 +114,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
 
     private function getReturnVar($var)
     {
-        if (is_string($var) && ! ctype_space($var)) {
+        if (is_string($var) && !ctype_space($var)) {
             try {
                 $unserialize = new Deserialize($var);
                 $var = $unserialize->var();

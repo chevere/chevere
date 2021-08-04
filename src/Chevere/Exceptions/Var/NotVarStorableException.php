@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\VarStorable;
+namespace Chevere\Exceptions\Var;
 
 use Chevere\Exceptions\Core\Exception;
 

@@ -26,7 +26,7 @@ use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Interfaces\VarStorable\VarStorableInterface;
+use Chevere\Interfaces\Var\VarStorableInterface;
 
 final class Cache implements CacheInterface
 {
@@ -59,7 +59,7 @@ final class Cache implements CacheInterface
 
         try {
             $file = new File($path);
-            if (! $file->exists()) {
+            if (!$file->exists()) {
                 $file->create();
             }
             $file->assertExists();
@@ -117,7 +117,7 @@ final class Cache implements CacheInterface
     public function get(CacheKeyInterface $cacheKey): CacheItemInterface
     {
         $path = $this->getPath($cacheKey->toString());
-        if (! $path->exists()) {
+        if (!$path->exists()) {
             throw new OutOfBoundsException(
                 (new Message('No cache for key %key%'))
                     ->code('%key%', $cacheKey->toString())
