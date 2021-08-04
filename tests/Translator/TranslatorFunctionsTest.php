@@ -14,6 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\Translator;
 
 use function Chevere\Components\Filesystem\dirForPath;
+use function Chevere\Components\Translator\__;
+use function Chevere\Components\Translator\__f;
+use function Chevere\Components\Translator\__n;
+use function Chevere\Components\Translator\__nf;
+use function Chevere\Components\Translator\__nt;
+use function Chevere\Components\Translator\__t;
 use Chevere\Components\Translator\TranslatorInstance;
 use Chevere\Components\Translator\TranslatorLoader;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +48,8 @@ final class TranslatorFunctionsTest extends TestCase
             "${value} seconds",
             __nt('%d second', '%d seconds', $value, [
                 '%d' => $value,
-            ]));
+            ])
+        );
     }
 
     public function testTranslator(): void
@@ -69,6 +76,7 @@ final class TranslatorFunctionsTest extends TestCase
             "${value} segundos",
             __nt('%d second', '%d segundos', $value, [
                 '%d' => $value,
-            ]));
+            ])
+        );
     }
 }
