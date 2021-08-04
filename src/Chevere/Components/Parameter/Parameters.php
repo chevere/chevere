@@ -72,7 +72,7 @@ final class Parameters implements ParametersInterface
         $new = clone $this;
         foreach ($parameters as $name => $param) {
             $name = (string) $name;
-            if (! $new->map->hasKey($name)) {
+            if (!$new->map->hasKey($name)) {
                 throw new OutOfBoundsException(
                     (new Message("Parameter %name% doesn't exists"))
                         ->code('%name%', $name)
@@ -84,9 +84,15 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    public function has(string $parameter): bool
+    public function has(string ...$parameter): bool
     {
-        return $this->map->hasKey($parameter);
+        foreach ($parameter as $pos => $value) {
+            if (!$this->map->hasKey($value)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function isRequired(string $parameter): bool
@@ -100,7 +106,7 @@ final class Parameters implements ParametersInterface
     {
         $this->assertNoOutOfBounds($parameter);
 
-        return ! $this->required->contains($parameter);
+        return !$this->required->contains($parameter);
     }
 
     public function get(string $name): ParameterInterface
@@ -137,7 +143,7 @@ final class Parameters implements ParametersInterface
 
     private function assertNoOutOfBounds(string $parameter): void
     {
-        if (! $this->has($parameter)) {
+        if (!$this->has($parameter)) {
             throw new OutOfBoundsException(
                 (new Message("Parameter %name% doesn't exists"))
                     ->code('%name%', $parameter)

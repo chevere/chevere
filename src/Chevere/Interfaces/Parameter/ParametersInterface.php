@@ -62,9 +62,9 @@ interface ParametersInterface extends MappedInterface
     public function withModify(ParameterInterface ...$parameters): self;
 
     /**
-     * Indicates whether the instance has a parameter by name.
+     * Indicates whether the instance has a parameter by name(s).
      */
-    public function has(string $parameter): bool;
+    public function has(string ...$parameter): bool;
 
     /**
      * Indicates whether the `$parameter` identified by its name is required.
