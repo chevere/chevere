@@ -22,6 +22,7 @@ use Chevere\Components\VarStorable\VarStorable;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use PHPUnit\Framework\TestCase;
+use function Safe\file_put_contents;
 
 final class CacheItemTest extends TestCase
 {
@@ -52,6 +53,7 @@ final class CacheItemTest extends TestCase
             unserialize($var),
             $cacheItem->var()
         );
+        unlink($path->toString());
     }
 
     private function getCacheItem(PathInterface $path): CacheItemInterface
@@ -67,6 +69,9 @@ final class CacheItemTest extends TestCase
 
     private function writeSerialized(PathInterface $path): void
     {
+        if (!$path->exists()) {
+            file_put_contents($path->toString(), '');
+        }
         $fileReturn = new FilePhpReturn(
             new FilePhp(
                 new File($path)
