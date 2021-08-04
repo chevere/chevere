@@ -49,10 +49,10 @@ final class VarStorable implements VarStorableInterface
     private function assertExportable($var): void
     {
         $this->assertIsNotResource($var);
-        if (is_iterable($var)) {
-            $this->breadcrumbIterable($var);
-        } elseif (is_object($var)) {
+        if (is_object($var)) {
             $this->breadcrumbObject($var);
+        } elseif (is_iterable($var)) {
+            $this->breadcrumbIterable($var);
         }
     }
 
@@ -63,10 +63,10 @@ final class VarStorable implements VarStorableInterface
     {
         if (is_resource($var)) {
             if ($this->breadcrumb->count() > 0) {
-                $message = (new Message("Passed argument contains a resource which can't be exported at %at%"))
+                $message = (new Message("Argument contains a resource which can't be exported at %at%"))
                     ->code('%at%', $this->breadcrumb->toString());
             } else {
-                $message = new Message("Argument is a resource which can't be exported");
+                $message = new Message("Argument is of type resource which can't be exported");
             }
 
             throw new NotVarStorableException($message);
@@ -83,7 +83,7 @@ final class VarStorable implements VarStorableInterface
         foreach ($var as $key => $val) {
             $key = (string) $key;
             $this->breadcrumb = $this->breadcrumb
-                ->withAddedItem('key:' . $key);
+                ->withAddedItem('key: ' . $key);
             $memberKey = $this->breadcrumb->pos();
             $this->assertExportable($val);
             $this->breadcrumb = $this->breadcrumb
@@ -96,14 +96,21 @@ final class VarStorable implements VarStorableInterface
     private function breadcrumbObject(object $var): void
     {
         $this->breadcrumb = $this->breadcrumb
-            ->withAddedItem('object:' . get_class($var));
+            ->withAddedItem('object: ' . $var::class);
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($var);
         $properties = $reflection->getProperties();
         foreach ($properties as $property) {
             $property->setAccessible(true);
+            $propertyType = $property->hasType()
+                ? $property->getType()->getName() . ' '
+                : '';
             $this->breadcrumb = $this->breadcrumb
-                ->withAddedItem('property:$' . $property->getName());
+                ->withAddedItem(
+                    'property: '
+                    . $propertyType
+                    . '$' . $property->getName()
+                );
             $propertyKey = $this->breadcrumb->pos();
             if ($property->isInitialized($var)) {
                 $this->assertExportable($property->getValue($var));
