@@ -41,9 +41,9 @@ trait ProcessorTrait
     {
         return $this->varDumper->formatter()
             ->highlight(
-                    VarDumperInterface::OPERATOR,
-                    $string
-                );
+                VarDumperInterface::OPERATOR,
+                $string
+            );
     }
 
     public function highlightParentheses(string $string): string
@@ -64,12 +64,12 @@ trait ProcessorTrait
     private function assertType(): void
     {
         $type = new Type($this->type());
-        if (! $type->validate($this->varDumper->dumpable()->var())) {
+        if (!$type->validate($this->varDumper->dumpable()->var())) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %className% expects a type %expected% for the return value of %method%, type %provided% returned'))
                     ->code('%className%', static::class)
                     ->code('%expected%', $this->type())
-                    ->code('%method%', get_class($this->varDumper) . '::var()')
+                    ->code('%method%', $this->varDumper::class . '::var()')
                     ->code('%provided%', get_debug_type($this->varDumper->dumpable()->var()))
             );
         }

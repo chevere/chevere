@@ -45,7 +45,7 @@ final class ThrowableRead implements ThrowableReadInterface
 
     public function __construct(Throwable $throwable)
     {
-        $this->className = get_class($throwable);
+        $this->className = $throwable::class;
         $this->code = (string) $throwable->getCode();
         if ($throwable instanceof ErrorException) {
             $this->severity = $throwable->getSeverity();
@@ -127,7 +127,7 @@ final class ThrowableRead implements ThrowableReadInterface
     private function assertSeverity(): void
     {
         $accepted = array_keys(ThrowableReadInterface::ERROR_TYPES);
-        if (! in_array($this->severity, $accepted, true)) {
+        if (!in_array($this->severity, $accepted, true)) {
             // @codeCoverageIgnoreStart
             throw new RangeException(
                 (new Message('Unknown severity value of %severity%, accepted values are: %accepted%'))

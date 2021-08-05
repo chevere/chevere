@@ -45,7 +45,7 @@ final class FilePhp implements FilePhpInterface
         touch($path, $past);
 
         try {
-            if (! opcache_compile_file($path)) {
+            if (!opcache_compile_file($path)) {
                 throw new RangeException(
                     (new Message('OPcache is disabled'))
                 );
@@ -64,10 +64,10 @@ final class FilePhp implements FilePhpInterface
      */
     public function flush(): void
     {
-        if (! opcache_is_script_cached($this->file->path()->toString())) {
+        if (!opcache_is_script_cached($this->file->path()->toString())) {
             return;
         }
-        if (! opcache_invalidate($this->file->path()->toString())) {
+        if (!opcache_invalidate($this->file->path()->toString())) {
             throw new RuntimeException(
                 (new Message('OPCache is disabled'))
             );
@@ -76,10 +76,10 @@ final class FilePhp implements FilePhpInterface
 
     private function assertFilePhp(): void
     {
-        if (! $this->file->isPhp()) {
+        if (!$this->file->isPhp()) {
             throw new FileNotPhpException(
                 (new Message('Instance of %className% must represents a PHP script in the path %path%'))
-                    ->code('%className%', get_class($this->file))
+                    ->code('%className%', $this->file::class)
                     ->code('%path%', $this->file->path()->toString())
             );
         }

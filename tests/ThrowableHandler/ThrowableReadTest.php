@@ -30,7 +30,7 @@ final class ThrowableReadTest extends TestCase
         $exception = new Exception($message->toString(), $code);
         $read = new ThrowableRead($exception);
         $this->assertSame((string) $code, $read->code());
-        $this->assertSame(get_class($exception), $read->className());
+        $this->assertSame($exception::class, $read->className());
         $this->assertSame(ThrowableReadInterface::DEFAULT_ERROR_TYPE, $read->severity());
         $this->assertSame(ThrowableReadInterface::ERROR_LEVELS[$read->severity()], $read->loggerLevel());
         $this->assertSame(ThrowableReadInterface::ERROR_TYPES[$read->severity()], $read->type());

@@ -56,7 +56,7 @@ final class Dir implements DirInterface
 
     public function assertExists(): void
     {
-        if (! $this->exists()) {
+        if (!$this->exists()) {
             throw new DirNotExistsException(
                 (new Message("Dir %path% doesn't exists"))
                     ->code('%path%', $this->path->toString())
@@ -134,7 +134,7 @@ final class Dir implements DirInterface
         if ($absolute[-1] !== '/') {
             throw new PathTailException(
                 (new Message('Instance of %className% must provide an absolute path ending with %tailChar%, path %provided% provided'))
-                    ->code('%className%', get_class($this->path))
+                    ->code('%className%', $this->path::class)
                     ->code('%tailChar%', '/')
                     ->code('%provided%', $absolute)
             );
@@ -143,7 +143,7 @@ final class Dir implements DirInterface
 
     private function assertIsDir(): void
     {
-        if (! $this->path->isDir()) {
+        if (!$this->path->isDir()) {
             throw new PathIsNotDirectoryException(
                 (new Message('Path %path% is not a directory'))
                     ->code('%path%', $this->path->toString())

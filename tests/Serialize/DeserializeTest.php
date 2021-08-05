@@ -47,7 +47,7 @@ final class DeserializeTest extends TestCase
     public function testConstruct(): void
     {
         $object = $this->getStdClass();
-        $objectClass = get_class($object);
+        $objectClass = $object::class;
         $serialized = serialize($object);
         $unserialize = new Deserialize($serialized);
         $this->assertSame($objectClass, $unserialize->type()->typeHinting());

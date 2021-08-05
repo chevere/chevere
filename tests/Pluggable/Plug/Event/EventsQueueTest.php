@@ -36,7 +36,7 @@ final class EventsQueueTest extends TestCase
         $this->assertSame([
             $event->anchor() => [
                 [
-                    get_class($event),
+                    $event::class,
                 ],
             ],
         ], $eventsQueue->plugsQueue()->toArray());

@@ -67,10 +67,10 @@ final class PlugsMap implements PlugsMapInterface
             );
         }
         // @codeCoverageIgnoreEnd
-        if (! ($assert->plugType() instanceof $this->type)) {
+        if (!($assert->plugType() instanceof $this->type)) {
             throw new InvalidArgumentException(
                 (new Message('Argument passed must be an instance of type %type%'))
-                    ->code('%type%', get_class($this->type))
+                    ->code('%type%', $this->type::class)
             );
         }
         $this->assertUnique($plug);
@@ -134,7 +134,7 @@ final class PlugsMap implements PlugsMapInterface
         if ($this->has($plug)) {
             throw new OverflowException(
                 (new Message('%plug% has been already registered'))
-                    ->code('%plug%', get_class($plug))
+                    ->code('%plug%', $plug::class)
             );
         }
     }

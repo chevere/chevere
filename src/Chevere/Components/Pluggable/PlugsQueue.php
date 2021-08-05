@@ -36,7 +36,7 @@ final class PlugsQueue implements PlugsQueueInterface
     public function withAdded(PlugInterface $plug): PlugsQueueInterface
     {
         $this->assertInterface($plug);
-        $plugName = get_class($plug);
+        $plugName = $plug::class;
         $this->assertUnique($plugName);
         $new = clone $this;
         $new->array[$plug->anchor()][(string) $plug->priority()][] = $plugName;
@@ -68,10 +68,10 @@ final class PlugsQueue implements PlugsQueueInterface
     private function assertInterface(PlugInterface $plug): void
     {
         $instanceof = $this->plugType->interface();
-        if (! ($plug instanceof $instanceof)) {
+        if (!($plug instanceof $instanceof)) {
             throw new TypeException(
                 (new Message("Plug %provided% doesn't implements the %expected% interface"))
-                    ->code('%provided%', get_class($plug))
+                    ->code('%provided%', $plug::class)
                     ->code('%expected%', $this->plugType->interface())
             );
         }

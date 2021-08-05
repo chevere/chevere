@@ -53,7 +53,7 @@ final class Routable implements RoutableInterface
         if ($this->route->endpoints()->count() === 0) {
             throw new RouteWithoutEndpointsException(
                 (new Message("Instance of %className% doesn't contain any endpoint"))
-                    ->code('%className%', get_class($this->route))
+                    ->code('%className%', $this->route::class)
             );
         }
     }

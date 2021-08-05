@@ -54,7 +54,7 @@ final class AssertPlug implements AssertPlugInterface
             throw new LogicException(
                 (new Message('Unable to retrieve %className% pluggable anchors declared by plug %plug% %message%'))
                     ->code('%className%', $at)
-                    ->code('%plug%', get_class($this->plug))
+                    ->code('%plug%', $this->plug::class)
                     ->code('%message%', $e->getMessage())
             );
         }
@@ -74,7 +74,7 @@ final class AssertPlug implements AssertPlugInterface
     private function assertType(): void
     {
         /** @psalm-suppress RedundantPropertyInitializationCheck */
-        if (! isset($this->plugType)) {
+        if (!isset($this->plugType)) {
             $accept = [];
             /**
              * @var PlugTypeInterface $plugType

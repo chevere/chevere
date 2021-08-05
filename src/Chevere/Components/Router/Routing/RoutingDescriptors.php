@@ -47,7 +47,7 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
         if ($this->set->contains($descriptor)) {
             throw new OverflowException(
                 (new Message('Instance of object %object% has been already added'))
-                    ->code('%object%', get_class($descriptor) . '#' . spl_object_id($descriptor))
+                    ->code('%object%', $descriptor::class . '#' . spl_object_id($descriptor))
             );
         }
         $new = clone $this;

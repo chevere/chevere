@@ -49,7 +49,7 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
         $this->var = $this->varDumper->dumpable()->var();
         $this->depth = $this->varDumper->depth() + 1;
         $this->known = $this->varDumper->known();
-        $this->className = get_class($this->var);
+        $this->className = $this->var::class;
         $this->handleNormalizeClassName();
         $this->objectId = spl_object_id($this->var);
         $this->info = $this->className . '#' . $this->objectId;

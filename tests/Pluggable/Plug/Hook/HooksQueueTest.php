@@ -35,7 +35,7 @@ final class HooksQueueTest extends TestCase
         $this->assertSame([
             $hook->anchor() => [
                 [
-                    get_class($hook),
+                    $hook::class,
                 ],
             ],
         ], $hooksQueue->plugsQueue()->toArray());

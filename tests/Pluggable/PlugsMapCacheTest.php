@@ -106,7 +106,7 @@ final class PlugsMapCacheTest extends TestCase
         $this->assertSame([
             $hook->anchor() => [
                 $hook->priority() => [
-                    get_class($hook),
+                    $hook::class,
                 ],
             ],
         ], $plugsQueueTyped->plugsQueue()->toArray());
