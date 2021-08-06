@@ -25,18 +25,26 @@ final class Routables implements RoutablesInterface
 {
     use MapTrait;
 
-    public function withPut(RoutableInterface $routable): RoutablesInterface
+    public function withPut(RoutableInterface ...$routables): RoutablesInterface
     {
-        $new = clone $this;
-        $key = $routable->route()->path()->toString();
-        $new->map->put($key, $routable);
+        foreach ($routables as $routable) {
+            $new = clone $this;
+            $key = $routable->route()->path()->toString();
+            $new->map->put($key, $routable);
+        }
 
         return $new;
     }
 
-    public function has(string $name): bool
+    public function has(string ...$names): bool
     {
-        return $this->map->hasKey($name);
+        foreach ($names as $name) {
+            if (!$this->map->hasKey($name)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
