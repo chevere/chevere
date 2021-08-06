@@ -39,6 +39,7 @@ final class RoutablesTest extends TestCase
         );
         $routable = new Routable($route);
         $routables = (new Routables())->withPut($routable);
+        $this->assertFalse($routables->has('test', 'some'));
         $this->assertTrue($routables->has($key));
         $this->assertSame($routable, $routables->get($key));
         $this->expectException(OutOfBoundsException::class);

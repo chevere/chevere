@@ -36,9 +36,9 @@ final class Routables implements RoutablesInterface
         return $new;
     }
 
-    public function has(string ...$names): bool
+    public function has(string ...$paths): bool
     {
-        foreach ($names as $name) {
+        foreach ($paths as $name) {
             if (!$this->map->hasKey($name)) {
                 return false;
             }
@@ -51,10 +51,10 @@ final class Routables implements RoutablesInterface
      * @throws TypeException
      * @throws OutOfBoundsException
      */
-    public function get(string $name): RoutableInterface
+    public function get(string $path): RoutableInterface
     {
         try {
-            return $this->map->get($name);
+            return $this->map->get($path);
         }
         // @codeCoverageIgnoreStart
         catch (TypeError $e) {
@@ -64,7 +64,7 @@ final class Routables implements RoutablesInterface
         catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Name %name% not found'))
-                    ->code('%name%', $name)
+                    ->code('%name%', $path)
             );
         }
     }

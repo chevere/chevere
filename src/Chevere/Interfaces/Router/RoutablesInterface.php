@@ -31,16 +31,16 @@ interface RoutablesInterface extends MappedInterface
     public function withPut(RoutableInterface ...$routables): self;
 
     /**
-     * Indicates whether the instance has a routable identified by its `$names`.
+     * Indicates whether the instance has routable(s) identified by its `$path`.
      */
-    public function has(string ...$names): bool;
+    public function has(string ...$path): bool;
 
     /**
-     * Returns the routable identified by its `$name`.
+     * Returns the routable identified by its `$path`.
      *
      * @throws OutOfBoundsException
      */
-    public function get(string $name): RoutableInterface;
+    public function get(string $path): RoutableInterface;
 
     /**
      * @return Generator<string, RoutableInterface>
