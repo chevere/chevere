@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Action\Action;
+use Chevere\Components\Controller\Attributes\Relation;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Interfaces\Controller\Attributes\RelationInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Parameter\StringParameterInterface;
+use ReflectionClass;
 
 abstract class Controller extends Action implements ControllerInterface
 {
@@ -27,6 +30,17 @@ abstract class Controller extends Action implements ControllerInterface
     final public function __construct(
         protected string $relation = ''
     ) {
+        if ($relation === '') {
+            $reflectionClass = new ReflectionClass($this);
+            $attributes = $reflectionClass->getAttributes();
+            foreach ($attributes as $relationAttribute) {
+                if (is_subclass_of($relationAttribute->getName(), RelationInterface::class)) {
+                    /** @var RelationInterface $newRelation */
+                    $newRelation = $relationAttribute->newInstance();
+                    $this->relation = $newRelation->relation();
+                }
+            }
+        }
         $this->parameterType ??= $this->parameter();
         $this->setUp();
         $this->assertParametersType();
