@@ -18,9 +18,9 @@ use DeepCopy\Exception\CloneException;
 
 /**
  * Deep copies the given value. Same as `DeepCopy\deep_copy`
- * but it adds a breadcrumbs for debugging.
+ * but it adds a breadcrumbs to the exception message.
  */
-function deepCopy(mixed $value, bool $useCloneMethod = false)
+function deepCopy(mixed $value, bool $useCloneMethod = false): mixed
 {
     try {
         return (new DeepCopy($useCloneMethod))
@@ -29,7 +29,5 @@ function deepCopy(mixed $value, bool $useCloneMethod = false)
         if (is_object($value)) {
             new ObjectClonable($value);
         }
-
-        throw $e;
     }
-}
+} // @codeCoverageIgnore
