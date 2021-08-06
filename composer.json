@@ -20,30 +20,29 @@
         "ext-zend-opcache": "*",
         "adhocore/cli": "^0.8",
         "gettext/gettext": "^5.5",
-        "gettext/php-scanner": "^1.2",
+        "gettext/php-scanner": "^1.3",
         "gettext/translator": "^1.0",
         "kevinlebrun/colors.php": "^1.0",
         "laminas/laminas-diactoros": "^2.4",
         "myclabs/deep-copy": "^1.10",
         "nikic/fast-route": "^1.3",
-        "php-ds/php-ds": "^1.2",
+        "php-ds/php-ds": "^1.3",
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0",
+        "psr/log": "^3.0",
         "ramsey/uuid": "^4.1",
-        "thecodingmachine/safe": "^1.1"
+        "thecodingmachine/safe": "^1.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
-        "symplify/easy-coding-standard": "^9.0",
-        "vimeo/psalm": "^4.3"
+        "symplify/easy-coding-standard": "^9.4"
     },
     "autoload": {
         "files": [
             "src/Chevere/Components/Filesystem/functions.php",
             "src/Chevere/Components/Iterator/functions.php",
             "src/Chevere/Components/Parameter/functions.php",
-            "src/Chevere/Components/Router/Routing/functions.php",
             "src/Chevere/Components/Str/functions.php",
             "src/Chevere/Components/ThrowableHandler/functions.php",
             "src/Chevere/Components/Translator/functions.php",
