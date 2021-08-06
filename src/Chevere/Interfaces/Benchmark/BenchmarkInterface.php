@@ -28,5 +28,5 @@ interface BenchmarkInterface
 
     public function index(): Set;
 
-    public function withAddedCallable(callable ...$namedCallable): self;
+    public function withAddedCallable(callable ...$callables): self;
 }
