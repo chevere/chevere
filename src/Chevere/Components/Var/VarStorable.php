@@ -15,7 +15,7 @@ namespace Chevere\Components\Var;
 
 use Chevere\Components\Iterator\Breadcrumb;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Var\NotVarStorableException;
+use Chevere\Exceptions\Var\VarStorableException;
 use Chevere\Interfaces\Iterator\BreadcrumbInterface;
 use Chevere\Interfaces\Var\VarStorableInterface;
 use ReflectionObject;
@@ -57,7 +57,7 @@ final class VarStorable implements VarStorableInterface
     }
 
     /**
-     * @throws NotVarStorableException
+     * @throws VarStorableException
      */
     private function assertIsNotResource($var): void
     {
@@ -69,7 +69,7 @@ final class VarStorable implements VarStorableInterface
                 $message = new Message("Argument is of type resource which can't be exported");
             }
 
-            throw new NotVarStorableException($message);
+            throw new VarStorableException($message);
         }
     }
 

@@ -15,7 +15,7 @@ namespace Chevere\Components\Var;
 
 use Chevere\Components\Iterator\Breadcrumb;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\LogicException;
+use Chevere\Exceptions\Var\ObjectClonableException;
 use Chevere\Interfaces\Iterator\BreadcrumbInterface;
 use Chevere\Interfaces\Var\ObjectClonableInterface;
 use ReflectionObject;
@@ -70,7 +70,7 @@ final class ObjectClonable implements ObjectClonableInterface
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($var);
         if (!$reflection->isCloneable()) {
-            throw new LogicException(
+            throw new ObjectClonableException(
                 message: (new Message('Object is not clonable at %at%'))
                     ->code('%at%', $this->breadcrumb->toString())
             );

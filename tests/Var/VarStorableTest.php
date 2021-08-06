@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Var;
 
 use Chevere\Components\Var\VarStorable;
-use Chevere\Exceptions\Var\NotVarStorableException;
+use Chevere\Exceptions\Var\VarStorableException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -22,7 +22,7 @@ final class VarStorableTest extends TestCase
 {
     public function testNotExportable(): void
     {
-        $this->expectException(NotVarStorableException::class);
+        $this->expectException(VarStorableException::class);
         $resource = fopen(__FILE__, 'r');
         if (is_resource($resource) === false) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
@@ -40,7 +40,7 @@ final class VarStorableTest extends TestCase
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         $object->array = [1, 2, 3, $resource];
-        $this->expectException(NotVarStorableException::class);
+        $this->expectException(VarStorableException::class);
         new VarStorable($object);
         /** @var resource $resource */
         fclose($resource);
