@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Workflow;
 
+use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 
@@ -38,4 +39,16 @@ function pushWorkflowQueue(WorkflowMessageInterface $workflowMessage, $stack): v
     //     );
     // }
     $stack[] = $workflowMessage;
+}
+
+// @codeCoverageIgnoreStart
+
+function workflow(StepInterface ...$steps) : WorkflowInterface {
+
+    return new Workflow(...$steps);
+}
+
+function step(string $action, mixed ...$namedArguments)
+{
+    return new Step($action, ...$namedArguments);
 }
