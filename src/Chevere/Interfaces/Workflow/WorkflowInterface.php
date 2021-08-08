@@ -33,8 +33,6 @@ interface WorkflowInterface extends Countable
 
     public function vars(): Map;
 
-    public function env(): Map;
-
     /**
      * Return an instance with the specified `$step`.
      *

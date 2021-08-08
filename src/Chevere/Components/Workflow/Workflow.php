@@ -43,8 +43,6 @@ final class Workflow implements WorkflowInterface
 
     private Map $vars;
 
-    private Map $env;
-
     private DsMap $map;
 
     private DsMap $expected;
@@ -59,7 +57,6 @@ final class Workflow implements WorkflowInterface
         $this->steps = new Vector();
         $this->parameters = new Parameters();
         $this->vars = new Map();
-        $this->env = new Map();
         $this->expected = new DsMap();
         $this->provided = new DsMap();
         $this->dependencies = new Dependencies();
@@ -74,11 +71,6 @@ final class Workflow implements WorkflowInterface
     public function vars(): Map
     {
         return $this->vars;
-    }
-
-    public function env(): Map
-    {
-        return $this->env;
     }
 
     public function withAdded(StepInterface ...$steps): WorkflowInterface
