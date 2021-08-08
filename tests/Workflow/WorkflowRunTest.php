@@ -35,7 +35,7 @@ final class WorkflowRunTest extends TestCase
             ->withAdded(
                 steps: new Step(
                     WorkflowRunTestStep1::class,
-                    foo: '${foo}'
+                    foo: '${foo}',
                 )
             );
         $arguments = [
@@ -73,8 +73,8 @@ final class WorkflowRunTest extends TestCase
         ];
         $workflowRun = (new WorkflowRun($workflow, ...$arguments))
             ->withStepResponse('step0', new Response());
-        $this->assertTrue($workflow->hasVar('${foo}'));
-        $this->assertTrue($workflow->hasVar('${baz}'));
+        $this->assertTrue($workflow->vars()->has('${foo}'));
+        $this->assertTrue($workflow->vars()->has('${baz}'));
         $this->assertTrue($workflowRun->has('step0'));
         $this->assertSame([], $workflowRun->get('step0')->data());
         $this->expectException(ArgumentCountException::class);

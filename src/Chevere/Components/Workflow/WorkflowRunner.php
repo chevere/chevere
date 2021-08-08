@@ -150,7 +150,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
     {
         $arguments = [];
         foreach ($step->arguments() as $name => $taskArgument) {
-            if (!$this->workflowRun->workflow()->hasVar($taskArgument)) {
+            if (!$this->workflowRun->workflow()->vars()->has($taskArgument)) {
                 // @codeCoverageIgnoreStart
                 $arguments[$name] = $taskArgument;
 

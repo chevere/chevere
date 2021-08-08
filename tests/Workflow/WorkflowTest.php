@@ -132,7 +132,7 @@ final class WorkflowTest extends TestCase
                 foo: '${foo}'
             )
         );
-        $this->assertTrue($workflow->hasVar('${foo}'));
+        $this->assertTrue($workflow->vars()->has('${foo}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $workflow = $workflow
@@ -143,8 +143,8 @@ final class WorkflowTest extends TestCase
                     bar: '${foo}'
                 )
             );
-        $this->assertTrue($workflow->hasVar('${foo}'));
-        $this->assertTrue($workflow->hasVar('${step1:bar}'));
+        $this->assertTrue($workflow->vars()->has('${foo}'));
+        $this->assertTrue($workflow->vars()->has('${step1:bar}'));
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $this->assertSame(['step1', 'bar'], $workflow->getVar('${step1:bar}'));

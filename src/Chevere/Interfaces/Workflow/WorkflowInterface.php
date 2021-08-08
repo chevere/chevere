@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Workflow;
 
+use Chevere\Components\DataStructure\Map;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
@@ -29,6 +30,10 @@ interface WorkflowInterface extends Countable
     public const REGEX_STEP_REFERENCE = '/^\${([\w-]*)\:([\w-]*)}$/';
 
     public function __construct(StepInterface ...$steps);
+
+    public function vars(): Map;
+
+    public function env(): Map;
 
     /**
      * Return an instance with the specified `$step`.
@@ -70,12 +75,10 @@ interface WorkflowInterface extends Countable
 
     public function order(): array;
 
-    public function hasVar(string $var): bool;
-
     /**
      * Provides access to the `$var` mapping for job variables.
      *
-     * Case `${foo}` (workflow parameters):
+     * Case `${foo}` (workflow variables):
      *
      * ```php
      * return ['foo'];

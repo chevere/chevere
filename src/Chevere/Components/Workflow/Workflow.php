@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Workflow;
 
+use Chevere\Components\DataStructure\Map;
 use Chevere\Components\Dependent\Dependencies;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Parameters;
@@ -27,7 +28,7 @@ use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
-use Ds\Map;
+use Ds\Map as DsMap;
 use Ds\Vector;
 use Generator;
 use function Safe\preg_match;
@@ -36,28 +37,31 @@ use TypeError;
 
 final class Workflow implements WorkflowInterface
 {
-    private Map $map;
-
     private Vector $steps;
 
     private ParametersInterface $parameters;
 
     private Map $vars;
 
-    private Map $expected;
+    private Map $env;
 
-    private Map $provided;
+    private DsMap $map;
+
+    private DsMap $expected;
+
+    private DsMap $provided;
 
     private DependenciesInterface $dependencies;
 
     public function __construct(StepInterface ...$steps)
     {
-        $this->map = new Map();
+        $this->map = new DsMap();
         $this->steps = new Vector();
         $this->parameters = new Parameters();
         $this->vars = new Map();
-        $this->expected = new Map();
-        $this->provided = new Map();
+        $this->env = new Map();
+        $this->expected = new DsMap();
+        $this->provided = new DsMap();
         $this->dependencies = new Dependencies();
         $this->putAdded(...$steps);
     }
@@ -65,6 +69,16 @@ final class Workflow implements WorkflowInterface
     public function count(): int
     {
         return $this->steps->count();
+    }
+
+    public function vars(): Map
+    {
+        return $this->vars;
+    }
+
+    public function env(): Map
+    {
+        return $this->env;
     }
 
     public function withAdded(StepInterface ...$steps): WorkflowInterface
@@ -83,7 +97,7 @@ final class Workflow implements WorkflowInterface
             $new->handleStepDependencies($stepEl);
             $name = (string) $name;
             $new->putMap($name, $stepEl);
-            $new->steps->insert($new->getPosByName($before), $name);
+            $new->steps->insert($new->steps->find($before), $name);
         }
 
         return $new;
@@ -97,7 +111,7 @@ final class Workflow implements WorkflowInterface
             $new->handleStepDependencies($stepEl);
             $name = (string) $name;
             $new->putMap($name, $stepEl);
-            $new->steps->insert($new->getPosByName($after) + 1, $name);
+            $new->steps->insert($new->steps->find($after) + 1, $name);
         }
 
         return $new;
@@ -143,11 +157,6 @@ final class Workflow implements WorkflowInterface
     public function order(): array
     {
         return $this->steps->toArray();
-    }
-
-    public function hasVar(string $variable): bool
-    {
-        return $this->vars->hasKey($variable);
     }
 
     /**
@@ -247,8 +256,8 @@ final class Workflow implements WorkflowInterface
             try {
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $reference, $matches)) {
                     /** @var array $matches */
-                    if (! $this->parameters->has($matches[1])) {
-                        $this->vars->put($reference, [$matches[1]]);
+                    if (!$this->parameters->has($matches[1])) {
+                        $this->vars = $this->vars->withPut(...[$reference => [$matches[1]]]);
                     }
                     $this->putParameter($matches[1], $parameter);
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $reference, $matches)) {
@@ -259,7 +268,7 @@ final class Workflow implements WorkflowInterface
                     $expected = $this->expected->get($previousStep, []);
                     $expected[] = $previousResponseKey;
                     $this->expected->put($previousStep, $expected);
-                    $this->vars->put($reference, [$previousStep, $previousResponseKey]);
+                    $this->vars = $this->vars->withPut(...[$reference => [$previousStep, $previousResponseKey]]);
                 }
             } catch (Throwable $e) {
                 throw new InvalidArgumentException(
@@ -275,18 +284,12 @@ final class Workflow implements WorkflowInterface
 
     private function assertHasStepByName(string $step): void
     {
-        if (! $this->map->hasKey($step)) {
+        if (!$this->map->hasKey($step)) {
             throw new OutOfBoundsException(
                 (new Message("Task name %name% doesn't exists"))
                     ->code('%name%', $step)
             );
         }
-    }
-
-    private function getPosByName(string $step): int
-    {
-        /** @var int */
-        return $this->steps->find($step);
     }
 
     private function assertMatchesExistingParameter(string $name, ParameterInterface $existent, ParameterInterface $parameter): void
@@ -322,7 +325,7 @@ final class Workflow implements WorkflowInterface
     private function assertPreviousReference(ParameterInterface $parameter, string $previousStep, string $responseKey): void
     {
         $reference = '${' . "${previousStep}:${responseKey}" . '}';
-        if (! $this->map->hasKey($previousStep)) {
+        if (!$this->map->hasKey($previousStep)) {
             throw new OutOfBoundsException(
                 (new Message("Reference %reference% not found, step %previous% doesn't exists"))
                     ->code('%reference%', $reference)
@@ -331,7 +334,7 @@ final class Workflow implements WorkflowInterface
         }
         /** @var ParametersInterface $responseParameters */
         $responseParameters = $this->provided->get($previousStep);
-        if (! $responseParameters->has($responseKey)) {
+        if (!$responseParameters->has($responseKey)) {
             throw new OutOfBoundsException(
                 (new Message('Reference %reference% not found, response parameter %parameter% is not declared by %previous%'))
                     ->code('%reference%', $reference)
