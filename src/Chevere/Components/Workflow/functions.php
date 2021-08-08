@@ -48,7 +48,7 @@ function workflow(StepInterface ...$steps) : WorkflowInterface {
     return new Workflow(...$steps);
 }
 
-function step(string $action, mixed ...$namedArguments)
+function step(string $action, mixed ...$namedArguments): StepInterface
 {
     return new Step($action, ...$namedArguments);
 }
