@@ -20,7 +20,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\TypeException;
-use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Router\Route\RouteInterface;
 use Chevere\Interfaces\Router\RouteIdentifierInterface;
 use Chevere\Interfaces\Router\RouterIndexInterface;
 use Ds\Map;
@@ -50,7 +50,7 @@ final class RouterIndex implements RouterIndexInterface
         $this->groupsMap = new Map();
     }
 
-    public function withAddedRoutable(RoutableInterface $routable, string $group): RouterIndexInterface
+    public function withAddedRoute(RouteInterface $route, string $group): RouterIndexInterface
     {
         try {
             (new StrAssert($group))->notEmpty()->notCtypeSpace();
@@ -65,7 +65,7 @@ final class RouterIndex implements RouterIndexInterface
         }
         // @codeCoverageIgnoreEnd
         $new = clone $this;
-        $routeName = $routable->route()->path()->toString();
+        $routeName = $route->path()->toString();
         $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeKey)) {
             /** @var string $groupName */

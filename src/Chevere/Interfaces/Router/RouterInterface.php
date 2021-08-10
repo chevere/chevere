@@ -15,6 +15,7 @@ namespace Chevere\Interfaces\Router;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Interfaces\Router\Route\RouteInterface;
 use FastRoute\RouteCollector;
 
 /**
@@ -23,15 +24,15 @@ use FastRoute\RouteCollector;
 interface RouterInterface
 {
     /**
-     * Return an instance with the specified added `$routable`.
+     * Return an instance with the specified added `$route`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added `$routable`.
+     * an instance that contains the specified added `$route`.
      *
      * @throws InvalidArgumentException if `$group` is invalid.
-     * @throws OverflowException if `$routable` has been already added.
+     * @throws OverflowException if `$route` has been already added.
      */
-    public function withAddedRoutable(RoutableInterface $routable, string $group): self;
+    public function withAddedRoute(RouteInterface $route, string $group): self;
 
     /**
      * Provides access to the index instance.
@@ -39,9 +40,9 @@ interface RouterInterface
     public function index(): RouterIndexInterface;
 
     /**
-     * Provides access to the routables instance.
+     * Provides access to the routes instance.
      */
-    public function routables(): RoutablesInterface;
+    public function routes(): RoutesInterface;
 
     /**
      * Provides access to the route collector instance.

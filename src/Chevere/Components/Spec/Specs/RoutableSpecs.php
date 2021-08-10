@@ -17,7 +17,7 @@ use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
-use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
+use Chevere\Interfaces\Spec\Specs\RouteSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
 use TypeError;
 
@@ -25,7 +25,7 @@ final class RoutableSpecs implements RoutableSpecsInterface
 {
     use MapTrait;
 
-    public function withPut(RoutableSpecInterface $routableSpec): RoutableSpecsInterface
+    public function withPut(RouteSpecInterface $routableSpec): RoutableSpecsInterface
     {
         $new = clone $this;
         $key = $routableSpec->key();
@@ -43,7 +43,7 @@ final class RoutableSpecs implements RoutableSpecsInterface
      * @throws TypeException
      * @throws OutOfBoundsException
      */
-    public function get(string $routeName): RoutableSpecInterface
+    public function get(string $routeName): RouteSpecInterface
     {
         try {
             return $this->map->get($routeName);

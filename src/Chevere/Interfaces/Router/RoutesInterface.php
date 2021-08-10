@@ -15,20 +15,21 @@ namespace Chevere\Interfaces\Router;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
+use Chevere\Interfaces\Router\Route\RouteInterface;
 use Generator;
 
 /**
- * Describes the component in charge of collecting objects implementing `RoutableInterface`.
+ * Describes the component in charge of collecting objects implementing `RouteInterface`.
  */
-interface RoutablesInterface extends MappedInterface
+interface RoutesInterface extends MappedInterface
 {
     /**
-     * Return an instance with the specified `$routable`.
+     * Return an instance with the specified `$namedRoutes`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$routable`.
+     * an instance that contains the specified `$namedRoutes`.
      */
-    public function withPut(RoutableInterface ...$routables): self;
+    public function withPut(RouteInterface ...$namedRoutes): self;
 
     /**
      * Indicates whether the instance has routable(s) identified by its `$path`.
@@ -40,10 +41,10 @@ interface RoutablesInterface extends MappedInterface
      *
      * @throws OutOfBoundsException
      */
-    public function get(string $path): RoutableInterface;
+    public function get(string $path): RouteInterface;
 
     /**
-     * @return Generator<string, RoutableInterface>
+     * @return Generator<string, RouteInterface>
      */
     public function getGenerator(): Generator;
 }

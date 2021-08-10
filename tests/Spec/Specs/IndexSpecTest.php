@@ -15,7 +15,6 @@ namespace Chevere\Tests\Spec\Specs;
 
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
@@ -45,7 +44,7 @@ final class IndexSpecTest extends TestCase
                 new RouteEndpoint(new GetMethod(), new TestController())
             );
         $objectStorage = new SplObjectStorage();
-        $objectStorage->attach(new Routable($route));
+        $objectStorage->attach($route);
         $groupSpec = new GroupSpec($specDir, $repository);
         $spec = (new IndexSpec($specDir))->withAddedGroup($groupSpec);
         $this->assertSame(

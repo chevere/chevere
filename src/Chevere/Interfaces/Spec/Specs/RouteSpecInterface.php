@@ -15,17 +15,17 @@ namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Router\Route\RouteInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 
 /**
- * Describes the component in charge of defining a routable spec.
+ * Describes the component in charge of defining a route spec.
  */
-interface RoutableSpecInterface extends SpecInterface
+interface RouteSpecInterface extends SpecInterface
 {
     public function __construct(
         DirInterface $specDir,
-        RoutableInterface $routable,
+        RouteInterface $route,
         string $repository
     );
 

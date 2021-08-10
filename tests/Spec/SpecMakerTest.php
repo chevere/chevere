@@ -16,7 +16,6 @@ namespace Chevere\Tests\Spec;
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
-use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
@@ -67,7 +66,7 @@ final class SpecMakerTest extends TestCase
                 new RouteEndpoint($getMethod, new SpecMakerTestGetController())
             );
         $router = (new Router())
-            ->withAddedRoutable(new Routable($route), 'repo');
+            ->withAddedRoute($route, 'repo');
         $specMaker = new SpecMaker(
             dirForPath('/spec/'),
             $this->buildDir->getChild('spec/'),

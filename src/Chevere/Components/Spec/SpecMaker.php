@@ -17,7 +17,7 @@ use Chevere\Components\Filesystem\File;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\IndexSpec;
-use Chevere\Components\Spec\Specs\RoutableSpec;
+use Chevere\Components\Spec\Specs\RouteSpec;
 use Chevere\Components\Str\Str;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
@@ -50,14 +50,14 @@ final class SpecMaker implements SpecMakerInterface
         $this->specIndex = new SpecIndex();
         $this->indexSpec = new IndexSpec($this->specDir);
         $this->files = new Map();
-        $routes = $router->routables();
+        $routes = $router->routes();
         $groups = [];
         foreach ($routes->getGenerator() as $routeName => $routable) {
             $repository = $router->index()->getRouteGroup($routeName);
             if (! isset($groups[$repository])) {
                 $groups[$repository] = new GroupSpec($specDir, $repository);
             }
-            $routableSpec = new RoutableSpec(
+            $routableSpec = new RouteSpec(
                 $specDir->getChild("${repository}/"),
                 $routable,
                 $repository
@@ -117,7 +117,7 @@ final class SpecMaker implements SpecMakerInterface
 
     private function assertRouter(): void
     {
-        if (count($this->router->routables()) === 0) {
+        if (count($this->router->routes()) === 0) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %interfaceName% does not contain any routable.'))
                     ->code('%interfaceName%', RouterInterface::class)

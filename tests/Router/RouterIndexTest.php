@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router;
 
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
@@ -62,8 +61,7 @@ final class RouterIndexTest extends TestCase
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(new GetMethod(), new TestController())
         );
-        $routable = new Routable($route);
-        $routerIndex = (new RouterIndex())->withAddedRoutable($routable, $groupName);
+        $routerIndex = (new RouterIndex())->withAddedRoute($route, $groupName);
         $this->assertTrue($routerIndex->hasRouteName($path));
         $this->assertInstanceOf(
             RouteIdentifierInterface::class,
@@ -83,8 +81,7 @@ final class RouterIndexTest extends TestCase
         $route2 = $route2->withAddedEndpoint(
             new RouteEndpoint(new GetMethod(), new TestController())
         );
-        $routable2 = new Routable($route2);
-        $routerIndex = $routerIndex->withAddedRoutable($routable2, $groupName);
+        $routerIndex = $routerIndex->withAddedRoute($route2, $groupName);
         $this->assertSame(
             [$path, $path2],
             $routerIndex->getGroupRouteNames($groupName)
@@ -98,9 +95,8 @@ final class RouterIndexTest extends TestCase
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())
             );
-        $routable = new Routable($route);
-        $routerIndex = (new RouterIndex())->withAddedRoutable($routable, $repo);
+        $routerIndex = (new RouterIndex())->withAddedRoute($route, $repo);
         $this->expectException(OverflowException::class);
-        $routerIndex->withAddedRoutable($routable, 'other-group');
+        $routerIndex->withAddedRoute($route, 'other-group');
     }
 }

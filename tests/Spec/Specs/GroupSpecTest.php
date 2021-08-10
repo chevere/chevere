@@ -15,13 +15,12 @@ namespace Chevere\Tests\Spec\Specs;
 
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Spec\Specs\GroupSpec;
-use Chevere\Components\Spec\Specs\RoutableSpec;
+use Chevere\Components\Spec\Specs\RouteSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -59,9 +58,9 @@ final class GroupSpecTest extends TestCase
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())
             );
-        $routableSpec = new RoutableSpec(
+        $routableSpec = new RouteSpec(
             $groupSpecDir->getChild(ltrim($routeLocator->path(), '/') . '/'),
-            new Routable($route),
+            $route,
             $repository
         );
         $spec = (new GroupSpec($specDir, $repository))

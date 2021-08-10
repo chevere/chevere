@@ -15,17 +15,16 @@ namespace Chevere\Tests\Spec\Specs;
 
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\PatchMethod;
-use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Spec\Specs\RoutableSpec;
+use Chevere\Components\Spec\Specs\RouteSpec;
 use Chevere\Components\Spec\Specs\RoutableSpecs;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
-final class RoutableSpecsTest extends TestCase
+final class RouteSpecsTest extends TestCase
 {
     public function testConstruct(): void
     {
@@ -41,17 +40,15 @@ final class RoutableSpecsTest extends TestCase
     {
         $repository = 'repo';
         $specs = new RoutableSpecs();
-        $spec = new RoutableSpec(
+        $spec = new RouteSpec(
             dirForPath("/spec/${repository}/"),
-            new Routable(
-                (new Route(new RoutePath('/path')))
-                    ->withAddedEndpoint(
-                        new RouteEndpoint(
-                            new PatchMethod(),
-                            new TestController()
-                        )
+            (new Route(new RoutePath('/path')))
+                ->withAddedEndpoint(
+                    new RouteEndpoint(
+                        new PatchMethod(),
+                        new TestController()
                     )
-            ),
+                ),
             $repository
         );
         $specs = $specs->withPut($spec);

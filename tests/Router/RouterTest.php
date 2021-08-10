@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router;
 
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Router\Router;
+use Chevere\Exceptions\Router\RouteNotRoutableException;
+use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
 use Chevere\Tests\Router\_resources\src\TestController;
 use FastRoute\RouteCollector;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +30,7 @@ final class RouterTest extends TestCase
     {
         $router = new Router();
         $this->assertSame([], $router->index()->toArray());
-        $this->assertCount(0, $router->routables());
+        $this->assertCount(0, $router->routes());
     }
 
     public function testRouter(): void
@@ -42,10 +43,26 @@ final class RouterTest extends TestCase
                 new TestController()
             )
         );
-        $routable = new Routable($route);
         $router = (new Router())
-            ->withAddedRoutable($routable, 'my-group');
-        $this->assertCount(1, $router->routables());
+            ->withAddedRoute($route, 'my-group');
+        $this->assertCount(1, $router->routes());
         $this->assertInstanceOf(RouteCollector::class, $router->routeCollector());
+    }
+
+    public function testConstructInvalidArgument(): void
+    {
+        $route = new Route(new RoutePath('/test'));
+        $this->expectException(RouteWithoutEndpointsException::class);
+        (new Router())
+            ->withAddedRoute($route, 'my-group');
+    }
+
+    public function testNotExportable(): void
+    {
+        $route = new Route(new RoutePath('/test'));
+        $route->resource = fopen('php://output', 'r+');
+        $this->expectException(RouteNotRoutableException::class);
+        (new Router())
+            ->withAddedRoute($route, 'my-group');
     }
 }

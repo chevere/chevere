@@ -17,20 +17,21 @@ use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
-use Chevere\Interfaces\Router\RoutableInterface;
-use Chevere\Interfaces\Router\RoutablesInterface;
+use Chevere\Interfaces\Router\Route\RouteInterface;
+use Chevere\Interfaces\Router\RoutesInterface;
 use TypeError;
 
-final class Routables implements RoutablesInterface
+final class Routes implements RoutesInterface
 {
     use MapTrait;
 
-    public function withPut(RoutableInterface ...$routables): RoutablesInterface
+    public function withPut(RouteInterface ...$namedRoutes): RoutesInterface
     {
-        foreach ($routables as $routable) {
+        foreach ($namedRoutes as $name => $route) {
+            $name = strval($name);
             $new = clone $this;
-            $key = $routable->route()->path()->toString();
-            $new->map->put($key, $routable);
+            $key = $route->path()->toString();
+            $new->map->put($key, $route);
         }
 
         return $new;
@@ -51,7 +52,7 @@ final class Routables implements RoutablesInterface
      * @throws TypeException
      * @throws OutOfBoundsException
      */
-    public function get(string $path): RoutableInterface
+    public function get(string $path): RouteInterface
     {
         try {
             return $this->map->get($path);

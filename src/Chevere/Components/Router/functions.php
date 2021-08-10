@@ -20,21 +20,13 @@ use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
-use Chevere\Interfaces\Router\RoutablesInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Router\Route\RouteInterface;
+use Chevere\Interfaces\Router\RoutesInterface;
 
-function routes(RouteInterface ...$routes): RoutablesInterface
+function routes(RouteInterface ...$namedRoutes): RoutesInterface
 {
-    $routables = new Routables();
-    foreach ($routes as $route) {
-        $routables = $routables
-            ->withPut(
-                new Routable($route)
-            );
-    }
-
-    return $routables;
+    return (new Routes())->withPut(...$namedRoutes);
 }
 
 /**

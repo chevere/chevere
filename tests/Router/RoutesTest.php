@@ -14,16 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router;
 
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Routable;
-use Chevere\Components\Router\Routables;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
+use Chevere\Components\Router\Routes;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
-final class RoutablesTest extends TestCase
+final class RoutesTest extends TestCase
 {
     public function testWithPut(): void
     {
@@ -37,12 +36,11 @@ final class RoutablesTest extends TestCase
                 new TestController()
             )
         );
-        $routable = new Routable($route);
-        $routables = (new Routables())->withPut($routable);
-        $this->assertFalse($routables->has('test', 'some'));
-        $this->assertTrue($routables->has($key));
-        $this->assertSame($routable, $routables->get($key));
+        $routes = (new Routes())->withPut($route);
+        $this->assertFalse($routes->has('test', 'some'));
+        $this->assertTrue($routes->has($key));
+        $this->assertSame($route, $routes->get($key));
         $this->expectException(OutOfBoundsException::class);
-        $routables->get('not-found');
+        $routes->get('not-found');
     }
 }

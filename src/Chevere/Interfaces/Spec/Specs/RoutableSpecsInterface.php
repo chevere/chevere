@@ -28,7 +28,7 @@ interface RoutableSpecsInterface extends MappedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$routableSpec`.
      */
-    public function withPut(RoutableSpecInterface $routableSpec): self;
+    public function withPut(RouteSpecInterface $routableSpec): self;
 
     /**
      * Indicates whether the instance has a routable spec identified by its `$routeName`.
@@ -39,10 +39,10 @@ interface RoutableSpecsInterface extends MappedInterface
      * Returns the routable spec identified by its `$routeName`.
      * @throws OutOfBoundsException
      */
-    public function get(string $routeName): RoutableSpecInterface;
+    public function get(string $routeName): RouteSpecInterface;
 
     /**
-     * @return Generator<string, RoutableSpecInterface>
+     * @return Generator<string, RouteSpecInterface>
      */
     public function getGenerator(): Generator;
 }

@@ -16,12 +16,12 @@ namespace Chevere\Components\Spec\Specs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use function Chevere\Components\Var\deepCopy;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Router\Route\RouteInterface;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
-use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
+use Chevere\Interfaces\Spec\Specs\RouteSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecsInterface;
 
-final class RoutableSpec implements RoutableSpecInterface
+final class RouteSpec implements RouteSpecInterface
 {
     use SpecsTrait;
 
@@ -35,9 +35,9 @@ final class RoutableSpec implements RoutableSpecInterface
 
     private array $wildcards;
 
-    public function __construct(DirInterface $specDir, RoutableInterface $routable, string $repository)
+    public function __construct(DirInterface $specDir, RouteInterface $route, string $repository)
     {
-        $path = $routable->route()->path();
+        $path = $route->path();
         $this->path = $path->name();
         $this->key = $path->name();
         $this->locator = $repository . ':' . $this->key;
@@ -48,7 +48,7 @@ final class RoutableSpec implements RoutableSpecInterface
 
         $this->regex = $path->regex()->toString();
         $this->wildcards = $path->wildcards()->toArray();
-        $routeEndpoints = $routable->route()->endpoints();
+        $routeEndpoints = $route->endpoints();
         /** @var string $key */
         foreach ($routeEndpoints->keys() as $key) {
             $routeEndpointSpec = new RouteEndpointSpec(

@@ -20,7 +20,7 @@ use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Tests\Router\Route\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
-final class FunctionsTest extends TestCase
+final class RouterFunctionsTest extends TestCase
 {
     public function testFunctionRoute(): void
     {
@@ -42,9 +42,9 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionRoutes(): void
     {
-        $routables = routes(
-            route('/test/', GET: new TestController())
+        $routes = routes(
+            myRoute: route('/test/', GET: new TestController())
         );
-        $this->assertTrue($routables->has('/test/'));
+        $this->assertTrue($routes->has('/test/'));
     }
 }

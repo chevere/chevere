@@ -16,7 +16,7 @@ namespace Chevere\Components\Spec\Specs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
-use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
+use Chevere\Interfaces\Spec\Specs\RouteSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
 
 final class GroupSpec implements GroupSpecInterface
@@ -35,7 +35,7 @@ final class GroupSpec implements GroupSpecInterface
         $this->routableSpecs = new RoutableSpecs();
     }
 
-    public function withAddedRoutableSpec(RoutableSpecInterface $routableSpec): GroupSpecInterface
+    public function withAddedRoutableSpec(RouteSpecInterface $routableSpec): GroupSpecInterface
     {
         $new = clone $this;
         $new->routableSpecs = $new->routableSpecs->withPut($routableSpec);

@@ -15,17 +15,16 @@ namespace Chevere\Tests\Spec\Specs;
 
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RouteLocator;
 use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Spec\Specs\RoutableSpec;
+use Chevere\Components\Spec\Specs\RouteSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
-final class RoutableSpecTest extends TestCase
+final class RouteSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
@@ -42,8 +41,7 @@ final class RoutableSpecTest extends TestCase
             ->withDescription('Test endpoint');
         $route = (new Route($routePath))
             ->withAddedEndpoint($routeEndpoint);
-        $routable = new Routable($route);
-        $spec = new RoutableSpec($specDir, $routable, $repository);
+        $spec = new RouteSpec($specDir, $route, $repository);
         $routeEndpoint = new RouteEndpointSpec(
             $specDir->getChild(ltrim($routeLocator->path(), '/') . '/'),
             $routeEndpoint

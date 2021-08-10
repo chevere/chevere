@@ -17,6 +17,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Common\ToArrayInterface;
+use Chevere\Interfaces\Router\Route\RouteInterface;
 
 /**
  * Describes the component in charge of indexing named routes.
@@ -24,15 +25,15 @@ use Chevere\Interfaces\Common\ToArrayInterface;
 interface RouterIndexInterface extends ToArrayInterface
 {
     /**
-     * Return an instance with the specified `$routable` added.
+     * Return an instance with the specified `$route` added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$routable` added.
+     * an instance that contains the specified `$route` added.
      *
      * @throws InvalidArgumentException
      * @throws OverflowException
      */
-    public function withAddedRoutable(RoutableInterface $routable, string $group): self;
+    public function withAddedRoute(RouteInterface $route, string $group): self;
 
     /**
      * Indicates whether the instance has a route identified by its `$name`.
