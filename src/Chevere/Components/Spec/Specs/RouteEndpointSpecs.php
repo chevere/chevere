@@ -29,14 +29,14 @@ final class RouteEndpointSpecs implements RouteEndpointSpecsInterface
     {
         $new = clone $this;
         $key = $routeEndpointSpec->key();
-        $new->map->put($key, $routeEndpointSpec);
+        $new->map = $new->map->withPut($key, $routeEndpointSpec);
 
         return $new;
     }
 
     public function has(string $methodName): bool
     {
-        return $this->map->hasKey($methodName);
+        return $this->map->has($methodName);
     }
 
     /**

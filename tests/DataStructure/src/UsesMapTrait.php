@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructure\src;
 
+use Chevere\Components\DataStructure\Map;
 use Chevere\Components\DataStructure\Traits\MapTrait;
-use Ds\Map;
 
 final class UsesMapTrait
 {
@@ -23,7 +23,7 @@ final class UsesMapTrait
     public function withPut(string $key, object $object): static
     {
         $new = clone $this;
-        $new->map->put($key, $object);
+        $new->map = $new->map->withPut($key, $object);
 
         return $new;
     }

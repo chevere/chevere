@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\DataStructure\Traits;
 
-use function Chevere\Components\Var\deepCopy;
-use Ds\Map;
+use Chevere\Components\DataStructure\Map;
 use Generator;
 
 trait MapTrait
@@ -28,15 +27,12 @@ trait MapTrait
 
     public function __clone()
     {
-        $this->map = new Map(deepCopy($this->map->toArray(), true));
+        $this->map = clone $this->map;
     }
 
-    /**
-     * @psalm-suppress LessSpecificImplementedReturnType
-     */
     public function keys(): array
     {
-        return $this->map->keys()->toArray();
+        return $this->map->keys();
     }
 
     public function count(): int
@@ -44,16 +40,8 @@ trait MapTrait
         return $this->map->count();
     }
 
-    /**
-     * @psalm-suppress LessSpecificImplementedReturnType
-     */
     public function getGenerator(): Generator
     {
-        /**
-         * @var \Ds\Pair $pair
-         */
-        foreach ($this->map->pairs() as $pair) {
-            yield $pair->key => $pair->value;
-        }
+        return $this->map->getGenerator();
     }
 }

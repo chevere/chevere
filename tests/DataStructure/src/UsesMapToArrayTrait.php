@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructure\src;
 
+use Chevere\Components\DataStructure\Map;
 use Chevere\Components\DataStructure\Traits\MapToArrayTrait;
-use Ds\Map;
 
 final class UsesMapToArrayTrait
 {
@@ -22,7 +22,7 @@ final class UsesMapToArrayTrait
 
     public function __construct()
     {
-        $this->map = new Map([
+        $this->map = new Map(...[
             0 => 'test',
         ]);
     }

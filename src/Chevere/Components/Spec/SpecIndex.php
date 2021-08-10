@@ -26,22 +26,22 @@ final class SpecIndex implements SpecIndexInterface
     public function withAddedRoute(string $routeName, RouteEndpointSpecInterface $routeEndpointSpec): SpecIndexInterface
     {
         $new = clone $this;
-        if ($new->map->hasKey($routeName)) {
+        if ($new->map->has($routeName)) {
             /** @var SpecEndpoints $specEndpoints */
             $specEndpoints = $new->map->get($routeName);
         } else {
             $specEndpoints = new SpecEndpoints();
-            $new->map->put($routeName, $specEndpoints);
+            $new->map = $new->map->withPut($routeName, $specEndpoints);
         }
         $specEndpoints = $specEndpoints->withPut($routeEndpointSpec);
-        $new->map->put($routeName, $specEndpoints);
+        $new->map = $new->map->withPut($routeName, $specEndpoints);
 
         return $new;
     }
 
     public function has(string $routeName, string $methodName): bool
     {
-        if ($this->map->hasKey($routeName)) {
+        if ($this->map->has($routeName)) {
             /** @var SpecEndpoints $specEndpoints */
             $specEndpoints = $this->map->get($routeName);
 

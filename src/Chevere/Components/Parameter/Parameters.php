@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Parameter;
 
+use Chevere\Components\DataStructure\Map;
 use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
-
-use function Chevere\Components\Var\deepCopy;
-use Ds\Map;
 use Ds\Set;
 
 final class Parameters implements ParametersInterface
@@ -42,7 +40,7 @@ final class Parameters implements ParametersInterface
 
     public function __clone()
     {
-        $this->map = deepCopy($this->map);
+        $this->map = clone $this->map;
         $this->required = new Set($this->required->toArray());
         $this->optional = new Set($this->optional->toArray());
     }
@@ -59,12 +57,13 @@ final class Parameters implements ParametersInterface
     {
         $new = clone $this;
         foreach ($parameters as $name => $param) {
-            $name = (string) $name;
+            $name = strval($name);
             $new->assertNoOverflow($name);
-            $new->map->put($name, $param);
+            $new->map = $new->map->withPut($name, $param);
             $new->optional->add($name);
         }
-
+        // xdd(iterator_to_array($new->map->getGenerator()), $new->optional);
+        
         return $new;
     }
 
@@ -72,14 +71,14 @@ final class Parameters implements ParametersInterface
     {
         $new = clone $this;
         foreach ($parameters as $name => $param) {
-            $name = (string) $name;
-            if (!$new->map->hasKey($name)) {
+            $name = strval($name);
+            if (!$new->map->has($name)) {
                 throw new OutOfBoundsException(
                     (new Message("Parameter %name% doesn't exists"))
                         ->code('%name%', $name)
                 );
             }
-            $new->map->put($name, $param);
+            $new->map = $new->map->withPut($name, $param);
         }
 
         return $new;
@@ -87,13 +86,7 @@ final class Parameters implements ParametersInterface
 
     public function has(string ...$parameter): bool
     {
-        foreach ($parameter as $pos => $value) {
-            if (!$this->map->hasKey($value)) {
-                return false;
-            }
-        }
-
-        return true;
+        return $this->map->has(...$parameter);
     }
 
     public function isRequired(string $parameter): bool
@@ -137,7 +130,7 @@ final class Parameters implements ParametersInterface
         foreach ($parameters as $name => $parameter) {
             $name = (string) $name;
             $this->assertNoOverflow($name);
-            $this->map->put($name, $parameter);
+            $this->map = $this->map->withPut($name, $parameter);
             $this->required->add($name);
         }
     }

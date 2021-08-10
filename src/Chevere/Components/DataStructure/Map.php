@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\DataStructure;
 
-use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use function Chevere\Components\Var\deepCopy;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MapInterface;
 use Ds\Map as DsMap;
+use Generator;
 
 final class Map implements MapInterface
 {
-    use MapTrait;
+    private DsMap $map;
 
     public function __construct(mixed ...$namedArguments)
     {
@@ -35,15 +35,33 @@ final class Map implements MapInterface
 
     public function __clone()
     {
-        $this->map = new DsMap(deepCopy($this->map->toArray()));
+        $this->map = deepCopy($this->map);
     }
 
-    public function withPut(mixed ...$namedValues): self
+    public function keys(): array
+    {
+        return $this->map->keys()->toArray();
+    }
+
+    public function count(): int
+    {
+        return $this->map->count();
+    }
+
+    public function getGenerator(): Generator
+    {
+        /**
+         * @var \Ds\Pair $pair
+         */
+        foreach ($this->map->pairs() as $pair) {
+            yield $pair->key => $pair->value;
+        }
+    }
+
+    public function withPut(string $key, mixed $value): self
     {
         $new = clone $this;
-        foreach ($namedValues as $name => $value) {
-            $new->map->put($name, $value);
-        }
+        $new->map->put($key, $value);
 
         return $new;
     }
@@ -67,7 +85,7 @@ final class Map implements MapInterface
         $missing = [];
         foreach ($keys as $k) {
             if (!$this->map->hasKey($k)) {
-                $missing[] = $k;
+                $missing[] = strval($k);
             }
         }
         if ($missing !== []) {

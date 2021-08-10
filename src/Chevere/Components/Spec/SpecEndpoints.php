@@ -28,17 +28,18 @@ final class SpecEndpoints implements SpecEndpointsInterface
     public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): SpecEndpointsInterface
     {
         $new = clone $this;
-        $new->map->put(
-            $routeEndpointSpec->key(),
-            $routeEndpointSpec->jsonPath()
-        );
+        $new->map = $new->map
+            ->withPut(
+                $routeEndpointSpec->key(),
+                $routeEndpointSpec->jsonPath()
+            );
 
         return $new;
     }
 
     public function has(string $methodName): bool
     {
-        return $this->map->hasKey($methodName);
+        return $this->map->has($methodName);
     }
 
     /**

@@ -13,17 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\DataStructure\Traits;
 
-use Ds\Map;
+use Chevere\Components\DataStructure\Map;
 
 trait MapToArrayTrait
 {
     private Map $map;
 
-    /**
-     * @psalm-suppress LessSpecificImplementedReturnType
-     */
     public function toArray(): array
     {
-        return $this->map->toArray();
+        return iterator_to_array($this->map->getGenerator(), true);
     }
 }

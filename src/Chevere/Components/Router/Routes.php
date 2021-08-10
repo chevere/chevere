@@ -25,13 +25,15 @@ final class Routes implements RoutesInterface
 {
     use MapTrait;
 
+    private array $named = [];
+
     public function withPut(RouteInterface ...$namedRoutes): RoutesInterface
     {
+        $new = clone $this;
         foreach ($namedRoutes as $name => $route) {
             $name = strval($name);
-            $new = clone $this;
             $key = $route->path()->toString();
-            $new->map->put($key, $route);
+            $new->map = $new->map->withPut($key, $route);
         }
 
         return $new;
@@ -39,13 +41,7 @@ final class Routes implements RoutesInterface
 
     public function has(string ...$paths): bool
     {
-        foreach ($paths as $name) {
-            if (!$this->map->hasKey($name)) {
-                return false;
-            }
-        }
-
-        return true;
+        return $this->map->has(...$paths);
     }
 
     /**

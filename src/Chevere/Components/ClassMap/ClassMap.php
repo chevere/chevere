@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ClassMap;
 
+use Chevere\Components\DataStructure\Map;
 use Chevere\Components\DataStructure\Traits\MapToArrayTrait;
 use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
@@ -20,11 +21,11 @@ use Chevere\Exceptions\Core\ClassNotExistsException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
-use Ds\Map;
 
 final class ClassMap implements ClassMapInterface
 {
     use MapTrait;
+
     use MapToArrayTrait;
 
     /**
@@ -45,19 +46,21 @@ final class ClassMap implements ClassMapInterface
 
     public function __clone()
     {
-        $this->map = new Map($this->map->toArray());
-        $this->flip = new Map($this->flip->toArray());
+        $this->map = clone $this->map;
+        $this->flip = clone $this->flip;
     }
 
     public function withPut(string $className, string $key): ClassMapInterface
     {
-        if (! class_exists($className) && ! interface_exists($className)) {
+        if (!class_exists($className) && !interface_exists($className)) {
             throw new ClassNotExistsException(
                 (new Message("Class name or interface %className% doesn't exists"))
                     ->strong('%className%', $className)
             );
         }
-        $known = $this->flip[$key] ?? null;
+        $known = $this->flip->has($key)
+            ? $this->flip->get($key)
+            : null;
         if ($known && $known !== $className) {
             throw new OverflowException(
                 (new Message('Attempting to map %className% to the same mapping of %known% -> %string%'))
@@ -67,48 +70,48 @@ final class ClassMap implements ClassMapInterface
             );
         }
         $new = clone $this;
-        $new->map[$className] = $key;
-        $new->flip[$key] = $className;
+        $new->map = $new->map->withPut($className, $key);
+        $new->flip = $new->flip->withPut($key, $className);
 
         return $new;
     }
 
     public function has(string $className): bool
     {
-        return $this->map->hasKey($className);
+        return $this->map->has($className);
     }
 
     public function hasKey(string $key): bool
     {
-        return $this->flip->hasKey($key);
+        return $this->flip->has($key);
     }
 
     public function key(string $className): string
     {
-        if (! $this->has($className)) {
+        if (!$this->has($className)) {
             throw new OutOfBoundsException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
             );
         }
 
-        return $this->map[$className];
+        return $this->map->get($className);
     }
 
     public function keys(): array
     {
-        return $this->flip->keys()->toArray();
+        return $this->flip->keys();
     }
 
     public function className(string $key): string
     {
-        if (! $this->hasKey($key)) {
+        if (!$this->hasKey($key)) {
             throw new OutOfBoundsException(
                 (new Message("Key %key% doesn't map any class"))
                     ->code('%key%', $key)
             );
         }
 
-        return $this->flip[$key];
+        return $this->flip->get($key);
     }
 }

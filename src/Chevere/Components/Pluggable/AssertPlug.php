@@ -73,7 +73,6 @@ final class AssertPlug implements AssertPlugInterface
 
     private function assertType(): void
     {
-        /** @psalm-suppress RedundantPropertyInitializationCheck */
         if (!isset($this->plugType)) {
             $accept = [];
             /**

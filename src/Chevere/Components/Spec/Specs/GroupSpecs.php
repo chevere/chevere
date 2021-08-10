@@ -28,14 +28,14 @@ final class GroupSpecs implements GroupSpecsInterface
     public function withPut(GroupSpecInterface $groupSpec): GroupSpecsInterface
     {
         $new = clone $this;
-        $new->map->put($groupSpec->key(), $groupSpec);
+        $new->map = $new->map->withPut($groupSpec->key(), $groupSpec);
 
         return $new;
     }
 
     public function has(string $name): bool
     {
-        return $this->map->hasKey($name);
+        return $this->map->has($name);
     }
 
     /**

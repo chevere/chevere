@@ -249,7 +249,7 @@ final class Workflow implements WorkflowInterface
                 if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $reference, $matches)) {
                     /** @var array $matches */
                     if (!$this->parameters->has($matches[1])) {
-                        $this->vars = $this->vars->withPut(...[$reference => [$matches[1]]]);
+                        $this->vars = $this->vars->withPut($reference, [$matches[1]]);
                     }
                     $this->putParameter($matches[1], $parameter);
                 } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $reference, $matches)) {
@@ -260,7 +260,7 @@ final class Workflow implements WorkflowInterface
                     $expected = $this->expected->get($previousStep, []);
                     $expected[] = $previousResponseKey;
                     $this->expected->put($previousStep, $expected);
-                    $this->vars = $this->vars->withPut(...[$reference => [$previousStep, $previousResponseKey]]);
+                    $this->vars = $this->vars->withPut($reference, [$previousStep, $previousResponseKey]);
                 }
             } catch (Throwable $e) {
                 throw new InvalidArgumentException(

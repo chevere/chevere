@@ -26,14 +26,17 @@ final class RouteEndpoints implements RouteEndpointsInterface
     public function withPut(RouteEndpointInterface $routeEndpoint): RouteEndpointsInterface
     {
         $new = clone $this;
-        $new->map->put($routeEndpoint->method()->name(), $routeEndpoint);
+        $new->map = $new->map->withPut(
+            $routeEndpoint->method()->name(),
+            $routeEndpoint
+        );
 
         return $new;
     }
 
     public function hasKey(string $key): bool
     {
-        return $this->map->hasKey($key);
+        return $this->map->has($key);
     }
 
     public function get(string $key): RouteEndpointInterface
