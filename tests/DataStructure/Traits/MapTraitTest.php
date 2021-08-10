@@ -49,7 +49,7 @@ final class MapTraitTest extends TestCase
         $keyAdd = 'testAdd';
         $mapClone = $mapClone->withPut($keyAdd, $object);
         $this->assertSame($object, $mapClone->map()->get($keyAdd));
-        $this->assertNotSame($object, $mapClone->map()->get($key));
+        $this->assertEquals($object, $mapClone->map()->get($key));
         $mapClone = $mapClone->withPut($keyAdd, deepCopy($object));
         $this->assertNotSame($object, $mapClone->map()->get($keyAdd));
     }
