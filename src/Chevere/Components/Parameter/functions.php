@@ -119,7 +119,7 @@ function stringParameter(
 
 function objectParameter(
     string $className,
-    ?string $description = null
+    ?string $description = null,
 ): ObjectParameterInterface {
     $parameter = isset($description)
         ? new ObjectParameter($description)

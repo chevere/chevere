@@ -12,6 +12,10 @@
 declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
+use function Chevere\Components\Parameter\arrayParameter;
+use function Chevere\Components\Parameter\booleanParameter;
+use function Chevere\Components\Parameter\floatParameter;
+use function Chevere\Components\Parameter\integerParameter;
 use function Chevere\Components\Parameter\objectParameter;
 use function Chevere\Components\Parameter\parameters;
 use function Chevere\Components\Parameter\stringParameter;
@@ -29,6 +33,58 @@ final class ParameterFunctionsTest extends TestCase
         );
         $this->assertCount(1, $parameters);
         $this->assertTrue($parameters->isRequired('foo'));
+    }
+
+    public function testArrayParameter(): void
+    {
+        $parameter = arrayParameter();
+        $this->assertSame('', $parameter->description());
+        $this->assertSame([], $parameter->default());
+        $parameter = arrayParameter(
+            description: 'name',
+            default: ['default']
+        );
+        $this->assertSame('name', $parameter->description());
+        $this->assertSame(['default'], $parameter->default());
+    }
+
+    public function testBooleanParameter(): void
+    {
+        $parameter = booleanParameter();
+        $this->assertSame('', $parameter->description());
+        $this->assertSame(false, $parameter->default());
+        $parameter = booleanParameter(
+            description: 'name',
+            default: true
+        );
+        $this->assertSame('name', $parameter->description());
+        $this->assertSame(true, $parameter->default());
+    }
+
+    public function testFloatParameter(): void
+    {
+        $parameter = floatParameter();
+        $this->assertSame('', $parameter->description());
+        $this->assertSame(0.0, $parameter->default());
+        $parameter = floatParameter(
+            description: 'name',
+            default: 5.5
+        );
+        $this->assertSame('name', $parameter->description());
+        $this->assertSame(5.5, $parameter->default());
+    }
+
+    public function testIntegerParameter(): void
+    {
+        $parameter = integerParameter();
+        $this->assertSame('', $parameter->description());
+        $this->assertSame(0, $parameter->default());
+        $parameter = integerParameter(
+            description: 'name',
+            default: 10
+        );
+        $this->assertSame('name', $parameter->description());
+        $this->assertSame(10, $parameter->default());
     }
 
     public function testFunctionObjectParameter(): void

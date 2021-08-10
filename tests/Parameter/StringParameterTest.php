@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Components\Parameter\StringParameter;
+use function Chevere\Components\Parameter\stringParameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -26,6 +27,7 @@ final class StringParameterTest extends TestCase
     {
         $regex = '/^.*$/';
         $parameter = new StringParameter();
+        $this->assertEquals($parameter, stringParameter());
         $this->assertSame($regex, $parameter->regex()->toString());
     }
 
