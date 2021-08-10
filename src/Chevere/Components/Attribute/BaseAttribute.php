@@ -11,20 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller\Attributes;
+namespace Chevere\Components\Attribute;
 
 use Attribute;
-use Chevere\Interfaces\Controller\Attributes\RelationInterface;
+use Chevere\Interfaces\Attribute\AttributeInterface;
 
 #[Attribute]
-class Relation implements RelationInterface
+abstract class BaseAttribute implements AttributeInterface
 {
-    public function __construct(protected string $relation)
+    public function __construct(protected string $attribute)
     {
     }
 
-    public function relation(): string
+    public function attribute(): string
     {
-        return $this->relation;
+        return $this->attribute;
     }
 }

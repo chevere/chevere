@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller\_resources\src;
+namespace Chevere\Tests\Workflow\_resources\src;
 
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowProviderInterface;
 
-final class ControllerTestWorkflowProvider implements WorkflowProviderInterface
+final class WorkflowTestProvider implements WorkflowProviderInterface
 {
     public function getWorkflow(): WorkflowInterface
     {

@@ -16,15 +16,17 @@ namespace Chevere\Tests\Controller;
 use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
 use Chevere\Components\Pluggable\Plug\Hook\HooksRunner;
 use Chevere\Components\Type\Type;
+use Chevere\Components\Workflow\Attributes\Dispatch;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Tests\Controller\_resources\src\ControllerTestController;
+use Chevere\Tests\Controller\_resources\src\ControllerTestControllerDispatchAttribute;
 use Chevere\Tests\Controller\_resources\src\ControllerTestControllerRelationAttribute;
 use Chevere\Tests\Controller\_resources\src\ControllerTestControllerRelationWorkflowAttribute;
 use Chevere\Tests\Controller\_resources\src\ControllerTestControllerRelationWorkflowAttributeError;
 use Chevere\Tests\Controller\_resources\src\ControllerTestInvalidController;
 use Chevere\Tests\Controller\_resources\src\ControllerTestModifyParamConflictHook;
 use Chevere\Tests\Controller\_resources\src\ControllerTestModifyParamHook;
-use Chevere\Tests\Controller\_resources\src\ControllerTestWorkflowProvider;
+use Chevere\Tests\Workflow\_resources\src\WorkflowTestProvider;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerTest extends TestCase
@@ -40,12 +42,23 @@ final class ControllerTest extends TestCase
         $controller = new ControllerTestController();
         $this->assertSame(Type::STRING, $controller->parameter()->type()->primitive());
         $this->assertSame('', $controller->relation());
+        $this->assertSame('', $controller->dispatch());
+        $matrix = [
+            'relation' => 'test relation',
+            'dispatch' => 'test dispatch',
+        ];
+        $controller = new ControllerTestController(
+            ...$matrix
+        );
+        foreach ($matrix as $key => $value) {
+            $this->assertSame($value, $controller->$key());
+        }
     }
 
-    public function testControllerRelation(): void
+    public function testControllerWorkflowDispatchAttribute(): void
     {
-        $controller = new ControllerTestController('Some Relation');
-        $this->assertSame('Some Relation', $controller->relation());
+        $controller = new ControllerTestControllerDispatchAttribute();
+        $this->assertSame(Dispatch::QUEUE, $controller->dispatch());
     }
 
     public function testControllerRelationAttribute(): void
@@ -57,7 +70,7 @@ final class ControllerTest extends TestCase
     public function testControllerRelationWorkflowAttribute(): void
     {
         $controller = new ControllerTestControllerRelationWorkflowAttribute();
-        $this->assertSame(ControllerTestWorkflowProvider::class, $controller->relation());
+        $this->assertSame(WorkflowTestProvider::class, $controller->relation());
     }
 
     public function testControllerRelationWorkflowAttributeError(): void

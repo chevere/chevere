@@ -25,6 +25,11 @@ use Chevere\Interfaces\Parameter\StringParameterInterface;
  */
 interface ControllerInterface extends ActionInterface
 {
+    public function __construct(
+        string $relation = '',
+        string $dispatch = '',
+    );
+
     public function relation(): string;
 
     public function parameter(): StringParameterInterface;

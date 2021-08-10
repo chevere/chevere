@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller\_resources\src;
 
-use Chevere\Components\Controller\Attributes\Relation;
+use Chevere\Components\Attribute\Relation;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;

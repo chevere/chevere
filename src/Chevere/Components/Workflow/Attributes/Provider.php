@@ -11,26 +11,26 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller\Attributes;
+namespace Chevere\Components\Workflow\Attributes;
 
 use Attribute;
+use Chevere\Components\Attribute\Relation;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Workflow\WorkflowProviderInterface;
 
 #[Attribute]
-class RelationWorkflow extends Relation
+final class Provider extends Relation
 {
     /**
-     * @param string $relation A workflow provider name.
-     * @throws InvalidArgumentException If $relation doesn't implement WorkflowProviderInterface.
+     * @param string $attribute A workflow provider name.
      */
-    public function __construct(protected string $relation)
+    public function __construct(protected string $attribute)
     {
-        if (!is_subclass_of($relation, WorkflowProviderInterface::class)) {
+        if (!is_subclass_of($attribute, WorkflowProviderInterface::class)) {
             throw new InvalidArgumentException(
-                message: (new Message("The relation `%relation%` doesn't implement the %interface% interface."))
-                    ->code('%relation%', $relation)
+                message: (new Message("The attribute `%attribute%` doesn't implement the %interface% interface."))
+                    ->code('%attribute%', $attribute)
                     ->code('%interface%', WorkflowProviderInterface::class)
             );
         }

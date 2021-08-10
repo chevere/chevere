@@ -16,14 +16,13 @@ namespace Chevere\Tests\Controller\_resources\src;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Workflow\Attributes\Provider;
+use Chevere\Components\Workflow\Attributes\Dispatch;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
-use Chevere\Tests\Workflow\_resources\src\WorkflowTestProvider;
 
-#[Provider(WorkflowTestProvider::class)]
-final class ControllerTestControllerRelationWorkflowAttribute extends Controller
+#[Dispatch(Dispatch::QUEUE)]
+final class ControllerTestControllerDispatchAttribute extends Controller
 {
     public function getParameters(): ParametersInterface
     {

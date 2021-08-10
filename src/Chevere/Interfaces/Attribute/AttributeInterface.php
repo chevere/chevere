@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Controller\Attributes;
+namespace Chevere\Interfaces\Attribute;
 
 /**
- * Describes the component in charge of defining controller relation attribute.
+ * Describes the component in charge of defining an attribute.
  */
-interface RelationInterface
+interface AttributeInterface
 {
-    public function __construct(string $relation);
+    public function __construct(string $attribute);
 
-    public function relation(): string;
+    public function attribute(): string;
 }

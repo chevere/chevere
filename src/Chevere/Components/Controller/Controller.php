@@ -14,36 +14,66 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Action\Action;
-use Chevere\Components\Controller\Attributes\Relation;
+use Chevere\Components\Attribute\Dispatch;
+use Chevere\Components\Attribute\Relation;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Controller\Attributes\RelationInterface;
+use Chevere\Interfaces\Controller\Attributes\AttributeInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Parameter\StringParameterInterface;
+use ReflectionAttribute;
 use ReflectionClass;
 
+/**
+ * #[Dispatch(Dispatch::QUEUE)]
+ * #[Relation('relationName')]
+ */
 abstract class Controller extends Action implements ControllerInterface
 {
     protected StringParameterInterface $parameterType;
 
-    final public function __construct(
-        protected string $relation = ''
+    public function __construct(
+        protected string $relation = '',
+        protected string $dispatch = '',
     ) {
-        if ($relation === '') {
-            $reflectionClass = new ReflectionClass($this);
-            $attributes = $reflectionClass->getAttributes();
-            foreach ($attributes as $relationAttribute) {
-                if (is_subclass_of($relationAttribute->getName(), RelationInterface::class)) {
-                    /** @var RelationInterface $newRelation */
-                    $newRelation = $relationAttribute->newInstance();
-                    $this->relation = $newRelation->relation();
-                }
-            }
-        }
         $this->parameterType ??= $this->parameter();
         $this->setUp();
         $this->assertParametersType();
+        if (in_array('', [$this->relation, $this->dispatch])) {
+            $reflectionClass = new ReflectionClass($this);
+            $attributes = $reflectionClass->getAttributes();
+            /** @var ReflectionAttribute $attribute */
+            foreach ($attributes as $attribute) {
+                $this->handleAttribute($attribute);
+            }
+        }
+    }
+
+    private function handleAttribute(ReflectionAttribute $attribute): void
+    {
+        if (
+            $this->relation === ''
+            && $this->isValidAttribute($attribute, Relation::class)
+        ) {
+            /** @var AttributeInterface $new */
+            $new = $attribute->newInstance();
+            $this->relation = $new->attribute();
+        }
+        if (
+            $this->dispatch === ''
+            && $this->isValidAttribute($attribute, Dispatch::class)
+        ) {
+            /** @var AttributeInterface $new */
+            $new = $attribute->newInstance();
+            $this->dispatch = $new->attribute();
+        }
+    }
+
+    private function isValidAttribute(ReflectionAttribute $attribute, string $className): bool
+    {
+        return $attribute->getName() === $className
+            || is_subclass_of($attribute->getName(), $className);
     }
 
     public function parameter(): StringParameterInterface
@@ -54,6 +84,11 @@ abstract class Controller extends Action implements ControllerInterface
     final public function relation(): string
     {
         return $this->relation;
+    }
+
+    final public function dispatch(): string
+    {
+        return $this->dispatch;
     }
 
     private function assertParametersType(): void
