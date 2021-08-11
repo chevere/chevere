@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
+use Chevere\Components\Workflow\Steps;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowMessage;
 use Chevere\Components\Workflow\WorkflowRun;
@@ -24,7 +25,7 @@ final class WorkflowMessageTest extends TestCase
 {
     public function getWorkflowRun(): WorkflowRunInterface
     {
-        return new WorkflowRun(new Workflow());
+        return new WorkflowRun(new Workflow(new Steps()));
     }
 
     public function testConstruct(): void

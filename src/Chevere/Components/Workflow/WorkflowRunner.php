@@ -45,7 +45,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
     {
         $this->assertDependencies($serviceContainer);
         $new = clone $this;
-        foreach ($new->workflowRun->workflow()->getGenerator() as $name => $step) {
+        foreach ($new->workflowRun->workflow()->steps()->getGenerator() as $name => $step) {
             if ($new->workflowRun->has($name)) {
                 continue;
             }
@@ -117,7 +117,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
 
     private function assertDependencies(MapInterface $serviceContainer): void
     {
-        $dependencies = $this->workflowRun->workflow()->dependencies();
+        $dependencies = $this->workflowRun->workflow()->steps()->dependencies();
         $missing = [];
         foreach ($dependencies->getGenerator() as $name => $className) {
             $isMissing =

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Workflow;
 
 use function Chevere\Components\Workflow\getWorkflowMessage;
+use Chevere\Components\Workflow\Steps;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowResponse;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +24,7 @@ final class WorkflowResponseTest extends TestCase
     public function testWithWorkflowMessage(): void
     {
         $data = [];
-        $workflowMessage = getWorkflowMessage(new Workflow())
+        $workflowMessage = getWorkflowMessage(new Workflow(new Steps()))
             ->withDelay(123)
             ->withExpiration(111)
             ->withPriority(10);

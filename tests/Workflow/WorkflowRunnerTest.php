@@ -17,6 +17,7 @@ use Chevere\Components\DataStructure\Map;
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Workflow\Step;
+use Chevere\Components\Workflow\Steps;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
 use Chevere\Components\Workflow\WorkflowRunner;
@@ -33,7 +34,7 @@ final class WorkflowRunnerTest extends TestCase
     {
         $foo = 'hola';
         $bar = 'mundo';
-        $workflow = (new Workflow())
+        $workflow = (new Workflow(new Steps()))
             ->withAdded(
                 step1: new Step(
                     WorkflowRunnerTestStep1::class,
@@ -84,7 +85,7 @@ final class WorkflowRunnerTest extends TestCase
     {
         $foo = 'hola';
         $bar = 'mundo';
-        $workflow = (new Workflow())
+        $workflow = (new Workflow(new Steps()))
             ->withAdded(
                 step1: new Step(
                     WorkflowRunnerTestDependentStep1::class,

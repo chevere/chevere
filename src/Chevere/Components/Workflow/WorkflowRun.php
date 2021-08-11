@@ -64,7 +64,7 @@ final class WorkflowRun implements WorkflowRunInterface
     public function withStepResponse(string $step, ResponseInterface $response): WorkflowRunInterface
     {
         $new = clone $this;
-        $new->workflow->get($step);
+        $new->workflow->steps()->get($step);
         new Arguments(
             $new->workflow->getProvided($step),
             ...$response->data()

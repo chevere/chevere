@@ -17,9 +17,11 @@ use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 
-function workflow(StepInterface ...$steps): WorkflowInterface
+function workflow(StepInterface ...$namedSteps): WorkflowInterface
 {
-    return new Workflow(...$steps);
+    return new Workflow(
+        new Steps(...$namedSteps)
+    );
 }
 
 function step(string $action, mixed ...$namedArguments): StepInterface

@@ -15,10 +15,8 @@ namespace Chevere\Interfaces\Workflow;
 
 use Chevere\Components\DataStructure\Map;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Countable;
-use Generator;
 
 /**
  * Describes the component in charge of defining a collection of chained tasks.
@@ -29,7 +27,9 @@ interface WorkflowInterface extends Countable
 
     public const REGEX_STEP_REFERENCE = '/^\${([\w-]*)\:([\w-]*)}$/';
 
-    public function __construct(StepInterface ...$steps);
+    public function __construct(StepsInterface $steps);
+
+    public function steps(): StepsInterface;
 
     public function vars(): Map;
 
@@ -51,7 +51,7 @@ interface WorkflowInterface extends Countable
      *
      * @throws OverflowException
      */
-    public function withAddedBefore(string $before, StepInterface ...$step): self;
+    public function withAddedBefore(string $before, StepInterface ...$steps): self;
 
     /**
      * Return an instance with the specified `$step` added after `$after`.
@@ -61,17 +61,9 @@ interface WorkflowInterface extends Countable
      *
      * @throws OverflowException
      */
-    public function withAddedAfter(string $after, StepInterface ...$step): self;
-
-    public function has(string $step): bool;
-
-    public function get(string $step): StepInterface;
-
-    public function dependencies(): DependenciesInterface;
+    public function withAddedAfter(string $after, StepInterface ...$steps): self;
 
     public function parameters(): ParametersInterface;
-
-    public function order(): array;
 
     /**
      * Provides access to the `$var` mapping for job variables.
@@ -96,9 +88,4 @@ interface WorkflowInterface extends Countable
      * Provides access to the expected return arguments for the given `$step`.
      */
     public function getProvided(string $step): ParametersInterface;
-
-    /**
-     * @return Generator<string, StepInterface>
-     */
-    public function getGenerator(): Generator;
 }

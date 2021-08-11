@@ -18,6 +18,7 @@ use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Response\Response;
 use Chevere\Components\Workflow\Step;
+use Chevere\Components\Workflow\Steps;
 use Chevere\Components\Workflow\Workflow;
 use Chevere\Components\Workflow\WorkflowRun;
 use Chevere\Exceptions\Core\ArgumentCountException;
@@ -31,7 +32,7 @@ final class WorkflowRunTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $workflow = (new Workflow())
+        $workflow = (new Workflow(new Steps()))
             ->withAdded(
                 steps: new Step(
                     WorkflowRunTestStep1::class,
@@ -54,7 +55,7 @@ final class WorkflowRunTest extends TestCase
 
     public function testWithAdded(): void
     {
-        $workflow = (new Workflow())
+        $workflow = (new Workflow(new Steps()))
             ->withAdded(
                 step0: new Step(
                     WorkflowRunTestStep1::class,
@@ -83,7 +84,7 @@ final class WorkflowRunTest extends TestCase
 
     public function testWithAddedNotFound(): void
     {
-        $workflow = (new Workflow())
+        $workflow = (new Workflow(new Steps()))
             ->withAdded(
                 step0: new Step(
                     WorkflowRunTestStep1::class,
@@ -103,7 +104,7 @@ final class WorkflowRunTest extends TestCase
 
     public function testWithAddedMissingArguments(): void
     {
-        $workflow = (new Workflow())
+        $workflow = (new Workflow(new Steps()))
             ->withAdded(
                 step0: new Step(WorkflowRunTestStep0::class),
                 step1: new Step(
