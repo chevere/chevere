@@ -17,6 +17,16 @@ use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\WorkflowInterface;
 use Chevere\Interfaces\Workflow\WorkflowMessageInterface;
 
+function workflow(StepInterface ...$steps): WorkflowInterface
+{
+    return new Workflow(...$steps);
+}
+
+function step(string $action, mixed ...$namedArguments): StepInterface
+{
+    return new Step($action, ...$namedArguments);
+}
+
 /**
  * @codeCoverageIgnore
  */
@@ -39,16 +49,4 @@ function pushWorkflowQueue(WorkflowMessageInterface $workflowMessage, $stack): v
     //     );
     // }
     $stack[] = $workflowMessage;
-}
-
-// @codeCoverageIgnoreStart
-
-function workflow(StepInterface ...$steps) : WorkflowInterface {
-
-    return new Workflow(...$steps);
-}
-
-function step(string $action, mixed ...$namedArguments): StepInterface
-{
-    return new Step($action, ...$namedArguments);
 }
