@@ -38,6 +38,4 @@ interface RoutePathInterface extends ToStringInterface
      * Provides access to the regex instance.
      */
     public function regex(): RegexInterface;
-
-    public function name(): string;
 }

@@ -57,7 +57,7 @@ final class RouterIndexTest extends TestCase
     {
         $groupName = 'some-group';
         $path = '/path';
-        $route = new Route(new RoutePath($path));
+        $route = new Route('test', new RoutePath($path));
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(new GetMethod(), new TestController())
         );
@@ -77,7 +77,7 @@ final class RouterIndexTest extends TestCase
             ],
         ], $routerIndex->toArray());
         $path2 = '/path-2';
-        $route2 = new Route(new RoutePath($path2));
+        $route2 = new Route('test', new RoutePath($path2));
         $route2 = $route2->withAddedEndpoint(
             new RouteEndpoint(new GetMethod(), new TestController())
         );
@@ -91,7 +91,7 @@ final class RouterIndexTest extends TestCase
     public function testWithAddedAlready(): void
     {
         $repo = 'repository';
-        $route = (new Route(new RoutePath('/path')))
+        $route = (new Route('test', new RoutePath('/path')))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())
             );

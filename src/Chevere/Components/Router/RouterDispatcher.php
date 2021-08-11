@@ -16,7 +16,7 @@ namespace Chevere\Components\Router;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Http\MethodNotAllowedException;
+use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
 use Chevere\Exceptions\Router\RouteNotFoundException;
 use Chevere\Interfaces\Router\RoutedInterface;
 use Chevere\Interfaces\Router\RouterDispatcherInterface;
@@ -51,7 +51,7 @@ final class RouterDispatcher implements RouterDispatcherInterface
 
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
-                throw new MethodNotAllowedException(
+                throw new HttpMethodNotAllowedException(
                     (new Message('Method %method% is not in the list of allowed methods: %allowed%'))
                         ->code('%method%', $httpMethod)
                         ->code('%allowed%', implode(', ', $info[1]))

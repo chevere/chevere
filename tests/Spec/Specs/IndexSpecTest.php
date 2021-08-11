@@ -39,7 +39,7 @@ final class IndexSpecTest extends TestCase
         $routePath = new RoutePath('/route/path');
         $specDir = dirForPath('/spec/');
         $repository = 'repo';
-        $route = (new Route($routePath))
+        $route = (new Route('test', $routePath))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())
             );

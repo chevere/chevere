@@ -56,6 +56,7 @@ final class SpecMakerTest extends TestCase
         $putMethod = new PutMethod();
         $getMethod = new GetMethod();
         $route = new Route(
+            'test',
             new RoutePath('/route-path/{id:[0-9]+}')
         );
         $route = $route

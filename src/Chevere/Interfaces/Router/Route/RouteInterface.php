@@ -24,7 +24,9 @@ use Chevere\Exceptions\Router\Route\RouteWildcardConflictException;
  */
 interface RouteInterface
 {
-    public function __construct(RoutePathInterface $path);
+    public function __construct(string $name, RoutePathInterface $path);
+
+    public function name(): string;
 
     /**
      * Provides access to the `$path` instance.

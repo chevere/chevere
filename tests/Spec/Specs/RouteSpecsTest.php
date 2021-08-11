@@ -42,7 +42,10 @@ final class RouteSpecsTest extends TestCase
         $specs = new RoutableSpecs();
         $spec = new RouteSpec(
             dirForPath("/spec/${repository}/"),
-            (new Route(new RoutePath('/path')))
+            (new Route(
+                path: new RoutePath('/path'),
+                name: 'test',
+            ))
                 ->withAddedEndpoint(
                     new RouteEndpoint(
                         new PatchMethod(),

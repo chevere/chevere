@@ -54,7 +54,7 @@ final class GroupSpecTest extends TestCase
         $repository = 'repo';
         $groupSpecDir = $specDir->getChild("${repository}/");
         $routesSpecPathJson = $groupSpecDir->path()->toString() . 'routes.json';
-        $route = (new Route(new RoutePath('/route/path')))
+        $route = (new Route('test', new RoutePath('/route/path')))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())
             );

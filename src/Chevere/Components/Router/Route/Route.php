@@ -27,7 +27,7 @@ use Chevere\Interfaces\Router\Route\RoutePathInterface;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
 
 final class Route implements RouteInterface
-{
+{    
     /**
      * @var array details about the instance maker
      */
@@ -43,15 +43,21 @@ final class Route implements RouteInterface
     private RouteEndpointsInterface $endpoints;
 
     public function __construct(
-        private RoutePathInterface $routePath
+        private string $name,
+        private RoutePathInterface $path
     ) {
         $this->maker = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
         $this->endpoints = new RouteEndpoints();
     }
 
+    public function name(): string
+    {
+        return $this->name;
+    }
+
     public function path(): RoutePathInterface
     {
-        return $this->routePath;
+        return $this->path;
     }
 
     public function maker(): array
@@ -64,7 +70,7 @@ final class Route implements RouteInterface
         $new = clone $this;
         $new->assertUnique($endpoint);
         $new->assertNoConflict($endpoint);
-        foreach ($new->routePath->wildcards()->getGenerator() as $wildcard) {
+        foreach ($new->path->wildcards()->getGenerator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
             $knownWildcardMatch = $new->wildcards[$wildcard->toString()] ?? null;
             /** @var StringParameterInterface $controllerParamMatch */

@@ -17,7 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
@@ -34,15 +34,16 @@ function routes(RouteInterface ...$namedRoutes): RoutesInterface
  * @param string $path The route path.
  * @param ControllerInterface ...$controllers Named arguments for httpMethod: ControllerName as `POST: PostController`.
  */
-function route(string $path, ControllerInterface ...$controllers): RouteInterface
+function route(string $name, string $path, ControllerInterface ...$httpControllers): RouteInterface
 {
     $route = new Route(
+        $name,
         new RoutePath($path)
     );
-    foreach ($controllers as $httpMethod => $controller) {
+    foreach ($httpControllers as $httpMethod => $controller) {
         $method = RouteEndpointInterface::KNOWN_METHODS[$httpMethod] ?? null;
         if (is_null($method)) {
-            throw new InvalidArgumentException(
+            throw new HttpMethodNotAllowedException(
                 message: (new Message('Unknown HTTP method `%httpMethod%` provided for %controller% controller.'))
                     ->code('%httpMethod%', $httpMethod)
                     ->code('%controller%', $controller::class)

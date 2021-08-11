@@ -39,7 +39,7 @@ final class RouteSpecTest extends TestCase
         $method = new GetMethod();
         $routeEndpoint = (new RouteEndpoint($method, new TestController()))
             ->withDescription('Test endpoint');
-        $route = (new Route($routePath))
+        $route = (new Route('test', $routePath))
             ->withAddedEndpoint($routeEndpoint);
         $spec = new RouteSpec($specDir, $route, $repository);
         $routeEndpoint = new RouteEndpointSpec(

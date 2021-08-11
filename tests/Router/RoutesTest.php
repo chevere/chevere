@@ -27,7 +27,8 @@ final class RoutesTest extends TestCase
     public function testWithPut(): void
     {
         $route = new Route(
-            new RoutePath('/some-path')
+            name: 'test',
+            path: new RoutePath('/some-path')
         );
         $key = $route->path()->toString();
         $route = $route->withAddedEndpoint(

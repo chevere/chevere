@@ -17,6 +17,7 @@ use function Chevere\Components\Router\route;
 use function Chevere\Components\Router\routes;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Tests\Router\Route\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
@@ -27,29 +28,39 @@ final class RouterFunctionsTest extends TestCase
     {
         $controller = new TestController();
         foreach (RouteEndpointInterface::KNOWN_METHODS as $httpMethod => $className) {
-            $route = route('/test/', ...[$httpMethod => $controller]);
+            $route = route($className, '/test/', ...[$httpMethod => $controller]);
+            $this->assertSame($className, $route->name());
             $this->assertTrue($route->endpoints()->hasKey($httpMethod));
             $this->assertCount(1, $route->endpoints());
             $this->assertSame($controller, $route->endpoints()->get($httpMethod)->controller());
         }
     }
 
-    public function testFunctionRouteError(): void
+    public function testFunctionRouteBadPath(): void
     {
         $controller = new TestController();
         $this->expectException(InvalidArgumentException::class);
-        route('/test/', TEST: $controller);
+        route('name', 'test', GET: $controller);
+    }
+
+    public function testFunctionRouteBadHttpMethod(): void
+    {
+        $controller = new TestController();
+        $this->expectException(HttpMethodNotAllowedException::class);
+        route('name', '/test/', TEST: $controller);
     }
 
     public function testFunctionRoutes(): void
     {
+        $name = 'test';
         $path = '/test/';
-        $routes = routes(
-            myRoute: route($path, GET: new TestController())
+        $route = route(
+            name: $name,
+            path: $path,
+            GET: new TestController()
         );
+        $routes = routes(myRoute: $route);
         $this->assertTrue($routes->has($path));
-        $this->assertSame('myRoute', $routes->getName($path));
-        $this->expectException(OutOfBoundsException::class);
-        $routes->getName('404');
+        $this->assertSame($route, $routes->get($path));
     }
 }

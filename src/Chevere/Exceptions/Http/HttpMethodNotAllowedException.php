@@ -18,6 +18,6 @@ use Chevere\Exceptions\Core\Exception;
 /**
  * Exception thrown when a method is not allowed.
  */
-final class MethodNotAllowedException extends Exception
+final class HttpMethodNotAllowedException extends Exception
 {
 }

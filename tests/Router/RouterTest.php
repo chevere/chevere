@@ -36,7 +36,7 @@ final class RouterTest extends TestCase
     public function testRouter(): void
     {
         $routePath = new RoutePath('/🐘/{id:\d+}/{name:\w+}');
-        $route = new Route($routePath);
+        $route = new Route('test', $routePath);
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(
                 new GetMethod(),
@@ -51,7 +51,7 @@ final class RouterTest extends TestCase
 
     public function testConstructInvalidArgument(): void
     {
-        $route = new Route(new RoutePath('/test'));
+        $route = new Route('test', new RoutePath('/test'));
         $this->expectException(RouteWithoutEndpointsException::class);
         (new Router())
             ->withAddedRoute($route, 'my-group');
@@ -59,7 +59,7 @@ final class RouterTest extends TestCase
 
     public function testNotExportable(): void
     {
-        $route = new Route(new RoutePath('/test'));
+        $route = new Route('test', new RoutePath('/test'));
         $route->resource = fopen('php://output', 'r+');
         $this->expectException(RouteNotRoutableException::class);
         (new Router())

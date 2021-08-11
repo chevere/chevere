@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Router;
 
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Http\MethodNotAllowedException;
+use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
 use Chevere\Exceptions\Router\RouteNotFoundException;
 use FastRoute\RouteCollector;
 
@@ -29,7 +29,7 @@ interface RouterDispatcherInterface
      * Dispatches against the provided HTTP method verb and URI.
      *
      * @throws RouteNotFoundException
-     * @throws MethodNotAllowedException
+     * @throws HttpMethodNotAllowedException
      * @throws LogicException if dispatcher returns an unexpected code.
      */
     public function dispatch(string $httpMethod, string $uri): RoutedInterface;
