@@ -16,7 +16,6 @@ namespace Chevere\Tests\Controller;
 use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
 use Chevere\Components\Pluggable\Plug\Hook\HooksRunner;
 use Chevere\Components\Type\Type;
-use Chevere\Components\Workflow\Attributes\Dispatch;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Tests\Controller\_resources\src\ControllerTestController;
 use Chevere\Tests\Controller\_resources\src\ControllerTestControllerDispatchAttribute;
@@ -58,7 +57,7 @@ final class ControllerTest extends TestCase
     public function testControllerWorkflowDispatchAttribute(): void
     {
         $controller = new ControllerTestControllerDispatchAttribute();
-        $this->assertSame(Dispatch::QUEUE, $controller->dispatch());
+        $this->assertSame('some', $controller->dispatch());
     }
 
     public function testControllerRelationAttribute(): void

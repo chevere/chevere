@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller\_resources\src;
 
+use Chevere\Components\Attribute\Dispatch;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Workflow\Attributes\Dispatch;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Response\ResponseInterface;
 
-#[Dispatch(Dispatch::QUEUE)]
+#[Dispatch('some')]
 final class ControllerTestControllerDispatchAttribute extends Controller
 {
     public function getParameters(): ParametersInterface

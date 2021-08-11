@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller\Attributes;
 
+use Chevere\Components\Attribute\Dispatch;
 use Chevere\Components\Attribute\Relation;
-use Chevere\Components\Workflow\Attributes\Dispatch;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerAttributesTest extends TestCase
@@ -29,12 +28,8 @@ final class ControllerAttributesTest extends TestCase
 
     public function testDispatch(): void
     {
-        $matrix = Dispatch::knownEvents();
-        foreach ($matrix as $pos => $event) {
-            $attribute = new Dispatch($event);
-            $this->assertSame($event, $attribute->attribute());
-        }
-        $this->expectException(InvalidArgumentException::class);
-        new Dispatch('aaaa');
+        $dispatch = 'dispatch';
+        $attribute = new Dispatch($dispatch);
+        $this->assertSame($dispatch, $attribute->attribute());
     }
 }
