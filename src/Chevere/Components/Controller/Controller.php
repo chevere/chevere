@@ -26,7 +26,7 @@ use ReflectionAttribute;
 use ReflectionClass;
 
 /**
- * #[Dispatch(Dispatch::QUEUE)]
+ * #[Dispatch('dispatchName')]
  * #[Relation('relationName')]
  */
 abstract class Controller extends Action implements ControllerInterface
@@ -34,8 +34,8 @@ abstract class Controller extends Action implements ControllerInterface
     protected StringParameterInterface $parameterType;
 
     public function __construct(
-        protected string $relation = '',
         protected string $dispatch = '',
+        protected string $relation = '',
     ) {
         $this->parameterType ??= $this->parameter();
         $this->setUp();
