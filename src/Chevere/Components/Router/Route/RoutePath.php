@@ -56,11 +56,11 @@ final class RoutePath implements RoutePathInterface
         $this->wildcards = new Wildcards();
         $routerData = array_values(array_filter($dataGenerator->getData()));
         foreach ($this->data as $value) {
-            if (! is_array($value)) {
+            if (!is_array($value)) {
                 continue;
             }
             $this->wildcards = $this->wildcards
-                ->withAddedWildcard(
+                ->withPut(
                     new RouteWildcard($value[0], new RouteWildcardMatch($value[1]))
                 );
         }

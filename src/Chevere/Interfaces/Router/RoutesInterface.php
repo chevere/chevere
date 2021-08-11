@@ -43,6 +43,8 @@ interface RoutesInterface extends MappedInterface
      */
     public function get(string $path): RouteInterface;
 
+    public function getName(string $path): string;
+
     /**
      * @return Generator<string, RouteInterface>
      */

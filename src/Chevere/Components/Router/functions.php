@@ -26,7 +26,8 @@ use Chevere\Interfaces\Router\RoutesInterface;
 
 function routes(RouteInterface ...$namedRoutes): RoutesInterface
 {
-    return (new Routes())->withPut(...$namedRoutes);
+    return (new Routes())
+        ->withPut(...$namedRoutes);
 }
 
 /**

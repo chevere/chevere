@@ -16,6 +16,7 @@ namespace Chevere\Tests\Router;
 use function Chevere\Components\Router\route;
 use function Chevere\Components\Router\routes;
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Tests\Router\Route\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
@@ -42,9 +43,13 @@ final class RouterFunctionsTest extends TestCase
 
     public function testFunctionRoutes(): void
     {
+        $path = '/test/';
         $routes = routes(
-            myRoute: route('/test/', GET: new TestController())
+            myRoute: route($path, GET: new TestController())
         );
-        $this->assertTrue($routes->has('/test/'));
+        $this->assertTrue($routes->has($path));
+        $this->assertSame('myRoute', $routes->getName($path));
+        $this->expectException(OutOfBoundsException::class);
+        $routes->getName('404');
     }
 }

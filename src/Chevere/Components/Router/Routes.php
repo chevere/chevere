@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\DataStructure\Map;
 use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -25,7 +26,19 @@ final class Routes implements RoutesInterface
 {
     use MapTrait;
 
-    private array $named = [];
+    private Map $named;
+
+    public function __construct()
+    {
+        $this->map = new Map();
+        $this->named = new Map();
+    }
+
+    public function __clone()
+    {
+        $this->map = clone $this->map;
+        $this->named = clone $this->named;
+    }
 
     public function withPut(RouteInterface ...$namedRoutes): RoutesInterface
     {
@@ -34,6 +47,7 @@ final class Routes implements RoutesInterface
             $name = strval($name);
             $key = $route->path()->toString();
             $new->map = $new->map->withPut($key, $route);
+            $new->named = $new->named->withPut($key, $name);
         }
 
         return $new;
@@ -60,8 +74,26 @@ final class Routes implements RoutesInterface
         // @codeCoverageIgnoreEnd
         catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
-                (new Message('Name %name% not found'))
-                    ->code('%name%', $path)
+                (new Message('Path %path% not found'))
+                    ->code('%path%', $path)
+            );
+        }
+    }
+
+    public function getName(string $path): string
+    {
+        try {
+            return $this->named->get($path);
+        }
+        // @codeCoverageIgnoreStart
+        catch (TypeError $e) {
+            throw new TypeException(previous: $e);
+        }
+        // @codeCoverageIgnoreEnd
+        catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(
+                (new Message('Path %path% not found'))
+                    ->code('%path%', $path)
             );
         }
     }

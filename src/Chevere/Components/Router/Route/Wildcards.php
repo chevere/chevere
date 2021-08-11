@@ -50,7 +50,7 @@ final class Wildcards implements WildcardsInterface
         $this->index = clone $this->index;
     }
 
-    public function withAddedWildcard(RouteWildcardInterface $routeWildcard): WildcardsInterface
+    public function withPut(RouteWildcardInterface $routeWildcard): WildcardsInterface
     {
         $new = clone $this;
         if ($new->index->has($routeWildcard->toString())) {
