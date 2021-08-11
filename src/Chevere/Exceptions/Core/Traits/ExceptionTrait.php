@@ -21,9 +21,6 @@ trait ExceptionTrait
 {
     private MessageInterface $_message;
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function __construct(?MessageInterface $message = null, int $code = 0, Throwable $previous = null)
     {
         $this->_message = $message ?? new Message('');

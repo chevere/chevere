@@ -24,14 +24,4 @@ use Throwable;
 class BadFunctionCallException extends \BadFunctionCallException
 {
     use ExceptionTrait;
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function __construct(?MessageInterface $message, int $code = 0, Throwable $previous = null)
-    {
-        $this->_message = $message ?? new Message('');
-
-        parent::__construct($this->_message->toString(), $code, $previous);
-    }
 }

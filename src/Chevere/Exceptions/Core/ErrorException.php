@@ -24,9 +24,6 @@ class ErrorException extends \ErrorException
 {
     use ExceptionTrait;
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function __construct(
         MessageInterface $message,
         int $code = 0,
