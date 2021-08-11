@@ -62,7 +62,6 @@ final class Parameters implements ParametersInterface
             $new->map = $new->map->withPut($name, $param);
             $new->optional->add($name);
         }
-        // xdd(iterator_to_array($new->map->getGenerator()), $new->optional);
         
         return $new;
     }

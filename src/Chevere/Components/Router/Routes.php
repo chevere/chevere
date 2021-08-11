@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\DataStructure\Map;
 use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -25,8 +24,6 @@ use TypeError;
 final class Routes implements RoutesInterface
 {
     use MapTrait;
-
-    private Map $named;
 
     public function withPut(RouteInterface ...$routes): RoutesInterface
     {

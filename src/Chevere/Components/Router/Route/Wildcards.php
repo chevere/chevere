@@ -73,8 +73,8 @@ final class Wildcards implements WildcardsInterface
 
     public function get(string $wildcardName): RouteWildcardInterface
     {
-        $pos = strval($this->index->get($wildcardName));
-        $get = $this->map->get($pos);
+        $posStr = strval($this->index->get($wildcardName));
+        $get = $this->map->get($posStr);
         if ($get === null) {
             // @codeCoverageIgnoreStart
             throw new RangeException();
