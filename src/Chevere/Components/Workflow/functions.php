@@ -44,11 +44,5 @@ function getWorkflowMessage(WorkflowInterface $workflow, mixed ...$namedArgument
 function pushWorkflowQueue(WorkflowMessageInterface $workflowMessage, $stack): void
 {
     $stack->push($workflowMessage);
-    // if (in_array($uuid, $stack)) {
-    //     throw new OutOfBoundsException(
-    //         (new Message('Queue uuid %uuid% already exists'))
-    //             ->code('%uuid%', $uuid)
-    //     );
-    // }
     $stack[] = $workflowMessage;
 }
