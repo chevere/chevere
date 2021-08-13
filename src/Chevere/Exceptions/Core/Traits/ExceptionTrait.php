@@ -17,9 +17,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Interfaces\Message\MessageInterface;
 use Throwable;
 
-/**
- * @codeCoverageIgnore
- */
 trait ExceptionTrait
 {
     private MessageInterface $_message;
