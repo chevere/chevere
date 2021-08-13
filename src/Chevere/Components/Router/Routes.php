@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\DataStructure\Map;
 use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Router\Route\RouteInterface;
 use Chevere\Interfaces\Router\RoutesInterface;
@@ -25,11 +27,17 @@ final class Routes implements RoutesInterface
 {
     use MapTrait;
 
-    public function withPut(RouteInterface ...$routes): RoutesInterface
+    private Map $names;
+
+    public function withAdded(RouteInterface ...$routes): RoutesInterface
     {
         $new = clone $this;
+        $new->names ??= new Map();
         foreach ($routes as $route) {
             $key = $route->path()->toString();
+            $new->assertRoute($key, $route);
+            $new->names = $new->names
+                ->withPut($route->name(), $key);
             $new->map = $new->map->withPut($key, $route);
         }
 
@@ -59,6 +67,24 @@ final class Routes implements RoutesInterface
             throw new OutOfBoundsException(
                 (new Message('Path %path% not found'))
                     ->code('%path%', $path)
+            );
+        }
+    }
+
+    private function assertRoute(string $path, RouteInterface $route): void
+    {
+        if ($this->names->has($route->name())) {
+            throw new OverflowException(
+                code: static::EXCEPTION_CODE_TAKEN_NAME,
+                message: (new Message('Named route %name% has been already taken.'))
+                    ->code('%name%', $route->name())
+            );
+        }
+        if ($this->map->has($path)) {
+            throw new OverflowException(
+                code: static::EXCEPTION_CODE_TAKEN_PATH,
+                message: (new Message('Route path %path% has been already taken.'))
+                    ->code('%path%', $route->name())
             );
         }
     }

@@ -23,13 +23,17 @@ use Generator;
  */
 interface RoutesInterface extends MappedInterface
 {
+    public const EXCEPTION_CODE_TAKEN_NAME = 110;
+
+    public const EXCEPTION_CODE_TAKEN_PATH = 100;
+
     /**
      * Return an instance with the specified `$namedRoutes`.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$namedRoutes`.
      */
-    public function withPut(RouteInterface ...$namedRoutes): self;
+    public function withAdded(RouteInterface ...$namedRoutes): self;
 
     /**
      * Indicates whether the instance has routable(s) identified by its `$path`.
