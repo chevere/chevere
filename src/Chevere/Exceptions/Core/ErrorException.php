@@ -19,6 +19,8 @@ use Throwable;
 
 /**
  * Extends \ErrorException with Message support.
+ *
+ * @codeCoverageIgnore
  */
 class ErrorException extends \ErrorException
 {
