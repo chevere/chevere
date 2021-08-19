@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
+use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
@@ -58,4 +60,10 @@ function route(?string $name = null, string $path, ControllerInterface ...$httpC
     }
 
     return $route;
+}
+
+function importRoutes(string $path): RoutesInterface
+{
+    return filePhpReturnForPath($path)
+        ->varType(new Type(RoutesInterface::class));
 }
