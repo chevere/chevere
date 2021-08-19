@@ -46,8 +46,7 @@ final class Plugins implements PluginsInterface
     {
         $this->assertSetPlugsPath($pluggableName);
         $this->assertPlugsPath();
-        $fileReturn = filePhpReturnForPath($this->plugsPath)
-            ->withStrict(false);
+        $fileReturn = filePhpReturnForPath($this->plugsPath);
         /**
          * @var PlugsQueueInterface $var
          */

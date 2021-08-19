@@ -114,7 +114,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         try {
             $path = $classMap->key($className);
 
-            return filePhpReturnForPath($path)->withStrict(false)->var();
+            return filePhpReturnForPath($path)->var();
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {

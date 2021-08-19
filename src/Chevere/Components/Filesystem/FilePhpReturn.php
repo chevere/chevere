@@ -36,20 +36,12 @@ final class FilePhpReturn implements FilePhpReturnInterface
     /**
      * @var bool True for strict validation (self::PHP_RETURN_CHARS), false for regex validation (return <algo>)
      */
-    private bool $strict = true;
+    private bool $strict = false;
 
     public function __construct(
         private FilePhpInterface $filePhp
     ) {
         $this->filePhp->file()->assertExists();
-    }
-
-    public function withStrict(bool $strict): FilePhpReturnInterface
-    {
-        $new = clone $this;
-        $new->strict = $strict;
-
-        return $new;
     }
 
     public function filePhp(): FilePhpInterface
@@ -126,54 +118,13 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return $var;
     }
 
-    private function assert(): void
-    {
-        if ($this->strict === true) {
-            $this->assertStrict();
-
-            return;
-        }
-        $this->assertNonStrict();
-    }
-
-    private function assertStrict(): void
-    {
-        $this->filePhp->file()->assertExists();
-        $filename = $this->filePhp->file()->path()->toString();
-        $handle = fopen($filename, 'r');
-        if ($handle === false) {
-            // @codeCoverageIgnoreStart
-            throw new FileHandleException(
-                (new Message('Unable to open %path% in %mode% mode'))
-                    ->code('%path%', $filename)
-                    ->code('%mode%', 'r')
-            );
-            // @codeCoverageIgnoreEnd
-        }
-        $contents = fread($handle, self::PHP_RETURN_CHARS);
-        fclose($handle);
-        if ($contents === '') {
-            throw new FileWithoutContentsException(
-                (new Message("The file %path% doesn't have any contents"))
-                    ->code('%path%', $filename)
-            );
-        }
-        if ($contents !== self::PHP_RETURN) {
-            throw new FileInvalidContentsException(
-                (new Message('Unexpected contents in %path%, strict validation requires a file return in the form of %expected%'))
-                    ->code('%path%', $filename)
-                    ->code('%expected%', self::PHP_RETURN . '$var;')
-            );
-        }
-    }
-
     /**
      * @throws FileNotExistsException
      * @throws FileUnableToGetException
      * @throws FileWithoutContentsException
      * @throws FileInvalidContentsException
      */
-    private function assertNonStrict(): void
+    private function assert(): void
     {
         $contents = $this->filePhp->file()->contents();
 

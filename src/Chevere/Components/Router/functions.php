@@ -19,6 +19,13 @@ use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Type\Type;
+use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
+use Chevere\Exceptions\Filesystem\FilesystemException;
+use Chevere\Exceptions\Filesystem\FileUnableToGetException;
+use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
@@ -62,6 +69,17 @@ function route(?string $name = null, string $path, ControllerInterface ...$httpC
     return $route;
 }
 
+/**
+ * @throws FilesystemException
+ * @throws FileNotExistsException
+ * @throws FileUnableToGetException
+ * @throws FileWithoutContentsException
+ * @throws FileInvalidContentsException
+ * @throws RuntimeException
+ * @throws FileReturnInvalidTypeException
+ *
+ * @codeCoverageIgnore
+ */
 function importRoutes(string $path): RoutesInterface
 {
     return filePhpReturnForPath($path)

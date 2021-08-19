@@ -38,17 +38,6 @@ interface FilePhpReturnInterface
     public const PHP_RETURN_CHARS = 13;
 
     /**
-     * Return an instance with the strict flag.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified the strict flag.
-     *
-     * Strict validation refers to match the beginning of the file contents
-     * against `FilePhpReturnInterface::PHP_RETURN`
-     */
-    public function withStrict(bool $strict): self;
-
-    /**
      * Provides access to the FilePhpInterface instance.
      */
     public function filePhp(): FilePhpInterface;
