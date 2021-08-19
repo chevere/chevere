@@ -36,12 +36,12 @@ final class Router implements RouterInterface
 
     public function __construct()
     {
-        $this->index = new RouterIndex();
         $this->routes = new Routes();
+        $this->index = new RouterIndex();
         $this->routeCollector = new RouteCollector(new StrictStd(), new DataGenerator());
     }
 
-    public function withAddedRoute(RouteInterface $route, string $group): RouterInterface
+    public function withAddedRoute(string $group, RouteInterface $route): RouterInterface
     {
         $this->assertRoute($route);
         $new = clone $this;

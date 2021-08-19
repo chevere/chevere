@@ -19,6 +19,8 @@ use Chevere\Components\Router\Route\Route;
 use Chevere\Components\Router\Route\RouteEndpoint;
 use Chevere\Components\Router\Route\RoutePath;
 use Chevere\Components\Type\Type;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
@@ -27,10 +29,13 @@ use Chevere\Exceptions\Filesystem\FilesystemException;
 use Chevere\Exceptions\Filesystem\FileUnableToGetException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
+use Chevere\Exceptions\Router\RouteNotRoutableException;
+use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Router\Route\RouteInterface;
+use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Router\RoutesInterface;
 
 function routes(RouteInterface ...$namedRoutes): RoutesInterface
@@ -67,6 +72,25 @@ function route(?string $name = null, string $path, ControllerInterface ...$httpC
     }
 
     return $route;
+}
+
+/**
+ *
+ * @throws RouteNotRoutableException
+ * @throws RouteWithoutEndpointsException
+ * @throws InvalidArgumentException
+ * @throws OverflowException
+ *
+ * @codeCoverageIgnore
+ */
+function router(string $group, RoutesInterface $routes): RouterInterface
+{
+    $router = new Router();
+    foreach ($routes->getGenerator() as $route) {
+        $router = $router->withAddedRoute($group, $route);
+    }
+
+    return $router;
 }
 
 /**

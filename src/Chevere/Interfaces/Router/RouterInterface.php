@@ -32,7 +32,7 @@ interface RouterInterface
      * @throws InvalidArgumentException if `$group` is invalid.
      * @throws OverflowException if `$route` has been already added.
      */
-    public function withAddedRoute(RouteInterface $route, string $group): self;
+    public function withAddedRoute(string $group, RouteInterface $route): self;
 
     /**
      * Provides access to the index instance.

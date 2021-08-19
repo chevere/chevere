@@ -67,7 +67,7 @@ final class SpecMakerTest extends TestCase
                 new RouteEndpoint($getMethod, new SpecMakerTestGetController())
             );
         $router = (new Router())
-            ->withAddedRoute($route, 'repo');
+            ->withAddedRoute(group: 'repo', route: $route);
         $specMaker = new SpecMaker(
             dirForPath('/spec/'),
             $this->buildDir->getChild('spec/'),
