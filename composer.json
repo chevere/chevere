@@ -30,7 +30,7 @@
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
         "psr/http-server-middleware": "^1.0",
-        "psr/log": "^3.0",
+        "psr/log": "^1 || ^2 || ^3",
         "ramsey/uuid": "^4.1",
         "thecodingmachine/safe": "^1.3"
     },
