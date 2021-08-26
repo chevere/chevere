@@ -39,7 +39,7 @@ final class TranslatorLoader implements TranslatorLoaderInterface
     public function getTranslator(string $locale, string $domain): TranslatorInterface
     {
         $dir = $this->dir->getChild($locale . '/');
-        if (! $dir->exists()) {
+        if (!$dir->exists()) {
             throw new InvalidArgumentException(
                 (new Message("Locale %locale% doesn't exits"))
                     ->code('%locale%', $locale)
@@ -48,7 +48,7 @@ final class TranslatorLoader implements TranslatorLoaderInterface
         $file = new File(
             $dir->path()->getChild("${domain}.php")
         );
-        if (! $file->exists()) {
+        if (!$file->exists()) {
             throw new DomainException(
                 (new Message("Domain %domain% doesn't exits"))
                     ->code('%domain%', $domain)
@@ -61,10 +61,7 @@ final class TranslatorLoader implements TranslatorLoaderInterface
         }
         // @codeCoverageIgnoreStart
         catch (\InvalidArgumentException $e) {
-            throw new LogicException(
-                previous: $e,
-                message: new Message('Unable to load translator.')
-            );
+            throw new LogicException(previous: $e, message: new Message('Unable to load translator.'));
         }
         // @codeCoverageIgnoreEnd
     }

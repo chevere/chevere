@@ -81,7 +81,7 @@ final class ThrowableHandlerHtmlDocument extends ThrowableHandlerDocument
     protected function prepare(string $document): string
     {
         $preDocument = strtr(self::HTML_TEMPLATE, [
-            '%bodyClass%' => ! headers_sent() ? 'body--flex' : 'body--block',
+            '%bodyClass%' => headers_sent() ? 'body--block' : 'body--flex',
             '%css%' => file_get_contents(dirname(__DIR__) . '/src/template.css'),
             '%body%' => $this->handler->isDebug() ? self::BODY_DEBUG_1_HTML : self::BODY_DEBUG_0_HTML,
         ]);

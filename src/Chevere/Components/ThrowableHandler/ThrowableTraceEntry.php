@@ -129,7 +129,7 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
 
     private function handleAnonClass()
     {
-        if ((new StrBool($this->class))->startsWith(VarDumperInterface::CLASS_ANON) === true) {
+        if ((new StrBool($this->class))->startsWith(VarDumperInterface::CLASS_ANON)) {
             preg_match('#^class@anonymous(.*):(\d+)#', $this->class, $matches);
             $this->class = VarDumperInterface::CLASS_ANON;
             $this->file = $matches[1];

@@ -152,13 +152,13 @@ final class Workflow implements WorkflowInterface
             $parameter = $parameters->get($argument);
 
             try {
-                if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $reference, $matches)) {
+                if (preg_match(self::REGEX_PARAMETER_REFERENCE, (string) $reference, $matches) !== 0) {
                     /** @var array $matches */
                     if (!$this->parameters->has($matches[1])) {
                         $this->vars = $this->vars->withPut($reference, [$matches[1]]);
                     }
                     $this->putParameter($matches[1], $parameter);
-                } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $reference, $matches)) {
+                } elseif (preg_match(self::REGEX_STEP_REFERENCE, (string) $reference, $matches) !== 0) {
                     /** @var array $matches */
                     $previousStep = (string) $matches[1];
                     $previousResponseKey = (string) $matches[2];

@@ -21,6 +21,7 @@ use Ds\Map;
 trait ParameterTrait
 {
     use DescriptionTrait;
+
     use AttributesTrait;
 
     private TypeInterface $type;

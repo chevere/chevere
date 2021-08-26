@@ -24,7 +24,7 @@ trait PluggableEventsTrait
 
     public function withEventsRunner(EventsRunnerInterface $eventsRunner): static
     {
-        if (! ($this instanceof PluggableEventsInterface)) {
+        if (!($this instanceof PluggableEventsInterface)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('This method applies only for %interface%'))
@@ -40,7 +40,7 @@ trait PluggableEventsTrait
 
     public function event(string $anchor, array $data = []): void
     {
-        if (isset($this->eventsRunner) === false) {
+        if (!isset($this->eventsRunner)) {
             return;
         }
         $this->eventsRunner->run($anchor, $data);

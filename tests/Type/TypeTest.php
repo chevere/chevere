@@ -30,7 +30,7 @@ final class TypeTest extends TestCase
     public function testTypes(): void
     {
         $resource = fopen(__FILE__, 'r');
-        if (is_resource($resource) === false) {
+        if (!is_resource($resource)) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         $scalars = ['boolean', 'integer', 'float', 'string'];

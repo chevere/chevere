@@ -76,7 +76,7 @@ final class Path implements PathInterface
     public function chmod(int $mode): void
     {
         $this->assertExists();
-        if (chmod($this->absolute, $mode) === false) {
+        if (!chmod($this->absolute, $mode)) {
             throw new PathUnableToChmodException(
                 (new Message('Unable to chmod %mode% %path%'))
                     ->strong('%mode%', (string) $mode)

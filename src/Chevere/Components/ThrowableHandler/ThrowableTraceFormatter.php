@@ -52,7 +52,7 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
     private function getTrTable(int $pos, ThrowableTraceEntryInterface $entry): array
     {
         $trValues = [
-            self::TAG_ENTRY_CSS_EVEN_CLASS => $pos & 1 ? 'entry--even' : '',
+            self::TAG_ENTRY_CSS_EVEN_CLASS => ($pos & 1) !== 0 ? 'entry--even' : '',
             self::TAG_ENTRY_POS => $pos,
             self::TAG_ENTRY_FILE => $entry->file(),
             self::TAG_ENTRY_LINE => $entry->line(),

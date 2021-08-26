@@ -80,7 +80,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     public function varType(TypeInterface $type)
     {
         $var = $this->var();
-        if ($type->validate($var) === false) {
+        if (!$type->validate($var)) {
             $typeReturn = get_debug_type($var);
 
             throw new FileReturnInvalidTypeException(

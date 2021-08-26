@@ -137,7 +137,7 @@ final class Route implements RouteInterface
                     ->code('%wildcard%', $wildcard->toString())
             );
         }
-        if (array_key_exists($wildcard->toString(), $endpoint->parameters()) === false) {
+        if (!array_key_exists($wildcard->toString(), $endpoint->parameters())) {
             $parameters = array_keys($endpoint->parameters());
 
             throw new OutOfBoundsException(

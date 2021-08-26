@@ -26,6 +26,8 @@ abstract class Action implements ActionInterface
 {
     use DescriptionTrait;
 
+    protected string $description = '';
+
     protected ParametersInterface $parameters;
 
     protected ParametersInterface $responseParameters;

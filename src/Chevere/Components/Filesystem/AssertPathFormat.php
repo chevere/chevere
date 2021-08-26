@@ -39,7 +39,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
 
     private function assertAbsolutePath(): void
     {
-        if ((new StrBool($this->path))->startsWith('/') === false) {
+        if (!(new StrBool($this->path))->startsWith('/')) {
             throw new PathNotAbsoluteException(
                 (new Message('Path %path% must start with %char%'))
                     ->code('%path%', $this->path)

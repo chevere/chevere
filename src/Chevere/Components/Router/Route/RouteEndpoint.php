@@ -23,6 +23,8 @@ use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 
 final class RouteEndpoint implements RouteEndpointInterface
 {
+    private string $description = '';
+
     use DescriptionTrait;
 
     private array $parameters = [];
@@ -78,7 +80,7 @@ final class RouteEndpoint implements RouteEndpointInterface
 
     public function withoutParameter(string $parameter): RouteEndpointInterface
     {
-        if (array_key_exists($parameter, $this->parameters) === false) {
+        if (!array_key_exists($parameter, $this->parameters)) {
             throw new OutOfBoundsException(
                 (new Message("Parameter %parameter% doesn't exists"))
                     ->code('%parameter%', $parameter)

@@ -40,7 +40,7 @@ final class Arguments implements ArgumentsInterface
         foreach ($this->parameters->getGenerator() as $name => $parameter) {
             $this->handleParameter($name, $parameter);
         }
-        if (count($this->errors) !== 0) {
+        if ($this->errors !== []) {
             throw new InvalidArgumentException(
                 (new Message(implode(', ', $this->errors)))
             );
@@ -160,7 +160,7 @@ final class Arguments implements ArgumentsInterface
      */
     private function assertHasParameter(string $name): void
     {
-        if ($this->parameters->has($name) === false) {
+        if (!$this->parameters->has($name)) {
             throw new OutOfBoundsException(
                 (new Message('Parameter %parameter% not found'))
                     ->code('%parameter%', $name)

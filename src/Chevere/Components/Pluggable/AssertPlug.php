@@ -92,7 +92,7 @@ final class AssertPlug implements AssertPlugInterface
 
     private function assertPluggableExists(): void
     {
-        if (class_exists($this->plug->at()) === false) {
+        if (!class_exists($this->plug->at())) {
             throw new ClassNotExistsException(
                 (new Message("Class %ClassName% doesn't exists"))
                     ->code('%ClassName%', $this->plug->at())
@@ -102,7 +102,7 @@ final class AssertPlug implements AssertPlugInterface
 
     private function assertAnchors(PluggableAnchors $anchors): void
     {
-        if ($anchors->has($this->plug->anchor()) === false) {
+        if (!$anchors->has($this->plug->anchor())) {
             throw new LogicException(
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))
                     ->code('%anchor%', $this->plug->anchor())

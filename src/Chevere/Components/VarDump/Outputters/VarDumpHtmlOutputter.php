@@ -37,7 +37,7 @@ final class VarDumpHtmlOutputter extends VarDumpAbstractOutputter
 
     public function prepare(): void
     {
-        if (headers_sent() === false || headers_list() === []) {
+        if (!headers_sent() || headers_list() === []) {
             $this->hasHeader = true;
             $this->writer()->write(
                 '<html style="background: '

@@ -24,7 +24,7 @@ final class VarStorableTest extends TestCase
     {
         $this->expectException(VarStorableException::class);
         $resource = fopen(__FILE__, 'r');
-        if (is_resource($resource) === false) {
+        if (!is_resource($resource)) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         /** @var resource $resource */
@@ -36,7 +36,7 @@ final class VarStorableTest extends TestCase
     {
         $object = new stdClass();
         $resource = fopen(__FILE__, 'r');
-        if (is_resource($resource) === false) {
+        if (!is_resource($resource)) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         $object->array = [1, 2, 3, $resource];

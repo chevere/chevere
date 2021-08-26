@@ -54,7 +54,7 @@ final class Message implements MessageInterface
         foreach ($this->trTable as $search => $formatting) {
             $format = $formatting[0];
             if (! in_array($format, $colorStyles, true)) {
-                array_push($colorStyles, $format);
+                $colorStyles[] = $format;
                 Color::style($format, self::CLI_TABLE[$format]);
             }
             $tr[$search] = $color->{$format}($formatting[1]);

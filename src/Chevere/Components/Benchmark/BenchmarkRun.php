@@ -78,7 +78,7 @@ final class BenchmarkRun implements BenchmarkRunInterface
     ) {
         if (count($benchmark->index()) === 0) {
             throw new InvalidArgumentException(
-                (new Message('No callable defined for object of class %className%, declare callables using the %method% method'))
+                (new Message('No callable defined for object of class %className%, declare callable(s) using the %method% method'))
                     ->code('%className%', $benchmark::class)
                     ->code('%method%', $benchmark::class . '::withAddedCallable')
             );
@@ -182,7 +182,7 @@ final class BenchmarkRun implements BenchmarkRunInterface
             $this->runs = 0;
             $this->runCallableAt($pos);
             $timeFinish = (int) hrtime(true);
-            $timeTook = intval($timeFinish - $timeInit);
+            $timeTook = (int) ($timeFinish - $timeInit);
             $this->records->put($name, $timeTook);
             $this->results->put($name, [
                 'time' => $timeTook,
@@ -197,8 +197,8 @@ final class BenchmarkRun implements BenchmarkRunInterface
         $callable = $this->benchmark->callables()->get($pos);
         $name = $this->benchmark->index()->get($pos);
         for ($i = 0; $i < $this->times; ++$i) {
-            $this->isPHPAborted = ! $this->canPHPKeepGoing();
-            $this->isSelfAborted = ! $this->canSelfKeepGoing();
+            $this->isPHPAborted = !$this->canPHPKeepGoing();
+            $this->isSelfAborted = !$this->canSelfKeepGoing();
             if ($this->isPHPAborted || $this->isSelfAborted) {
                 $this->isAborted = true;
 
@@ -232,20 +232,17 @@ final class BenchmarkRun implements BenchmarkRunInterface
     {
         $this->records->sort();
         $this->recordsCount = count($this->records);
+        $fastestTime = $this->records->first()->value;
         if ($this->recordsCount > 1) {
             /**
              * @var string $name
              * @var int $timeTaken
              */
-            foreach ($this->records as $name => $timeTaken) {
-                if (! isset($fastestTime)) {
-                    $fastestTime = $timeTaken;
-                } else {
-                    /** @var array $resultsAdd */
-                    $resultsAdd = $this->results->get($name);
-                    $resultsAdd['adds'] = number_format(100 * ($timeTaken - $fastestTime) / $fastestTime, 2) . '%';
-                    $this->results->put($name, $resultsAdd);
-                }
+            foreach ($this->records->getIterator() as $name => $timeTaken) {
+                /** @var array $resultsAdd */
+                $resultsAdd = $this->results->get($name);
+                $resultsAdd['adds'] = number_format(100 * ($timeTaken - $fastestTime) / $fastestTime, 2) . '%';
+                $this->results->put($name, $resultsAdd);
             }
         }
     }
@@ -287,9 +284,6 @@ final class BenchmarkRun implements BenchmarkRunInterface
             }
         } else {
             $resultTitle .= ' (' . $this->results->get($name)['adds'] . ' slower)';
-        }
-        if (isset($this->consoleColor)) {
-            $resultTitle = $this->consoleColor->apply($this->recordsProcessed === 0 ? 'green' : 'red', $resultTitle);
         }
 
         return $resultTitle;

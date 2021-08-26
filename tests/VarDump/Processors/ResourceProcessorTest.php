@@ -25,7 +25,7 @@ final class ResourceProcessorTest extends TestCase
     public function testConstruct(): void
     {
         $resource = fopen(__FILE__, 'r');
-        if (is_resource($resource) === false) {
+        if (!is_resource($resource)) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         $resourceString = (string) $resource;

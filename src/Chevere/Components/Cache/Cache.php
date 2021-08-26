@@ -41,7 +41,7 @@ final class Cache implements CacheInterface
     public function __construct(
         private DirInterface $dir
     ) {
-        if ($this->dir->exists() === false) {
+        if (!$this->dir->exists()) {
             // @codeCoverageIgnore
             $this->dir->create();
         }
@@ -88,7 +88,7 @@ final class Cache implements CacheInterface
         $path = $this->getPath($cacheKey->toString());
 
         try {
-            if ($path->exists() === false) {
+            if (!$path->exists()) {
                 // @codeCoverageIgnoreStart
                 return $new;
                 // @codeCoverageIgnoreEnd

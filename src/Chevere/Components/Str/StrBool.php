@@ -29,12 +29,12 @@ final class StrBool implements StrBoolInterface
 
     public function ctypeSpace(): bool
     {
-        return ctype_space($this->string) === true;
+        return ctype_space($this->string);
     }
 
     public function ctypeDigit(): bool
     {
-        return ctype_digit($this->string) === true;
+        return ctype_digit($this->string);
     }
 
     public function startsWithCtypeDigit(): bool

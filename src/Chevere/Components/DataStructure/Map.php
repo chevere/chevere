@@ -28,7 +28,7 @@ final class Map implements MapInterface
     {
         $this->map = new DsMap();
         /** @var array $namedArguments */
-        if (count($namedArguments) > 0) {
+        if ($namedArguments !== []) {
             $this->map->putAll($namedArguments);
         }
     }

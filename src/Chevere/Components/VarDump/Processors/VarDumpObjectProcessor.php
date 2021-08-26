@@ -170,7 +170,7 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
 
     private function handleNormalizeClassName(): void
     {
-        if ((new StrBool($this->className))->startsWith(VarDumperInterface::CLASS_ANON) === true) {
+        if ((new StrBool($this->className))->startsWith(VarDumperInterface::CLASS_ANON)) {
             $this->className = VarDumperInterface::CLASS_ANON;
         }
     }

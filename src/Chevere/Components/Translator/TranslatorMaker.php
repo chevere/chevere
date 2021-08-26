@@ -25,6 +25,8 @@ use Throwable;
 
 final class TranslatorMaker implements TranslatorMakerInterface
 {
+    private string $locale;
+
     private DirInterface $localeSourceDir;
 
     private DirInterface $localeTargetDir;

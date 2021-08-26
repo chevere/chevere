@@ -41,7 +41,7 @@ final class TranslatorFunctionsTest extends TestCase
                 '%s' => $username,
             ])
         );
-        $this->assertSame('image', __n('image', 'images', 1, 1));
+        $this->assertSame('image', __n('image', 'images', 1));
         $this->assertSame('2 seconds', __nf('%d second', '%d seconds', 2, 2));
         $value = 123;
         $this->assertSame(
@@ -69,7 +69,7 @@ final class TranslatorFunctionsTest extends TestCase
                 '%s' => $username,
             ])
         );
-        $this->assertSame('imagen', __n('image', 'images', 1, 1));
+        $this->assertSame('imagen', __n('image', 'images', 1));
         $this->assertSame('2 segundos', __nf('%d second', '%d seconds', 2, 2));
         $value = 123;
         $this->assertSame(

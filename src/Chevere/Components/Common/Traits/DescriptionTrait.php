@@ -18,8 +18,6 @@ namespace Chevere\Components\Common\Traits;
  */
 trait DescriptionTrait
 {
-    //private string $description = ''; @FLAG PHP BUG
-
     public function getDescription(): string
     {
         return '';

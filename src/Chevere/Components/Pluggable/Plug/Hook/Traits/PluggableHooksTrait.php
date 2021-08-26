@@ -24,7 +24,7 @@ trait PluggableHooksTrait
 
     public function withHooksRunner(HooksRunnerInterface $hooksRunner): static
     {
-        if (! ($this instanceof PluggableHooksInterface)) {
+        if (!($this instanceof PluggableHooksInterface)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message("Instance doesn't implements %type%"))
@@ -38,9 +38,9 @@ trait PluggableHooksTrait
         return $new;
     }
 
-    public function hook(string $anchor, &$argument): void
+    public function hook(string $anchor, mixed &$argument): void
     {
-        if (isset($this->hooksRunner) === false) {
+        if (!isset($this->hooksRunner)) {
             return;
         }
         $this->hooksRunner->run($anchor, $argument);
