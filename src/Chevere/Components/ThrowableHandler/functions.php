@@ -22,14 +22,12 @@ use Chevere\Components\Writer\StreamWriter;
 use Chevere\Components\Writer\WritersInstance;
 use Chevere\Exceptions\Core\ErrorException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use LogicException;
-use ReflectionClass;
-use RuntimeException;
 use Throwable;
 
 /**
  * @codeCoverageIgnore
- * @throws ErrorException
  */
 function errorsAsExceptions(int $severity, string $message, string $file, int $line): void
 {
@@ -38,55 +36,81 @@ function errorsAsExceptions(int $severity, string $message, string $file, int $l
 
 /**
  * @codeCoverageIgnore
- * @throws RuntimeException
  */
 function plainHandler(Throwable $throwable): void
 {
-    handleExceptionAs($throwable, ThrowableHandlerPlainDocument::class);
+    handleExceptionAs(
+        plainHandlerDocument($throwable)
+    );
 }
 
 /**
  * @codeCoverageIgnore
- * @throws RuntimeException
+ */
+function plainHandlerDocument(Throwable $throwable): ThrowableHandlerPlainDocument
+{
+    return new ThrowableHandlerPlainDocument(
+        throwableHandler($throwable)
+    );
+}
+
+/**
+ * @codeCoverageIgnore
  */
 function consoleHandler(Throwable $throwable): void
 {
-    handleExceptionAs($throwable, ThrowableHandlerConsoleDocument::class);
+    handleExceptionAs(
+        consoleHandlerDocument($throwable)
+    );
 }
 
 /**
  * @codeCoverageIgnore
- * @throws RuntimeException
+ */
+function consoleHandlerDocument(Throwable $throwable): ThrowableHandlerConsoleDocument
+{
+    return new ThrowableHandlerConsoleDocument(
+        throwableHandler($throwable)
+    );
+}
+
+/**
+ * @codeCoverageIgnore
  */
 function htmlHandler(Throwable $throwable): void
 {
-    handleExceptionAs($throwable, ThrowableHandlerHtmlDocument::class);
+    handleExceptionAs(
+        htmlHandlerDocument($throwable)
+    );
 }
 
 /**
  * @codeCoverageIgnore
- * @throws RuntimeException
  */
-function handleExceptionAs(Throwable $throwable, string $document): void
+function htmlHandlerDocument(Throwable $throwable): ThrowableHandlerHtmlDocument
 {
-    $reflection = new ReflectionClass($document);
-    if (!$reflection->implementsInterface(ThrowableHandlerDocumentInterface::class)) {
-        trigger_error(
-            (new Message('Document %document% must implement %interface%'))
-                ->code('%document%', $document)
-                ->code('%interface%', ThrowableHandlerDocumentInterface::class)
-                ->toString()
-        );
-    }
-    /** @var ThrowableHandlerDocumentInterface $document */
-    $document = new $document(
-        new ThrowableHandler(new ThrowableRead($throwable))
+    return new ThrowableHandlerHtmlDocument(
+        throwableHandler($throwable)
     );
+}
 
+/**
+ * @codeCoverageIgnore
+ */
+function throwableHandler(Throwable $throwable): ThrowableHandlerInterface
+{
+    return new ThrowableHandler(new ThrowableRead($throwable));
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function handleExceptionAs(ThrowableHandlerDocumentInterface $document): void
+{
     try {
         $writer = WritersInstance::get()->error();
     } catch (LogicException $e) {
-        $writer = new StreamWriter(streamFor('php://stderr', 'r+'));
+        $writer = new StreamWriter(streamFor('php://stderr', 'w'));
     }
     $writer->write($document->toString() . "\n");
 
