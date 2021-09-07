@@ -40,33 +40,30 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
     {
         return [
             // orange
-            TypeInterface::STRING => '#e67e22',
+            TypeInterface::STRING => '#ff8700',
+            TypeInterface::FLOAT => '#ff8700',
+            TypeInterface::INTEGER => '#ff8700',
+            TypeInterface::BOOLEAN => '#ff8700',
+            TypeInterface::NULL => '#ff8700',
             // yellow
-            TypeInterface::FLOAT => '#f1c40f',
-            // yellow
-            TypeInterface::INTEGER => '#f1c40f',
-            // purple
-            TypeInterface::BOOLEAN => '#9b59b6',
-            // grey
-            TypeInterface::NULL => '#7f8c8d',
-            // red
-            TypeInterface::OBJECT => '#e74c3c',
+            TypeInterface::OBJECT => '#ffd700',
             // green
-            TypeInterface::ARRAY => '#2ecc71',
+            TypeInterface::ARRAY => '#00d700',
+            // red
+            TypeInterface::RESOURCE => '#ff0000',
             // blue
-            TypeInterface::RESOURCE => '#3498db',
-            VarDumperInterface::FILE => 'inherit',
+            VarDumperInterface::FILE => '#87afff',
+            // light yellow
+            VarDumperInterface::CLASS_REG => '#ffd75f',
+            // dark gray
+            VarDumperInterface::OPERATOR => '#6c6c6c',
             // blue
-            VarDumperInterface::CLASS_REG => '#3498db',
-            // grey
-            VarDumperInterface::OPERATOR => '#7f8c8d',
-            // purple
-            VarDumperInterface::FUNCTION => '#9b59b6',
-            // purple
-            VarDumperInterface::MODIFIERS => '#9b59b6',
-            // orange
-            VarDumperInterface::VARIABLE => '#e67e22',
-            VarDumperInterface::EMPHASIS => '#7f8c8d',
+            VarDumperInterface::FUNCTION => '#00afff',
+            VarDumperInterface::VARIABLE => '#00afff',
+            // pink
+            VarDumperInterface::MODIFIERS => '#ff5fff',
+            // dark gray italic
+            VarDumperInterface::EMPHASIS => '#6c6c6c',
         ];
     }
 }

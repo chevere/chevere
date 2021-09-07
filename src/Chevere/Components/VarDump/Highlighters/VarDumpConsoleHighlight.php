@@ -51,28 +51,29 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
     public function palette(): array
     {
         return [
-            // orange
+            // DarkOrange
             TypeInterface::STRING => '208',
             TypeInterface::FLOAT => '208',
             TypeInterface::INTEGER => '208',
             TypeInterface::BOOLEAN => '208',
             TypeInterface::NULL => '208',
-            // yellow
+            // Gold1
             TypeInterface::OBJECT => '220',
-            // green
+            // Green3
             TypeInterface::ARRAY => '41',
-            // red
+            // Red1
             TypeInterface::RESOURCE => '196',
-            // blue
-            VarDumperInterface::FILE => '4',
+            // SkyBlue2
+            VarDumperInterface::FILE => '111',
             // light yellow
             VarDumperInterface::CLASS_REG => '221',
-            // dark gray
+            // Grey42
             VarDumperInterface::OPERATOR => '242',
+            // DeepSkyBlue1
             VarDumperInterface::FUNCTION => '39',
-            // purple
-            VarDumperInterface::MODIFIERS => '207',
             VarDumperInterface::VARIABLE => '39',
+            // MediumOrchid1
+            VarDumperInterface::MODIFIERS => '207',
             // dark gray italic
             VarDumperInterface::EMPHASIS => ['242', '3'],
         ];
