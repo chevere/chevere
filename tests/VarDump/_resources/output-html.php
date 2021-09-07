@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 return '<html style="background: #132537;"><head></head><body>%handlerClassName%->%handlerFunctionName%()<hr><pre style="font: 14px \'Fira Code Retina\', \'Operator Mono\', Inconsolata, Consolas,
     monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: #132537; display: block; text-align: left; border: none; border-radius: 4px;">
-<span style="color:#3498db">%className%</span>-><span style="color:#9b59b6">%functionName%()</span>
-<span style="color:inherit">%fileLine%</span>
+<span style="color:#ffd75f">%className%</span>-><span style="color:#00afff">%functionName%()</span>
+<span style="color:#87afff">%fileLine%</span>
 
-Arg:name <span style="color:#7f8c8d">null</span></pre></body></html>';
+Arg:name <span style="color:#ff8700">null</span></pre></body></html>';

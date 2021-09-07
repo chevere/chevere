@@ -61,8 +61,8 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
             TypeInterface::OBJECT => '220',
             // Green3
             TypeInterface::ARRAY => '41',
-            // Red1
-            TypeInterface::RESOURCE => '196',
+            // IndianRed1
+            TypeInterface::RESOURCE => '203',
             // SkyBlue2
             VarDumperInterface::FILE => '111',
             // light yellow
@@ -72,8 +72,8 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
             // DeepSkyBlue1
             VarDumperInterface::FUNCTION => '39',
             VarDumperInterface::VARIABLE => '39',
-            // MediumOrchid1
-            VarDumperInterface::MODIFIERS => '207',
+            // Orchid
+            VarDumperInterface::MODIFIERS => '170',
             // dark gray italic
             VarDumperInterface::EMPHASIS => ['242', '3'],
         ];

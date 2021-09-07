@@ -50,7 +50,7 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
             // green
             TypeInterface::ARRAY => '#00d700',
             // red
-            TypeInterface::RESOURCE => '#ff0000',
+            TypeInterface::RESOURCE => '#ff5f5f',
             // blue
             VarDumperInterface::FILE => '#87afff',
             // light yellow
@@ -61,7 +61,7 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
             VarDumperInterface::FUNCTION => '#00afff',
             VarDumperInterface::VARIABLE => '#00afff',
             // pink
-            VarDumperInterface::MODIFIERS => '#ff5fff',
+            VarDumperInterface::MODIFIERS => '#d75fd7',
             // dark gray italic
             VarDumperInterface::EMPHASIS => '#6c6c6c',
         ];
