@@ -18,6 +18,7 @@ use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use Colors\Color;
+use Throwable;
 
 final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
 {
@@ -38,7 +39,10 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
     public function highlight(string $dump): string
     {
         foreach ($this->style as $style) {
-            $dump = $this->color->apply("color[${style}]", $dump);
+            try {
+                $dump = $this->color->apply("color[${style}]", $dump);
+            } catch (Throwable $e) {
+            }
         }
 
         return $dump;
@@ -46,11 +50,6 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
 
     public function palette(): array
     {
-        // string text ffd76d
-        // number null reference c39ac9
-        // boolean ff657a
-        // object namespace 9cd1bb
-        // file b2b9bd
         return [
             // orange
             TypeInterface::STRING => '208',
