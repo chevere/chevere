@@ -77,7 +77,6 @@ final class VarOutputterTest extends TestCase
         );
         $varOutputter->process(new VarDumpHtmlOutputter());
         $parsed = $this->getParsed($backtrace, 'output-html');
-
         $this->assertSame($parsed, $writer->toString());
     }
 

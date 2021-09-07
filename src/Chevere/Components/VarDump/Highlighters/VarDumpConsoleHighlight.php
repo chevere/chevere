@@ -41,8 +41,11 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
         foreach ($this->style as $style) {
             try {
                 $dump = $this->color->apply("color[${style}]", $dump);
-            } catch (Throwable $e) {
             }
+            // @codeCoverageIgnoreStart
+            catch (Throwable) {
+            }
+            // @codeCoverageIgnoreEnd
         }
 
         return $dump;

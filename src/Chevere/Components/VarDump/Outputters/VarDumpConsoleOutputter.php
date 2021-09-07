@@ -34,8 +34,11 @@ final class VarDumpConsoleOutputter extends VarDumpAbstractOutputter
         try {
             $this->outputHr = $color->fg('blue', $this->outputHr);
             $caller = $color->fg('red', $color->bold($caller));
-        } catch (Throwable $e) {
         }
+        // @codeCoverageIgnoreStart
+        catch (Throwable) {
+        }
+        // @codeCoverageIgnoreEnd
         $this->writer()->write(
             implode("\n", [
                 '',
