@@ -47,9 +47,9 @@ final class VarDumpHtmlOutputter extends VarDumpAbstractOutputter
         }
         $this->writer()->write(
             implode('', [
-                $this->caller(),
-                '<hr>',
                 '<pre style="' . self::STYLE . '">',
+                $this->caller(),
+                '<hr style="opacity:.25">',
             ])
         );
     }
