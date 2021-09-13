@@ -58,14 +58,10 @@ final class ThrowableRead implements ThrowableReadInterface
         $this->assertSeverity();
         $this->loggerLevel = ThrowableReadInterface::ERROR_LEVELS[$this->severity];
         $this->type = ThrowableReadInterface::ERROR_TYPES[$this->severity];
-        if ($throwable instanceof Exception) {
-            $this->message = $throwable->message();
-        } else {
-            $this->message = new Message($throwable->getMessage());
-        }
+        $this->setMessage($throwable);
         $this->file = $throwable->getFile();
         $this->line = $throwable->getLine();
-        $this->trace = $throwable->getTrace();
+        $this->setTrace($throwable);
         $this->previous = $throwable->getPrevious();
     }
 
@@ -135,6 +131,23 @@ final class ThrowableRead implements ThrowableReadInterface
                     ->code('%accepted%', implode(', ', $accepted))
             );
             // @codeCoverageIgnoreEnd
+        }
+    }
+
+    private function setMessage(Throwable $throwable): void
+    {
+        if ($throwable instanceof Exception) {
+            $this->message = $throwable->message();
+        } else {
+            $this->message = new Message($throwable->getMessage());
+        }
+    }
+
+    private function setTrace(Throwable $throwable): void
+    {
+        $this->trace = $throwable->getTrace();
+        if ($this->trace[0]['function'] === 'Chevere\Components\ThrowableHandler\errorsAsExceptions') {
+            array_shift($this->trace);
         }
     }
 }
