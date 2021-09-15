@@ -18,9 +18,6 @@ use Chevere\Interfaces\Message\MessageInterface;
 
 final class Message implements MessageInterface
 {
-    /**
-     * @var array Translation table [search => [format, replace]]
-     */
     private array $trTable = [];
 
     public function __construct(
@@ -53,7 +50,7 @@ final class Message implements MessageInterface
         $colorStyles = [];
         foreach ($this->trTable as $search => $formatting) {
             $format = $formatting[0];
-            if (! in_array($format, $colorStyles, true)) {
+            if (!in_array($format, $colorStyles, true)) {
                 $colorStyles[] = $format;
                 Color::style($format, self::CLI_TABLE[$format]);
             }
