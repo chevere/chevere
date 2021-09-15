@@ -79,6 +79,9 @@ function consoleHandlerDocument(Throwable $throwable): ThrowableHandlerConsoleDo
  */
 function htmlHandler(Throwable $throwable): void
 {
+    if (!headers_sent()) {
+        http_response_code(500);
+    }
     handleExceptionAs(
         htmlHandlerDocument($throwable)
     );
