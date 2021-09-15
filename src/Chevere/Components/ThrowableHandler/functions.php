@@ -116,3 +116,25 @@ function handleExceptionAs(ThrowableHandlerDocumentInterface $document): void
 
     die(255);
 }
+
+/**
+ * @codeCoverageIgnore
+ */
+function fatalErrorHandler(): void
+{
+    $error = error_get_last();
+    if ($error !== null) {
+        $handler = set_exception_handler(function () {
+        });
+        restore_exception_handler();
+        $handler(
+            new ErrorException(
+                message: new Message($error["message"]),
+                code: 0,
+                severity: $error["type"],
+                filename: $error["file"],
+                lineno: $error["line"]
+            )
+        );
+    }
+}
