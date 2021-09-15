@@ -143,10 +143,13 @@ final class ThrowableRead implements ThrowableReadInterface
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     private function setTrace(Throwable $throwable): void
     {
         $this->trace = $throwable->getTrace();
-        if ($this->trace[0]['function'] === 'Chevere\Components\ThrowableHandler\errorsAsExceptions') {
+        if (($this->trace[0]['function'] ?? '') === ThrowableHandler::ERRORS_AS_EXCEPTIONS) {
             array_shift($this->trace);
         }
     }
