@@ -24,6 +24,17 @@ use Throwable;
 
 final class ThrowableHandler implements ThrowableHandlerInterface
 {
+    public const ERRORS_AS_EXCEPTIONS = __NAMESPACE__ . '\errorsAsExceptions';
+
+    public const CONSOLE_HANDLER = __NAMESPACE__ . '\consoleHandler';
+    
+    public const HTML_HANDLER =
+    __NAMESPACE__ . '\htmlHandler';
+    
+    public const PLAIN_HANDLER = __NAMESPACE__ . '\plainHandler';
+
+    public const FATAL_ERROR_HANDLER = __NAMESPACE__ . '\fatalErrorHandler';
+    
     private DateTimeInterface $dateTimeUtc;
 
     private string $id;
