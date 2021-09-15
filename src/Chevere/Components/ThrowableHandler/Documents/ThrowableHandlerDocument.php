@@ -29,14 +29,8 @@ abstract class ThrowableHandlerDocument implements ThrowableHandlerDocumentInter
 
     protected array $sections = self::SECTIONS;
 
-    /**
-     * @var array [$sectionName =>, ]
-     */
     protected array $template;
 
-    /**
-     * @var array [$tag =>, ]
-     */
     protected array $tags;
 
     protected int $verbosity = 0;
@@ -125,7 +119,7 @@ abstract class ThrowableHandlerDocument implements ThrowableHandlerDocumentInter
 
     public function getSectionChain(): string
     {
-        if (! $this->handler->throwableRead()->hasPrevious()) {
+        if (!$this->handler->throwableRead()->hasPrevious()) {
             return '';
         }
         $throwable = $this->handler->throwableRead()->previous();
@@ -176,11 +170,6 @@ abstract class ThrowableHandlerDocument implements ThrowableHandlerDocumentInter
             $this->getContent(static::TAG_PHP_UNAME);
     }
 
-    /**
-     * Prepare the document, useful to wrap headers, scripts, etc.
-     *
-     * @param string $document The document generated (so far)
-     */
     protected function prepare(string $document): string
     {
         return $document;

@@ -26,17 +26,13 @@ use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use LogicException;
 use Throwable;
 
-/**
- * @codeCoverageIgnore
- */
+// @codeCoverageIgnoreStart
+
 function errorsAsExceptions(int $severity, string $message, string $file, int $line): void
 {
     throw new ErrorException(new Message($message), 0, $severity, $file, $line);
 }
 
-/**
- * @codeCoverageIgnore
- */
 function plainHandler(Throwable $throwable): void
 {
     handleExceptionAs(
@@ -44,9 +40,6 @@ function plainHandler(Throwable $throwable): void
     );
 }
 
-/**
- * @codeCoverageIgnore
- */
 function plainHandlerDocument(Throwable $throwable): ThrowableHandlerPlainDocument
 {
     return new ThrowableHandlerPlainDocument(
@@ -54,9 +47,6 @@ function plainHandlerDocument(Throwable $throwable): ThrowableHandlerPlainDocume
     );
 }
 
-/**
- * @codeCoverageIgnore
- */
 function consoleHandler(Throwable $throwable): void
 {
     handleExceptionAs(
@@ -64,9 +54,6 @@ function consoleHandler(Throwable $throwable): void
     );
 }
 
-/**
- * @codeCoverageIgnore
- */
 function consoleHandlerDocument(Throwable $throwable): ThrowableHandlerConsoleDocument
 {
     return new ThrowableHandlerConsoleDocument(
@@ -74,9 +61,6 @@ function consoleHandlerDocument(Throwable $throwable): ThrowableHandlerConsoleDo
     );
 }
 
-/**
- * @codeCoverageIgnore
- */
 function htmlHandler(Throwable $throwable): void
 {
     if (!headers_sent()) {
@@ -87,9 +71,6 @@ function htmlHandler(Throwable $throwable): void
     );
 }
 
-/**
- * @codeCoverageIgnore
- */
 function htmlHandlerDocument(Throwable $throwable): ThrowableHandlerHtmlDocument
 {
     return new ThrowableHandlerHtmlDocument(
@@ -97,17 +78,11 @@ function htmlHandlerDocument(Throwable $throwable): ThrowableHandlerHtmlDocument
     );
 }
 
-/**
- * @codeCoverageIgnore
- */
 function throwableHandler(Throwable $throwable): ThrowableHandlerInterface
 {
     return new ThrowableHandler(new ThrowableRead($throwable));
 }
 
-/**
- * @codeCoverageIgnore
- */
 function handleExceptionAs(ThrowableHandlerDocumentInterface $document): void
 {
     try {
@@ -120,24 +95,24 @@ function handleExceptionAs(ThrowableHandlerDocumentInterface $document): void
     die(255);
 }
 
-/**
- * @codeCoverageIgnore
- */
 function fatalErrorHandler(): void
 {
     $error = error_get_last();
-    if ($error !== null) {
-        $handler = set_exception_handler(function () {
-        });
-        restore_exception_handler();
-        $handler(
-            new ErrorException(
-                message: new Message($error["message"]),
-                code: 0,
-                severity: $error["type"],
-                filename: $error["file"],
-                lineno: $error["line"]
-            )
-        );
+    if ($error === null) {
+        return;
     }
+    $handler = set_exception_handler(function () {
+    });
+    restore_exception_handler();
+    $handler(
+        new ErrorException(
+            message: new Message($error["message"]),
+            code: 0,
+            severity: $error["type"],
+            filename: $error["file"],
+            lineno: $error["line"]
+        )
+    );
 }
+
+// @codeCoverageIgnoreEnd
