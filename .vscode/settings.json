@@ -1,10 +1,12 @@
 {
-    "emeraldwalk.runonsave": {
-        "commands": [
-            {
-                "match": "\\.php$",
-                "cmd": "vendor/bin/ecs check ${file} --fix"
-            }
-        ]
-    }
+    "runOnSave.commands": [
+        {
+            "match": "\\.php$",
+            "runIn": "backend",
+            "command": "cd ${workspaceFolder} && vendor/bin/ecs check ${file} --fix",
+            "workingDirectoryAsCWD": true,
+            "runningStatusMessage": "ECS ${fileBasename}",
+            "finishStatusMessage": "${fileBasename} OK"
+        },
+    ]
 }
