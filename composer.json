@@ -43,15 +43,16 @@
         "files": [
             "src/Chevere/Components/Filesystem/functions.php",
             "src/Chevere/Components/Iterator/functions.php",
-            "src/Chevere/Components/Sandbox/functions.php",
+            "src/Chevere/Components/Message/functions.php",
             "src/Chevere/Components/Parameter/functions.php",
             "src/Chevere/Components/Router/functions.php",
+            "src/Chevere/Components/Sandbox/functions.php",
             "src/Chevere/Components/Str/functions.php",
             "src/Chevere/Components/ThrowableHandler/functions.php",
             "src/Chevere/Components/Translator/functions.php",
             "src/Chevere/Components/Type/functions.php",
-            "src/Chevere/Components/VarDump/functions.php",
             "src/Chevere/Components/Var/functions.php",
+            "src/Chevere/Components/VarDump/functions.php",
             "src/Chevere/Components/Workflow/functions.php",
             "src/Chevere/Components/Writer/functions.php"
         ],
