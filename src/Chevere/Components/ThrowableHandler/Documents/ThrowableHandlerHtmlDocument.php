@@ -54,8 +54,8 @@ final class ThrowableHandlerHtmlDocument extends ThrowableHandlerDocument
     {
         if (!$this->handler->isDebug()) {
             return $this->formatter->wrapTitle(self::NO_DEBUG_TITLE_PLAIN) .
-                self::NO_DEBUG_CONTENT_HTML . '<p class="fine-print user-select-all">' .
-                self::TAG_DATE_TIME_UTC_ATOM . ' • ' . self::TAG_ID . '</p>';
+                self::NO_DEBUG_CONTENT_HTML . '<p><span class="user-select-all">' .
+                self::TAG_DATE_TIME_UTC_ATOM . '</span> • <span class="user-select-all">' . self::TAG_ID . '</span></p>';
         }
 
         return $this->formatter->wrapTitle(
