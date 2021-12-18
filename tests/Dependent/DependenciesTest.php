@@ -27,7 +27,7 @@ final class DependenciesTest extends TestCase
         $dependencies = new Dependencies();
         $key = 'key';
         $this->assertCount(0, $dependencies);
-        $this->assertSame(null, $dependencies->getGenerator()->current());
+        $this->assertSame(null, $dependencies->getIterator()->current());
         $this->assertSame([], $dependencies->keys());
         $this->assertFalse($dependencies->hasKey($key));
         $this->expectException(OutOfBoundsException::class);
@@ -41,7 +41,7 @@ final class DependenciesTest extends TestCase
             dir: DirInterface::class,
         );
         $this->assertCount(2, $dependencies);
-        $this->assertSame(PathInterface::class, $dependencies->getGenerator()->current());
+        $this->assertSame(PathInterface::class, $dependencies->getIterator()->current());
         $this->assertSame(['path', 'dir'], $dependencies->keys());
         $this->assertSame(PathInterface::class, $dependencies->key('path'));
         $this->assertSame(DirInterface::class, $dependencies->key('dir'));
@@ -52,7 +52,7 @@ final class DependenciesTest extends TestCase
         $dependencies = new Dependencies(path: PathInterface::class);
         $dependencies = $dependencies->withPut(dir: DirInterface::class);
         $this->assertCount(2, $dependencies);
-        $this->assertSame(PathInterface::class, $dependencies->getGenerator()->current());
+        $this->assertSame(PathInterface::class, $dependencies->getIterator()->current());
         $this->assertSame(['path', 'dir'], $dependencies->keys());
         $this->assertSame(PathInterface::class, $dependencies->key('path'));
         $this->assertSame(DirInterface::class, $dependencies->key('dir'));

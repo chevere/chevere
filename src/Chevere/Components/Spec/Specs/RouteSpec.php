@@ -18,8 +18,8 @@ use function Chevere\Components\Var\deepCopy;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\Route\RouteInterface;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
-use Chevere\Interfaces\Spec\Specs\RouteSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecsInterface;
+use Chevere\Interfaces\Spec\Specs\RouteSpecInterface;
 
 final class RouteSpec implements RouteSpecInterface
 {
@@ -68,7 +68,7 @@ final class RouteSpec implements RouteSpecInterface
     public function toArray(): array
     {
         $endpoints = [];
-        foreach ($this->routeEndpointSpecs->getGenerator() as $key => $routeEndpointSpec) {
+        foreach ($this->routeEndpointSpecs->getIterator() as $key => $routeEndpointSpec) {
             $endpoints[$key] = $routeEndpointSpec->toArray();
         }
         $wildcards = [];

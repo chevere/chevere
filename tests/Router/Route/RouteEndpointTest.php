@@ -54,9 +54,9 @@ final class RouteEndpointTest extends TestCase
     public function testWithoutParameter(): void
     {
         $controller = new RouteEndpointTestController();
-        $generator = $controller->parameters()->getGenerator();
-        $generator->rewind();
-        $key = $generator->key() ?? 'name';
+        $iterator = $controller->parameters()->getIterator();
+        $iterator->rewind();
+        $key = $iterator->key() ?? 'name';
         $routeEndpoint = (new RouteEndpoint(new GetMethod(), $controller))
             ->withoutParameter($key);
         $this->assertArrayNotHasKey($key, $routeEndpoint->parameters());

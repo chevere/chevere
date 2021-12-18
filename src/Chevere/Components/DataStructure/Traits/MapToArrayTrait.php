@@ -21,6 +21,6 @@ trait MapToArrayTrait
 
     public function toArray(): array
     {
-        return iterator_to_array($this->map->getGenerator(), true);
+        return iterator_to_array($this->map->getIterator(), true);
     }
 }

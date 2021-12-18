@@ -46,7 +46,7 @@ final class Workflow implements WorkflowInterface
         $this->vars = new Map();
         $this->expected = new DsMap();
         $this->provided = new DsMap();
-        $this->putAdded(...iterator_to_array($steps->getGenerator()));
+        $this->putAdded(...iterator_to_array($steps->getIterator()));
     }
 
     public function steps(): StepsInterface

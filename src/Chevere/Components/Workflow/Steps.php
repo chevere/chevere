@@ -25,7 +25,7 @@ use Chevere\Interfaces\Dependent\DependentInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\StepsInterface;
 use Ds\Vector;
-use Generator;
+use Iterator;
 use TypeError;
 
 final class Steps implements StepsInterface
@@ -74,7 +74,8 @@ final class Steps implements StepsInterface
         }
     }
 
-    public function getGenerator(): Generator
+    #[\ReturnTypeWillChange]
+    public function getIterator(): Iterator
     {
         foreach ($this->steps as $step) {
             yield $step => $this->get($step);

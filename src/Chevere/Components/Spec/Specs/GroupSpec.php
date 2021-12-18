@@ -16,8 +16,8 @@ namespace Chevere\Components\Spec\Specs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
-use Chevere\Interfaces\Spec\Specs\RouteSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
+use Chevere\Interfaces\Spec\Specs\RouteSpecInterface;
 
 final class GroupSpec implements GroupSpecInterface
 {
@@ -46,7 +46,7 @@ final class GroupSpec implements GroupSpecInterface
     public function toArray(): array
     {
         $routes = [];
-        foreach ($this->routableSpecs->getGenerator() as $key => $routableSpec) {
+        foreach ($this->routableSpecs->getIterator() as $key => $routableSpec) {
             $routes[$key] = $routableSpec->toArray();
         }
 

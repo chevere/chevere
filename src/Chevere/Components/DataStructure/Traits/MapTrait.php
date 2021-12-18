@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\DataStructure\Traits;
 
 use Chevere\Components\DataStructure\Map;
-use Generator;
+use Iterator;
 
 trait MapTrait
 {
@@ -40,8 +40,8 @@ trait MapTrait
         return $this->map->count();
     }
 
-    public function getGenerator(): Generator
+    public function getIterator(): Iterator
     {
-        return $this->map->getGenerator();
+        return $this->map->getIterator();
     }
 }

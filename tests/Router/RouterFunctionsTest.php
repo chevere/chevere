@@ -16,7 +16,6 @@ namespace Chevere\Tests\Router;
 use function Chevere\Components\Router\route;
 use function Chevere\Components\Router\routes;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
 use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
 use Chevere\Tests\Router\Route\_resources\src\TestController;
@@ -28,7 +27,7 @@ final class RouterFunctionsTest extends TestCase
     {
         $controller = new TestController();
         foreach (RouteEndpointInterface::KNOWN_METHODS as $httpMethod => $className) {
-            $route = route($className, '/test/', ...[$httpMethod => $controller]);
+            $route = route('/test/', $className, ...[$httpMethod => $controller]);
             $this->assertSame($className, $route->name());
             $this->assertTrue($route->endpoints()->hasKey($httpMethod));
             $this->assertCount(1, $route->endpoints());
@@ -40,14 +39,14 @@ final class RouterFunctionsTest extends TestCase
     {
         $controller = new TestController();
         $this->expectException(InvalidArgumentException::class);
-        route('name', 'test', GET: $controller);
+        route('test', 'name', GET: $controller);
     }
 
     public function testFunctionRouteBadHttpMethod(): void
     {
         $controller = new TestController();
         $this->expectException(HttpMethodNotAllowedException::class);
-        route('name', '/test/', TEST: $controller);
+        route('/test/', 'name', TEST: $controller);
     }
 
     public function testFunctionRoutes(): void

@@ -26,7 +26,7 @@ final class PlugTypesListTest extends TestCase
          * @var int $pos
          * @var PlugTypeInterface $plugType
          */
-        foreach ($plugTypesList->getGenerator() as $pos => $plugType) {
+        foreach ($plugTypesList->getIterator() as $pos => $plugType) {
             $this->assertIsInt($pos);
             $this->assertInstanceOf(PlugTypeInterface::class, $plugType, "@pos ${pos}");
         }

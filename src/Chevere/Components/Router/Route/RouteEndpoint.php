@@ -40,7 +40,7 @@ final class RouteEndpoint implements RouteEndpointInterface
         /**
          * @var StringParameterInterface $parameter
          */
-        foreach ($controller->parameters()->getGenerator() as $name => $parameter) {
+        foreach ($controller->parameters()->getIterator() as $name => $parameter) {
             $attributes = $parameter->attributes()->toArray();
             $array = [
                 'name' => $name,

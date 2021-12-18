@@ -18,7 +18,7 @@ use function Chevere\Components\Var\deepCopy;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MapInterface;
 use Ds\Map as DsMap;
-use Generator;
+use Iterator;
 
 final class Map implements MapInterface
 {
@@ -48,14 +48,9 @@ final class Map implements MapInterface
         return $this->map->count();
     }
 
-    public function getGenerator(): Generator
+    public function getIterator(): Iterator
     {
-        /**
-         * @var \Ds\Pair $pair
-         */
-        foreach ($this->map->pairs() as $pair) {
-            yield $pair->key => $pair->value;
-        }
+        return $this->map->getIterator();
     }
 
     public function withPut(string $key, mixed $value): self

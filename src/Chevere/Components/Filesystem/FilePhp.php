@@ -19,7 +19,6 @@ use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FileNotPhpException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
-use Throwable;
 
 final class FilePhp implements FilePhpInterface
 {
@@ -43,20 +42,12 @@ final class FilePhp implements FilePhpInterface
         $path = $this->file->path()->toString();
         $past = stat($path)['mtime'] - 10;
         touch($path, $past);
-
-        try {
-            if (!opcache_compile_file($path)) {
-                throw new RangeException(
-                    (new Message('OPcache is disabled'))
-                );
-            }
-        } catch (Throwable $e) {
-            throw new RuntimeException(
-                previous: $e,
-                message: (new Message('Unable to compile cache for file %path%'))
-                    ->code('%path%', $path)
+        if (opcache_get_status() === false) {
+            throw new RangeException(
+                (new Message('OPCache is not enabled'))
             );
         }
+        opcache_compile_file($path);
     }
 
     /**
@@ -69,7 +60,7 @@ final class FilePhp implements FilePhpInterface
         }
         if (!opcache_invalidate($this->file->path()->toString())) {
             throw new RuntimeException(
-                (new Message('OPCache is disabled'))
+                (new Message('OPCache is not enabled'))
             );
         }
     }

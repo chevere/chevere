@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\DataStructure;
 
-use Generator;
+use Iterator;
 
 /**
- * Describes the component in charge of providing a generator.
+ * Describes the component in charge of providing access to the iterator.
  */
-interface GetGeneratorInterface
+interface GetIteratorInterface
 {
-    /**
-     * Provides the generator.
-     */
-    public function getGenerator(): Generator;
+    public function getIterator(): Iterator;
 }

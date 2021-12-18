@@ -49,7 +49,7 @@ function routes(RouteInterface ...$namedRoutes): RoutesInterface
  * @param string $path The route path.
  * @param ControllerInterface ...$httpControllers Named arguments for httpMethod: ControllerName as `POST: PostController`.
  */
-function route(?string $name = null, string $path, ControllerInterface ...$httpControllers): RouteInterface
+function route(string $path, ?string $name = null, ControllerInterface ...$httpControllers): RouteInterface
 {
     $route = new Route(
         $name ?? $path,
@@ -86,7 +86,7 @@ function route(?string $name = null, string $path, ControllerInterface ...$httpC
 function router(string $group, RoutesInterface $routes): RouterInterface
 {
     $router = new Router();
-    foreach ($routes->getGenerator() as $route) {
+    foreach ($routes->getIterator() as $route) {
         $router = $router->withAddedRoute($group, $route);
     }
 

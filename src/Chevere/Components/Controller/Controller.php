@@ -94,7 +94,7 @@ abstract class Controller extends Action implements ControllerInterface
     private function assertParametersType(): void
     {
         $invalid = [];
-        foreach ($this->parameters()->getGenerator() as $name => $parameter) {
+        foreach ($this->parameters()->getIterator() as $name => $parameter) {
             if ($parameter->type()->validator() !== $this->parameterType->type()->validator()) {
                 $invalid[] = $name;
             }

@@ -52,35 +52,35 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         $new = clone $this;
         $new->classMap = new ClassMap();
 
-        try {
-            foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueueTyped) {
-                $classNameAsPath = (new Str($pluggableName))
+        // try {
+        foreach ($plugsMap->getIterator() as $pluggableName => $plugsQueueTyped) {
+            $classNameAsPath = (new Str($pluggableName))
                     ->withForwardSlashes()->toString() . '/';
-                $cacheAt = new Cache($new->cache->dir()->getChild($classNameAsPath));
-                $queueName = (new ReflectionClass($plugsQueueTyped))->getShortName();
-                $cacheAt = $cacheAt->withPut(
-                    new CacheKey($queueName),
-                    new VarStorable($plugsQueueTyped)
-                );
-                $new->classMap = $new->classMap
+            $cacheAt = new Cache($new->cache->dir()->getChild($classNameAsPath));
+            $queueName = (new ReflectionClass($plugsQueueTyped))->getShortName();
+            $cacheAt = $cacheAt->withPut(
+                new CacheKey($queueName),
+                new VarStorable($plugsQueueTyped)
+            );
+            $new->classMap = $new->classMap
                     ->withPut(
                         $pluggableName,
                         $cacheAt->puts()[$queueName]['path']
                     );
-            }
-            $new->cache = $new->cache
+        }
+        $new->cache = $new->cache
                 ->withPut(
                     $new->classMapKey,
                     new VarStorable($new->classMap)
                 );
-        }
+        // }
         // @codeCoverageIgnoreStart
-        catch (Throwable $e) {
-            throw new RuntimeException(
-                previous: $e,
-                message: (new Message('Unable to put provided plugs map')),
-            );
-        }
+        // catch (Throwable $e) {
+        //     throw new RuntimeException(
+        //         previous: $e,
+        //         message: (new Message('Unable to put provided plugs map')),
+        //     );
+        // }
         // @codeCoverageIgnoreEnd
 
         return $new;

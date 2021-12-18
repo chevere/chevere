@@ -35,7 +35,7 @@ final class AssertPlug implements AssertPlugInterface
         private PlugInterface $plug
     ) {
         $this->plugTypesList = new PlugTypesList();
-        foreach ($this->plugTypesList->getGenerator() as $plugType) {
+        foreach ($this->plugTypesList->getIterator() as $plugType) {
             $plugInterface = $plugType->interface();
             if ($this->plug instanceof $plugInterface) {
                 $this->plugType = $plugType;
@@ -78,7 +78,7 @@ final class AssertPlug implements AssertPlugInterface
             /**
              * @var PlugTypeInterface $plugType
              */
-            foreach ($this->plugTypesList->getGenerator() as $plugType) {
+            foreach ($this->plugTypesList->getIterator() as $plugType) {
                 $accept[] = $plugType->interface();
             }
 

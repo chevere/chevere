@@ -26,7 +26,7 @@ use Chevere\Interfaces\Pluggable\PlugsQueueTypedInterface;
 use Chevere\Interfaces\Pluggable\PlugTypeInterface;
 use Ds\Map;
 use Ds\Set;
-use Generator;
+use Iterator;
 use TypeError;
 
 final class PlugsMap implements PlugsMapInterface
@@ -122,7 +122,8 @@ final class PlugsMap implements PlugsMapInterface
         }
     }
 
-    public function getGenerator(): Generator
+    #[\ReturnTypeWillChange]
+    public function getIterator(): Iterator
     {
         foreach ($this->map->pairs() as $pair) {
             yield $pair->key => $pair->value;

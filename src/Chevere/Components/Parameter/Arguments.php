@@ -37,7 +37,7 @@ final class Arguments implements ArgumentsInterface
         $this->arguments = $namedArguments;
         $this->assertCount();
         $this->errors = [];
-        foreach ($this->parameters->getGenerator() as $name => $parameter) {
+        foreach ($this->parameters->getIterator() as $name => $parameter) {
             $this->handleParameter($name, $parameter);
         }
         if ($this->errors !== []) {
@@ -141,7 +141,7 @@ final class Arguments implements ArgumentsInterface
     {
         $parameter = $this->parameters->get($name);
         $type = $parameter->type();
-        if (! $type->validate($value)) {
+        if (!$type->validate($value)) {
             throw new InvalidArgumentException(
                 (new Message('Parameter %name%: Expecting value of type %expected%, %provided% provided'))
                     ->strong('%name%', $name)
@@ -200,7 +200,7 @@ final class Arguments implements ArgumentsInterface
 
     private function handleParameterDefault(string $name, ParameterInterface $parameter): void
     {
-        if (! $this->has($name)
+        if (!$this->has($name)
             && $parameter instanceof StringParameterInterface
             && $parameter->default() !== ''
         ) {
