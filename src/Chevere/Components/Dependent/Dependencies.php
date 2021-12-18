@@ -20,7 +20,7 @@ use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Ds\Set;
-use Traversable;
+use Iterator;
 
 final class Dependencies implements DependenciesInterface
 {
@@ -89,7 +89,7 @@ final class Dependencies implements DependenciesInterface
     }
 
     #[\ReturnTypeWillChange]
-    public function getIterator(): Traversable
+    public function getIterator(): Iterator
     {
         foreach ($this->classMap->getIterator() as $className => $key) {
             yield $key => $className;

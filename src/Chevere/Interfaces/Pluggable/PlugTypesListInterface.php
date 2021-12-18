@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Pluggable;
 
-use Traversable;
+use Iterator;
 
 /**
  * Describes the component in charge of defining a plugs types list.
@@ -21,7 +21,7 @@ use Traversable;
 interface PlugTypesListInterface
 {
     /**
-     * @return Traversable<int, PlugTypeInterface>
+     * @return Iterator<int, PlugTypeInterface>
      */
-    public function getIterator(): Traversable;
+    public function getIterator(): Iterator;
 }

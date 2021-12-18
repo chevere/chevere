@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\DataStructure\Traits;
 
 use Chevere\Components\DataStructure\Map;
-use Traversable;
+use Iterator;
 
 trait MapTrait
 {
@@ -40,7 +40,7 @@ trait MapTrait
         return $this->map->count();
     }
 
-    public function getIterator(): Traversable
+    public function getIterator(): Iterator
     {
         return $this->map->getIterator();
     }

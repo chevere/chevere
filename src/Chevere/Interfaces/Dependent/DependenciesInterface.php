@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Dependent;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
-use Traversable;
+use Iterator;
 
 /**
  * Describes the component in charge of defining dependencies.
@@ -41,7 +41,7 @@ interface DependenciesInterface extends MappedInterface
     public function key(string $key): string;
 
     /**
-     * @return Traversable<string, string> Name to dependency class name
+     * @return Iterator<string, string> Name to dependency class name
      */
-    public function getIterator(): Traversable;
+    public function getIterator(): Iterator;
 }

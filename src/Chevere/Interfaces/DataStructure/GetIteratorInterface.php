@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\DataStructure;
 
-use Traversable;
+use Iterator;
 
 /**
  * Describes the component in charge of providing access to the iterator.
  */
 interface GetIteratorInterface
 {
-    public function getIterator(): Traversable;
+    public function getIterator(): Iterator;
 }

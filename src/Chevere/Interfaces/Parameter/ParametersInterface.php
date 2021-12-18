@@ -17,7 +17,7 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
 use Ds\Set;
-use Traversable;
+use Iterator;
 
 /**
  * Describes the component in charge of collecting objects implementing `ParameterInterface`.
@@ -27,9 +27,9 @@ interface ParametersInterface extends MappedInterface
     public function __construct(ParameterInterface ...$parameters);
 
     /**
-     * @return Traversable<string, ParameterInterface>
+     * @return Iterator<string, ParameterInterface>
      */
-    public function getIterator(): Traversable;
+    public function getIterator(): Iterator;
 
     /**
      * Return an instance with the specified required `$parameters` instance added.

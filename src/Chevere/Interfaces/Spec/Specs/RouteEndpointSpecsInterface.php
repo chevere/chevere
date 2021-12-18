@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
-use Traversable;
+use Iterator;
 
 /**
  * Describes the component in charge of collecting objects implementing `RouteEndpointSpecInterface`.
@@ -42,7 +42,7 @@ interface RouteEndpointSpecsInterface extends MappedInterface
     public function get(string $methodName): RouteEndpointSpecInterface;
 
     /**
-     * @return Traversable<string, RouteEndpointSpecInterface>
+     * @return Iterator<string, RouteEndpointSpecInterface>
      */
-    public function getIterator(): Traversable;
+    public function getIterator(): Iterator;
 }

@@ -18,7 +18,7 @@ use function Chevere\Components\Var\deepCopy;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MapInterface;
 use Ds\Map as DsMap;
-use Traversable;
+use Iterator;
 
 final class Map implements MapInterface
 {
@@ -48,7 +48,7 @@ final class Map implements MapInterface
         return $this->map->count();
     }
 
-    public function getIterator(): Traversable
+    public function getIterator(): Iterator
     {
         return $this->map->getIterator();
     }

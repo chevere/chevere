@@ -25,7 +25,7 @@ use Chevere\Interfaces\Dependent\DependentInterface;
 use Chevere\Interfaces\Workflow\StepInterface;
 use Chevere\Interfaces\Workflow\StepsInterface;
 use Ds\Vector;
-use Traversable;
+use Iterator;
 use TypeError;
 
 final class Steps implements StepsInterface
@@ -75,7 +75,7 @@ final class Steps implements StepsInterface
     }
 
     #[\ReturnTypeWillChange]
-    public function getIterator(): Traversable
+    public function getIterator(): Iterator
     {
         foreach ($this->steps as $step) {
             yield $step => $this->get($step);

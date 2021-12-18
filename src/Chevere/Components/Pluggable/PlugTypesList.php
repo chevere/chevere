@@ -18,7 +18,7 @@ use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\Pluggable\PlugTypeInterface;
 use Chevere\Interfaces\Pluggable\PlugTypesListInterface;
 use Ds\Map;
-use Traversable;
+use Iterator;
 
 final class PlugTypesList implements PlugTypesListInterface
 {
@@ -44,7 +44,7 @@ final class PlugTypesList implements PlugTypesListInterface
     }
 
     #[\ReturnTypeWillChange]
-    public function getIterator(): Traversable
+    public function getIterator(): Iterator
     {
         foreach ($this->map->pairs() as $pair) {
             yield $pair->key => $pair->value;

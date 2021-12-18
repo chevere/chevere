@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Router\Route;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
-use Traversable;
+use Iterator;
 
 /**
  * Describes the component in charge of collecting objects implementing `RouteEndpointInterface`.
@@ -43,7 +43,7 @@ interface RouteEndpointsInterface extends MappedInterface
     public function get(string $key): RouteEndpointInterface;
 
     /**
-     * @return Traversable<string, RouteEndpointInterface>
+     * @return Iterator<string, RouteEndpointInterface>
      */
-    public function getIterator(): Traversable;
+    public function getIterator(): Iterator;
 }

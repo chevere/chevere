@@ -17,7 +17,7 @@ use Chevere\Exceptions\Core\ClassNotExistsException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
-use Traversable;
+use Iterator;
 
 /**
  * Describes the component in charge of mapping classes to keys.
@@ -62,9 +62,9 @@ interface ClassMapInterface extends MappedInterface
     /**
      * Provides a traversable with `className => key`
      *
-     * @return Traversable<string, string>
+     * @return Iterator<string, string>
      */
-    public function getIterator(): Traversable;
+    public function getIterator(): Iterator;
 
     /**
      * Provides access to the class map `className => key`
