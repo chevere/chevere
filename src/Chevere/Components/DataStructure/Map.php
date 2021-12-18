@@ -48,9 +48,12 @@ final class Map implements MapInterface
         return $this->map->count();
     }
 
+    #[\ReturnTypeWillChange]
     public function getIterator(): Iterator
     {
-        return $this->map->getIterator();
+        foreach ($this->map->pairs() as $pair) {
+            yield $pair->key => $pair->value;
+        }
     }
 
     public function withPut(string $key, mixed $value): self
