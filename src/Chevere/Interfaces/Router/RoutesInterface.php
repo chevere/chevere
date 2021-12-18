@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\Router;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
 use Chevere\Interfaces\Router\Route\RouteInterface;
-use Generator;
+use Traversable;
 
 /**
  * Describes the component in charge of collecting objects implementing `RouteInterface`.
@@ -48,7 +48,7 @@ interface RoutesInterface extends MappedInterface
     public function get(string $path): RouteInterface;
 
     /**
-     * @return Generator<string, RouteInterface>
+     * @return Traversable<string, RouteInterface>
      */
-    public function getGenerator(): Generator;
+    public function getIterator(): Traversable;
 }

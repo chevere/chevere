@@ -45,7 +45,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
     {
         $this->assertDependencies($serviceContainer);
         $new = clone $this;
-        foreach ($new->workflowRun->workflow()->steps()->getGenerator() as $name => $step) {
+        foreach ($new->workflowRun->workflow()->steps()->getIterator() as $name => $step) {
             if ($new->workflowRun->has($name)) {
                 continue;
             }
@@ -119,7 +119,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
     {
         $dependencies = $this->workflowRun->workflow()->steps()->dependencies();
         $missing = [];
-        foreach ($dependencies->getGenerator() as $name => $className) {
+        foreach ($dependencies->getIterator() as $name => $className) {
             $isMissing =
                 !$serviceContainer->has($name) ||
                 !is_a($serviceContainer->get($name), $className, false);
@@ -139,7 +139,7 @@ final class WorkflowRunner implements WorkflowRunnerInterface
     {
         if ($action instanceof DependentInterface) {
             $instances = [];
-            foreach ($action->dependencies()->getGenerator() as $name => $className) {
+            foreach ($action->dependencies()->getIterator() as $name => $className) {
                 $instances[$name] = $serviceContainer->get($name);
             }
             $action = $action->withDependencies(...$instances);

@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
-use Generator;
+use Traversable;
 
 /**
  * Describes the component in charge of collecting objects implementing `RoutableSpecInterface`.
@@ -42,7 +42,7 @@ interface RoutableSpecsInterface extends MappedInterface
     public function get(string $routeName): RouteSpecInterface;
 
     /**
-     * @return Generator<string, RouteSpecInterface>
+     * @return Traversable<string, RouteSpecInterface>
      */
-    public function getGenerator(): Generator;
+    public function getIterator(): Traversable;
 }

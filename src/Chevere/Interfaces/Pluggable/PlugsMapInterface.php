@@ -17,7 +17,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Countable;
-use Generator;
+use Traversable;
 
 /**
  * Describes the component in charge of mapping plugs in the file system.
@@ -60,7 +60,7 @@ interface PlugsMapInterface extends Countable
     public function getPlugsQueueTypedFor(string $pluggable): PlugsQueueTypedInterface;
 
     /**
-     * @return Generator<string, PlugsQueueTypedInterface>
+     * @return Traversable<string, PlugsQueueTypedInterface>
      */
-    public function getGenerator(): Generator;
+    public function getIterator(): Traversable;
 }

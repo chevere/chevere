@@ -20,7 +20,7 @@ use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
 use Ds\Set;
-use Generator;
+use Traversable;
 
 final class Dependencies implements DependenciesInterface
 {
@@ -46,7 +46,7 @@ final class Dependencies implements DependenciesInterface
     public function withMerge(DependenciesInterface $dependencies): DependenciesInterface
     {
         $new = clone $this;
-        foreach ($dependencies->getGenerator() as $name => $className) {
+        foreach ($dependencies->getIterator() as $name => $className) {
             if ($new->keys->contains($name)) {
                 $expected = $new->key($name);
                 if ($expected !== $className) {
@@ -88,9 +88,10 @@ final class Dependencies implements DependenciesInterface
         return $this->classMap->count();
     }
 
-    public function getGenerator(): Generator
+    #[\ReturnTypeWillChange]
+    public function getIterator(): Traversable
     {
-        foreach ($this->classMap->getGenerator() as $className => $key) {
+        foreach ($this->classMap->getIterator() as $className => $key) {
             yield $key => $className;
         }
     }

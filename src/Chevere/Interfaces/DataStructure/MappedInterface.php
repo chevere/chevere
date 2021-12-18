@@ -18,6 +18,6 @@ use Countable;
 /**
  * Describes the component in charge of defining a mapped interface.
  */
-interface MappedInterface extends Countable, KeysInterface, GetGeneratorInterface
+interface MappedInterface extends Countable, KeysInterface, GetIteratorInterface
 {
 }

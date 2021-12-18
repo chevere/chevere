@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Router\Route;
 
 use Chevere\Interfaces\Common\ToArrayInterface;
 use Chevere\Interfaces\DataStructure\MappedInterface;
-use Generator;
+use Traversable;
 
 /**
  * Describes the component in charge of collecting objects implementing `RouteWildcardInterface`.
@@ -53,7 +53,7 @@ interface WildcardsInterface extends MappedInterface, ToArrayInterface
     public function getPos(int $pos): RouteWildcardInterface;
 
     /**
-     * @return Generator<int , RouteWildcardInterface>
+     * @return Traversable<int , RouteWildcardInterface>
      */
-    public function getGenerator(): Generator;
+    public function getIterator(): Traversable;
 }

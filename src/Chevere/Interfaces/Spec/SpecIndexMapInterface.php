@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Spec;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
-use Generator;
+use Traversable;
 
 /**
  * Describes the component in charge of collecting route spec endpoints.
@@ -42,7 +42,7 @@ interface SpecIndexMapInterface extends MappedInterface
     public function get(string $routeName): SpecEndpointsInterface;
 
     /**
-     * @return Generator<string, SpecEndpointsInterface>
+     * @return Traversable<string, SpecEndpointsInterface>
      */
-    public function getGenerator(): Generator;
+    public function getIterator(): Traversable;
 }

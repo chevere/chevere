@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Pluggable;
 
-use Generator;
+use Traversable;
 
 /**
  * Describes the component in charge of defining a plugs types list.
@@ -21,7 +21,7 @@ use Generator;
 interface PlugTypesListInterface
 {
     /**
-     * @return Generator<int, PlugTypeInterface>
+     * @return Traversable<int, PlugTypeInterface>
      */
-    public function getGenerator(): Generator;
+    public function getIterator(): Traversable;
 }

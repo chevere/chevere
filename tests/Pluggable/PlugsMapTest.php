@@ -67,7 +67,7 @@ final class PlugsMapTest extends TestCase
             ->withAdded($hook2);
         $this->assertTrue($plugsMap->has($hook));
         $this->assertTrue($plugsMap->has($hook2));
-        foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueue) {
+        foreach ($plugsMap->getIterator() as $pluggableName => $plugsQueue) {
             $this->assertSame($plugsMap->getPlugsQueueTypedFor($pluggableName), $plugsQueue);
             $this->assertInstanceOf(HooksQueueInterface::class, $plugsQueue);
             $this->assertTrue($plugsMap->hasPlugsFor($pluggableName));

@@ -43,7 +43,7 @@ final class Step implements StepInterface
                     ->code('%action%', $this->action)
             );
         }
-        if (! $reflection->implementsInterface(ActionInterface::class)) {
+        if (!$reflection->implementsInterface(ActionInterface::class)) {
             throw new UnexpectedValueException(
                 (new Message('Action %action% must implement %interface% interface'))
                     ->code('%action%', $this->action)
@@ -81,7 +81,7 @@ final class Step implements StepInterface
         $this->assertArgumentsCount($namedArguments);
         $store = [];
         $missing = [];
-        foreach ($this->parameters->getGenerator() as $name => $parameter) {
+        foreach ($this->parameters->getIterator() as $name => $parameter) {
             $parameter->description();
             $argument = $namedArguments[$name] ?? null;
             if ($argument !== null) {

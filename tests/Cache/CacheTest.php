@@ -29,6 +29,9 @@ final class CacheTest extends TestCase
 
     protected function setUp(): void
     {
+        if (opcache_get_status() === false) {
+            $this->markTestSkipped('OPCache is not enabled');
+        }
         $this->dir = new Dir(
             new Path(__DIR__ . '/_resources/CacheTest/cache/')
         );

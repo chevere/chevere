@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
-use Generator;
+use Traversable;
 
 /**
  * Describes the component in charge of collecting objects implementing `GroupSpecInterface`.
@@ -42,7 +42,7 @@ interface GroupSpecsInterface extends MappedInterface
     public function get(string $groupName): GroupSpecInterface;
 
     /**
-     * @return Generator<string, GroupSpecInterface>
+     * @return Traversable<string, GroupSpecInterface>
      */
-    public function getGenerator(): Generator;
+    public function getIterator(): Traversable;
 }

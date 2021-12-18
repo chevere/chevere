@@ -17,7 +17,7 @@ use Chevere\Exceptions\Core\ClassNotExistsException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\DataStructure\MappedInterface;
-use Generator;
+use Traversable;
 
 /**
  * Describes the component in charge of mapping classes to keys.
@@ -60,11 +60,11 @@ interface ClassMapInterface extends MappedInterface
     public function className(string $key): string;
 
     /**
-     * Provides a generator with `className => key`
+     * Provides a traversable with `className => key`
      *
-     * @return Generator<string, string>
+     * @return Traversable<string, string>
      */
-    public function getGenerator(): Generator;
+    public function getIterator(): Traversable;
 
     /**
      * Provides access to the class map `className => key`

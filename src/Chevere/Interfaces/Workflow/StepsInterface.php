@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Workflow;
 
 use Chevere\Interfaces\DataStructure\MappedInterface;
 use Chevere\Interfaces\Dependent\DependenciesInterface;
-use Generator;
+use Traversable;
 
 /**
  * Describes the component in charge of defining a collection of steps.
@@ -41,7 +41,7 @@ interface StepsInterface extends MappedInterface
     public function withAddedAfter(string $after, StepInterface ...$step): StepsInterface;
 
     /**
-     * @return Generator<string, StepInterface>
+     * @return Traversable<string, StepInterface>
      */
-    public function getGenerator(): Generator;
+    public function getIterator(): Traversable;
 }

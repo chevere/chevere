@@ -37,6 +37,9 @@ final class PlugsMapCacheTest extends TestCase
 
     protected function setUp(): void
     {
+        if (opcache_get_status() === false) {
+            $this->markTestSkipped('OPCache is not enabled');
+        }
         $this->dirHelper = new DirHelper($this);
         $this->emptyDir = $this->dirHelper->dir()->getChild('empty/');
         $this->workingDir = $this->dirHelper->dir()->getChild('working/');
@@ -72,6 +75,9 @@ final class PlugsMapCacheTest extends TestCase
 
     public function testPluggableNotMapped(): void
     {
+        if (opcache_get_status() === false) {
+            $this->markTestSkipped('OPCache is not enabled');
+        }
         $workingCache = new Cache($this->workingDir);
         $cache = new Cache($workingCache->dir()->getChild('empty/'));
         $plugsMap = new PlugsMap(new HookPlugType());

@@ -54,7 +54,7 @@ final class RouteEndpointTest extends TestCase
     public function testWithoutParameter(): void
     {
         $controller = new RouteEndpointTestController();
-        $generator = $controller->parameters()->getGenerator();
+        $generator = $controller->parameters()->getIterator();
         $generator->rewind();
         $key = $generator->key() ?? 'name';
         $routeEndpoint = (new RouteEndpoint(new GetMethod(), $controller))

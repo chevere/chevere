@@ -18,7 +18,7 @@ use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\Pluggable\PlugTypeInterface;
 use Chevere\Interfaces\Pluggable\PlugTypesListInterface;
 use Ds\Map;
-use Generator;
+use Traversable;
 
 final class PlugTypesList implements PlugTypesListInterface
 {
@@ -31,7 +31,7 @@ final class PlugTypesList implements PlugTypesListInterface
         $this->map = new Map($list);
         foreach ($this->map->pairs() as $pair) {
             // @codeCoverageIgnoreStart
-            if (! ($pair->value instanceof PlugTypeInterface)) {
+            if (!($pair->value instanceof PlugTypeInterface)) {
                 throw new RangeException(
                     (new Message('List source (%path%) contains an invalid type not implementing %interface% at %pos% index'))
                         ->code('%path%', $path)
@@ -43,7 +43,8 @@ final class PlugTypesList implements PlugTypesListInterface
         }
     }
 
-    public function getGenerator(): Generator
+    #[\ReturnTypeWillChange]
+    public function getIterator(): Traversable
     {
         foreach ($this->map->pairs() as $pair) {
             yield $pair->key => $pair->value;

@@ -36,14 +36,14 @@ interface FilePhpInterface
      * Applies OPCache.
      *
      * @throws FileNotExistsException
-     * @throws RuntimeException If OPCache is disabled.
+     * @throws RuntimeException If OPCache is not enabled.
      */
     public function cache(): void;
 
     /**
      * Flushes OPCache.
      *
-     * @throws RuntimeException If OPCache is disabled.
+     * @throws RuntimeException If OPCache is not enabled.
      */
     public function flush(): void;
 }

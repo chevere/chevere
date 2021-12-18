@@ -168,7 +168,7 @@ final class WorkflowTest extends TestCase
                 step0: new Step(WorkflowTestStepDeps0::class)
             )
         );
-        foreach ((new WorkflowTestStepDeps0())->dependencies()->getGenerator() as $key => $className) {
+        foreach ((new WorkflowTestStepDeps0())->dependencies()->getIterator() as $key => $className) {
             $this->assertSame($className, $workflow->steps()->dependencies()->key($key));
         }
         $this->expectException(OverflowException::class);

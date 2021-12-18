@@ -29,9 +29,9 @@ trait DependentTrait
         $new = clone $this;
         $missing = [];
         $new->dependencies ??= $new->getDependencies();
-        foreach ($new->dependencies->getGenerator() as $name => $className) {
+        foreach ($new->dependencies->getIterator() as $name => $className) {
             $value = $namedDependencies[$name] ?? null;
-            if (! isset($value)) {
+            if (!isset($value)) {
                 $missing[] = $name;
 
                 continue;
@@ -63,7 +63,7 @@ trait DependentTrait
         $this->dependencies ??= $this->getDependencies();
         $missing = [];
         foreach ($this->dependencies->keys() as $property) {
-            if (! isset($this->{$property})) {
+            if (!isset($this->{$property})) {
                 $missing[] = $property;
             }
         }
@@ -77,7 +77,7 @@ trait DependentTrait
 
     private function assertType(string $className, string $name, object $value): void
     {
-        if (! is_a($value, $className, false)) {
+        if (!is_a($value, $className, false)) {
             throw new TypeException(
                 (new Message('Expecting dependency %key% of type %expected%, %provided% provided'))
                     ->strong('%key%', $name)

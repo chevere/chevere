@@ -27,7 +27,7 @@ use Chevere\Interfaces\Router\Route\RoutePathInterface;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
 
 final class Route implements RouteInterface
-{    
+{
     /**
      * @var array details about the instance maker
      */
@@ -70,7 +70,7 @@ final class Route implements RouteInterface
         $new = clone $this;
         $new->assertUnique($endpoint);
         $new->assertNoConflict($endpoint);
-        foreach ($new->path->wildcards()->getGenerator() as $wildcard) {
+        foreach ($new->path->wildcards()->getIterator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
             $knownWildcardMatch = $new->wildcards[$wildcard->toString()] ?? null;
             /** @var StringParameterInterface $controllerParamMatch */
