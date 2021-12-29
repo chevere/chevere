@@ -25,7 +25,7 @@ final class VarOutputter implements VarOutputterInterface
 
     public function __construct(
         private WriterInterface $writer,
-        private array $debugBacktrace,
+        private array $backtrace,
         private VarDumpFormatterInterface $formatter,
         ...$vars
     ) {
@@ -34,17 +34,17 @@ final class VarOutputter implements VarOutputterInterface
 
     public function process(VarDumpOutputterInterface $outputter): void
     {
-        $outputter->setUp($this->writer, $this->debugBacktrace);
+        $outputter->setUp($this->writer, $this->backtrace);
         $outputter->prepare();
         $this->handleClassFunction();
-        $this->writeCallerFile();
+        $outputter->writeCallerFile($this->formatter);
         $this->handleArgs();
         $outputter->tearDown();
     }
 
     private function handleClassFunction(): void
     {
-        $item = $this->debugBacktrace[1] ?? [];
+        $item = $this->backtrace[1] ?? [];
         $class = $item['class'] ?? null;
         if (isset($item, $class)) {
             $this->writer->write("\n");
@@ -54,27 +54,13 @@ final class VarOutputter implements VarOutputterInterface
                 . $type
             );
         }
-        $debugFn = $this->debugBacktrace[1]['function'] ?? null;
+        $debugFn = $this->backtrace[1]['function'] ?? null;
         if ($debugFn !== null) {
             $debugFn .= '()';
             $this->writer->write(
-                ($class === null ? "\n" : '')
+                ($class == null ? "\n" : '')
                 . $this->formatter->highlight(VarDumperInterface::FUNCTION, $debugFn)
-            );
-        }
-    }
-
-    private function writeCallerFile(): void
-    {
-        $item = $this->debugBacktrace[0] ?? null;
-        if ($item !== null && isset($item['file'])) {
-            $this->writer->write(
-                "\n"
-                . $this->formatter
-                    ->highlight(
-                        '_file',
-                        $item['file'] . ':' . $item['line']
-                    )
+                . "\n"
             );
         }
     }
@@ -87,7 +73,7 @@ final class VarOutputter implements VarOutputterInterface
                 $this->formatter,
                 new VarDumpable($value)
             );
-            $this->writer->write("\n\nArg:" . (string) $name . ' ');
+            $this->writer->write("\nArg:" . (string) $name . ' ');
             $varDumper->withProcess();
         }
     }

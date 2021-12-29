@@ -21,6 +21,11 @@ use Chevere\Interfaces\Writer\WriterInterface;
 interface VarDumpOutputterInterface
 {
     /**
+     * Writes the caller file using the target formatter.
+     */
+    public function writeCallerFile(VarDumpFormatterInterface $formatter): void;
+
+    /**
      * This method is executed before `prepare()`.
      */
     public function setUp(WriterInterface $writer, array $backtrace);
