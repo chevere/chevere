@@ -8,8 +8,6 @@ html {
     font: 16px Helvetica, Arial, sans-serif;
     line-height: 1.2;
     background: #3498db;
-    background: -moz-linear-gradient(top, #3498db 0%, #8e44ad 100%);
-    background: -webkit-linear-gradient(top, #3498db 0%, #8e44ad 100%);
     background: linear-gradient(to bottom, #3498db 0%, #8e44ad 100%);
     background-attachment: fixed;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3498db", endColorstr="#8e44ad", GradientType=0);
@@ -21,14 +19,8 @@ html {
 
 .body--flex {
     margin: 0;
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
     justify-content: center;
 }
 
@@ -144,7 +136,7 @@ main {
 
 .pre.pre--stack-entry {
     border: 0;
-    color: #FFF;
+    color: #ecf0f1;
     background: hsl(210, 29%, 24%);
     line-height: normal;
 }
@@ -166,7 +158,6 @@ main>div>* {
 
 @media (min-width: 768px) {
     main>div {
-        -webkit-box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.09);
         box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.09);
         border-radius: 2px;
     }
