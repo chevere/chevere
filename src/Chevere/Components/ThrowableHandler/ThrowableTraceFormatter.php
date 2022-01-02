@@ -59,7 +59,7 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
             self::TAG_ENTRY_FILE_LINE => $entry->fileLine(),
             self::TAG_ENTRY_CLASS => $entry->class(),
             self::TAG_ENTRY_TYPE => $entry->type(),
-            self::TAG_ENTRY_FUNCTION => $entry->function(),
+            self::TAG_ENTRY_FUNCTION => $entry->function() . '()',
         ];
         $array = $trValues;
         foreach (self::HIGHLIGHT_TAGS as $tag => $key) {

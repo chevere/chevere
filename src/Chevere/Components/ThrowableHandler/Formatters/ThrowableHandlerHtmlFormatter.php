@@ -33,7 +33,7 @@ final class ThrowableHandlerHtmlFormatter extends ThrowableHandlerFormatter
             ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS .
             ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE .
             ThrowableTraceFormatterInterface::TAG_ENTRY_FUNCTION .
-            '()</div>';
+            '</div>';
     }
 
     public function getHr(): string
