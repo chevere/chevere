@@ -46,7 +46,7 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
             TypeInterface::BOOLEAN => '#ff8700',
             TypeInterface::NULL => '#ff8700',
             // yellow
-            TypeInterface::OBJECT => '#ffd700',
+            TypeInterface::OBJECT => '#fabb00',
             // green
             TypeInterface::ARRAY => '#00d700',
             // red
@@ -54,7 +54,7 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
             // blue
             VarDumperInterface::FILE => '#87afff',
             // light yellow
-            VarDumperInterface::CLASS_REG => '#ffd75f',
+            VarDumperInterface::CLASS_REG => '#fabb00',
             // dark gray
             VarDumperInterface::OPERATOR => '#6c6c6c',
             // blue
