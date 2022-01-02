@@ -11,9 +11,7 @@
 
 declare(strict_types=1);
 
-return '<html style="background: #132537;"><head></head><body><pre style="font: 14px \'Fira Code Retina\', \'Operator Mono\', Inconsolata, Consolas,
-    monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: #132537; display: block; text-align: left; border: none; border-radius: 4px;">%handlerClassName%->%handlerFunctionName%()<hr style="opacity:.25">
-<span style="color:#fabb00">%className%</span>-><span style="color:#00afff">%functionName%()</span>
-<span style="color:#87afff">%fileLine%</span>
+return '<html style="background: #132537;"><head></head><body><pre style="font: 14px \'Fira Code Retina\', \'Operator Mono\', Inconsolata, Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: #132537; display: block; text-align: left; border: none; border-radius: 4px;">class@handler->function@handler()<hr style="opacity:.25">
+<span style="color:#87afff">file@handler:100</span>
 
 Arg:name <span style="color:#ff8700">null</span></pre></body></html>';

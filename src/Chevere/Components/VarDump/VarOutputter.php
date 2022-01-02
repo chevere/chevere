@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpOutputterInterface;
 use Chevere\Interfaces\VarDump\VarOutputterInterface;
@@ -36,33 +35,9 @@ final class VarOutputter implements VarOutputterInterface
     {
         $outputter->setUp($this->writer, $this->backtrace);
         $outputter->prepare();
-        $this->handleClassFunction();
         $outputter->writeCallerFile($this->formatter);
         $this->handleArgs();
         $outputter->tearDown();
-    }
-
-    private function handleClassFunction(): void
-    {
-        $item = $this->backtrace[1] ?? [];
-        $class = $item['class'] ?? null;
-        if (isset($item, $class)) {
-            $this->writer->write("\n");
-            $type = $item['type'];
-            $this->writer->write(
-                $this->formatter->highlight(VarDumperInterface::CLASS_REG, $class)
-                . $type
-            );
-        }
-        $debugFn = $this->backtrace[1]['function'] ?? null;
-        if ($debugFn !== null) {
-            $debugFn .= '()';
-            $this->writer->write(
-                ($class == null ? "\n" : '')
-                . $this->formatter->highlight(VarDumperInterface::FUNCTION, $debugFn)
-                . "\n"
-            );
-        }
     }
 
     private function handleArgs(): void
