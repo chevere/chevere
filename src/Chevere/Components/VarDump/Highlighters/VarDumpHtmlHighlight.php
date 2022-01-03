@@ -48,7 +48,7 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
             // yellow
             TypeInterface::OBJECT => '#fabb00',
             // green
-            TypeInterface::ARRAY => '#00d700',
+            TypeInterface::ARRAY => '#27ae60',
             // red
             TypeInterface::RESOURCE => '#ff5f5f',
             // blue
