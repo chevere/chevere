@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Message;
 
 use Chevere\Components\Message\Message;
+use function Chevere\Components\Message\message;
 use Chevere\Interfaces\Message\MessageInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -66,5 +67,10 @@ final class MessageTest extends TestCase
         $plain = strip_tags($html);
         $this->assertSame($plain, $message->toString());
         $this->assertNotSame($plain, $message->toConsole());
+    }
+
+    public function testFunction(): void
+    {
+        $this->assertEquals(message('template'), new Message('template'));
     }
 }

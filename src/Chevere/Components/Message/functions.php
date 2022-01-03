@@ -15,9 +15,6 @@ namespace Chevere\Components\Message;
 
 use Chevere\Interfaces\Message\MessageInterface;
 
-/**
- * @codeCoverageIgnore
- */
 function message(string $template): MessageInterface
 {
     return new Message($template);

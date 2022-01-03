@@ -46,7 +46,6 @@
             "src/Chevere/Components/Message/functions.php",
             "src/Chevere/Components/Parameter/functions.php",
             "src/Chevere/Components/Router/functions.php",
-            "src/Chevere/Components/Sandbox/functions.php",
             "src/Chevere/Components/Str/functions.php",
             "src/Chevere/Components/ThrowableHandler/functions.php",
             "src/Chevere/Components/Translator/functions.php",
