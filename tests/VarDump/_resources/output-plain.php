@@ -14,7 +14,6 @@ declare(strict_types=1);
 return '
 %handlerClassName%->%handlerFunctionName%()
 ------------------------------------------------------------
-%className%->%functionName%()
 %fileLine%
 
 Arg:name null

@@ -30,7 +30,8 @@ abstract class VarDumpAbstractOutputter implements VarDumpOutputterInterface
         $item = $this->backtrace[0] ?? null;
         if ($item !== null && isset($item['file'])) {
             $this->writer->write(
-                $formatter
+                "\n"
+                . $formatter
                     ->highlight(
                         '_file',
                         $item['file'] . ':' . $item['line']

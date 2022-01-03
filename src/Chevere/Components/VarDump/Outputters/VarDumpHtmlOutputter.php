@@ -22,8 +22,7 @@ final class VarDumpHtmlOutputter extends VarDumpAbstractOutputter
     /**
      * @var string Dump style, no double quotes.
      */
-    public const STYLE = "font: 14px 'Fira Code Retina', 'Operator Mono', Inconsolata, Consolas,
-    monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: " . self::BACKGROUND . '; display: block; text-align: left; border: none; border-radius: 4px;';
+    public const STYLE = "font: 14px 'Fira Code Retina', 'Operator Mono', Inconsolata, Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: " . self::BACKGROUND . '; display: block; text-align: left; border: none; border-radius: 4px;';
 
     private bool $hasHeader = false;
 
