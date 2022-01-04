@@ -40,6 +40,8 @@ function getFilesystemInstanceMessage(string $instance, string $path): MessageIn
  */
 function dirForPath(string $path): DirInterface
 {
+    $path .= (substr($path, -1) == DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR);
+
     try {
         return new Dir(new Path($path));
     } catch (Throwable $e) {
