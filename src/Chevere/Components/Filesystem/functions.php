@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Filesystem\FilesystemException;
 use Chevere\Interfaces\Filesystem\DirInterface;
@@ -43,7 +42,7 @@ function dirForPath(string $path): DirInterface
 {
     try {
         return new Dir(new Path($path));
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         throw new FilesystemException(
             previous: $e,
             message: getFilesystemInstanceMessage(Dir::class, $path),
@@ -59,7 +58,7 @@ function fileForPath(string $path): FileInterface
 {
     try {
         return new File(new Path($path));
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         throw new FilesystemException(
             previous: $e,
             message: getFilesystemInstanceMessage(File::class, $path),
@@ -75,7 +74,7 @@ function filePhpForPath(string $path): FilePhpInterface
 {
     try {
         return new FilePhp(fileForPath($path));
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         throw new FilesystemException(
             previous: $e,
             message: getFilesystemInstanceMessage(FilePhp::class, $path),
@@ -91,7 +90,7 @@ function filePhpReturnForPath(string $path): FilePhpReturn
 {
     try {
         return new FilePhpReturn(filePhpForPath($path));
-    } catch (Exception $e) {
+    } catch (Throwable $e) {
         throw new FilesystemException(
             previous: $e,
             message: getFilesystemInstanceMessage(FilePhpReturn::class, $path),
