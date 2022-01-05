@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Message;
 
-use Ahc\Cli\Output\Color;
 use Chevere\Interfaces\Message\MessageInterface;
+use Colors\Color;
 
 final class Message implements MessageInterface
 {
@@ -47,14 +47,11 @@ final class Message implements MessageInterface
     {
         $tr = [];
         $color = new Color();
-        $colorStyles = [];
-        foreach ($this->trTable as $search => $formatting) {
+        $color->setUserStyles(self::CLI_TABLE);
+        foreach ($this->trTable as $wildcard => $formatting) {
             $format = $formatting[0];
-            if (!in_array($format, $colorStyles, true)) {
-                $colorStyles[] = $format;
-                Color::style($format, self::CLI_TABLE[$format]);
-            }
-            $tr[$search] = $color->{$format}($formatting[1]);
+            $colorTheme = 'message_' . $format;
+            $tr[$wildcard] = (string) $color($formatting[1])->apply($colorTheme);
         }
 
         return strtr($this->template, $tr);

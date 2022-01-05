@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Message;
 
-use Ahc\Cli\Output\Color;
 use Chevere\Interfaces\Common\ToStringInterface;
 
 /**
@@ -22,19 +21,10 @@ use Chevere\Interfaces\Common\ToStringInterface;
 interface MessageInterface extends ToStringInterface
 {
     public const CLI_TABLE = [
-        'emphasis' => [
-            'bold' => 3,
-        ],
-        'strong' => [
-            'bold' => 1,
-        ],
-        'underline' => [
-            'bold' => 4,
-        ],
-        'code' => [
-            'bg' => Color::WHITE,
-            'fg' => Color::BLACK,
-        ],
+        'message_emphasis' => 'italic',
+        'message_strong' => 'bold',
+        'message_underline' => 'underline',
+        'message_code' => 'reverse',
     ];
 
     public const HTML_TABLE = [
