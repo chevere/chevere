@@ -77,8 +77,8 @@ jobs:
       - name: Fix paths for sonar-scanner
         working-directory: ./build
         run: |
-          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' junit.xml
-          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' logs/clover.xml
+          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' junit.xml
+          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' logs/clover.xml
 
       - name: SonarCloud scan
         uses: SonarSource/sonarcloud-github-action@master
