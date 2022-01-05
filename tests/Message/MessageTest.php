@@ -16,6 +16,7 @@ namespace Chevere\Tests\Message;
 use Chevere\Components\Message\Message;
 use function Chevere\Components\Message\message;
 use Chevere\Interfaces\Message\MessageInterface;
+use Colors\Color;
 use PHPUnit\Framework\TestCase;
 
 final class MessageTest extends TestCase
@@ -61,12 +62,17 @@ final class MessageTest extends TestCase
             $tag = MessageInterface::HTML_TABLE[$tag] ?? $tag;
             $tr[$value[0]] = "<${tag}>" . $value[1] . "</${tag}>";
         }
-        $this->assertSame($var, $message->template());
         $html = strtr($var, $tr);
-        $this->assertSame($html, $message->toHtml());
         $plain = strip_tags($html);
+        $this->assertSame($var, $message->template());
+        $this->assertSame($html, $message->toHtml());
         $this->assertSame($plain, $message->toString());
-        $this->assertNotSame($plain, $message->toConsole());
+        $consoleMessage = $message->toConsole();
+        $consolePlain = preg_replace('/' . preg_quote(Color::ESC) . '\d+m/', '', $consoleMessage);
+        $this->assertSame($plain, $consolePlain);
+        if ((new Color())->isSupported()) {
+            $this->assertNotSame($plain, $consoleMessage);
+        }
     }
 
     public function testFunction(): void
