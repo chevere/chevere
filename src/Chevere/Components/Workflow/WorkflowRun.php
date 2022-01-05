@@ -65,11 +65,11 @@ final class WorkflowRun implements WorkflowRunInterface
     {
         $new = clone $this;
         $new->workflow->steps()->get($step);
-        $arguments = new Arguments(
+        $tryArguments = new Arguments(
             $new->workflow->getProvided($step),
             ...$response->data()
         );
-        $arguments->parameters();
+        $tryArguments->parameters();
         $new->steps->put($step, $response);
 
         return $new;
