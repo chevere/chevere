@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller\Attributes;
+namespace Chevere\Tests\Attribute;
 
 use Chevere\Components\Attribute\Dispatch;
 use Chevere\Components\Attribute\Relation;
 use PHPUnit\Framework\TestCase;
 
-final class ControllerAttributesTest extends TestCase
+final class AttributesTest extends TestCase
 {
     public function testRelation(): void
     {
