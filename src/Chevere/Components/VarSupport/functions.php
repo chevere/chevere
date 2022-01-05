@@ -25,9 +25,10 @@ function deepCopy(mixed $value, bool $useCloneMethod = false): mixed
     try {
         return (new DeepCopy($useCloneMethod))
             ->copy($value);
-    } catch (CloneException $e) {
+    } catch (CloneException) {
         if (is_object($value)) {
-            new ObjectClonable($value);
+            $clonable = new ObjectClonable($value);
+            $clonable->var();
         }
     }
 } // @codeCoverageIgnore

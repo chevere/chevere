@@ -71,10 +71,10 @@ final class RouteSpec implements RouteSpecInterface
         foreach ($this->routeEndpointSpecs->getIterator() as $key => $routeEndpointSpec) {
             $endpoints[$key] = $routeEndpointSpec->toArray();
         }
-        $wildcards = [];
+        $wildcardsArray = [];
         /** @var RouteWildcardInterface $wildcard */
         foreach ($this->wildcards as $wildcard) {
-            $wildcards[$wildcard->toString()] = '^' . $wildcard->match()->toString() . '$';
+            $wildcardsArray[$wildcard->toString()] = '^' . $wildcard->match()->toString() . '$';
         }
 
         return [
@@ -82,7 +82,7 @@ final class RouteSpec implements RouteSpecInterface
             'locator' => $this->locator,
             'spec' => $this->jsonPath,
             'regex' => $this->regex,
-            'wildcards' => $wildcards,
+            'wildcards' => $wildcardsArray,
             'endpoints' => $endpoints,
         ];
     }

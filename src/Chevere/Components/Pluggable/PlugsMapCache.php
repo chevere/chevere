@@ -73,15 +73,6 @@ final class PlugsMapCache implements PlugsMapCacheInterface
                     $new->classMapKey,
                     new VarStorable($new->classMap)
                 );
-        // }
-        // @codeCoverageIgnoreStart
-        // catch (Throwable $e) {
-        //     throw new RuntimeException(
-        //         previous: $e,
-        //         message: (new Message('Unable to put provided plugs map')),
-        //     );
-        // }
-        // @codeCoverageIgnoreEnd
 
         return $new;
     }
@@ -102,8 +93,8 @@ final class PlugsMapCache implements PlugsMapCacheInterface
     public function getPlugsQueueTypedFor(string $className): PlugsQueueTypedInterface
     {
         $this->assertClassMap();
-        $classMap = $this->getClassMapFromCache();
-        if (!$classMap->has($className)) {
+        $classMapCached = $this->getClassMapFromCache();
+        if (!$classMapCached->has($className)) {
             throw new OutOfBoundsException(
                 (new Message('Class name %className% not found'))
                     ->code('%className%', $className),
@@ -112,7 +103,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         }
 
         try {
-            $path = $classMap->key($className);
+            $path = $classMapCached->key($className);
 
             return filePhpReturnForPath($path)->var();
         }
