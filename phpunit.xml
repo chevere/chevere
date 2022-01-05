@@ -11,9 +11,6 @@
             <directory suffix="Test.php">tests/</directory>
         </testsuite>
     </testsuites>
-    <logging>
-        <junit outputFile="build/junit.xml"/>
-    </logging>
     <coverage cacheDirectory=".phpunit.cache/code-coverage"
               processUncoveredFiles="true"
               ignoreDeprecatedCodeUnits="true">

@@ -72,47 +72,47 @@ jobs:
         run: composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
 
       - name: Run tests with phpunit
-        run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml
+        run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --log-junit=build/logs/junit.xml
 
-      - name: Fix paths for sonar-scanner
-        working-directory: ./build
-        run: |
-          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' junit.xml
-          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' logs/clover.xml
-
-      - name: SonarCloud scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          projectBaseDir: .
-
-      # - name: Cache SonarCloud packages
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: ~/.sonar/cache
-      #     key: ${{ runner.os }}-sonar
-      #     restore-keys: ${{ runner.os }}-sonar
-
-      # - name: Cache for Incremental Analysis
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: sonar-cache
-      #     key: ${{ runner.os }}-sonar
-      #     restore-keys: ${{ runner.os }}-sonar
-
-      # - name: Download and set up sonar-scanner
-      #   env:
-      #     SONAR_SCANNER_DOWNLOAD_URL: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ env.SONAR_SCANNER_VERSION }}-linux.zip
+      # - name: Fix paths for sonar-scanner
+      #   working-directory: ./build/logs
       #   run: |
-      #     mkdir -p $HOME/.sonar
-      #     curl -sSLo $HOME/.sonar/sonar-scanner.zip ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
-      #     unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
-      #     echo "$HOME/.sonar/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
+      #     sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' junit.xml
+      #     sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' clover.xml
 
-      # - name: Run sonar-scanner
+      # - name: SonarCloud scan
+      #   uses: SonarSource/sonarcloud-github-action@master
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #   run: sonar-scanner
+      #   with:
+      #     projectBaseDir: .
+
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Cache for Incremental Analysis
+        uses: actions/cache@v2
+        with:
+          path: sonar-cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Download and set up sonar-scanner
+        env:
+          SONAR_SCANNER_DOWNLOAD_URL: https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${{ env.SONAR_SCANNER_VERSION }}-linux.zip
+        run: |
+          mkdir -p $HOME/.sonar
+          curl -sSLo $HOME/.sonar/sonar-scanner.zip ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
+          unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+          echo "$HOME/.sonar/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
+
+      - name: Run sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: sonar-scanner
