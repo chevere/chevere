@@ -74,11 +74,11 @@ jobs:
       - name: Run tests with phpunit
         run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --log-junit=build/logs/junit.xml
 
-      # - name: Fix paths for sonar-scanner
-      #   working-directory: ./build/logs
-      #   run: |
-      #     sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' junit.xml
-      #     sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' clover.xml
+      - name: Fix paths for sonar-scanner
+        working-directory: ./build/logs
+        run: |
+          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' junit.xml
+          sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace@g' clover.xml
 
       # - name: SonarCloud scan
       #   uses: SonarSource/sonarcloud-github-action@master
