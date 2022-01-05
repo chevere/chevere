@@ -4,74 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1447f29ecd015f6e5b97cd77775a599",
+    "content-hash": "efb3766ce66e465d5a1d984a80d76abf",
     "packages": [
-        {
-            "name": "adhocore/cli",
-            "version": "0.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/adhocore/php-cli.git",
-                "reference": "319c7dd0092c0346d9ad03366cc13d3491b57e34"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/adhocore/php-cli/zipball/319c7dd0092c0346d9ad03366cc13d3491b57e34",
-                "reference": "319c7dd0092c0346d9ad03366cc13d3491b57e34",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Ahc\\Cli\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jitendra Adhikari",
-                    "email": "jiten.adhikary@gmail.com"
-                }
-            ],
-            "description": "Command line interface library for PHP",
-            "keywords": [
-                "PHP7",
-                "argument-parser",
-                "argv-parser",
-                "cli",
-                "cli-action",
-                "cli-app",
-                "cli-color",
-                "cli-option",
-                "cli-writer",
-                "command",
-                "console",
-                "console-app",
-                "php-cli",
-                "stream-input",
-                "stream-output"
-            ],
-            "support": {
-                "issues": "https://github.com/adhocore/php-cli/issues",
-                "source": "https://github.com/adhocore/php-cli/tree/0.9.0"
-            },
-            "funding": [
-                {
-                    "url": "https://paypal.me/ji10",
-                    "type": "custom"
-                }
-            ],
-            "time": "2021-01-06T00:25:50+00:00"
-        },
         {
             "name": "brick/math",
             "version": "0.9.3",
