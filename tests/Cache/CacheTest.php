@@ -17,7 +17,7 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Var\VarStorable;
+use Chevere\Components\VarSupport\VarStorable;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;

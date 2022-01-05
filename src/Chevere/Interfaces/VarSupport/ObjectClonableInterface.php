@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Var;
+namespace Chevere\Interfaces\VarSupport;
 
 /**
  * Describes the component in charge of defining a clonable object variable.

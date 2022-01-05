@@ -15,7 +15,7 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\RouteParsers\StrictStd;
-use Chevere\Components\Var\VarStorable;
+use Chevere\Components\VarSupport\VarStorable;
 use Chevere\Exceptions\Router\RouteNotRoutableException;
 use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
 use Chevere\Interfaces\Router\Route\RouteInterface;

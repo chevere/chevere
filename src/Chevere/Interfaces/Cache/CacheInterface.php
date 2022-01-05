@@ -17,7 +17,7 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Var\VarStorableInterface;
+use Chevere\Interfaces\VarSupport\VarStorableInterface;
 
 /**
  * Describes the component in charge of caching PHP variables.

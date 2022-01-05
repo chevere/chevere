@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Var;
+namespace Chevere\Components\VarSupport;
 
 use DeepCopy\DeepCopy;
 use DeepCopy\Exception\CloneException;

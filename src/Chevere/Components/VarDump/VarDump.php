@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use function Chevere\Components\Var\deepCopy;
+use function Chevere\Components\VarSupport\deepCopy;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
 use Chevere\Interfaces\VarDump\VarDumpOutputterInterface;

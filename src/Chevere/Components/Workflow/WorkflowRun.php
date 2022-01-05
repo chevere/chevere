@@ -15,7 +15,7 @@ namespace Chevere\Components\Workflow;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Parameter\Arguments;
-use function Chevere\Components\Var\deepCopy;
+use function Chevere\Components\VarSupport\deepCopy;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;

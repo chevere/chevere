@@ -17,7 +17,7 @@ use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use function Chevere\Components\Filesystem\varForFilePhpReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
-use function Chevere\Components\Var\deepCopy;
+use function Chevere\Components\VarSupport\deepCopy;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Pluggable\PluggableNotRegisteredException;
 use Chevere\Exceptions\Pluggable\PlugsFileNotExistsException;

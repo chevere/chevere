@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Var;
+namespace Chevere\Tests\VarSupport;
 
-use Chevere\Components\Var\ObjectClonable;
+use Chevere\Components\VarSupport\ObjectClonable;
 use finfo;
 use LogicException;
 use PHPUnit\Framework\TestCase;

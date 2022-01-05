@@ -19,7 +19,7 @@ use Chevere\Components\ClassMap\ClassMap;
 use function Chevere\Components\Filesystem\filePhpReturnForPath;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
-use Chevere\Components\Var\VarStorable;
+use Chevere\Components\VarSupport\VarStorable;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;

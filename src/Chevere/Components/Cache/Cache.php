@@ -26,7 +26,7 @@ use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Interfaces\Var\VarStorableInterface;
+use Chevere\Interfaces\VarSupport\VarStorableInterface;
 
 final class Cache implements CacheInterface
 {

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
-use function Chevere\Components\Var\deepCopy;
+use function Chevere\Components\VarSupport\deepCopy;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Router\Route\RouteInterface;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;

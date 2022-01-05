@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Var;
+namespace Chevere\Interfaces\VarSupport;
 
-use Chevere\Exceptions\Var\VarStorableException;
+use Chevere\Exceptions\VarSupport\VarStorableException;
 
 /**
  * Describes the component in charge of handling storable variables.

@@ -28,7 +28,7 @@ use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\Var\VarStorableInterface;
+use Chevere\Interfaces\VarSupport\VarStorableInterface;
 use Throwable;
 
 final class FilePhpReturn implements FilePhpReturnInterface

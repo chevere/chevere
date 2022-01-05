@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructure\Traits;
 
-use function Chevere\Components\Var\deepCopy;
+use function Chevere\Components\VarSupport\deepCopy;
 use Chevere\Tests\DataStructure\src\UsesMapTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;

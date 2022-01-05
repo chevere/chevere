@@ -22,7 +22,7 @@ use Chevere\Exceptions\Filesystem\FileUnableToGetException;
 use Chevere\Exceptions\Filesystem\FileUnableToPutException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\Var\VarStorableInterface;
+use Chevere\Interfaces\VarSupport\VarStorableInterface;
 
 /**
  * Describes the component in charge of interact with `.php` files that return a variable.

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Pluggable;
 
 use Chevere\Components\Message\Message;
-use function Chevere\Components\Var\deepCopy;
+use function Chevere\Components\VarSupport\deepCopy;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
 use Ds\Set;

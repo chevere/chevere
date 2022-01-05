@@ -18,7 +18,7 @@ use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Type\Type;
-use Chevere\Components\Var\VarStorable;
+use Chevere\Components\VarSupport\VarStorable;
 use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;

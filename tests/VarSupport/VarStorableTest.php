@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Var;
+namespace Chevere\Tests\VarSupport;
 
-use Chevere\Components\Var\VarStorable;
-use Chevere\Exceptions\Var\VarStorableException;
+use Chevere\Components\VarSupport\VarStorable;
+use Chevere\Exceptions\VarSupport\VarStorableException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

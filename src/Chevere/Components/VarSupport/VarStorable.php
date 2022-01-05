@@ -11,24 +11,24 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Var;
+namespace Chevere\Components\VarSupport;
 
 use Chevere\Components\Iterator\Breadcrumb;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Var\ObjectClonableException;
+use Chevere\Exceptions\VarSupport\VarStorableException;
 use Chevere\Interfaces\Iterator\BreadcrumbInterface;
-use Chevere\Interfaces\Var\ObjectClonableInterface;
+use Chevere\Interfaces\VarSupport\VarStorableInterface;
 use ReflectionObject;
 
-final class ObjectClonable implements ObjectClonableInterface
+final class VarStorable implements VarStorableInterface
 {
     private BreadcrumbInterface $breadcrumb;
 
     public function __construct(
-        private object $var
+        private mixed $var
     ) {
         $this->breadcrumb = new Breadcrumb();
-        $this->assertClonable($this->var);
+        $this->assertExportable($this->var);
     }
 
     public function var(): mixed
@@ -36,8 +36,19 @@ final class ObjectClonable implements ObjectClonableInterface
         return $this->var;
     }
 
-    private function assertClonable($var): void
+    public function toExport(): string
     {
+        return var_export($this->var, true);
+    }
+
+    public function toSerialize(): string
+    {
+        return serialize($this->var);
+    }
+
+    private function assertExportable($var): void
+    {
+        $this->assertIsNotResource($var);
         if (is_object($var)) {
             $this->breadcrumbObject($var);
         } elseif (is_iterable($var)) {
@@ -45,6 +56,26 @@ final class ObjectClonable implements ObjectClonableInterface
         }
     }
 
+    /**
+     * @throws VarStorableException
+     */
+    private function assertIsNotResource($var): void
+    {
+        if (is_resource($var)) {
+            if ($this->breadcrumb->count() > 0) {
+                $message = (new Message("Argument contains a resource which can't be exported at %at%"))
+                    ->code('%at%', $this->breadcrumb->toString());
+            } else {
+                $message = new Message("Argument is of type resource which can't be exported");
+            }
+
+            throw new VarStorableException($message);
+        }
+    }
+
+    /**
+     * @throws VarExportableIsResourceException
+     */
     private function breadcrumbIterable(iterable $var): void
     {
         $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
@@ -53,11 +84,10 @@ final class ObjectClonable implements ObjectClonableInterface
             $key = (string) $key;
             $this->breadcrumb = $this->breadcrumb
                 ->withAddedItem('key: ' . $key);
-            $this->assertClonable($val);
+            $memberKey = $this->breadcrumb->pos();
+            $this->assertExportable($val);
             $this->breadcrumb = $this->breadcrumb
-                ->withRemovedItem(
-                    $this->breadcrumb->pos()
-                );
+                ->withRemovedItem($memberKey);
         }
         $this->breadcrumb = $this->breadcrumb
             ->withRemovedItem($iterableKey);
@@ -69,12 +99,6 @@ final class ObjectClonable implements ObjectClonableInterface
             ->withAddedItem('object: ' . $var::class);
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($var);
-        if (!$reflection->isCloneable()) {
-            throw new ObjectClonableException(
-                message: (new Message('Object is not clonable at %at%'))
-                    ->code('%at%', $this->breadcrumb->toString())
-            );
-        }
         $properties = $reflection->getProperties();
         foreach ($properties as $property) {
             $property->setAccessible(true);
@@ -89,7 +113,7 @@ final class ObjectClonable implements ObjectClonableInterface
                 );
             $propertyKey = $this->breadcrumb->pos();
             if ($property->isInitialized($var)) {
-                $this->assertClonable($property->getValue($var));
+                $this->assertExportable($property->getValue($var));
             }
             $this->breadcrumb = $this->breadcrumb
                 ->withRemovedItem($propertyKey);
