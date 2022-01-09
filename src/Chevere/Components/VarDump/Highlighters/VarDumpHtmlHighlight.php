@@ -39,31 +39,21 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
     public function palette(): array
     {
         return [
-            // orange
             TypeInterface::STRING => '#ff8700',
             TypeInterface::FLOAT => '#ff8700',
             TypeInterface::INTEGER => '#ff8700',
             TypeInterface::BOOLEAN => '#ff8700',
             TypeInterface::NULL => '#ff8700',
-            // yellow
             TypeInterface::OBJECT => '#fabb00',
-            // green
             TypeInterface::ARRAY => '#27ae60',
-            // red
             TypeInterface::RESOURCE => '#ff5f5f',
-            // blue
             VarDumperInterface::FILE => '#87afff',
-            // light yellow
             VarDumperInterface::CLASS_REG => '#fabb00',
-            // dark gray
             VarDumperInterface::OPERATOR => '#6c6c6c',
-            // blue
             VarDumperInterface::FUNCTION => '#00afff',
             VarDumperInterface::VARIABLE => '#00afff',
-            // pink
             VarDumperInterface::MODIFIERS => '#d75fd7',
-            // dark gray italic
-            VarDumperInterface::EMPHASIS => '#6c6c6c',
+            VarDumperInterface::EMPHASIS => 'rgb(108 108 108 / 65%);',
         ];
     }
 }
