@@ -13,20 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarSupport;
 
-use Chevere\Components\VarSupport\ObjectClonable;
+use Chevere\Components\VarSupport\VarObject;
 use finfo;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
-final class ObjectClonableTest extends TestCase
+final class VarObjectTest extends TestCase
 {
     public function testClonable(): void
     {
-        $class = new class() {
+        $anonObject = new class() {
             private string $property = '';
         };
-        $objectClonable = new ObjectClonable($class);
-        $this->assertSame($class, $objectClonable->var());
+        $object = new VarObject($anonObject);
+        $object->assertClonable();
+        $this->assertSame($anonObject, $object->var());
     }
 
     public function testNotClonable(): void
@@ -37,7 +38,8 @@ final class ObjectClonableTest extends TestCase
             }
         };
         $this->expectException(LogicException::class);
-        new ObjectClonable($class);
+        $object = new VarObject($class);
+        $object->assertClonable();
     }
 
     public function testNestedNotClonable(): void
@@ -54,6 +56,7 @@ final class ObjectClonableTest extends TestCase
             }
         };
         $this->expectException(LogicException::class);
-        new ObjectClonable($class);
+        $object = new VarObject($class);
+        $object->assertClonable();
     }
 }

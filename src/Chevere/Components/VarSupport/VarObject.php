@@ -15,12 +15,12 @@ namespace Chevere\Components\VarSupport;
 
 use Chevere\Components\Iterator\Breadcrumb;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\VarSupport\ObjectClonableException;
+use Chevere\Exceptions\VarSupport\VarObjectNotClonableException;
 use Chevere\Interfaces\Iterator\BreadcrumbInterface;
-use Chevere\Interfaces\VarSupport\ObjectClonableInterface;
+use Chevere\Interfaces\VarSupport\VarObjectInterface;
 use ReflectionObject;
 
-final class ObjectClonable implements ObjectClonableInterface
+final class VarObject implements VarObjectInterface
 {
     private BreadcrumbInterface $breadcrumb;
 
@@ -28,39 +28,28 @@ final class ObjectClonable implements ObjectClonableInterface
         private object $var
     ) {
         $this->breadcrumb = new Breadcrumb();
-        $this->assertClonable($this->var);
     }
 
-    public function var(): mixed
+    public function var(): object
     {
         return $this->var;
     }
 
-    private function assertClonable($var): void
+    /**
+     * @throws VarObjectNotClonableException
+     */
+    public function assertClonable(): void
+    {
+        $this->assertVarClonable($this->var);
+    }
+
+    private function assertVarClonable(mixed $var): void
     {
         if (is_object($var)) {
             $this->breadcrumbObject($var);
         } elseif (is_iterable($var)) {
             $this->breadcrumbIterable($var);
         }
-    }
-
-    private function breadcrumbIterable(iterable $var): void
-    {
-        $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
-        $iterableKey = $this->breadcrumb->pos();
-        foreach ($var as $key => $val) {
-            $key = (string) $key;
-            $this->breadcrumb = $this->breadcrumb
-                ->withAddedItem('key: ' . $key);
-            $this->assertClonable($val);
-            $this->breadcrumb = $this->breadcrumb
-                ->withRemovedItem(
-                    $this->breadcrumb->pos()
-                );
-        }
-        $this->breadcrumb = $this->breadcrumb
-            ->withRemovedItem($iterableKey);
     }
 
     private function breadcrumbObject(object $var): void
@@ -70,7 +59,7 @@ final class ObjectClonable implements ObjectClonableInterface
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($var);
         if (!$reflection->isCloneable()) {
-            throw new ObjectClonableException(
+            throw new VarObjectNotClonableException(
                 message: (new Message('Object is not clonable at %at%'))
                     ->code('%at%', $this->breadcrumb->toString())
             );
@@ -89,12 +78,30 @@ final class ObjectClonable implements ObjectClonableInterface
                 );
             $propertyKey = $this->breadcrumb->pos();
             if ($property->isInitialized($var)) {
-                $this->assertClonable($property->getValue($var));
+                $this->assertVarClonable($property->getValue($var));
             }
             $this->breadcrumb = $this->breadcrumb
                 ->withRemovedItem($propertyKey);
         }
         $this->breadcrumb = $this->breadcrumb
             ->withRemovedItem($objectKey);
+    }
+
+    private function breadcrumbIterable(iterable $var): void
+    {
+        $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
+        $iterableKey = $this->breadcrumb->pos();
+        foreach ($var as $key => $val) {
+            $key = (string) $key;
+            $this->breadcrumb = $this->breadcrumb
+                ->withAddedItem('key: ' . $key);
+            $this->assertVarClonable($val);
+            $this->breadcrumb = $this->breadcrumb
+                ->withRemovedItem(
+                    $this->breadcrumb->pos()
+                );
+        }
+        $this->breadcrumb = $this->breadcrumb
+            ->withRemovedItem($iterableKey);
     }
 }

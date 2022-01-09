@@ -27,8 +27,8 @@ function deepCopy(mixed $value, bool $useCloneMethod = false): mixed
             ->copy($value);
     } catch (CloneException) {
         if (is_object($value)) {
-            $clonable = new ObjectClonable($value);
-            $clonable->var();
+            $object = new VarObject($value);
+            $object->assertClonable();
         }
     }
 } // @codeCoverageIgnore

@@ -18,6 +18,6 @@ use Chevere\Exceptions\Core\LogicException;
 /**
  * Exception thrown when failing to provide a clonable object.
  */
-final class ObjectClonableException extends LogicException
+final class VarObjectNotClonableException extends LogicException
 {
 }
