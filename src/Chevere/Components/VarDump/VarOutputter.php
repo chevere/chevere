@@ -42,13 +42,18 @@ final class VarOutputter implements VarOutputterInterface
 
     private function handleArgs(): void
     {
+        $aux = 0;
         foreach ($this->vars as $name => $value) {
+            $aux++;
             $varDumper = new VarDumper(
                 $this->writer,
                 $this->formatter,
                 new VarDumpable($value)
             );
-            $this->writer->write("\nArg:" . (string) $name . ' ');
+            $this->writer->write(
+                str_repeat("\n", (int) ($aux === 1 ?: 2))
+                . "Arg:" . (string) $name . ' '
+            );
             $varDumper->withProcess();
         }
     }
