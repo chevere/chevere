@@ -4,9 +4,9 @@
 /tests export-ignore
 /.gitattributes export-ignore
 /.gitignore export-ignore
-/phpunit-report.xml
-/phpunit.xml
-/rector.php
-/sonar-project.properties
+/phpunit-report.xml export-ignore
+/phpunit.xml export-ignore
+/rector.php export-ignore
+/sonar-project.properties export-ignore
 
 *.php diff=php
