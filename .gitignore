@@ -1,23 +1,7 @@
-# OS
 .DS_Store
-
-# Composer
-/vendor
-composer.lock
-
-# Build
-/build
-
-# PHP-CS-Fixer
-/.php_cs
-/.php_cs.cache
-
-# PHPUnit
-/.phpunit.cache
-.phpunit.result.cache
-
-## Sonar
-/.scannerwork
-
-# IDE
 /.idea
+/.phpunit.cache
+/.scannerwork
+/vendor
+/composer.lock
+/build
