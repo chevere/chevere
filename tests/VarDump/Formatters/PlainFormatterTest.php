@@ -23,7 +23,7 @@ final class PlainFormatterTest extends TestCase
     {
         $indent = 5;
         $indented = (new VarDumpPlainFormatter())->indent($indent);
-        $this->assertTrue(strlen($indented) === $indent);
+        $this->assertSame($indent, strlen($indented));
     }
 
     public function testEmphasis(): void

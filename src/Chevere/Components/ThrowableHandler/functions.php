@@ -102,6 +102,7 @@ function fatalErrorHandler(): void
         return;
     }
     $handler = set_exception_handler(function () {
+        // dummy
     });
     restore_exception_handler();
     $handler(
