@@ -15,7 +15,6 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
 use Chevere\Exceptions\Router\RouteNotFoundException;
 use Chevere\Interfaces\Router\RoutedInterface;
@@ -23,9 +22,6 @@ use Chevere\Interfaces\Router\RouterDispatcherInterface;
 use FastRoute\Dispatcher\GroupCountBased as Dispatcher;
 use FastRoute\RouteCollector;
 
-/**
- * @codeCoverageIgnore
- */
 final class RouterDispatcher implements RouterDispatcherInterface
 {
     public function __construct(
@@ -37,25 +33,20 @@ final class RouterDispatcher implements RouterDispatcherInterface
     {
         $info = (new Dispatcher($this->routeCollector->getData()))
             ->dispatch($httpMethod, $uri);
-        switch ($info[0]) {
-            default:
-                throw new LogicException(
-                    (new Message('Unexpected response code %code% from route dispatcher'))
-                        ->code('%code%', $info[0])
-                );
-            case Dispatcher::NOT_FOUND:
+
+        return match ($info[0]) {
+            Dispatcher::NOT_FOUND =>
                 throw new RouteNotFoundException(
                     (new Message('No route found for %uri%'))
                         ->code('%uri%', $uri)
-                );
-            case Dispatcher::FOUND:
-                return new Routed(new ControllerName($info[1]), $info[2]);
-            case Dispatcher::METHOD_NOT_ALLOWED:
+                ),
+            Dispatcher::FOUND => new Routed(new ControllerName($info[1]), $info[2]),
+            Dispatcher::METHOD_NOT_ALLOWED =>
                 throw new HttpMethodNotAllowedException(
                     (new Message('Method %method% is not in the list of allowed methods: %allowed%'))
                         ->code('%method%', $httpMethod)
                         ->code('%allowed%', implode(', ', $info[1]))
-                );
-        }
+                )
+        };
     }
 }

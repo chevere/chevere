@@ -22,7 +22,7 @@ use Chevere\Interfaces\Router\Route\RouteInterface;
 use Chevere\Interfaces\Router\RouterIndexInterface;
 use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Router\RoutesInterface;
-use FastRoute\DataGenerator\GroupCountBased as DataGenerator;
+use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteCollector;
 use Throwable;
 
@@ -38,7 +38,7 @@ final class Router implements RouterInterface
     {
         $this->routes = new Routes();
         $this->index = new RouterIndex();
-        $this->routeCollector = new RouteCollector(new StrictStd(), new DataGenerator());
+        $this->routeCollector = new RouteCollector(new StrictStd(), new GroupCountBased());
     }
 
     public function withAddedRoute(string $group, RouteInterface $route): RouterInterface
