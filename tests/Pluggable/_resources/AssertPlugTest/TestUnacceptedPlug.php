@@ -19,7 +19,6 @@ final class TestUnacceptedPlug implements PlugInterface
 {
     public function __invoke(&$argument): void
     {
-        return;
     }
 
     public function anchor(): string

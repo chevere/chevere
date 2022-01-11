@@ -43,6 +43,7 @@ final class DirTest extends TestCase
         try {
             $this->testDir->remove();
         } catch (Throwable) {
+            // Ignore fs issues
         }
     }
 

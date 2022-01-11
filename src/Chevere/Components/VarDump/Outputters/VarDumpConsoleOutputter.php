@@ -37,6 +37,7 @@ final class VarDumpConsoleOutputter extends VarDumpAbstractOutputter
         }
         // @codeCoverageIgnoreStart
         catch (Throwable) {
+            // Ignore if color not supported
         }
         // @codeCoverageIgnoreEnd
         $this->writer()->write(

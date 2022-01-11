@@ -44,6 +44,7 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
             }
             // @codeCoverageIgnoreStart
             catch (Throwable) {
+                // Ignore if color not supported
             }
             // @codeCoverageIgnoreEnd
         }
