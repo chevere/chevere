@@ -22,7 +22,7 @@ final class CacheKeyTest extends TestCase
     public function testInvalidArgumentConstruct()
     {
         $this->expectException(InvalidArgumentException::class);
-        new CacheKey('./\\~:');
+        new CacheKey('././\\~:');
     }
 
     public function testConstruct(): void

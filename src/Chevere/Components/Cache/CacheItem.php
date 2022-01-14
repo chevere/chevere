@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
+use Throwable;
 
 final class CacheItem implements CacheItemInterface
 {
@@ -29,27 +29,17 @@ final class CacheItem implements CacheItemInterface
     {
         try {
             return $this->phpFileReturn->raw();
+        } catch (Throwable $e) {
+            throw new RuntimeException(previous: $e);
         }
-        // @codeCoverageIgnoreStart
-        catch (Exception $e) {
-            throw new RuntimeException(
-                $e->message(),
-            );
-        }
-        // @codeCoverageIgnoreEnd
     }
 
     public function var()
     {
         try {
             return $this->phpFileReturn->var();
+        } catch (Throwable $e) {
+            throw new RuntimeException(previous: $e);
         }
-        // @codeCoverageIgnoreStart
-        catch (Exception $e) {
-            throw new RuntimeException(
-                $e->message(),
-            );
-        }
-        // @codeCoverageIgnoreEnd
     }
 }
