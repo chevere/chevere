@@ -17,11 +17,12 @@ use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Exceptions\Core\ClassNotExistsException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Tests\src\ObjectHelper;
 use PHPUnit\Framework\TestCase;
 
 final class ClassMapTest extends TestCase
 {
-    public function testConstructGet(): void
+    public function testConstruct(): void
     {
         $test = 'test';
         $classMap = new ClassMap();
@@ -31,7 +32,21 @@ final class ClassMapTest extends TestCase
         $classMap->key($test);
     }
 
-    public function testConstructGetClass(): void
+    public function testClone(): void
+    {
+        $classMap = new ClassMap();
+        $cloned = clone $classMap;
+        $helper = new ObjectHelper($classMap);
+        $map = $helper->getPropertyValue('map');
+        $flip = $helper->getPropertyValue('flip');
+        $cloneHelper = new ObjectHelper($cloned);
+        $mapCloned = $cloneHelper->getPropertyValue('map');
+        $flipCloned = $cloneHelper->getPropertyValue('flip');
+        $this->assertNotSame($map, $mapCloned);
+        $this->assertNotSame($flip, $flipCloned);
+    }
+
+    public function testEmptyClassName(): void
     {
         $key = 'test';
         $classMap = new ClassMap();
@@ -43,19 +58,19 @@ final class ClassMapTest extends TestCase
     {
         $className = self::class;
         $key = 'self';
-        $classMap = (new ClassMap())->withPut($className, $key);
-        $this->assertCount(1, $classMap);
-        $this->assertTrue($classMap->has($className));
-        $this->assertTrue($classMap->hasKey($key));
-        $this->assertSame([
-            $className => $key,
-        ], $classMap->toArray());
-        $this->assertSame($key, $classMap->key($className));
-        $this->assertSame($className, $classMap->className($key));
-        $this->assertSame([$key], $classMap->keys());
+        $classMap = new ClassMap();
+        $classMapWithPut = $classMap->withPut($className, $key);
+        $this->assertNotSame($classMap, $classMapWithPut);
+        $this->assertCount(1, $classMapWithPut);
+        $this->assertTrue($classMapWithPut->has($className));
+        $this->assertTrue($classMapWithPut->hasKey($key));
+        $this->assertSame([$className => $key], $classMapWithPut->toArray());
+        $this->assertSame($key, $classMapWithPut->key($className));
+        $this->assertSame($className, $classMapWithPut->className($key));
+        $this->assertSame([$key], $classMapWithPut->keys());
     }
 
-    public function testWithPutSameMapping(): void
+    public function testWithPutOverflow(): void
     {
         $mapping = 'self';
         $this->expectException(OverflowException::class);
@@ -64,7 +79,7 @@ final class ClassMapTest extends TestCase
             ->withPut(TestCase::class, $mapping);
     }
 
-    public function testWithPutInexistentClass(): void
+    public function testWithPutClassNotExists(): void
     {
         $this->expectException(ClassNotExistsException::class);
         (new ClassMap())->withPut(uniqid(), 'test');

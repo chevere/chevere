@@ -88,14 +88,14 @@ final class ClassMap implements ClassMapInterface
 
     public function key(string $className): string
     {
-        if (!$this->has($className)) {
+        try {
+            return $this->map->get($className);
+        } catch (OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
             );
         }
-
-        return $this->map->get($className);
     }
 
     public function keys(): array
@@ -105,13 +105,13 @@ final class ClassMap implements ClassMapInterface
 
     public function className(string $key): string
     {
-        if (!$this->hasKey($key)) {
+        try {
+            return $this->flip->get($key);
+        } catch (OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message("Key %key% doesn't map any class"))
                     ->code('%key%', $key)
             );
         }
-
-        return $this->flip->get($key);
     }
 }
