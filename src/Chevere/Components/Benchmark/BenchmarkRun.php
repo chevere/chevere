@@ -28,6 +28,7 @@ use TypeError;
 
 /**
  * @codeCoverageIgnore
+ * @infection-ignore-all
  */
 final class BenchmarkRun implements BenchmarkRunInterface
 {
