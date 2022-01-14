@@ -36,9 +36,10 @@ final class ActionExecutedTest extends TestCase
     {
         $executed = new ActionExecuted([]);
         $throwable = new Exception(new Message('Uy'));
-        $executed = $executed->withThrowable($throwable, 1);
-        $this->assertTrue($executed->hasThrowable());
-        $this->assertSame($throwable, $executed->throwable());
-        $this->assertSame(1, $executed->code());
+        $withThrowable = $executed->withThrowable($throwable, 1);
+        $this->assertNotSame($executed, $withThrowable);
+        $this->assertTrue($withThrowable->hasThrowable());
+        $this->assertSame($throwable, $withThrowable->throwable());
+        $this->assertSame(1, $withThrowable->code());
     }
 }

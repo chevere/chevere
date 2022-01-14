@@ -28,11 +28,20 @@ final class BenchmarkTest extends TestCase
         $this->assertSame([], $benchmark->callables()->toArray());
     }
 
-    public function testConstructArguments(): void
+    public function testConstructWithArguments(): void
     {
         $arguments = [1, false, '', null, 1.1];
         $benchmark = (new Benchmark(...$arguments));
         $this->assertSame($arguments, $benchmark->arguments());
+    }
+
+    public function testClone(): void
+    {
+        $benchmark = new Benchmark('value');
+        $clone = clone $benchmark;
+        $this->assertNotSame($benchmark, $clone);
+        $this->assertNotSame($benchmark->index(), $clone->index());
+        $this->assertNotSame($benchmark->callables(), $clone->callables());
     }
 
     public function testWithBadAddedCallable(): void
@@ -69,14 +78,16 @@ final class BenchmarkTest extends TestCase
         ];
         $benchmark = new Benchmark('value');
         foreach ($callables as $callable => $name) {
-            $benchmark = $benchmark->withAddedCallable(...[
-                $name => $callable,
-            ]);
-            $this->assertContains($callable, $benchmark->callables());
-            $this->assertContains($name, $benchmark->index());
+            $withAddedCallable = ($withAddedCallable ?? $benchmark)
+                ->withAddedCallable(...[
+                    $name => $callable,
+                ]);
+            $this->assertNotSame($benchmark, $withAddedCallable);
+            $this->assertContains($callable, $withAddedCallable->callables());
+            $this->assertContains($name, $withAddedCallable->index());
         }
-        $this->assertSame(array_keys($callables), $benchmark->callables()->toArray());
-        $this->assertSame(array_values($callables), $benchmark->index()->toArray());
+        $this->assertSame(array_keys($callables), $withAddedCallable->callables()->toArray());
+        $this->assertSame(array_values($callables), $withAddedCallable->index()->toArray());
     }
 
     public function testWithDuplicatedCallable(): void

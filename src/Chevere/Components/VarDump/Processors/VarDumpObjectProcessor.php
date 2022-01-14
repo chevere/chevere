@@ -32,8 +32,6 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
 
     private object $var;
 
-    private int $depth = 0;
-
     private ReflectionObject $reflectionObject;
 
     private string $className;

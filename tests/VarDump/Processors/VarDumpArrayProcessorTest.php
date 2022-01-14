@@ -19,16 +19,23 @@ use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class ArrayProcessorTest extends TestCase
+final class VarDumpArrayProcessorTest extends TestCase
 {
     use VarDumperTrait;
 
+    public function testInvalidArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new VarDumpArrayProcessor($this->getVarDumper(null));
+    }
+    
     public function testConstructEmpty(): void
     {
         $var = [];
         $expectInfo = 'size=' . count($var);
         $varProcess = $this->getVarDumper($var);
         $processor = new VarDumpArrayProcessor($varProcess);
+        $this->assertSame(1, $processor->depth());
         $this->assertSame($expectInfo, $processor->info());
         $processor->write();
         $this->assertSame(
@@ -79,11 +86,5 @@ final class ArrayProcessorTest extends TestCase
         $processor = new VarDumpArrayProcessor($varProcess);
         $processor->write();
         $this->assertStringContainsString($processor->maxDepthReached(), $varProcess->writer()->toString());
-    }
-
-    public function testInvalidArgument(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new VarDumpArrayProcessor($this->getVarDumper(null));
     }
 }

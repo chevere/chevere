@@ -17,7 +17,7 @@ use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter;
 use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use PHPUnit\Framework\TestCase;
 
-final class ConsoleFormatterTest extends TestCase
+final class VarDumpConsoleFormatterTest extends TestCase
 {
     public function testIndent(): void
     {

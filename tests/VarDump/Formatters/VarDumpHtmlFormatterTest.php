@@ -17,13 +17,16 @@ use Chevere\Components\VarDump\Formatters\VarDumpHtmlFormatter;
 use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use PHPUnit\Framework\TestCase;
 
-final class HtmlFormatterTest extends TestCase
+final class VarDumpHtmlFormatterTest extends TestCase
 {
     public function testIndent(): void
     {
+        $baseIndent = strip_tags(VarDumpHtmlFormatter::HTML_INLINE_PREFIX);
         $indent = 5;
         $indented = (new VarDumpHtmlFormatter())->indent($indent);
-        $this->assertTrue(strlen($indented) > strlen((string) $indent));
+        $stripped = strip_tags($indented);
+        $expected = str_repeat($baseIndent, $indent);
+        $this->assertSame($expected, $stripped);
     }
 
     public function testEmphasis(): void

@@ -51,7 +51,7 @@ final class Dir implements DirInterface
 
     public function exists(): bool
     {
-        return $this->path->exists() && $this->path->isDir();
+        return $this->path->isDir();
     }
 
     public function assertExists(): void

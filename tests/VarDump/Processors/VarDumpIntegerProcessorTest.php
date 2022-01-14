@@ -18,7 +18,7 @@ use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class IntegerProcessorTest extends TestCase
+final class VarDumpIntegerProcessorTest extends TestCase
 {
     use VarDumperTrait;
 

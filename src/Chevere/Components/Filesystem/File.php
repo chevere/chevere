@@ -53,12 +53,12 @@ final class File implements FileInterface
 
     public function exists(): bool
     {
-        return $this->path->exists() && $this->path->isFile();
+        return $this->path->isFile();
     }
 
     public function assertExists(): void
     {
-        if (! $this->exists()) {
+        if (!$this->exists()) {
             throw new FileNotExistsException(
                 (new Message("File %path% doesn't exists"))
                     ->code('%path%', $this->path->toString())
@@ -109,7 +109,7 @@ final class File implements FileInterface
 
     public function removeIfExists(): void
     {
-        if (! $this->exists()) {
+        if (!$this->exists()) {
             return;
         }
         $this->assertUnlink();
@@ -157,7 +157,7 @@ final class File implements FileInterface
     {
         $dirname = dirname($this->path->toString());
         $path = new Path($dirname . '/');
-        if (! $path->exists()) {
+        if (!$path->exists()) {
             (new Dir($path))->create();
         }
     }

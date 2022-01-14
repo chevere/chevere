@@ -58,16 +58,17 @@ final class MessageTest extends TestCase
         $message = new Message($var);
         $tr = [];
         foreach ($tags as $tag => $value) {
-            $message = $message->{$tag}(...$value);
+            $withReplaces = ($withReplaces ?? $message)->{$tag}(...$value);
+            $this->assertNotSame($message, $withReplaces);
             $tag = MessageInterface::HTML_TABLE[$tag] ?? $tag;
             $tr[$value[0]] = "<${tag}>" . $value[1] . "</${tag}>";
         }
         $html = strtr($var, $tr);
         $plain = strip_tags($html);
-        $this->assertSame($var, $message->template());
-        $this->assertSame($html, $message->toHtml());
-        $this->assertSame($plain, $message->toString());
-        $consoleMessage = $message->toConsole();
+        $this->assertSame($var, $withReplaces->template());
+        $this->assertSame($html, $withReplaces->toHtml());
+        $this->assertSame($plain, $withReplaces->toString());
+        $consoleMessage = $withReplaces->toConsole();
         $consolePlain = preg_replace('/' . preg_quote(Color::ESC) . '\d+m/', '', $consoleMessage);
         $this->assertSame($plain, $consolePlain);
         if ((new Color())->isSupported()) {

@@ -46,8 +46,11 @@ final class Message implements MessageInterface
     public function toConsole(): string
     {
         $tr = [];
-        $color = new Color();
-        $color->setUserStyles(self::CLI_TABLE);
+        $color = (new Color(''))->setUserStyles(self::CLI_TABLE);
+        /**
+         * @var string $wildcard
+         * @var array $formatting
+         */
         foreach ($this->trTable as $wildcard => $formatting) {
             $format = $formatting[0];
             $colorTheme = 'message_' . $format;
@@ -85,32 +88,27 @@ final class Message implements MessageInterface
 
     public function strtr(string $search, string $replace): MessageInterface
     {
-        return (clone $this)
-            ->put('', $search, $replace);
+        return $this->put('', $search, $replace);
     }
 
     public function emphasis(string $search, string $replace): MessageInterface
     {
-        return (clone $this)
-            ->put('emphasis', $search, $replace);
+        return $this->put('emphasis', $search, $replace);
     }
 
     public function strong(string $search, string $replace): MessageInterface
     {
-        return (clone $this)
-            ->put('strong', $search, $replace);
+        return $this->put('strong', $search, $replace);
     }
 
     public function underline(string $search, string $replace): MessageInterface
     {
-        return (clone $this)
-            ->put('underline', $search, $replace);
+        return $this->put('underline', $search, $replace);
     }
 
     public function code(string $search, string $replace): MessageInterface
     {
-        return (clone $this)
-            ->put('code', $search, $replace);
+        return $this->put('code', $search, $replace);
     }
 
     private function put(string $format, string $search, string $replace): MessageInterface

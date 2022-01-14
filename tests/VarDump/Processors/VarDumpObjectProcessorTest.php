@@ -14,15 +14,22 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump\Processors;
 
 use Chevere\Components\VarDump\Processors\VarDumpObjectProcessor;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use Ds\Map;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class ObjectProcessorTest extends TestCase
+final class VarDumpObjectProcessorTest extends TestCase
 {
     use VarDumperTrait;
+
+    public function testInvalidArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new VarDumpObjectProcessor($this->getVarDumper(null));
+    }
 
     public function testEmptyObject(): void
     {
@@ -30,6 +37,7 @@ final class ObjectProcessorTest extends TestCase
         $id = (string) spl_object_id($object);
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
+        $this->assertSame(1, $processor->depth());
         $this->assertSame(stdClass::class . '#' . $id, $processor->info());
         $processor->write();
         $this->assertSame(stdClass::class . '#' . $id, $varDumper->writer()->toString());

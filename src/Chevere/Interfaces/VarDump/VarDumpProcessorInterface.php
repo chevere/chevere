@@ -28,12 +28,17 @@ interface VarDumpProcessorInterface
     public function __construct(VarDumperInterface $varDumper);
 
     /**
+     * Provides the current processor depth.
+     */
+    public function depth(): int;
+
+    /**
      * Provides the variable type (primitive).
      */
     public function type(): string;
 
     /**
-     * Provides info about the variable like `size=1`, `length=6`, 'Object #id'
+     * Provides info about the variable like `size=1`, `length=6`, 'Object #id'.
      */
     public function info(): string;
 

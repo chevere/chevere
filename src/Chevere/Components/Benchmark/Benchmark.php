@@ -64,8 +64,10 @@ final class Benchmark implements BenchmarkInterface
     public function withAddedCallable(callable ...$callables): self
     {
         $new = clone $this;
+        /**
+         * @var string $name
+         */
         foreach ($callables as $name => $callable) {
-            $name = (string) $name;
             $new->assertUniqueCallableName($name);
             $new->reflection = new ReflectionFunction($callable);
             $new->assertCallableArgumentsCount($name);

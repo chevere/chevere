@@ -13,28 +13,27 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Processors;
 
-use Chevere\Components\VarDump\Processors\VarDumpBooleanProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpFloatProcessor;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class BooleanProcessorTest extends TestCase
+final class VarDumpFloatProcessorTest extends TestCase
 {
     use VarDumperTrait;
 
     public function testConstruct(): void
     {
-        foreach ([
-            'true' => true,
-            'false' => false,
-        ] as $info => $var) {
+        foreach ([0.1, 1.1, 10.0, 2.00, 110.011] as $var) {
+            $stringVar = (string) $var;
+            $expectedInfo = 'length=' . strlen($stringVar);
             $varDumper = $this->getVarDumper($var);
-            $processor = new VarDumpBooleanProcessor($varDumper);
-            $this->assertSame($info, $processor->info(), 'info');
+            $processor = new VarDumpFloatProcessor($varDumper);
+            $this->assertSame($expectedInfo, $processor->info());
             $processor->write();
             $this->assertSame(
-                "boolean ${info}",
-                $varDumper->writer()->toString(),
+                "float ${stringVar} (${expectedInfo})",
+                $varDumper->writer()->toString()
             );
         }
     }
@@ -42,6 +41,6 @@ final class BooleanProcessorTest extends TestCase
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new VarDumpBooleanProcessor($this->getVarDumper(null));
+        new VarDumpFloatProcessor($this->getVarDumper(100));
     }
 }
