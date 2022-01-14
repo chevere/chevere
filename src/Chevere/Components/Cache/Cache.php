@@ -17,7 +17,6 @@ use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
@@ -27,6 +26,7 @@ use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\VarSupport\VarStorableInterface;
+use Throwable;
 
 final class Cache implements CacheInterface
 {
@@ -42,7 +42,6 @@ final class Cache implements CacheInterface
         private DirInterface $dir
     ) {
         if (!$this->dir->exists()) {
-            // @codeCoverageIgnore
             $this->dir->create();
         }
         $this->puts = [];
@@ -62,10 +61,10 @@ final class Cache implements CacheInterface
             if (!$file->exists()) {
                 $file->create();
             }
-            $file->assertExists();
             $filePhp = new FilePhp($file);
             $fileReturn = new FilePhpReturn($filePhp);
             $fileReturn->put($var);
+            // @infection-ignore-all
             $filePhp->cache();
             $new = clone $this;
             $new->puts[$key->toString()] = [
@@ -74,7 +73,8 @@ final class Cache implements CacheInterface
             ];
         }
         // @codeCoverageIgnoreStart
-        catch (Exception $e) {
+        // @infection-ignore-all
+        catch (Throwable $e) {
             throw new RuntimeException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
@@ -82,6 +82,9 @@ final class Cache implements CacheInterface
         return $new;
     }
 
+    /**
+     * @infection-ignore-all
+     */
     public function without(CacheKeyInterface $cacheKey): CacheInterface
     {
         $new = clone $this;
@@ -94,14 +97,14 @@ final class Cache implements CacheInterface
                 // @codeCoverageIgnoreEnd
             }
             $filePhp = new FilePhp(new File($path));
+            // @infection-ignore-all
             $filePhp->flush();
             $filePhp->file()->remove();
         }
         // @codeCoverageIgnoreStart
-        catch (Exception $e) {
-            throw new RuntimeException(
-                $e->message(),
-            );
+        // @infection-ignore-all
+        catch (Throwable $e) {
+            throw new RuntimeException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
         unset($new->puts[$cacheKey->toString()]);
@@ -142,18 +145,6 @@ final class Cache implements CacheInterface
     {
         $child = $name . '.php';
 
-        try {
-            return $this->dir->path()->getChild($child);
-        }
-        // @codeCoverageIgnoreStart
-        catch (Exception $e) {
-            throw new RuntimeException(
-                previous: $e,
-                message: (new Message('Unable to get cache for child %child% at path %path%'))
-                    ->code('%child%', $child)
-                    ->code('%path%', $this->dir->path()->toString()),
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        return $this->dir->path()->getChild($child);
     }
 }

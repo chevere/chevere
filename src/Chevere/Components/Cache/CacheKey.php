@@ -33,7 +33,7 @@ final class CacheKey implements CacheKeyInterface
     private function assertKey(): void
     {
         if (preg_match_all('#[' . CacheKeyInterface::ILLEGAL_KEY_CHARACTERS . ']#', $this->key, $matches)) {
-            /** @infection-ignore-all */
+            // @infection-ignore-all
             $forbidden = implode(' ', array_unique($matches[0]));
 
             throw new InvalidArgumentException(

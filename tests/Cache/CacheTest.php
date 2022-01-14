@@ -37,10 +37,20 @@ final class CacheTest extends TestCase
         );
     }
 
-    public function testConstructor(): void
+    public function testConstruct(): void
     {
         $cache = new Cache($this->dir);
         $this->assertSame($cache->dir(), $this->dir);
+    }
+
+    public function testConstructDirNotExists(): void
+    {
+        $dir = $this->dir->getChild('delete/');
+        $dirPath = $dir->path()->toString();
+        $this->assertDirectoryDoesNotExist($dir->path()->toString());
+        new Cache($dir);
+        $this->assertDirectoryExists($dirPath);
+        $dir->remove();
     }
 
     public function testKeyNotExists(): void
@@ -60,16 +70,35 @@ final class CacheTest extends TestCase
     public function testWithPutWithRemove(): void
     {
         $key = uniqid();
-        $var = [time(), false, 'test', $this->dir->getChild('test/'), 13.13];
+        $var = [
+            time(),
+            false,
+            'test',
+            $this->dir->getChild('test/'),
+            13.13
+        ];
         $varStorable = new VarStorable($var);
         $cacheKey = new CacheKey($key);
-        $cache = (new Cache($this->dir))
-            ->withPut($cacheKey, $varStorable);
-        $this->assertArrayHasKey($key, $cache->puts());
-        $this->assertTrue($cache->exists($cacheKey));
-        $this->assertInstanceOf(CacheItemInterface::class, $cache->get($cacheKey));
-        $cache = $cache->without($cacheKey);
-        $this->assertArrayNotHasKey($key, $cache->puts());
-        $this->assertFalse($cache->exists($cacheKey));
+        $cache = new Cache($this->dir);
+        $cacheWithPut = $cache->withPut($cacheKey, $varStorable);
+        $this->assertNotSame($cache, $cacheWithPut);
+        $this->assertArrayHasKey($key, $cacheWithPut->puts());
+        $this->assertArrayHasKey(
+            'path',
+            $cacheWithPut->puts()[$key]
+        );
+        $this->assertArrayHasKey(
+            'checksum',
+            $cacheWithPut->puts()[$key]
+        );
+        $this->assertTrue($cacheWithPut->exists($cacheKey));
+        $this->assertInstanceOf(
+            CacheItemInterface::class,
+            $cacheWithPut->get($cacheKey)
+        );
+        $cacheWithout = $cacheWithPut->without($cacheKey);
+        $this->assertNotSame($cacheWithPut, $cacheWithout);
+        $this->assertArrayNotHasKey($key, $cacheWithout->puts());
+        $this->assertFalse($cacheWithout->exists($cacheKey));
     }
 }
