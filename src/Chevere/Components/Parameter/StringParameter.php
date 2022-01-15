@@ -32,12 +32,10 @@ final class StringParameter implements StringParameterInterface
     private RegexInterface $regex;
 
     private string $default = '';
-
-    public function __construct(
-        private string $description = ''
-    ) {
+    
+    public function setUp(): void
+    {
         $this->regex = new Regex('/^.*$/');
-        $this->setUp();
     }
 
     public function getType(): TypeInterface

@@ -17,6 +17,7 @@ use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Tests\src\ObjectHelper;
 use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase
@@ -52,7 +53,20 @@ final class ParametersTest extends TestCase
         ]);
     }
 
-    public function testWithAdded(): void
+    public function testClone(): void
+    {
+        $parameters = new Parameters(test: new StringParameter());
+        $clone = clone $parameters;
+        $this->assertNotSame($parameters, $clone);
+        $parametersHelper = new ObjectHelper($parameters);
+        $cloneHelper = new ObjectHelper($clone);
+        $this->assertNotSame(
+            $parametersHelper->getPropertyValue('map'),
+            $cloneHelper->getPropertyValue('map')
+        );
+    }
+
+    public function testWithAddedOverflow(): void
     {
         $name = 'name';
         $parameter = new StringParameter();
@@ -67,6 +81,8 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
+        $parametersWithAdded = $parameters->withAdded(test: $parameter);
+        $this->assertNotSame($parameters, $parametersWithAdded);
         $this->expectException(OverflowException::class);
         $parameters->withAdded(...[
             $name => $parameter,
@@ -77,16 +93,18 @@ final class ParametersTest extends TestCase
     {
         $name = 'named';
         $parameter = new StringParameter();
-        $parameters = (new Parameters())
+        $parameters = new Parameters();
+        $parametersWithAddedOptional = $parameters
             ->withAddedOptional(...[$name => $parameter]);
-        $this->assertCount(1, $parameters);
-        $this->assertCount(1, $parameters->optional());
-        $this->assertCount(0, $parameters->required());
-        $this->assertTrue($parameters->has($name));
-        $this->assertTrue($parameters->isOptional($name));
-        $this->assertSame($parameter, $parameters->get($name));
+        $this->assertNotSame($parameters, $parametersWithAddedOptional);
+        $this->assertCount(1, $parametersWithAddedOptional);
+        $this->assertCount(1, $parametersWithAddedOptional->optional());
+        $this->assertCount(0, $parametersWithAddedOptional->required());
+        $this->assertTrue($parametersWithAddedOptional->has($name));
+        $this->assertTrue($parametersWithAddedOptional->isOptional($name));
+        $this->assertSame($parameter, $parametersWithAddedOptional->get($name));
         $this->expectException(OverflowException::class);
-        $parameters->withAddedOptional(...[$name => $parameter]);
+        $parametersWithAddedOptional->withAddedOptional(...[$name => $parameter]);
     }
 
     public function testIsRequiredOutOfBounds(): void

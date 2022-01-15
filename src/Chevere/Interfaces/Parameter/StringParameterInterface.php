@@ -20,7 +20,7 @@ use Chevere\Interfaces\Regex\RegexInterface;
 /**
  * Describes the component in charge of defining a parameter of type string.
  */
-interface StringParameterInterface extends ParameterInterface
+interface StringParameterInterface extends ParameterDefaultInterface, ParameterInterface
 {
     /**
      * Provides access to the regex instance.

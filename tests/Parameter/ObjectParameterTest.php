@@ -21,7 +21,7 @@ use stdClass;
 
 final class ObjectParameterTest extends TestCase
 {
-    public function testConstructor(): void
+    public function testConstruct(): void
     {
         $parameter = new ObjectParameter();
         $this->assertEquals($parameter, objectParameter(stdClass::class));
@@ -36,8 +36,10 @@ final class ObjectParameterTest extends TestCase
 
     public function testWithClassName(): void
     {
-        $parameter = (new ObjectParameter())
+        $parameter = new ObjectParameter();
+        $parameterWithClassName = $parameter
             ->withClassName(__CLASS__);
-        $this->assertSame($parameter->className(), __CLASS__);
+        $this->assertNotSame($parameter, $parameterWithClassName);
+        $this->assertSame($parameterWithClassName->className(), __CLASS__);
     }
 }

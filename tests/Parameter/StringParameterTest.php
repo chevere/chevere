@@ -29,6 +29,7 @@ final class StringParameterTest extends TestCase
         $parameter = new StringParameter();
         $this->assertEquals($parameter, stringParameter());
         $this->assertSame($regex, $parameter->regex()->toString());
+        $parameter->attributes();
     }
 
     public function testWithRegex(): void

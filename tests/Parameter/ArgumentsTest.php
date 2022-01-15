@@ -18,13 +18,16 @@ use Chevere\Components\Parameter\ArrayParameter;
 use Chevere\Components\Parameter\BooleanParameter;
 use Chevere\Components\Parameter\FloatParameter;
 use Chevere\Components\Parameter\IntegerParameter;
+use Chevere\Components\Parameter\ObjectParameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\TypeException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 use TypeError;
 
 final class ArgumentsTest extends TestCase
@@ -128,6 +131,18 @@ final class ArgumentsTest extends TestCase
         ]);
     }
 
+    public function testWithArgumentWrongTypeValue(): void
+    {
+        $arguments = new Arguments(
+            new Parameters(
+                id: new StringParameter()
+            ),
+            id: '123'
+        );
+        $this->expectException(TypeException::class);
+        $arguments->withArgument(id: 123);
+    }
+
     public function testArgumentsRequiredException(): void
     {
         $parameters = new Parameters(
@@ -151,65 +166,75 @@ final class ArgumentsTest extends TestCase
                 $required => '123',
             ]
         );
-        $this->assertFalse($arguments->has($optional));
+        $this->assertTrue($arguments->has($optional));
     }
 
     public function testParameterDefault(): void
     {
         $required = 'id';
         $optional = 'name';
-        $arguments = new Arguments(
-            (new Parameters(id: new StringParameter()))
-                ->withAddedOptional(
-                    name: (new StringParameter())
+        $requiredValue = '123';
+        $optionalDefault = 'a';
+        $parameters = (new Parameters(id: new StringParameter()))
+            ->withAddedOptional(
+                ...[
+                    $optional => (new StringParameter())
                         ->withRegex(new Regex('/^a|b$/'))
-                        ->withDefault('a')
-                ),
+                        ->withDefault($optionalDefault)
+                ]
+            );
+        $arguments = new Arguments(
+            $parameters,
             ...[
-                $required => '123',
+                $required => $requiredValue,
             ]
         );
         $this->assertTrue($arguments->has($optional));
+        $this->assertSame($optionalDefault, $arguments->get($optional));
+        $this->assertSame(
+            [
+                $required => $requiredValue,
+                $optional => $optionalDefault
+            ],
+            $arguments->toArray()
+        );
     }
 
-    // public function testParameter(): void
-    // {
-    //     $resource = fopen(__FILE__, 'r');
-    //     if (is_resource($resource) === false) {
-    //         $this->markTestIncomplete('Unable to open ' . __FILE__);
-    //     }
-    //     $getters = ['boolean', 'string', 'integer', 'float', 'array'];
-    //     foreach ([
-    //         TypeInterface::BOOLEAN => true,
-    //         TypeInterface::INTEGER => 1,
-    //         TypeInterface::FLOAT => 13.13,
-    //         TypeInterface::STRING => 'test',
-    //         TypeInterface::ARRAY => ['test'],
-    //         TypeInterface::OBJECT => new stdClass(),
-    //         TypeInterface::CALLABLE => 'phpinfo',
-    //         TypeInterface::ITERABLE => [4, 2, 1, 3],
-    //         TypeInterface::RESOURCE => $resource,
-    //     ] as $type => $value) {
-    //         $name = 'test-' . $type;
-    //         $arguments = new Arguments(
-    //             new Parameters(
-    //                 ...[
-    //                     $name => new Parameter(new Type($type)),
-    //                 ]
-    //             ),
-    //             ...[
-    //                 $name => $value,
-    //             ]
-    //         );
-    //         $this->assertSame($value, $arguments->get($name));
-    //         if (in_array($type, $getters, true)) {
-    //             $getter = 'get' . ucfirst($type);
-    //             $this->assertSame($value, $arguments->{$getter}($name));
-    //         }
-    //     }
-    //     /** @var resource */
-    //     fclose($resource);
-    // }
+    public function testArgumentDefaultOverride(): void
+    {
+        $required = 'id';
+        $optionalName = 'name';
+        $requiredValue = '123';
+        $optionalDefault = 'a';
+        $optionalNameValue = 'b';
+        $optionalObject = 'object';
+        $optionalObjectValue = new stdClass();
+        $parameters = (new Parameters(id: new StringParameter()))
+            ->withAddedOptional(
+                ...[
+                    $optionalName => (new StringParameter())
+                        ->withRegex(new Regex('/^a|b$/'))
+                        ->withDefault($optionalDefault),
+                    $optionalObject => new ObjectParameter(),
+                ]
+            );
+        $argumentsWithAllValues = new Arguments(
+            $parameters,
+            ...[
+                $required => $requiredValue,
+                $optionalName => $optionalNameValue,
+                // $optionalObject => $optionalObjectValue,
+            ]
+        );
+        $this->assertSame(
+            [
+                $required => $requiredValue,
+                $optionalName => $optionalNameValue,
+                // $optionalObject => $optionalObjectValue,
+            ],
+            $argumentsWithAllValues->toArray()
+        );
+    }
 
     public function testGetBoolean(): void
     {

@@ -22,6 +22,13 @@ use Chevere\Interfaces\Type\TypeInterface;
  */
 interface ParameterInterface extends DescriptionInterface, AttributesInterface
 {
+    public function __construct(string $description = '');
+
+    /**
+     * This method runs before the `__construct` method.
+     */
+    public function setUp(): void;
+
     /**
      * Provides access to the type instance.
      */

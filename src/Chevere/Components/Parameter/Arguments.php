@@ -17,7 +17,9 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\TypeException;
 use Chevere\Interfaces\Parameter\ArgumentsInterface;
+use Chevere\Interfaces\Parameter\ParameterDefaultInterface;
 use Chevere\Interfaces\Parameter\ParameterInterface;
 use Chevere\Interfaces\Parameter\ParametersInterface;
 use Chevere\Interfaces\Parameter\StringParameterInterface;
@@ -57,12 +59,11 @@ final class Arguments implements ArgumentsInterface
         return $this->arguments;
     }
 
-    public function withArgument(string ...$nameValue): ArgumentsInterface
+    public function withArgument(mixed ...$nameValue): ArgumentsInterface
     {
         $new = clone $this;
         foreach ($nameValue as $name => $value) {
             $name = strval($name);
-            $new->assertHasParameter($name);
             $new->assertType($name, $value);
             $new->arguments[$name] = $value;
         }
@@ -137,13 +138,13 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    private function assertType(string $name, $value): void
+    private function assertType(string $name, mixed $value): void
     {
         $parameter = $this->parameters->get($name);
         $type = $parameter->type();
         if (!$type->validate($value)) {
-            throw new InvalidArgumentException(
-                (new Message('Parameter %name%: Expecting value of type %expected%, %provided% provided'))
+            throw new TypeException(
+                message: (new Message('Parameter %name%: Expecting value of type %expected%, %provided% provided'))
                     ->strong('%name%', $name)
                     ->strong('%expected%', $type->typeHinting())
                     ->code('%provided%', get_debug_type($value))
@@ -152,19 +153,6 @@ final class Arguments implements ArgumentsInterface
         if ($parameter instanceof StringParameterInterface) {
             /** @var StringParameterInterface $parameter */
             $this->assertStringArgument($name, $parameter, $value);
-        }
-    }
-
-    /**
-     * @throws OutOfBoundsException
-     */
-    private function assertHasParameter(string $name): void
-    {
-        if (!$this->parameters->has($name)) {
-            throw new OutOfBoundsException(
-                (new Message('Parameter %parameter% not found'))
-                    ->code('%parameter%', $name)
-            );
         }
     }
 
@@ -201,8 +189,7 @@ final class Arguments implements ArgumentsInterface
     private function handleParameterDefault(string $name, ParameterInterface $parameter): void
     {
         if (!$this->has($name)
-            && $parameter instanceof StringParameterInterface
-            && $parameter->default() !== ''
+            && $parameter instanceof ParameterDefaultInterface
         ) {
             $this->arguments[$name] = $parameter->default();
         }

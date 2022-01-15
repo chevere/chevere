@@ -127,7 +127,7 @@ final class Parameters implements ParametersInterface
     private function putAdded(ParameterInterface ...$parameters): void
     {
         foreach ($parameters as $name => $parameter) {
-            $name = (string) $name;
+            $name = strval($name);
             $this->assertNoOverflow($name);
             $this->map = $this->map->withPut($name, $parameter);
             $this->required->add($name);

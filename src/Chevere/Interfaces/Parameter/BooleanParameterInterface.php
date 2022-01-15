@@ -18,7 +18,7 @@ use Chevere\Exceptions\Core\InvalidArgumentException;
 /**
  * Describes the component in charge of defining a parameter of type boolean.
  */
-interface BooleanParameterInterface extends ParameterInterface
+interface BooleanParameterInterface extends ParameterDefaultInterface, ParameterInterface
 {
     /**
      * Return an instance with the specified `$default` value.

@@ -28,18 +28,22 @@ trait ParameterTrait
 
     abstract public function getType(): TypeInterface;
 
-    public function __construct(
+    public function setUp(): void
+    {
+        // Nothing to do
+    }
+
+    final public function __construct(
         private string $description = ''
     ) {
         $this->setUp();
-    }
-
-    final public function setUp(): void
-    {
         $this->type = $this->type();
         $this->attributes = new Map();
     }
 
+    /**
+     * @infection-ignore-all
+     */
     final public function type(): TypeInterface
     {
         return $this->type ??= $this->getType();

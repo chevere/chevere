@@ -24,12 +24,10 @@ final class ObjectParameter implements ObjectParameterInterface
     use ParameterTrait;
 
     private string $className;
-
-    public function __construct(
-        private string $description = ''
-    ) {
+    
+    public function setUp(): void
+    {
         $this->className = stdClass::class;
-        $this->setUp();
     }
 
     public function getType(): TypeInterface
