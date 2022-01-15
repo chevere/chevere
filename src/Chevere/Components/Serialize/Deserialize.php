@@ -17,7 +17,6 @@ use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Serialize\DeserializeInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use LogicException;
 use Throwable;
 
 final class Deserialize implements DeserializeInterface
@@ -29,10 +28,7 @@ final class Deserialize implements DeserializeInterface
     public function __construct(string $unserializable)
     {
         try {
-            $this->var = @unserialize($unserializable);
-            if ($this->var === false) {
-                throw new LogicException('Passed string is not unserializable');
-            }
+            $this->var = unserialize($unserializable);
         } catch (Throwable $e) {
             throw new InvalidArgumentException(previous: $e);
         }
