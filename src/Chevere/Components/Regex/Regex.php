@@ -36,7 +36,7 @@ final class Regex implements RegexInterface
         $this->assertRegex();
         $delimiter = $this->pattern[0];
         $this->noDelimiters = trim($this->pattern, $delimiter);
-        $this->noDelimitersNoAnchors = (string) preg_replace('#^\^(.*)\$$#', '$1', $this->noDelimiters);
+        $this->noDelimitersNoAnchors = strval(preg_replace('#^\^(.*)\$$#', '$1', $this->noDelimiters));
     }
 
     public function toString(): string
@@ -56,6 +56,7 @@ final class Regex implements RegexInterface
 
     /**
      * @codeCoverageIgnore
+     * @infection-ignore-all
      */
     public function match(string $string): array
     {
@@ -74,6 +75,7 @@ final class Regex implements RegexInterface
 
     /**
      * @codeCoverageIgnore
+     * @infection-ignore-all
      */
     public function matchAll(string $string): array
     {
