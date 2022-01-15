@@ -37,6 +37,9 @@ final class StrBool implements StrBoolInterface
         return ctype_digit($this->string);
     }
 
+    /**
+     * @infection-ignore-all
+     */
     public function startsWithCtypeDigit(): bool
     {
         return strlen($this->string) > 0 && ctype_digit(mb_substr($this->string, 0, 1));
@@ -52,6 +55,9 @@ final class StrBool implements StrBoolInterface
         return str_ends_with($this->string, $needle);
     }
 
+    /**
+     * @infection-ignore-all
+     */
     public function same(string $string): bool
     {
         $safe = $this->string;

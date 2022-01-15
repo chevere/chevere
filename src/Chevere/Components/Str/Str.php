@@ -96,9 +96,9 @@ final class Str implements StrInterface
         $new = clone $this;
         $pos = strpos($new->string, $search);
         if ($pos !== false) {
-            $subject = substr_replace($new->string, $replace, $pos, mb_strlen($search));
+            $subject = substr_replace($new->string, $replace, $pos, strlen($search));
+            $new->string = $subject;
         }
-        $new->string = $subject ?? '';
 
         return $new;
     }
@@ -108,9 +108,9 @@ final class Str implements StrInterface
         $new = clone $this;
         $pos = strrpos($new->string, $search);
         if ($pos !== false) {
-            $subject = substr_replace($new->string, $replace, $pos, mb_strlen($search));
+            $subject = substr_replace($new->string, $replace, $pos, strlen($search));
+            $new->string = $subject;
         }
-        $new->string = $subject ?? $new->string;
 
         return $new;
     }

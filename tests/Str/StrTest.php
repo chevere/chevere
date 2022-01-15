@@ -24,133 +24,144 @@ final class StrTest extends TestCase
         $this->assertSame($string, (new Str($string))->toString());
     }
 
-    public function testLowercase(): void
+    public function testWithLowercase(): void
     {
         $string = 'sTrÍnG';
         $expected = 'stríng';
-        $this->assertSame(
-            $expected,
-            (new Str($string))->withLowercase()->toString()
-        );
+        $str = new Str($string);
+        $strWithLowercase = $str->withLowercase();
+        $this->assertNotSame($str, $strWithLowercase);
+        $this->assertSame($expected, $strWithLowercase->toString());
     }
 
-    public function testUppercase(): void
+    public function testWithUppercase(): void
     {
-        $string = 'sTrÍnG';
+        $string = 'sTrínG';
         $expected = 'STRÍNG';
-        $this->assertSame(
-            $expected,
-            (new Str($string))->withUppercase()->toString()
-        );
+        $str = new Str($string);
+        $strWithUppercase = $str->withUppercase();
+        $this->assertNotSame($str, $strWithUppercase);
+        $this->assertSame($expected, $strWithUppercase->toString());
     }
 
-    public function testStripWhitespace(): void
+    public function testWithStripWhitespace(): void
     {
         $string = 'st ri ng';
         $expected = 'string';
-        $this->assertSame(
-            $expected,
-            (new Str($string))->withStripWhitespace()->toString()
-        );
+        $str = new Str($string);
+        $strWithStripWhitespace = $str->withStripWhitespace();
+        $this->assertNotSame($str, $strWithStripWhitespace);
+        $this->assertSame($expected, $strWithStripWhitespace->toString());
     }
 
-    public function testStripExtraWhitespace(): void
+    public function testWithStripExtraWhitespace(): void
     {
         $string = 'str  in  g';
         $expected = 'str in g';
-        $this->assertSame(
-            $expected,
-            (new Str($string))->withStripExtraWhitespace()->toString()
-        );
+        $str = new Str($string);
+        $strWithStripExtraWhitespace = $str->withStripExtraWhitespace();
+        $this->assertNotSame($str, $strWithStripExtraWhitespace);
+        $this->assertSame($expected, $strWithStripExtraWhitespace->toString());
     }
 
-    public function testStripNonAlphanumerics(): void
+    public function testWithStripNonAlphanumerics(): void
     {
         $string = '$7r |n,;:g! %~';
         $expected = '7rng';
+        $str = new Str($string);
+        $strWithStripNonAlphanumerics = $str->withStripNonAlphanumerics();
+        $this->assertNotSame($str, $strWithStripNonAlphanumerics);
         $this->assertSame(
             $expected,
-            (new Str($string))->withStripNonAlphanumerics()->toString()
+            $strWithStripNonAlphanumerics->toString()
         );
     }
 
-    public function testForwardSlashes(): void
+    public function testWithForwardSlashes(): void
     {
         $string = '\\str\in\\\\g';
         $expected = '/str/in//g';
-        $this->assertSame(
-            $expected,
-            (new Str($string))->withForwardSlashes()->toString()
-        );
+        $str = new Str($string);
+        $strWithForwardSlashes = $str->withForwardSlashes();
+        $this->assertNotSame($str, $strWithForwardSlashes);
+        $this->assertSame($expected, $strWithForwardSlashes->toString());
     }
 
-    public function testLeftTail(): void
+    public function testWithLeftTail(): void
     {
         $string = 'string';
         $tail = 'lt';
         $expected = $tail . $string;
-        $this->assertSame(
-            $expected,
-            (new Str($tail . $tail . $string))->withLeftTail($tail)->toString()
-        );
+        $str = new Str($tail . $tail . $string);
+        $strWithLeftTail = $str->withLeftTail($tail);
+        $this->assertNotSame($str, $strWithLeftTail);
+        $this->assertSame($expected, $strWithLeftTail->toString());
     }
 
-    public function testRightTail(): void
+    public function testWithRightTail(): void
     {
         $string = 'string';
         $tail = 'rt';
         $expected = $string . $tail;
-        $this->assertSame(
-            $expected,
-            (new Str($string . $tail . $tail))->withRightTail($tail)->toString()
-        );
+        $str = new Str($string . $tail . $tail);
+        $strWithRightTail = $str->withRightTail($tail);
+        $this->assertNotSame($str, $strWithRightTail);
+        $this->assertSame($expected, $strWithRightTail->toString());
     }
 
-    public function testReplaceFirst(): void
+    public function testWithReplaceFirst(): void
     {
-        $string = 'ststring';
-        $search = 'st';
+        $string = 'eést string';
+        $search = 'eést ';
         $replace = 'the ';
         $expected = 'the string';
-        $this->assertSame(
-            $expected,
-            (new Str($string))->withReplaceFirst($search, $replace)->toString()
-        );
+        $str = new Str($string);
+        $strWithReplaceFirst = $str->withReplaceFirst($search, $replace);
+        $this->assertNotSame($str, $strWithReplaceFirst);
+        $this->assertSame($expected, $strWithReplaceFirst->toString());
+        $strWithReplaceFirst = $str->withReplaceFirst('X', $replace);
+        $this->assertSame($string, $strWithReplaceFirst->toString());
     }
 
-    public function testReplaceLast(): void
+    public function testWithReplaceLast(): void
     {
-        $string = 'string.php';
+        $string = 'string.phpé';
         $stringAlt = 'eee';
-        $search = '.php';
+        $search = '.phpé';
         $replace = '.md';
         $expected = 'string.md';
-        $this->assertSame(
-            $expected,
-            (new Str($string))->withReplaceLast($search, $replace)->toString()
-        );
-        $this->assertSame(
-            $stringAlt,
-            (new Str($stringAlt))->withReplaceLast($search, $replace)->toString()
-        );
+        $str = new Str($string);
+        $strAlt = new Str($stringAlt);
+        $strWithReplaceLast = $str->withReplaceLast($search, $replace);
+        $this->assertNotSame($str, $strWithReplaceLast);
+        $this->assertSame($expected, $strWithReplaceLast->toString());
+        $strAltWithReplaceLast = $strAlt->withReplaceLast($search, $replace);
+        $this->assertNotSame($strAlt, $strAltWithReplaceLast);
+        $this->assertSame($stringAlt, $strAltWithReplaceLast->toString());
     }
 
     public function testWithReplaceAll(): void
     {
         $string = 'hola mundo po';
         $search = ' ';
+        $str = new Str($string);
+        $strWithReplaceAll = $str->withReplaceAll($search, '');
+        $this->assertNotSame($str, $strWithReplaceAll);
         $this->assertSame(
             str_replace($search, '', $string),
-            (new Str($string))->withReplaceAll($search, '')->toString()
+            $strWithReplaceAll->toString()
         );
     }
 
-    public function testWithStripANSIColos(): void
+    public function testWithStripANSIColors(): void
     {
         $string = 'Arg#1 [38;5;245mnull[0m';
+        $str = new Str($string);
+        $strWithStripANSIColors = $str->withStripANSIColors();
+        $this->assertNotSame($str, $strWithStripANSIColors);
         $this->assertSame(
             'Arg#1 null',
-            (new Str($string))->withStripANSIColors()->toString()
+            $strWithStripANSIColors->toString()
         );
     }
 }
