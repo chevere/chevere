@@ -28,6 +28,14 @@ final class MapTraitTest extends TestCase
         $this->assertCount(0, $map->getIterator());
     }
 
+    public function testClone(): void
+    {
+        $map = new UsesMapTrait();
+        $clone = clone $map;
+        $this->assertNotSame($map, $clone);
+        $this->assertNotSame($map->map(), $clone->map());
+    }
+
     public function testWithClone(): void
     {
         $key = 'test';
