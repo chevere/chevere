@@ -64,6 +64,7 @@ final class Dir implements DirInterface
         }
     }
 
+    // @infection-ignore-all
     public function create(int $mode = 0755): void
     {
         if ($this->exists()) {
@@ -75,6 +76,7 @@ final class Dir implements DirInterface
         $this->assertCreate($mode);
     }
 
+    // @infection-ignore-all
     public function createIfNotExists(int $mode = 0755): void
     {
         if ($this->exists()) {
@@ -85,7 +87,6 @@ final class Dir implements DirInterface
 
     public function remove(): array
     {
-        $this->assertIsDir();
         $array = $this->removeContents();
         $this->rmdir();
         $array[] = $this->path->toString();
@@ -101,10 +102,10 @@ final class Dir implements DirInterface
             RecursiveIteratorIterator::CHILD_FIRST
         );
         $removed = [];
+        /** @var SplFileInfo */
         foreach ($files as $fileInfo) {
             if ($fileInfo->isDir()) {
-                $realPath = $fileInfo->getRealPath();
-                $realPath .= (substr($realPath, -1) == DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR);
+                $realPath = tailDirPath($fileInfo->getRealPath());
                 $path = new Path($realPath);
                 (new self($path))->rmdir();
                 $removed[] = $path->toString();
@@ -155,6 +156,7 @@ final class Dir implements DirInterface
 
     /**
      * @codeCoverageIgnore
+     * @infection-ignore-all
      */
     private function assertCreate(int $mode = 0755): void
     {
@@ -167,6 +169,7 @@ final class Dir implements DirInterface
 
     /**
      * @codeCoverageIgnore
+     * @infection-ignore-all
      */
     private function rmdir(): void
     {

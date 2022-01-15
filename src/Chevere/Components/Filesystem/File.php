@@ -15,12 +15,12 @@ namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
-use Chevere\Exceptions\Filesystem\FileExistsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileUnableToCreateException;
 use Chevere\Exceptions\Filesystem\FileUnableToGetException;
 use Chevere\Exceptions\Filesystem\FileUnableToPutException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
+use Chevere\Exceptions\Filesystem\PathExistsException;
 use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
@@ -84,7 +84,7 @@ final class File implements FileInterface
      * @throws FileNotExistsException
      * @throws FileUnableToGetException
      */
-    public function contents(): string
+    public function getContents(): string
     {
         $this->assertExists();
 
@@ -92,6 +92,7 @@ final class File implements FileInterface
             return file_get_contents($this->path->toString());
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (Throwable $e) {
             throw new FileUnableToGetException(
                 (new Message('Unable to read the contents of the file at %path%'))
@@ -117,9 +118,8 @@ final class File implements FileInterface
 
     public function create(): void
     {
-        $this->assertIsNotDir();
         if ($this->path->exists()) {
-            throw new FileExistsException(
+            throw new PathExistsException(
                 (new Message('Unable to create file %path% (file already exists)'))
                     ->code('%path%', $this->path->toString())
             );
@@ -130,6 +130,7 @@ final class File implements FileInterface
             file_put_contents($this->path->toString(), '');
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (Throwable $e) {
             throw new FileUnableToCreateException(previous: $e);
         }
@@ -144,6 +145,7 @@ final class File implements FileInterface
             file_put_contents($this->path->toString(), $contents);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (Throwable $e) {
             throw new FileUnableToPutException(
                 (new Message('Unable to write content to file %filepath%'))
@@ -178,6 +180,7 @@ final class File implements FileInterface
             unlink($this->path->toString());
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (Throwable $e) {
             throw new FileUnableToRemoveException(previous: $e);
         }

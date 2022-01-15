@@ -34,13 +34,22 @@ function getFilesystemInstanceMessage(string $instance, string $path): MessageIn
         ->code('%path%', $path);
 }
 
+function tailDirPath(string $path): string
+{
+    $path .= substr($path, -1) == DIRECTORY_SEPARATOR
+        ? ''
+        : DIRECTORY_SEPARATOR;
+
+    return $path;
+}
+
 /**
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
 function dirForPath(string $path): DirInterface
 {
-    $path .= (substr($path, -1) == DIRECTORY_SEPARATOR ? '' : DIRECTORY_SEPARATOR);
+    $path = tailDirPath($path);
 
     try {
         return new Dir(new Path($path));

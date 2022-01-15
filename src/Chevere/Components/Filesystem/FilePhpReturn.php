@@ -121,7 +121,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
      */
     private function assert(): void
     {
-        $contents = $this->filePhp->file()->contents();
+        $contents = $this->filePhp->file()->getContents();
 
         try {
             (new StrAssert($contents))->notEmpty()->notCtypeSpace();

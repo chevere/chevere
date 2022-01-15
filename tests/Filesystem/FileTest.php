@@ -16,8 +16,8 @@ namespace Chevere\Tests\Filesystem;
 use function Chevere\Components\Filesystem\dirForPath;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Exceptions\Filesystem\FileExistsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\PathExistsException;
 use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;
@@ -35,6 +35,18 @@ final class FileTest extends TestCase
 
     protected function tearDown(): void
     {
+        try {
+            $this->getChildFile('.test')->remove();
+        } catch (Throwable $e) {
+            //$e
+        }
+
+        try {
+            $this->testDir->removeContents();
+        } catch (Throwable $e) {
+            //$e
+        }
+
         try {
             $this->testDir->remove();
         } catch (Throwable $e) {
@@ -72,7 +84,7 @@ final class FileTest extends TestCase
         $this->assertSame(FileInterface::CHECKSUM_LENGTH, strlen($file->getChecksum()));
         $this->assertSame(filesize($file->path()->toString()), $file->getSize());
         $this->assertTrue($file->exists());
-        $this->expectException(FileExistsException::class);
+        $this->expectException(PathExistsException::class);
         $file->create();
     }
 
@@ -106,15 +118,37 @@ final class FileTest extends TestCase
         $this->assertFalse($file->exists());
         $file->create();
         $this->assertTrue($file->exists());
+        $file->remove();
     }
 
     public function testPut(): void
     {
-        $file = $this->getChildFile('put');
+        $file = $this->getChildFile('.put');
         $file->create();
         $id = uniqid();
         $file->put($id);
         $this->assertSame($id, file_get_contents($file->path()->toString()));
         $file->remove();
+    }
+
+    public function testGetChecksum(): void
+    {
+        $file = $this->getChildFile('.checksum');
+        $this->expectException(FileNotExistsException::class);
+        $file->getChecksum();
+    }
+
+    public function testGetSize(): void
+    {
+        $file = $this->getChildFile('.size');
+        $this->expectException(FileNotExistsException::class);
+        $file->getSize();
+    }
+
+    public function testGetContents(): void
+    {
+        $file = $this->getChildFile('.contents');
+        $this->expectException(FileNotExistsException::class);
+        $file->getContents();
     }
 }

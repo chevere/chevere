@@ -105,16 +105,27 @@ final class DirTest extends TestCase
         $removed = $this->testDir->remove();
         $this->assertContainsEquals($this->testDir->path()->toString(), $removed);
         $this->assertFalse($this->testDir->exists());
+        $this->expectException(PathIsNotDirectoryException::class);
+        $this->testDir->remove();
     }
 
     public function testRemoveContents(): void
     {
         $this->testDir->create();
-        $childPath = $this->testDir->path()->getChild('file');
-        $childFile = new File($childPath);
-        $childFile->create();
+        $childDir1 = new Dir($this->testDir->path()->getChild('dir1/'));
+        $childFile1 = new File($this->testDir->path()->getChild('file1'));
+        $childFile2 = new File($this->testDir->path()->getChild('file2'));
+        $childDir1->create();
+        $childFile1->create();
+        $childFile2->create();
         $removed = $this->testDir->removeContents();
+        $this->assertCount(3, $removed);
         $this->assertNotContainsEquals($this->testDir->path()->toString(), $removed);
-        $this->assertContainsEquals($childFile->path()->toString(), $removed);
+        $this->assertContainsEquals($childFile1->path()->toString(), $removed);
+        $this->assertContainsEquals($childFile1->path()->toString(), $removed);
+        $this->assertContainsEquals($childFile2->path()->toString(), $removed);
+        $this->testDir->remove();
+        $this->expectException(PathIsNotDirectoryException::class);
+        $this->testDir->removeContents();
     }
 }

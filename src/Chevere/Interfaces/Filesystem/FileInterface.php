@@ -75,7 +75,7 @@ interface FileInterface
      * @throws FileNotExistsException
      * @throws FileUnableToGetException
      */
-    public function contents(): string;
+    public function getContents(): string;
 
     /**
      * Remove the file.
