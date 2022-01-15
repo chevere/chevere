@@ -36,25 +36,15 @@ final class ControllerTest extends TestCase
         new ControllerTestInvalidController();
     }
 
-    public function testController(): void
+    public function testControllerNoAttributes(): void
     {
         $controller = new ControllerTestController();
         $this->assertSame(Type::STRING, $controller->parameter()->type()->primitive());
         $this->assertSame('', $controller->relation());
         $this->assertSame('', $controller->dispatch());
-        $matrix = [
-            'relation' => 'test relation',
-            'dispatch' => 'test dispatch',
-        ];
-        $controller = new ControllerTestController(
-            ...$matrix
-        );
-        foreach ($matrix as $key => $value) {
-            $this->assertSame($value, $controller->$key());
-        }
     }
 
-    public function testControllerWorkflowDispatchAttribute(): void
+    public function testControllerDispatchAttribute(): void
     {
         $controller = new ControllerTestControllerDispatchAttribute();
         $this->assertSame('some', $controller->dispatch());

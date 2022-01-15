@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Controller\ControllerNameInterfaceException;
+use Chevere\Exceptions\Controller\ControllerNameNotExistsException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Controller\ControllerNameInterface;
 
@@ -33,19 +34,17 @@ final class ControllerName implements ControllerNameInterface
 
     private function assertController(): void
     {
-        if (! class_exists($this->name)) {
-            throw new InvalidArgumentException(
+        if (!class_exists($this->name)) {
+            throw new ControllerNameNotExistsException(
                 (new Message("Controller %controllerName% doesn't exists"))
-                    ->code('%controllerName%', $this->name),
-                100
+                    ->code('%controllerName%', $this->name)
             );
         }
-        if (! is_subclass_of($this->name, ControllerInterface::class)) {
-            throw new InvalidArgumentException(
+        if (!is_subclass_of($this->name, ControllerInterface::class)) {
+            throw new ControllerNameInterfaceException(
                 (new Message('Controller %controllerName% must implement the %interface% interface'))
                     ->code('%controllerName%', $this->name)
-                    ->code('%interface%', ControllerInterface::class),
-                101
+                    ->code('%interface%', ControllerInterface::class)
             );
         }
     }

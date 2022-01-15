@@ -31,38 +31,34 @@ use ReflectionClass;
  */
 abstract class Controller extends Action implements ControllerInterface
 {
-    protected StringParameterInterface $parameterType;
+    protected StringParameterInterface $parameter;
 
-    public function __construct(
-        protected string $dispatch = '',
-        protected string $relation = '',
-    ) {
-        $this->parameterType ??= $this->parameter();
+    protected string $dispatch = '';
+
+    protected string $relation = '';
+
+    public function __construct()
+    {
+        $this->parameter = $this->parameter();
         $this->setUp();
         $this->assertParametersType();
-        if (in_array('', [$this->relation, $this->dispatch])) {
-            $reflectionClass = new ReflectionClass($this);
-            $attributes = $reflectionClass->getAttributes();
-            /** @var ReflectionAttribute $attribute */
-            foreach ($attributes as $attribute) {
-                $this->handleAttribute($attribute);
-            }
+        $reflectionClass = new ReflectionClass($this);
+        $attributes = $reflectionClass->getAttributes();
+        /** @var ReflectionAttribute $attribute */
+        foreach ($attributes as $attribute) {
+            $this->handleAttribute($attribute);
         }
     }
 
     private function handleAttribute(ReflectionAttribute $attribute): void
     {
-        if (
-            $this->relation === ''
-            && $this->isValidAttribute($attribute, Relation::class)
+        if ($this->isValidAttribute($attribute, Relation::class)
         ) {
             /** @var AttributeInterface $new */
             $new = $attribute->newInstance();
             $this->relation = $new->attribute();
         }
-        if (
-            $this->dispatch === ''
-            && $this->isValidAttribute($attribute, Dispatch::class)
+        if ($this->isValidAttribute($attribute, Dispatch::class)
         ) {
             /** @var AttributeInterface $new */
             $new = $attribute->newInstance();
@@ -95,7 +91,7 @@ abstract class Controller extends Action implements ControllerInterface
     {
         $invalid = [];
         foreach ($this->parameters()->getIterator() as $name => $parameter) {
-            if ($parameter->type()->validator() !== $this->parameterType->type()->validator()) {
+            if ($parameter->type()->validator() !== $this->parameter->type()->validator()) {
                 $invalid[] = $name;
             }
         }
@@ -103,7 +99,7 @@ abstract class Controller extends Action implements ControllerInterface
             throw new InvalidArgumentException(
                 (new Message('Parameter %parameters% must be of type %type% for controller %className%.'))
                     ->code('%parameters%', implode(', ', $invalid))
-                    ->strong('%type%', $this->parameterType->type()->typeHinting())
+                    ->strong('%type%', $this->parameter->type()->typeHinting())
                     ->strong('%className%', static::class)
             );
         }
