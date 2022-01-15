@@ -56,9 +56,9 @@ final class Filename implements FilenameInterface
                 ->notEmpty()
                 ->notCtypeSpace();
         } catch (Throwable $e) {
-            throw new InvalidArgumentException(code: 100);
+            throw new InvalidArgumentException(previous: $e, code: 100);
         }
-        if (mb_strlen($this->basename) > self::MAX_LENGTH_BYTES) {
+        if (strlen($this->basename) > self::MAX_LENGTH_BYTES) {
             throw new LengthException(
                 message: (new Message('String %string% provided exceed the limit of %bytes% bytes'))
                     ->code('%string%', $this->basename)

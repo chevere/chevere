@@ -57,6 +57,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         $this->assert();
         $filePath = $this->filePhp->file()->path()->toString();
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         try {
             return include $filePath;
         } catch (Throwable $e) {

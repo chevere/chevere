@@ -110,6 +110,7 @@ final class Dir implements DirInterface
                 (new self($path))->rmdir();
                 $removed[] = $path->toString();
 
+                /** @infection-ignore-all */
                 continue;
             }
             $path = new Path($fileInfo->getRealPath());

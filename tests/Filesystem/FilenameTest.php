@@ -24,12 +24,15 @@ final class FilenameTest extends TestCase
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionCode(100);
         new Filename(' ');
     }
 
-    public function testInvalidLength(): void
+    public function testLength(): void
     {
+        new Filename(str_repeat('e', 255));
         $this->expectException(LengthException::class);
+        $this->expectExceptionCode(110);
         new Filename(randomString(256));
     }
 

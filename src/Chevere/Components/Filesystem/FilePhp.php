@@ -35,6 +35,7 @@ final class FilePhp implements FilePhpInterface
 
     /**
      * @codeCoverageIgnore
+     * @infection-ignore-all
      */
     public function cache(): void
     {
@@ -52,6 +53,7 @@ final class FilePhp implements FilePhpInterface
 
     /**
      * @codeCoverageIgnore
+     * @infection-ignore-all
      */
     public function flush(): void
     {

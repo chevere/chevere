@@ -41,6 +41,7 @@ final class Path implements PathInterface
 
     public function exists(): bool
     {
+        // @infection-ignore-all
         $this->clearStatCache();
 
         return stream_resolve_include_path($this->absolute) !== false;
@@ -48,7 +49,7 @@ final class Path implements PathInterface
 
     public function assertExists(): void
     {
-        if (! $this->exists()) {
+        if (!$this->exists()) {
             throw new PathNotExistsException(
                 (new Message("Path %path% doesn't exists"))
                     ->code('%path%', $this->absolute)
@@ -58,6 +59,7 @@ final class Path implements PathInterface
 
     public function isDir(): bool
     {
+        // @infection-ignore-all
         $this->clearStatCache();
 
         return is_dir($this->absolute);
@@ -65,6 +67,7 @@ final class Path implements PathInterface
 
     public function isFile(): bool
     {
+        // @infection-ignore-all
         $this->clearStatCache();
 
         return is_file($this->absolute);
@@ -72,6 +75,7 @@ final class Path implements PathInterface
 
     /**
      * @codeCoverageIgnore
+     * @infection-ignore-all
      */
     public function chmod(int $mode): void
     {
@@ -85,20 +89,19 @@ final class Path implements PathInterface
         }
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function isWritable(): bool
     {
         $this->assertExists();
         if (is_writable($this->absolute)) {
             return true;
         }
+        // @codeCoverageIgnoreStart
         $testFile = sprintf('%s/%s.tmp', $this->absolute, uniqid('data_write_test_'));
 
+        // @infection-ignore-all
         try {
             $handle = fopen($testFile, 'w');
-            if (! $handle || fwrite($handle, 'Test write operation') === false) {
+            if (!$handle || fwrite($handle, 't') === false) {
                 return false;
             }
             fclose($handle);
@@ -107,11 +110,9 @@ final class Path implements PathInterface
         } catch (Throwable $e) {
             throw new FilesystemException(previous: $e);
         }
+        // @codeCoverageIgnoreEnd
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function isReadable(): bool
     {
         $this->assertExists();
@@ -127,6 +128,9 @@ final class Path implements PathInterface
         return new self($childPath . '/' . $path);
     }
 
+    /**
+     * @infection-ignore-all
+     */
     private function clearStatCache(): void
     {
         clearstatcache(true, $this->absolute);
