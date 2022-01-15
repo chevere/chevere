@@ -15,6 +15,10 @@ namespace Chevere\Components\HrTime;
 
 use Chevere\Interfaces\HrTime\HrTimeInterface;
 
+/**
+ * @infection-ignore-all
+ *
+ */
 final class HrTime implements HrTimeInterface
 {
     /**

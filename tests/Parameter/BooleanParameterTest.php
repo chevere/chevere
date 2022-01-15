@@ -23,7 +23,12 @@ final class BooleanParameterTest extends TestCase
         $parameter = new BooleanParameter('name');
         $this->assertSame(false, $parameter->default());
         $default = true;
-        $parameter = $parameter->withDefault($default);
-        $this->assertSame($default, $parameter->default());
+        $parameterWithDefault = $parameter->withDefault($default);
+        (new ParameterHelper())->testWithParameterDefault(
+            primitive: 'boolean',
+            parameter: $parameter,
+            default: $default,
+            parameterWithDefault: $parameterWithDefault
+        );
     }
 }

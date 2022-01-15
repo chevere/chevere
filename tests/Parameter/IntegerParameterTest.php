@@ -23,7 +23,12 @@ final class IntegerParameterTest extends TestCase
         $parameter = new IntegerParameter('name');
         $this->assertSame(0, $parameter->default());
         $default = 1234;
-        $parameter = $parameter->withDefault($default);
-        $this->assertSame($default, $parameter->default());
+        $parameterWithDefault = $parameter->withDefault($default);
+        (new ParameterHelper())->testWithParameterDefault(
+            primitive: 'integer',
+            parameter: $parameter,
+            default: $default,
+            parameterWithDefault: $parameterWithDefault
+        );
     }
 }

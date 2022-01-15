@@ -17,6 +17,7 @@ use Chevere\Interfaces\Writer\WriterInterface;
 
 /**
  * @codeCoverageIgnore
+ * @infection-ignore-all
  */
 trait WriterTrait
 {

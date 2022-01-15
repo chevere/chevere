@@ -34,15 +34,15 @@ trait ParameterTrait
         $this->setUp();
     }
 
-    public function setUp(): void
+    final public function setUp(): void
     {
-        $this->type = $this->getType();
+        $this->type = $this->type();
         $this->attributes = new Map();
     }
 
     final public function type(): TypeInterface
     {
-        return $this->type;
+        return $this->type ??= $this->getType();
     }
 
     final public function description(): string

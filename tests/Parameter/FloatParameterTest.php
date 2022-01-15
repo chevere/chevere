@@ -25,7 +25,12 @@ final class FloatParameterTest extends TestCase
         $this->assertEquals($parameter, floatParameter('name'));
         $this->assertSame(0.0, $parameter->default());
         $default = 12.34;
-        $parameter = $parameter->withDefault($default);
-        $this->assertSame($default, $parameter->default());
+        $parameterWithDefault = $parameter->withDefault($default);
+        (new ParameterHelper())->testWithParameterDefault(
+            primitive: 'float',
+            parameter: $parameter,
+            default: $default,
+            parameterWithDefault: $parameterWithDefault
+        );
     }
 }

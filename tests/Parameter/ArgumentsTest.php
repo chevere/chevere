@@ -21,13 +21,10 @@ use Chevere\Components\Parameter\IntegerParameter;
 use Chevere\Components\Parameter\Parameters;
 use Chevere\Components\Parameter\StringParameter;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\ArgumentCountException;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\Type\TypeInterface;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 use TypeError;
 
 final class ArgumentsTest extends TestCase
@@ -120,12 +117,13 @@ final class ArgumentsTest extends TestCase
         );
         $this->assertTrue($arguments->has($name));
         $this->assertSame($value, $arguments->get($name));
-        $arguments = $arguments->withArgument(...[
+        $argumentsWith = $arguments->withArgument(...[
             $name => $valueAlt,
         ]);
-        $this->assertSame($valueAlt, $arguments->get($name));
+        $this->assertNotSame($arguments, $argumentsWith);
+        $this->assertSame($valueAlt, $argumentsWith->get($name));
         $this->expectException(InvalidArgumentException::class);
-        $arguments->withArgument(...[
+        $argumentsWith->withArgument(...[
             $name => 'invalid',
         ]);
     }

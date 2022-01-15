@@ -35,9 +35,11 @@ final class WritersTest extends TestCase
     public function testWith(): void
     {
         $writer = new StreamWriter(streamTemp(''));
-        $writers = (new Writers())->with($writer);
+        $writers = new Writers();
+        $writersWith = $writers->with($writer);
+        $this->assertNotSame($writers, $writersWith);
         foreach (['output', 'error', 'debug', 'log'] as $name) {
-            $this->assertSame($writer, $writers->{$name}());
+            $this->assertSame($writer, $writersWith->{$name}());
         }
     }
 
@@ -46,8 +48,10 @@ final class WritersTest extends TestCase
         foreach (['output', 'error', 'debug', 'log'] as $name) {
             $writer = new StreamWriter(streamTemp(''));
             $withFn = 'with' . ucfirst($name);
-            $writers = (new Writers())->{$withFn}($writer);
-            $this->assertSame($writer, $writers->{$name}());
+            $writers = new Writers();
+            $writersWithX = $writers->{$withFn}($writer);
+            $this->assertNotSame($writers, $writersWithX);
+            $this->assertSame($writer, $writersWithX->{$name}());
         }
     }
 }

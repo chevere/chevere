@@ -20,7 +20,15 @@ final class HrTimeTest extends TestCase
 {
     public function testToReadMs(): void
     {
-        $timeHr = new HrTime((int) hrtime(true));
+        $decimal = '.';
+        $thousands = ',';
+        $group = 2;
+        $now = (int) hrtime(true);
+        $timeHr = new HrTime($now);
         $this->assertStringEndsWith(' ms', $timeHr->toReadMs());
+        $chopMs = substr($timeHr->toReadMs(), 0, -($group + 1));
+        $decimalHr = explode($decimal, $chopMs)[1];
+        $this->assertSame(2, strlen($decimalHr));
+        $this->assertSame(number_format($now / 1e+6, 2), $chopMs);
     }
 }

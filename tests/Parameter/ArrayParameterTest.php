@@ -23,7 +23,12 @@ final class ArrayParameterTest extends TestCase
         $parameter = new ArrayParameter('name');
         $this->assertSame([], $parameter->default());
         $default = ['test', 1];
-        $parameter = $parameter->withDefault($default);
-        $this->assertSame($default, $parameter->default());
+        $parameterWithDefault = $parameter->withDefault($default);
+        (new ParameterHelper())->testWithParameterDefault(
+            primitive: 'array',
+            parameter: $parameter,
+            default: $default,
+            parameterWithDefault: $parameterWithDefault
+        );
     }
 }

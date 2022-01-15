@@ -36,6 +36,7 @@ final class Writers implements WritersInterface
             $this->error = new StreamWriter(streamTemp(''));
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (InvalidArgumentException $e) {
             throw new LogicException(
                 previous: $e,

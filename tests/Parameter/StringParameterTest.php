@@ -81,16 +81,22 @@ final class StringParameterTest extends TestCase
         $parameter = new StringParameter('test');
         $this->assertSame('', $parameter->default());
         $default = 'some value';
-        $parameter = $parameter->withDefault($default);
-        $this->assertSame($default, $parameter->default());
+        $parameterWithDefault = $parameter->withDefault($default);
+        (new ParameterHelper())->testWithParameterDefault(
+            primitive: 'string',
+            parameter: $parameter,
+            default: $default,
+            parameterWithDefault: $parameterWithDefault
+        );
     }
 
     public function testWithDefaultRegexAware(): void
     {
-        $parameter = (new StringParameter('test'))
-            ->withRegex(new Regex('/^a|b$/'))
-            ->withDefault('a');
+        $parameter = (new StringParameter('test'))->withDefault('a');
+        $parameterWithRegex = $parameter
+            ->withRegex(new Regex('/^a|b$/'));
+        $this->assertNotSame($parameter, $parameterWithRegex);
         $this->expectException(InvalidArgumentException::class);
-        $parameter->withDefault('');
+        $parameterWithRegex->withDefault('');
     }
 }

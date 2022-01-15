@@ -50,22 +50,24 @@ final class DependenciesTest extends TestCase
     public function testWithPut(): void
     {
         $dependencies = new Dependencies(path: PathInterface::class);
-        $dependencies = $dependencies->withPut(dir: DirInterface::class);
-        $this->assertCount(2, $dependencies);
-        $this->assertSame(PathInterface::class, $dependencies->getIterator()->current());
-        $this->assertSame(['path', 'dir'], $dependencies->keys());
-        $this->assertSame(PathInterface::class, $dependencies->key('path'));
-        $this->assertSame(DirInterface::class, $dependencies->key('dir'));
+        $dependenciesWithPut = $dependencies->withPut(dir: DirInterface::class);
+        $this->assertNotSame($dependencies, $dependenciesWithPut);
+        $this->assertCount(2, $dependenciesWithPut);
+        $this->assertSame(PathInterface::class, $dependenciesWithPut->getIterator()->current());
+        $this->assertSame(['path', 'dir'], $dependenciesWithPut->keys());
+        $this->assertSame(PathInterface::class, $dependenciesWithPut->key('path'));
+        $this->assertSame(DirInterface::class, $dependenciesWithPut->key('dir'));
     }
 
     public function testWithMerge(): void
     {
         $dependencies = new Dependencies(path: PathInterface::class);
         $merge = new Dependencies(dir: DirInterface::class);
-        $merged = $dependencies->withMerge($merge);
-        $this->assertSame(['path', 'dir'], $merged->keys());
-        $this->assertSame(PathInterface::class, $merged->key('path'));
-        $this->assertSame(DirInterface::class, $merged->key('dir'));
+        $dependenciesWithMerge = $dependencies->withMerge($merge);
+        $this->assertNotSame($dependencies, $dependenciesWithMerge);
+        $this->assertSame(['path', 'dir'], $dependenciesWithMerge->keys());
+        $this->assertSame(PathInterface::class, $dependenciesWithMerge->key('path'));
+        $this->assertSame(DirInterface::class, $dependenciesWithMerge->key('dir'));
     }
 
     public function testWithMergeConflict(): void

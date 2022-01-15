@@ -25,6 +25,8 @@ final class Type implements TypeInterface
 
     private string $typeHinting;
 
+    public const CLASS_TYPES = [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME];
+
     public function __construct(
         private string $type
     ) {
@@ -69,11 +71,7 @@ final class Type implements TypeInterface
 
     private function isAbleToValidateObjects(): bool
     {
-        return in_array(
-            $this->primitive,
-            [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME],
-            true
-        );
+        return in_array($this->primitive, self::CLASS_TYPES, true);
     }
 
     private function validateObject(object $object): bool
@@ -98,7 +96,8 @@ final class Type implements TypeInterface
 
     private function setPrimitive(): void
     {
-        if (isset(self::TYPE_VALIDATORS[$this->type]) && in_array($this->type, self::TYPE_ARGUMENTS)) {
+        if (isset(self::TYPE_VALIDATORS[$this->type])
+            && in_array($this->type, self::TYPE_ARGUMENTS)) {
             $this->primitive = $this->type;
 
             return;

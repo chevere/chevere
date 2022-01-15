@@ -22,5 +22,13 @@ use Chevere\Interfaces\Type\TypeInterface;
  */
 interface ParameterInterface extends DescriptionInterface, AttributesInterface
 {
+    /**
+     * Provides access to the type instance.
+     */
     public function type(): TypeInterface;
+
+    /**
+     * Gets a new parameter type instance.
+     */
+    public function getType(): TypeInterface;
 }
