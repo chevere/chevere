@@ -20,4 +20,11 @@
             "@codeCoverageIgnoreEnd"
         ]
     },
+    "coverage-infection-ignore-all": {
+        "description": "Comment infection ignore all",
+        "prefix": "comment-infection-ignore-all",
+        "body": [
+            "@infection-ignore-all.",
+        ]
+    },
 }
