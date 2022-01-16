@@ -37,13 +37,13 @@ final class ClassMapTest extends TestCase
         $classMap = new ClassMap();
         $cloned = clone $classMap;
         $helper = new ObjectHelper($classMap);
-        $map = $helper->getPropertyValue('map');
-        $flip = $helper->getPropertyValue('flip');
         $cloneHelper = new ObjectHelper($cloned);
-        $mapCloned = $cloneHelper->getPropertyValue('map');
-        $flipCloned = $cloneHelper->getPropertyValue('flip');
-        $this->assertNotSame($map, $mapCloned);
-        $this->assertNotSame($flip, $flipCloned);
+        foreach (['map', 'flip'] as $property) {
+            $this->assertNotSame(
+                $helper->getPropertyValue($property),
+                $cloneHelper->getPropertyValue($property)
+            );
+        }
     }
 
     public function testEmptyClassName(): void

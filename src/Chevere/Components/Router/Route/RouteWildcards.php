@@ -17,10 +17,10 @@ use Chevere\Components\DataStructure\Map;
 use Chevere\Components\DataStructure\Traits\MapToArrayTrait;
 use Chevere\Components\DataStructure\Traits\MapTrait;
 use Chevere\Interfaces\Router\Route\RouteWildcardInterface;
-use Chevere\Interfaces\Router\Route\WildcardsInterface;
+use Chevere\Interfaces\Router\Route\RouteWildcardsInterface;
 use RangeException;
 
-final class Wildcards implements WildcardsInterface
+final class RouteWildcards implements RouteWildcardsInterface
 {
     use MapTrait;
 
@@ -50,7 +50,7 @@ final class Wildcards implements WildcardsInterface
         $this->index = clone $this->index;
     }
 
-    public function withPut(RouteWildcardInterface $routeWildcard): WildcardsInterface
+    public function withPut(RouteWildcardInterface $routeWildcard): RouteWildcardsInterface
     {
         $new = clone $this;
         if ($new->index->has($routeWildcard->toString())) {
@@ -77,6 +77,7 @@ final class Wildcards implements WildcardsInterface
         $get = $this->map->get($posStr);
         if ($get === null) {
             // @codeCoverageIgnoreStart
+            // @infection-ignore-all
             throw new RangeException();
             // @codeCoverageIgnoreEnd
         }

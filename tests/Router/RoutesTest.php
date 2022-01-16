@@ -30,12 +30,14 @@ final class RoutesTest extends TestCase
             path: new RoutePath('/some-path')
         ));
         $key = $route->path()->toString();
-        $routes = (new Routes())
+        $routes = new Routes();
+        $routesWithAdded = $routes
             ->withAdded($route);
-        $this->assertTrue($routes->has($key));
-        $this->assertSame($route, $routes->get($key));
+        $this->assertNotSame($routes, $routesWithAdded);
+        $this->assertTrue($routesWithAdded->has($key));
+        $this->assertSame($route, $routesWithAdded->get($key));
         $this->expectException(OutOfBoundsException::class);
-        $routes->get('not-found');
+        $routesWithAdded->get('not-found');
     }
 
     public function testWithAddedNameCollision(): void

@@ -58,12 +58,14 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(test: new StringParameter());
         $clone = clone $parameters;
         $this->assertNotSame($parameters, $clone);
-        $parametersHelper = new ObjectHelper($parameters);
+        $helper = new ObjectHelper($parameters);
         $cloneHelper = new ObjectHelper($clone);
-        $this->assertNotSame(
-            $parametersHelper->getPropertyValue('map'),
-            $cloneHelper->getPropertyValue('map')
-        );
+        foreach (['map', 'required', 'optional'] as $property) {
+            $this->assertNotSame(
+                $helper->getPropertyValue($property),
+                $cloneHelper->getPropertyValue($property)
+            );
+        }
     }
 
     public function testWithAddedOverflow(): void

@@ -20,7 +20,7 @@ use Iterator;
 /**
  * Describes the component in charge of collecting objects implementing `RouteWildcardInterface`.
  */
-interface WildcardsInterface extends MappedInterface, ToArrayInterface
+interface RouteWildcardsInterface extends MappedInterface, ToArrayInterface
 {
     /**
      * Return an instance with the specified `$wildcard`.

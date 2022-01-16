@@ -59,6 +59,7 @@ final class Routes implements RoutesInterface
             return $this->map->get($path);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (TypeError $e) {
             throw new TypeException(previous: $e);
         }

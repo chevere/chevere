@@ -35,24 +35,28 @@ final class RouteIdentifierTest extends TestCase
     public function testEmptyGroup(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/ \$group /');
         new RouteIdentifier('', 'some-name');
     }
 
     public function testCtypeSpaceGroup(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/ \$group /');
         new RouteIdentifier('   ', 'some-name');
     }
 
     public function testEmptyName(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/ \$name /');
         new RouteIdentifier('some-group', '');
     }
 
     public function testCtypeSpaceName(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/ \$name /');
         new RouteIdentifier('some-group', '  ');
     }
 }

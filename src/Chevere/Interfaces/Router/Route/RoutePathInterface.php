@@ -32,7 +32,7 @@ interface RoutePathInterface extends ToStringInterface
     /**
      * Provides access to the wildcards instance.
      */
-    public function wildcards(): WildcardsInterface;
+    public function wildcards(): RouteWildcardsInterface;
 
     /**
      * Provides access to the regex instance.

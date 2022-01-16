@@ -50,6 +50,7 @@ final class StrictStd extends Std
             $datas = parent::parse($route);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (Throwable $e) {
             throw new InvalidArgumentException(
                 previous: $e,

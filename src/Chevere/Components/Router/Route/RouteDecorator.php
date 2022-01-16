@@ -15,19 +15,19 @@ namespace Chevere\Components\Router\Route;
 
 use Chevere\Interfaces\Router\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Router\Route\RouteLocatorInterface;
-use Chevere\Interfaces\Router\Route\WildcardsInterface;
+use Chevere\Interfaces\Router\Route\RouteWildcardsInterface;
 
 final class RouteDecorator implements RouteDecoratorInterface
 {
-    private WildcardsInterface $wildcards;
+    private RouteWildcardsInterface $wildcards;
 
     public function __construct(
         private RouteLocatorInterface $name
     ) {
-        $this->wildcards = new Wildcards();
+        $this->wildcards = new RouteWildcards();
     }
 
-    public function withWildcards(WildcardsInterface $wildcards): RouteDecoratorInterface
+    public function withWildcards(RouteWildcardsInterface $wildcards): RouteDecoratorInterface
     {
         $new = clone $this;
         $new->wildcards = $wildcards;
@@ -40,7 +40,7 @@ final class RouteDecorator implements RouteDecoratorInterface
         return $this->name;
     }
 
-    public function wildcards(): WildcardsInterface
+    public function wildcards(): RouteWildcardsInterface
     {
         return $this->wildcards;
     }

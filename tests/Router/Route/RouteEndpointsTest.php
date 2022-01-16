@@ -36,8 +36,11 @@ final class RouteEndpointsTest extends TestCase
     {
         $method = new GetMethod();
         $routeEndpoint = new RouteEndpoint($method, new GetArticleController());
-        $routeEndpoints = (new RouteEndpoints())->withPut($routeEndpoint);
-        $this->assertTrue($routeEndpoints->hasKey($method->name()));
-        $this->assertSame($routeEndpoints->get($method->name()), $routeEndpoint);
+        $routeEndpoints = new RouteEndpoints();
+        $routeEndpointsWithPut = $routeEndpoints
+            ->withPut($routeEndpoint);
+        $this->assertNotSame($routeEndpoints, $routeEndpointsWithPut);
+        $this->assertTrue($routeEndpointsWithPut->hasKey($method->name()));
+        $this->assertSame($routeEndpointsWithPut->get($method->name()), $routeEndpoint);
     }
 }

@@ -31,10 +31,10 @@ interface RouteDecoratorInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$wildcards` instance.
      */
-    public function withWildcards(WildcardsInterface $wildcards): self;
+    public function withWildcards(RouteWildcardsInterface $wildcards): self;
 
     /**
      * Provides access to the route wildcards.
      */
-    public function wildcards(): WildcardsInterface;
+    public function wildcards(): RouteWildcardsInterface;
 }

@@ -15,15 +15,16 @@ namespace Chevere\Tests\Router\Route;
 
 use Chevere\Components\Router\Route\RouteWildcard;
 use Chevere\Components\Router\Route\RouteWildcardMatch;
-use Chevere\Components\Router\Route\Wildcards;
+use Chevere\Components\Router\Route\RouteWildcards;
+use Chevere\Tests\src\ObjectHelper;
 use FastRoute\RouteParser\Std;
 use PHPUnit\Framework\TestCase;
 
-final class WildcardsTest extends TestCase
+final class RouteWildcardsTest extends TestCase
 {
     public function testConstructEmpty(): void
     {
-        $routeWildcards = new Wildcards();
+        $routeWildcards = new RouteWildcards();
         $this->assertCount(0, $routeWildcards);
     }
 
@@ -34,7 +35,7 @@ final class WildcardsTest extends TestCase
             $wildcardName,
             new RouteWildcardMatch(Std::DEFAULT_DISPATCH_REGEX)
         );
-        $routeWildcards = (new Wildcards())->withPut($routeWildcard);
+        $routeWildcards = (new RouteWildcards())->withPut($routeWildcard);
         $this->assertCount(1, $routeWildcards);
         $this->assertTrue($routeWildcards->hasPos(0));
         $this->assertSame($routeWildcard, $routeWildcards->getPos(0));
@@ -42,23 +43,39 @@ final class WildcardsTest extends TestCase
         $this->assertSame($routeWildcard, $routeWildcards->get($wildcardName));
     }
 
+    public function testClone(): void
+    {
+        $routeWildcards = new RouteWildcards();
+        $clone = clone $routeWildcards;
+        $this->assertNotSame($routeWildcards, $clone);
+        $helper = new ObjectHelper($routeWildcards);
+        $cloneHelper = new ObjectHelper($clone);
+        foreach (['map', 'index'] as $property) {
+            $this->assertNotSame(
+                $helper->getPropertyValue($property),
+                $cloneHelper->getPropertyValue($property)
+            );
+        }
+    }
+
     public function testWithAddedWildcard(): void
     {
         $match = new RouteWildcardMatch(Std::DEFAULT_DISPATCH_REGEX);
         $wildcards = [new RouteWildcard('test1', $match), new RouteWildcard('test2', $match)];
-        $routeWildcards = new Wildcards();
+        $routeWildcards = new RouteWildcards();
         foreach ($wildcards as $wildcard) {
-            $routeWildcards = $routeWildcards
+            $routeWildcardsWithPut = ($routeWildcardsWithPut ?? $routeWildcards)
                 ->withPut($wildcard)
                 ->withPut($wildcard);
+            $this->assertNotSame($routeWildcards, $routeWildcardsWithPut);
         }
-        $this->assertCount(2, $routeWildcards);
+        $this->assertCount(2, $routeWildcardsWithPut);
         foreach ($wildcards as $pos => $wildcard) {
-            $this->assertTrue($routeWildcards->hasPos($pos));
-            $this->assertTrue($routeWildcards->has($wildcard->toString()));
+            $this->assertTrue($routeWildcardsWithPut->hasPos($pos));
+            $this->assertTrue($routeWildcardsWithPut->has($wildcard->toString()));
             $this->assertEqualsCanonicalizing(
                 $wildcard,
-                $routeWildcards->get($wildcard->toString())
+                $routeWildcardsWithPut->get($wildcard->toString())
             );
         }
     }

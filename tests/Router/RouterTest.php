@@ -43,10 +43,15 @@ final class RouterTest extends TestCase
                 new TestController()
             )
         );
-        $router = (new Router())
+        $router = new Router();
+        $routerWithAddedRoute = $router
             ->withAddedRoute(route: $route, group: 'my-group');
-        $this->assertCount(1, $router->routes());
-        $this->assertInstanceOf(RouteCollector::class, $router->routeCollector());
+        $this->assertNotSame($router, $routerWithAddedRoute);
+        $this->assertCount(1, $routerWithAddedRoute->routes());
+        $this->assertInstanceOf(
+            RouteCollector::class,
+            $routerWithAddedRoute->routeCollector()
+        );
     }
 
     public function testConstructInvalidArgument(): void

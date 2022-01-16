@@ -14,9 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Str\StrAssert;
-use Chevere\Exceptions\Core\Exception;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\TypeException;
@@ -52,20 +49,9 @@ final class RouterIndex implements RouterIndexInterface
 
     public function withAddedRoute(RouteInterface $route, string $group): RouterIndexInterface
     {
-        try {
-            (new StrAssert($group))->notEmpty()->notCtypeSpace();
-        }
-        // @codeCoverageIgnoreStart
-        catch (Exception $e) {
-            throw new InvalidArgumentException(
-                previous: $e,
-                message: (new Message('Invalid argument %argument% provided'))
-                    ->code('%argument%', $group),
-            );
-        }
-        // @codeCoverageIgnoreEnd
         $new = clone $this;
         $routeName = $route->path()->toString();
+        $routeIdentifier = new RouteIdentifier($group, $routeName);
         $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeKey)) {
             /** @var string $groupName */
@@ -79,10 +65,7 @@ final class RouterIndex implements RouterIndexInterface
         }
         $groupKey = $group;
         $groupValue = $group;
-        $new->identifiersMap->put(
-            $routeKey,
-            new RouteIdentifier($group, $routeName)
-        );
+        $new->identifiersMap->put($routeKey, $routeIdentifier);
         $new->groupsIndex->put($routeKey, $groupValue);
         $names = [];
         if ($new->groupsMap->hasKey($groupKey)) {
@@ -111,6 +94,7 @@ final class RouterIndex implements RouterIndexInterface
             return $this->identifiersMap->get($name);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (TypeError $e) {
             throw new TypeException(previous: $e);
         }
@@ -138,6 +122,7 @@ final class RouterIndex implements RouterIndexInterface
             return $this->groupsMap->get($group);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (TypeError $e) {
             throw new TypeException(previous: $e);
         }
@@ -160,6 +145,7 @@ final class RouterIndex implements RouterIndexInterface
             return $this->groupsIndex->get($group);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (TypeError $e) {
             throw new TypeException(previous: $e);
         }
