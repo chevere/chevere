@@ -90,6 +90,7 @@ final class WorkflowRun implements WorkflowRunInterface
             return $this->steps->get($name);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (TypeError $e) {
             throw new TypeException(previous: $e);
         }

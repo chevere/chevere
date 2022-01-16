@@ -31,40 +31,53 @@ final class WorkflowMessageTest extends TestCase
     public function testConstruct(): void
     {
         $run = $this->getWorkflowRun();
-        $queue = new WorkflowMessage($run);
-        $this->assertSame(0, $queue->priority());
-        $this->assertSame($run, $queue->workflowRun());
-        $this->assertIsString($queue->uuid());
-        $this->assertSame(0, $queue->expiration());
+        $workflowMessage = new WorkflowMessage($run);
+        $this->assertSame(0, $workflowMessage->priority());
+        $this->assertSame($run, $workflowMessage->workflowRun());
+        $this->assertIsString($workflowMessage->uuid());
+        $this->assertSame(0, $workflowMessage->delay());
+        $this->assertSame(0, $workflowMessage->expiration());
     }
 
     public function testWithPriority(): void
     {
-        $queue = new WorkflowMessage($this->getWorkflowRun());
-        $priority = 255;
-        $queue = $queue->withPriority($priority);
-        $this->assertSame($priority, $queue->priority());
+        $workflowMessage = new WorkflowMessage($this->getWorkflowRun());
+        foreach ([0, 255] as $priority) {
+            $new = $workflowMessage->withPriority($priority);
+            $this->assertNotSame($workflowMessage, $new);
+            $this->assertSame($priority, $new->priority());
+        }
         $this->expectException(InvalidArgumentException::class);
-        $queue = $queue->withPriority(-999);
+        $workflowMessage = $workflowMessage->withPriority(-999);
+    }
+
+    public function testWithPriorityOutOfRange(): void
+    {
+        $workflowMessage = new WorkflowMessage($this->getWorkflowRun());
+        $this->expectException(InvalidArgumentException::class);
+        $workflowMessage->withPriority(256);
     }
 
     public function testWithDelay(): void
     {
-        $queue = new WorkflowMessage($this->getWorkflowRun());
-        $delay = 3600;
-        $queue = $queue->withDelay($delay);
-        $this->assertSame($delay, $queue->delay());
+        $workflowMessage = new WorkflowMessage($this->getWorkflowRun());
+        foreach ([0, 3600] as $delay) {
+            $new = $workflowMessage->withDelay($delay);
+            $this->assertNotSame($workflowMessage, $new);
+            $this->assertSame($delay, $new->delay());
+        }
         $this->expectException(InvalidArgumentException::class);
-        $queue = $queue->withDelay(-3600);
+        $workflowMessage = $workflowMessage->withDelay(-3600);
     }
 
-    public function testWithExpiresInterval(): void
+    public function testWithExpiration(): void
     {
-        $queue = new WorkflowMessage($this->getWorkflowRun());
+        $workflowMessage = new WorkflowMessage($this->getWorkflowRun());
         $ahead = 60;
-        $queue = $queue->withExpiration($ahead);
-        $this->assertSame($ahead, $queue->expiration());
+        $workflowMessageWithExpiration = $workflowMessage->withExpiration($ahead);
+        $this->assertNotSame($workflowMessage, $workflowMessageWithExpiration);
+        $this->assertSame($ahead, $workflowMessageWithExpiration->expiration());
         $this->expectException(InvalidArgumentException::class);
-        $queue = $queue->withExpiration(-60);
+        $workflowMessage = $workflowMessage->withExpiration(-60);
     }
 }

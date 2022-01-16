@@ -28,9 +28,11 @@ final class WorkflowResponseTest extends TestCase
             ->withDelay(123)
             ->withExpiration(111)
             ->withPriority(10);
-        $response = (new WorkflowResponse())
+        $workflowResponse = new WorkflowResponse();
+        $workflowResponseWithMessage = $workflowResponse
             ->withWorkflowMessage($workflowMessage);
-        $this->assertSame($workflowMessage, $response->workflowMessage());
-        $this->assertSame($data, $response->data());
+        $this->assertNotSame($workflowResponse, $workflowResponseWithMessage);
+        $this->assertSame($workflowMessage, $workflowResponseWithMessage->workflowMessage());
+        $this->assertSame($data, $workflowResponseWithMessage->data());
     }
 }

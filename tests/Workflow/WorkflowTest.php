@@ -53,36 +53,40 @@ final class WorkflowTest extends TestCase
         $step = new Step(WorkflowTestStep0::class);
         $steps = new Steps(step: $step);
         $workflow = new Workflow($steps);
-        $workflow = $workflow->withAdded(step2: $step);
-        $this->assertCount(2, $workflow);
-        $this->assertTrue($workflow->steps()->has('step'));
-        $this->assertTrue($workflow->steps()->has('step2'));
-        $this->assertSame(['step', 'step2'], $workflow->steps()->keys());
+        $workflowWithAddedStep = $workflow->withAddedStep(step2: $step);
+        $this->assertNotSame($workflow, $workflowWithAddedStep);
+        $this->assertCount(2, $workflowWithAddedStep);
+        $this->assertTrue($workflowWithAddedStep->steps()->has('step'));
+        $this->assertTrue($workflowWithAddedStep->steps()->has('step2'));
+        $this->assertSame(['step', 'step2'], $workflowWithAddedStep->steps()->keys());
         $this->expectException(OverflowException::class);
-        $workflow->withAdded(step: $step);
+        $workflowWithAddedStep->withAddedStep(step: $step);
     }
 
     public function testWithAddedBeforeAndAfter(): void
     {
-        $workflow = (new Workflow(new Steps()))
-            ->withAdded(step: new Step(WorkflowTestStep0::class))
-            ->withAddedBefore(
+        $workflow = (new Workflow(new Steps()));
+        $workflowWithAddedSteps = $workflow
+            ->withAddedStep(step: new Step(WorkflowTestStep0::class))
+            ->withAddedStepBefore(
                 'step',
                 stepBefore: new Step(WorkflowTestStep0::class)
             );
-        $this->assertSame(['stepBefore', 'step'], $workflow->steps()->keys());
-        $workflow = $workflow
-            ->withAddedAfter(
+        $this->assertNotSame($workflow, $workflowWithAddedSteps);
+        $this->assertSame(['stepBefore', 'step'], $workflowWithAddedSteps->steps()->keys());
+        $workflowWithAddedSteps = $workflowWithAddedSteps
+            ->withAddedStepAfter(
                 'stepBefore',
                 stepAfter: new Step(WorkflowTestStep0::class)
             );
+        $this->assertNotSame($workflow, $workflowWithAddedSteps);
         $this->assertSame([
             'stepBefore',
             'stepAfter',
             'step',
-        ], $workflow->steps()->keys());
+        ], $workflowWithAddedSteps->steps()->keys());
         $this->expectException(BadMethodCallException::class);
-        $workflow->withAdded(
+        $workflowWithAddedSteps->withAddedStep(
             step3: new Step(
                 WorkflowTestStep1::class,
                 missing: '${not-found:reference}'
@@ -93,11 +97,11 @@ final class WorkflowTest extends TestCase
     public function testWithAddedBeforeOutOfBounds(): void
     {
         $workflow = (new Workflow(new Steps()))
-            ->withAdded(
+            ->withAddedStep(
                 found: new Step(WorkflowTestStep0::class)
             );
         $this->expectException(OutOfBoundsException::class);
-        $workflow->withAddedBefore(
+        $workflow->withAddedStepBefore(
             'not-found',
             test: new Step(WorkflowTestStep0::class)
         );
@@ -107,9 +111,9 @@ final class WorkflowTest extends TestCase
     {
         $step = new Step(WorkflowTestStep0::class);
         $workflow = (new Workflow(new Steps(step: $step)))
-            ->withAdded(found: $step);
+            ->withAddedStep(found: $step);
         $this->expectException(OutOfBoundsException::class);
-        $workflow->withAddedAfter(
+        $workflow->withAddedStepAfter(
             'not-found',
             test: new Step(WorkflowTestStep0::class)
         );
@@ -122,7 +126,7 @@ final class WorkflowTest extends TestCase
             foo: 'foo'
         );
         $workflow = (new Workflow(new Steps(step: $step)))
-            ->withAdded(name: $step);
+            ->withAddedStep(name: $step);
         $this->assertSame($step, $workflow->steps()->get('name'));
     }
 
@@ -140,7 +144,7 @@ final class WorkflowTest extends TestCase
         $this->assertTrue($workflow->parameters()->has('foo'));
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $workflow = $workflow
-            ->withAdded(
+            ->withAddedStep(
                 step2: new Step(
                     WorkflowTestStep2::class,
                     foo: '${step1:bar}',
@@ -153,7 +157,7 @@ final class WorkflowTest extends TestCase
         $this->assertSame(['foo'], $workflow->getVar('${foo}'));
         $this->assertSame(['step1', 'bar'], $workflow->getVar('${step1:bar}'));
         $this->expectException(InvalidArgumentException::class);
-        $workflow->withAdded(
+        $workflow->withAddedStep(
             step: new Step(
                 WorkflowTestStep1::class,
                 foo: '${not:found}'
@@ -172,7 +176,7 @@ final class WorkflowTest extends TestCase
             $this->assertSame($className, $workflow->steps()->dependencies()->key($key));
         }
         $this->expectException(OverflowException::class);
-        $workflow->withAdded(
+        $workflow->withAddedStep(
             step1: new Step(WorkflowTestStepDeps1::class)
         );
     }

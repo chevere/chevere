@@ -41,7 +41,7 @@ interface WorkflowInterface extends Countable
      *
      * @throws OverflowException
      */
-    public function withAdded(StepInterface ...$steps): self;
+    public function withAddedStep(StepInterface ...$steps): self;
 
     /**
      * Return an instance with the specified `$step` added before `$before`.
@@ -51,7 +51,7 @@ interface WorkflowInterface extends Countable
      *
      * @throws OverflowException
      */
-    public function withAddedBefore(string $before, StepInterface ...$steps): self;
+    public function withAddedStepBefore(string $before, StepInterface ...$steps): self;
 
     /**
      * Return an instance with the specified `$step` added after `$after`.
@@ -61,7 +61,7 @@ interface WorkflowInterface extends Countable
      *
      * @throws OverflowException
      */
-    public function withAddedAfter(string $after, StepInterface ...$steps): self;
+    public function withAddedStepAfter(string $after, StepInterface ...$steps): self;
 
     public function parameters(): ParametersInterface;
 

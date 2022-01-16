@@ -64,7 +64,7 @@ final class Workflow implements WorkflowInterface
         return $this->vars;
     }
 
-    public function withAdded(StepInterface ...$steps): WorkflowInterface
+    public function withAddedStep(StepInterface ...$steps): WorkflowInterface
     {
         $new = clone $this;
         $new->steps = $new->steps->withAdded(...$steps);
@@ -73,24 +73,24 @@ final class Workflow implements WorkflowInterface
         return $new;
     }
 
-    public function withAddedBefore(string $before, StepInterface ...$steps): WorkflowInterface
+    public function withAddedStepBefore(string $before, StepInterface ...$steps): WorkflowInterface
     {
         $new = clone $this;
         $new->steps = $new->steps->withAddedBefore($before, ...$steps);
         foreach ($steps as $name => $step) {
-            $name = (string) $name;
+            $name = strval($name);
             $new->setParameters($name, $step);
         }
 
         return $new;
     }
 
-    public function withAddedAfter(string $after, StepInterface ...$steps): WorkflowInterface
+    public function withAddedStepAfter(string $after, StepInterface ...$steps): WorkflowInterface
     {
         $new = clone $this;
         $new->steps = $new->steps->withAddedAfter($after, ...$steps);
         foreach ($steps as $name => $step) {
-            $name = (string) $name;
+            $name = strval($name);
             $new->setParameters($name, $step);
         }
 
@@ -112,6 +112,7 @@ final class Workflow implements WorkflowInterface
             return $this->vars->get($variable);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (TypeError $e) {
             throw new TypeException(previous: $e);
         }
@@ -130,6 +131,7 @@ final class Workflow implements WorkflowInterface
             return $this->provided->get($step);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (TypeError $e) {
             throw new TypeException(previous: $e);
         } catch (\OutOfBoundsException $e) {
@@ -240,7 +242,7 @@ final class Workflow implements WorkflowInterface
     private function putAdded(StepInterface ...$steps): void
     {
         foreach ($steps as $name => $step) {
-            $name = (string) $name;
+            $name = strval($name);
             $this->setParameters($name, $step);
         }
     }

@@ -33,7 +33,7 @@ final class Steps implements StepsInterface
     use MapTrait;
 
     /**
-     * @var string[]
+     * @var Vector string[]
      */
     private Vector $steps;
 
@@ -62,6 +62,7 @@ final class Steps implements StepsInterface
             return $this->map->get($step);
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (TypeError $e) {
             throw new TypeException(previous: $e);
         }
@@ -143,7 +144,7 @@ final class Steps implements StepsInterface
     {
         foreach ($steps as $name => $step) {
             $this->handleStepDependencies($step);
-            $name = (string) $name;
+            $name = strval($name);
             $this->addMap($name, $step);
             $this->steps->push($name);
         }

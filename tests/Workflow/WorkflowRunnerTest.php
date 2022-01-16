@@ -35,7 +35,7 @@ final class WorkflowRunnerTest extends TestCase
         $foo = 'hola';
         $bar = 'mundo';
         $workflow = (new Workflow(new Steps()))
-            ->withAdded(
+            ->withAddedStep(
                 step1: new Step(
                     WorkflowRunnerTestStep1::class,
                     foo: '${foo}'
@@ -86,7 +86,7 @@ final class WorkflowRunnerTest extends TestCase
         $foo = 'hola';
         $bar = 'mundo';
         $workflow = (new Workflow(new Steps()))
-            ->withAdded(
+            ->withAddedStep(
                 step1: new Step(
                     WorkflowRunnerTestDependentStep1::class,
                     foo: '${foo}'

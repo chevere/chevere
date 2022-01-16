@@ -33,7 +33,7 @@ final class WorkflowRunTest extends TestCase
     public function testConstruct(): void
     {
         $workflow = (new Workflow(new Steps()))
-            ->withAdded(
+            ->withAddedStep(
                 steps: new Step(
                     WorkflowRunTestStep1::class,
                     foo: '${foo}',
@@ -53,10 +53,10 @@ final class WorkflowRunTest extends TestCase
         $workflowRun->get('not-found');
     }
 
-    public function testWithAdded(): void
+    public function testWithStepResponse(): void
     {
         $workflow = (new Workflow(new Steps()))
-            ->withAdded(
+            ->withAddedStep(
                 step0: new Step(
                     WorkflowRunTestStep1::class,
                     foo: '${foo}'
@@ -72,20 +72,23 @@ final class WorkflowRunTest extends TestCase
             'bar' => 'mundo',
             'baz' => 'ql',
         ];
-        $workflowRun = (new WorkflowRun($workflow, ...$arguments))
+        $workflowRun = (new WorkflowRun($workflow, ...$arguments));
+        $workflowRunWithStepResponse = $workflowRun
             ->withStepResponse('step0', new Response());
+        $this->assertNotSame($workflowRun, $workflowRunWithStepResponse);
         $this->assertTrue($workflow->vars()->has('${foo}'));
         $this->assertTrue($workflow->vars()->has('${baz}'));
-        $this->assertTrue($workflowRun->has('step0'));
-        $this->assertSame([], $workflowRun->get('step0')->data());
+        $this->assertTrue($workflowRunWithStepResponse->has('step0'));
+        $this->assertSame([], $workflowRunWithStepResponse->get('step0')->data());
         $this->expectException(ArgumentCountException::class);
-        $workflowRun->withStepResponse('step0', new Response(extra: 'not-allowed'));
+        $workflowRunWithStepResponse
+            ->withStepResponse('step0', new Response(extra: 'not-allowed'));
     }
 
     public function testWithAddedNotFound(): void
     {
         $workflow = (new Workflow(new Steps()))
-            ->withAdded(
+            ->withAddedStep(
                 step0: new Step(
                     WorkflowRunTestStep1::class,
                     foo: '${foo}'
@@ -105,7 +108,7 @@ final class WorkflowRunTest extends TestCase
     public function testWithAddedMissingArguments(): void
     {
         $workflow = (new Workflow(new Steps()))
-            ->withAdded(
+            ->withAddedStep(
                 step0: new Step(WorkflowRunTestStep0::class),
                 step1: new Step(
                     WorkflowRunTestStep1::class,
