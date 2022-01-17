@@ -52,6 +52,23 @@ final class VarObject implements VarObjectInterface
         }
     }
 
+    private function breadcrumbIterable(iterable $var): void
+    {
+        $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
+        $iterableKey = $this->breadcrumb->pos();
+        foreach ($var as $key => $val) {
+            $key = strval($key);
+            $this->breadcrumb = $this->breadcrumb
+                ->withAddedItem('key: ' . $key);
+            $memberKey = $this->breadcrumb->pos();
+            $this->assertVarClonable($val);
+            $this->breadcrumb = $this->breadcrumb
+                ->withRemovedItem($memberKey);
+        }
+        $this->breadcrumb = $this->breadcrumb
+            ->withRemovedItem($iterableKey);
+    }
+
     private function breadcrumbObject(object $var): void
     {
         $this->breadcrumb = $this->breadcrumb
@@ -66,7 +83,6 @@ final class VarObject implements VarObjectInterface
         }
         $properties = $reflection->getProperties();
         foreach ($properties as $property) {
-            $property->setAccessible(true);
             $propertyType = $property->hasType()
                 ? $property->getType()->getName() . ' '
                 : '';
@@ -85,23 +101,5 @@ final class VarObject implements VarObjectInterface
         }
         $this->breadcrumb = $this->breadcrumb
             ->withRemovedItem($objectKey);
-    }
-
-    private function breadcrumbIterable(iterable $var): void
-    {
-        $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
-        $iterableKey = $this->breadcrumb->pos();
-        foreach ($var as $key => $val) {
-            $key = (string) $key;
-            $this->breadcrumb = $this->breadcrumb
-                ->withAddedItem('key: ' . $key);
-            $this->assertVarClonable($val);
-            $this->breadcrumb = $this->breadcrumb
-                ->withRemovedItem(
-                    $this->breadcrumb->pos()
-                );
-        }
-        $this->breadcrumb = $this->breadcrumb
-            ->withRemovedItem($iterableKey);
     }
 }

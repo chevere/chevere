@@ -21,12 +21,12 @@ use Chevere\Exceptions\VarSupport\VarStorableException;
 interface VarStorableInterface
 {
     /**
-     * @throws VarStorableException if `$var` can't be exported.
+     * @throws VarStorableException if `$var` is or contains a resource.
      */
     public function __construct($var);
 
     /**
-     * Provides access to `$var`.
+     * Provides access to passed `$var`.
      */
     public function var(): mixed;
 

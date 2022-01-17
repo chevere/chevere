@@ -37,23 +37,30 @@ final class VarDumpTest extends TestCase
         $stream = $this->getStream();
         $writer = new StreamWriter($stream);
         $var = new stdClass();
-        $varDump = $this->getVarDump()->withVars($var);
-        $this->assertEqualsCanonicalizing([$var], $varDump->vars());
-        $varDump->process($writer);
+        $varDump = $this->getVarDump();
+        $varDumpWithVars = $varDump->withVars($var);
+        $this->assertNotSame($varDump, $varDumpWithVars);
+        $this->assertEqualsCanonicalizing([$var], $varDumpWithVars->vars());
+        $varDumpWithVars->process($writer);
     }
 
     public function testWithShift(): void
     {
         $stream = $this->getStream();
         $writer = new StreamWriter($stream);
-        $varDump = $this->getVarDump()->withShift(1);
-        $this->assertSame(1, $varDump->shift());
-        $varDump->process($writer);
+        $varDump = $this->getVarDump();
+        $varDumpWithShift = $varDump->withShift(1);
+        $this->assertNotSame($varDump, $varDumpWithShift);
+        $this->assertSame(1, $varDumpWithShift->shift());
+        $varDumpWithShift->process($writer);
     }
 
     private function getVarDump(): VarDumpInterface
     {
-        return new VarDump(new VarDumpPlainFormatter(), new VarDumpPlainOutputter());
+        return new VarDump(
+            new VarDumpPlainFormatter(),
+            new VarDumpPlainOutputter()
+        );
     }
 
     private function getStream(): StreamInterface

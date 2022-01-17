@@ -62,14 +62,12 @@ final class VarStorable implements VarStorableInterface
     private function assertIsNotResource($var): void
     {
         if (is_resource($var)) {
-            if ($this->breadcrumb->count() > 0) {
-                $message = (new Message("Argument contains a resource which can't be exported at %at%"))
-                    ->code('%at%', $this->breadcrumb->toString());
-            } else {
-                $message = new Message("Argument is of type resource which can't be exported");
-            }
+            $message = $this->breadcrumb->count() > 0
+                ? (new Message("Argument contains a resource at %at%"))
+                    ->code('%at%', $this->breadcrumb->toString())
+                : new Message("Argument is of type resource.");
 
-            throw new VarStorableException($message);
+            throw new VarStorableException(message: $message);
         }
     }
 
@@ -81,7 +79,7 @@ final class VarStorable implements VarStorableInterface
         $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
         $iterableKey = $this->breadcrumb->pos();
         foreach ($var as $key => $val) {
-            $key = (string) $key;
+            $key = strval($key);
             $this->breadcrumb = $this->breadcrumb
                 ->withAddedItem('key: ' . $key);
             $memberKey = $this->breadcrumb->pos();
@@ -101,7 +99,6 @@ final class VarStorable implements VarStorableInterface
         $reflection = new ReflectionObject($var);
         $properties = $reflection->getProperties();
         foreach ($properties as $property) {
-            $property->setAccessible(true);
             $propertyType = $property->hasType()
                 ? $property->getType()->getName() . ' '
                 : '';

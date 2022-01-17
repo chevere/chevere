@@ -15,6 +15,7 @@ namespace Chevere\Tests\VarSupport;
 
 use Chevere\Components\VarSupport\VarStorable;
 use Chevere\Exceptions\VarSupport\VarStorableException;
+use Chevere\Tests\VarSupport\_resources\ClassWithResource;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -22,11 +23,12 @@ final class VarStorableTest extends TestCase
 {
     public function testNotExportable(): void
     {
-        $this->expectException(VarStorableException::class);
         $resource = fopen(__FILE__, 'r');
         if (!is_resource($resource)) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
+        $this->expectException(VarStorableException::class);
+        $this->expectExceptionMessageMatches('/ of type resource/');
         /** @var resource $resource */
         new VarStorable($resource);
         fclose($resource);
@@ -39,8 +41,21 @@ final class VarStorableTest extends TestCase
         if (!is_resource($resource)) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
-        $object->array = [1, 2, 3, $resource];
+        $childObject = new ClassWithResource($resource);
+        $object->array = [1, 2, 3, $childObject];
+        $atBreadcrumb = [
+            'object: stdClass',
+            'property: $array',
+            '(iterable)',
+            'key: 3',
+            'object: ' . $childObject::class,
+            'property: array $array',
+            '(iterable)',
+            'key: 0',
+        ];
+        $atString = '[' . implode('][', $atBreadcrumb) . ']';
         $this->expectException(VarStorableException::class);
+        $this->expectExceptionMessage($atString);
         new VarStorable($object);
         /** @var resource $resource */
         fclose($resource);

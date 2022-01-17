@@ -51,16 +51,18 @@ final class VarDumpable implements VarDumpableInterface
     private function assertSetProcessorName(): void
     {
         $processorName = VarDumperInterface::PROCESSORS[$this->type] ?? null;
-        if (! isset($processorName)) {
+        if (!isset($processorName)) {
             // @codeCoverageIgnoreStart
+            // @infection-ignore-all
             throw new LogicException(
                 (new Message('No processor for variable of type %type%'))
                     ->code('%type%', $this->type)
             );
             // @codeCoverageIgnoreEnd
         }
-        if (! is_subclass_of($processorName, VarDumpProcessorInterface::class, true)) {
+        if (!is_subclass_of($processorName, VarDumpProcessorInterface::class, true)) {
             // @codeCoverageIgnoreStart
+            // @infection-ignore-all
             throw new LogicException(
                 (new Message('Processor %processorName% must implement the %interfaceName% interface'))
                     ->code('%processorName%', $processorName)

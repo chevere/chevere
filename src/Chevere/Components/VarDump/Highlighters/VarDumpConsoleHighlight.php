@@ -43,6 +43,7 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
                 $dump = $this->color->apply("color[${style}]", $dump);
             }
             // @codeCoverageIgnoreStart
+            // @infection-ignore-all
             catch (Throwable) {
                 // Ignore if color not supported
             }
