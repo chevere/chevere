@@ -59,9 +59,8 @@ final class VarDump implements VarDumpInterface
             $writer,
             $this->debugBacktrace,
             $this->formatter,
-            ...$this->vars
         ))
-            ->process($this->outputter);
+            ->process($this->outputter, ...$this->vars);
     }
 
     public function vars(): array
@@ -74,9 +73,11 @@ final class VarDump implements VarDumpInterface
         return $this->shift;
     }
 
+    /**
+     * @infection-ignore-all
+     */
     private function setDebugBacktrace(): void
     {
-        // 0: helper or maker (like xdd), 1: where 0 got called
         $this->debugBacktrace = debug_backtrace();
         for ($i = 0; $i <= $this->shift; $i++) {
             array_shift($this->debugBacktrace);

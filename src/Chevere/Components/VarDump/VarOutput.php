@@ -20,39 +20,35 @@ use Chevere\Interfaces\Writer\WriterInterface;
 
 final class VarOutput implements VarOutputInterface
 {
-    private array $vars;
-
     public function __construct(
         private WriterInterface $writer,
         private array $backtrace,
-        private VarDumpFormatInterface $formatter,
-        ...$vars
+        private VarDumpFormatInterface $format,
     ) {
-        $this->vars = $vars;
     }
 
-    public function process(VarDumpOutputInterface $outputter): void
+    public function process(VarDumpOutputInterface $outputter, ...$vars): void
     {
         $outputter->setUp($this->writer, $this->backtrace);
         $outputter->prepare();
-        $outputter->writeCallerFile($this->formatter);
-        $this->handleArgs();
+        $outputter->writeCallerFile($this->format);
+        $this->handleArgs($vars);
         $outputter->tearDown();
     }
 
-    private function handleArgs(): void
+    private function handleArgs(array $vars): void
     {
         $aux = 0;
-        foreach ($this->vars as $name => $value) {
+        foreach ($vars as $name => $value) {
             $aux++;
             $varDumper = new VarDumper(
                 $this->writer,
-                $this->formatter,
+                $this->format,
                 new VarDumpable($value)
             );
             $this->writer->write(
                 str_repeat("\n", (int) ($aux === 1 ?: 2))
-                . "Arg:" . (string) $name . ' '
+                . "Arg:" . strval($name) . ' '
             );
             $varDumper->withProcess();
         }

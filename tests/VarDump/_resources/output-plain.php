@@ -17,5 +17,7 @@ return '
 %fileLine%
 
 Arg:name null
+
+Arg:id integer 123 (length=3)
 ------------------------------------------------------------
 ';

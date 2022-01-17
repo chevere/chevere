@@ -42,6 +42,19 @@ final class VarDumpTest extends TestCase
         $this->assertNotSame($varDump, $varDumpWithVars);
         $this->assertEqualsCanonicalizing([$var], $varDumpWithVars->vars());
         $varDumpWithVars->process($writer);
+        $line = strval(__LINE__ - 1);
+        $hrLine = str_repeat('-', 60);
+        $expectedString = "\n"
+            . $varDump::class . '->process()'
+            . "\n"
+            . $hrLine
+            . "\n"
+            . __FILE__ . ':' . $line
+            . "\n\n"
+            . 'Arg:0 stdClass#' . spl_object_id($var)
+            . "\n" . $hrLine
+            . "\n";
+        $this->assertSame($expectedString, $writer->toString());
     }
 
     public function testWithShift(): void
