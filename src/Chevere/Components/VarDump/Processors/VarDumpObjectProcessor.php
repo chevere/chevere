@@ -61,12 +61,12 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
     public function write(): void
     {
         $this->varDumper->writer()->write(
-            $this->varDumper->formatter()
+            $this->varDumper->format()
                 ->highlight(
                     VarDumperInterface::CLASS_REG,
                     $this->className
                 ) .
-            $this->varDumper->formatter()
+            $this->varDumper->format()
                 ->highlight(
                     VarDumperInterface::OPERATOR,
                     '#' . (string) $this->objectId
@@ -94,7 +94,7 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
             $this->varDumper->writer()->write(' ');
             (new VarDumper(
                 $this->varDumper->writer(),
-                $this->varDumper->formatter(),
+                $this->varDumper->format(),
                 new VarDumpable($this->var->toArray())
             ))
                 ->withDepth($this->depth)
@@ -139,21 +139,21 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
         $this->varDumper->writer()->write(
             implode(' ', [
                 "\n" . $this->varDumper->indentString(),
-                $this->varDumper->formatter()->highlight(
+                $this->varDumper->format()->highlight(
                     VarDumperInterface::MODIFIERS,
                     $modifiers
                 ),
-                $this->varDumper->formatter()
+                $this->varDumper->format()
                     ->highlight(
                         VarDumperInterface::VARIABLE,
-                        '$' . $this->varDumper->formatter()->filterEncodedChars($name)
+                        '$' . $this->varDumper->format()->filterEncodedChars($name)
                     ),
                 '',
             ])
         );
         (new VarDumper(
             $this->varDumper->writer(),
-            $this->varDumper->formatter(),
+            $this->varDumper->format(),
             new VarDumpable($var)
         ))
             ->withDepth(

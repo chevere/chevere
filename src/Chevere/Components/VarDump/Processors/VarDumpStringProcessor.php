@@ -39,7 +39,7 @@ final class VarDumpStringProcessor implements VarDumpProcessorInterface
         $this->varDumper->writer()->write(
             implode(' ', [
                 $this->typeHighlighted(),
-                $this->varDumper->formatter()->filterEncodedChars(
+                $this->varDumper->format()->filterEncodedChars(
                     $this->varDumper->dumpable()->var()
                 ),
                 $this->highlightParentheses($this->info),

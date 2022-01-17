@@ -29,7 +29,7 @@ final class VarDumpResourceProcessor implements VarDumpProcessorInterface
     ) {
         $this->assertType();
         $this->info = 'type=' . get_resource_type($this->varDumper->dumpable()->var());
-        $this->stringVar = $this->varDumper->formatter()->highlight(
+        $this->stringVar = $this->varDumper->format()->highlight(
             $this->type(),
             (string) $this->varDumper->dumpable()->var()
         );

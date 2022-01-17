@@ -32,7 +32,7 @@ final class VarDumper implements VarDumperInterface
 
     public function __construct(
         private WriterInterface $writer,
-        private VarDumpFormatInterface $formatter,
+        private VarDumpFormatInterface $format,
         private VarDumpableInterface $dumpable
     ) {
         $this->known = new Set();
@@ -44,9 +44,9 @@ final class VarDumper implements VarDumperInterface
         return $this->writer;
     }
 
-    public function formatter(): VarDumpFormatInterface
+    public function format(): VarDumpFormatInterface
     {
-        return $this->formatter;
+        return $this->format;
     }
 
     public function dumpable(): VarDumpableInterface
@@ -58,7 +58,7 @@ final class VarDumper implements VarDumperInterface
     {
         $new = clone $this;
         $new->indent = $indent;
-        $new->indentString = $new->formatter->indent($indent);
+        $new->indentString = $new->format->indent($indent);
 
         return $new;
     }
