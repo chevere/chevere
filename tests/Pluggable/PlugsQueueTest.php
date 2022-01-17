@@ -44,14 +44,15 @@ final class PlugsQueueTest extends TestCase
     {
         $hook = new TestHook();
         $plugQueue = new PlugsQueue(new HookPlugType());
-        $plugQueue = $plugQueue->withAdded($hook);
+        $plugQueueWithAdded = $plugQueue->withAdded($hook);
+        $this->assertNotSame($plugQueue, $plugQueueWithAdded);
         $this->assertSame([
             $hook->anchor() => [
                 0 => [
                     $hook::class,
                 ],
             ],
-        ], $plugQueue->toArray());
+        ], $plugQueueWithAdded->toArray());
     }
 
     public function testWithAlreadyAddedPlug(): void

@@ -81,10 +81,12 @@ final class PlugsMapCacheTest extends TestCase
         $workingCache = new Cache($this->workingDir);
         $cache = new Cache($workingCache->dir()->getChild('empty/'));
         $plugsMap = new PlugsMap(new HookPlugType());
-        $plugsMapCache = (new PlugsMapCache($cache))
+        $plugsMapCache = new PlugsMapCache($cache);
+        $plugsMapCacheWithPut = $plugsMapCache
             ->withPut($plugsMap);
+        $this->assertNotSame($plugsMapCache, $plugsMapCacheWithPut);
         $this->expectException(OutOfBoundsException::class);
-        $plugsMapCache->getPlugsQueueTypedFor('workingEmpty');
+        $plugsMapCacheWithPut->getPlugsQueueTypedFor('workingEmpty');
     }
 
     public function testClassMapCorruptedQueue(): void
