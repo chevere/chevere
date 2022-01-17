@@ -93,6 +93,8 @@ final class VarObject implements VarObjectInterface
                     . '$' . $property->getName()
                 );
             $propertyKey = $this->breadcrumb->pos();
+            // @infection-ignore-all
+            $property->setAccessible(true);
             if ($property->isInitialized($var)) {
                 $this->assertVarClonable($property->getValue($var));
             }

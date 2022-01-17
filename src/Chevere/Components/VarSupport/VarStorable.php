@@ -109,6 +109,8 @@ final class VarStorable implements VarStorableInterface
                     . '$' . $property->getName()
                 );
             $propertyKey = $this->breadcrumb->pos();
+            // @infection-ignore-all
+            $property->setAccessible(true);
             if ($property->isInitialized($var)) {
                 $this->assertExportable($property->getValue($var));
             }
