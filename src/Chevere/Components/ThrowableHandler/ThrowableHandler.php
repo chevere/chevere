@@ -51,6 +51,7 @@ final class ThrowableHandler implements ThrowableHandlerInterface
             );
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         catch (Throwable $e) {
             throw new RuntimeException(
                 (new Message('Unable to create %var%: %error%'))
@@ -59,7 +60,7 @@ final class ThrowableHandler implements ThrowableHandlerInterface
             );
         }
         // @codeCoverageIgnoreEnd
-        $this->id = uniqid('', false);
+        $this->id = uniqid('');
     }
 
     public function withIsDebug(bool $isDebug): ThrowableHandlerInterface

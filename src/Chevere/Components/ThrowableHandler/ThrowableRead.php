@@ -124,13 +124,11 @@ final class ThrowableRead implements ThrowableReadInterface
     {
         $accepted = array_keys(ThrowableReadInterface::ERROR_TYPES);
         if (!in_array($this->severity, $accepted, true)) {
-            // @codeCoverageIgnoreStart
             throw new RangeException(
                 (new Message('Unknown severity value of %severity%, accepted values are: %accepted%'))
                     ->code('%severity%', (string) $this->severity)
                     ->code('%accepted%', implode(', ', $accepted))
             );
-            // @codeCoverageIgnoreEnd
         }
     }
 
@@ -145,6 +143,7 @@ final class ThrowableRead implements ThrowableReadInterface
 
     /**
      * @codeCoverageIgnore
+     * @infection-ignore-all
      */
     private function setTrace(Throwable $throwable): void
     {

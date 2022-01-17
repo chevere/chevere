@@ -34,8 +34,11 @@ final class ThrowableHandlerTest extends TestCase
 
     public function testWithDebug(): void
     {
+        $handler = $this->getExceptionHandler();
+        $handlerWithDebug = $handler->withIsDebug(true);
+        $this->assertNotSame($handler, $handlerWithDebug);
         $this->assertTrue(
-            $this->getExceptionHandler()->withIsDebug(true)->isDebug()
+            $handlerWithDebug->isDebug()
         );
     }
 

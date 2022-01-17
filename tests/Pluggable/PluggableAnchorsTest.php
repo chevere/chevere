@@ -29,11 +29,12 @@ final class PluggableAnchorsTest extends TestCase
     public function testWithAddedAnchor(): void
     {
         $anchor = 'anchor';
-        $pluggableAnchors = (new PluggableAnchors())
+        $pluggableAnchors = new PluggableAnchors();
+        $pluggableAnchorsWithAdded = $pluggableAnchors
             ->withAdded($anchor);
-        $this->assertCount(1, $pluggableAnchors->clonedSet());
-        $this->assertTrue($pluggableAnchors->has($anchor));
+        $this->assertCount(1, $pluggableAnchorsWithAdded->clonedSet());
+        $this->assertTrue($pluggableAnchorsWithAdded->has($anchor));
         $this->expectException(OverflowException::class);
-        $pluggableAnchors->withAdded($anchor);
+        $pluggableAnchorsWithAdded->withAdded($anchor);
     }
 }
