@@ -51,6 +51,11 @@ interface ThrowableHandlerFormatterInterface
     public function wrapLink(string $value): string;
 
     /**
+     * Returns `$value` formatted as hidden element.
+     */
+    public function wrapHidden(string $value): string;
+
+    /**
      * Returns `$value` formatted as section title.
      */
     public function wrapSectionTitle(string $value): string;

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Documents;
 
-use function Chevere\Components\Filesystem\fileForPath;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerHtmlDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
 use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerHtmlFormatter;
@@ -54,8 +53,6 @@ final class HtmlDocumentTest extends TestCase
         $string = $document->toString();
         $this->assertStringContainsString('<html><head><meta charset="utf-8">', $string);
         $this->assertStringContainsString('<main class="main--stack">', $string);
-        // $file = fileForPath(__DIR__ . '/html.html');
-        // $file->put($string);
     }
 
     public function testHandlerDebugOff(): void

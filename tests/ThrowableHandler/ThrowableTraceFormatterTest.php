@@ -20,6 +20,13 @@ use PHPUnit\Framework\TestCase;
 
 final class ThrowableTraceFormatterTest extends TestCase
 {
+    private string $hrLine;
+
+    protected function setUp(): void
+    {
+        $this->hrLine = str_repeat('-', 60);
+    }
+
     public function testRealStackTrace(): void
     {
         $e = new Exception('Message', 100);
@@ -30,7 +37,7 @@ final class ThrowableTraceFormatterTest extends TestCase
 
     public function testEmptyStackTrace(): void
     {
-        $trace = [
+        $backtrace = [
             0 => [
                 'file' => null,
                 'line' => null,
@@ -40,16 +47,19 @@ final class ThrowableTraceFormatterTest extends TestCase
                 'args' => [0, null],
             ],
         ];
-        $trace = new ThrowableTraceFormatter($trace, new ThrowableHandlerPlainFormatter());
+        $traceFormatter = new ThrowableTraceFormatter(
+            $backtrace,
+            new ThrowableHandlerPlainFormatter()
+        );
         $this->assertSame([
             0 => "#0 \n()",
-        ], $trace->toArray());
+        ], $traceFormatter->toArray());
         $this->assertSame(
-            '------------------------------------------------------------' .
+            $this->hrLine .
             "\n#0 " .
             "\n()" .
-            "\n------------------------------------------------------------",
-            $trace->toString()
+            "\n" . $this->hrLine,
+            $traceFormatter->toString()
         );
     }
 
@@ -60,7 +70,7 @@ final class ThrowableTraceFormatterTest extends TestCase
         $fqn = 'The\\Full\\className';
         $type = '->';
         $method = 'methodName';
-        $trace = [
+        $backtrace = [
             0 => [
                 'file' => $file,
                 'line' => $line,
@@ -69,20 +79,31 @@ final class ThrowableTraceFormatterTest extends TestCase
                 'type' => $type,
                 'args' => [],
             ],
-        ];
-        $trace = new ThrowableTraceFormatter($trace, new ThrowableHandlerPlainFormatter());
-        $this->assertSame(
-            [
-                0 => "#0 ${file}:${line}\n${fqn}${type}${method}()",
+            1 => [
+                'file' => $file,
+                'line' => $line,
+                'function' => $method,
+                'class' => $fqn,
+                'type' => $type,
+                'args' => [],
             ],
-            $trace->toArray()
+        ];
+        $traceFormatter = new ThrowableTraceFormatter(
+            $backtrace,
+            new ThrowableHandlerPlainFormatter()
         );
-        $this->assertSame(
-            '------------------------------------------------------------' .
-            "\n#0 ${file}:${line}" .
-            "\n${fqn}${type}${method}()" .
-            "\n------------------------------------------------------------",
-            $trace->toString()
-        );
+        $expectEntries = [];
+        foreach (array_keys($backtrace) as $pos) {
+            $expect = "#{$pos} ${file}:${line}\n${fqn}${type}${method}()";
+            $expectEntries[] = $expect;
+            $this->assertSame(
+                $expect,
+                $traceFormatter->toArray()[$pos]
+            );
+        }
+        $expectString = $this->hrLine . "\n" .
+            implode("\n" . $this->hrLine . "\n", $expectEntries) . "\n" .
+            $this->hrLine;
+        $this->assertSame($expectString, $traceFormatter->toString());
     }
 }

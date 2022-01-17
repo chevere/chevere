@@ -18,6 +18,7 @@ use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
 use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerConsoleFormatter;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
+use Colors\Color;
 use Exception;
 use LogicException;
 use PHPUnit\Framework\TestCase;
@@ -38,10 +39,21 @@ final class ConsoleDocumentTest extends TestCase
             )
         ));
         $document = new ThrowableHandlerConsoleDocument($handler);
-        $this->assertInstanceOf(ThrowableHandlerConsoleFormatter::class, $document->getFormatter());
+        $this->assertSame(
+            (new Color())->isSupported()
+                ? '[31m[1m%title%[0m[0m in [34m[4m%fileLine%[0m[0m'
+                : '%title% in %fileLine%',
+            $document->getSectionTitle()
+        );
+        $this->assertInstanceOf(
+            ThrowableHandlerConsoleFormatter::class,
+            $document->getFormatter()
+        );
         $sectionTitle = $document->getSectionTitle();
         $plainDocument = new ThrowableHandlerPlainDocument($handler);
-        $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());
+        $this->assertTrue(
+            strlen($sectionTitle) > $plainDocument->getSectionTitle()
+        );
         $document->toString();
     }
 }

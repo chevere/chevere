@@ -18,7 +18,7 @@ use Chevere\Interfaces\VarDump\VarDumperInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class TraceEntryTest extends TestCase
+final class ThrowableTraceEntryTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
@@ -66,12 +66,14 @@ final class TraceEntryTest extends TestCase
         foreach ($entry as $method => $val) {
             $this->assertSame($val, $traceEntry->{$method}());
         }
+        $this->assertSame($line, $traceEntry->line());
         $this->assertSame($filename . ':' . $line, $traceEntry->fileLine());
     }
 
     public function testAnonClass(): void
     {
-        $fileLine = __FILE__ . ':' . __LINE__;
+        $line = __LINE__ + 1;
+        $fileLine = __FILE__ . ':' . strval($line);
         $entry = [
             'file' => null,
             'line' => null,
@@ -81,8 +83,29 @@ final class TraceEntryTest extends TestCase
             'args' => [],
         ];
         $traceEntry = new ThrowableTraceEntry($entry);
-        $this->assertSame(VarDumperInterface::CLASS_ANON, $traceEntry->class());
+        $this->assertSame(
+            VarDumperInterface::CLASS_ANON,
+            $traceEntry->class()
+        );
+        $this->assertSame($line, $traceEntry->line());
         $this->assertSame($fileLine, $traceEntry->fileLine());
+    }
+
+    public function testMissingAnonClassFile(): void
+    {
+        $line = 100;
+        $anonPath = '/path/to/file.php';
+        $anonFileLine = $anonPath . ':' . strval($line);
+        $entry = [
+            'file' => null,
+            'line' => null,
+            'function' => __FUNCTION__,
+            'class' => 'class@anonymous' . $anonFileLine . '$b5',
+            'type' => '->',
+        ];
+        $traceEntry = new ThrowableTraceEntry($entry);
+        $this->assertSame($line, $traceEntry->line());
+        $this->assertSame($anonFileLine, $traceEntry->fileLine());
     }
 
     public function testMissingClassFile(): void
@@ -90,13 +113,27 @@ final class TraceEntryTest extends TestCase
         $line = __LINE__ - 2;
         $entry = [
             'file' => null,
-            'line' => $line,
+            'line' => null,
             'function' => __FUNCTION__,
             'class' => __CLASS__,
             'type' => '->',
             'args' => [1, '2'],
         ];
         $traceEntry = new ThrowableTraceEntry($entry);
+        $this->assertSame($line, $traceEntry->line());
         $this->assertSame(__FILE__ . ':' . $line, $traceEntry->fileLine());
+    }
+
+    public function testMissingFileLine(): void
+    {
+        $entry = [
+            'file' => 'duh',
+            'line' => null,
+            'function' => '',
+            'class' => '',
+            'type' => '->',
+        ];
+        $traceEntry = new ThrowableTraceEntry($entry);
+        $this->assertSame(0, $traceEntry->line());
     }
 }

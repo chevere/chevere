@@ -27,7 +27,7 @@ final class ThrowableHandlerConsoleDocument extends ThrowableHandlerDocument
     public function getSectionTitle(): string
     {
         return strtr('%t in %f', [
-            '%t' => (string) (new Color(self::TAG_TITLE))->bold()->red(),
+            '%t' => strval((new Color(self::TAG_TITLE))->bold()->red()),
             '%f' => $this->formatter->wrapLink(self::TAG_FILE_LINE),
         ]);
     }

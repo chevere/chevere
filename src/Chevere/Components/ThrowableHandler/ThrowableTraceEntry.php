@@ -90,7 +90,7 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
     {
         $missing = [];
         foreach (self::MUST_HAVE_KEYS as $key) {
-            if (! array_key_exists($key, $this->entry)) {
+            if (!array_key_exists($key, $this->entry)) {
                 $missing[] = $key;
             }
         }
@@ -106,10 +106,7 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
     {
         $this->line = $this->entry['line'] ?? 0;
         $this->args = $this->entry['args'] ?? [];
-        foreach (self::KEYS as $propName) {
-            if (in_array($propName, ['line', 'args'], true)) {
-                continue;
-            }
+        foreach (array_diff(self::KEYS, ['line', 'args']) as $propName) {
             $this->{$propName} = $this->entry[$propName] ?? '';
         }
     }
@@ -120,7 +117,7 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
             /** @var class-string $this->class */
             $reflector = new ReflectionMethod($this->class, $this->function);
             $filename = $reflector->getFileName();
-            if ($filename !== false) {
+            if ($filename) {
                 $this->file = $filename;
                 $this->line = $reflector->getStartLine();
             }
@@ -129,8 +126,11 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
 
     private function handleAnonClass()
     {
-        if ((new StrBool($this->class))->startsWith(VarDumperInterface::CLASS_ANON)) {
-            preg_match('#^class@anonymous(.*):(\d+)#', $this->class, $matches);
+        if (
+            (new StrBool($this->class))
+                ->startsWith(VarDumperInterface::CLASS_ANON)
+        ) {
+            preg_match('#class@anonymous(.*):(\d+)#', $this->class, $matches);
             $this->class = VarDumperInterface::CLASS_ANON;
             $this->file = $matches[1];
             $this->line = (int) $matches[2];

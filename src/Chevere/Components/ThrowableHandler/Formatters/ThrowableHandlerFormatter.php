@@ -57,6 +57,11 @@ abstract class ThrowableHandlerFormatter implements ThrowableHandlerFormatterInt
         return $value;
     }
 
+    public function wrapHidden(string $value): string
+    {
+        return $value;
+    }
+
     public function wrapSectionTitle(string $value): string
     {
         return $value;

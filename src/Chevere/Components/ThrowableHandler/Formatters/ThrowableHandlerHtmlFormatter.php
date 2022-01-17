@@ -38,23 +38,26 @@ final class ThrowableHandlerHtmlFormatter extends ThrowableHandlerFormatter
 
     public function getHr(): string
     {
-        return '<div class="hr"><span>------------------------------------------------------------</span></div>';
+        return '<div class="hr"><span>'
+            . str_repeat('-', 60)
+            . '</span></div>';
     }
 
     public function getLineBreak(): string
     {
         return "\n<br>\n";
     }
-
-    public function wrapSectionTitle(string $value): string
-    {
-        return '<div class="title">' .
-            str_replace('# ', $this->wrapHidden('#&nbsp;'), $value) . '</div>';
-    }
-
+    
     public function wrapHidden(string $value): string
     {
         return '<span class="hide">' . $value . '</span>';
+    }
+    
+    public function wrapSectionTitle(string $value): string
+    {
+        return '<div class="title">'
+            . str_replace('# ', $this->wrapHidden('#&nbsp;'), $value)
+            . '</div>';
     }
 
     public function wrapTitle(string $value): string

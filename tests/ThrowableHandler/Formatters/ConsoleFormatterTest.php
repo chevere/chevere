@@ -24,12 +24,13 @@ final class ConsoleFormatterTest extends TestCase
     {
         $plainFormatter = new ThrowableHandlerPlainFormatter();
         $consoleFormatter = new ThrowableHandlerConsoleFormatter();
-
         $array = [
             'getTraceEntryTemplate' => [],
             'getHr' => [],
+            'getLineBreak' => [],
             'wrapLink' => ['value'],
             'wrapSectionTitle' => ['value'],
+            'wrapTitle' => ['value'],
         ];
         foreach ($array as $methodName => $args) {
             $plain = $plainFormatter->{$methodName}(...$args);
