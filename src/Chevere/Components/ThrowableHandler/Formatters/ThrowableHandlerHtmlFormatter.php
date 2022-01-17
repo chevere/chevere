@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Formatters;
 
-use Chevere\Components\VarDump\Formatters\VarDumpHtmlFormatter;
+use Chevere\Components\VarDump\Format\VarDumpHtmlFormat;
 use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
-use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 
 final class ThrowableHandlerHtmlFormatter extends ThrowableHandlerFormatter
 {
-    public function getVarDumpFormatter(): VarDumpFormatterInterface
+    public function getVarDumpFormatter(): VarDumpFormatInterface
     {
-        return new VarDumpHtmlFormatter();
+        return new VarDumpHtmlFormat();
     }
 
     public function getTraceEntryTemplate(): string

@@ -18,12 +18,12 @@ use Chevere\Interfaces\Writer\WriterInterface;
 /**
  * Describes the component in charge of orchestrating the var dump output processing.
  */
-interface VarDumpOutputterInterface
+interface VarDumpOutputInterface
 {
     /**
      * Writes the caller file using the target formatter.
      */
-    public function writeCallerFile(VarDumpFormatterInterface $formatter): void;
+    public function writeCallerFile(VarDumpFormatInterface $formatter): void;
 
     /**
      * This method is executed before `prepare()`.

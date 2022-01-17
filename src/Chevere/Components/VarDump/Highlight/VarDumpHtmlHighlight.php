@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Highlighters;
+namespace Chevere\Components\VarDump\Highlight;
 
-use Chevere\Components\VarDump\Highlighters\Traits\AssertKeyTrait;
+use Chevere\Components\VarDump\Highlight\Traits\AssertKeyTrait;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;

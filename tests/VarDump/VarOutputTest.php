@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump;
 
 use Chevere\Components\Str\Str;
-use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter;
-use Chevere\Components\VarDump\Formatters\VarDumpHtmlFormatter;
-use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter;
-use Chevere\Components\VarDump\Outputters\VarDumpConsoleOutputter;
-use Chevere\Components\VarDump\Outputters\VarDumpHtmlOutputter;
-use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
-use Chevere\Components\VarDump\VarOutputter;
+use Chevere\Components\VarDump\Format\VarDumpConsoleFormat;
+use Chevere\Components\VarDump\Format\VarDumpHtmlFormat;
+use Chevere\Components\VarDump\Format\VarDumpPlainFormat;
+use Chevere\Components\VarDump\Output\VarDumpConsoleOutput;
+use Chevere\Components\VarDump\Output\VarDumpHtmlOutput;
+use Chevere\Components\VarDump\Output\VarDumpPlainOutput;
+use Chevere\Components\VarDump\VarOutput;
 use function Chevere\Components\Writer\streamTemp;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Tests\VarDump\Traits\DebugBacktraceTrait;
 use PHPUnit\Framework\TestCase;
 
-final class VarOutputterTest extends TestCase
+final class VarOutputTest extends TestCase
 {
     use DebugBacktraceTrait;
 
@@ -34,13 +34,13 @@ final class VarOutputterTest extends TestCase
     {
         $backtrace = $this->getDebugBacktrace();
         $writer = new StreamWriter(streamTemp(''));
-        $varOutputter = new VarOutputter(
+        $varOutputter = new VarOutput(
             $writer,
             $backtrace,
-            new VarDumpPlainFormatter(),
+            new VarDumpPlainFormat(),
             name: null,
         );
-        $varOutputter->process(new VarDumpPlainOutputter());
+        $varOutputter->process(new VarDumpPlainOutput());
         $this->assertSame(
             $this->getParsed($backtrace, 'output-plain'),
             $writer->toString(),
@@ -51,13 +51,13 @@ final class VarOutputterTest extends TestCase
     {
         $backtrace = $this->getDebugBacktrace();
         $writer = new StreamWriter(streamTemp(''));
-        $varOutputter = new VarOutputter(
+        $varOutputter = new VarOutput(
             $writer,
             $backtrace,
-            new VarDumpConsoleFormatter(),
+            new VarDumpConsoleFormat(),
             name: null,
         );
-        $varOutputter->process(new VarDumpConsoleOutputter());
+        $varOutputter->process(new VarDumpConsoleOutput());
         $parsed = $this->getParsed($backtrace, 'output-console-color');
         $string = $writer->toString();
         $parsed = (new Str($parsed))->withStripANSIColors()->toString();
@@ -69,13 +69,13 @@ final class VarOutputterTest extends TestCase
     {
         $backtrace = $this->getDebugBacktrace();
         $writer = new StreamWriter(streamTemp(''));
-        $varOutputter = new VarOutputter(
+        $varOutputter = new VarOutput(
             $writer,
             $backtrace,
-            new VarDumpHtmlFormatter(),
+            new VarDumpHtmlFormat(),
             name: null,
         );
-        $varOutputter->process(new VarDumpHtmlOutputter());
+        $varOutputter->process(new VarDumpHtmlOutput());
         $parsed = $this->getParsed($backtrace, 'output-html');
         $this->assertSame($parsed, $writer->toString());
     }

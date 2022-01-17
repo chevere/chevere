@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Outputters;
+namespace Chevere\Components\VarDump\Output;
 
-final class VarDumpHtmlOutputter extends VarDumpAbstractOutputter
+final class VarDumpHtmlOutput extends VarDumpAbstractOutput
 {
     public const BACKGROUND = '#132537';
 

@@ -62,7 +62,7 @@ interface VarDumperInterface
 
     public function __construct(
         WriterInterface $writer,
-        VarDumpFormatterInterface $formatter,
+        VarDumpFormatInterface $formatter,
         VarDumpableInterface $dumpable
     );
 
@@ -74,7 +74,7 @@ interface VarDumperInterface
     /**
      * Provides access to the `$formatter` instance.
      */
-    public function formatter(): VarDumpFormatterInterface;
+    public function formatter(): VarDumpFormatInterface;
 
     /**
      * Provides access to the `$dumpable` instance.

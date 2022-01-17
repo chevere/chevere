@@ -14,12 +14,12 @@ declare(strict_types=1);
 // @codeCoverageIgnoreStart
 
 namespace Chevere\Components\VarDump {
-    use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter;
-    use Chevere\Components\VarDump\Formatters\VarDumpHtmlFormatter;
-    use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter;
-    use Chevere\Components\VarDump\Outputters\VarDumpConsoleOutputter;
-    use Chevere\Components\VarDump\Outputters\VarDumpHtmlOutputter;
-    use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
+    use Chevere\Components\VarDump\Format\VarDumpConsoleFormat;
+    use Chevere\Components\VarDump\Format\VarDumpHtmlFormat;
+    use Chevere\Components\VarDump\Format\VarDumpPlainFormat;
+    use Chevere\Components\VarDump\Output\VarDumpConsoleOutput;
+    use Chevere\Components\VarDump\Output\VarDumpHtmlOutput;
+    use Chevere\Components\VarDump\Output\VarDumpPlainOutput;
     use function Chevere\Components\Writer\streamFor;
     use Chevere\Components\Writer\StreamWriter;
     use Chevere\Components\Writer\Writers;
@@ -32,8 +32,8 @@ namespace Chevere\Components\VarDump {
     {
         return
                 new VarDump(
-                    new VarDumpPlainFormatter(),
-                    new VarDumpPlainOutputter()
+                    new VarDumpPlainFormat(),
+                    new VarDumpPlainOutput()
                 );
     }
 
@@ -41,8 +41,8 @@ namespace Chevere\Components\VarDump {
     {
         return
             new VarDump(
-                new VarDumpConsoleFormatter(),
-                new VarDumpConsoleOutputter()
+                new VarDumpConsoleFormat(),
+                new VarDumpConsoleOutput()
             );
     }
 
@@ -50,8 +50,8 @@ namespace Chevere\Components\VarDump {
     {
         return
             new VarDump(
-                new VarDumpHtmlFormatter(),
-                new VarDumpHtmlOutputter()
+                new VarDumpHtmlFormat(),
+                new VarDumpHtmlOutput()
             );
     }
 

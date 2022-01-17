@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
-use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter;
-use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
+use Chevere\Components\VarDump\Format\VarDumpPlainFormat;
+use Chevere\Components\VarDump\Output\VarDumpPlainOutput;
 use Chevere\Components\VarDump\VarDump;
 use function Chevere\Components\Writer\streamTemp;
 use Chevere\Components\Writer\StreamWriter;
@@ -58,8 +58,8 @@ final class VarDumpTest extends TestCase
     private function getVarDump(): VarDumpInterface
     {
         return new VarDump(
-            new VarDumpPlainFormatter(),
-            new VarDumpPlainOutputter()
+            new VarDumpPlainFormat(),
+            new VarDumpPlainOutput()
         );
     }
 

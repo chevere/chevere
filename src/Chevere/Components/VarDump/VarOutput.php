@@ -13,25 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
-use Chevere\Interfaces\VarDump\VarDumpOutputterInterface;
-use Chevere\Interfaces\VarDump\VarOutputterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
+use Chevere\Interfaces\VarDump\VarDumpOutputInterface;
+use Chevere\Interfaces\VarDump\VarOutputInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 
-final class VarOutputter implements VarOutputterInterface
+final class VarOutput implements VarOutputInterface
 {
     private array $vars;
 
     public function __construct(
         private WriterInterface $writer,
         private array $backtrace,
-        private VarDumpFormatterInterface $formatter,
+        private VarDumpFormatInterface $formatter,
         ...$vars
     ) {
         $this->vars = $vars;
     }
 
-    public function process(VarDumpOutputterInterface $outputter): void
+    public function process(VarDumpOutputInterface $outputter): void
     {
         $outputter->setUp($this->writer, $this->backtrace);
         $outputter->prepare();

@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Outputters;
+namespace Chevere\Components\VarDump\Output;
 
-final class VarDumpPlainOutputter extends VarDumpAbstractOutputter
+final class VarDumpPlainOutput extends VarDumpAbstractOutput
 {
     private string $outputHr = '------------------------------------------------------------';
 

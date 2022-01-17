@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\VarDump;
 /**
  * Describes the component in charge of formatting the var dump strings.
  */
-interface VarDumpFormatterInterface
+interface VarDumpFormatInterface
 {
     /**
      * Get indent for the given `$indent` size.

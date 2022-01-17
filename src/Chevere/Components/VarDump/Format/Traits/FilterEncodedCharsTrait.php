@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Formatters\Traits;
+namespace Chevere\Components\VarDump\Format\Traits;
 
-trait IndentTrait
+trait FilterEncodedCharsTrait
 {
-    public function indent(int $indent): string
+    public function filterEncodedChars(string $string): string
     {
-        return str_repeat(' ', $indent);
+        return $string;
     }
 }

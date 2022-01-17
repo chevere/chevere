@@ -15,23 +15,23 @@ namespace Chevere\Components\ThrowableHandler\Formatters;
 
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
-use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 
 abstract class ThrowableHandlerFormatter implements ThrowableHandlerFormatterInterface
 {
-    protected VarDumpFormatterInterface $varDumpFormatter;
+    protected VarDumpFormatInterface $varDumpFormatter;
 
     final public function __construct()
     {
         $this->varDumpFormatter = $this->getVarDumpFormatter();
     }
 
-    final public function varDumpFormatter(): VarDumpFormatterInterface
+    final public function varDumpFormatter(): VarDumpFormatInterface
     {
         return $this->varDumpFormatter;
     }
 
-    abstract public function getVarDumpFormatter(): VarDumpFormatterInterface;
+    abstract public function getVarDumpFormatter(): VarDumpFormatInterface;
 
     public function getTraceEntryTemplate(): string
     {

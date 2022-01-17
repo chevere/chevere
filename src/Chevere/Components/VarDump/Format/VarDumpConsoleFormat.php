@@ -11,17 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Formatters;
+namespace Chevere\Components\VarDump\Format;
 
-use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
-use Chevere\Components\VarDump\Formatters\Traits\IndentTrait;
-use Chevere\Components\VarDump\Highlighters\VarDumpConsoleHighlight;
+use Chevere\Components\VarDump\Format\Traits\FilterEncodedCharsTrait;
+use Chevere\Components\VarDump\Format\Traits\IndentTrait;
+use Chevere\Components\VarDump\Highlight\VarDumpConsoleHighlight;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 
-final class VarDumpConsoleFormatter implements VarDumpFormatterInterface
+final class VarDumpConsoleFormat implements VarDumpFormatInterface
 {
     use IndentTrait;
+
     use FilterEncodedCharsTrait;
 
     public function emphasis(string $string): string

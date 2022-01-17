@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Outputters;
+namespace Chevere\Components\VarDump\Output;
 
-use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
-use Chevere\Interfaces\VarDump\VarDumpOutputterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
+use Chevere\Interfaces\VarDump\VarDumpOutputInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 
-abstract class VarDumpAbstractOutputter implements VarDumpOutputterInterface
+abstract class VarDumpAbstractOutput implements VarDumpOutputInterface
 {
     private WriterInterface $writer;
 
@@ -25,7 +25,7 @@ abstract class VarDumpAbstractOutputter implements VarDumpOutputterInterface
 
     private string $caller;
 
-    public function writeCallerFile(VarDumpFormatterInterface $formatter): void
+    public function writeCallerFile(VarDumpFormatInterface $formatter): void
     {
         $item = $this->backtrace[0] ?? null;
         if ($item !== null && isset($item['file'])) {

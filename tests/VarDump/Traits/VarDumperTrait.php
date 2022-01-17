@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Traits;
 
-use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter;
+use Chevere\Components\VarDump\Format\VarDumpPlainFormat;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 use function Chevere\Components\Writer\streamTemp;
@@ -26,7 +26,7 @@ trait VarDumperTrait
     {
         return new VarDumper(
             new StreamWriter(streamTemp('')),
-            new VarDumpPlainFormatter(),
+            new VarDumpPlainFormat(),
             new VarDumpable($var)
         );
     }

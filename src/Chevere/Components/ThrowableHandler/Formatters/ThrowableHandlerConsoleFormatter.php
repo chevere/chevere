@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Formatters;
 
-use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter as VarDumpFormatter;
+use Chevere\Components\VarDump\Format\VarDumpConsoleFormat as VarDumpFormatter;
 use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
-use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 use Colors\Color;
 
 final class ThrowableHandlerConsoleFormatter extends ThrowableHandlerFormatter
 {
-    public function getVarDumpFormatter(): VarDumpFormatterInterface
+    public function getVarDumpFormatter(): VarDumpFormatInterface
     {
         return new VarDumpFormatter();
     }

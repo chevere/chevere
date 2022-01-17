@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\VarDump\Highlighters;
+namespace Chevere\Tests\VarDump\Highlight;
 
-use Chevere\Components\VarDump\Highlighters\VarDumpConsoleHighlight;
+use Chevere\Components\VarDump\Highlight\VarDumpConsoleHighlight;
 use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use PHPUnit\Framework\TestCase;

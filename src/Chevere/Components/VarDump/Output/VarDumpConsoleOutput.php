@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Outputters;
+namespace Chevere\Components\VarDump\Output;
 
 use Colors\Color;
 use Throwable;
 
-final class VarDumpConsoleOutputter extends VarDumpAbstractOutputter
+final class VarDumpConsoleOutput extends VarDumpAbstractOutput
 {
     private string $outputHr;
 

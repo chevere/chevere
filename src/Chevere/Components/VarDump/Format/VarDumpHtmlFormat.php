@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Formatters;
+namespace Chevere\Components\VarDump\Format;
 
-use Chevere\Components\VarDump\Highlighters\VarDumpHtmlHighlight;
+use Chevere\Components\VarDump\Highlight\VarDumpHtmlHighlight;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 
-final class VarDumpHtmlFormatter implements VarDumpFormatterInterface
+final class VarDumpHtmlFormat implements VarDumpFormatInterface
 {
     public const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid rgba(108 108 108 / 35%);"></span>  ';
 

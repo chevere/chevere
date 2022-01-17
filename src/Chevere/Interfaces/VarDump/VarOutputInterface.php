@@ -18,17 +18,17 @@ use Chevere\Interfaces\Writer\WriterInterface;
 /**
  * Describes the component in charge of writing information about a variable.
  */
-interface VarOutputterInterface
+interface VarOutputInterface
 {
     public function __construct(
         WriterInterface $writer,
         array $debugBacktrace,
-        VarDumpFormatterInterface $formatter,
+        VarDumpFormatInterface $formatter,
         ...$vars
     );
 
     /**
      * Process the var output streaming.
      */
-    public function process(VarDumpOutputterInterface $outputter): void;
+    public function process(VarDumpOutputInterface $outputter): void;
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ThrowableHandler;
 
-use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 
 /**
  * Describes the component in charge of formatting a throwable handler document.
@@ -21,14 +21,14 @@ use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 interface ThrowableHandlerFormatterInterface
 {
     /**
-     * Provides access to the VarDumpFormatterInterface instance.
+     * Provides access to the VarDumpFormatInterface instance.
      */
-    public function varDumpFormatter(): VarDumpFormatterInterface;
+    public function varDumpFormatter(): VarDumpFormatInterface;
 
     /**
-     * Get a new object implementing the VarDumpFormatterInterface.
+     * Get a new object implementing the VarDumpFormatInterface.
      */
-    public function getVarDumpFormatter(): VarDumpFormatterInterface;
+    public function getVarDumpFormatter(): VarDumpFormatInterface;
 
     /**
      * Returns the template used for each trace entry.

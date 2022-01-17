@@ -11,15 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Formatters;
+namespace Chevere\Components\VarDump\Format;
 
-use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
-use Chevere\Components\VarDump\Formatters\Traits\IndentTrait;
-use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
+use Chevere\Components\VarDump\Format\Traits\FilterEncodedCharsTrait;
+use Chevere\Components\VarDump\Format\Traits\IndentTrait;
+use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 
-final class VarDumpPlainFormatter implements VarDumpFormatterInterface
+final class VarDumpPlainFormat implements VarDumpFormatInterface
 {
     use IndentTrait;
+
     use FilterEncodedCharsTrait;
 
     public function highlight(string $key, string $string): string

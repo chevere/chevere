@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Highlighters\Traits;
+namespace Chevere\Components\VarDump\Highlight\Traits;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfRangeException;
@@ -22,7 +22,7 @@ trait AssertKeyTrait
 
     protected function assertKey(string $key): void
     {
-        if (! array_key_exists($key, $this->palette())) {
+        if (!array_key_exists($key, $this->palette())) {
             throw new OutOfRangeException(
                 (new Message('Invalid key %keyName%, expecting one of the following palette keys: %keys%'))
                     ->code('%keyName%', $key)
