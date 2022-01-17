@@ -65,17 +65,20 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
                 ->highlight(
                     VarDumperInterface::CLASS_REG,
                     $this->className
-                ) .
+                )
+            .
             $this->varDumper->format()
                 ->highlight(
                     VarDumperInterface::OPERATOR,
-                    '#' . (string) $this->objectId
+                    '#' . strval($this->objectId)
                 )
         );
         if ($this->known->contains($this->objectId)) {
             $this->varDumper->writer()->write(
-                ' ' .
-                $this->highlightOperator($this->circularReference() . ' #' . $this->objectId)
+                ' '
+                . $this->highlightOperator(
+                    $this->circularReference() . ' #' . $this->objectId
+                )
             );
 
             return;
@@ -99,7 +102,9 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
             ))
                 ->withDepth($this->depth)
                 ->withIndent(
-                    $this->varDumper->indent() > 1 ? $this->varDumper->indent() - 1 : $this->varDumper->indent()
+                    $this->varDumper->indent() > 1
+                        ? $this->varDumper->indent() - 1
+                        : $this->varDumper->indent()
                 )
                 ->withKnownObjects($this->known)
                 ->withProcess();
@@ -122,7 +127,10 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
                 }
                 $properties[$property->getName()] = [
                     $property->getName(),
-                    implode(' ', Reflection::getModifierNames($property->getModifiers())),
+                    implode(
+                        ' ',
+                        Reflection::getModifierNames($property->getModifiers())
+                    ),
                     $value ?? null,
                 ];
             }
@@ -168,7 +176,10 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
 
     private function handleNormalizeClassName(): void
     {
-        if ((new StrBool($this->className))->startsWith(VarDumperInterface::CLASS_ANON)) {
+        if (
+            (new StrBool($this->className))
+                ->startsWith(VarDumperInterface::CLASS_ANON)
+        ) {
             $this->className = VarDumperInterface::CLASS_ANON;
         }
     }

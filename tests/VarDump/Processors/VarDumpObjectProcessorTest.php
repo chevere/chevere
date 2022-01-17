@@ -16,6 +16,7 @@ namespace Chevere\Tests\VarDump\Processors;
 use Chevere\Components\VarDump\Processors\VarDumpObjectProcessor;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
+use Chevere\Tests\VarDump\_resources\DummyClass;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use Ds\Map;
 use PHPUnit\Framework\TestCase;
@@ -24,6 +25,11 @@ use stdClass;
 final class VarDumpObjectProcessorTest extends TestCase
 {
     use VarDumperTrait;
+
+    private function hookTestOutput(string $expected, array $lines): void
+    {
+        $this->assertSame(implode("\n", $lines), $expected);
+    }
 
     public function testInvalidArgument(): void
     {
@@ -34,166 +40,150 @@ final class VarDumpObjectProcessorTest extends TestCase
     public function testEmptyObject(): void
     {
         $object = new stdClass();
-        $id = (string) spl_object_id($object);
+        $id = strval(spl_object_id($object));
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
         $this->assertSame(1, $processor->depth());
         $this->assertSame(stdClass::class . '#' . $id, $processor->info());
         $processor->write();
-        $this->assertSame(stdClass::class . '#' . $id, $varDumper->writer()->toString());
+        $this->assertSame(
+            stdClass::class . '#' . $id,
+            $varDumper->writer()->toString()
+        );
     }
 
     public function testUnsetObject(): void
     {
         $object = new DummyClass();
-        $id = (string) spl_object_id($object);
+        $id = strval(spl_object_id($object));
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
         $this->assertSame(DummyClass::class . '#' . $id, $processor->info());
         $processor->write();
-        $string = $varDumper->writer()->toString();
-        $this->assertStringContainsString(
-            'public $public null',
-            $string
-        );
-        $this->assertStringContainsString(
-            'private $protected null',
-            $string
-        );
-        $this->assertStringContainsString(
-            'private $private null',
-            $string
-        );
-        $this->assertStringContainsString(
-            'private $circularReference null',
-            $string
-        );
+        $stringEls = [
+            $object::class . '#' . strval(spl_object_id($object)),
+            ' public $public null',
+            ' private $private null',
+            ' private $protected null',
+            ' private $circularReference null',
+            ' private $deep null',
+        ];
+        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
     }
 
     public function testObjectProperty(): void
     {
-        $varDumper = $this->getVarDumper((new DummyClass())->withPublic());
+        $object = (new DummyClass())->withPublic();
+        $id = strval(spl_object_id($object));
+        $pubId = strval(spl_object_id($object->public));
+        $varDumper = $this->getVarDumper($object);
         (new VarDumpObjectProcessor($varDumper))->write();
-        $this->assertStringContainsString(
-            'public $public stdClass',
-            $varDumper->writer()->toString()
-        );
+        $stringEls = [
+            $object::class . '#' . $id,
+            ' public $public stdClass#' . $pubId,
+            ' public $string string string (length=6)',
+            ' public $array array (size=0)',
+            ' public $int integer 1 (length=1)',
+            ' public $bool boolean true',
+            ' private $private null',
+            ' private $protected null',
+            ' private $circularReference null',
+            ' private $deep null',
+        ];
+        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
     }
 
     public function testAnonClass(): void
     {
         $object = new class() {
         };
-        $id = (string) spl_object_id($object);
+        $id = strval(spl_object_id($object));
         $varDumper = $this->getVarDumper($object);
         (new VarDumpObjectProcessor($varDumper))->write();
-        $this->assertSame('class@anonymous#' . $id, $varDumper->writer()->toString());
+        $this->assertSame(
+            'class@anonymous#' . $id,
+            $varDumper->writer()->toString()
+        );
     }
 
     public function testCircularReference(): void
     {
         $object = (new DummyClass())->withCircularReference();
-        $id = (string) spl_object_id($object);
+        $id = strval(spl_object_id($object));
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
         $processor->write();
-        $this->assertStringContainsString(
-            'private $circularReference ' . DummyClass::class . '#' . $id . ' ' . $processor->circularReference(),
-            $varDumper->writer()->toString()
-        );
+        $stringEls = [
+            $object::class . '#' . $id,
+            ' public $public null',
+            ' private $private null',
+            ' private $protected null',
+            ' private $circularReference '
+                . $object::class
+                . '#'
+                . $id
+                . ' *circular reference* #' . $id,
+            ' private $deep null',
+        ];
+        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
     }
 
     public function testDeep(): void
     {
-        $object = (new DummyClass())->withDeep(VarDumpProcessorInterface::MAX_DEPTH);
+        $deep = new stdClass();
+        for ($i = 0; $i <= VarDumpProcessorInterface::MAX_DEPTH; $i++) {
+            $deep = new class($deep) {
+                public function __construct(public $deep)
+                {
+                }
+            };
+            $objectIds[] = strval(spl_object_id($deep));
+        }
+        $objectIds = array_reverse($objectIds);
+        $object = (new DummyClass())
+            ->withDeep($deep);
+        $id = strval(spl_object_id($object));
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
         $processor->write();
-        $this->assertStringContainsString(
-            $processor->maxDepthReached(),
-            $varDumper->writer()->toString()
-        );
+        $stringEls = [
+            $object::class . '#' . $id,
+            ' public $public null',
+            ' private $private null',
+            ' private $protected null',
+            ' private $circularReference null',
+            ' private $deep class@anonymous#' . $objectIds[0],
+            ' public $deep class@anonymous#' . $objectIds[1],
+            '  public $deep class@anonymous#' . $objectIds[2],
+            '   public $deep class@anonymous#' . $objectIds[3],
+            '    public $deep class@anonymous#' . $objectIds[4],
+            '     public $deep class@anonymous#' . $objectIds[5],
+            '      public $deep class@anonymous#' . $objectIds[6],
+            '       public $deep class@anonymous#' . $objectIds[7],
+            '        public $deep class@anonymous#' . $objectIds[8],
+            '         public $deep class@anonymous#' . $objectIds[9]
+                . ' *max depth reached*',
+        ];
+        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
     }
 
     public function testDsCollection(): void
     {
         $key = 'key';
         $value = 'value';
-        $object = new Map([
-            $key => $value,
-        ]);
+        $objectChild = new Map(['test']);
+        $object = new Map([$key => $value, 'map' => $objectChild]);
+        $id = strval(spl_object_id($object));
+        $idChild = strval(spl_object_id($objectChild));
         $varDumper = $this->getVarDumper($object);
         $processor = new VarDumpObjectProcessor($varDumper);
         $processor->write();
-        $this->assertStringContainsString(
-            "${key} => string ${value}",
-            $varDumper->writer()->toString()
-        );
-    }
-}
-
-final class DummyClass
-{
-    public object $public;
-
-    private object $private;
-
-    private object $protected;
-
-    private object $circularReference;
-
-    private object $deep;
-
-    public function withPrivate(): self
-    {
-        $new = clone $this;
-        $new->private = new stdClass();
-
-        return $new;
-    }
-
-    public function withProtected(): self
-    {
-        $new = clone $this;
-        $new->protected = new stdClass();
-
-        return $new;
-    }
-
-    public function withPublic(): self
-    {
-        $new = clone $this;
-        $new->public = new stdClass();
-        $new->public->string = 'string';
-        $new->public->array = [];
-        $new->public->int = 1;
-        $new->public->bool = true;
-
-        return $new;
-    }
-
-    public function withCircularReference(): self
-    {
-        $new = clone $this;
-        $new->circularReference = $new;
-
-        return $new;
-    }
-
-    public function withDeep(int $deep): self
-    {
-        $new = clone $this;
-        $array = [
-            'deep' => [],
+        $stringEls = [
+            $object::class . '#' . $id . ' array (size=2)',
+            'key => string value (length=5)',
+            'map => Ds\Map#' . $idChild . ' array (size=1)',
+            ' 0 => string test (length=4)',
         ];
-        for ($i = 0; $i <= $deep; $i++) {
-            $array = [
-                'deep' => $array,
-            ];
-        }
-        $object = json_encode($array);
-        $new->deep = json_decode($object);
-
-        return $new;
+        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
     }
 }
