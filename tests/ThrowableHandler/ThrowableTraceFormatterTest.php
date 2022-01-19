@@ -44,7 +44,7 @@ final class ThrowableTraceFormatterTest extends TestCase
                 'function' => null,
                 'class' => null,
                 'type' => null,
-                'args' => [0, null],
+                'args' => [false, null],
             ],
         ];
         $traceFormatter = new ThrowableTraceFormatter(
@@ -52,12 +52,12 @@ final class ThrowableTraceFormatterTest extends TestCase
             new ThrowableHandlerPlainFormatter()
         );
         $this->assertSame([
-            0 => "#0 \n(integer 0, NULL)",
+            0 => "#0 \n(boolean false, NULL)",
         ], $traceFormatter->toArray());
         $this->assertSame(
             $this->hrLine .
             "\n#0 " .
-            "\n(integer 0, NULL)" .
+            "\n(boolean false, NULL)" .
             "\n" . $this->hrLine,
             $traceFormatter->toString()
         );

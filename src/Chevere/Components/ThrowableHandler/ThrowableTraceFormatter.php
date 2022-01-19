@@ -85,6 +85,7 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
         foreach ($entry->args() as $argument) {
             $return .= gettype($argument) . ' ';
             $return .= match (true) {
+                is_bool($argument) => $argument ? 'true' : 'false',
                 is_scalar($argument) => strval($argument),
                 is_array($argument) => 'array(' . count($argument) . ')',
                 is_object($argument) => get_class($argument) . '#'
