@@ -18,8 +18,12 @@ use Chevere\Exceptions\Core\OutOfRangeException;
 
 trait AssertKeyTrait
 {
-    abstract public function palette(): array;
+    abstract public static function palette(): array;
 
+    /**
+     * @infection-ignore-all
+     * @throws OutOfRangeException
+     */
     protected function assertKey(string $key): void
     {
         if (!array_key_exists($key, $this->palette())) {

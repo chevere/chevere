@@ -36,7 +36,7 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
         return '<span style="color:' . $this->color . '">' . $dump . '</span>';
     }
 
-    public function palette(): array
+    public static function palette(): array
     {
         return [
             TypeInterface::STRING => '#ff8700',

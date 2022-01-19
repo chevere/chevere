@@ -62,5 +62,5 @@ interface VarDumpHighlightInterface
      * ];
      * ```
      */
-    public function palette(): array;
+    public static function palette(): array;
 }

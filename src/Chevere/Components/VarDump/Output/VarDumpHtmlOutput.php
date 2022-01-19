@@ -36,6 +36,7 @@ final class VarDumpHtmlOutput extends VarDumpAbstractOutput
 
     public function prepare(): void
     {
+        // @infection-ignore-all
         if (!headers_sent() || headers_list() === []) {
             $this->hasHeader = true;
             $this->writer()->write(
