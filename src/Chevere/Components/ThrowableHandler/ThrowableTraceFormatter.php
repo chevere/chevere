@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler;
 
+use Chevere\Components\Str\Str;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableTraceEntryInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
@@ -27,7 +28,6 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
         private array $trace,
         private ThrowableHandlerFormatterInterface $formatter
     ) {
-        $this->string = '{main}';
         foreach ($this->trace as $pos => $entry) {
             $this->array[] = strtr(
                 $this->formatter->getTraceEntryTemplate(),
@@ -55,6 +55,7 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
         int $pos,
         ThrowableTraceEntryInterface $entry
     ): array {
+        $function = $this->getFunctionWithArguments($entry);
         $trValues = [
             self::TAG_ENTRY_CSS_EVEN_CLASS => ($pos & 1) !== 0
                 ? 'entry--even'
@@ -65,7 +66,7 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
             self::TAG_ENTRY_FILE_LINE => $entry->fileLine(),
             self::TAG_ENTRY_CLASS => $entry->class(),
             self::TAG_ENTRY_TYPE => $entry->type(),
-            self::TAG_ENTRY_FUNCTION => $entry->function() . '()',
+            self::TAG_ENTRY_FUNCTION => $function,
         ];
         $array = $trValues;
         foreach (self::HIGHLIGHT_TAGS as $tag => $key) {
@@ -75,6 +76,29 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
         }
         
         return $array;
+    }
+
+    private function getFunctionWithArguments(
+        ThrowableTraceEntryInterface $entry
+    ): string {
+        $return = '';
+        foreach ($entry->args() as $argument) {
+            $return .= gettype($argument) . ' ';
+            $return .= match (true) {
+                is_scalar($argument) => strval($argument),
+                is_array($argument) => 'array(' . count($argument) . ')',
+                is_object($argument) => get_class($argument) . '#'
+                    . strval(spl_object_id($argument)),
+                is_resource($argument) => get_resource_id($argument),
+                default => '',
+            };
+            $return .= ', ';
+        }
+        $return = (new Str($return))
+            ->withReplaceLast(', ', '')
+            ->toString();
+
+        return $entry->function() . '(' . trim($return) . ')';
     }
 
     private function wrapStringHr(string $text): string

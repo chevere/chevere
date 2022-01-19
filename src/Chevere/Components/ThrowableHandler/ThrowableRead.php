@@ -151,5 +151,10 @@ final class ThrowableRead implements ThrowableReadInterface
         if (($this->trace[0]['function'] ?? '') === ThrowableHandler::ERRORS_AS_EXCEPTIONS) {
             array_shift($this->trace);
         }
+        array_unshift($this->trace, [
+            'function' => '{main}',
+            'file' => $this->file,
+            'line' => $this->line,
+        ]);
     }
 }

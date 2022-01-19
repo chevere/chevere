@@ -35,9 +35,9 @@ final class ThrowableTraceFormatterTest extends TestCase
         $this->assertIsString($trace->toString());
     }
 
-    public function testEmptyStackTrace(): void
+    public function testNullStackTrace(): void
     {
-        $backtrace = [
+        $trace = [
             0 => [
                 'file' => null,
                 'line' => null,
@@ -48,16 +48,16 @@ final class ThrowableTraceFormatterTest extends TestCase
             ],
         ];
         $traceFormatter = new ThrowableTraceFormatter(
-            $backtrace,
+            $trace,
             new ThrowableHandlerPlainFormatter()
         );
         $this->assertSame([
-            0 => "#0 \n()",
+            0 => "#0 \n(integer 0, NULL)",
         ], $traceFormatter->toArray());
         $this->assertSame(
             $this->hrLine .
             "\n#0 " .
-            "\n()" .
+            "\n(integer 0, NULL)" .
             "\n" . $this->hrLine,
             $traceFormatter->toString()
         );
@@ -70,7 +70,7 @@ final class ThrowableTraceFormatterTest extends TestCase
         $fqn = 'The\\Full\\className';
         $type = '->';
         $method = 'methodName';
-        $backtrace = [
+        $trace = [
             0 => [
                 'file' => $file,
                 'line' => $line,
@@ -89,11 +89,11 @@ final class ThrowableTraceFormatterTest extends TestCase
             ],
         ];
         $traceFormatter = new ThrowableTraceFormatter(
-            $backtrace,
+            $trace,
             new ThrowableHandlerPlainFormatter()
         );
         $expectEntries = [];
-        foreach (array_keys($backtrace) as $pos) {
+        foreach (array_keys($trace) as $pos) {
             $expect = "#{$pos} ${file}:${line}\n${fqn}${type}${method}()";
             $expectEntries[] = $expect;
             $this->assertSame(
