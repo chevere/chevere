@@ -62,7 +62,7 @@ final class TranslatorMaker implements TranslatorMakerInterface
         $poFile->assertExists();
 
         try {
-            $translations = $new->poLoader->loadFile($poFile->path()->toString());
+            $translations = $new->poLoader->loadFile($poFile->path()->__toString());
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {
@@ -80,7 +80,7 @@ final class TranslatorMaker implements TranslatorMakerInterface
 
         try {
             (new ArrayGenerator())
-                ->generateFile($translations, $phpFile->path()->toString());
+                ->generateFile($translations, $phpFile->path()->__toString());
         }
         // @codeCoverageIgnoreStart
         catch (Throwable $e) {

@@ -40,8 +40,8 @@ final class RoutePathTest extends TestCase
         $this->assertSame('/path/{id}/it/{var}', $routePath->name());
         $this->assertSame(
             '~^(?|/path/(\d+)/it/([^/]+))$~',
-            $routePath->regex()->toString()
+            $routePath->regex()->__toString()
         );
-        $this->assertSame($string, $routePath->toString());
+        $this->assertSame($string, $routePath->__toString());
     }
 }

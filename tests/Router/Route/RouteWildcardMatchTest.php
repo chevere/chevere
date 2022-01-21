@@ -48,7 +48,7 @@ final class RouteWildcardMatchTest extends TestCase
     {
         $string = '[a-z]+';
         $routeWildcardMatch = new RouteWildcardMatch($string);
-        $this->assertSame($string, $routeWildcardMatch->toString());
+        $this->assertSame($string, $routeWildcardMatch->__toString());
         $this->assertSame('^' . $string . '$', $routeWildcardMatch->toAnchored());
     }
 }

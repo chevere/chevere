@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router\Route;
 
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of defining a route name.
  */
-interface RouteLocatorInterface extends ToStringInterface
+interface RouteLocatorInterface extends Stringable
 {
     public function __construct(string $repository, string $name);
 

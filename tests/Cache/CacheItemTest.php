@@ -40,7 +40,7 @@ final class CacheItemTest extends TestCase
     {
         $path = (new Path(__DIR__))->getChild('_resources')
             ->getChild('return-disposable.php');
-        $file = fileForPath($path->toString());
+        $file = fileForPath($path->__toString());
         $file->create();
         $file->put("return '';");
 
@@ -69,7 +69,7 @@ final class CacheItemTest extends TestCase
     {
         $path = $this->resourcesPath->getChild('return.php');
         $cacheItem = $this->getCacheItem($path);
-        $var = include $path->toString();
+        $var = include $path->__toString();
         $this->assertSame($var, $cacheItem->raw());
         $this->assertSame($var, $cacheItem->var());
     }
@@ -79,13 +79,13 @@ final class CacheItemTest extends TestCase
         $path = $this->resourcesPath->getChild('return-serialized.php');
         $this->writeSerialized($path);
         $cacheItem = $this->getCacheItem($path);
-        $var = include $path->toString();
+        $var = include $path->__toString();
         $this->assertSame($var, $cacheItem->raw());
         $this->assertEqualsCanonicalizing(
             unserialize($var),
             $cacheItem->var()
         );
-        unlink($path->toString());
+        unlink($path->__toString());
     }
 
     private function getCacheItem(PathInterface $path): CacheItemInterface
@@ -102,7 +102,7 @@ final class CacheItemTest extends TestCase
     private function writeSerialized(PathInterface $path): void
     {
         if (!$path->exists()) {
-            file_put_contents($path->toString(), '');
+            file_put_contents($path->__toString(), '');
         }
         $fileReturn = new FilePhpReturn(
             new FilePhp(

@@ -40,6 +40,6 @@ final class EventsRunnerTest extends TestCase
         $runner = new EventsRunner($eventsQueue, $writers);
         $data = ['data'];
         $runner->run($event->anchor(), $data);
-        $this->assertSame(implode(' ', $data), $writer->toString());
+        $this->assertSame(implode(' ', $data), $writer->__toString());
     }
 }

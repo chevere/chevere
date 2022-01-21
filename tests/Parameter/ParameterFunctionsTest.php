@@ -108,6 +108,6 @@ final class ParameterFunctionsTest extends TestCase
         );
         $this->assertSame($description, $parameter->description());
         $this->assertSame($default, $parameter->default());
-        $this->assertSame($regex, $parameter->regex()->toString());
+        $this->assertSame($regex, $parameter->regex()->__toString());
     }
 }

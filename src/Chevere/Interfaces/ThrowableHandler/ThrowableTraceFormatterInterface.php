@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\ThrowableHandler;
 
 use Chevere\Interfaces\Common\ToArrayInterface;
-use Chevere\Interfaces\Common\ToStringInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of formatting a throwable trace entry.
  */
-interface ThrowableTraceFormatterInterface extends ToArrayInterface, ToStringInterface
+interface ThrowableTraceFormatterInterface extends ToArrayInterface, Stringable
 {
     public const TAG_ENTRY_FILE = '%file%';
 

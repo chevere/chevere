@@ -15,12 +15,12 @@ namespace Chevere\Interfaces\Regex;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of interacting with PCRE - Perl Compatible Regular Expressions.
  */
-interface RegexInterface extends ToStringInterface
+interface RegexInterface extends Stringable
 {
     public const ERRORS = [
         // duh!

@@ -54,7 +54,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
 
         foreach ($plugsMap->getIterator() as $pluggableName => $plugsQueueTyped) {
             $classNameAsPath = (new Str($pluggableName))
-                    ->withForwardSlashes()->toString() . '/';
+                    ->withForwardSlashes()->__toString() . '/';
             $cacheAt = new Cache($new->cache->dir()->getChild($classNameAsPath));
             $queueName = (new ReflectionClass($plugsQueueTyped))->getShortName();
             $cacheAt = $cacheAt->withPut(
@@ -130,7 +130,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
             throw new RuntimeException(
                 previous: $e,
                 message: (new Message('Unable to retrieve cache for key %key%'))
-                    ->code('%key%', $this->classMapKey->toString()),
+                    ->code('%key%', $this->classMapKey->__toString()),
             );
         }
         // @codeCoverageIgnoreEnd
@@ -141,7 +141,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         if (!$this->cache->exists($this->classMapKey)) {
             throw new OutOfBoundsException(
                 (new Message('No cache exists at cache key %key%'))
-                    ->code('%key%', $this->classMapKey->toString()),
+                    ->code('%key%', $this->classMapKey->__toString()),
                 1
             );
         }

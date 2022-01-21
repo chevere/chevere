@@ -30,7 +30,7 @@ final class GroupSpec implements GroupSpecInterface
         $this->jsonPath = $specDir
             ->getChild("${groupName}/")
             ->path()
-            ->toString() . 'routes.json';
+            ->__toString() . 'routes.json';
         $this->key = $groupName;
         $this->routableSpecs = new RoutableSpecs();
     }

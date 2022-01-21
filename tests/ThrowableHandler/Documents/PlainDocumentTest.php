@@ -42,6 +42,6 @@ final class PlainDocumentTest extends TestCase
         $getTemplate = $document->getTemplate();
         $this->assertIsArray($getTemplate);
         $this->assertSame(ThrowableHandlerDocumentInterface::SECTIONS, array_keys($getTemplate));
-        $document->toString();
+        $document->__toString();
     }
 }

@@ -29,7 +29,7 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
         $this->assertRegexNoCapture();
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->string;
     }
@@ -42,7 +42,7 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
     public function assertRegexNoCapture(): void
     {
         $regex = new Regex('#' . $this->string . '#');
-        $string = $regex->toString();
+        $string = $regex->__toString();
         $regex = str_replace(['\(', '\)'], '', $string);
         if (strpos($regex, '(') !== false || strpos($regex, ')') !== false) {
             throw new UnexpectedValueException(

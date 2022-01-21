@@ -33,8 +33,8 @@ final class HookedTest extends TestCase
     {
         $resources = (new Path(__DIR__ . '/_resources/'));
         $hooksPath = (new Dir($resources))->getChild('HookedTest/hooks-reg/')
-            ->path()->toString();
-        $srcAt = $resources->toString();
+            ->path()->__toString();
+        $srcAt = $resources->__toString();
         $nsHookable = 'Chevere\Tests\Pluggable\Plug\Hook\_resources';
         $fsHooks = 'Chevere/Components/Hooks/Tests/';
         $classMap = new ClassMap();

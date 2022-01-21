@@ -48,7 +48,7 @@ final class IndexSpecTest extends TestCase
         $groupSpec = new GroupSpec($specDir, $repository);
         $spec = (new IndexSpec($specDir))->withAddedGroup($groupSpec);
         $this->assertSame(
-            $specDir->path()->toString() . 'index.json',
+            $specDir->path()->__toString() . 'index.json',
             $spec->jsonPath()
         );
         $this->assertSame(

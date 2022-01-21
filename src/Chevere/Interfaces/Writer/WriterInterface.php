@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Writer;
 
 use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of writing strings.
  */
-interface WriterInterface extends ToStringInterface
+interface WriterInterface extends Stringable
 {
     /**
      * Writes the given string.
@@ -31,5 +31,5 @@ interface WriterInterface extends ToStringInterface
     /**
      * Returns the contents written. Must not alter the file cursor.
      */
-    public function toString(): string;
+    public function __toString(): string;
 }

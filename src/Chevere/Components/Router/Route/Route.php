@@ -72,23 +72,23 @@ final class Route implements RouteInterface
         $new->assertNoConflict($endpoint);
         foreach ($new->path->wildcards()->getIterator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
-            $knownWildcardMatch = $new->wildcards[$wildcard->toString()] ?? null;
+            $knownWildcardMatch = $new->wildcards[$wildcard->__toString()] ?? null;
             /** @var StringParameterInterface $controllerParamMatch */
-            $controllerParamMatch = $endpoint->controller()->parameters()->get($wildcard->toString());
+            $controllerParamMatch = $endpoint->controller()->parameters()->get($wildcard->__toString());
             $controllerParamMatch = $controllerParamMatch->regex()->toNoDelimitersNoAnchors();
             if (!isset($knownWildcardMatch)) {
-                if ($controllerParamMatch !== $wildcard->match()->toString()) {
+                if ($controllerParamMatch !== $wildcard->match()->__toString()) {
                     throw new RouteWildcardConflictException(
                         (new Message('Wildcard %parameter% matches against %match% which is incompatible with the match %controllerMatch% defined for %controller%'))
-                            ->code('%parameter%', $wildcard->toString())
-                            ->code('%match%', $wildcard->match()->toString())
+                            ->code('%parameter%', $wildcard->__toString())
+                            ->code('%match%', $wildcard->match()->__toString())
                             ->code('%controllerMatch%', $controllerParamMatch)
                             ->code('%controller%', $endpoint->controller()::class)
                     );
                 }
-                $new->wildcards[$wildcard->toString()] = $controllerParamMatch;
+                $new->wildcards[$wildcard->__toString()] = $controllerParamMatch;
             }
-            $endpoint = $endpoint->withoutParameter($wildcard->toString());
+            $endpoint = $endpoint->withoutParameter($wildcard->__toString());
         }
         $new->endpoints = $new->endpoints->withPut($endpoint);
 
@@ -134,15 +134,15 @@ final class Route implements RouteInterface
             throw new InvalidArgumentException(
                 (new Message("Controller %controller% doesn't accept any parameter (route wildcard %wildcard%)"))
                     ->code('%controller%', $endpoint->controller()::class)
-                    ->code('%wildcard%', $wildcard->toString())
+                    ->code('%wildcard%', $wildcard->__toString())
             );
         }
-        if (!array_key_exists($wildcard->toString(), $endpoint->parameters())) {
+        if (!array_key_exists($wildcard->__toString(), $endpoint->parameters())) {
             $parameters = array_keys($endpoint->parameters());
 
             throw new OutOfBoundsException(
                 (new Message('Wildcard parameter %wildcard% must bind to one of the known %controller% parameters: %parameters%'))
-                    ->code('%wildcard%', $wildcard->toString())
+                    ->code('%wildcard%', $wildcard->__toString())
                     ->code('%controller%', $endpoint->controller()::class)
                     ->code('%parameters%', implode(', ', $parameters))
             );

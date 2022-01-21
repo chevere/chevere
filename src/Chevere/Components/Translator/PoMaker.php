@@ -67,7 +67,7 @@ final class PoMaker implements PoMakerInterface
         $new->phpScanner->setFunctions(self::FUNCTIONS);
         $iterator = $new->getIterator();
         $this->writer->write(
-            sprintf("📂 Starting dir %s iteration\n", $new->sourceDir->path()->toString())
+            sprintf("📂 Starting dir %s iteration\n", $new->sourceDir->path()->__toString())
         );
         $iterator->rewind();
         while ($iterator->valid()) {
@@ -94,7 +94,7 @@ final class PoMaker implements PoMakerInterface
 
     public function make(DirInterface $targetDir): void
     {
-        if (! isset($this->phpScanner)) {
+        if (!isset($this->phpScanner)) {
             throw new BadMethodCallException(
                 (new Message('Unable to call %method% without a %type% instance'))
                     ->code('%method%', __METHOD__)
@@ -113,7 +113,7 @@ final class PoMaker implements PoMakerInterface
             $translations->setLanguage($this->locale);
 
             try {
-                $generator->generateFile($translations, $poFile->path()->toString());
+                $generator->generateFile($translations, $poFile->path()->__toString());
             }
             // @codeCoverageIgnoreStart
             catch (\InvalidArgumentException $e) {

@@ -31,7 +31,7 @@ final class PathTest extends TestCase
     protected function setUp(): void
     {
         $this->testPath = new Path(__DIR__ . '/PathTest_' . uniqid() . '/');
-        $this->testDir = new Dir(new Path($this->testPath->toString()));
+        $this->testDir = new Dir(new Path($this->testPath->__toString()));
     }
 
     protected function tearDown(): void
@@ -99,13 +99,13 @@ final class PathTest extends TestCase
     public function testExistentDirPathRemoved(): void
     {
         $this->assertFalse($this->testPath->exists());
-        if (!mkdir($this->testPath->toString(), 0777, true)) {
-            throw new RuntimeException('Unable to create dir ' . $this->testPath->toString());
+        if (!mkdir($this->testPath->__toString(), 0777, true)) {
+            throw new RuntimeException('Unable to create dir ' . $this->testPath->__toString());
         }
         $this->assertTrue($this->testPath->exists());
         $this->assertTrue($this->testPath->isDir());
-        if (!rmdir($this->testPath->toString())) {
-            throw new RuntimeException('Unable to remove dir ' . $this->testPath->toString());
+        if (!rmdir($this->testPath->__toString())) {
+            throw new RuntimeException('Unable to remove dir ' . $this->testPath->__toString());
         }
         $this->assertFalse($this->testPath->exists());
         $this->assertFalse($this->testPath->isDir());
@@ -116,13 +116,13 @@ final class PathTest extends TestCase
         $this->testDir->create();
         $path = $this->testPath->getChild('test.txt');
         $this->assertFalse($path->exists());
-        if (file_put_contents($path->toString(), 'file put contents') === false) {
-            throw new RuntimeException('Unable to create file ' . $path->toString());
+        if (file_put_contents($path->__toString(), 'file put contents') === false) {
+            throw new RuntimeException('Unable to create file ' . $path->__toString());
         }
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isFile());
-        if (!unlink($path->toString())) {
-            throw new RuntimeException('Unable to remove file ' . $path->toString());
+        if (!unlink($path->__toString())) {
+            throw new RuntimeException('Unable to remove file ' . $path->__toString());
         }
         $this->assertFalse($path->exists());
         $this->assertFalse($path->isFile());

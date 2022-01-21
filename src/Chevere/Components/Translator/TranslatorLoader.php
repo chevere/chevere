@@ -57,7 +57,7 @@ final class TranslatorLoader implements TranslatorLoaderInterface
 
         try {
             return (new Translator())
-                ->loadTranslations($file->path()->toString());
+                ->loadTranslations($file->path()->__toString());
         }
         // @codeCoverageIgnoreStart
         catch (\InvalidArgumentException $e) {

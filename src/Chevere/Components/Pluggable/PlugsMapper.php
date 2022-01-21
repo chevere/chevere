@@ -57,7 +57,7 @@ final class PlugsMapper
             )
         );
         $this->writer->write(
-            sprintf("📂 Starting dir %s iteration\n", $dir->path()->toString())
+            sprintf("📂 Starting dir %s iteration\n", $dir->path()->__toString())
         );
         $iterator->rewind();
         while ($iterator->valid()) {
@@ -85,7 +85,7 @@ final class PlugsMapper
         /** @var class-string */
         $classString = "${namespace}\\${className}";
         $reflection = new ReflectionClass($classString);
-        if (! $reflection->isInterface() && $reflection->implementsInterface(PlugInterface::class)) {
+        if (!$reflection->isInterface() && $reflection->implementsInterface(PlugInterface::class)) {
             $plugName = $reflection->getName();
             /** @var PlugInterface $plug */
             $plug = new $plugName();

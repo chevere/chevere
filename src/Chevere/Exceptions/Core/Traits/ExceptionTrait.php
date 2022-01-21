@@ -25,7 +25,7 @@ trait ExceptionTrait
     {
         $this->_message = $message ?? new Message('');
 
-        parent::__construct($this->_message->toString(), $code, $previous);
+        parent::__construct($this->_message->__toString(), $code, $previous);
     }
 
     public function message(): MessageInterface

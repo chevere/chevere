@@ -37,6 +37,6 @@ final class PoMakerTest extends TestCase
         $poMaker = (new PoMaker($locale, 'messages'))
             ->withScanFor($dir->getChild('user/'));
         $poMaker->make($dir->getChild('make/'));
-        $this->assertFileExists($poFile->path()->toString());
+        $this->assertFileExists($poFile->path()->__toString());
     }
 }

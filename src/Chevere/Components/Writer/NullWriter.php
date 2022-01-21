@@ -27,7 +27,7 @@ final class NullWriter implements WriterInterface
         // null
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return '';
     }

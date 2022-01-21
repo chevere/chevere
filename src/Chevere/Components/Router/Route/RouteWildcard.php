@@ -28,7 +28,7 @@ final class RouteWildcard implements RouteWildcardInterface
         $this->assertName();
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->name;
     }
@@ -46,7 +46,7 @@ final class RouteWildcard implements RouteWildcardInterface
                     ->code('%string%', $this->name)
             );
         }
-        if (! preg_match(RouteWildcardInterface::ACCEPT_CHARS_REGEX, $this->name)) {
+        if (!preg_match(RouteWildcardInterface::ACCEPT_CHARS_REGEX, $this->name)) {
             throw new RouteWildcardInvalidException(
                 (new Message('String %string% must contain only alphanumeric and underscore characters'))
                     ->code('%string%', $this->name)

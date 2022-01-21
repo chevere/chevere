@@ -27,7 +27,7 @@ final class ControllerName implements ControllerNameInterface
         $this->assertController();
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->name;
     }

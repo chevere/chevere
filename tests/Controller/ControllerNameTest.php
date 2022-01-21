@@ -55,6 +55,6 @@ final class ControllerNameTest extends TestCase
     {
         $className = ControllerNameTestController::class;
         $controllerName = new ControllerName($className);
-        $this->assertSame($className, $controllerName->toString());
+        $this->assertSame($className, $controllerName->__toString());
     }
 }

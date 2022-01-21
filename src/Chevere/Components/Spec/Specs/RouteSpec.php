@@ -44,9 +44,9 @@ final class RouteSpec implements RouteSpecInterface
         $this->routeEndpointSpecs = new RouteEndpointSpecs();
         $specGroupRoute = $specDir
             ->getChild(ltrim($this->path, '/') . '/');
-        $this->jsonPath = $specGroupRoute->path()->toString() . 'route.json';
+        $this->jsonPath = $specGroupRoute->path()->__toString() . 'route.json';
 
-        $this->regex = $path->regex()->toString();
+        $this->regex = $path->regex()->__toString();
         $this->wildcards = $path->wildcards()->toArray();
         $routeEndpoints = $route->endpoints();
         /** @var string $key */
@@ -74,7 +74,7 @@ final class RouteSpec implements RouteSpecInterface
         $wildcardsArray = [];
         /** @var RouteWildcardInterface $wildcard */
         foreach ($this->wildcards as $wildcard) {
-            $wildcardsArray[$wildcard->toString()] = '^' . $wildcard->match()->toString() . '$';
+            $wildcardsArray[$wildcard->__toString()] = '^' . $wildcard->match()->__toString() . '$';
         }
 
         return [

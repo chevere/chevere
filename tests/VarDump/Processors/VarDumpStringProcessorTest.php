@@ -32,7 +32,7 @@ final class VarDumpStringProcessorTest extends TestCase
             $processor->write();
             $this->assertSame(
                 "string ${var} (${expectedInfo})",
-                $varDumper->writer()->toString(),
+                $varDumper->writer()->__toString(),
                 "string:${var}"
             );
         }

@@ -25,7 +25,7 @@ final class CacheKey implements CacheKeyInterface
         $this->assertKey();
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->key;
     }

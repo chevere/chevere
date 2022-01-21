@@ -90,7 +90,7 @@ function handleExceptionAs(ThrowableHandlerDocumentInterface $document): void
     } catch (LogicException $e) {
         $writer = new StreamWriter(streamFor('php://stderr', 'w'));
     }
-    $writer->write($document->toString() . "\n");
+    $writer->write($document->__toString() . "\n");
 
     die(255);
 }

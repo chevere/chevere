@@ -80,6 +80,6 @@ final class BenchmarkRunTest extends TestCase
         (new BenchmarkRun($benchmark))
             ->withTimes(1000)
             ->exec()
-            ->toString();
+            ->__toString();
     }
 }

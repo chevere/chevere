@@ -33,7 +33,7 @@ final class VarDumpFloatProcessorTest extends TestCase
             $processor->write();
             $this->assertSame(
                 "float ${stringVar} (${expectedInfo})",
-                $varDumper->writer()->toString()
+                $varDumper->writer()->__toString()
             );
         }
     }

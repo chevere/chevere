@@ -33,7 +33,7 @@ final class GroupSpecTest extends TestCase
         $specGroupPathJson = $specDir
             ->getChild("${repository}/")
             ->path()
-            ->toString() . 'routes.json';
+            ->__toString() . 'routes.json';
         $spec = new GroupSpec($specDir, $repository);
         $this->assertSame($specGroupPathJson, $spec->jsonPath());
         $this->assertSame(
@@ -53,7 +53,7 @@ final class GroupSpecTest extends TestCase
         $specDir = dirForPath('/spec/');
         $repository = 'repo';
         $groupSpecDir = $specDir->getChild("${repository}/");
-        $routesSpecPathJson = $groupSpecDir->path()->toString() . 'routes.json';
+        $routesSpecPathJson = $groupSpecDir->path()->__toString() . 'routes.json';
         $route = (new Route('test', new RoutePath('/route/path')))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod(), new TestController())

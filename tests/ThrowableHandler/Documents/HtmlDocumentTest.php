@@ -50,7 +50,7 @@ final class HtmlDocumentTest extends TestCase
         $sectionTitle = $document->getSectionTitle();
         $plainDocument = new ThrowableHandlerPlainDocument($this->exceptionHandler);
         $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());
-        $string = $document->toString();
+        $string = $document->__toString();
         $this->assertStringContainsString('<html><head><meta charset="utf-8">', $string);
         $this->assertStringContainsString('<main class="main--stack">', $string);
     }
@@ -63,7 +63,7 @@ final class HtmlDocumentTest extends TestCase
         $sectionTitle = $document->getSectionTitle();
         $plainDocument = new ThrowableHandlerPlainDocument($this->exceptionHandler);
         $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());
-        $string = $document->toString();
+        $string = $document->__toString();
         $this->assertStringContainsString('<html><head><meta charset="utf-8">', $string);
         $this->assertStringContainsString('Something went wrong', $string);
         $this->assertStringContainsString('Please try again later.', $string);

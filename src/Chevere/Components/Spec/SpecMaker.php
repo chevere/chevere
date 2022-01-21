@@ -106,7 +106,7 @@ final class SpecMaker implements SpecMakerInterface
             if (!$this->outputDir->path()->isWritable()) {
                 throw new Exception(
                     (new Message('Directory %pathName% is not writable'))
-                        ->code('%pathName%', $this->outputDir->path()->toString())
+                        ->code('%pathName%', $this->outputDir->path()->__toString())
                 );
             }
             $this->outputDir->removeContents();
@@ -145,7 +145,7 @@ final class SpecMaker implements SpecMakerInterface
             throw new FilesystemException(
                 previous: $e,
                 message: (new Message('Unable to make file %filename%'))
-                    ->code('%filename%', $filePath->toString()),
+                    ->code('%filename%', $filePath->__toString()),
             );
         }
         // @codeCoverageIgnoreEnd
@@ -156,8 +156,8 @@ final class SpecMaker implements SpecMakerInterface
         try {
             $dirPath = $this->outputDir->path();
             $child = (new Str($jsonPath))
-                ->withReplaceFirst($this->specDir->path()->toString(), '')
-                ->toString();
+                ->withReplaceFirst($this->specDir->path()->__toString(), '')
+                ->__toString();
             $child = ltrim($child, '/');
 
             return $dirPath->getChild($child);

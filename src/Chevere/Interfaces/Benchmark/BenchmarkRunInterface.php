@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Benchmark;
 
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of running a Benchmark.
  */
-interface BenchmarkRunInterface extends ToStringInterface
+interface BenchmarkRunInterface extends Stringable
 {
     /**
      * @var int Determines the number of columns used for output.
@@ -49,5 +49,5 @@ interface BenchmarkRunInterface extends ToStringInterface
     /**
      * @return string Formated result summary
      */
-    public function toString(): string;
+    public function __toString(): string;
 }

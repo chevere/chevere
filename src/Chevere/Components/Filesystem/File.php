@@ -37,7 +37,7 @@ final class File implements FileInterface
     public function __construct(
         private PathInterface $path
     ) {
-        $this->isPhp = (new StrBool($this->path->toString()))->endsWith('.php');
+        $this->isPhp = (new StrBool($this->path->__toString()))->endsWith('.php');
         $this->assertIsNotDir();
     }
 
@@ -61,7 +61,7 @@ final class File implements FileInterface
         if (!$this->exists()) {
             throw new FileNotExistsException(
                 (new Message("File %path% doesn't exists"))
-                    ->code('%path%', $this->path->toString())
+                    ->code('%path%', $this->path->__toString())
             );
         }
     }
@@ -70,14 +70,14 @@ final class File implements FileInterface
     {
         $this->assertExists();
 
-        return hash_file(FileInterface::CHECKSUM_ALGO, $this->path->toString());
+        return hash_file(FileInterface::CHECKSUM_ALGO, $this->path->__toString());
     }
 
     public function getSize(): int
     {
         $this->assertExists();
 
-        return filesize($this->path->toString());
+        return filesize($this->path->__toString());
     }
 
     /**
@@ -89,14 +89,14 @@ final class File implements FileInterface
         $this->assertExists();
 
         try {
-            return file_get_contents($this->path->toString());
+            return file_get_contents($this->path->__toString());
         }
         // @codeCoverageIgnoreStart
         // @infection-ignore-all
         catch (Throwable $e) {
             throw new FileUnableToGetException(
                 (new Message('Unable to read the contents of the file at %path%'))
-                    ->code('%path%', $this->path->toString())
+                    ->code('%path%', $this->path->__toString())
             );
         }
         // @codeCoverageIgnoreEnd
@@ -121,13 +121,13 @@ final class File implements FileInterface
         if ($this->path->exists()) {
             throw new PathExistsException(
                 (new Message('Unable to create file %path% (file already exists)'))
-                    ->code('%path%', $this->path->toString())
+                    ->code('%path%', $this->path->__toString())
             );
         }
         $this->createPath();
 
         try {
-            file_put_contents($this->path->toString(), '');
+            file_put_contents($this->path->__toString(), '');
         }
         // @codeCoverageIgnoreStart
         // @infection-ignore-all
@@ -142,14 +142,14 @@ final class File implements FileInterface
         $this->assertExists();
 
         try {
-            file_put_contents($this->path->toString(), $contents);
+            file_put_contents($this->path->__toString(), $contents);
         }
         // @codeCoverageIgnoreStart
         // @infection-ignore-all
         catch (Throwable $e) {
             throw new FileUnableToPutException(
                 (new Message('Unable to write content to file %filepath%'))
-                    ->code('%filepath%', $this->path->toString())
+                    ->code('%filepath%', $this->path->__toString())
             );
         }
         // @codeCoverageIgnoreEnd
@@ -157,7 +157,7 @@ final class File implements FileInterface
 
     private function createPath(): void
     {
-        $dirname = dirname($this->path->toString());
+        $dirname = dirname($this->path->__toString());
         $path = new Path($dirname . '/');
         if (!$path->exists()) {
             (new Dir($path))->create();
@@ -169,7 +169,7 @@ final class File implements FileInterface
         if ($this->path->isDir()) {
             throw new PathIsDirException(
                 (new Message('Path %path% is a directory'))
-                    ->code('%path%', $this->path->toString())
+                    ->code('%path%', $this->path->__toString())
             );
         }
     }
@@ -177,7 +177,7 @@ final class File implements FileInterface
     private function assertUnlink(): void
     {
         try {
-            unlink($this->path->toString());
+            unlink($this->path->__toString());
         }
         // @codeCoverageIgnoreStart
         // @infection-ignore-all

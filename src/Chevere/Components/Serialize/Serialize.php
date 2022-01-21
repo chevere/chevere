@@ -39,7 +39,7 @@ final class Serialize implements SerializeInterface
         }
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->serialize;
     }

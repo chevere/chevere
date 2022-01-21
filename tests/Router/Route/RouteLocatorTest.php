@@ -23,7 +23,7 @@ final class RouteLocatorTest extends TestCase
         $repo = 'repo';
         $path = '/path';
         $routeLocator = new RouteLocator($repo, $path);
-        $this->assertSame("${repo}:${path}", $routeLocator->toString());
+        $this->assertSame("${repo}:${path}", $routeLocator->__toString());
         $this->assertSame($repo, $routeLocator->repository());
         $this->assertSame($path, $routeLocator->path());
     }

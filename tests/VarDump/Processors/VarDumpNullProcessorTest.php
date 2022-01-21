@@ -29,7 +29,7 @@ final class VarDumpNullProcessorTest extends TestCase
         $processor = new VarDumpNullProcessor($varDumper);
         $this->assertSame('', $processor->info());
         $processor->write();
-        $this->assertSame('null', $varDumper->writer()->toString());
+        $this->assertSame('null', $varDumper->writer()->__toString());
     }
 
     public function testInvalidArgument(): void

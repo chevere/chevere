@@ -44,7 +44,7 @@ final class EventedTest extends TestCase
                 new EventsRunner($eventsQueue, $writers)
             );
         $testEventable->setString($string);
-        $this->assertSame($writers->output()->toString(), implode(' ', [$string]));
+        $this->assertSame($writers->output()->__toString(), implode(' ', [$string]));
     }
 
     public function testNotEventedClass(): void

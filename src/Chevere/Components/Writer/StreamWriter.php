@@ -48,7 +48,7 @@ final class StreamWriter implements WriterInterface
         }
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->stream->__toString();
     }

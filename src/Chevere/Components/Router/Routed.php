@@ -32,7 +32,7 @@ final class Routed implements RoutedInterface
 
     public function getController(): ControllerInterface
     {
-        $controller = $this->controllerName->toString();
+        $controller = $this->controllerName->__toString();
         /** @var ControllerInterface */
         return new $controller();
     }

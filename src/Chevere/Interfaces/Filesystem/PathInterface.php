@@ -20,12 +20,12 @@ use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
 use Chevere\Exceptions\Filesystem\PathNotExistsException;
 use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of interact with filesystem paths.
  */
-interface PathInterface extends ToStringInterface
+interface PathInterface extends Stringable
 {
     /**
      * @throws PathDotSlashException
@@ -38,7 +38,7 @@ interface PathInterface extends ToStringInterface
     /**
      * @return string absolute filesystem path
      */
-    public function toString(): string;
+    public function __toString(): string;
 
     /**
      * Asserts whether the path exists.

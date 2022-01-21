@@ -162,7 +162,7 @@ final class BenchmarkRun implements BenchmarkRunInterface
         return $this;
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->printable;
     }

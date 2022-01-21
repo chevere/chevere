@@ -23,7 +23,7 @@ final class BreadcrumbTest extends TestCase
     {
         $breadcrumb = new Breadcrumb();
         $this->assertEmpty($breadcrumb->toArray());
-        $this->assertEmpty($breadcrumb->toString());
+        $this->assertEmpty($breadcrumb->__toString());
         $this->assertCount(0, $breadcrumb);
         $this->assertFalse($breadcrumb->has(0));
         $this->assertSame(-1, $breadcrumb->pos());
@@ -43,17 +43,17 @@ final class BreadcrumbTest extends TestCase
             $this->assertTrue($breadcrumb->has($pos));
             $this->assertSame($pos, $breadcrumb->pos());
             $this->assertContains($item, $breadcrumb->toArray());
-            $this->assertStringContainsString($item, $breadcrumb->toString());
+            $this->assertStringContainsString($item, $breadcrumb->__toString());
         }
         $this->assertSame($items, $breadcrumb->toArray());
         $this->assertSame(
             '[' . implode('][', $items) . ']',
-            $breadcrumb->toString()
+            $breadcrumb->__toString()
         );
         $breadcrumb = $breadcrumb
             ->withRemovedItem(1);
         $this->assertNotContains($items[1], $breadcrumb->toArray());
-        $this->assertStringNotContainsString($items[1], $breadcrumb->toString());
+        $this->assertStringNotContainsString($items[1], $breadcrumb->__toString());
     }
 
     public function testWithRemovedItems(): void
@@ -71,11 +71,11 @@ final class BreadcrumbTest extends TestCase
                 ->withRemovedItem($pos);
             $this->assertFalse($breadcrumb->has($pos));
             $this->assertNotContains($item, $breadcrumb->toArray());
-            $this->assertStringNotContainsString($item, $breadcrumb->toString());
+            $this->assertStringNotContainsString($item, $breadcrumb->__toString());
         }
         $this->assertCount(0, $breadcrumb);
         $this->assertEmpty($breadcrumb->toArray());
-        $this->assertEmpty($breadcrumb->toString());
+        $this->assertEmpty($breadcrumb->__toString());
         $this->expectException(OutOfRangeException::class);
         $breadcrumb->withRemovedItem($pos);
     }

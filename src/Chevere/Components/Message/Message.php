@@ -25,12 +25,14 @@ final class Message implements MessageInterface
     ) {
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function __toString(): string
     {
-        return $this->toString();
+        $tr = [];
+        foreach ($this->trTable as $search => $format) {
+            $tr[$search] = $format[1];
+        }
+
+        return strtr($this->template, $tr);
     }
 
     public function template(): string
@@ -71,16 +73,6 @@ final class Message implements MessageInterface
             }
             $replace = $format[1];
             $tr[$search] = "<${tag}>${replace}</${tag}>";
-        }
-
-        return strtr($this->template, $tr);
-    }
-
-    public function toString(): string
-    {
-        $tr = [];
-        foreach ($this->trTable as $search => $format) {
-            $tr[$search] = $format[1];
         }
 
         return strtr($this->template, $tr);

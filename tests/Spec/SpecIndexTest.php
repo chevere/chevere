@@ -44,19 +44,19 @@ final class SpecIndexTest extends TestCase
         $specDir = dirForPath('/spec/group/route/');
         $routeEndpointSpec = new RouteEndpointSpec($specDir, $routeEndpoint);
         $specIndex = (new SpecIndex())->withAddedRoute(
-            $routeLocator->toString(),
+            $routeLocator->__toString(),
             $routeEndpointSpec
         );
         $this->assertFalse($specIndex->has('404', $getMethod->name()));
         $this->assertTrue($specIndex->has(
-            $routeLocator->toString(),
+            $routeLocator->__toString(),
             $getMethod->name()
         ));
         $this->assertCount(1, $specIndex);
         $this->assertSame(
-            $specDir->path()->toString() . $getMethod->name() . '.json',
+            $specDir->path()->__toString() . $getMethod->name() . '.json',
             $specIndex->get(
-                $routeLocator->toString(),
+                $routeLocator->__toString(),
                 $getMethod->name()
             )
         );
@@ -64,21 +64,21 @@ final class SpecIndexTest extends TestCase
         $routeEndpoint2 = new RouteEndpoint($method2, new TestController());
         $routeEndpointSpec2 = new RouteEndpointSpec($specDir, $routeEndpoint2);
         $specIndex = $specIndex->withAddedRoute(
-            $routeLocator->toString(),
+            $routeLocator->__toString(),
             $routeEndpointSpec2
         );
         $this->assertTrue($specIndex->has(
-            $routeLocator->toString(),
+            $routeLocator->__toString(),
             $getMethod->name()
         ));
         $this->assertTrue($specIndex->has(
-            $routeLocator->toString(),
+            $routeLocator->__toString(),
             $method2->name()
         ));
         $this->assertCount(1, $specIndex);
         $this->assertSame(
-            $specDir->path()->toString() . $method2->name() . '.json',
-            $specIndex->get($routeLocator->toString(), $method2->name())
+            $specDir->path()->__toString() . $method2->name() . '.json',
+            $specIndex->get($routeLocator->__toString(), $method2->name())
         );
     }
 }

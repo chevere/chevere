@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of handling the controller name.
  */
-interface ControllerNameInterface extends ToStringInterface
+interface ControllerNameInterface extends Stringable
 {
     /**
      * @throws InvalidArgumentException

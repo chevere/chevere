@@ -41,7 +41,7 @@ final class ThrowableReadTest extends TestCase
     {
         $code = 100;
         $message = new Message('Ups');
-        $exception = new Exception($message->toString(), $code);
+        $exception = new Exception($message->__toString(), $code);
         $read = new ThrowableRead($exception);
         $this->assertSame((string) $code, $read->code());
         $this->assertSame($exception::class, $read->className());
@@ -53,7 +53,7 @@ final class ThrowableReadTest extends TestCase
         $readTrace = $read->trace();
         array_shift($readTrace);
         $this->assertSame($exception->getTrace(), $readTrace);
-        $this->assertSame($message->toString(), $read->message()->toString());
+        $this->assertSame($message->__toString(), $read->message()->__toString());
     }
 
     public function testErrorException(): void

@@ -34,6 +34,6 @@ class ErrorException extends \ErrorException
     ) {
         $this->_message = $message;
 
-        parent::__construct($message->toString(), $code, $severity, $filename, $lineno, $previous);
+        parent::__construct($message->__toString(), $code, $severity, $filename, $lineno, $previous);
     }
 }

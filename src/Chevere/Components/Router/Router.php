@@ -50,7 +50,7 @@ final class Router implements RouterInterface
         foreach ($route->endpoints()->getIterator() as $endpoint) {
             $new->routeCollector->addRoute(
                 $endpoint->method()::name(),
-                $route->path()->toString(),
+                $route->path()->__toString(),
                 $endpoint->controller()::class
             );
         }

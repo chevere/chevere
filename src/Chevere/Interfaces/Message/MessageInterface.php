@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Message;
 
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of handling rich system messages for CLI and HTML.
  */
-interface MessageInterface extends ToStringInterface
+interface MessageInterface extends Stringable
 {
     public const CLI_TABLE = [
         'message_emphasis' => 'italic',
@@ -60,7 +60,7 @@ interface MessageInterface extends ToStringInterface
     /**
      *  Returns a text message representation.
      */
-    public function toString(): string;
+    public function __toString(): string;
 
     /**
      * Return an instance with the specified string translation.

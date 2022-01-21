@@ -22,7 +22,7 @@ final class Str implements StrInterface
     ) {
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->string;
     }

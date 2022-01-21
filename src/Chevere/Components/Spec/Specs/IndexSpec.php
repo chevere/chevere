@@ -27,7 +27,7 @@ final class IndexSpec implements IndexSpecInterface
 
     public function __construct(DirInterface $specDir)
     {
-        $this->jsonPath = $specDir->path()->toString() . 'index.json';
+        $this->jsonPath = $specDir->path()->__toString() . 'index.json';
         $this->groupSpecs = new GroupSpecs();
     }
 

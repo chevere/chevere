@@ -35,7 +35,7 @@ final class RouteSpecTest extends TestCase
         $routeSpecPath = $specDir
             ->getChild(ltrim($routeLocator->path(), '/') . '/')
             ->path()
-            ->toString() . 'route.json';
+            ->__toString() . 'route.json';
         $method = new GetMethod();
         $routeEndpoint = (new RouteEndpoint($method, new TestController()))
             ->withDescription('Test endpoint');
@@ -50,9 +50,9 @@ final class RouteSpecTest extends TestCase
         $this->assertSame(
             [
                 'name' => $routePath->name(),
-                'locator' => $routeLocator->toString(),
+                'locator' => $routeLocator->__toString(),
                 'spec' => $routeSpecPath,
-                'regex' => $routePath->regex()->toString(),
+                'regex' => $routePath->regex()->__toString(),
                 'wildcards' => $routePath->wildcards()->toArray(),
                 'endpoints' => [
                     $method->name() => $routeEndpoint->toArray(),

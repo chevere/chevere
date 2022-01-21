@@ -39,7 +39,7 @@ final class Regex implements RegexInterface
         $this->noDelimitersNoAnchors = strval(preg_replace('#^\^(.*)\$$#', '$1', $this->noDelimiters));
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->pattern;
     }

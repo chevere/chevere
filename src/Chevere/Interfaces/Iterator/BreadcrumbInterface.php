@@ -15,13 +15,13 @@ namespace Chevere\Interfaces\Iterator;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Common\ToArrayInterface;
-use Chevere\Interfaces\Common\ToStringInterface;
 use Countable;
+use Stringable;
 
 /**
  * Describe a general purpose iterator companion.
  */
-interface BreadcrumbInterface extends ToArrayInterface, ToStringInterface, Countable
+interface BreadcrumbInterface extends ToArrayInterface, Stringable, Countable
 {
     /**
      * Indicates whether the instance has the given position.
@@ -67,5 +67,5 @@ interface BreadcrumbInterface extends ToArrayInterface, ToStringInterface, Count
      * return '[item0][item1][itemN]...[itemN+1]';
      * ```
      */
-    public function toString(): string;
+    public function __toString(): string;
 }

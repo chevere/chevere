@@ -27,7 +27,7 @@ final class MessageTest extends TestCase
         $message = new Message($var);
         $this->assertSame($var, $message->template());
         $this->assertSame([], $message->trTable());
-        $this->assertSame($var, $message->toString());
+        $this->assertSame($var, $message->__toString());
     }
 
     public function testTranslate(): void
@@ -43,7 +43,7 @@ final class MessageTest extends TestCase
         $this->assertSame([
             '%translate%' => ['', $replace],
         ], $message->trTable());
-        $this->assertSame($varTr, $message->toString());
+        $this->assertSame($varTr, $message->__toString());
     }
 
     public function testWithDeclaredTags(): void
@@ -67,7 +67,7 @@ final class MessageTest extends TestCase
         $plain = strip_tags($html);
         $this->assertSame($var, $withReplaces->template());
         $this->assertSame($html, $withReplaces->toHtml());
-        $this->assertSame($plain, $withReplaces->toString());
+        $this->assertSame($plain, strval($withReplaces));
         $consoleMessage = $withReplaces->toConsole();
         $consolePlain = preg_replace('/' . preg_quote(Color::ESC) . '\d+m/', '', $consoleMessage);
         $this->assertSame($plain, $consolePlain);

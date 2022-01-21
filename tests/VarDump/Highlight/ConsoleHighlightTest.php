@@ -70,7 +70,7 @@ final class ConsoleHighlightTest extends TestCase
             $expected = $expect[$key];
             if ($color->isSupported() === false) {
                 $expected = (new Str($expected))->withStripANSIColors()
-                    ->toString();
+                    ->__toString();
             }
             $this->assertSame($expected, $string);
         }

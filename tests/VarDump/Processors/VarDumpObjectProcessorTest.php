@@ -48,7 +48,7 @@ final class VarDumpObjectProcessorTest extends TestCase
         $processor->write();
         $this->assertSame(
             stdClass::class . '#' . $id,
-            $varDumper->writer()->toString()
+            $varDumper->writer()->__toString()
         );
     }
 
@@ -68,7 +68,7 @@ final class VarDumpObjectProcessorTest extends TestCase
             ' private $circularReference null',
             ' private $deep null',
         ];
-        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
+        $this->hookTestOutput($varDumper->writer()->__toString(), $stringEls);
     }
 
     public function testObjectProperty(): void
@@ -90,7 +90,7 @@ final class VarDumpObjectProcessorTest extends TestCase
             ' private $circularReference null',
             ' private $deep null',
         ];
-        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
+        $this->hookTestOutput($varDumper->writer()->__toString(), $stringEls);
     }
 
     public function testAnonClass(): void
@@ -102,7 +102,7 @@ final class VarDumpObjectProcessorTest extends TestCase
         (new VarDumpObjectProcessor($varDumper))->write();
         $this->assertSame(
             'class@anonymous#' . $id,
-            $varDumper->writer()->toString()
+            $varDumper->writer()->__toString()
         );
     }
 
@@ -125,7 +125,7 @@ final class VarDumpObjectProcessorTest extends TestCase
                 . ' *circular reference* #' . $id,
             ' private $deep null',
         ];
-        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
+        $this->hookTestOutput($varDumper->writer()->__toString(), $stringEls);
     }
 
     public function testDeep(): void
@@ -164,7 +164,7 @@ final class VarDumpObjectProcessorTest extends TestCase
             '         public $deep class@anonymous#' . $objectIds[9]
                 . ' *max depth reached*',
         ];
-        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
+        $this->hookTestOutput($varDumper->writer()->__toString(), $stringEls);
     }
 
     public function testDsCollection(): void
@@ -184,6 +184,6 @@ final class VarDumpObjectProcessorTest extends TestCase
             'map => Ds\Map#' . $idChild . ' array (size=1)',
             ' 0 => string test (length=4)',
         ];
-        $this->hookTestOutput($varDumper->writer()->toString(), $stringEls);
+        $this->hookTestOutput($varDumper->writer()->__toString(), $stringEls);
     }
 }

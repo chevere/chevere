@@ -53,13 +53,13 @@ final class RouteWildcards implements RouteWildcardsInterface
     public function withPut(RouteWildcardInterface $routeWildcard): RouteWildcardsInterface
     {
         $new = clone $this;
-        if ($new->index->has($routeWildcard->toString())) {
-            $new->pos = $new->index->get($routeWildcard->toString());
+        if ($new->index->has($routeWildcard->__toString())) {
+            $new->pos = $new->index->get($routeWildcard->__toString());
         } else {
             $new->pos++;
         }
         $new->index = $new->index
-            ->withPut($routeWildcard->toString(), $new->pos);
+            ->withPut($routeWildcard->__toString(), $new->pos);
         $new->map = $new->map
             ->withPut(strval($new->pos), $routeWildcard);
 

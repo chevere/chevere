@@ -40,7 +40,7 @@ final class VarDumpArrayProcessorTest extends TestCase
         $processor->write();
         $this->assertSame(
             "array (${expectInfo})",
-            $varProcess->writer()->toString()
+            $varProcess->writer()->__toString()
         );
     }
 
@@ -56,7 +56,7 @@ final class VarDumpArrayProcessorTest extends TestCase
         foreach ($var as $int) {
             $this->assertStringContainsString(
                 str_replace('%s', (string) $int, $containTpl),
-                $varProcess->writer()->toString()
+                $varProcess->writer()->__toString()
             );
         }
     }
@@ -72,7 +72,7 @@ final class VarDumpArrayProcessorTest extends TestCase
         $processor->write();
         $this->assertSame(
             "array (${expectInfo}) " . $processor->circularReference(),
-            $varProcess->writer()->toString()
+            $varProcess->writer()->__toString()
         );
     }
 
@@ -85,6 +85,6 @@ final class VarDumpArrayProcessorTest extends TestCase
         $varProcess = $this->getVarDumper($var);
         $processor = new VarDumpArrayProcessor($varProcess);
         $processor->write();
-        $this->assertStringContainsString($processor->maxDepthReached(), $varProcess->writer()->toString());
+        $this->assertStringContainsString($processor->maxDepthReached(), $varProcess->writer()->__toString());
     }
 }

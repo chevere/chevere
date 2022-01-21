@@ -39,6 +39,6 @@ final class SerializeTest extends TestCase
     {
         $variable = 'test';
         $serialize = new Serialize($variable);
-        $this->assertSame(serialize($variable), $serialize->toString());
+        $this->assertSame(serialize($variable), $serialize->__toString());
     }
 }

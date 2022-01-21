@@ -56,7 +56,7 @@ final class TranslatorMakerTest extends TestCase
             $file->removeIfExists();
             $translatorMaker = $translatorMaker
                 ->withMakeTranslation(locale: $locale, domain: $domain);
-            $this->assertFileExists($file->path()->toString());
+            $this->assertFileExists($file->path()->__toString());
         }
     }
 

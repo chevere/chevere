@@ -34,6 +34,6 @@ final class StreamWriterTest extends TestCase
         foreach ($letters as $letter) {
             $writer->write($letter);
         }
-        $this->assertSame(implode('', $letters), $writer->toString());
+        $this->assertSame(implode('', $letters), $writer->__toString());
     }
 }

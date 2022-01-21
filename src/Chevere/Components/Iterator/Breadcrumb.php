@@ -72,7 +72,7 @@ final class Breadcrumb implements BreadcrumbInterface
         return $this->items;
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         if ($this->items === []) {
             return '';

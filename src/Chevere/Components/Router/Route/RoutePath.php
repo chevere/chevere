@@ -85,7 +85,7 @@ final class RoutePath implements RoutePathInterface
         return $this->name;
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->route;
     }

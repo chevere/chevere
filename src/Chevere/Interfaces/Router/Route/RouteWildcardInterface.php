@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Router\Route;
 
 use Chevere\Exceptions\Router\Route\RouteWildcardInvalidException;
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of defining a route wildcard.
  */
-interface RouteWildcardInterface extends ToStringInterface
+interface RouteWildcardInterface extends Stringable
 {
     public const ACCEPT_CHARS = '([a-z\_][\w_]*?)';
 

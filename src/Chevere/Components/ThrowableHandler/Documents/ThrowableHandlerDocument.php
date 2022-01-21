@@ -57,7 +57,7 @@ abstract class ThrowableHandlerDocument implements ThrowableHandlerDocumentInter
         return $this->verbosity;
     }
 
-    final public function toString(): string
+    final public function __toString(): string
     {
         if ($this->verbosity > 0) {
             $this->handleVerbositySections();
@@ -187,7 +187,7 @@ abstract class ThrowableHandlerDocument implements ThrowableHandlerDocumentInter
         return (new ThrowableTraceFormatter(
             $this->handler->throwableRead()->trace(),
             $this->formatter
-        ))->toString();
+        ))->__toString();
     }
 
     protected function handleVerbositySections(): void

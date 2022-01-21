@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Str;
 
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of string manipulation.
  */
-interface StrInterface extends ToStringInterface
+interface StrInterface extends Stringable
 {
     public function __construct(string $string);
 

@@ -50,7 +50,7 @@ final class RouterIndex implements RouterIndexInterface
     public function withAddedRoute(RouteInterface $route, string $group): RouterIndexInterface
     {
         $new = clone $this;
-        $routeName = $route->path()->toString();
+        $routeName = $route->path()->__toString();
         $routeIdentifier = new RouteIdentifier($group, $routeName);
         $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeKey)) {

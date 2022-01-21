@@ -78,19 +78,19 @@ final class SpecMakerTest extends TestCase
          * @var PathInterface $path
          */
         foreach ($specMaker->files() as $jsonPath => $path) {
-            $cachedFile = $buildPath->getChild(ltrim($jsonPath, '/'))->toString();
+            $cachedFile = $buildPath->getChild(ltrim($jsonPath, '/'))->__toString();
             $this->assertFileEquals(
                 $cachedFile,
-                $path->toString(),
+                $path->__toString(),
                 $cachedFile
             );
         }
         $this->assertTrue($specMaker->specIndex()->has(
-            $route->path()->toString(),
+            $route->path()->__toString(),
             $putMethod->name()
         ));
         $this->assertTrue($specMaker->specIndex()->has(
-            $route->path()->toString(),
+            $route->path()->__toString(),
             $getMethod->name()
         ));
     }

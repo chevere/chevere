@@ -29,7 +29,7 @@ final class RoutesTest extends TestCase
             name: $name,
             path: new RoutePath('/some-path')
         ));
-        $key = $route->path()->toString();
+        $key = $route->path()->__toString();
         $routes = new Routes();
         $routesWithAdded = $routes
             ->withAdded($route);
@@ -47,7 +47,7 @@ final class RoutesTest extends TestCase
             name: $name,
             path: new RoutePath('/some-path')
         );
-        $key = $route->path()->toString();
+        $key = $route->path()->__toString();
         $routes = (new Routes())
             ->withAdded($route);
         $this->expectException(OverflowException::class);
@@ -67,7 +67,7 @@ final class RoutesTest extends TestCase
             name: 'test',
             path: $routePath
         );
-        $key = $route->path()->toString();
+        $key = $route->path()->__toString();
         $routes = (new Routes())
             ->withAdded($route);
         $this->expectException(OverflowException::class);

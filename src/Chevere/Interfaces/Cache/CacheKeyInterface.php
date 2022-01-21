@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Cache;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of defining a cache key.
  */
-interface CacheKeyInterface extends ToStringInterface
+interface CacheKeyInterface extends Stringable
 {
     public const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
@@ -31,5 +31,5 @@ interface CacheKeyInterface extends ToStringInterface
     /**
      * Provides access to `$key`.
      */
-    public function toString(): string;
+    public function __toString(): string;
 }

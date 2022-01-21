@@ -28,7 +28,7 @@ final class StringParameterTest extends TestCase
         $regex = '/^.*$/';
         $parameter = new StringParameter();
         $this->assertEquals($parameter, stringParameter());
-        $this->assertSame($regex, $parameter->regex()->toString());
+        $this->assertSame($regex, $parameter->regex()->__toString());
         $parameter->attributes();
     }
 
@@ -36,7 +36,7 @@ final class StringParameterTest extends TestCase
     {
         $regex = new Regex('/^[0-9+]$/');
         $parameter = (new StringParameter())->withRegex($regex);
-        $this->assertSame($regex->toString(), $parameter->regex()->toString());
+        $this->assertSame($regex->__toString(), $parameter->regex()->__toString());
     }
 
     public function testWithDescription(): void

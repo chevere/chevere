@@ -46,7 +46,7 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
         return $this->array;
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->string;
     }
@@ -97,7 +97,7 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
         }
         $return = (new Str($return))
             ->withReplaceLast(', ', '')
-            ->toString();
+            ->__toString();
 
         return $entry->function() . '(' . trim($return) . ')';
     }

@@ -54,7 +54,7 @@ final class Cache implements CacheInterface
 
     public function withPut(CacheKeyInterface $key, VarStorableInterface $var): CacheInterface
     {
-        $path = $this->getPath($key->toString());
+        $path = $this->getPath($key->__toString());
 
         try {
             $file = new File($path);
@@ -67,8 +67,8 @@ final class Cache implements CacheInterface
             // @infection-ignore-all
             $filePhp->cache();
             $new = clone $this;
-            $new->puts[$key->toString()] = [
-                'path' => $fileReturn->filePhp()->file()->path()->toString(),
+            $new->puts[$key->__toString()] = [
+                'path' => $fileReturn->filePhp()->file()->path()->__toString(),
                 'checksum' => $fileReturn->filePhp()->file()->getChecksum(),
             ];
         }
@@ -88,7 +88,7 @@ final class Cache implements CacheInterface
     public function without(CacheKeyInterface $cacheKey): CacheInterface
     {
         $new = clone $this;
-        $path = $this->getPath($cacheKey->toString());
+        $path = $this->getPath($cacheKey->__toString());
 
         try {
             if (!$path->exists()) {
@@ -107,23 +107,23 @@ final class Cache implements CacheInterface
             throw new RuntimeException(previous: $e);
         }
         // @codeCoverageIgnoreEnd
-        unset($new->puts[$cacheKey->toString()]);
+        unset($new->puts[$cacheKey->__toString()]);
 
         return $new;
     }
 
     public function exists(CacheKeyInterface $cacheKey): bool
     {
-        return $this->getPath($cacheKey->toString())->exists();
+        return $this->getPath($cacheKey->__toString())->exists();
     }
 
     public function get(CacheKeyInterface $cacheKey): CacheItemInterface
     {
-        $path = $this->getPath($cacheKey->toString());
+        $path = $this->getPath($cacheKey->__toString());
         if (!$path->exists()) {
             throw new OutOfBoundsException(
                 (new Message('No cache for key %key%'))
-                    ->code('%key%', $cacheKey->toString())
+                    ->code('%key%', $cacheKey->__toString())
             );
         }
 

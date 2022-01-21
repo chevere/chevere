@@ -78,7 +78,7 @@ final class VarObject implements VarObjectInterface
         if (!$reflection->isCloneable()) {
             throw new VarObjectNotClonableException(
                 message: (new Message('Object is not clonable at %at%'))
-                    ->code('%at%', $this->breadcrumb->toString())
+                    ->code('%at%', $this->breadcrumb->__toString())
             );
         }
         $properties = $reflection->getProperties();

@@ -46,8 +46,8 @@ final class CacheTest extends TestCase
     public function testConstructDirNotExists(): void
     {
         $dir = $this->dir->getChild('delete/');
-        $dirPath = $dir->path()->toString();
-        $this->assertDirectoryDoesNotExist($dir->path()->toString());
+        $dirPath = $dir->path()->__toString();
+        $this->assertDirectoryDoesNotExist($dir->path()->__toString());
         new Cache($dir);
         $this->assertDirectoryExists($dirPath);
         $dir->remove();

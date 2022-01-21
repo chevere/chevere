@@ -36,7 +36,7 @@ final class VarDumpResourceProcessorTest extends TestCase
         $processor->write();
         $this->assertSame(
             $resourceString . " (${expectedInfo})",
-            $varDumper->writer()->toString()
+            $varDumper->writer()->__toString()
         );
         /** @var resource $resource */
         fclose($resource);

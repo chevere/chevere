@@ -44,7 +44,7 @@ final class RouteEndpoint implements RouteEndpointInterface
             $attributes = $parameter->attributes()->toArray();
             $array = [
                 'name' => $name,
-                'regex' => $parameter->regex()->toString(),
+                'regex' => $parameter->regex()->__toString(),
                 'description' => $parameter->description(),
                 'isRequired' => $controller->parameters()->isRequired($name),
             ];

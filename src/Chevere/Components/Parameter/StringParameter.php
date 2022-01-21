@@ -57,7 +57,7 @@ final class StringParameter implements StringParameterInterface
             throw new InvalidArgumentException(
                 (new Message('Default value `%value%` must match the parameter regex %regexString%'))
                     ->code('%value%', $value)
-                    ->code('%regexString%', $this->regex->toString())
+                    ->code('%regexString%', $this->regex->__toString())
             );
         }
         $new = clone $this;

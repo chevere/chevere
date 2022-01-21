@@ -54,6 +54,6 @@ final class ConsoleDocumentTest extends TestCase
         $this->assertTrue(
             strlen($sectionTitle) > $plainDocument->getSectionTitle()
         );
-        $document->toString();
+        $document->__toString();
     }
 }

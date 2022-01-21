@@ -54,7 +54,7 @@ final class VarDumpTest extends TestCase
             . 'Arg:0 stdClass#' . spl_object_id($var)
             . "\n" . $hrLine
             . "\n";
-        $this->assertSame($expectedString, $writer->toString());
+        $this->assertSame($expectedString, $writer->__toString());
     }
 
     public function testWithShift(): void

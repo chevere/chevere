@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ThrowableHandler;
 
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of defining a throwable handler document.
  */
-interface ThrowableHandlerDocumentInterface extends ToStringInterface
+interface ThrowableHandlerDocumentInterface extends Stringable
 {
     public const SECTION_TITLE = 'title';
 

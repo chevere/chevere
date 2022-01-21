@@ -34,7 +34,7 @@ final class VarDumpBooleanProcessorTest extends TestCase
             $processor->write();
             $this->assertSame(
                 "boolean ${info}",
-                $varDumper->writer()->toString(),
+                $varDumper->writer()->__toString(),
             );
         }
     }

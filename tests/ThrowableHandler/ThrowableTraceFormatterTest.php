@@ -32,7 +32,7 @@ final class ThrowableTraceFormatterTest extends TestCase
         $e = new Exception('Message', 100);
         $trace = new ThrowableTraceFormatter($e->getTrace(), new ThrowableHandlerPlainFormatter());
         $this->assertIsArray($trace->toArray());
-        $this->assertIsString($trace->toString());
+        $this->assertIsString($trace->__toString());
     }
 
     public function testNullStackTrace(): void
@@ -59,7 +59,7 @@ final class ThrowableTraceFormatterTest extends TestCase
             "\n#0 " .
             "\n(boolean false, NULL)" .
             "\n" . $this->hrLine,
-            $traceFormatter->toString()
+            $traceFormatter->__toString()
         );
     }
 
@@ -104,6 +104,6 @@ final class ThrowableTraceFormatterTest extends TestCase
         $expectString = $this->hrLine . "\n" .
             implode("\n" . $this->hrLine . "\n", $expectEntries) . "\n" .
             $this->hrLine;
-        $this->assertSame($expectString, $traceFormatter->toString());
+        $this->assertSame($expectString, $traceFormatter->__toString());
     }
 }

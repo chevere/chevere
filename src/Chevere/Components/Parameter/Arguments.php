@@ -161,7 +161,7 @@ final class Arguments implements ArgumentsInterface
      */
     private function assertStringArgument(string $name, StringParameterInterface $parameter, string $argument): void
     {
-        $regexString = $parameter->regex()->toString();
+        $regexString = $parameter->regex()->__toString();
         if (preg_match($regexString, $argument) !== 1) {
             throw new InvalidArgumentException(
                 (new Message("Parameter %name%: Argument value provided doesn't match the regex %regex%"))

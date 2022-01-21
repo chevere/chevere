@@ -34,7 +34,7 @@ final class Routes implements RoutesInterface
         $new = clone $this;
         $new->names ??= new Map();
         foreach ($routes as $route) {
-            $key = $route->path()->toString();
+            $key = $route->path()->__toString();
             $new->assertRoute($key, $route);
             $new->names = $new->names
                 ->withPut($route->name(), $key);

@@ -25,6 +25,6 @@ final class NullWriterTest extends TestCase
         foreach ($letters as $letter) {
             $writer->write($letter);
         }
-        $this->assertSame('', $writer->toString());
+        $this->assertSame('', $writer->__toString());
     }
 }

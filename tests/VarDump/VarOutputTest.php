@@ -46,7 +46,7 @@ final class VarOutputTest extends TestCase
         );
         $this->assertSame(
             $this->getParsed($backtrace, 'output-plain'),
-            $writer->toString(),
+            $writer->__toString(),
         );
     }
 
@@ -61,9 +61,9 @@ final class VarOutputTest extends TestCase
         );
         $varOutputter->process(new VarDumpConsoleOutput(), name: null);
         $parsed = $this->getParsed($backtrace, 'output-console-color');
-        $string = $writer->toString();
-        $parsed = (new Str($parsed))->withStripANSIColors()->toString();
-        $string = (new Str($string))->withStripANSIColors()->toString();
+        $string = $writer->__toString();
+        $parsed = (new Str($parsed))->withStripANSIColors()->__toString();
+        $string = (new Str($string))->withStripANSIColors()->__toString();
         $this->assertSame($parsed, $string);
     }
 
@@ -78,7 +78,7 @@ final class VarOutputTest extends TestCase
         );
         $varOutputter->process(new VarDumpHtmlOutput(), name: null);
         $parsed = $this->getParsed($backtrace, 'output-html');
-        $this->assertSame($parsed, $writer->toString());
+        $this->assertSame($parsed, $writer->__toString());
     }
 
     private function getParsed(array $backtrace, string $name): string

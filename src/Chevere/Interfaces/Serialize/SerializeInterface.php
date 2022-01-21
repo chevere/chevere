@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Serialize;
 
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of handling `serialize()`.
  */
-interface SerializeInterface extends ToStringInterface
+interface SerializeInterface extends Stringable
 {
     public function __construct(mixed $var);
 }

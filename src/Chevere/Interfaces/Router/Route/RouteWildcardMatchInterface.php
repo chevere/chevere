@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Router\Route;
 
 use Chevere\Exceptions\Core\UnexpectedValueException;
-use Chevere\Interfaces\Common\ToStringInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of defining a route wildcard match.
  */
-interface RouteWildcardMatchInterface extends ToStringInterface
+interface RouteWildcardMatchInterface extends Stringable
 {
     /**
      * @param string $string A regular expression match statement.
