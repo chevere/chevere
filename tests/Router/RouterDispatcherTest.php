@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use Chevere\Components\Router\RouteParsers\StrictStd;
+use Chevere\Components\Router\Parsers\StrictStd;
 use Chevere\Components\Router\RouterDispatcher;
 use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
 use Chevere\Exceptions\Router\RouteNotFoundException;

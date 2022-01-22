@@ -17,7 +17,7 @@ use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Iterator\RecursiveFileFilterIterator;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Writer\NullWriter;
-use Chevere\Components\Writer\traits\WriterTrait;
+use Chevere\Components\Writer\Traits\WriterTrait;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Pluggable\PlugInterface;
 use Chevere\Interfaces\Pluggable\PlugsMapInterface;

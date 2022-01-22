@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Highlight\Traits;
+namespace Chevere\Components\VarDump\Highlights\Traits;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\OutOfRangeException;

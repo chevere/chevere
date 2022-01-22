@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\ThrowableHandler;
 
 use Chevere\Components\Str\Str;
-use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableTraceEntryInterface;
-use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatInterface;
 
-final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
+final class ThrowableTraceFormat implements ThrowableTraceFormatInterface
 {
     private array $array = [];
 
@@ -26,11 +26,11 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
 
     public function __construct(
         private array $trace,
-        private ThrowableHandlerFormatterInterface $formatter
+        private ThrowableHandlerFormatInterface $format
     ) {
         foreach ($this->trace as $pos => $entry) {
             $this->array[] = strtr(
-                $this->formatter->getTraceEntryTemplate(),
+                $this->format->getTraceEntryTemplate(),
                 $this->getTrTable($pos, new ThrowableTraceEntry($entry))
             );
         }
@@ -71,7 +71,7 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
         $array = $trValues;
         foreach (self::HIGHLIGHT_TAGS as $tag => $key) {
             $val = $trValues[$tag];
-            $array[$tag] = $this->formatter->varDumpFormatter()
+            $array[$tag] = $this->format->varDumpFormat()
                 ->highlight($key, (string) $val);
         }
         
@@ -104,12 +104,12 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
 
     private function wrapStringHr(string $text): string
     {
-        return $this->formatter->getHr() . "\n" . $text . "\n" .
-            $this->formatter->getHr();
+        return $this->format->getHr() . "\n" . $text . "\n" .
+            $this->format->getHr();
     }
 
     private function glueString(array $array)
     {
-        return implode("\n" . $this->formatter->getHr() . "\n", $array);
+        return implode("\n" . $this->format->getHr() . "\n", $array);
     }
 }

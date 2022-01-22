@@ -11,18 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\ThrowableHandler\Formatters;
+namespace Chevere\Tests\ThrowableHandler\Formats;
 
-use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerHtmlFormatter;
-use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerPlainFormatter;
+use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerHtmlFormat;
+use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
 use PHPUnit\Framework\TestCase;
 
 final class HtmlFormatterTest extends TestCase
 {
     public function testAgainstPlain(): void
     {
-        $plainFormatter = new ThrowableHandlerPlainFormatter();
-        $htmlFormatter = new ThrowableHandlerHtmlFormatter();
+        $plainFormatter = new ThrowableHandlerPlainFormat();
+        $htmlFormatter = new ThrowableHandlerHtmlFormat();
         $array = [
             'getTraceEntryTemplate' => [],
             'getHr' => [],
@@ -41,7 +41,7 @@ final class HtmlFormatterTest extends TestCase
 
     public function testFormatting(): void
     {
-        $htmlFormatter = new ThrowableHandlerHtmlFormatter();
+        $htmlFormatter = new ThrowableHandlerHtmlFormat();
         $array = [
             'getTraceEntryTemplate' => [
                 [],

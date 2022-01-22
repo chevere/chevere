@@ -21,8 +21,8 @@ use Chevere\Interfaces\Writer\WriterInterface;
 interface VarDumpInterface
 {
     public function __construct(
-        VarDumpFormatInterface $formatter,
-        VarDumpOutputInterface $outputter
+        VarDumpFormatInterface $format,
+        VarDumpOutputInterface $output
     );
 
     /**
@@ -39,7 +39,7 @@ interface VarDumpInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$shift` traces shifted.
      *
-     * This method removes `$shift` traces from `\debug_backtrace()`
+     * This method removes `$shift` traces.
      */
     public function withShift(int $shift): self;
 

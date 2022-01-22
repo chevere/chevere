@@ -11,29 +11,29 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\ThrowableHandler\Formatters;
+namespace Chevere\Components\ThrowableHandler\Formats;
 
-use Chevere\Components\VarDump\Format\VarDumpConsoleFormat as VarDumpFormatter;
-use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
+use Chevere\Components\VarDump\Formats\VarDumpConsoleFormat;
+use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 use Colors\Color;
 
-final class ThrowableHandlerConsoleFormatter extends ThrowableHandlerFormatter
+final class ThrowableHandlerConsoleFormat extends ThrowableHandlerFormat
 {
-    public function getVarDumpFormatter(): VarDumpFormatInterface
+    public function getVarDumpFormat(): VarDumpFormatInterface
     {
-        return new VarDumpFormatter();
+        return new VarDumpConsoleFormat();
     }
 
     public function getTraceEntryTemplate(): string
     {
         return $this->wrapSectionTitle(
-            '#' . ThrowableTraceFormatterInterface::TAG_ENTRY_POS
+            '#' . ThrowableTraceFormatInterface::TAG_ENTRY_POS
         ) .
-            ' ' . ThrowableTraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n" .
-            ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS .
-            ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE .
-            ThrowableTraceFormatterInterface::TAG_ENTRY_FUNCTION;
+            ' ' . ThrowableTraceFormatInterface::TAG_ENTRY_FILE_LINE . "\n" .
+            ThrowableTraceFormatInterface::TAG_ENTRY_CLASS .
+            ThrowableTraceFormatInterface::TAG_ENTRY_TYPE .
+            ThrowableTraceFormatInterface::TAG_ENTRY_FUNCTION;
     }
 
     public function getHr(): string

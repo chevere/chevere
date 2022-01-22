@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Output;
+namespace Chevere\Components\VarDump\Outputs;
 
 final class VarDumpHtmlOutput extends VarDumpAbstractOutput
 {

@@ -14,12 +14,12 @@ declare(strict_types=1);
 // @codeCoverageIgnoreStart
 
 namespace Chevere\Components\VarDump {
-    use Chevere\Components\VarDump\Format\VarDumpConsoleFormat;
-    use Chevere\Components\VarDump\Format\VarDumpHtmlFormat;
-    use Chevere\Components\VarDump\Format\VarDumpPlainFormat;
-    use Chevere\Components\VarDump\Output\VarDumpConsoleOutput;
-    use Chevere\Components\VarDump\Output\VarDumpHtmlOutput;
-    use Chevere\Components\VarDump\Output\VarDumpPlainOutput;
+    use Chevere\Components\VarDump\Formats\VarDumpConsoleFormat;
+    use Chevere\Components\VarDump\Formats\VarDumpHtmlFormat;
+    use Chevere\Components\VarDump\Formats\VarDumpPlainFormat;
+    use Chevere\Components\VarDump\Outputs\VarDumpConsoleOutput;
+    use Chevere\Components\VarDump\Outputs\VarDumpHtmlOutput;
+    use Chevere\Components\VarDump\Outputs\VarDumpPlainOutput;
     use function Chevere\Components\Writer\streamFor;
     use Chevere\Components\Writer\StreamWriter;
     use Chevere\Components\Writer\Writers;

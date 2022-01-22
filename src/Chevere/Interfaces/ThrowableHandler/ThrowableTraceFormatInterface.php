@@ -20,7 +20,7 @@ use Stringable;
 /**
  * Describes the component in charge of formatting a throwable trace entry.
  */
-interface ThrowableTraceFormatterInterface extends ToArrayInterface, Stringable
+interface ThrowableTraceFormatInterface extends ToArrayInterface, Stringable
 {
     public const TAG_ENTRY_FILE = '%file%';
 
@@ -47,5 +47,5 @@ interface ThrowableTraceFormatterInterface extends ToArrayInterface, Stringable
         self::TAG_ENTRY_FUNCTION => VarDumperInterface::FUNCTION,
     ];
 
-    public function __construct(array $trace, ThrowableHandlerFormatterInterface $formatter);
+    public function __construct(array $trace, ThrowableHandlerFormatInterface $format);
 }

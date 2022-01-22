@@ -11,35 +11,35 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\ThrowableHandler\Formatters;
+namespace Chevere\Components\ThrowableHandler\Formats;
 
-use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
-use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 
-abstract class ThrowableHandlerFormatter implements ThrowableHandlerFormatterInterface
+abstract class ThrowableHandlerFormat implements ThrowableHandlerFormatInterface
 {
     protected VarDumpFormatInterface $varDumpFormatter;
 
     final public function __construct()
     {
-        $this->varDumpFormatter = $this->getVarDumpFormatter();
+        $this->varDumpFormatter = $this->getVarDumpFormat();
     }
 
-    final public function varDumpFormatter(): VarDumpFormatInterface
+    final public function varDumpFormat(): VarDumpFormatInterface
     {
         return $this->varDumpFormatter;
     }
 
-    abstract public function getVarDumpFormatter(): VarDumpFormatInterface;
+    abstract public function getVarDumpFormat(): VarDumpFormatInterface;
 
     public function getTraceEntryTemplate(): string
     {
-        return '#' . ThrowableTraceFormatterInterface::TAG_ENTRY_POS .
-            ' ' . ThrowableTraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n" .
-            ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS .
-            ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE .
-            ThrowableTraceFormatterInterface::TAG_ENTRY_FUNCTION;
+        return '#' . ThrowableTraceFormatInterface::TAG_ENTRY_POS .
+            ' ' . ThrowableTraceFormatInterface::TAG_ENTRY_FILE_LINE . "\n" .
+            ThrowableTraceFormatInterface::TAG_ENTRY_CLASS .
+            ThrowableTraceFormatInterface::TAG_ENTRY_TYPE .
+            ThrowableTraceFormatInterface::TAG_ENTRY_FUNCTION;
     }
 
     public function getHr(): string

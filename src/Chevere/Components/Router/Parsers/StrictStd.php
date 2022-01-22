@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Router\RouteParsers;
+namespace Chevere\Components\Router\Parsers;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;

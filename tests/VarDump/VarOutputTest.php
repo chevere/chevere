@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump;
 
 use Chevere\Components\Str\Str;
-use Chevere\Components\VarDump\Format\VarDumpConsoleFormat;
-use Chevere\Components\VarDump\Format\VarDumpHtmlFormat;
-use Chevere\Components\VarDump\Format\VarDumpPlainFormat;
-use Chevere\Components\VarDump\Output\VarDumpConsoleOutput;
-use Chevere\Components\VarDump\Output\VarDumpHtmlOutput;
-use Chevere\Components\VarDump\Output\VarDumpPlainOutput;
+use Chevere\Components\VarDump\Formats\VarDumpConsoleFormat;
+use Chevere\Components\VarDump\Formats\VarDumpHtmlFormat;
+use Chevere\Components\VarDump\Formats\VarDumpPlainFormat;
+use Chevere\Components\VarDump\Outputs\VarDumpConsoleOutput;
+use Chevere\Components\VarDump\Outputs\VarDumpHtmlOutput;
+use Chevere\Components\VarDump\Outputs\VarDumpPlainOutput;
 use Chevere\Components\VarDump\VarOutput;
 use function Chevere\Components\Writer\streamTemp;
 use Chevere\Components\Writer\StreamWriter;
@@ -30,65 +30,65 @@ final class VarOutputTest extends TestCase
 {
     use DebugBacktraceTrait;
 
-    public function testPlainOutputter(): void
+    public function testPlainOutput(): void
     {
-        $backtrace = $this->getDebugBacktrace();
+        $trace = $this->getDebugBacktrace();
         $writer = new StreamWriter(streamTemp(''));
-        $varOutputter = new VarOutput(
+        $varOutput = new VarOutput(
             writer: $writer,
-            backtrace: $backtrace,
+            trace: $trace,
             format: new VarDumpPlainFormat()
         );
-        $varOutputter->process(
+        $varOutput->process(
             new VarDumpPlainOutput(),
             name: null,
             id: 123
         );
         $this->assertSame(
-            $this->getParsed($backtrace, 'output-plain'),
+            $this->getParsed($trace, 'output-plain'),
             $writer->__toString(),
         );
     }
 
-    public function testConsoleOutputter(): void
+    public function testConsoleOutput(): void
     {
-        $backtrace = $this->getDebugBacktrace();
+        $trace = $this->getDebugBacktrace();
         $writer = new StreamWriter(streamTemp(''));
-        $varOutputter = new VarOutput(
+        $varOutput = new VarOutput(
             writer: $writer,
-            backtrace: $backtrace,
+            trace: $trace,
             format: new VarDumpConsoleFormat(),
         );
-        $varOutputter->process(new VarDumpConsoleOutput(), name: null);
-        $parsed = $this->getParsed($backtrace, 'output-console-color');
+        $varOutput->process(new VarDumpConsoleOutput(), name: null);
+        $parsed = $this->getParsed($trace, 'output-console-color');
         $string = $writer->__toString();
         $parsed = (new Str($parsed))->withStripANSIColors()->__toString();
         $string = (new Str($string))->withStripANSIColors()->__toString();
         $this->assertSame($parsed, $string);
     }
 
-    public function testHtmlOutputter(): void
+    public function testHtmlOutput(): void
     {
-        $backtrace = $this->getDebugBacktrace();
+        $trace = $this->getDebugBacktrace();
         $writer = new StreamWriter(streamTemp(''));
-        $varOutputter = new VarOutput(
+        $varOutput = new VarOutput(
             writer: $writer,
-            backtrace: $backtrace,
+            trace: $trace,
             format: new VarDumpHtmlFormat(),
         );
-        $varOutputter->process(new VarDumpHtmlOutput(), name: null);
-        $parsed = $this->getParsed($backtrace, 'output-html');
+        $varOutput->process(new VarDumpHtmlOutput(), name: null);
+        $parsed = $this->getParsed($trace, 'output-html');
         $this->assertSame($parsed, $writer->__toString());
     }
 
-    private function getParsed(array $backtrace, string $name): string
+    private function getParsed(array $trace, string $name): string
     {
         return strtr(include "_resources/${name}.php", [
-            '%handlerClassName%' => $backtrace[0]['class'],
-            '%handlerFunctionName%' => $backtrace[0]['function'],
-            '%fileLine%' => $backtrace[0]['file'] . ':' . $backtrace[0]['line'],
-            '%className%' => $backtrace[1]['class'],
-            '%functionName%' => $backtrace[1]['function'],
+            '%handlerClassName%' => $trace[0]['class'],
+            '%handlerFunctionName%' => $trace[0]['function'],
+            '%fileLine%' => $trace[0]['file'] . ':' . $trace[0]['line'],
+            '%className%' => $trace[1]['class'],
+            '%functionName%' => $trace[1]['function'],
         ]);
     }
 }

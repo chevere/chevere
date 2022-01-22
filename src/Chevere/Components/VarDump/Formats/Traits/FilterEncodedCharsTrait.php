@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Format\Traits;
+namespace Chevere\Components\VarDump\Formats\Traits;
 
 trait FilterEncodedCharsTrait
 {

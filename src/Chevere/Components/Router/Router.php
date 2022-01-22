@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\RouteParsers\StrictStd;
+use Chevere\Components\Router\Parsers\StrictStd;
 use Chevere\Components\VarSupport\VarStorable;
 use Chevere\Exceptions\Router\RouteNotRoutableException;
 use Chevere\Exceptions\Router\RouteWithoutEndpointsException;

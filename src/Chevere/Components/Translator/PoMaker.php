@@ -18,7 +18,7 @@ use function Chevere\Components\Iterator\recursiveDirectoryIteratorFor;
 use Chevere\Components\Iterator\RecursiveFileFilterIterator;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Writer\NullWriter;
-use Chevere\Components\Writer\traits\WriterTrait;
+use Chevere\Components\Writer\Traits\WriterTrait;
 use Chevere\Exceptions\Core\BadMethodCallException;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Filesystem\DirInterface;

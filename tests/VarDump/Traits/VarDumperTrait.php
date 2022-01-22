@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Traits;
 
-use Chevere\Components\VarDump\Format\VarDumpPlainFormat;
+use Chevere\Components\VarDump\Formats\VarDumpPlainFormat;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 use function Chevere\Components\Writer\streamTemp;

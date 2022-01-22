@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Format;
+namespace Chevere\Components\VarDump\Formats;
 
-use Chevere\Components\VarDump\Format\Traits\FilterEncodedCharsTrait;
-use Chevere\Components\VarDump\Format\Traits\IndentTrait;
-use Chevere\Components\VarDump\Highlight\VarDumpConsoleHighlight;
+use Chevere\Components\VarDump\Formats\Traits\FilterEncodedCharsTrait;
+use Chevere\Components\VarDump\Formats\Traits\IndentTrait;
+use Chevere\Components\VarDump\Highlights\VarDumpConsoleHighlight;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 

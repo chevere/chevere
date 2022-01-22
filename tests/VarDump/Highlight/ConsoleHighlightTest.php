@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\VarDump\Highlight;
+namespace Chevere\Tests\VarDump\Highlights;
 
 use Chevere\Components\Str\Str;
-use Chevere\Components\VarDump\Highlight\VarDumpConsoleHighlight;
+use Chevere\Components\VarDump\Highlights\VarDumpConsoleHighlight;
 use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;

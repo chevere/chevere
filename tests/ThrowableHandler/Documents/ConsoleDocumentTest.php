@@ -15,7 +15,7 @@ namespace Chevere\Tests\ThrowableHandler\Documents;
 
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerConsoleDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
-use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerConsoleFormatter;
+use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerConsoleFormat;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Colors\Color;
@@ -46,8 +46,8 @@ final class ConsoleDocumentTest extends TestCase
             $document->getSectionTitle()
         );
         $this->assertInstanceOf(
-            ThrowableHandlerConsoleFormatter::class,
-            $document->getFormatter()
+            ThrowableHandlerConsoleFormat::class,
+            $document->getFormat()
         );
         $sectionTitle = $document->getSectionTitle();
         $plainDocument = new ThrowableHandlerPlainDocument($handler);

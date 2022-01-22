@@ -23,22 +23,22 @@ interface VarDumpOutputInterface
     /**
      * Writes the caller file using the target formatter.
      */
-    public function writeCallerFile(VarDumpFormatInterface $formatter): void;
+    public function writeCallerFile(VarDumpFormatInterface $format): void;
 
     /**
      * This method is executed before `prepare()`.
      */
-    public function setUp(WriterInterface $writer, array $backtrace);
+    public function setUp(WriterInterface $writer, array $trace);
 
     /**
-     * Ends the outputter.
+     * Ends the output.
      */
     public function tearDown(): void;
 
     /**
      * Provides access to the instance backtrace.
      */
-    public function backtrace(): array;
+    public function trace(): array;
 
     /**
      * Provides access to the instance caller.

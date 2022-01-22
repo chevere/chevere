@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Writer\traits;
+namespace Chevere\Components\Writer\Traits;
 
 use Chevere\Interfaces\Writer\WriterInterface;
 

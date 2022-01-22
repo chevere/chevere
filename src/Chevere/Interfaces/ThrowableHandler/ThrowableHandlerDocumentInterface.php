@@ -145,5 +145,5 @@ interface ThrowableHandlerDocumentInterface extends Stringable
     /**
      * Returns the document formatter.
      */
-    public function getFormatter(): ThrowableHandlerFormatterInterface;
+    public function getFormat(): ThrowableHandlerFormatInterface;
 }

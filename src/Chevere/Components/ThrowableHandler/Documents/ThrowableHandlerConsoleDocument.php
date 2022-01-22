@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerConsoleFormatter;
-use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
+use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerConsoleFormat;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatInterface;
 use Colors\Color;
 
 final class ThrowableHandlerConsoleDocument extends ThrowableHandlerDocument
 {
-    public function getFormatter(): ThrowableHandlerFormatterInterface
+    public function getFormat(): ThrowableHandlerFormatInterface
     {
-        return new ThrowableHandlerConsoleFormatter();
+        return new ThrowableHandlerConsoleFormat();
     }
 
     public function getSectionTitle(): string
     {
         return strtr('%t in %f', [
             '%t' => strval((new Color(self::TAG_TITLE))->bold()->red()),
-            '%f' => $this->formatter->wrapLink(self::TAG_FILE_LINE),
+            '%f' => $this->format->wrapLink(self::TAG_FILE_LINE),
         ]);
     }
 }

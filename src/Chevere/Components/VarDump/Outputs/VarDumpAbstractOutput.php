@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Output;
+namespace Chevere\Components\VarDump\Outputs;
 
 use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
 use Chevere\Interfaces\VarDump\VarDumpOutputInterface;
@@ -21,17 +21,17 @@ abstract class VarDumpAbstractOutput implements VarDumpOutputInterface
 {
     private WriterInterface $writer;
 
-    private array $backtrace;
+    private array $trace;
 
     private string $caller;
 
-    public function writeCallerFile(VarDumpFormatInterface $formatter): void
+    public function writeCallerFile(VarDumpFormatInterface $format): void
     {
-        $item = $this->backtrace[0] ?? null;
+        $item = $this->trace[0] ?? null;
         if ($item !== null && isset($item['file'])) {
             $this->writer->write(
                 "\n"
-                . $formatter
+                . $format
                     ->highlight(
                         '_file',
                         $item['file'] . ':' . $item['line']
@@ -41,26 +41,26 @@ abstract class VarDumpAbstractOutput implements VarDumpOutputInterface
         }
     }
 
-    final public function setUp(WriterInterface $writer, array $backtrace)
+    final public function setUp(WriterInterface $writer, array $trace)
     {
         $this->writer = $writer;
-        $this->backtrace = $backtrace;
+        $this->trace = $trace;
         $this->caller = '';
-        if ($this->backtrace[0]['class'] ?? null) {
-            $this->caller .= $this->backtrace[0]['class']
-                . $this->backtrace[0]['type'];
+        if ($this->trace[0]['class'] ?? null) {
+            $this->caller .= $this->trace[0]['class']
+                . $this->trace[0]['type'];
         }
-        if ($this->backtrace[0]['function'] ?? null) {
-            $this->caller .= $this->backtrace[0]['function'] . '()';
+        if ($this->trace[0]['function'] ?? null) {
+            $this->caller .= $this->trace[0]['function'] . '()';
         }
     }
 
     /**
      * @codeCoverageIgnore
      */
-    final public function backtrace(): array
+    final public function trace(): array
     {
-        return $this->backtrace;
+        return $this->trace;
     }
 
     final public function caller(): string

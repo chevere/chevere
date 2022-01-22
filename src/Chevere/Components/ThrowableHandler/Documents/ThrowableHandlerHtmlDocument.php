@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerHtmlFormatter;
-use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
+use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerHtmlFormat;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatInterface;
 
 final class ThrowableHandlerHtmlDocument extends ThrowableHandlerDocument
 {
@@ -28,9 +28,9 @@ final class ThrowableHandlerHtmlDocument extends ThrowableHandlerDocument
 
     public const DEBUG_BODY_HTML = '<main class="main--stack"><div>%content%</div></main>';
 
-    public function getFormatter(): ThrowableHandlerFormatterInterface
+    public function getFormat(): ThrowableHandlerFormatInterface
     {
-        return new ThrowableHandlerHtmlFormatter();
+        return new ThrowableHandlerHtmlFormat();
     }
 
     public function getTemplate(): array
@@ -53,12 +53,12 @@ final class ThrowableHandlerHtmlDocument extends ThrowableHandlerDocument
     public function getSectionTitle(): string
     {
         if (!$this->handler->isDebug()) {
-            return $this->formatter->wrapTitle(self::NO_DEBUG_TITLE_PLAIN) .
+            return $this->format->wrapTitle(self::NO_DEBUG_TITLE_PLAIN) .
                 self::NO_DEBUG_CONTENT_HTML . '<p><span class="user-select-all">' .
                 self::TAG_DATE_TIME_UTC_ATOM . '</span> • <span class="user-select-all">' . self::TAG_ID . '</span></p>';
         }
 
-        return $this->formatter->wrapTitle(
+        return $this->format->wrapTitle(
             self::TAG_TITLE . ' <span>in&nbsp;' . self::TAG_FILE_LINE . '</span>'
         );
     }

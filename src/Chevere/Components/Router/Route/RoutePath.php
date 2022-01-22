@@ -15,7 +15,7 @@ namespace Chevere\Components\Router\Route;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Router\RouteParsers\StrictStd;
+use Chevere\Components\Router\Parsers\StrictStd;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Interfaces\Router\Route\RoutePathInterface;

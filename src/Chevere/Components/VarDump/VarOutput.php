@@ -22,18 +22,18 @@ final class VarOutput implements VarOutputInterface
 {
     public function __construct(
         private WriterInterface $writer,
-        private array $backtrace,
+        private array $trace,
         private VarDumpFormatInterface $format,
     ) {
     }
 
-    public function process(VarDumpOutputInterface $outputter, ...$vars): void
+    public function process(VarDumpOutputInterface $output, ...$vars): void
     {
-        $outputter->setUp($this->writer, $this->backtrace);
-        $outputter->prepare();
-        $outputter->writeCallerFile($this->format);
+        $output->setUp($this->writer, $this->trace);
+        $output->prepare();
+        $output->writeCallerFile($this->format);
         $this->handleArgs($vars);
-        $outputter->tearDown();
+        $output->tearDown();
     }
 
     private function handleArgs(array $vars): void

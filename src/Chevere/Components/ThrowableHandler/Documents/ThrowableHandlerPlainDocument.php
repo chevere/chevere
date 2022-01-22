@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerPlainFormatter;
-use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
+use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatInterface;
 
 final class ThrowableHandlerPlainDocument extends ThrowableHandlerDocument
 {
-    public function getFormatter(): ThrowableHandlerFormatterInterface
+    public function getFormat(): ThrowableHandlerFormatInterface
     {
-        return new ThrowableHandlerPlainFormatter();
+        return new ThrowableHandlerPlainFormat();
     }
 }

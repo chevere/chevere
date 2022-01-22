@@ -28,8 +28,8 @@ final class VarDump implements VarDumpInterface
     private array $debugBacktrace = [];
 
     public function __construct(
-        private VarDumpFormatInterface $formatter,
-        private VarDumpOutputInterface $outputter
+        private VarDumpFormatInterface $format,
+        private VarDumpOutputInterface $output
     ) {
     }
 
@@ -58,9 +58,9 @@ final class VarDump implements VarDumpInterface
         (new VarOutput(
             $writer,
             $this->debugBacktrace,
-            $this->formatter,
+            $this->format,
         ))
-            ->process($this->outputter, ...$this->vars);
+            ->process($this->output, ...$this->vars);
     }
 
     public function vars(): array

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\ThrowableHandler\Documents;
 
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
-use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerPlainFormatter;
+use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
@@ -34,7 +34,7 @@ final class PlainDocumentTest extends TestCase
             ))
         );
         $verbosity = 0;
-        $this->assertInstanceOf(ThrowableHandlerPlainFormatter::class, $document->getFormatter());
+        $this->assertInstanceOf(ThrowableHandlerPlainFormat::class, $document->getFormat());
         $this->assertSame($verbosity, $document->verbosity());
         $verbosity = 16;
         $document = $document->withVerbosity($verbosity);

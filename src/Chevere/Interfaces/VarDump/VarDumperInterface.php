@@ -72,7 +72,7 @@ interface VarDumperInterface
     public function writer(): WriterInterface;
 
     /**
-     * Provides access to the `$formatter` instance.
+     * Provides access to the `$format` instance.
      */
     public function format(): VarDumpFormatInterface;
 

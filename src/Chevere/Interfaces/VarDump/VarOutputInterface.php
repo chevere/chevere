@@ -22,12 +22,12 @@ interface VarOutputInterface
 {
     public function __construct(
         WriterInterface $writer,
-        array $debugBacktrace,
+        array $trace,
         VarDumpFormatInterface $format
     );
 
     /**
      * Process the var output streaming.
      */
-    public function process(VarDumpOutputInterface $outputter, ...$vars): void;
+    public function process(VarDumpOutputInterface $output, ...$vars): void;
 }
