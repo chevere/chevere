@@ -4,7 +4,7 @@
 
 ![Chevere](LOGO.svg)
 
-![Code size](https://img.shields.io/github/languages/code-size/chevere/chevere?style=flat-square) [![AGPL-3.0-only](https://img.shields.io/github/license/chevere/chevere?style=flat-square)](LICENSE) [![Build](https://img.shields.io/github/workflow/status/chevere/chevere/CI/master?style=flat-square)](https://github.com/chevere/chevere/actions)
+![Code size](https://img.shields.io/github/languages/code-size/chevere/chevere?style=flat-square) [![Apache-2.0](https://img.shields.io/github/license/chevere/chevere?style=flat-square)](LICENSE) [![Build](https://img.shields.io/github/workflow/status/chevere/chevere/CI/master?style=flat-square)](https://github.com/chevere/chevere/actions)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=chevere_chevere&metric=alert_status)](https://sonarcloud.io/dashboard?id=chevere_chevere) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=chevere_chevere&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=chevere_chevere) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=chevere_chevere&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=chevere_chevere) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=chevere_chevere&metric=security_rating)](https://sonarcloud.io/dashboard?id=chevere_chevere) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=chevere_chevere&metric=coverage)](https://sonarcloud.io/dashboard?id=chevere_chevere) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=chevere_chevere&metric=sqale_index)](https://sonarcloud.io/dashboard?id=chevere_chevere) [![CodeFactor](https://www.codefactor.io/repository/github/chevere/chevere/badge)](https://www.codefactor.io/repository/github/chevere/chevere) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b956754f8ff04aaa9ca24a6e4cc21661)](https://www.codacy.com/gh/chevere/chevere/dashboard)
 
@@ -16,4 +16,8 @@ Documentation is available at [chevere.org](https://chevere.org/).
 
 ## License
 
-Copyright [Rodolfo Berrios A.](https://rodolfoberrios.com/) Chevere is licensed under the [AGPLv3](LICENSE).
+Copyright 2022 [Rodolfo Berrios A.](https://rodolfoberrios.com/)
+
+Chevere is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
