@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Hook;
 
-use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
-use Chevere\Components\Pluggable\Types\HookPlugType;
-use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\HookInterface;
+use Chevere\Pluggable\Plug\Hook\HooksQueue;
+use Chevere\Pluggable\Types\HookPlugType;
 use Chevere\Tests\Pluggable\Plug\Hook\_resources\TestHook;
 use PHPUnit\Framework\TestCase;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Hook\_resources\HooksRunnerTest;
 
-use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\HookInterface;
 
 class TestHookTypeChange implements HookInterface
 {

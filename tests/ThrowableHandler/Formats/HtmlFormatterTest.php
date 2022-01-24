@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Formats;
 
-use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerHtmlFormat;
-use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
+use Chevere\ThrowableHandler\Formats\ThrowableHandlerHtmlFormat;
+use Chevere\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
 use PHPUnit\Framework\TestCase;
 
 final class HtmlFormatterTest extends TestCase

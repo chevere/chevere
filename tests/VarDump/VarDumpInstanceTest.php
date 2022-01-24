@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
-use Chevere\Components\VarDump\VarDumpInstance;
-
-use function Chevere\Components\VarDump\varDumpConsole;
-use function Chevere\Components\VarDump\varDumpPlain;
-use Chevere\Exceptions\Core\LogicException;
+use Chevere\Throwable\Exceptions\LogicException;
+use function Chevere\VarDump\varDumpConsole;
+use Chevere\VarDump\VarDumpInstance;
 use PHPUnit\Framework\TestCase;
 
 final class VarDumpInstanceTest extends TestCase

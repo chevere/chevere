@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
-use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
-use Chevere\Components\Pluggable\Plug\Hook\HooksRunner;
-use Chevere\Components\Type\Type;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Pluggable\Plug\Hook\HooksQueue;
+use Chevere\Pluggable\Plug\Hook\HooksRunner;
 use Chevere\Tests\Controller\_resources\src\ControllerTestController;
 use Chevere\Tests\Controller\_resources\src\ControllerTestControllerDispatchAttribute;
 use Chevere\Tests\Controller\_resources\src\ControllerTestControllerRelationAttribute;
@@ -26,6 +24,8 @@ use Chevere\Tests\Controller\_resources\src\ControllerTestInvalidController;
 use Chevere\Tests\Controller\_resources\src\ControllerTestModifyParamConflictHook;
 use Chevere\Tests\Controller\_resources\src\ControllerTestModifyParamHook;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestProvider;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Type\Type;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerTest extends TestCase

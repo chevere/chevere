@@ -11,8 +11,8 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Pluggable\PlugsQueue;
-use Chevere\Components\Pluggable\Types\HookPlugType;
+use Chevere\Pluggable\PlugsQueue;
+use Chevere\Pluggable\Types\HookPlugType;
 use Chevere\Tests\Pluggable\Plug\Hook\_resources\TestHook;
 
 return (new PlugsQueue(new HookPlugType()))

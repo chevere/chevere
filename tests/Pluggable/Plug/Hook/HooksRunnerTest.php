@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Hook;
 
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
-use Chevere\Components\Pluggable\Plug\Hook\HooksRunner;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Filesystem\Path;
+use Chevere\Pluggable\Plug\Hook\HooksQueue;
+use Chevere\Pluggable\Plug\Hook\HooksRunner;
 use Chevere\Tests\Pluggable\Plug\Hook\_resources\HooksRunnerTest\TestHookPath;
 use Chevere\Tests\Pluggable\Plug\Hook\_resources\HooksRunnerTest\TestHookString;
 use Chevere\Tests\Pluggable\Plug\Hook\_resources\HooksRunnerTest\TestHookTypeChange;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

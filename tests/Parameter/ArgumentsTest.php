@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\Arguments;
-use Chevere\Components\Parameter\ArrayParameter;
-use Chevere\Components\Parameter\BooleanParameter;
-use Chevere\Components\Parameter\FloatParameter;
-use Chevere\Components\Parameter\IntegerParameter;
-use Chevere\Components\Parameter\ObjectParameter;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Regex\Regex;
-use Chevere\Exceptions\Core\ArgumentCountException;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\TypeException;
+use Chevere\Parameter\Arguments;
+use Chevere\Parameter\ArrayParameter;
+use Chevere\Parameter\BooleanParameter;
+use Chevere\Parameter\FloatParameter;
+use Chevere\Parameter\IntegerParameter;
+use Chevere\Parameter\ObjectParameter;
+use Chevere\Parameter\Parameters;
+use Chevere\Parameter\StringParameter;
+use Chevere\Regex\Regex;
+use Chevere\Throwable\Errors\ArgumentCountError;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use TypeError;
@@ -65,14 +64,14 @@ final class ArgumentsTest extends TestCase
     public function testInvalidArgumentCount(): void
     {
         $parameters = new Parameters();
-        $this->expectException(ArgumentCountException::class);
+        $this->expectException(ArgumentCountError::class);
         new Arguments($parameters, id: '123');
     }
 
     public function testInvalidExtraArguments(): void
     {
         $parameters = new Parameters(test: new StringParameter());
-        $this->expectException(ArgumentCountException::class);
+        $this->expectException(ArgumentCountError::class);
         new Arguments($parameters, test: '123', extra: 'nono');
     }
 
@@ -139,7 +138,7 @@ final class ArgumentsTest extends TestCase
             ),
             id: '123'
         );
-        $this->expectException(TypeException::class);
+        $this->expectException(TypeError::class);
         $arguments->withArgument(id: 123);
     }
 
@@ -149,7 +148,7 @@ final class ArgumentsTest extends TestCase
             id: (new StringParameter())
                 ->withRegex(new Regex('/^[0-9]+$/'))
         );
-        $this->expectException(ArgumentCountException::class);
+        $this->expectException(ArgumentCountError::class);
         new Arguments($parameters, ...[]);
     }
 

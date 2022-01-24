@@ -11,13 +11,13 @@
  */
 
 use Ahc\Cli\IO\Interactor;
-use Chevere\Components\Console\Application;
-use Chevere\Components\Console\Commands\ControllerInspectCommand;
-use Chevere\Components\Console\Commands\ControllerListCommand;
-use Chevere\Components\Console\Commands\ControllerRunCommand;
-use Chevere\Components\Instances\WritersInstance;
-use Chevere\Components\Writer\Writers;
-use function Chevere\Components\Filesystem\dirForString;
+use Chevere\Console\Application;
+use Chevere\Console\Commands\ControllerInspectCommand;
+use Chevere\Console\Commands\ControllerListCommand;
+use Chevere\Console\Commands\ControllerRunCommand;
+use Chevere\Instances\WritersInstance;
+use Chevere\Writer\Writers;
+use function Chevere\Filesystem\dirForString;
 
 foreach ([
     __DIR__ . '/../../../../vendor/autoload.php',

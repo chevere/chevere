@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec;
 
-use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Http\Methods\PutMethod;
-use Chevere\Components\Router\Route\Route;
-use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Router\Router;
-use Chevere\Components\Spec\SpecMaker;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Filesystem\PathInterface;
+use function Chevere\Filesystem\dirForPath;
+use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Interfaces\PathInterface;
+use Chevere\Http\Methods\GetMethod;
+use Chevere\Http\Methods\PutMethod;
+use Chevere\Router\Route\Route;
+use Chevere\Router\Route\RouteEndpoint;
+use Chevere\Router\Route\RoutePath;
+use Chevere\Router\Router;
+use Chevere\Spec\SpecMaker;
 use Chevere\Tests\Spec\_resources\src\SpecMakerTestGetController;
 use Chevere\Tests\Spec\_resources\src\SpecMakerTestPutController;
 use Chevere\Tests\src\DirHelper;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class SpecMakerTest extends TestCase

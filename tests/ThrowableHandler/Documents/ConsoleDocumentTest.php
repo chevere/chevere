@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerConsoleDocument;
-use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
-use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerConsoleFormat;
-use Chevere\Components\ThrowableHandler\ThrowableHandler;
-use Chevere\Components\ThrowableHandler\ThrowableRead;
+use Chevere\ThrowableHandler\Documents\ThrowableHandlerConsoleDocument;
+use Chevere\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
+use Chevere\ThrowableHandler\Formats\ThrowableHandlerConsoleFormat;
+use Chevere\ThrowableHandler\ThrowableHandler;
+use Chevere\ThrowableHandler\ThrowableRead;
 use Colors\Color;
 use Exception;
 use LogicException;

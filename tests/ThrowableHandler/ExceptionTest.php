@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
-use Chevere\Components\Message\Message;
-use Chevere\Components\ThrowableHandler\ThrowableRead;
-use Chevere\Exceptions\Core\ErrorException;
-use Chevere\Exceptions\Core\Exception;
-use Chevere\Exceptions\Core\RangeException;
-use Chevere\Interfaces\ThrowableHandler\ThrowableReadInterface;
+use Chevere\Message\Message;
+use Chevere\Throwable\Exceptions\ErrorException;
+use Chevere\Throwable\Exceptions\LogicException;
+use Chevere\Throwable\Exceptions\RangeException;
+use Chevere\ThrowableHandler\Interfaces\ThrowableReadInterface;
+use Chevere\ThrowableHandler\ThrowableRead;
 use PHPUnit\Framework\TestCase;
 
 final class ExceptionTest extends TestCase
@@ -27,7 +27,7 @@ final class ExceptionTest extends TestCase
     {
         $message = new Message('test');
         $code = 12345;
-        $exceptionName = Exception::class;
+        $exceptionName = LogicException::class;
         // LINE
         $throw = new $exceptionName($message, $code);
         $line = __LINE__ - 1;

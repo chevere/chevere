@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec\_resources\src;
 
-use Chevere\Components\Controller\Controller;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use function Chevere\Components\Parameter\stringParameter;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Controller\Controller;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Parameters;
+use function Chevere\Parameter\stringParameter;
+use Chevere\Response\Interfaces\ResponseInterface;
 
 class SpecMakerTestGetController extends Controller
 {

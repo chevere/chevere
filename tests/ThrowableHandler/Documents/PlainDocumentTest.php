@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
-use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
-use Chevere\Components\ThrowableHandler\ThrowableHandler;
-use Chevere\Components\ThrowableHandler\ThrowableRead;
-use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
+use Chevere\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
+use Chevere\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
+use Chevere\ThrowableHandler\Interfaces\ThrowableHandlerDocumentInterface;
+use Chevere\ThrowableHandler\ThrowableHandler;
+use Chevere\ThrowableHandler\ThrowableRead;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 

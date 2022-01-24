@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Route\Route;
-use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Router\RouterIndex;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Router\RouteIdentifierInterface;
+use Chevere\Http\Methods\GetMethod;
+use Chevere\Router\Interfaces\RouteIdentifierInterface;
+use Chevere\Router\Route\Route;
+use Chevere\Router\Route\RouteEndpoint;
+use Chevere\Router\Route\RoutePath;
+use Chevere\Router\RouterIndex;
 use Chevere\Tests\Router\_resources\src\TestController;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class RouterIndexTest extends TestCase

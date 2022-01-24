@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Formats;
 
-use Chevere\Components\VarDump\Formats\VarDumpHtmlFormat;
-use Chevere\Components\VarDump\Interfaces\VarDumpHighlightInterface;
+use Chevere\VarDump\Formats\VarDumpHtmlFormat;
+use Chevere\VarDump\Interfaces\VarDumpHighlightInterface;
 use PHPUnit\Framework\TestCase;
 
 final class VarDumpHtmlFormatTest extends TestCase

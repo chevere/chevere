@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Route;
 
-use Chevere\Components\Router\Route\RouteWildcardMatch;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\UnexpectedValueException;
+use Chevere\Router\Route\RouteWildcardMatch;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\UnexpectedValueException;
 use PHPUnit\Framework\TestCase;
 
 final class RouteWildcardMatchTest extends TestCase

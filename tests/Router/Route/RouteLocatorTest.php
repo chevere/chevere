@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Route;
 
-use Chevere\Components\Router\Route\RouteLocator;
+use Chevere\Router\Route\RouteLocator;
 use PHPUnit\Framework\TestCase;
 
 final class RouteLocatorTest extends TestCase

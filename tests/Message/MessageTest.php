@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Message;
 
-use Chevere\Components\Message\Message;
-use function Chevere\Components\Message\message;
-use Chevere\Interfaces\Message\MessageInterface;
+use Chevere\Message\Interfaces\MessageInterface;
+use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Colors\Color;
 use PHPUnit\Framework\TestCase;
 

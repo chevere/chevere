@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\HrTime;
 
-use Chevere\Components\HrTime\HrTime;
+use Chevere\HrTime\HrTime;
 use PHPUnit\Framework\TestCase;
 
 final class HrTimeTest extends TestCase

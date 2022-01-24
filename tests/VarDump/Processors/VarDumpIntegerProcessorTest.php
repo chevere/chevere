@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Processors;
 
-use Chevere\Components\VarDump\Processors\VarDumpIntegerProcessor;
+use Chevere\VarDump\Processors\VarDumpIntegerProcessor;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;

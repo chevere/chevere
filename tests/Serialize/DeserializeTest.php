@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Serialize;
 
-use Chevere\Components\Serialize\Deserialize;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Serialize\Deserialize;
 use Chevere\Tests\Serialize\_resources\TestUnserializeException;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

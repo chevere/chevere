@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Writer;
 
-use function Chevere\Components\Writer\streamFor;
-use function Chevere\Components\Writer\streamTemp;
-use Chevere\Components\Writer\StreamWriter;
+use function Chevere\Writer\streamFor;
+use function Chevere\Writer\streamTemp;
+use Chevere\Writer\StreamWriter;
 use PHPUnit\Framework\TestCase;
 
 final class StreamWriterTest extends TestCase

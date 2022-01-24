@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Hook\_resources\HooksRunnerTest;
 
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
-use Chevere\Components\Pluggable\PluggableAnchors;
-use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
-use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
+use Chevere\Filesystem\Interfaces\PathInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\PluggableHooksInterface;
+use Chevere\Pluggable\Interfaces\PluggableAnchorsInterface;
+use Chevere\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
+use Chevere\Pluggable\PluggableAnchors;
 
 class TestHookable implements PluggableHooksInterface
 {

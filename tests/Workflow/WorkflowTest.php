@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Workflow\Step;
-use Chevere\Components\Workflow\Steps;
-use Chevere\Components\Workflow\Workflow;
-use Chevere\Exceptions\Core\BadMethodCallException;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep0;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep1;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep2;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStep2Conflict;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStepDeps0;
 use Chevere\Tests\Workflow\_resources\src\WorkflowTestStepDeps1;
+use Chevere\Throwable\Exceptions\BadMethodCallException;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
+use Chevere\Workflow\Step;
+use Chevere\Workflow\Steps;
+use Chevere\Workflow\Workflow;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowTest extends TestCase

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\src;
 
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Filesystem\Dir;
+use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
 

@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable;
 
-use Chevere\Components\Pluggable\Types\EventPlugType;
-use Chevere\Components\Pluggable\Types\HookPlugType;
-use Chevere\Interfaces\Pluggable\Plug\Event\EventInterface;
-use Chevere\Interfaces\Pluggable\Plug\Event\EventQueueInterface;
-use Chevere\Interfaces\Pluggable\Plug\Event\PluggableEventsInterface;
-use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
-use Chevere\Interfaces\Pluggable\Plug\Hook\HooksQueueInterface;
-use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
-use Chevere\Interfaces\Pluggable\PlugTypeInterface;
+use Chevere\Pluggable\Interfaces\Plug\Event\EventInterface;
+use Chevere\Pluggable\Interfaces\Plug\Event\EventQueueInterface;
+use Chevere\Pluggable\Interfaces\Plug\Event\PluggableEventsInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\HookInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\HooksQueueInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\PluggableHooksInterface;
+use Chevere\Pluggable\Interfaces\PlugTypeInterface;
+use Chevere\Pluggable\Types\EventPlugType;
+use Chevere\Pluggable\Types\HookPlugType;
 use PHPUnit\Framework\TestCase;
 
 final class PlugTypesTest extends TestCase

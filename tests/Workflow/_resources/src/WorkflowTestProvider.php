@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow\_resources\src;
 
-use Chevere\Components\Workflow\Workflow;
-use Chevere\Interfaces\Workflow\WorkflowInterface;
-use Chevere\Interfaces\Workflow\WorkflowProviderInterface;
+use Chevere\Workflow\Interfaces\WorkflowInterface;
+use Chevere\Workflow\Interfaces\WorkflowProviderInterface;
+use Chevere\Workflow\Workflow;
 
 final class WorkflowTestProvider implements WorkflowProviderInterface
 {

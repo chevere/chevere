@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Benchmark\Tests;
+namespace Chevere\Benchmark\Tests;
 
-use Chevere\Components\Benchmark\Benchmark;
-use Chevere\Exceptions\Core\ArgumentCountException;
-use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Benchmark\Benchmark;
+use Chevere\Throwable\Errors\ArgumentCountError;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class BenchmarkTest extends TestCase
@@ -47,7 +47,7 @@ final class BenchmarkTest extends TestCase
     public function testWithBadAddedCallable(): void
     {
         $benchmark = (new Benchmark(1, 2, 3));
-        $this->expectException(ArgumentCountException::class);
+        $this->expectException(ArgumentCountError::class);
         $benchmark->withAddedCallable(
             one: function (int $one) {
                 return $one;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Trace;
 
-use Chevere\Components\Trace\TraceEntry;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Trace\TraceEntry;
+use Chevere\VarDump\Interfaces\VarDumperInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

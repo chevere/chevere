@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
-use Chevere\Components\VarDump\Processors\VarDumpArrayProcessor;
-use Chevere\Components\VarDump\Processors\VarDumpBooleanProcessor;
-use Chevere\Components\VarDump\Processors\VarDumpFloatProcessor;
-use Chevere\Components\VarDump\Processors\VarDumpIntegerProcessor;
-use Chevere\Components\VarDump\Processors\VarDumpNullProcessor;
-use Chevere\Components\VarDump\Processors\VarDumpObjectProcessor;
-use Chevere\Components\VarDump\Processors\VarDumpResourceProcessor;
-use Chevere\Components\VarDump\Processors\VarDumpStringProcessor;
-use Chevere\Components\VarDump\VarDumpable;
-use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Type\Interfaces\TypeInterface;
+use Chevere\VarDump\Processors\VarDumpArrayProcessor;
+use Chevere\VarDump\Processors\VarDumpBooleanProcessor;
+use Chevere\VarDump\Processors\VarDumpFloatProcessor;
+use Chevere\VarDump\Processors\VarDumpIntegerProcessor;
+use Chevere\VarDump\Processors\VarDumpNullProcessor;
+use Chevere\VarDump\Processors\VarDumpObjectProcessor;
+use Chevere\VarDump\Processors\VarDumpResourceProcessor;
+use Chevere\VarDump\Processors\VarDumpStringProcessor;
+use Chevere\VarDump\VarDumpable;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

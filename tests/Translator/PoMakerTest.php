@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Tests\Translator;
 
 use BadMethodCallException;
-use function Chevere\Components\Filesystem\dirForPath;
-use function Chevere\Components\Filesystem\fileForPath;
-use Chevere\Components\Translator\PoMaker;
+use function Chevere\Filesystem\dirForPath;
+use function Chevere\Filesystem\fileForPath;
+use Chevere\Translator\PoMaker;
 use PHPUnit\Framework\TestCase;
 
 final class PoMakerTest extends TestCase

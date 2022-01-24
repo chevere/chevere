@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Event;
 
-use Chevere\Components\Pluggable\Plug\Event\EventsQueue;
-use Chevere\Components\Pluggable\Plug\Event\EventsRunner;
-use function Chevere\Components\Writer\streamTemp;
-use Chevere\Components\Writer\StreamWriter;
-use Chevere\Components\Writer\Writers;
+use Chevere\Pluggable\Plug\Event\EventsQueue;
+use Chevere\Pluggable\Plug\Event\EventsRunner;
+use function Chevere\Writer\streamTemp;
+use Chevere\Writer\StreamWriter;
+use Chevere\Writer\Writers;
 use Chevere\Tests\Pluggable\Plug\Event\_resources\TestEvent;
 use Chevere\Tests\Pluggable\Plug\Event\_resources\TestEventable;
 use PHPUnit\Framework\TestCase;

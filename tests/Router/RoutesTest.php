@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use Chevere\Components\Router\Route\Route;
-use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Router\Routes;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Router\Route\Route;
+use Chevere\Router\Route\RoutePath;
+use Chevere\Router\Routes;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class RoutesTest extends TestCase

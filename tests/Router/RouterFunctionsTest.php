@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use function Chevere\Components\Router\route;
-use function Chevere\Components\Router\routes;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
-use Chevere\Interfaces\Router\Route\RouteEndpointInterface;
+use Chevere\Http\Exceptions\HttpMethodNotAllowedException;
+use Chevere\Router\Interfaces\Route\RouteEndpointInterface;
+use function Chevere\Router\route;
+use function Chevere\Router\routes;
 use Chevere\Tests\Router\Route\_resources\src\TestController;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class RouterFunctionsTest extends TestCase

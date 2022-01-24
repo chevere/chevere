@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Dependent;
 
-use Chevere\Components\Dependent\Dependencies;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Filesystem\PathInterface;
+use Chevere\Dependent\Dependencies;
+use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Interfaces\PathInterface;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class DependenciesTest extends TestCase

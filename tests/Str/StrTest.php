@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Str;
 
-use Chevere\Components\Str\Str;
+use Chevere\Str\Str;
 use PHPUnit\Framework\TestCase;
 
 final class StrTest extends TestCase

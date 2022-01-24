@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Route;
 
-use Chevere\Components\Router\Route\RouteWildcard;
-use Chevere\Components\Router\Route\RouteWildcardMatch;
-use Chevere\Exceptions\Router\Route\RouteWildcardInvalidException;
+use Chevere\Router\Exceptions\Route\RouteWildcardInvalidException;
+use Chevere\Router\Route\RouteWildcard;
+use Chevere\Router\Route\RouteWildcardMatch;
 use FastRoute\RouteParser\Std;
 use PHPUnit\Framework\TestCase;
 

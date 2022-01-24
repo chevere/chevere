@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec;
 
-use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Http\Methods\PutMethod;
-use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Router\Route\RouteLocator;
-use Chevere\Components\Spec\SpecIndex;
-use Chevere\Components\Spec\Specs\RouteEndpointSpec;
-use Chevere\Exceptions\Core\OutOfBoundsException;
+use function Chevere\Filesystem\dirForPath;
+use Chevere\Http\Methods\GetMethod;
+use Chevere\Http\Methods\PutMethod;
+use Chevere\Router\Route\RouteEndpoint;
+use Chevere\Router\Route\RouteLocator;
+use Chevere\Spec\SpecIndex;
+use Chevere\Spec\Specs\RouteEndpointSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class SpecIndexTest extends TestCase

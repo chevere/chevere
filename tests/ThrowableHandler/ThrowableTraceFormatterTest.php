@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
-use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
-use Chevere\Components\Trace\TraceFormat;
+use Chevere\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
+use Chevere\Trace\TraceFormat;
 use Exception;
 use PHPUnit\Framework\TestCase;
 

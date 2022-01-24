@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller\_resources\src;
 
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\StringParameter;
+use Chevere\Pluggable\Interfaces\Plug\Hook\HookInterface;
 
 class ControllerTestModifyParamHook implements HookInterface
 {

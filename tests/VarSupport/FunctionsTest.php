@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarSupport;
 
-use function Chevere\Components\VarSupport\deepCopy;
-use Chevere\Exceptions\VarSupport\VarObjectNotClonableException;
+use function Chevere\VarSupport\deepCopy;
+use Chevere\VarSupport\Exceptions\VarObjectNotClonableException;
 use PHPUnit\Framework\TestCase;
 
 final class FunctionsTest extends TestCase

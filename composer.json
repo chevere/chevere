@@ -40,24 +40,22 @@
     },
     "autoload": {
         "files": [
-            "src/Chevere/Components/Filesystem/functions.php",
-            "src/Chevere/Components/Iterator/functions.php",
-            "src/Chevere/Components/Message/functions.php",
-            "src/Chevere/Components/Parameter/functions.php",
-            "src/Chevere/Components/Router/functions.php",
-            "src/Chevere/Components/Str/functions.php",
-            "src/Chevere/Components/ThrowableHandler/functions.php",
-            "src/Chevere/Components/Translator/functions.php",
-            "src/Chevere/Components/Type/functions.php",
-            "src/Chevere/Components/VarSupport/functions.php",
-            "src/Chevere/Components/VarDump/functions.php",
-            "src/Chevere/Components/Workflow/functions.php",
-            "src/Chevere/Components/Writer/functions.php"
+            "src/Filesystem/functions.php",
+            "src/Iterator/functions.php",
+            "src/Message/functions.php",
+            "src/Parameter/functions.php",
+            "src/Router/functions.php",
+            "src/Str/functions.php",
+            "src/ThrowableHandler/functions.php",
+            "src/Translator/functions.php",
+            "src/Type/functions.php",
+            "src/VarSupport/functions.php",
+            "src/VarDump/functions.php",
+            "src/Workflow/functions.php",
+            "src/Writer/functions.php"
         ],
         "psr-4": {
-            "Chevere\\Components\\": "src/Chevere/Components/",
-            "Chevere\\Interfaces\\": "src/Chevere/Interfaces/",
-            "Chevere\\Exceptions\\": "src/Chevere/Exceptions/"
+            "Chevere\\": "src/"
         }
     },
     "autoload-dev": {

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
-use Chevere\Components\Message\Message;
-use Chevere\Components\ThrowableHandler\ThrowableRead;
-use Chevere\Exceptions\Core\Exception as CoreException;
-use Chevere\Interfaces\ThrowableHandler\ThrowableReadInterface;
+use Chevere\Message\Message;
+use Chevere\Throwable\Exceptions\LogicException;
+use Chevere\ThrowableHandler\Interfaces\ThrowableReadInterface;
+use Chevere\ThrowableHandler\ThrowableRead;
 use ErrorException;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -67,7 +67,7 @@ final class ThrowableReadTest extends TestCase
     public function testChevereException(): void
     {
         $message = new Message('Ups');
-        $exception = new CoreException($message);
+        $exception = new LogicException($message);
         $read = new ThrowableRead($exception);
         $this->assertSame($message, $read->message());
     }

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructure\src;
 
-use Chevere\Components\DataStructure\Map;
-use Chevere\Components\DataStructure\Traits\MapToArrayTrait;
+use Chevere\DataStructure\Map;
+use Chevere\DataStructure\Traits\MapToArrayTrait;
 
 final class UsesMapToArrayTrait
 {

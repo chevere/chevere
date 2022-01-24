@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarSupport;
 
-use Chevere\Components\VarSupport\VarObject;
-use Chevere\Exceptions\VarSupport\VarObjectNotClonableException;
+use Chevere\VarSupport\Exceptions\VarObjectNotClonableException;
+use Chevere\VarSupport\VarObject;
 use Chevere\Tests\VarSupport\_resources\ClassWithResource;
 use finfo;
 use PHPUnit\Framework\TestCase;

@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable;
 
-use Chevere\Components\Cache\Cache;
-use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
-use Chevere\Components\Pluggable\PlugsMap;
-use Chevere\Components\Pluggable\PlugsMapCache;
-use Chevere\Components\Pluggable\Types\HookPlugType;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Cache\Cache;
+use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Pluggable\Plug\Hook\HooksQueue;
+use Chevere\Pluggable\PlugsMap;
+use Chevere\Pluggable\PlugsMapCache;
+use Chevere\Pluggable\Types\HookPlugType;
 use Chevere\Tests\Pluggable\_resources\src\TestHook;
 use Chevere\Tests\src\DirHelper;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 final class PlugsMapCacheTest extends TestCase

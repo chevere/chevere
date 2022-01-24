@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Event\_resources;
 
-use Chevere\Components\Pluggable\Plug\Event\Traits\PluggableEventsTrait;
-use Chevere\Components\Pluggable\PluggableAnchors;
-use Chevere\Interfaces\Pluggable\Plug\Event\PluggableEventsInterface;
-use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
+use Chevere\Pluggable\Interfaces\Plug\Event\PluggableEventsInterface;
+use Chevere\Pluggable\Interfaces\PluggableAnchorsInterface;
+use Chevere\Pluggable\Plug\Event\Traits\PluggableEventsTrait;
+use Chevere\Pluggable\PluggableAnchors;
 
 class TestEventable implements PluggableEventsInterface
 {

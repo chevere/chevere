@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Translator;
 
-use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Translator\TranslatorLoader;
-use Chevere\Exceptions\Filesystem\DirNotExistsException;
-use Chevere\Interfaces\Translator\TranslatorLoaderInterface;
+use function Chevere\Filesystem\dirForPath;
+use Chevere\Filesystem\Exceptions\DirNotExistsException;
+use Chevere\Translator\Interfaces\TranslatorLoaderInterface;
+use Chevere\Translator\TranslatorLoader;
 use DomainException;
 use Gettext\Translator;
 use InvalidArgumentException;

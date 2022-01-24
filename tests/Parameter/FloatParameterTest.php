@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\FloatParameter;
-use function Chevere\Components\Parameter\floatParameter;
+use Chevere\Parameter\FloatParameter;
+use function Chevere\Parameter\floatParameter;
 use PHPUnit\Framework\TestCase;
 
 final class FloatParameterTest extends TestCase

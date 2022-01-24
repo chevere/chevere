@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Benchmark\Tests;
+namespace Chevere\Benchmark\Tests;
 
-use Chevere\Components\Benchmark\Benchmark;
-use Chevere\Components\Benchmark\BenchmarkRun;
-use Chevere\Exceptions\Core\TypeException;
-use Chevere\Interfaces\Benchmark\BenchmarkInterface;
+use Chevere\Benchmark\Benchmark;
+use Chevere\Benchmark\BenchmarkRun;
+use Chevere\Benchmark\Interfaces\BenchmarkInterface;
+use Chevere\Throwable\Errors\TypeError;
 use PHPUnit\Framework\TestCase;
 
 final class BenchmarkRunTest extends TestCase
@@ -52,7 +52,7 @@ final class BenchmarkRunTest extends TestCase
 
     public function testExecBadArgumentType(): void
     {
-        $this->expectException(TypeException::class);
+        $this->expectException(TypeError::class);
         $benchmark = (new Benchmark('string'))
             ->withAddedCallable(
                 int: function (int $int) {

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Route;
 
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Router\Route\RouteEndpoints;
+use Chevere\Http\Methods\GetMethod;
+use Chevere\Router\Route\RouteEndpoint;
+use Chevere\Router\Route\RouteEndpoints;
 use Chevere\Tests\Router\Route\_resources\src\GetArticleController;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;

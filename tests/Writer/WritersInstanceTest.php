@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Writer;
 
-use Chevere\Components\Writer\Writers;
-use Chevere\Components\Writer\WritersInstance;
-use Chevere\Exceptions\Core\LogicException;
+use Chevere\Throwable\Exceptions\LogicException;
+use Chevere\Writer\Writers;
+use Chevere\Writer\WritersInstance;
 use PHPUnit\Framework\TestCase;
 
 final class WritersInstanceTest extends TestCase

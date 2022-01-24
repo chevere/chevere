@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Hook;
 
-use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Pluggable\Plug\Hook\HooksQueue;
-use Chevere\Components\Pluggable\Plug\Hook\HooksRunner;
-use Chevere\Components\Pluggable\Plugins;
-use Chevere\Interfaces\Pluggable\PluginsInterface;
+use Chevere\ClassMap\ClassMap;
+use Chevere\Filesystem\Dir;
+use Chevere\Filesystem\Path;
+use Chevere\Pluggable\Interfaces\PluginsInterface;
+use Chevere\Pluggable\Plug\Hook\HooksQueue;
+use Chevere\Pluggable\Plug\Hook\HooksRunner;
+use Chevere\Pluggable\Plugins;
 use Chevere\Tests\Pluggable\Plug\Hook\_resources\TestHook;
 use Chevere\Tests\Pluggable\Plug\Hook\_resources\TestHookable;
 use Chevere\Tests\Pluggable\Plug\Hook\_resources\TestHookableWithoutHooks;

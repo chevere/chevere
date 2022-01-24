@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable;
 
-use Chevere\Components\Pluggable\PlugsMap;
-use Chevere\Components\Pluggable\Types\EventPlugType;
-use Chevere\Components\Pluggable\Types\HookPlugType;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Interfaces\Pluggable\Plug\Hook\HooksQueueInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\HooksQueueInterface;
+use Chevere\Pluggable\PlugsMap;
+use Chevere\Pluggable\Types\EventPlugType;
+use Chevere\Pluggable\Types\HookPlugType;
 use Chevere\Tests\Pluggable\_resources\src\TestHook;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class PlugsMapTest extends TestCase

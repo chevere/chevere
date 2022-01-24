@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\_resources\PlugsMapperTest;
 
-use Chevere\Components\Pluggable\PluggableAnchors;
-use Chevere\Components\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
-use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
-use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\PluggableHooksInterface;
+use Chevere\Pluggable\Interfaces\PluggableAnchorsInterface;
+use Chevere\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
+use Chevere\Pluggable\PluggableAnchors;
 
 class TestMappedHookable implements PluggableHooksInterface
 {

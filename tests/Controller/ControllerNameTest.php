@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
-use Chevere\Components\Controller\ControllerName;
-use Chevere\Exceptions\Controller\ControllerNameInterfaceException;
-use Chevere\Exceptions\Controller\ControllerNameNotExistsException;
+use Chevere\Controller\ControllerName;
+use Chevere\Controller\Exceptions\ControllerNameInterfaceException;
+use Chevere\Controller\Exceptions\ControllerNameNotExistsException;
 use Chevere\Tests\Controller\_resources\src\ControllerNameTestController;
 use PHPUnit\Framework\TestCase;
 

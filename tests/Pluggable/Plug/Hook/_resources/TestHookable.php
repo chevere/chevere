@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Hook\_resources;
 
-use Chevere\Components\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
-use Chevere\Components\Pluggable\PluggableAnchors;
-use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
-use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\PluggableHooksInterface;
+use Chevere\Pluggable\Interfaces\PluggableAnchorsInterface;
+use Chevere\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
+use Chevere\Pluggable\PluggableAnchors;
 
 class TestHookable implements PluggableHooksInterface
 {

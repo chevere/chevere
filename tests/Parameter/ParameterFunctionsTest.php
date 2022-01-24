@@ -12,13 +12,13 @@
 declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
-use function Chevere\Components\Parameter\arrayParameter;
-use function Chevere\Components\Parameter\booleanParameter;
-use function Chevere\Components\Parameter\floatParameter;
-use function Chevere\Components\Parameter\integerParameter;
-use function Chevere\Components\Parameter\objectParameter;
-use function Chevere\Components\Parameter\parameters;
-use function Chevere\Components\Parameter\stringParameter;
+use function Chevere\Parameter\arrayParameter;
+use function Chevere\Parameter\booleanParameter;
+use function Chevere\Parameter\floatParameter;
+use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\objectParameter;
+use function Chevere\Parameter\parameters;
+use function Chevere\Parameter\stringParameter;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

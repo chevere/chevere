@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Cache;
 
-use Chevere\Components\Cache\Cache;
-use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\VarSupport\VarStorable;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\Cache\CacheItemInterface;
-use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Cache\Cache;
+use Chevere\Cache\CacheKey;
+use Chevere\Cache\Interfaces\CacheItemInterface;
+use Chevere\Filesystem\Dir;
+use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Path;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\VarSupport\VarStorable;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase

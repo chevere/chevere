@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Exceptions\Filesystem\FileNotExistsException;
-use Chevere\Exceptions\Filesystem\PathExistsException;
-use Chevere\Exceptions\Filesystem\PathIsDirException;
-use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Filesystem\FileInterface;
+use function Chevere\Filesystem\dirForPath;
+use Chevere\Filesystem\Exceptions\FileNotExistsException;
+use Chevere\Filesystem\Exceptions\PathExistsException;
+use Chevere\Filesystem\Exceptions\PathIsDirException;
+use Chevere\Filesystem\File;
+use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Interfaces\FileInterface;
+use Chevere\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller\_resources\src;
 
-use Chevere\Components\Controller\Controller;
-use Chevere\Components\Parameter\IntegerParameter;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Controller\Controller;
+use Chevere\Parameter\IntegerParameter;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Parameters;
+use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ControllerTestInvalidController extends Controller
 {

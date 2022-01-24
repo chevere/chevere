@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow\_resources\src;
 
-use Chevere\Components\Action\Action;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Action\Action;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Parameters;
+use Chevere\Parameter\StringParameter;
+use Chevere\Response\Interfaces\ResponseInterface;
 
 class WorkflowRunnerTestStep1 extends Action
 {

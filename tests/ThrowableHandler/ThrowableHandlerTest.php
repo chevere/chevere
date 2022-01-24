@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
-use Chevere\Components\Message\Message;
-use Chevere\Components\ThrowableHandler\ThrowableHandler;
-use Chevere\Components\ThrowableHandler\ThrowableRead;
-use Chevere\Exceptions\Core\Exception;
-use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
+use Chevere\Message\Message;
+use Chevere\Throwable\Exceptions\LogicException;
+use Chevere\ThrowableHandler\Interfaces\ThrowableHandlerInterface;
+use Chevere\ThrowableHandler\ThrowableHandler;
+use Chevere\ThrowableHandler\ThrowableRead;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -47,7 +47,7 @@ final class ThrowableHandlerTest extends TestCase
         return
             new ThrowableHandler(
                 new ThrowableRead(
-                    new Exception(new Message('Ups'), 100)
+                    new LogicException(new Message('Ups'), 100)
                 )
             );
     }

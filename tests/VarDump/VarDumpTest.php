@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
-use Chevere\Components\VarDump\Formats\VarDumpPlainFormat;
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
-use Chevere\Components\VarDump\Outputs\VarDumpPlainOutput;
-use Chevere\Components\VarDump\VarDump;
-use function Chevere\Components\Writer\streamTemp;
-use Chevere\Components\Writer\StreamWriter;
+use Chevere\VarDump\Formats\VarDumpPlainFormat;
+use Chevere\VarDump\Interfaces\VarDumpInterface;
+use Chevere\VarDump\Outputs\VarDumpPlainOutput;
+use Chevere\VarDump\VarDump;
+use function Chevere\Writer\streamTemp;
+use Chevere\Writer\StreamWriter;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 use stdClass;

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Parameter\Parameters;
+use Chevere\Parameter\StringParameter;
 use Chevere\Tests\src\ObjectHelper;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase

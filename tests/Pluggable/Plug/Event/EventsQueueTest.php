@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Event;
 
-use Chevere\Components\Pluggable\Plug\Event\EventsQueue;
-use Chevere\Components\Pluggable\Types\EventPlugType;
-use Chevere\Interfaces\Pluggable\Plug\Event\EventInterface;
+use Chevere\Pluggable\Interfaces\Plug\Event\EventInterface;
+use Chevere\Pluggable\Plug\Event\EventsQueue;
+use Chevere\Pluggable\Types\EventPlugType;
 use Chevere\Tests\Pluggable\Plug\Event\_resources\TestEvent;
 use PHPUnit\Framework\TestCase;
 

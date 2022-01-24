@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Hook\_resources\HooksRunnerTest;
 
-use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Interfaces\Pluggable\Plug\Hook\HookInterface;
+use Chevere\Filesystem\Interfaces\PathInterface;
+use Chevere\Pluggable\Interfaces\Plug\Hook\HookInterface;
 
 class TestHookPath implements HookInterface
 {

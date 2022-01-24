@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
-use function Chevere\Components\Type\getType;
-use function Chevere\Components\Type\returnTypeExceptionMessage;
-use Chevere\Interfaces\Type\TypeInterface;
+use function Chevere\Type\getType;
+use Chevere\Type\Interfaces\TypeInterface;
+use function Chevere\Type\returnTypeExceptionMessage;
 use PHPUnit\Framework\TestCase;
 
 final class FunctionsTest extends TestCase
@@ -42,7 +42,7 @@ final class FunctionsTest extends TestCase
     {
         $types = ['boolean', 'integer', 'float', 'string', 'array', 'callable', 'iterable', 'resource', 'null'];
         foreach ($types as $v) {
-            $name = 'Chevere\\Components\\Type\\type' . ucfirst($v);
+            $name = 'Chevere\\Type\\type' . ucfirst($v);
             /** @var TypeInterface $fn */
             $object = $name();
             $this->assertSame($v, $object->typeHinting());

@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Action\Action;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Response\Response;
-use Chevere\Components\Workflow\Step;
-use Chevere\Components\Workflow\Steps;
-use Chevere\Components\Workflow\Workflow;
-use Chevere\Components\Workflow\WorkflowRun;
-use Chevere\Exceptions\Core\ArgumentCountException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Action\Action;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Parameters;
+use Chevere\Parameter\StringParameter;
+use Chevere\Response\Interfaces\ResponseInterface;
+use Chevere\Response\Response;
+use Chevere\Throwable\Errors\ArgumentCountError;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Workflow\Step;
+use Chevere\Workflow\Steps;
+use Chevere\Workflow\Workflow;
+use Chevere\Workflow\WorkflowRun;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowRunTest extends TestCase
@@ -80,7 +80,7 @@ final class WorkflowRunTest extends TestCase
         $this->assertTrue($workflow->vars()->has('${baz}'));
         $this->assertTrue($workflowRunWithStepResponse->has('step0'));
         $this->assertSame([], $workflowRunWithStepResponse->get('step0')->data());
-        $this->expectException(ArgumentCountException::class);
+        $this->expectException(ArgumentCountError::class);
         $workflowRunWithStepResponse
             ->withStepResponse('step0', new Response(extra: 'not-allowed'));
     }
@@ -115,7 +115,7 @@ final class WorkflowRunTest extends TestCase
                     foo: '${foo}'
                 )
             );
-        $this->expectException(ArgumentCountException::class);
+        $this->expectException(ArgumentCountError::class);
         (new WorkflowRun($workflow))
             ->withStepResponse(
                 'step0',

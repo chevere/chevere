@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\StringParameter;
-use function Chevere\Components\Parameter\stringParameter;
-use Chevere\Components\Regex\Regex;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Parameter\StringParameter;
+use function Chevere\Parameter\stringParameter;
+use Chevere\Regex\Regex;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class StringParameterTest extends TestCase

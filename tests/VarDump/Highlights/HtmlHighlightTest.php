@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Highlights;
 
-use Chevere\Components\VarDump\Highlights\VarDumpHtmlHighlight;
-use Chevere\Components\VarDump\Interfaces\VarDumpHighlightInterface;
-use Chevere\Exceptions\Core\OutOfRangeException;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
+use Chevere\VarDump\Highlights\VarDumpHtmlHighlight;
+use Chevere\VarDump\Interfaces\VarDumpHighlightInterface;
 use PHPUnit\Framework\TestCase;
 
 final class HtmlHighlightTest extends TestCase

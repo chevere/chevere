@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Route;
 
-use Chevere\Components\Router\Route\RouteDecorator;
-use Chevere\Components\Router\Route\RouteLocator;
-use Chevere\Components\Router\Route\RouteWildcards;
+use Chevere\Router\Route\RouteDecorator;
+use Chevere\Router\Route\RouteLocator;
+use Chevere\Router\Route\RouteWildcards;
 use PHPUnit\Framework\TestCase;
 
 final class RouteDecoratorTest extends TestCase

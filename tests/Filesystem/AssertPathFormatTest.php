@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Components\Filesystem\AssertPathFormat;
-use Chevere\Exceptions\Filesystem\PathDotSlashException;
-use Chevere\Exceptions\Filesystem\PathDoubleDotsDashException;
-use Chevere\Exceptions\Filesystem\PathExtraSlashesException;
-use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
+use Chevere\Filesystem\AssertPathFormat;
+use Chevere\Filesystem\Exceptions\PathDotSlashException;
+use Chevere\Filesystem\Exceptions\PathDoubleDotsDashException;
+use Chevere\Filesystem\Exceptions\PathExtraSlashesException;
+use Chevere\Filesystem\Exceptions\PathNotAbsoluteException;
 use PHPUnit\Framework\TestCase;
 
 final class AssertPathFormatTest extends TestCase

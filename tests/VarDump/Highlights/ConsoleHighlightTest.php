@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Highlights;
 
-use Chevere\Components\Str\Str;
-use Chevere\Components\VarDump\Highlights\VarDumpConsoleHighlight;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumpHighlightInterface;
-use Chevere\Exceptions\Core\OutOfRangeException;
-use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Str\Str;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
+use Chevere\Type\Interfaces\TypeInterface;
+use Chevere\VarDump\Highlights\VarDumpConsoleHighlight;
+use Chevere\VarDump\Interfaces\VarDumperInterface;
+use Chevere\VarDump\Interfaces\VarDumpHighlightInterface;
 use Colors\Color;
 use PHPUnit\Framework\TestCase;
 

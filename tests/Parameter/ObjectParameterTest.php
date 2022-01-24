@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\ObjectParameter;
-use function Chevere\Components\Parameter\objectParameter;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Parameter\ObjectParameter;
+use function Chevere\Parameter\objectParameter;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\BooleanParameter;
+use Chevere\Parameter\BooleanParameter;
 use PHPUnit\Framework\TestCase;
 
 final class BooleanParameterTest extends TestCase

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructure;
 
-use Chevere\Components\DataStructure\Map;
-use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\DataStructure\Map;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class MapTest extends TestCase

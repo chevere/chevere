@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Cache;
 
-use Chevere\Components\Cache\CacheKey;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Cache\CacheKey;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class CacheKeyTest extends TestCase

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
-use function Chevere\Components\ThrowableHandler\errorsAsExceptions;
+use function Chevere\ThrowableHandler\errorsAsExceptions;
 use ErrorException;
 use PHPUnit\Framework\TestCase;
 

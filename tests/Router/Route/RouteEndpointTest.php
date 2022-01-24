@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Route;
 
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Route\RouteEndpoint;
+use Chevere\Http\Methods\GetMethod;
+use Chevere\Router\Route\RouteEndpoint;
 use Chevere\Tests\Router\Route\_resources\src\RouteEndpointTestController;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;

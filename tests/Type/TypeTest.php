@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
-use Chevere\Components\Type\Type;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Type\Interfaces\TypeInterface;
+use Chevere\Type\Type;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

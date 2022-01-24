@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action\_resources\src;
 
-use Chevere\Components\Action\Action;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Action\Action;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ActionTestEmptyAction extends Action
 {

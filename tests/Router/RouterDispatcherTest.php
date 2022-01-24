@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use Chevere\Components\Router\Parsers\StrictStd;
-use Chevere\Components\Router\RouterDispatcher;
-use Chevere\Exceptions\Http\HttpMethodNotAllowedException;
-use Chevere\Exceptions\Router\RouteNotFoundException;
+use Chevere\Http\Exceptions\HttpMethodNotAllowedException;
+use Chevere\Router\Exceptions\RouteNotFoundException;
+use Chevere\Router\Parsers\StrictStd;
+use Chevere\Router\RouterDispatcher;
 use Chevere\Tests\Router\_resources\src\TestController;
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteCollector;

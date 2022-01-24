@@ -2,7 +2,7 @@
     "$schema": "https://raw.githubusercontent.com/infection/infection/0.26.1/resources/schema.json",
     "source": {
         "directories": [
-            "src/Chevere/Components/"
+            "src/"
         ]
     },
     "logs": {

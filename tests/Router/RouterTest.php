@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Route\Route;
-use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Components\Router\Router;
-use Chevere\Exceptions\Router\RouteNotRoutableException;
-use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
+use Chevere\Http\Methods\GetMethod;
+use Chevere\Router\Exceptions\RouteNotRoutableException;
+use Chevere\Router\Exceptions\RouteWithoutEndpointsException;
+use Chevere\Router\Route\Route;
+use Chevere\Router\Route\RouteEndpoint;
+use Chevere\Router\Route\RoutePath;
+use Chevere\Router\Router;
 use Chevere\Tests\Router\_resources\src\TestController;
 use FastRoute\RouteCollector;
 use PHPUnit\Framework\TestCase;

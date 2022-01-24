@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Dependent\Traits;
 
-use Chevere\Components\Action\Action;
-use Chevere\Components\Dependent\Dependencies;
-use Chevere\Components\Dependent\Traits\DependentTrait;
-use Chevere\Exceptions\Core\TypeException;
-use Chevere\Exceptions\Dependent\MissingDependenciesException;
-use Chevere\Interfaces\Dependent\DependenciesInterface;
-use Chevere\Interfaces\Dependent\DependentInterface;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Action\Action;
+use Chevere\Dependent\Dependencies;
+use Chevere\Dependent\Exceptions\MissingDependenciesException;
+use Chevere\Dependent\Interfaces\DependenciesInterface;
+use Chevere\Dependent\Interfaces\DependentInterface;
+use Chevere\Dependent\Traits\DependentTrait;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Response\Interfaces\ResponseInterface;
+use Chevere\Throwable\Errors\TypeError;
 use PHPUnit\Framework\TestCase;
 
 final class DependentTraitTest extends TestCase
@@ -49,13 +49,13 @@ final class DependentTraitTest extends TestCase
 
     public function testWithWrongDependencyClass(): void
     {
-        $this->expectException(TypeException::class);
+        $this->expectException(TypeError::class);
         $this->getTestDependent(testCase: new \stdClass());
     }
 
     public function testWithDependencyMismatch(): void
     {
-        $this->expectException(TypeException::class);
+        $this->expectException(TypeError::class);
         $this->getTestDependentMismatch(testCase: $this);
     }
 

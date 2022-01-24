@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\_resources\AssertPlugTest;
 
-use Chevere\Interfaces\Pluggable\PlugInterface;
+use Chevere\Pluggable\Interfaces\PlugInterface;
 
 final class TestUnacceptedPlug implements PlugInterface
 {

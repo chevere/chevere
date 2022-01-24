@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec\Specs;
 
-use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Spec\Specs\RouteEndpointSpec;
+use function Chevere\Filesystem\dirForPath;
+use Chevere\Http\Methods\GetMethod;
+use Chevere\Router\Route\RouteEndpoint;
+use Chevere\Spec\Specs\RouteEndpointSpec;
 use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 

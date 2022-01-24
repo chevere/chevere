@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
-use Chevere\Components\Str\Str;
-use Chevere\Components\VarDump\Formats\VarDumpConsoleFormat;
-use Chevere\Components\VarDump\Formats\VarDumpHtmlFormat;
-use Chevere\Components\VarDump\Formats\VarDumpPlainFormat;
-use Chevere\Components\VarDump\Outputs\VarDumpConsoleOutput;
-use Chevere\Components\VarDump\Outputs\VarDumpHtmlOutput;
-use Chevere\Components\VarDump\Outputs\VarDumpPlainOutput;
-use Chevere\Components\VarDump\VarOutput;
-use function Chevere\Components\Writer\streamTemp;
-use Chevere\Components\Writer\StreamWriter;
+use Chevere\Str\Str;
+use Chevere\VarDump\Formats\VarDumpConsoleFormat;
+use Chevere\VarDump\Formats\VarDumpHtmlFormat;
+use Chevere\VarDump\Formats\VarDumpPlainFormat;
+use Chevere\VarDump\Outputs\VarDumpConsoleOutput;
+use Chevere\VarDump\Outputs\VarDumpHtmlOutput;
+use Chevere\VarDump\Outputs\VarDumpPlainOutput;
+use Chevere\VarDump\VarOutput;
+use function Chevere\Writer\streamTemp;
+use Chevere\Writer\StreamWriter;
 use Chevere\Tests\VarDump\Traits\DebugBacktraceTrait;
 use PHPUnit\Framework\TestCase;
 

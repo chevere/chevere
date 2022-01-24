@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Formats;
 
-use Chevere\Components\Str\Str;
-use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerConsoleFormat;
-use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
+use Chevere\Str\Str;
+use Chevere\ThrowableHandler\Formats\ThrowableHandlerConsoleFormat;
+use Chevere\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
 use PHPUnit\Framework\TestCase;
 
 final class ConsoleFormatterTest extends TestCase

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Attribute;
 
-use Chevere\Components\Attribute\Dispatch;
-use Chevere\Components\Attribute\Relation;
+use Chevere\Attribute\Dispatch;
+use Chevere\Attribute\Relation;
 use PHPUnit\Framework\TestCase;
 
 final class AttributesTest extends TestCase

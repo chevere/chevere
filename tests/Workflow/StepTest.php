@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Workflow\Step;
-use Chevere\Exceptions\Core\ArgumentCountException;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Tests\Workflow\_resources\src\TaskTestStep0;
 use Chevere\Tests\Workflow\_resources\src\TaskTestStep1;
+use Chevere\Throwable\Errors\ArgumentCountError;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Workflow\Step;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
@@ -37,7 +37,7 @@ final class StepTest extends TestCase
 
     public function testArgumentCountError(): void
     {
-        $this->expectException(ArgumentCountException::class);
+        $this->expectException(ArgumentCountError::class);
         new Step(
             TaskTestStep0::class,
             foo: 'foo',
@@ -47,7 +47,7 @@ final class StepTest extends TestCase
 
     public function testWithArgumentCountError(): void
     {
-        $this->expectException(ArgumentCountException::class);
+        $this->expectException(ArgumentCountError::class);
         new Step(
             TaskTestStep0::class,
             foo: 'foo',

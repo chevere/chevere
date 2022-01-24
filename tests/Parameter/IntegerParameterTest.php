@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\IntegerParameter;
+use Chevere\Parameter\IntegerParameter;
 use PHPUnit\Framework\TestCase;
 
 final class IntegerParameterTest extends TestCase

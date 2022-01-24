@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable;
 
-use Chevere\Components\Pluggable\PluggableAnchors;
-use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Pluggable\PluggableAnchors;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class PluggableAnchorsTest extends TestCase

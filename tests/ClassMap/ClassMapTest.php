@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ClassMap;
 
-use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Exceptions\Core\ClassNotExistsException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
+use Chevere\ClassMap\ClassMap;
 use Chevere\Tests\src\ObjectHelper;
+use Chevere\Throwable\Exceptions\ClassNotExistsException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class ClassMapTest extends TestCase

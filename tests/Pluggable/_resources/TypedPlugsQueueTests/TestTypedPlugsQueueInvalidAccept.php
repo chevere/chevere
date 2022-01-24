@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\_resources\TypedPlugsQueueTests;
 
-use Chevere\Components\Pluggable\Traits\TypedPlugsQueueTrait;
-use Chevere\Components\Pluggable\Types\HookPlugType;
-use Chevere\Interfaces\Pluggable\PlugsQueueTypedInterface;
-use Chevere\Interfaces\Pluggable\PlugTypeInterface;
+use Chevere\Pluggable\Interfaces\PlugsQueueTypedInterface;
+use Chevere\Pluggable\Interfaces\PlugTypeInterface;
+use Chevere\Pluggable\Traits\TypedPlugsQueueTrait;
+use Chevere\Pluggable\Types\HookPlugType;
 
 final class TestTypedPlugsQueueInvalidAccept implements PlugsQueueTypedInterface
 {

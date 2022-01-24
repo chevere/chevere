@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use function Chevere\Components\Workflow\getWorkflowMessage;
-use Chevere\Components\Workflow\Steps;
-use Chevere\Components\Workflow\Workflow;
-use Chevere\Components\Workflow\WorkflowResponse;
+use function Chevere\Workflow\getWorkflowMessage;
+use Chevere\Workflow\Steps;
+use Chevere\Workflow\Workflow;
+use Chevere\Workflow\WorkflowResponse;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowResponseTest extends TestCase

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Translator;
 
-use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Translator\TranslatorMaker;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Filesystem\DirNotExistsException;
-use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Translator\TranslatorMakerInterface;
+use function Chevere\Filesystem\dirForPath;
+use Chevere\Filesystem\Exceptions\DirNotExistsException;
+use Chevere\Filesystem\File;
+use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Translator\Interfaces\TranslatorMakerInterface;
+use Chevere\Translator\TranslatorMaker;
 use PHPUnit\Framework\TestCase;
 
 final class TranslatorMakerTest extends TestCase

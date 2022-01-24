@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action\_resources\src;
 
-use Chevere\Components\Controller\Controller;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Controller\Controller;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Response\Interfaces\ResponseInterface;
 use Exception;
 
 final class ActionRunnerTestControllerRunFail extends Controller

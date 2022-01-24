@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable\Plug\Event\_resources;
 
-use Chevere\Interfaces\Pluggable\Plug\Event\EventInterface;
-use Chevere\Interfaces\Writer\WritersInterface;
+use Chevere\Pluggable\Interfaces\Plug\Event\EventInterface;
+use Chevere\Writer\Interfaces\WritersInterface;
 
 final class TestEvent implements EventInterface
 {

@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable;
 
-use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Pluggable\Plugins;
-use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Pluggable\PluggableNotRegisteredException;
-use Chevere\Exceptions\Pluggable\PlugsFileNotExistsException;
-use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Interfaces\Pluggable\PlugsQueueInterface;
+use Chevere\ClassMap\ClassMap;
+use Chevere\Filesystem\Interfaces\PathInterface;
+use Chevere\Filesystem\Path;
+use Chevere\Pluggable\Exceptions\PluggableNotRegisteredException;
+use Chevere\Pluggable\Exceptions\PlugsFileNotExistsException;
+use Chevere\Pluggable\Interfaces\PlugsQueueInterface;
+use Chevere\Pluggable\Plugins;
+use Chevere\Throwable\Exceptions\LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class PluginsTest extends TestCase

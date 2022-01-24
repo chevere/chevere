@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable;
 
-use Chevere\Components\Pluggable\PlugsQueue;
-use Chevere\Components\Pluggable\Types\EventPlugType;
-use Chevere\Components\Pluggable\Types\HookPlugType;
-use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Core\TypeException;
+use Chevere\Pluggable\PlugsQueue;
+use Chevere\Pluggable\Types\EventPlugType;
+use Chevere\Pluggable\Types\HookPlugType;
 use Chevere\Tests\Pluggable\_resources\src\TestHook;
+use Chevere\Throwable\Errors\TypeError;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class PlugsQueueTest extends TestCase
@@ -36,7 +36,7 @@ final class PlugsQueueTest extends TestCase
         $hook = new TestHook();
         $plugType = new EventPlugType();
         $plugsQueue = new PlugsQueue($plugType);
-        $this->expectException(TypeException::class);
+        $this->expectException(TypeError::class);
         $plugsQueue->withAdded($hook);
     }
 

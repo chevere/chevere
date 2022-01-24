@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Str;
 
-use Chevere\Components\Str\StrAssert;
-use Chevere\Exceptions\Str\StrContainsException;
-use Chevere\Exceptions\Str\StrCtypeDigitException;
-use Chevere\Exceptions\Str\StrCtypeSpaceException;
-use Chevere\Exceptions\Str\StrEmptyException;
-use Chevere\Exceptions\Str\StrEndsWithException;
-use Chevere\Exceptions\Str\StrNotContainsException;
-use Chevere\Exceptions\Str\StrNotCtypeDigitException;
-use Chevere\Exceptions\Str\StrNotCtypeSpaceException;
-use Chevere\Exceptions\Str\StrNotEmptyException;
-use Chevere\Exceptions\Str\StrNotEndsWithException;
-use Chevere\Exceptions\Str\StrNotSameException;
-use Chevere\Exceptions\Str\StrNotStartsWithCtypeDigitException;
-use Chevere\Exceptions\Str\StrNotStartsWithException;
-use Chevere\Exceptions\Str\StrSameException;
-use Chevere\Exceptions\Str\StrStartsWithCtypeDigitException;
-use Chevere\Exceptions\Str\StrStartsWithException;
+use Chevere\Str\Exceptions\StrContainsException;
+use Chevere\Str\Exceptions\StrCtypeDigitException;
+use Chevere\Str\Exceptions\StrCtypeSpaceException;
+use Chevere\Str\Exceptions\StrEmptyException;
+use Chevere\Str\Exceptions\StrEndsWithException;
+use Chevere\Str\Exceptions\StrNotContainsException;
+use Chevere\Str\Exceptions\StrNotCtypeDigitException;
+use Chevere\Str\Exceptions\StrNotCtypeSpaceException;
+use Chevere\Str\Exceptions\StrNotEmptyException;
+use Chevere\Str\Exceptions\StrNotEndsWithException;
+use Chevere\Str\Exceptions\StrNotSameException;
+use Chevere\Str\Exceptions\StrNotStartsWithCtypeDigitException;
+use Chevere\Str\Exceptions\StrNotStartsWithException;
+use Chevere\Str\Exceptions\StrSameException;
+use Chevere\Str\Exceptions\StrStartsWithCtypeDigitException;
+use Chevere\Str\Exceptions\StrStartsWithException;
+use Chevere\Str\StrAssert;
 use PHPUnit\Framework\TestCase;
 
 final class StrAssertTest extends TestCase

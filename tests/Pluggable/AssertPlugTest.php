@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable;
 
-use Chevere\Components\Pluggable\AssertPlug;
-use Chevere\Components\Pluggable\Types\HookPlugType;
-use Chevere\Exceptions\Core\ClassNotExistsException;
-use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Core\TypeException;
+use Chevere\Pluggable\AssertPlug;
+use Chevere\Pluggable\Types\HookPlugType;
 use Chevere\Tests\Pluggable\_resources\AssertPlugTest\TestHookAtInvalidInterface;
 use Chevere\Tests\Pluggable\_resources\AssertPlugTest\TestHookAtNotExists;
 use Chevere\Tests\Pluggable\_resources\AssertPlugTest\TestHookForNotExists;
 use Chevere\Tests\Pluggable\_resources\AssertPlugTest\TestUnacceptedPlug;
 use Chevere\Tests\Pluggable\_resources\src\TestHook;
+use Chevere\Throwable\Errors\TypeError;
+use Chevere\Throwable\Exceptions\ClassNotExistsException;
+use Chevere\Throwable\Exceptions\LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class AssertPlugTest extends TestCase
@@ -30,7 +30,7 @@ final class AssertPlugTest extends TestCase
     public function testUnaccepted(): void
     {
         $plug = new TestUnacceptedPlug();
-        $this->expectException(TypeException::class);
+        $this->expectException(TypeError::class);
         new AssertPlug($plug);
     }
 

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Workflow\Steps;
-use Chevere\Components\Workflow\Workflow;
-use Chevere\Components\Workflow\WorkflowMessage;
-use Chevere\Components\Workflow\WorkflowRun;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\Workflow\WorkflowRunInterface;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Workflow\Interfaces\WorkflowRunInterface;
+use Chevere\Workflow\Steps;
+use Chevere\Workflow\Workflow;
+use Chevere\Workflow\WorkflowMessage;
+use Chevere\Workflow\WorkflowRun;
 use PHPUnit\Framework\TestCase;
 
 final class WorkflowMessageTest extends TestCase

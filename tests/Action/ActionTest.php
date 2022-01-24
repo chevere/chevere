@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
-use Chevere\Components\Parameter\Arguments;
+use Chevere\Parameter\Arguments;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
 use PHPUnit\Framework\TestCase;
 

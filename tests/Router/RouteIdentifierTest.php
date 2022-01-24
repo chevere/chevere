@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use Chevere\Components\Router\RouteIdentifier;
-use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Router\RouteIdentifier;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class RouteIdentifierTest extends TestCase

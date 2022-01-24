@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Components\Parameter\ArrayParameter;
+use Chevere\Parameter\ArrayParameter;
 use PHPUnit\Framework\TestCase;
 
 final class ArrayParameterTest extends TestCase

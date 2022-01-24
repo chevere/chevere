@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\_resources;
 
-use Chevere\Components\DataStructure\Map;
+use Chevere\DataStructure\Map;
 use stdClass;
 
 final class DummyClass

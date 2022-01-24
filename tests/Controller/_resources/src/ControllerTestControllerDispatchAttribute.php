@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller\_resources\src;
 
-use Chevere\Components\Attribute\Dispatch;
-use Chevere\Components\Controller\Controller;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Attribute\Dispatch;
+use Chevere\Controller\Controller;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Parameters;
+use Chevere\Parameter\StringParameter;
+use Chevere\Response\Interfaces\ResponseInterface;
 
 #[Dispatch('some')]
 final class ControllerTestControllerDispatchAttribute extends Controller

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Pluggable;
 
-use function Chevere\Components\Filesystem\dirForPath;
-use Chevere\Components\Pluggable\PlugsMapper;
-use Chevere\Components\Pluggable\Types\HookPlugType;
-use Chevere\Exceptions\Filesystem\DirNotExistsException;
+use function Chevere\Filesystem\dirForPath;
+use Chevere\Filesystem\Exceptions\DirNotExistsException;
+use Chevere\Pluggable\PlugsMapper;
+use Chevere\Pluggable\Types\HookPlugType;
 use PHPUnit\Framework\TestCase;
 
 final class PlugsMapperTest extends TestCase

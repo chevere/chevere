@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Cache;
 
-use Chevere\Components\Cache\CacheItem;
-use Chevere\Components\Filesystem\File;
-use function Chevere\Components\Filesystem\fileForPath;
-use Chevere\Components\Filesystem\FilePhp;
-use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\VarSupport\VarStorable;
-use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Interfaces\Cache\CacheItemInterface;
-use Chevere\Interfaces\Filesystem\FileInterface;
-use Chevere\Interfaces\Filesystem\PathInterface;
+use Chevere\Cache\CacheItem;
+use Chevere\Cache\Interfaces\CacheItemInterface;
+use Chevere\Filesystem\File;
+use function Chevere\Filesystem\fileForPath;
+use Chevere\Filesystem\FilePhp;
+use Chevere\Filesystem\FilePhpReturn;
+use Chevere\Filesystem\Interfaces\FileInterface;
+use Chevere\Filesystem\Interfaces\PathInterface;
+use Chevere\Filesystem\Path;
+use Chevere\Throwable\Exceptions\RuntimeException;
+use Chevere\VarSupport\VarStorable;
 use PHPUnit\Framework\TestCase;
 use function Safe\file_put_contents;
 

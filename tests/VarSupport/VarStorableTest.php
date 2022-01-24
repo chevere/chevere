@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarSupport;
 
-use Chevere\Components\VarSupport\VarStorable;
-use Chevere\Exceptions\VarSupport\VarStorableException;
+use Chevere\VarSupport\Exceptions\VarStorableException;
+use Chevere\VarSupport\VarStorable;
 use Chevere\Tests\VarSupport\_resources\ClassWithResource;
 use PHPUnit\Framework\TestCase;
 use stdClass;

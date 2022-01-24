@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Workflow;
 
-use Chevere\Components\Workflow\Step;
-use function Chevere\Components\Workflow\step;
-use Chevere\Components\Workflow\Steps;
-use function Chevere\Components\Workflow\workflow;
-use Chevere\Components\Workflow\Workflow;
+use Chevere\Workflow\Step;
+use function Chevere\Workflow\step;
+use Chevere\Workflow\Steps;
+use function Chevere\Workflow\workflow;
+use Chevere\Workflow\Workflow;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
 use PHPUnit\Framework\TestCase;
 

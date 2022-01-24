@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Components\Filesystem\Filename;
-use function Chevere\Components\Str\randomString;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\LengthException;
+use Chevere\Filesystem\Filename;
+use function Chevere\Str\randomString;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\LengthException;
 use PHPUnit\Framework\TestCase;
 
 final class FilenameTest extends TestCase

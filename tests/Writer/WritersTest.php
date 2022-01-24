@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Writer;
 
-use function Chevere\Components\Writer\streamTemp;
-use Chevere\Components\Writer\StreamWriter;
-use Chevere\Components\Writer\Writers;
-use Chevere\Interfaces\Writer\WriterInterface;
+use Chevere\Writer\Interfaces\WriterInterface;
+use function Chevere\Writer\streamTemp;
+use Chevere\Writer\StreamWriter;
+use Chevere\Writer\Writers;
 use PHPUnit\Framework\TestCase;
 
 final class WritersTest extends TestCase

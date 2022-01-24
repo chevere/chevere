@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec\_resources\src;
 
-use Chevere\Components\Controller\Controller;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
-use Chevere\Components\Pluggable\PluggableAnchors;
-use Chevere\Components\Regex\Regex;
-use Chevere\Components\Response\Response;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Pluggable\Plug\Hook\PluggableHooksInterface;
-use Chevere\Interfaces\Pluggable\PluggableAnchorsInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Controller\Controller;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Parameters;
+use Chevere\Parameter\StringParameter;
+use Chevere\Pluggable\Interfaces\Plug\Hook\PluggableHooksInterface;
+use Chevere\Pluggable\Interfaces\PluggableAnchorsInterface;
+use Chevere\Pluggable\Plug\Hook\Traits\PluggableHooksTrait;
+use Chevere\Pluggable\PluggableAnchors;
+use Chevere\Regex\Regex;
+use Chevere\Response\Interfaces\ResponseInterface;
+use Chevere\Response\Response;
 
 class TestController extends Controller implements PluggableHooksInterface
 {

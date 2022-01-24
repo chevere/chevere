@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Response;
 
-use Chevere\Components\Response\Response;
+use Chevere\Response\Response;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Rfc4122\Validator;
 

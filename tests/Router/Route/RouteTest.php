@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Route;
 
-use Chevere\Components\Controller\Controller;
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Http\Methods\PostMethod;
-use Chevere\Components\Parameter\Parameters;
-use Chevere\Components\Parameter\StringParameter;
-use Chevere\Components\Regex\Regex;
-use Chevere\Components\Router\Route\Route;
-use Chevere\Components\Router\Route\RouteEndpoint;
-use Chevere\Components\Router\Route\RoutePath;
-use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Router\Route\RouteEndpointConflictException;
-use Chevere\Exceptions\Router\Route\RouteWildcardConflictException;
-use Chevere\Interfaces\Parameter\ArgumentsInterface;
-use Chevere\Interfaces\Parameter\ParametersInterface;
-use Chevere\Interfaces\Response\ResponseInterface;
+use Chevere\Controller\Controller;
+use Chevere\Http\Methods\GetMethod;
+use Chevere\Http\Methods\PostMethod;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Parameters;
+use Chevere\Parameter\StringParameter;
+use Chevere\Regex\Regex;
+use Chevere\Response\Interfaces\ResponseInterface;
+use Chevere\Router\Exceptions\Route\RouteEndpointConflictException;
+use Chevere\Router\Exceptions\Route\RouteWildcardConflictException;
+use Chevere\Router\Route\Route;
+use Chevere\Router\Route\RouteEndpoint;
+use Chevere\Router\Route\RoutePath;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
 final class RouteTest extends TestCase
