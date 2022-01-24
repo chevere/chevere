@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Formats;
 
 use Chevere\Components\VarDump\Highlights\VarDumpHtmlHighlight;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpFormatInterface;
 
 final class VarDumpHtmlFormat implements VarDumpFormatInterface
 {

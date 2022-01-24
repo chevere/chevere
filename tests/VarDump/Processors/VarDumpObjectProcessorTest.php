@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Processors;
 
+use Chevere\Components\VarDump\Interfaces\VarDumpProcessorInterface;
 use Chevere\Components\VarDump\Processors\VarDumpObjectProcessor;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 use Chevere\Tests\VarDump\_resources\DummyClass;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use Ds\Map;

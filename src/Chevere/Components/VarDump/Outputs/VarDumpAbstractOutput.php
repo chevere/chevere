@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputs;
 
-use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
-use Chevere\Interfaces\VarDump\VarDumpOutputInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpOutputInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 
 abstract class VarDumpAbstractOutput implements VarDumpOutputInterface

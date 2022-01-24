@@ -16,8 +16,8 @@ namespace Chevere\Components\VarDump\Formats;
 use Chevere\Components\VarDump\Formats\Traits\FilterEncodedCharsTrait;
 use Chevere\Components\VarDump\Formats\Traits\IndentTrait;
 use Chevere\Components\VarDump\Highlights\VarDumpConsoleHighlight;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpFormatInterface;
 
 final class VarDumpConsoleFormat implements VarDumpFormatInterface
 {

@@ -17,6 +17,7 @@ namespace Chevere\Components\VarDump {
     use Chevere\Components\VarDump\Formats\VarDumpConsoleFormat;
     use Chevere\Components\VarDump\Formats\VarDumpHtmlFormat;
     use Chevere\Components\VarDump\Formats\VarDumpPlainFormat;
+    use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
     use Chevere\Components\VarDump\Outputs\VarDumpConsoleOutput;
     use Chevere\Components\VarDump\Outputs\VarDumpHtmlOutput;
     use Chevere\Components\VarDump\Outputs\VarDumpPlainOutput;
@@ -25,7 +26,6 @@ namespace Chevere\Components\VarDump {
     use Chevere\Components\Writer\Writers;
     use Chevere\Components\Writer\WritersInstance;
     use Chevere\Exceptions\Core\LogicException;
-    use Chevere\Interfaces\VarDump\VarDumpInterface;
     use Chevere\Interfaces\Writer\WritersInterface;
 
     function varDumpPlain(): VarDumpInterface

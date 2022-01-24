@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Highlights;
 
 use Chevere\Components\VarDump\Highlights\Traits\AssertKeyTrait;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpHighlightInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use Colors\Color;
 use Throwable;
 

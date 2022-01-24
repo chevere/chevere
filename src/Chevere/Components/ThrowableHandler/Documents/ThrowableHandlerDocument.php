@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\ThrowableHandler\Documents;
 
 use Chevere\Components\ThrowableHandler\ThrowableRead;
-use Chevere\Components\ThrowableHandler\ThrowableTraceFormat;
+use Chevere\Components\Trace\TraceFormat;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
@@ -184,7 +184,7 @@ abstract class ThrowableHandlerDocument implements ThrowableHandlerDocumentInter
 
     protected function getStackTrace(): string
     {
-        return (new ThrowableTraceFormat(
+        return (new TraceFormat(
             $this->handler->throwableRead()->trace(),
             $this->format
         ))->__toString();

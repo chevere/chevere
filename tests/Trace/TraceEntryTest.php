@@ -11,19 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\ThrowableHandler;
+namespace Chevere\Tests\Trace;
 
-use Chevere\Components\ThrowableHandler\ThrowableTraceEntry;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Components\Trace\TraceEntry;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class ThrowableTraceEntryTest extends TestCase
+final class TraceEntryTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new ThrowableTraceEntry([]);
+        new TraceEntry([]);
     }
 
     public function testConstructInvalidTypes(): void
@@ -35,7 +35,7 @@ final class ThrowableTraceEntryTest extends TestCase
             'class' => null,
             'type' => null,
         ];
-        $traceEntry = new ThrowableTraceEntry($entry);
+        $traceEntry = new TraceEntry($entry);
         $strings = [
             'file',
             'function',
@@ -62,7 +62,7 @@ final class ThrowableTraceEntryTest extends TestCase
             'type' => '->',
             'args' => [1, '2'],
         ];
-        $traceEntry = new ThrowableTraceEntry($entry);
+        $traceEntry = new TraceEntry($entry);
         foreach ($entry as $method => $val) {
             $this->assertSame($val, $traceEntry->{$method}());
         }
@@ -82,7 +82,7 @@ final class ThrowableTraceEntryTest extends TestCase
             'type' => '->',
             'args' => [],
         ];
-        $traceEntry = new ThrowableTraceEntry($entry);
+        $traceEntry = new TraceEntry($entry);
         $this->assertSame(
             VarDumperInterface::CLASS_ANON,
             $traceEntry->class()
@@ -103,7 +103,7 @@ final class ThrowableTraceEntryTest extends TestCase
             'class' => 'class@anonymous' . $anonFileLine . '$b5',
             'type' => '->',
         ];
-        $traceEntry = new ThrowableTraceEntry($entry);
+        $traceEntry = new TraceEntry($entry);
         $this->assertSame($line, $traceEntry->line());
         $this->assertSame($anonFileLine, $traceEntry->fileLine());
     }
@@ -119,7 +119,7 @@ final class ThrowableTraceEntryTest extends TestCase
             'type' => '->',
             'args' => [1, '2'],
         ];
-        $traceEntry = new ThrowableTraceEntry($entry);
+        $traceEntry = new TraceEntry($entry);
         $this->assertSame($line, $traceEntry->line());
         $this->assertSame(__FILE__ . ':' . $line, $traceEntry->fileLine());
     }
@@ -133,7 +133,7 @@ final class ThrowableTraceEntryTest extends TestCase
             'class' => '',
             'type' => '->',
         ];
-        $traceEntry = new ThrowableTraceEntry($entry);
+        $traceEntry = new TraceEntry($entry);
         $this->assertSame(0, $traceEntry->line());
     }
 }

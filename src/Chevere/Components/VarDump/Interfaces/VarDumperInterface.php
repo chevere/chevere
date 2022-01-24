@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\VarDump;
+namespace Chevere\Components\VarDump\Interfaces;
 
 use Chevere\Components\VarDump\Processors\VarDumpArrayProcessor;
 use Chevere\Components\VarDump\Processors\VarDumpBooleanProcessor;

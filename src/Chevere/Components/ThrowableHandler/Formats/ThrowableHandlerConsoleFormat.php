@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\ThrowableHandler\Formats;
 
 use Chevere\Components\VarDump\Formats\VarDumpConsoleFormat;
-use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatInterface;
-use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpFormatInterface;
+use Chevere\Interfaces\Trace\TraceFormatInterface;
 use Colors\Color;
 
 final class ThrowableHandlerConsoleFormat extends ThrowableHandlerFormat
@@ -28,12 +28,12 @@ final class ThrowableHandlerConsoleFormat extends ThrowableHandlerFormat
     public function getTraceEntryTemplate(): string
     {
         return $this->wrapSectionTitle(
-            '#' . ThrowableTraceFormatInterface::TAG_ENTRY_POS
+            '#' . TraceFormatInterface::TAG_ENTRY_POS
         ) .
-            ' ' . ThrowableTraceFormatInterface::TAG_ENTRY_FILE_LINE . "\n" .
-            ThrowableTraceFormatInterface::TAG_ENTRY_CLASS .
-            ThrowableTraceFormatInterface::TAG_ENTRY_TYPE .
-            ThrowableTraceFormatInterface::TAG_ENTRY_FUNCTION;
+            ' ' . TraceFormatInterface::TAG_ENTRY_FILE_LINE . "\n" .
+            TraceFormatInterface::TAG_ENTRY_CLASS .
+            TraceFormatInterface::TAG_ENTRY_TYPE .
+            TraceFormatInterface::TAG_ENTRY_FUNCTION;
     }
 
     public function getHr(): string

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\ThrowableHandler;
 
 use Chevere\Components\ThrowableHandler\Formats\ThrowableHandlerPlainFormat;
-use Chevere\Components\ThrowableHandler\ThrowableTraceFormat;
+use Chevere\Components\Trace\TraceFormat;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +30,7 @@ final class ThrowableTraceFormatterTest extends TestCase
     public function testRealStackTrace(): void
     {
         $e = new Exception('Message', 100);
-        $trace = new ThrowableTraceFormat($e->getTrace(), new ThrowableHandlerPlainFormat());
+        $trace = new TraceFormat($e->getTrace(), new ThrowableHandlerPlainFormat());
         $this->assertIsArray($trace->toArray());
         $this->assertIsString($trace->__toString());
     }
@@ -47,7 +47,7 @@ final class ThrowableTraceFormatterTest extends TestCase
                 'args' => [false, null],
             ],
         ];
-        $traceFormatter = new ThrowableTraceFormat(
+        $traceFormatter = new TraceFormat(
             $trace,
             new ThrowableHandlerPlainFormat()
         );
@@ -88,7 +88,7 @@ final class ThrowableTraceFormatterTest extends TestCase
                 'args' => [],
             ],
         ];
-        $traceFormatter = new ThrowableTraceFormat(
+        $traceFormatter = new TraceFormat(
             $trace,
             new ThrowableHandlerPlainFormat()
         );

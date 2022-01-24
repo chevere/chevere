@@ -15,10 +15,10 @@ namespace Chevere\Components\VarDump;
 
 use Chevere\Components\Message\Message;
 use function Chevere\Components\Type\getType;
+use Chevere\Components\VarDump\Interfaces\VarDumpableInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpProcessorInterface;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Interfaces\VarDump\VarDumpableInterface;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 
 final class VarDumpable implements VarDumpableInterface
 {

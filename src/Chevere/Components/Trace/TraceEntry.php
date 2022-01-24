@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\ThrowableHandler;
+namespace Chevere\Components\Trace;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Interfaces\ThrowableHandler\ThrowableTraceEntryInterface;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\Trace\TraceEntryInterface;
 use ReflectionMethod;
 
-final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
+final class TraceEntry implements TraceEntryInterface
 {
     private string $file;
 

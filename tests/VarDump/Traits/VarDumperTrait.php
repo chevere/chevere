@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump\Traits;
 
 use Chevere\Components\VarDump\Formats\VarDumpPlainFormat;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 use function Chevere\Components\Writer\streamTemp;
 use Chevere\Components\Writer\StreamWriter;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
 
 trait VarDumperTrait
 {

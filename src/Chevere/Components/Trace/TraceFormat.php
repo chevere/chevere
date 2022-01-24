@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\ThrowableHandler;
+namespace Chevere\Components\Trace;
 
 use Chevere\Components\Str\Str;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatInterface;
-use Chevere\Interfaces\ThrowableHandler\ThrowableTraceEntryInterface;
-use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatInterface;
+use Chevere\Interfaces\Trace\TraceEntryInterface;
+use Chevere\Interfaces\Trace\TraceFormatInterface;
 
-final class ThrowableTraceFormat implements ThrowableTraceFormatInterface
+final class TraceFormat implements TraceFormatInterface
 {
     private array $array = [];
 
@@ -31,7 +31,7 @@ final class ThrowableTraceFormat implements ThrowableTraceFormatInterface
         foreach ($this->trace as $pos => $entry) {
             $this->array[] = strtr(
                 $this->format->getTraceEntryTemplate(),
-                $this->getTrTable($pos, new ThrowableTraceEntry($entry))
+                $this->getTrTable($pos, new TraceEntry($entry))
             );
         }
         if ($this->array !== []) {
@@ -51,9 +51,9 @@ final class ThrowableTraceFormat implements ThrowableTraceFormatInterface
         return $this->string;
     }
 
-    private function getTrTable(
+    public function getTrTable(
         int $pos,
-        ThrowableTraceEntryInterface $entry
+        TraceEntryInterface $entry
     ): array {
         $function = $this->getFunctionWithArguments($entry);
         $trValues = [
@@ -78,8 +78,8 @@ final class ThrowableTraceFormat implements ThrowableTraceFormatInterface
         return $array;
     }
 
-    private function getFunctionWithArguments(
-        ThrowableTraceEntryInterface $entry
+    public function getFunctionWithArguments(
+        TraceEntryInterface $entry
     ): string {
         $return = '';
         foreach ($entry->args() as $argument) {

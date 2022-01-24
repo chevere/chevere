@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ThrowableHandler;
 
-use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpFormatInterface;
 
 /**
  * Describes the component in charge of formatting a throwable handler document.

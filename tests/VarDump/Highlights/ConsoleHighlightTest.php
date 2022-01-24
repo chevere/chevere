@@ -15,10 +15,10 @@ namespace Chevere\Tests\VarDump\Highlights;
 
 use Chevere\Components\Str\Str;
 use Chevere\Components\VarDump\Highlights\VarDumpConsoleHighlight;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpHighlightInterface;
 use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use Colors\Color;
 use PHPUnit\Framework\TestCase;
 

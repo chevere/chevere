@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\ThrowableHandler;
+namespace Chevere\Interfaces\Trace;
 
 use Chevere\Exceptions\Core\InvalidArgumentException;
 
 /**
- * Describes the component in charge of describing a throwable trace entry captured from `debug_backtrace()`.
+ * Describes the component in charge of describing a trace entry captured from `debug_backtrace()`.
  */
-interface ThrowableTraceEntryInterface
+interface TraceEntryInterface
 {
     /**
      * Known key properties

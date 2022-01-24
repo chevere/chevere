@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
+use Chevere\Components\VarDump\Interfaces\VarDumpFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpOutputInterface;
 use function Chevere\Components\VarSupport\deepCopy;
-use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
-use Chevere\Interfaces\VarDump\VarDumpInterface;
-use Chevere\Interfaces\VarDump\VarDumpOutputInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 
 final class VarDump implements VarDumpInterface

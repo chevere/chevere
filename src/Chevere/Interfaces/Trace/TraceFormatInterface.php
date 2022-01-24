@@ -11,16 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\ThrowableHandler;
+namespace Chevere\Interfaces\Trace;
 
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Interfaces\Common\ToArrayInterface;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatInterface;
 use Stringable;
 
 /**
- * Describes the component in charge of formatting a throwable trace entry.
+ * Describes the component in charge of formatting a trace entry.
  */
-interface ThrowableTraceFormatInterface extends ToArrayInterface, Stringable
+interface TraceFormatInterface extends ToArrayInterface, Stringable
 {
     public const TAG_ENTRY_FILE = '%file%';
 
@@ -47,5 +48,17 @@ interface ThrowableTraceFormatInterface extends ToArrayInterface, Stringable
         self::TAG_ENTRY_FUNCTION => VarDumperInterface::FUNCTION,
     ];
 
-    public function __construct(array $trace, ThrowableHandlerFormatInterface $format);
+    public function __construct(
+        array $trace,
+        ThrowableHandlerFormatInterface $format
+    );
+
+    public function getTrTable(
+        int $pos,
+        TraceEntryInterface $entry
+    ): array;
+
+    public function getFunctionWithArguments(
+        TraceEntryInterface $entry
+    ): string;
 }

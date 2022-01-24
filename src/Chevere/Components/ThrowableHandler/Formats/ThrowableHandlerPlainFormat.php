@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\ThrowableHandler\Formats;
 
 use Chevere\Components\VarDump\Formats\VarDumpPlainFormat;
-use Chevere\Interfaces\VarDump\VarDumpFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpFormatInterface;
 
 final class ThrowableHandlerPlainFormat extends ThrowableHandlerFormat
 {

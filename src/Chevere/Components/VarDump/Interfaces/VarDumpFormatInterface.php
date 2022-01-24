@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\VarDump;
+namespace Chevere\Components\VarDump\Interfaces;
 
 /**
  * Describes the component in charge of formatting the var dump strings.
