@@ -15,7 +15,6 @@ namespace Chevere\ThrowableHandler\Interfaces;
 
 use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Throwable\Exceptions\RangeException;
-use Psr\Log\LogLevel;
 use Throwable;
 use TypeError;
 
@@ -47,25 +46,22 @@ interface ThrowableReadInterface
         E_USER_DEPRECATED => 'Deprecated',
     ];
 
-    /**
-     * @var string[] PHP error code LogLevel table. Stripped from Monolog\ErrorHandler::defaultErrorLevelMap
-     */
     public const ERROR_LEVELS = [
-        E_ERROR => LogLevel::CRITICAL,
-        E_WARNING => LogLevel::WARNING,
-        E_PARSE => LogLevel::ALERT,
-        E_NOTICE => LogLevel::NOTICE,
-        E_CORE_ERROR => LogLevel::CRITICAL,
-        E_CORE_WARNING => LogLevel::WARNING,
-        E_COMPILE_ERROR => LogLevel::ALERT,
-        E_COMPILE_WARNING => LogLevel::WARNING,
-        E_USER_ERROR => LogLevel::ERROR,
-        E_USER_WARNING => LogLevel::WARNING,
-        E_USER_NOTICE => LogLevel::NOTICE,
-        E_STRICT => LogLevel::NOTICE,
-        E_RECOVERABLE_ERROR => LogLevel::ERROR,
-        E_DEPRECATED => LogLevel::NOTICE,
-        E_USER_DEPRECATED => LogLevel::NOTICE,
+        E_ERROR => LogLevelInterface::CRITICAL,
+        E_WARNING => LogLevelInterface::WARNING,
+        E_PARSE => LogLevelInterface::ALERT,
+        E_NOTICE => LogLevelInterface::NOTICE,
+        E_CORE_ERROR => LogLevelInterface::CRITICAL,
+        E_CORE_WARNING => LogLevelInterface::WARNING,
+        E_COMPILE_ERROR => LogLevelInterface::ALERT,
+        E_COMPILE_WARNING => LogLevelInterface::WARNING,
+        E_USER_ERROR => LogLevelInterface::ERROR,
+        E_USER_WARNING => LogLevelInterface::WARNING,
+        E_USER_NOTICE => LogLevelInterface::NOTICE,
+        E_STRICT => LogLevelInterface::NOTICE,
+        E_RECOVERABLE_ERROR => LogLevelInterface::ERROR,
+        E_DEPRECATED => LogLevelInterface::NOTICE,
+        E_USER_DEPRECATED => LogLevelInterface::NOTICE,
     ];
 
     /**
