@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Trace;
 
 use Chevere\Trace\TraceEntry;
-use Chevere\VarDump\Interfaces\VarDumperInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -78,13 +77,13 @@ final class TraceEntryTest extends TestCase
             'file' => null,
             'line' => null,
             'function' => 'method',
-            'class' => VarDumperInterface::CLASS_ANON . $fileLine . '$a3',
+            'class' => 'class@anonymous' . $fileLine . '$a3',
             'type' => '->',
             'args' => [],
         ];
         $traceEntry = new TraceEntry($entry);
         $this->assertSame(
-            VarDumperInterface::CLASS_ANON,
+            'class@anonymous',
             $traceEntry->class()
         );
         $this->assertSame($line, $traceEntry->line());

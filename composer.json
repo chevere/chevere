@@ -49,7 +49,6 @@
             "src/Translator/functions.php",
             "src/Type/functions.php",
             "src/VarSupport/functions.php",
-            "src/VarDump/functions.php",
             "src/Writer/functions.php"
         ],
         "psr-4": {

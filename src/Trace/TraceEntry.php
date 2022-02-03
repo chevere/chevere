@@ -17,7 +17,6 @@ use Chevere\Message\Message;
 use Chevere\Str\StrBool;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Trace\Interfaces\TraceEntryInterface;
-use Chevere\VarDump\Interfaces\VarDumperInterface;
 use ReflectionMethod;
 
 final class TraceEntry implements TraceEntryInterface
@@ -128,10 +127,10 @@ final class TraceEntry implements TraceEntryInterface
     {
         if (
             (new StrBool($this->class))
-                ->startsWith(VarDumperInterface::CLASS_ANON)
+                ->startsWith('class@anonymous')
         ) {
             preg_match('#class@anonymous(.*):(\d+)#', $this->class, $matches);
-            $this->class = VarDumperInterface::CLASS_ANON;
+            $this->class = 'class@anonymous';
             $this->file = $matches[1];
             $this->line = (int) $matches[2];
         }
