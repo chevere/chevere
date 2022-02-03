@@ -51,7 +51,6 @@
             "src/Type/functions.php",
             "src/VarSupport/functions.php",
             "src/VarDump/functions.php",
-            "src/Workflow/functions.php",
             "src/Writer/functions.php"
         ],
         "psr-4": {
