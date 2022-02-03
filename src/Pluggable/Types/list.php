@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Workflow\Interfaces;
+namespace Chevere\Pluggable\Types;
 
 /**
- * Describes the component in charge of providing Workflow.
+ * @codeCoverageIgnore
  */
-interface WorkflowProviderInterface
-{
-    public function getWorkflow(): WorkflowInterface;
-}
+return [
+    new HookPlugType(),
+    new EventPlugType(),
+];

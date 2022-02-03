@@ -11,14 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Workflow\Traits;
+namespace Chevere\Filesystem\Exceptions;
 
-use Chevere\Workflow\Interfaces\WorkflowInterface;
+use Chevere\Throwable\Exception;
 
 /**
- * @codeCoverageIgnore
+ * Exception thrown when the directory exists.
  */
-trait WorkflowProviderTrait
+final class DirExistsException extends Exception
 {
-    abstract public function getWorkflow(): WorkflowInterface;
 }
