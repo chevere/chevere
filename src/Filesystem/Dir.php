@@ -94,6 +94,13 @@ final class Dir implements DirInterface
         return $array;
     }
 
+    public function removeIfExists(): array
+    {
+        if ($this->exists()) {
+            return $this->remove();
+        }
+    }
+
     public function removeContents(): array
     {
         $this->assertIsDir();

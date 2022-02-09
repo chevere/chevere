@@ -52,7 +52,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
      * @throws FileUnableToGetException
      * @throws RuntimeException
      */
-    public function raw()
+    public function raw(): mixed
     {
         $this->assert();
         $filePath = $this->filePhp->file()->path()->__toString();
@@ -66,14 +66,14 @@ final class FilePhpReturn implements FilePhpReturnInterface
         // @codeCoverageIgnoreEnd
     }
 
-    public function var()
+    public function var(): mixed
     {
         $var = $this->raw();
 
         return $this->getReturnVar($var);
     }
 
-    public function varType(TypeInterface $type)
+    public function varType(TypeInterface $type): mixed
     {
         $var = $this->var();
         if (!$type->validate($var)) {
@@ -100,7 +100,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         );
     }
 
-    private function getReturnVar($var)
+    private function getReturnVar($var): mixed
     {
         if (is_string($var) && !ctype_space($var)) {
             try {
@@ -140,7 +140,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         }
     }
 
-    private function getFileReturnVar($var)
+    private function getFileReturnVar($var): mixed
     {
         if (is_object($var)) {
             return (new Serialize($var))->__toString();

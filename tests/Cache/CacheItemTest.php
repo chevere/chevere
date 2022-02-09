@@ -15,36 +15,31 @@ namespace Chevere\Tests\Cache;
 
 use Chevere\Cache\CacheItem;
 use Chevere\Cache\Interfaces\CacheItemInterface;
+use Chevere\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Filesystem\File;
-use function Chevere\Filesystem\fileForPath;
 use Chevere\Filesystem\FilePhp;
 use Chevere\Filesystem\FilePhpReturn;
+use Chevere\Filesystem\Interfaces\DirInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
-use Chevere\Filesystem\Path;
-use Chevere\Throwable\Exceptions\RuntimeException;
+use Chevere\Tests\src\DirHelper;
 use Chevere\VarSupport\VarStorable;
 use PHPUnit\Framework\TestCase;
 use function Safe\file_put_contents;
 
 final class CacheItemTest extends TestCase
 {
-    private PathInterface $resourcesPath;
+    private DirInterface $dir;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
-        $this->resourcesPath = (new Path(__DIR__))->getChild('_resources');
+        $this->dir = (new DirHelper($this))->dir();
+        $this->dir->createIfNotExists();
     }
 
-    public function getDisposablePhpFileReturn(): FileInterface
+    public function tearDown(): void
     {
-        $path = (new Path(__DIR__))->getChild('_resources')
-            ->getChild('return-disposable.php');
-        $file = fileForPath($path->__toString());
-        $file->create();
-        $file->put("return '';");
-
-        return $file;
+        $this->dir->removeIfExists();
     }
 
     public function testVarThrowsException(): void
@@ -52,7 +47,7 @@ final class CacheItemTest extends TestCase
         $file = $this->getDisposablePhpFileReturn();
         $cacheItem = $this->getCacheItem($file->path());
         $file->remove();
-        $this->expectException(RuntimeException::class);
+        $this->expectException(FileNotExistsException::class);
         $cacheItem->var();
     }
 
@@ -61,13 +56,14 @@ final class CacheItemTest extends TestCase
         $file = $this->getDisposablePhpFileReturn();
         $cacheItem = $this->getCacheItem($file->path());
         $file->remove();
-        $this->expectException(RuntimeException::class);
+        $this->expectException(FileNotExistsException::class);
         $cacheItem->raw();
     }
 
     public function testNotSerialized(): void
     {
-        $path = $this->resourcesPath->getChild('return.php');
+        $path = $this->dir->path()->getChild('return.php');
+        $this->getDisposablePhpFileReturn();
         $cacheItem = $this->getCacheItem($path);
         $var = include $path->__toString();
         $this->assertSame($var, $cacheItem->raw());
@@ -76,7 +72,7 @@ final class CacheItemTest extends TestCase
 
     public function testSerialized(): void
     {
-        $path = $this->resourcesPath->getChild('return-serialized.php');
+        $path = $this->dir->path()->getChild('return-serialized.php');
         $this->writeSerialized($path);
         $cacheItem = $this->getCacheItem($path);
         $var = include $path->__toString();
@@ -86,6 +82,16 @@ final class CacheItemTest extends TestCase
             $cacheItem->var()
         );
         unlink($path->__toString());
+    }
+
+    private function getDisposablePhpFileReturn(): FileInterface
+    {
+        $path = $this->dir->path()->getChild('return.php');
+        $file = new File($path);
+        $file->create();
+        $file->put("<?php return '';");
+
+        return $file;
     }
 
     private function getCacheItem(PathInterface $path): CacheItemInterface

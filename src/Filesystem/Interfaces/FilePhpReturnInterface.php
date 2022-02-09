@@ -52,7 +52,7 @@ interface FilePhpReturnInterface
      * @throws FileUnableToGetException
      * @throws RuntimeException
      */
-    public function raw();
+    public function raw(): mixed;
 
     /**
      * Retrieves a PHP variable, applying unserialize to objects (if any).
@@ -64,7 +64,7 @@ interface FilePhpReturnInterface
      * @throws FileUnableToGetException
      * @throws RuntimeException
      */
-    public function var();
+    public function var(): mixed;
 
     /**
      * Same as `var()`, but checking the variable `$type`.
@@ -77,7 +77,7 @@ interface FilePhpReturnInterface
      * @throws RuntimeException
      * @throws FileReturnInvalidTypeException
      */
-    public function varType(TypeInterface $type);
+    public function varType(TypeInterface $type): mixed;
 
     /**
      * Put `$var` into the file using var_export return and strict format.

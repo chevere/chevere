@@ -28,12 +28,12 @@ interface CacheItemInterface
      *
      * @throws RuntimeException
      */
-    public function raw();
+    public function raw(): mixed;
 
     /**
      * Provides access to the cache PHP variable.
      *
      * @throws RuntimeException
      */
-    public function var();
+    public function var(): mixed;
 }

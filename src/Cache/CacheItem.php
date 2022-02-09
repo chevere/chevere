@@ -15,8 +15,6 @@ namespace Chevere\Cache;
 
 use Chevere\Cache\Interfaces\CacheItemInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
-use Chevere\Throwable\Exceptions\RuntimeException;
-use Throwable;
 
 final class CacheItem implements CacheItemInterface
 {
@@ -25,21 +23,13 @@ final class CacheItem implements CacheItemInterface
     ) {
     }
 
-    public function raw()
+    public function raw(): mixed
     {
-        try {
-            return $this->phpFileReturn->raw();
-        } catch (Throwable $e) {
-            throw new RuntimeException(previous: $e);
-        }
+        return $this->phpFileReturn->raw();
     }
 
-    public function var()
+    public function var(): mixed
     {
-        try {
-            return $this->phpFileReturn->var();
-        } catch (Throwable $e) {
-            throw new RuntimeException(previous: $e);
-        }
+        return $this->phpFileReturn->var();
     }
 }

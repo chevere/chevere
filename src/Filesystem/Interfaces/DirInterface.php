@@ -76,13 +76,20 @@ interface DirInterface
     public function removeContents(): array;
 
     /**
-     * Removes the directory.
+     * Removes the directory and its contents.
      *
      * @return array An array with all the elements removed
      *
      * @throws DirUnableToRemoveException if unable to remove the directory
      */
     public function remove(): array;
+
+    /**
+     * Same as remove, but only if the directory exists.
+     *
+     * @throws DirUnableToRemoveException if unable to remove the directory
+     */
+    public function removeIfExists(): array;
 
     /**
      * Gets a child `DirInterface` for the added path.
