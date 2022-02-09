@@ -37,7 +37,7 @@ final class FilePhp implements FilePhpInterface
      * @codeCoverageIgnore
      * @infection-ignore-all
      */
-    public function cache(): void
+    public function compileCache(): void
     {
         $this->file->assertExists();
         $path = $this->file->path()->__toString();
@@ -55,7 +55,7 @@ final class FilePhp implements FilePhpInterface
      * @codeCoverageIgnore
      * @infection-ignore-all
      */
-    public function flush(): void
+    public function flushCache(): void
     {
         if (!opcache_is_script_cached($this->file->path()->__toString())) {
             return;

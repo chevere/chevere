@@ -65,7 +65,11 @@ final class Cache implements CacheInterface
             $fileReturn = new FilePhpReturn($filePhp);
             $fileReturn->put($var);
             // @infection-ignore-all
-            $filePhp->cache();
+            try {
+                $filePhp->compileCache();
+            } catch (Throwable) {
+                // Don't panic if OPCache fails
+            }
             $new = clone $this;
             $new->puts[$key->__toString()] = [
                 'path' => $fileReturn->filePhp()->file()->path()->__toString(),
@@ -98,7 +102,7 @@ final class Cache implements CacheInterface
             }
             $filePhp = new FilePhp(new File($path));
             // @infection-ignore-all
-            $filePhp->flush();
+            $filePhp->flushCache();
             $filePhp->file()->remove();
         }
         // @codeCoverageIgnoreStart

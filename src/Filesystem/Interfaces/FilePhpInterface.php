@@ -38,12 +38,12 @@ interface FilePhpInterface
      * @throws FileNotExistsException
      * @throws RuntimeException If OPCache is not enabled.
      */
-    public function cache(): void;
+    public function compileCache(): void;
 
     /**
      * Flushes OPCache.
      *
      * @throws RuntimeException If OPCache is not enabled.
      */
-    public function flush(): void;
+    public function flushCache(): void;
 }

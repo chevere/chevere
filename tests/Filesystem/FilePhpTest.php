@@ -55,7 +55,7 @@ final class FilePhpTest extends TestCase
         );
         $filePhp = new FilePhp($file);
         $this->expectException(FileNotExistsException::class);
-        $filePhp->cache();
+        $filePhp->compileCache();
     }
 
     /**
@@ -72,8 +72,8 @@ final class FilePhpTest extends TestCase
         );
         $file->create();
         $filePhp = new FilePhp($file);
-        $filePhp->cache();
-        $filePhp->flush();
+        $filePhp->compileCache();
+        $filePhp->flushCache();
         $file->remove();
     }
 }
