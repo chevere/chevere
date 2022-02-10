@@ -16,42 +16,42 @@ namespace Chevere\Str\Interfaces;
 /**
  * Describes the component in charge of string conditionals.
  */
-interface StrBoolInterface
+interface StrConditionInterface
 {
     public function __construct(string $string);
 
     /**
      * Indicates whether the string is empty.
      */
-    public function empty(): bool;
+    public function isEmpty(): bool;
 
     /**
      * Indicates whether the string is ctype space.
      */
-    public function ctypeSpace(): bool;
+    public function isCtypeSpace(): bool;
 
     /**
      * Indicates whether the string is ctype digit.
      */
-    public function ctypeDigit(): bool;
+    public function isCtypeDigit(): bool;
 
     /**
      * Indicates whether the string starts with ctype digit.
      */
-    public function startsWithCtypeDigit(): bool;
+    public function isStartingWithCtypeDigit(): bool;
 
     /**
      * Indicates whether the string starts with `$needle`.
      */
-    public function startsWith(string $needle): bool;
+    public function isStartingWith(string $needle): bool;
 
     /**
      * Indicates whether the string ends with `$needle`.
      */
-    public function endsWith(string $needle): bool;
+    public function isEndingWith(string $needle): bool;
 
     /**
      * Indicates whether the string is the same as `$needle`.
      */
-    public function same(string $string): bool;
+    public function isSame(string $string): bool;
 }

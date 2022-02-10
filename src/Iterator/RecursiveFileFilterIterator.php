@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Iterator;
 
-use Chevere\Str\StrBool;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
@@ -35,8 +34,10 @@ final class RecursiveFileFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        return (new StrBool($this->current()->getFilename()))
-            ->endsWith($this->trailingName);
+        return str_ends_with(
+            $this->current()->getFilename(),
+            $this->trailingName
+        );
     }
 
     public function getChildren(): RecursiveFilterIterator

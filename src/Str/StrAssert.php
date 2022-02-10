@@ -41,7 +41,7 @@ final class StrAssert implements StrAssertInterface
 
     public function empty(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->empty()) {
+        if ((new StrCondition($this->string))->isEmpty()) {
             return $this;
         }
 
@@ -53,7 +53,7 @@ final class StrAssert implements StrAssertInterface
 
     public function notEmpty(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->empty()) {
+        if ((new StrCondition($this->string))->isEmpty()) {
             throw new StrEmptyException(
                 (new Message('String is empty'))
             );
@@ -64,7 +64,7 @@ final class StrAssert implements StrAssertInterface
 
     public function ctypeSpace(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->ctypeSpace()) {
+        if ((new StrCondition($this->string))->isCtypeSpace()) {
             return $this;
         }
 
@@ -77,7 +77,7 @@ final class StrAssert implements StrAssertInterface
 
     public function notCtypeSpace(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->ctypeSpace()) {
+        if ((new StrCondition($this->string))->isCtypeSpace()) {
             throw new StrCtypeSpaceException(
                 (new Message('String %algo% provided'))
                     ->strong('%algo%', 'ctype space')
@@ -89,7 +89,7 @@ final class StrAssert implements StrAssertInterface
 
     public function ctypeDigit(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->ctypeSpace()) {
+        if ((new StrCondition($this->string))->isCtypeSpace()) {
             return $this;
         }
 
@@ -102,7 +102,7 @@ final class StrAssert implements StrAssertInterface
 
     public function notCtypeDigit(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->ctypeDigit()) {
+        if ((new StrCondition($this->string))->isCtypeDigit()) {
             throw new StrCtypeDigitException(
                 (new Message('String %algo% provided'))
                     ->strong('%algo%', 'ctype digit')
@@ -114,7 +114,7 @@ final class StrAssert implements StrAssertInterface
 
     public function startsWithCtypeDigit(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->startsWithCtypeDigit()) {
+        if ((new StrCondition($this->string))->isStartingWithCtypeDigit()) {
             return $this;
         }
 
@@ -127,7 +127,7 @@ final class StrAssert implements StrAssertInterface
 
     public function notStartsWithCtypeDigit(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->startsWithCtypeDigit()) {
+        if ((new StrCondition($this->string))->isStartingWithCtypeDigit()) {
             throw new StrStartsWithCtypeDigitException(
                 (new Message('String %string% starts with a %algo% character'))
                     ->code('%string%', $this->string)
@@ -140,7 +140,7 @@ final class StrAssert implements StrAssertInterface
 
     public function startsWith(string $needle): StrAssertInterface
     {
-        if ((new StrBool($this->string))->startsWith($needle)) {
+        if ((new StrCondition($this->string))->isStartingWith($needle)) {
             return $this;
         }
 
@@ -153,7 +153,7 @@ final class StrAssert implements StrAssertInterface
 
     public function notStartsWith(string $needle): StrAssertInterface
     {
-        if ((new StrBool($this->string))->startsWith($needle)) {
+        if ((new StrCondition($this->string))->isStartingWith($needle)) {
             throw new StrStartsWithException(
                 (new Message('String %string% starts with %needle%'))
                     ->code('%string%', $this->string)
@@ -166,7 +166,7 @@ final class StrAssert implements StrAssertInterface
 
     public function endsWith(string $needle): StrAssertInterface
     {
-        if ((new StrBool($this->string))->endsWith($needle)) {
+        if ((new StrCondition($this->string))->isEndingWith($needle)) {
             return $this;
         }
 
@@ -179,7 +179,7 @@ final class StrAssert implements StrAssertInterface
 
     public function notEndsWith(string $needle): StrAssertInterface
     {
-        if ((new StrBool($this->string))->endsWith($needle)) {
+        if ((new StrCondition($this->string))->isEndingWith($needle)) {
             throw new StrEndsWithException(
                 (new Message('String %string% ends with %needle%'))
                     ->code('%string%', $this->string)
@@ -192,7 +192,7 @@ final class StrAssert implements StrAssertInterface
 
     public function same(string $string): StrAssertInterface
     {
-        if ((new StrBool($this->string))->same($string)) {
+        if ((new StrCondition($this->string))->isSame($string)) {
             return $this;
         }
 
@@ -205,7 +205,7 @@ final class StrAssert implements StrAssertInterface
 
     public function notSame(string $string): StrAssertInterface
     {
-        if ((new StrBool($this->string))->same($string)) {
+        if ((new StrCondition($this->string))->isSame($string)) {
             throw new StrSameException(
                 (new Message('Provided string %provided% is the same as %string%'))
                     ->code('%provided%', $string)
@@ -218,7 +218,7 @@ final class StrAssert implements StrAssertInterface
 
     public function contains(string $string): StrAssertInterface
     {
-        if ((new StrBool($this->string))->contains($string)) {
+        if ((new StrCondition($this->string))->contains($string)) {
             return $this;
         }
 
@@ -231,7 +231,7 @@ final class StrAssert implements StrAssertInterface
 
     public function notContains(string $string): StrAssertInterface
     {
-        if ((new StrBool($this->string))->contains($string)) {
+        if ((new StrCondition($this->string))->contains($string)) {
             throw new StrContainsException(
                 (new Message('String %string% contains %provided%'))
                     ->code('%provided%', $string)

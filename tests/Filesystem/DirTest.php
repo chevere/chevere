@@ -64,6 +64,10 @@ final class DirTest extends TestCase
     public function testNotExists(): void
     {
         $this->assertFalse($this->testDir->getChild('not-exists/')->exists());
+        $this->assertSame(
+            [],
+            $this->testDir->getChild('not-exists/')->removeIfExists()
+        );
     }
 
     public function testAssertExists(): void

@@ -19,7 +19,6 @@ use Chevere\Filesystem\Exceptions\PathExtraSlashesException;
 use Chevere\Filesystem\Exceptions\PathNotAbsoluteException;
 use Chevere\Filesystem\Interfaces\AssertPathFormatInterface;
 use Chevere\Message\Message;
-use Chevere\Str\StrBool;
 
 final class AssertPathFormat implements AssertPathFormatInterface
 {
@@ -39,7 +38,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
 
     private function assertAbsolutePath(): void
     {
-        if (!(new StrBool($this->path))->startsWith('/')) {
+        if (!str_starts_with($this->path, '/')) {
             throw new PathNotAbsoluteException(
                 (new Message('Path %path% must start with %char%'))
                     ->code('%path%', $this->path)

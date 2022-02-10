@@ -23,7 +23,6 @@ use Chevere\Filesystem\Exceptions\PathIsDirException;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
 use Chevere\Message\Message;
-use Chevere\Str\StrBool;
 use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\filesize;
@@ -37,7 +36,7 @@ final class File implements FileInterface
     public function __construct(
         private PathInterface $path
     ) {
-        $this->isPhp = (new StrBool($this->path->__toString()))->endsWith('.php');
+        $this->isPhp = str_ends_with($this->path->__toString(), '.php');
         $this->assertIsNotDir();
     }
 
