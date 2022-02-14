@@ -67,9 +67,12 @@ final class Cache implements CacheInterface
             // @infection-ignore-all
             try {
                 $filePhp->compileCache();
-            } catch (Throwable) {
+            }
+            // @codeCoverageIgnoreStart
+            catch (Throwable) {
                 // Don't panic if OPCache fails
             }
+            // @codeCoverageIgnoreEnd
             $new = clone $this;
             $new->puts[$key->__toString()] = [
                 'path' => $fileReturn->filePhp()->file()->path()->__toString(),
