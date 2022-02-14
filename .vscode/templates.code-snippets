@@ -5,7 +5,7 @@
         "body": [
             "<?php",
             "",
-            "namespace Chevere\\Interfaces\\\\${TM_DIRECTORY/.*Interfaces\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "namespace Chevere\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
             "",
             "/**",
             " * Describes the component in charge of ${1:doing}.",
@@ -32,12 +32,12 @@
         ]
     },
     "component": {
-        "description": "Chevere component",
-        "prefix": "component",
+        "description": "Class",
+        "prefix": "class",
         "body": [
             "<?php",
             "",
-            "namespace Chevere\\Components\\\\${TM_DIRECTORY/.*Components\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "namespace Chevere\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
             "",
             "final class $TM_FILENAME_BASE",
             "{",
@@ -51,7 +51,7 @@
         "body": [
             "<?php",
             "",
-            "namespace Chevere\\Exceptions\\\\${TM_DIRECTORY/.*Exceptions\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "namespace Chevere\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
             "",
             "use Chevere\\Exceptions\\Core\\Exception;",
             "",
@@ -69,7 +69,7 @@
         "body": [
             "<?php",
             "",
-            "namespace Chevere\\Components\\\\${TM_DIRECTORY/.*Components\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
+            "namespace Chevere\\\\${TM_DIRECTORY/.*src\\/(([^\\/]*)(\\/)?)|(\\/)([^\\/]*)/$2${3:+\\\\}${5:+\\\\}$5/g};",
             "",
             "trait $TM_FILENAME_BASE",
             "{",
