@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Controller;
 
 use Chevere\Tests\Controller\_resources\src\ControllerTestController;
-use Chevere\Tests\Controller\_resources\src\ControllerTestControllerDispatchAttribute;
-use Chevere\Tests\Controller\_resources\src\ControllerTestControllerRelationAttribute;
 use Chevere\Tests\Controller\_resources\src\ControllerTestInvalidController;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Type;
@@ -35,17 +33,5 @@ final class ControllerTest extends TestCase
         $this->assertSame(Type::STRING, $controller->parameter()->type()->primitive());
         $this->assertSame('', $controller->relation());
         $this->assertSame('', $controller->dispatch());
-    }
-
-    public function testControllerDispatchAttribute(): void
-    {
-        $controller = new ControllerTestControllerDispatchAttribute();
-        $this->assertSame('some', $controller->dispatch());
-    }
-
-    public function testControllerRelationAttribute(): void
-    {
-        $controller = new ControllerTestControllerRelationAttribute();
-        $this->assertSame('test relation', $controller->relation());
     }
 }
