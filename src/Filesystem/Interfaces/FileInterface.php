@@ -99,6 +99,13 @@ interface FileInterface
     public function create(): void;
 
     /**
+     * Create the file if it doesn't exists.
+     *
+     * @throws FileUnableToCreateException
+     */
+    public function createIfNotExists(): void;
+
+    /**
      * Put contents to the file. If the file doesn't exists it will be created.
      *
      * @throws FileNotExistsException

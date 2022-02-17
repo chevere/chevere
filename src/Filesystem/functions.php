@@ -97,7 +97,7 @@ function filePhpForPath(string $path): FilePhpInterface
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
-function filePhpReturnForPath(string $path): FilePhpReturn
+function filePhpReturnForPath(string $path): FilePhpReturnInterface
 {
     try {
         return new FilePhpReturn(filePhpForPath($path));

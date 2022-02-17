@@ -68,16 +68,13 @@ final class FilePhpReturn implements FilePhpReturnInterface
 
     public function var(): mixed
     {
-        $var = $this->raw();
-
-        return $this->getReturnVar($var);
+        return $this->getReturnVar($this->raw());
     }
 
     public function varType(TypeInterface $type): mixed
     {
-        $var = $this->var();
-        if (!$type->validate($var)) {
-            $typeReturn = get_debug_type($var);
+        if (!$type->validate($this->var())) {
+            $typeReturn = get_debug_type($this->var());
 
             throw new FileReturnInvalidTypeException(
                 (new Message("File PHP return of type %return% at %path% doesn't match the expected type %expected%"))
@@ -87,7 +84,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
             );
         }
 
-        return $var;
+        return $this->var();
     }
 
     public function put(VarStorableInterface $varStorable): void

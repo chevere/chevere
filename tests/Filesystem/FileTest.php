@@ -117,8 +117,12 @@ final class FileTest extends TestCase
         $file = $this->getChildFile('.create');
         $this->assertFalse($file->exists());
         $file->create();
+        $file->createIfNotExists();
         $this->assertTrue($file->exists());
         $file->remove();
+        $this->assertFalse($file->exists());
+        $file->createIfNotExists();
+        $this->assertTrue($file->exists());
     }
 
     public function testPut(): void

@@ -136,6 +136,14 @@ final class File implements FileInterface
         // @codeCoverageIgnoreEnd
     }
 
+    public function createIfNotExists(): void
+    {
+        if ($this->exists()) {
+            return;
+        }
+        $this->create();
+    }
+
     public function put(string $contents): void
     {
         $this->assertExists();
