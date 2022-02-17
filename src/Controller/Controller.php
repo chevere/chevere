@@ -36,11 +36,11 @@ abstract class Controller extends Action implements ControllerInterface
         return new StringParameter();
     }
 
-    private function assertParametersType(): void
+    protected function assertParametersType(): void
     {
         $invalid = [];
         foreach ($this->parameters()->getIterator() as $name => $parameter) {
-            if ($parameter->type()->validator() !== $this->parameter->type()->validator()) {
+            if (!($parameter instanceof StringParameterInterface)) {
                 $invalid[] = $name;
             }
         }
