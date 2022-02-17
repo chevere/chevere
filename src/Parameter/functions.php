@@ -28,9 +28,7 @@ function arrayParameter(
     ?array $default = null,
     string ...$attributes
 ): ArrayParameterInterface {
-    $parameter = isset($description)
-        ? new ArrayParameter($description)
-        : new ArrayParameter();
+    $parameter = new ArrayParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
     }
@@ -46,9 +44,7 @@ function booleanParameter(
     ?bool $default = null,
     string ...$attributes
 ): BooleanParameterInterface {
-    $parameter = isset($description)
-        ? new BooleanParameter($description)
-        : new BooleanParameter();
+    $parameter = new BooleanParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
     }
@@ -64,9 +60,7 @@ function floatParameter(
     ?float $default = null,
     string ...$attributes
 ): FloatParameterInterface {
-    $parameter = isset($description)
-        ? new FloatParameter($description)
-        : new FloatParameter();
+    $parameter = new FloatParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
     }
@@ -82,9 +76,7 @@ function integerParameter(
     ?int $default = null,
     string ...$attributes
 ): IntegerParameterInterface {
-    $parameter = isset($description)
-        ? new IntegerParameter($description)
-        : new IntegerParameter();
+    $parameter = new IntegerParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
     }
@@ -101,9 +93,7 @@ function stringParameter(
     ?string $regex = null,
     string ...$attributes
 ): StringParameterInterface {
-    $parameter = isset($description)
-        ? new StringParameter($description)
-        : new StringParameter();
+    $parameter = new StringParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
     }
@@ -121,9 +111,7 @@ function objectParameter(
     string $className,
     ?string $description = null,
 ): ObjectParameterInterface {
-    $parameter = isset($description)
-        ? new ObjectParameter($description)
-        : new ObjectParameter();
+    $parameter = new ObjectParameter($description ?? '');
 
     return $parameter->withClassName($className);
 }
