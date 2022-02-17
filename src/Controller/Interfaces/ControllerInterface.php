@@ -20,17 +20,9 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
  * Describes the component in charge of defining a controller, which is an action
  * intended to be exposed closest to an application entry-point HTTP/CLI mapping.
  *
- * Key point of a controller is that it only takes string arguments and it
- * provides an additional layer for context parameters.
+ * Key point of a controller is that it only takes string arguments as input.
  */
 interface ControllerInterface extends ActionInterface
 {
-    public function __construct(
-        string $dispatch = '',
-        string $relation = '',
-    );
-
-    public function relation(): string;
-
     public function parameter(): StringParameterInterface;
 }

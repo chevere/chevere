@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
-use Chevere\Tests\Controller\_resources\src\ControllerTestController;
 use Chevere\Tests\Controller\_resources\src\ControllerTestInvalidController;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Type\Type;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerTest extends TestCase
@@ -25,13 +23,5 @@ final class ControllerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         new ControllerTestInvalidController();
-    }
-
-    public function testControllerNoAttributes(): void
-    {
-        $controller = new ControllerTestController();
-        $this->assertSame(Type::STRING, $controller->parameter()->type()->primitive());
-        $this->assertSame('', $controller->relation());
-        $this->assertSame('', $controller->dispatch());
     }
 }
