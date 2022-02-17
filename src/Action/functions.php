@@ -13,24 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Action;
 
-use Chevere\Action\Interfaces\ActionExecutedInterface;
 use Chevere\Action\Interfaces\ActionInterface;
+use Chevere\Action\Interfaces\ActionRunInterface;
 use Throwable;
 
 /**
- * Runs the `$action` with the given `$namedArguments`.
+ * Runs the `$action` with the given `...$namedArguments`.
  */
-function runAction(
+function actionRun(
     ActionInterface $action,
     mixed ...$namedArguments
-): ActionExecutedInterface {
+): ActionRunInterface {
     try {
         $runArguments = $action->getArguments(...$namedArguments);
         $response = $action->run($runArguments);
     } catch (Throwable $e) {
-        return (new ActionExecuted([]))
+        return (new ActionRun([]))
             ->withThrowable($e, 1);
     }
 
-    return new ActionExecuted($response->data());
+    return new ActionRun($response->data());
 }

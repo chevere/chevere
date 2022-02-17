@@ -16,19 +16,19 @@ namespace Chevere\Action\Interfaces;
 use Throwable;
 
 /**
- * Describes the component in charge of handling the controller execution outcome.
+ * Describes the component in charge of handling the action run outcome.
  */
-interface ActionExecutedInterface
+interface ActionRunInterface
 {
     public function __construct(array $data);
 
     /**
-     * Provides access to the controller returned code.
+     * Provides access to the action returned code.
      */
     public function code(): int;
 
     /**
-     * Provides access to the controller returned data.
+     * Provides access to the action returned data.
      */
     public function data(): array;
 

@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
-use Chevere\Action\ActionExecuted;
+use Chevere\Action\ActionRun;
 use Chevere\Message\Message;
 use Chevere\Throwable\Exceptions\LogicException;
 use Error;
 use PHPUnit\Framework\TestCase;
 
-final class ActionExecutedTest extends TestCase
+final class ActionRunTest extends TestCase
 {
     public function testConstruct(): void
     {
         $data = ['The data'];
-        $executed = new ActionExecuted($data);
+        $executed = new ActionRun($data);
         $this->assertSame(0, $executed->code());
         $this->assertSame($data, $executed->data());
         $this->assertFalse($executed->hasThrowable());
@@ -34,7 +34,7 @@ final class ActionExecutedTest extends TestCase
 
     public function testWithThrowable(): void
     {
-        $executed = new ActionExecuted([]);
+        $executed = new ActionRun([]);
         $throwable = new LogicException(new Message('Uy'));
         $withThrowable = $executed->withThrowable($throwable, 1);
         $this->assertNotSame($executed, $withThrowable);
