@@ -81,6 +81,8 @@ final class DirTest extends TestCase
         $this->testDir->create();
         $this->testDir->assertExists();
         $this->assertTrue($this->testDir->exists());
+        $this->testDir->removeIfExists();
+        $this->assertFalse($this->testDir->exists());
     }
 
     public function testCreateIfNotExists(): void
