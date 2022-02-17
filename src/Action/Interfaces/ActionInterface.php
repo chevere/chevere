@@ -50,6 +50,9 @@ interface ActionInterface extends DescriptionInterface
      */
     public function responseParameters(): ParametersInterface;
 
+    /**
+     * Retrieves an arguments instance typed against the action parameters.
+     */
     public function getArguments(mixed ...$namedArguments): ArgumentsInterface;
 
     /**

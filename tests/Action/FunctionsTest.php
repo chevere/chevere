@@ -13,25 +13,28 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
-use Chevere\Action\ActionRunner;
 use Chevere\Action\Interfaces\ActionExecutedInterface;
+use function Chevere\Action\runAction;
 use Chevere\Controller\Interfaces\ControllerInterface;
 use Chevere\Tests\Action\_resources\src\ActionRunnerTestController;
 use Chevere\Tests\Action\_resources\src\ActionRunnerTestControllerRunFail;
 use PHPUnit\Framework\TestCase;
 
-final class ActionRunnerTest extends TestCase
+final class FunctionsTest extends TestCase
 {
-    public function testControllerRunFailure(): void
+    public function testRunActionFailure(): void
     {
         $controller = new ActionRunnerTestControllerRunFail();
         $ran = $this->getFailedRan($controller);
         $this->assertSame(1, $ran->code());
         $this->assertTrue($ran->hasThrowable());
-        $this->assertSame('Something went wrong', $ran->throwable()->getMessage());
+        $this->assertSame(
+            'Something went wrong',
+            $ran->throwable()->getMessage()
+        );
     }
 
-    public function testRunWithArguments(): void
+    public function testRunActionWithArguments(): void
     {
         $parameter = 'name';
         $value = 'PeoplesHernandez';
@@ -39,15 +42,15 @@ final class ActionRunnerTest extends TestCase
         $arguments = [
             $parameter => $value,
         ];
-        $execute = (new ActionRunner($controller))->execute(...$arguments);
-        $this->assertSame(0, $execute->code());
+        $run = runAction($controller, ...$arguments);
+        $this->assertSame(0, $run->code());
         $this->assertSame([
             'user' => $value,
-        ], $execute->data());
+        ], $run->data());
     }
 
     private function getFailedRan(ControllerInterface $controller): ActionExecutedInterface
     {
-        return (new ActionRunner($controller))->execute(...[]);
+        return runAction($controller, ...[]);
     }
 }
