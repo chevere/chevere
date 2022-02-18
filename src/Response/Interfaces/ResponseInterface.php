@@ -23,12 +23,12 @@ interface ResponseInterface extends AttributesInterface
     public function __construct(mixed ...$namedData);
 
     /**
-     * Return an instance with the specified status.
+     * Return an instance with the specified code.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified status.
+     * an instance that contains the specified code.
      */
-    public function withStatus(int $code): self;
+    public function withCode(int $code): self;
 
     /**
      * Return an instance with the specified data.
@@ -41,7 +41,7 @@ interface ResponseInterface extends AttributesInterface
     public function withData(mixed ...$namedData): self;
 
     /**
-     * Provides access to uuid.
+     * Provides access to uuid (v4).
      */
     public function uuid(): string;
 
@@ -56,7 +56,7 @@ interface ResponseInterface extends AttributesInterface
     public function data(): array;
 
     /**
-     * Provides access to status.
+     * Provides access to code.
      */
-    public function status(): int;
+    public function code(): int;
 }

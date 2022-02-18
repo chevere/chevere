@@ -23,7 +23,7 @@ final class ResponseTest extends TestCase
     {
         $response = new Response();
         $this->assertSame([], $response->data());
-        $this->assertSame(0, $response->status());
+        $this->assertSame(0, $response->code());
         $this->assertTrue(
             (new Validator())->validate($response->uuid()),
             'Invalid UUID'
@@ -43,11 +43,11 @@ final class ResponseTest extends TestCase
     public function testWithStatus(): void
     {
         $data = ['data'];
-        $status = 123;
+        $code = 123;
         $response = (new Response())
             ->withData(...$data)
-            ->withStatus($status);
+            ->withCode($code);
         $this->assertSame($data, $response->data());
-        $this->assertSame($status, $response->status());
+        $this->assertSame($code, $response->code());
     }
 }

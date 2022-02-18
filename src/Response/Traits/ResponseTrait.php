@@ -26,7 +26,7 @@ trait ResponseTrait
 
     private array $data = [];
 
-    private int $status = 0;
+    private int $code = 0;
 
     public function __construct(mixed ...$namedData)
     {
@@ -35,10 +35,10 @@ trait ResponseTrait
         $this->data = $namedData;
     }
 
-    public function withStatus(int $code): static
+    public function withCode(int $code): static
     {
         $new = clone $this;
-        $new->status = $code;
+        $new->code = $code;
 
         return $new;
     }
@@ -66,8 +66,8 @@ trait ResponseTrait
         return $this->data;
     }
 
-    public function status(): int
+    public function code(): int
     {
-        return $this->status;
+        return $this->code;
     }
 }
