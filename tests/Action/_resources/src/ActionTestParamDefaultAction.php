@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller\_resources\src;
+namespace Chevere\Tests\Action\_resources\src;
 
-use Chevere\Controller\Controller;
+use Chevere\Action\Action;
 use Chevere\Response\Interfaces\ResponseInterface;
 
-final class ControllerTestInvalidController extends Controller
+final class ActionTestParamDefaultAction extends Action
 {
-    public function run(int $integer): ResponseInterface
+    public function run(string $default = 'default'): ResponseInterface
     {
         return $this->getResponse();
     }

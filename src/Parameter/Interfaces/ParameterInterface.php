@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Interfaces;
 
-use Chevere\Common\Interfaces\AttributesInterface;
 use Chevere\Common\Interfaces\DescriptionInterface;
 use Chevere\Type\Interfaces\TypeInterface;
 
 /**
  * Describes the component in charge of defining a parameter.
  */
-interface ParameterInterface extends DescriptionInterface, AttributesInterface
+interface ParameterInterface extends DescriptionInterface
 {
     public function __construct(string $description = '');
 
@@ -38,4 +37,9 @@ interface ParameterInterface extends DescriptionInterface, AttributesInterface
      * Gets a new parameter type instance.
      */
     public function getType(): TypeInterface;
+
+    /**
+     * Provides access to the default value.
+     */
+    public function default();
 }

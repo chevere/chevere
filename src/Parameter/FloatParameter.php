@@ -15,13 +15,9 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
-use Chevere\Type\Type;
 use Chevere\Type\Interfaces\TypeInterface;
+use Chevere\Type\Type;
 
-/**
- * @method FloatParameterInterface withAddedAttribute(string ...$attributes)
- * @method FloatParameterInterface withoutAttribute(string ...$attribute)
- */
 final class FloatParameter implements FloatParameterInterface
 {
     use ParameterTrait;

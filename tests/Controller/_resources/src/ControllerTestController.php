@@ -14,22 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Controller\_resources\src;
 
 use Chevere\Controller\Controller;
-use Chevere\Parameter\Interfaces\ArgumentsInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Parameter\Parameters;
-use Chevere\Parameter\StringParameter;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ControllerTestController extends Controller
 {
-    public function getParameters(): ParametersInterface
-    {
-        return new Parameters(
-            string: new StringParameter()
-        );
-    }
-
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function run(string $string): ResponseInterface
     {
         return $this->getResponse();
     }

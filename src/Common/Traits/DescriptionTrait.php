@@ -27,4 +27,12 @@ trait DescriptionTrait
     {
         return $this->description ??= $this->getDescription();
     }
+
+    public function withDescription(string $description): static
+    {
+        $new = clone $this;
+        $new->description = $description;
+
+        return $new;
+    }
 }

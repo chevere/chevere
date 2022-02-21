@@ -26,14 +26,10 @@ use Chevere\Regex\Regex;
 function arrayParameter(
     ?string $description = null,
     ?array $default = null,
-    string ...$attributes
 ): ArrayParameterInterface {
     $parameter = new ArrayParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
-    }
-    if (isset($attributes)) {
-        $parameter = $parameter->withAddedAttribute(...$attributes);
     }
 
     return $parameter;
@@ -42,14 +38,10 @@ function arrayParameter(
 function booleanParameter(
     ?string $description = null,
     ?bool $default = null,
-    string ...$attributes
 ): BooleanParameterInterface {
     $parameter = new BooleanParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
-    }
-    if (isset($attributes)) {
-        $parameter = $parameter->withAddedAttribute(...$attributes);
     }
 
     return $parameter;
@@ -58,14 +50,10 @@ function booleanParameter(
 function floatParameter(
     ?string $description = null,
     ?float $default = null,
-    string ...$attributes
 ): FloatParameterInterface {
     $parameter = new FloatParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
-    }
-    if (isset($attributes)) {
-        $parameter = $parameter->withAddedAttribute(...$attributes);
     }
 
     return $parameter;
@@ -74,14 +62,10 @@ function floatParameter(
 function integerParameter(
     ?string $description = null,
     ?int $default = null,
-    string ...$attributes
 ): IntegerParameterInterface {
     $parameter = new IntegerParameter($description ?? '');
     if (isset($default)) {
         $parameter = $parameter->withDefault($default);
-    }
-    if (isset($attributes)) {
-        $parameter = $parameter->withAddedAttribute(...$attributes);
     }
 
     return $parameter;
@@ -91,7 +75,6 @@ function stringParameter(
     ?string $description = null,
     ?string $default = null,
     ?string $regex = null,
-    string ...$attributes
 ): StringParameterInterface {
     $parameter = new StringParameter($description ?? '');
     if (isset($default)) {
@@ -99,9 +82,6 @@ function stringParameter(
     }
     if (isset($regex)) {
         $parameter = $parameter->withRegex(new Regex($regex));
-    }
-    if (isset($attributes)) {
-        $parameter = $parameter->withAddedAttribute(...$attributes);
     }
 
     return $parameter;

@@ -48,4 +48,9 @@ final class ObjectParameter implements ObjectParameterInterface
 
         return $new;
     }
+
+    public function default(): mixed
+    {
+        return null;
+    }
 }

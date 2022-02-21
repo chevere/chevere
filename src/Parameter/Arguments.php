@@ -15,7 +15,6 @@ namespace Chevere\Parameter;
 
 use Chevere\Message\Message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
-use Chevere\Parameter\Interfaces\ParameterDefaultInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
@@ -164,7 +163,7 @@ final class Arguments implements ArgumentsInterface
         $regexString = $parameter->regex()->__toString();
         if (preg_match($regexString, $argument) !== 1) {
             throw new InvalidArgumentException(
-                (new Message("Parameter %name%: Argument value provided doesn't match the regex %regex%"))
+                (new Message("Parameter [%name%]: Argument value provided doesn't match the regex %regex%"))
                     ->strong('%name%', $name)
                     ->code('%parameter%', $name)
                     ->code('%regex%', $regexString)
@@ -188,9 +187,7 @@ final class Arguments implements ArgumentsInterface
 
     private function handleParameterDefault(string $name, ParameterInterface $parameter): void
     {
-        if (!$this->has($name)
-            && $parameter instanceof ParameterDefaultInterface
-        ) {
+        if (!$this->has($name)) {
             $this->arguments[$name] = $parameter->default();
         }
     }

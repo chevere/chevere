@@ -18,7 +18,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 /**
  * Describes the component in charge of defining a parameter of type array.
  */
-interface ArrayParameterInterface extends ParameterDefaultInterface, ParameterInterface
+interface ArrayParameterInterface extends ParameterInterface
 {
     /**
      * Return an instance with the specified `$default` value.

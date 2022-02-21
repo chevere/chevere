@@ -20,7 +20,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 /**
  * Describes the component in charge of defining a parameter of type string.
  */
-interface StringParameterInterface extends ParameterDefaultInterface, ParameterInterface
+interface StringParameterInterface extends ParameterInterface
 {
     /**
      * Provides access to the regex instance.

@@ -13,16 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
-use Chevere\Common\Traits\AttributesTrait;
 use Chevere\Common\Traits\DescriptionTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use Ds\Map;
 
 trait ParameterTrait
 {
     use DescriptionTrait;
-
-    use AttributesTrait;
 
     private TypeInterface $type;
 
@@ -38,7 +34,6 @@ trait ParameterTrait
     ) {
         $this->setUp();
         $this->type = $this->type();
-        $this->attributes = new Map();
     }
 
     /**

@@ -38,11 +38,11 @@ final class FunctionsTest extends TestCase
     {
         $parameter = 'name';
         $value = 'PeoplesHernandez';
-        $controller = new ActionRunnerTestController();
+        $action = new ActionRunnerTestController();
         $arguments = [
             $parameter => $value,
         ];
-        $run = actionRun($controller, ...$arguments);
+        $run = actionRun($action, ...$arguments);
         $this->assertSame(0, $run->code());
         $this->assertSame([
             'user' => $value,

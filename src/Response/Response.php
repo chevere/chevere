@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Response;
 
-use Chevere\Common\Traits\AttributesTrait;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Traits\ResponseTrait;
 
 final class Response implements ResponseInterface
 {
     use ResponseTrait;
-
-    use AttributesTrait;
 }

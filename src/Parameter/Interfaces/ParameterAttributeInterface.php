@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Interfaces;
 
+use Chevere\Regex\Interfaces\RegexInterface;
+
 /**
- * Describes the component in charge of defining a parameter providing default value.
+ * Describes the component in charge of defining the base parameter attribute.
  */
-interface ParameterDefaultInterface extends ParameterInterface
+interface ParameterAttributeInterface
 {
-    /**
-     * Provides access to the default value.
-     */
-    public function default();
+    public function description(): string;
+
+    public function regex(): RegexInterface;
 }

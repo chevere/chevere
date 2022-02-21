@@ -18,10 +18,6 @@ use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\Type\Type;
 
-/**
- * @method ArrayParameterInterface withAddedAttribute(string ...$attributes)
- * @method ArrayParameterInterface withoutAttribute(string ...$attribute)
- */
 final class ArrayParameter implements ArrayParameterInterface
 {
     use ParameterTrait;

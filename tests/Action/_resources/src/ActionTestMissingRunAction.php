@@ -14,12 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Action\Action;
-use Chevere\Response\Interfaces\ResponseInterface;
 
-final class ActionTestEmptyAction extends Action
+final class ActionTestMissingRunAction extends Action
 {
-    public function run(): ResponseInterface
-    {
-        return $this->getResponse();
-    }
 }

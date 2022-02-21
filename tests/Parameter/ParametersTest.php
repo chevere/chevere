@@ -129,11 +129,10 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(name: new StringParameter());
         $parametersWithModify = $parameters
             ->withModify(
-                name: (new StringParameter())->withAddedAttribute(attr: 'modify')
+                name: (new StringParameter())->withDefault('eee')
             );
         $this->assertNotSame($parameters, $parametersWithModify);
         $this->assertTrue($parametersWithModify->has($name));
-        $this->assertTrue($parametersWithModify->get($name)->hasAttribute('attr'));
         $this->expectException(OutOfBoundsException::class);
         $parametersWithModify->withModify(notFound: new StringParameter());
     }

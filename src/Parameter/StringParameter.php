@@ -22,9 +22,6 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\Type\Type;
 
-/**
- * @method StringParameterInterface withAddedAttribute(string ...$attributes)
- */
 final class StringParameter implements StringParameterInterface
 {
     use ParameterTrait;

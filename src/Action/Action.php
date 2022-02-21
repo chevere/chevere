@@ -15,12 +15,19 @@ namespace Chevere\Action;
 
 use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Common\Traits\DescriptionTrait;
+use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
+use Chevere\Parameter\Attributes\ParameterAttribute;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Parameters;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
+use Chevere\Throwable\Exceptions\LogicException;
+use ReflectionAttribute;
+use ReflectionException;
+use ReflectionMethod;
 
 abstract class Action implements ActionInterface
 {
@@ -44,17 +51,63 @@ abstract class Action implements ActionInterface
         $this->responseParameters = $this->getResponseParameters();
     }
 
-    public function getParameters(): ParametersInterface
+    final protected function getParameters(): ParametersInterface
     {
-        return new Parameters();
+        try {
+            $reflection = new ReflectionMethod($this, 'run');
+        } catch (ReflectionException) {
+            throw new LogicException(
+                message('Action %action% does not provide %method% method')
+                    ->code('%action%', $this::class)
+                    ->code('%method%', 'run')
+            );
+        }
+        $parameters = new Parameters();
+        
+        $collection = [
+            0 => [],
+            1 => [],
+        ];
+        foreach ($reflection->getParameters() as $parameter) {
+            $description = '';
+            /** @var ParameterAttribute[] $parameterAttributes */
+            $parameterAttributes = $parameter->getAttributes(ParameterAttribute::class);
+            /** @var ReflectionAttribute $reflectionAttribute */
+            $reflectionAttribute = $parameterAttributes[0] ?? null;
+            if (isset($reflectionAttribute)) {
+                /** @var ParameterAttribute $parameterAttribute */
+                $parameterAttribute = $reflectionAttribute->newInstance();
+                $description = $parameterAttribute->description();
+            }
+            $default = $parameter->isDefaultValueAvailable()
+                    ? $parameter->getDefaultValue()
+                    : null;
+            $typeName = $parameter->getType()->getName();
+            $type = self::TYPES_TO_CLASSES[$typeName] ?? null;
+            if ($type === null) {
+                $type = self::TYPES_TO_CLASSES['object'];
+            }
+            $typedParam = new $type($description);
+            
+            if ($default !== null && method_exists($typedParam, 'withDefault')) {
+                $typedParam = $typedParam->withDefault($default);
+            }
+            if (isset($parameterAttribute) && $typedParam instanceof StringParameterInterface) {
+                $typedParam = $typedParam
+                    ->withRegex($parameterAttribute->regex());
+            }
+            $pos = $parameter->isOptional() ? 0 : 1;
+            $collection[$pos][$parameter->getName()] = $typedParam;
+        }
+            
+        return $parameters->withAdded(...$collection[1])
+            ->withAddedOptional(...$collection[0]);
     }
 
     public function getResponseParameters(): ParametersInterface
     {
         return new Parameters();
     }
-
-    abstract public function run(ArgumentsInterface $arguments): ResponseInterface;
 
     final public function parameters(): ParametersInterface
     {

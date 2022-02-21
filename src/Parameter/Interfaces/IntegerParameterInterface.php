@@ -18,7 +18,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 /**
  * Describes the component in charge of defining a parameter of type integer.
  */
-interface IntegerParameterInterface extends ParameterDefaultInterface, ParameterInterface
+interface IntegerParameterInterface extends ParameterInterface
 {
     /**
      * Return an instance with the specified `$default` value.

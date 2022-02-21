@@ -222,14 +222,13 @@ final class ArgumentsTest extends TestCase
             ...[
                 $required => $requiredValue,
                 $optionalName => $optionalNameValue,
-                // $optionalObject => $optionalObjectValue,
             ]
         );
         $this->assertSame(
             [
                 $required => $requiredValue,
                 $optionalName => $optionalNameValue,
-                // $optionalObject => $optionalObjectValue,
+                $optionalObject => null,
             ],
             $argumentsWithAllValues->toArray()
         );

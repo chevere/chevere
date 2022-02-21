@@ -14,30 +14,25 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Controller\Controller;
-use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Attributes\ParameterAttribute;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
-use Chevere\Regex\Regex;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ActionRunnerTestController extends Controller
 {
-    public function getParameters(): ParametersInterface
-    {
-        return new Parameters(
-            name: (new StringParameter())
-                ->withRegex(new Regex('/^\w+$/'))
-        );
-    }
-
     public function getResponseParameters(): ParametersInterface
     {
         return new Parameters(user: new StringParameter());
     }
 
-    public function run(ArgumentsInterface $arguments): ResponseInterface
-    {
+    public function run(
+        #[ParameterAttribute(
+            description: 'The username.',
+            regex: '/^[a-zA-Z]+$/'
+        )] string $name
+    ): ResponseInterface {
         return $this->getResponse(user: 'PeoplesHernandez');
     }
 }

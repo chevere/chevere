@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Response\Traits;
 
-use Chevere\Common\Traits\AttributesTrait;
 use Ramsey\Uuid\Uuid;
 
 trait ResponseTrait
 {
-    use AttributesTrait;
-
     private string $uuid;
 
     private string $token;

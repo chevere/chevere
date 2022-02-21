@@ -18,10 +18,6 @@ use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\Type\Type;
 
-/**
- * @method IntegerParameterInterface withAddedAttribute(string ...$attributes)
- * @method IntegerParameterInterface withoutAttribute(string ...$attribute)
- */
 final class IntegerParameter implements IntegerParameterInterface
 {
     use ParameterTrait;

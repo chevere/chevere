@@ -18,7 +18,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 /**
  * Describes the component in charge of defining a parameter of type float.
  */
-interface FloatParameterInterface extends ParameterDefaultInterface, ParameterInterface
+interface FloatParameterInterface extends ParameterInterface
 {
     /**
      * Return an instance with the specified `$default` value.

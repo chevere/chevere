@@ -14,8 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Action\Interfaces;
 
 use Chevere\Common\Interfaces\DescriptionInterface;
+use Chevere\Parameter\ArrayParameter;
+use Chevere\Parameter\BooleanParameter;
+use Chevere\Parameter\FloatParameter;
+use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\ObjectParameter;
+use Chevere\Parameter\StringParameter;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 /**
@@ -23,12 +29,16 @@ use Chevere\Response\Interfaces\ResponseInterface;
  */
 interface ActionInterface extends DescriptionInterface
 {
-    public function __construct();
+    public const TYPES_TO_CLASSES = [
+        'array' => ArrayParameter::class,
+        'boolean' => BooleanParameter::class,
+        'float' => FloatParameter::class,
+        'integer' => IntegerParameter::class,
+        'string' => StringParameter::class,
+        'object' => ObjectParameter::class,
+    ];
 
-    /**
-     * Defines action parameters.
-     */
-    public function getParameters(): ParametersInterface;
+    public function __construct();
 
     /**
      * Defines expected response data parameters when executing `run` method.
@@ -38,7 +48,7 @@ interface ActionInterface extends DescriptionInterface
     /**
      * Method called when running the action.
      */
-    public function run(ArgumentsInterface $arguments): ResponseInterface;
+    // public function run({...}): ResponseInterface;
 
     /**
      * Provides access to the parameters.
