@@ -19,6 +19,7 @@ use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\Attributes\ParameterAttribute;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Parameters;
@@ -88,7 +89,9 @@ abstract class Action implements ActionInterface
                 $type = self::TYPE_TO_PARAMETER['object'];
             }
             $typedParam = new $type($description);
-            
+            if ($typedParam instanceof ObjectParameterInterface) {
+                $typedParam = $typedParam->withClassName($typeName);
+            }
             if ($default !== null && method_exists($typedParam, 'withDefault')) {
                 $typedParam = $typedParam->withDefault($default);
             }
