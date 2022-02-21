@@ -29,11 +29,11 @@ use Chevere\Response\Interfaces\ResponseInterface;
  */
 interface ActionInterface extends DescriptionInterface
 {
-    public const TYPES_TO_CLASSES = [
+    public const TYPE_TO_PARAMETER = [
         'array' => ArrayParameter::class,
-        'boolean' => BooleanParameter::class,
+        'bool' => BooleanParameter::class,
         'float' => FloatParameter::class,
-        'integer' => IntegerParameter::class,
+        'int' => IntegerParameter::class,
         'string' => StringParameter::class,
         'object' => ObjectParameter::class,
     ];

@@ -83,9 +83,9 @@ abstract class Action implements ActionInterface
                     ? $parameter->getDefaultValue()
                     : null;
             $typeName = $parameter->getType()->getName();
-            $type = self::TYPES_TO_CLASSES[$typeName] ?? null;
+            $type = self::TYPE_TO_PARAMETER[$typeName] ?? null;
             if ($type === null) {
-                $type = self::TYPES_TO_CLASSES['object'];
+                $type = self::TYPE_TO_PARAMETER['object'];
             }
             $typedParam = new $type($description);
             
