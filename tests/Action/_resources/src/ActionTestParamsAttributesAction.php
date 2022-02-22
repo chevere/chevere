@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Action\Action;
-use Chevere\Attributes\DescriptionAttribute;
-use Chevere\Attributes\RegexAttribute;
+use Chevere\Common\Attributes\DescriptionAttribute;
+use Chevere\Regex\Attributes\RegexAttribute;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ActionTestParamsAttributesAction extends Action

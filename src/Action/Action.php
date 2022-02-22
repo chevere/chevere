@@ -15,8 +15,7 @@ namespace Chevere\Action;
 
 use Attribute;
 use Chevere\Action\Interfaces\ActionInterface;
-use Chevere\Attributes\DescriptionAttribute;
-use Chevere\Attributes\RegexAttribute;
+use Chevere\Common\Attributes\DescriptionAttribute;
 use Chevere\Common\Traits\DescriptionTrait;
 use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
@@ -25,6 +24,7 @@ use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Parameters;
+use Chevere\Regex\Attributes\RegexAttribute;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
 use Chevere\Throwable\Exceptions\LogicException;
