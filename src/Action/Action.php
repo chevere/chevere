@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Action;
 
+use Attribute;
 use Chevere\Action\Interfaces\ActionInterface;
+use Chevere\Attributes\DescriptionAttribute;
+use Chevere\Attributes\RegexAttribute;
 use Chevere\Common\Traits\DescriptionTrait;
 use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
-use Chevere\Parameter\Attributes\ParameterAttribute;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -29,6 +31,7 @@ use Chevere\Throwable\Exceptions\LogicException;
 use ReflectionAttribute;
 use ReflectionException;
 use ReflectionMethod;
+use ReflectionParameter;
 
 abstract class Action implements ActionInterface
 {
@@ -70,16 +73,13 @@ abstract class Action implements ActionInterface
             1 => [],
         ];
         foreach ($reflection->getParameters() as $parameter) {
-            $description = '';
-            /** @var ParameterAttribute[] $parameterAttributes */
-            $parameterAttributes = $parameter->getAttributes(ParameterAttribute::class);
-            /** @var ReflectionAttribute $reflectionAttribute */
-            $reflectionAttribute = $parameterAttributes[0] ?? null;
-            if (isset($reflectionAttribute)) {
-                /** @var ParameterAttribute $parameterAttribute */
-                $parameterAttribute = $reflectionAttribute->newInstance();
-                $description = $parameterAttribute->description();
-            }
+            $descriptionAttribute = $this->getAttribute(
+                $parameter,
+                DescriptionAttribute::class
+            );
+            $description = $descriptionAttribute instanceof DescriptionAttribute
+                ? $descriptionAttribute->description()
+                : '';
             $default = $parameter->isDefaultValueAvailable()
                     ? $parameter->getDefaultValue()
                     : null;
@@ -95,9 +95,14 @@ abstract class Action implements ActionInterface
             if ($default !== null && method_exists($typedParam, 'withDefault')) {
                 $typedParam = $typedParam->withDefault($default);
             }
-            if (isset($parameterAttribute) && $typedParam instanceof StringParameterInterface) {
-                $typedParam = $typedParam
-                    ->withRegex($parameterAttribute->regex());
+            if ($typedParam instanceof StringParameterInterface) {
+                $regexAttribute = $this->getAttribute(
+                    $parameter,
+                    RegexAttribute::class
+                );
+                if ($regexAttribute instanceof RegexAttribute) {
+                    $typedParam = $typedParam->withRegex($regexAttribute->regex());
+                }
             }
             $pos = $parameter->isOptional() ? 0 : 1;
             $collection[$pos][$parameter->getName()] = $typedParam;
@@ -105,6 +110,18 @@ abstract class Action implements ActionInterface
             
         return $parameters->withAdded(...$collection[1])
             ->withAddedOptional(...$collection[0]);
+    }
+
+    private function getAttribute(ReflectionParameter $parameter, string $className): object
+    {
+        $reflectionAttributes = $parameter->getAttributes($className);
+        /** @var ReflectionAttribute $reflectionAttribute */
+        $reflectionAttribute = $reflectionAttributes[0] ?? null;
+        if (isset($reflectionAttribute)) {
+            return $reflectionAttribute->newInstance();
+        }
+
+        return new Attribute();
     }
 
     public function getResponseParameters(): ParametersInterface

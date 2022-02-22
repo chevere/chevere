@@ -24,8 +24,9 @@ function actionRun(
     ActionInterface $action,
     mixed ...$namedArguments
 ): ActionRunInterface {
+    $runArguments = $action->getArguments(...$namedArguments);
+
     try {
-        $runArguments = $action->getArguments(...$namedArguments);
         $response = $action->run(...$runArguments->toArray());
     } catch (Throwable $e) {
         return (new ActionRun([]))

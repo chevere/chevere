@@ -169,7 +169,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(CompactNullableTypehintFixer::class);
     $services->set(BlankLineBeforeStatementFixer::class);
     $services->set(CombineConsecutiveUnsetsFixer::class);
-    $services->set(ClassAttributesSeparationFixer::class);
+    // $services->set(ClassAttributesSeparationFixer::class);
     $services->set(MultilineWhitespaceBeforeSemicolonsFixer::class);
     $services->set(SingleLineCommentStyleFixer::class);
     $services->set(IncludeFixer::class);
@@ -180,7 +180,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(UselessVariableSniff::class);
     $services->set(UnusedInheritedVariablePassedToClosureSniff::class);
     $services->set(UselessSemicolonSniff::class);
-    // $services->set(UselessParenthesesSniff::class); // broken for php 8.0
+    $services->set(UselessParenthesesSniff::class);
     $services->set(ArraySyntaxFixer::class)
         ->call('configure', [[
             'syntax' => 'short',

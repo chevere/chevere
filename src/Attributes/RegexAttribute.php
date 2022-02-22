@@ -11,28 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Parameter\Attributes;
+namespace Chevere\Attributes;
 
 use Attribute;
-use Chevere\Parameter\Interfaces\ParameterAttributeInterface;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 
 #[Attribute]
-final class ParameterAttribute implements ParameterAttributeInterface
+final class RegexAttribute
 {
     private RegexInterface $regex;
-
-    public function __construct(private string $description = '', string $regex = '')
+    
+    public function __construct(string $regex = '')
     {
-        if ($regex !== '') {
-            $this->regex = new Regex($regex);
-        }
-    }
-
-    public function description(): string
-    {
-        return $this->description;
+        $this->regex = new Regex($regex);
     }
 
     public function regex(): RegexInterface

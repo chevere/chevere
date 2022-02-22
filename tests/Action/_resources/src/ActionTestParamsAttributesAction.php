@@ -14,12 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Action\Action;
+use Chevere\Attributes\DescriptionAttribute;
+use Chevere\Attributes\RegexAttribute;
 use Chevere\Response\Interfaces\ResponseInterface;
 
-final class ActionTestParamDefaultAction extends Action
+final class ActionTestParamsAttributesAction extends Action
 {
-    public function run(string $default = 'default'): ResponseInterface
-    {
+    public function run(
+        #[DescriptionAttribute('An int')] int $int,
+        #[DescriptionAttribute('The name'),
+        RegexAttribute('/^[a-z]$/')] string $name,
+    ): ResponseInterface {
         return $this->getResponse();
     }
 }
