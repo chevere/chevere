@@ -34,7 +34,6 @@
     },
     "autoload": {
         "files": [
-            "src/Action/functions.php",
             "src/Filesystem/functions.php",
             "src/Iterator/functions.php",
             "src/Message/functions.php",

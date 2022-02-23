@@ -21,6 +21,7 @@ use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Tests\Action\_resources\src\ActionTestController;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
 use Chevere\Tests\Action\_resources\src\ActionTestContainerAction;
 use Chevere\Tests\Action\_resources\src\ActionTestMissingRunAction;
@@ -106,5 +107,20 @@ final class ActionTest extends TestCase
         $action = new ActionTestContainerAction();
         $this->expectException(LogicException::class);
         $action->runner();
+    }
+
+    public function testActionRunWithArguments(): void
+    {
+        $parameter = 'name';
+        $value = 'PeoplesHernandez';
+        $action = new ActionTestController();
+        $arguments = [
+            $parameter => $value,
+        ];
+        $run = $action->run(...$arguments);
+        $this->assertSame(0, $run->code());
+        $this->assertSame([
+            'user' => $value,
+        ], $run->data());
     }
 }

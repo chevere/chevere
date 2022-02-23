@@ -21,7 +21,7 @@ use Chevere\Parameter\StringParameter;
 use Chevere\Regex\Attributes\RegexAttribute;
 use Chevere\Response\Interfaces\ResponseInterface;
 
-final class ActionRunnerTestController extends Controller
+final class ActionTestController extends Controller
 {
     public function getResponseParameters(): ParametersInterface
     {
