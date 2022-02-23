@@ -129,7 +129,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
                     ->code('%path%', $this->filePhp->file()->path()->__toString())
             );
         }
-        if (preg_match('#<?php[\S\s]*\s*return\s*[\S\s]*;#', $contents) !== 1) {
+        if (preg_match('#^<\?php[\S\s]*return[\S\s]*;$#', $contents) !== 1) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path%'))
                     ->code('%path%', $this->filePhp->file()->path()->__toString())
