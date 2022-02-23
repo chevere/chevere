@@ -18,7 +18,6 @@ use Chevere\Parameter\ArrayParameter;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
-use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\StringParameter;
@@ -77,11 +76,6 @@ interface ActionInterface extends DescriptionInterface
      * Provides access to the expected response data parameters.
      */
     public function responseParameters(): ParametersInterface;
-
-    /**
-     * Retrieves an arguments instance typed against the action parameters.
-     */
-    public function getArguments(mixed ...$namedArguments): ArgumentsInterface;
 
     public function runner(mixed ...$namedArguments): ResponseInterface;
 }

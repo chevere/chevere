@@ -51,6 +51,7 @@ abstract class Action implements ActionInterface
     public function __construct()
     {
         $this->parameters = $this->parameters();
+        $this->containerParameters = $this->containerParameters();
     }
 
     public function getContainerParameters(): ParametersInterface
@@ -85,9 +86,9 @@ abstract class Action implements ActionInterface
 
     final protected function getResponse(mixed ...$namedData): ResponseInterface
     {
-        new Arguments($this->responseParameters(), ...$namedData);
+        $arguments = new Arguments($this->responseParameters(), ...$namedData);
 
-        return new Response(...$namedData);
+        return new Response(...$arguments->toArray());
     }
 
     final public function withContainer(ContainerInterface $container): ActionInterface
@@ -106,7 +107,7 @@ abstract class Action implements ActionInterface
     final public function runner(mixed ...$namedArguments): ResponseInterface
     {
         $this->assertRunMethod();
-        $arguments = [];
+        $arguments = $this->getArguments(...$namedArguments)->toArray();
         $missing = [];
         foreach ($this->containerParameters()->getIterator() as $name => $parameter) {
             if (!$this->container()->has($name)) {
