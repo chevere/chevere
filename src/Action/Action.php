@@ -28,6 +28,7 @@ use Chevere\Parameter\Parameters;
 use Chevere\Regex\Attributes\RegexAttribute;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use Psr\Container\ContainerInterface;
 use ReflectionAttribute;
@@ -107,25 +108,28 @@ abstract class Action implements ActionInterface
     final public function runner(mixed ...$namedArguments): ResponseInterface
     {
         $this->assertRunMethod();
-        $arguments = $this->getArguments(...$namedArguments)->toArray();
-        $missing = [];
-        foreach ($this->containerParameters()->getIterator() as $name => $parameter) {
+        $missingService = [];
+        $services = [];
+        $keys = array_keys(
+            iterator_to_array($this->containerParameters()->getIterator())
+        );
+        foreach ($keys as $name) {
             if (!$this->container()->has($name)) {
-                $missing[] = $name;
+                $missingService[] = $name;
 
                 continue;
             }
-            $arguments[$name] = $this->container()->get($name);
+            $services[$name] = $this->container()->get($name);
         }
-        if ($missing !== []) {
-            throw new LogicException(
+        if ($missingService !== []) {
+            throw new InvalidArgumentException(
                 message('The container does not provide the parameter(s): [%missing%]')
-                    ->strtr('%missing%', implode(', ', $missing))
+                    ->strtr('%missing%', implode(', ', $missingService))
             );
         }
-        new Arguments($this->containerParameters(), ...$arguments);
+        $arguments = $this->getArguments(...$namedArguments)->toArray();
 
-        return $this->run(...$namedArguments);
+        return $this->run(...$arguments);
     }
 
     final protected function getParameters(): ParametersInterface

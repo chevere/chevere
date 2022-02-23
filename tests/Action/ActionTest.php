@@ -21,12 +21,13 @@ use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
-use Chevere\Tests\Action\_resources\src\ActionTestController;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
 use Chevere\Tests\Action\_resources\src\ActionTestContainerAction;
+use Chevere\Tests\Action\_resources\src\ActionTestController;
 use Chevere\Tests\Action\_resources\src\ActionTestMissingRunAction;
 use Chevere\Tests\Action\_resources\src\ActionTestParamsAction;
 use Chevere\Tests\Action\_resources\src\ActionTestParamsAttributesAction;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use Ds\Vector;
 use PHPUnit\Framework\TestCase;
@@ -102,10 +103,10 @@ final class ActionTest extends TestCase
         $this->assertSame(0, $response->code());
     }
 
-    public function testActionContainerException(): void
+    public function testActionContainerMissingParameterException(): void
     {
         $action = new ActionTestContainerAction();
-        $this->expectException(LogicException::class);
+        $this->expectException(InvalidArgumentException::class);
         $action->runner();
     }
 
