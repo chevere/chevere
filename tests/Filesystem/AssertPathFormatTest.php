@@ -56,10 +56,11 @@ final class AssertPathFormatTest extends TestCase
     public function testConstructWindows(): void
     {
         $paths = [
-            '\Program Files\Custom Utilities' => '/Program Files/Custom Utilities',
+            '\Program Files' => '/Program Files',
             '\Program Files\Custom Utilities\\' => '/Program Files/Custom Utilities/',
-            'C:\Documents\Newsletters' => 'C:/Documents/Newsletters',
+            'C:\Documents' => 'C:/Documents',
             'C:\Documents\Newsletters\\' => 'C:/Documents/Newsletters/',
+            'C:\Documents\Newsletters/' => 'C:/Documents/Newsletters/',
         ];
         foreach ($paths as $path => $expected) {
             $assert = new AssertPathFormat($path);

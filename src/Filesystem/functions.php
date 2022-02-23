@@ -36,45 +36,32 @@ function getFilesystemInstanceMessage(string $instance, string $path): MessageIn
 
 function tailDirPath(string $path): string
 {
-    $path .= substr($path, -1) == DIRECTORY_SEPARATOR
+    if (substr($path, -1) === '\\') {
+        $path = substr($path, 0, -1);
+    }
+    $path .= substr($path, -1) == '/'
         ? ''
-        : DIRECTORY_SEPARATOR;
+        : '/';
 
     return $path;
 }
 
 /**
  * @codeCoverageIgnore
- * @throws FilesystemException
  */
 function dirForPath(string $path): DirInterface
 {
     $path = tailDirPath($path);
 
-    try {
-        return new Dir(new Path($path));
-    } catch (Throwable $e) {
-        throw new FilesystemException(
-            previous: $e,
-            message: getFilesystemInstanceMessage(Dir::class, $path),
-        );
-    }
+    return new Dir(new Path($path));
 }
 
 /**
  * @codeCoverageIgnore
- * @throws FilesystemException
  */
 function fileForPath(string $path): FileInterface
 {
-    try {
-        return new File(new Path($path));
-    } catch (Throwable $e) {
-        throw new FilesystemException(
-            previous: $e,
-            message: getFilesystemInstanceMessage(File::class, $path),
-        );
-    }
+    return new File(new Path($path));
 }
 
 /**
@@ -83,14 +70,7 @@ function fileForPath(string $path): FileInterface
  */
 function filePhpForPath(string $path): FilePhpInterface
 {
-    try {
-        return new FilePhp(fileForPath($path));
-    } catch (Throwable $e) {
-        throw new FilesystemException(
-            previous: $e,
-            message: getFilesystemInstanceMessage(FilePhp::class, $path),
-        );
-    }
+    return new FilePhp(fileForPath($path));
 }
 
 /**
@@ -99,14 +79,7 @@ function filePhpForPath(string $path): FilePhpInterface
  */
 function filePhpReturnForPath(string $path): FilePhpReturnInterface
 {
-    try {
-        return new FilePhpReturn(filePhpForPath($path));
-    } catch (Throwable $e) {
-        throw new FilesystemException(
-            previous: $e,
-            message: getFilesystemInstanceMessage(FilePhpReturn::class, $path),
-        );
-    }
+    return new FilePhpReturn(filePhpForPath($path));
 }
 
 /**

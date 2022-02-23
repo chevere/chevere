@@ -144,11 +144,11 @@ final class Dir implements DirInterface
     private function assertTailDir(): void
     {
         $absolute = $this->path->__toString();
-        if ($absolute[-1] !== DIRECTORY_SEPARATOR) {
+        if ($absolute[-1] !== '/') {
             throw new PathTailException(
                 (new Message('Instance of %className% must provide an absolute path ending with %tailChar%, path %provided% provided'))
                     ->code('%className%', $this->path::class)
-                    ->code('%tailChar%', DIRECTORY_SEPARATOR)
+                    ->code('%tailChar%', '/')
                     ->code('%provided%', $absolute)
             );
         }
