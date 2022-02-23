@@ -16,7 +16,6 @@ namespace Chevere\Tests\Action\_resources\src;
 use Chevere\Action\Action;
 use Chevere\Common\Attributes\DescriptionAttribute;
 use Chevere\Regex\Attributes\RegexAttribute;
-use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ActionTestParamsAttributesAction extends Action
 {
@@ -24,7 +23,7 @@ final class ActionTestParamsAttributesAction extends Action
         #[DescriptionAttribute('An int')] int $int,
         #[DescriptionAttribute('The name'),
         RegexAttribute('/^[a-z]$/')] string $name,
-    ): ResponseInterface {
-        return $this->getResponse();
+    ): array {
+        return [];
     }
 }

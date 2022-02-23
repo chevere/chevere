@@ -15,7 +15,6 @@ namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Action\Action;
 use Chevere\Filesystem\Interfaces\FileInterface;
-use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ActionTestParamsAction extends Action
 {
@@ -33,7 +32,7 @@ final class ActionTestParamsAction extends Action
         float $floatDefault = 0.0,
         array $arrayDefault = [],
         object $objectDefault = null,
-    ): ResponseInterface {
-        return $this->getResponse();
+    ): array {
+        return [];
     }
 }

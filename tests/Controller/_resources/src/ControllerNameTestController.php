@@ -14,13 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Controller\_resources\src;
 
 use Chevere\Controller\Controller;
-use Chevere\Parameter\Interfaces\ArgumentsInterface;
-use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ControllerNameTestController extends Controller
 {
-    public function run(ArgumentsInterface $arguments): ResponseInterface
+    public function run(): array
     {
-        return $this->getResponse();
+        return [];
     }
 }

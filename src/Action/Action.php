@@ -22,6 +22,7 @@ use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
+use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Parameters;
@@ -128,8 +129,15 @@ abstract class Action implements ActionInterface
             );
         }
         $arguments = $this->getArguments(...$namedArguments)->toArray();
+        $response = $this->run(...$arguments);
+        if (!is_array($response)) {
+            throw new LogicException(
+                message('Method %method% must return an array.')
+                    ->strtr('%method%', $this::class . '::run')
+            );
+        }
 
-        return $this->run(...$arguments);
+        return $this->getResponse(...$response);
     }
 
     final protected function getParameters(): ParametersInterface
@@ -141,40 +149,21 @@ abstract class Action implements ActionInterface
             0 => [],
             1 => [],
         ];
-        foreach ($reflection->getParameters() as $parameter) {
-            $descriptionAttribute = $this->getAttribute(
-                $parameter,
-                DescriptionAttribute::class
-            );
-            $description = $descriptionAttribute instanceof DescriptionAttribute
-                ? $descriptionAttribute->description()
-                : '';
-            $default = $parameter->isDefaultValueAvailable()
-                    ? $parameter->getDefaultValue()
-                    : null;
-            $typeName = $parameter->getType()->getName();
-            $type = self::TYPE_TO_PARAMETER[$typeName] ?? null;
-            if ($type === null) {
-                $type = self::TYPE_TO_PARAMETER['object'];
+        foreach ($reflection->getParameters() as $reflectionParameter) {
+            $description = $this->getDescriptionAttribute($reflectionParameter);
+            $default = $this->getDefaultValue($reflectionParameter);
+            $typeName = $reflectionParameter->getType()->getName();
+            $type = $this->getTypeToParameter($reflectionParameter);
+            $parameter = new $type($description);
+            if ($parameter instanceof ObjectParameterInterface) {
+                $parameter = $parameter->withClassName($typeName);
             }
-            $typedParam = new $type($description);
-            if ($typedParam instanceof ObjectParameterInterface) {
-                $typedParam = $typedParam->withClassName($typeName);
+            if ($default !== null && method_exists($parameter, 'withDefault')) {
+                $parameter = $parameter->withDefault($default);
             }
-            if ($default !== null && method_exists($typedParam, 'withDefault')) {
-                $typedParam = $typedParam->withDefault($default);
-            }
-            if ($typedParam instanceof StringParameterInterface) {
-                $regexAttribute = $this->getAttribute(
-                    $parameter,
-                    RegexAttribute::class
-                );
-                if ($regexAttribute instanceof RegexAttribute) {
-                    $typedParam = $typedParam->withRegex($regexAttribute->regex());
-                }
-            }
-            $pos = $parameter->isOptional() ? 0 : 1;
-            $collection[$pos][$parameter->getName()] = $typedParam;
+            $parameter = $this->getParameterWithSome($parameter, $reflectionParameter);
+            $pos = intval(!$reflectionParameter->isOptional());
+            $collection[$pos][$reflectionParameter->getName()] = $parameter;
         }
             
         return $parameters->withAdded(...$collection[1])
@@ -201,5 +190,53 @@ abstract class Action implements ActionInterface
                     ->code('%action%', $this::class)
             );
         }
+    }
+
+    protected function getDescriptionAttribute(ReflectionParameter $parameter): string
+    {
+        $attribute = $this->getAttribute(
+            $parameter,
+            DescriptionAttribute::class
+        );
+
+        return $attribute instanceof DescriptionAttribute
+            ? $attribute->description()
+            : '';
+    }
+
+    protected function getDefaultValue(ReflectionParameter $reflection): mixed
+    {
+        return $reflection->isDefaultValueAvailable()
+            ? $reflection->getDefaultValue()
+            : null;
+    }
+
+    protected function getParameterWithSome(
+        ParameterInterface $parameter,
+        ReflectionParameter $reflection
+    ): ParameterInterface {
+        if (!($parameter instanceof StringParameterInterface)) {
+            return $parameter;
+        }
+        $attribute = $this->getAttribute(
+            $reflection,
+            RegexAttribute::class
+        );
+        if ($attribute instanceof RegexAttribute) {
+            $parameter = $parameter->withRegex($attribute->regex());
+        }
+
+        return $parameter;
+    }
+
+    protected function getTypeToParameter(ReflectionParameter $reflection): string
+    {
+        $typeName = $reflection->getType()->getName();
+        $type = self::TYPE_TO_PARAMETER[$typeName] ?? null;
+        if ($type === null) {
+            $type = self::TYPE_TO_PARAMETER['object'];
+        }
+        
+        return $type;
     }
 }

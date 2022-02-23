@@ -19,7 +19,6 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
 use Chevere\Regex\Attributes\RegexAttribute;
-use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ActionTestController extends Controller
 {
@@ -34,7 +33,9 @@ final class ActionTestController extends Controller
         RegexAttribute('/^[a-zA-Z]+$/')
         ]
         string $name
-    ): ResponseInterface {
-        return $this->getResponse(user: 'PeoplesHernandez');
+    ): array {
+        return [
+            'user' => 'PeoplesHernandez'
+        ];
     }
 }

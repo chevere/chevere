@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Controller\Controller;
-use Chevere\Response\Interfaces\ResponseInterface;
 use Exception;
 
 final class ActionRunnerTestControllerRunFail extends Controller
 {
-    public function run(): ResponseInterface
+    public function run(): array
     {
         throw new Exception('Something went wrong');
     }

@@ -17,7 +17,6 @@ use Chevere\Action\Action;
 use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Parameters;
-use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ActionTestContainerAction extends Action
 {
@@ -27,8 +26,8 @@ final class ActionTestContainerAction extends Action
             id: integerParameter()
         );
     }
-    public function run(): ResponseInterface
+    public function run(): array
     {
-        return $this->getResponse();
+        return [];
     }
 }

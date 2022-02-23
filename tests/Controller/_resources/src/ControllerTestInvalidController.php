@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Controller\_resources\src;
 
 use Chevere\Controller\Controller;
-use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ControllerTestInvalidController extends Controller
 {
-    public function run(int $integer): ResponseInterface
+    public function run(int $integer): array
     {
-        return $this->getResponse();
+        return [];
     }
 }

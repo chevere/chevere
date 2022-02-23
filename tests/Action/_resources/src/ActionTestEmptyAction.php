@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Action\Action;
-use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ActionTestEmptyAction extends Action
 {
-    public function run(): ResponseInterface
+    public function run(): array
     {
-        return $this->getResponse();
+        return [];
     }
 }

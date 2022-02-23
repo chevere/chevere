@@ -74,11 +74,12 @@ final class ActionTest extends TestCase
         $action = new ActionTestParamsAction();
         $this->assertTrue($optional->contains(...$action->parameters()->optional()));
         $this->assertTrue($required->contains(...$action->parameters()->required()));
-        foreach ($defaults as $parameter => $value) {
-            $parameter = $action->parameters()->get($parameter);
+        foreach ($defaults as $name => $value) {
+            $parameter = $action->parameters()->get(strval($name));
             $this->assertSame($value, $parameter->default());
         }
         foreach ($types as $parameter => $class) {
+            $parameter = strval($parameter);
             $this->assertInstanceOf($class, $action->parameters()->get($parameter));
         }
     }
@@ -118,10 +119,13 @@ final class ActionTest extends TestCase
         $arguments = [
             $parameter => $value,
         ];
-        $run = $action->run(...$arguments);
-        $this->assertSame(0, $run->code());
-        $this->assertSame([
+        $array = $action->run(...$arguments);
+        $expected = [
             'user' => $value,
-        ], $run->data());
+        ];
+        $this->assertSame($expected, $array);
+        $response = $action->runner(...$arguments);
+        $this->assertSame(0, $response->code());
+        $this->assertSame($expected, $response->data());
     }
 }
