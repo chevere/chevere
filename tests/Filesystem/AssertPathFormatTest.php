@@ -52,4 +52,18 @@ final class AssertPathFormatTest extends TestCase
         $assert = new AssertPathFormat($path);
         $this->assertSame($path, $assert->path());
     }
+
+    public function testConstructWindows(): void
+    {
+        $paths = [
+            '\Program Files\Custom Utilities' => '/Program Files/Custom Utilities',
+            '\Program Files\Custom Utilities\\' => '/Program Files/Custom Utilities/',
+            'C:\Documents\Newsletters' => 'C:/Documents/Newsletters',
+            'C:\Documents\Newsletters\\' => 'C:/Documents/Newsletters/',
+        ];
+        foreach ($paths as $path => $expected) {
+            $assert = new AssertPathFormat($path);
+            $this->assertSame($expected, $assert->path());
+        }
+    }
 }

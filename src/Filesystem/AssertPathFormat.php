@@ -22,9 +22,13 @@ use Chevere\Message\Message;
 
 final class AssertPathFormat implements AssertPathFormatInterface
 {
+    private string $driveLetter;
+
     public function __construct(
         private string $path
     ) {
+        $this->path = str_replace('\\', '/', $path);
+        $this->driveLetter = $this->getDriveLetter();
         $this->assertAbsolutePath();
         $this->assertNoDoubleDots();
         $this->assertNoDots();
@@ -36,9 +40,20 @@ final class AssertPathFormat implements AssertPathFormatInterface
         return $this->path;
     }
 
+    private function getDriveLetter(): string
+    {
+        return (strlen($this->path) > 2
+            && ':' === $this->path[1]
+            && '/' === $this->path[2]
+            && ctype_alpha($this->path[0])
+        )
+            ? strtoupper($this->path[0])
+            : '';
+    }
+
     private function assertAbsolutePath(): void
     {
-        if (!str_starts_with($this->path, '/')) {
+        if ($this->driveLetter === '' && !str_starts_with($this->path, '/')) {
             throw new PathNotAbsoluteException(
                 (new Message('Path %path% must start with %char%'))
                     ->code('%path%', $this->path)
