@@ -43,6 +43,7 @@ final class FunctionsTest extends TestCase
             $parameter => $value,
         ];
         $run = actionRun($action, ...$arguments);
+        // vdd($run->throwable());
         $this->assertSame(0, $run->code());
         $this->assertSame([
             'user' => $value,

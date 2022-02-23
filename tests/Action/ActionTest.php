@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
+use Chevere\Container\Container;
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
@@ -21,6 +22,7 @@ use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
+use Chevere\Tests\Action\_resources\src\ActionTestContainerAction;
 use Chevere\Tests\Action\_resources\src\ActionTestMissingRunAction;
 use Chevere\Tests\Action\_resources\src\ActionTestParamsAction;
 use Chevere\Tests\Action\_resources\src\ActionTestParamsAttributesAction;
@@ -87,5 +89,22 @@ final class ActionTest extends TestCase
         $parameter = $action->parameters()->get('name');
         $this->assertSame('The name', $parameter->description());
         $this->assertSame('/^[a-z]$/', $parameter->regex()->__toString());
+    }
+
+    public function testActionContainer(): void
+    {
+        $container = new Container();
+        $container = $container->withPut('id', 123);
+        $action = new ActionTestContainerAction();
+        $action = $action->withContainer($container);
+        $response = $action->runner();
+        $this->assertSame(0, $response->code());
+    }
+
+    public function testActionContainerException(): void
+    {
+        $action = new ActionTestContainerAction();
+        $this->expectException(LogicException::class);
+        $action->runner();
     }
 }

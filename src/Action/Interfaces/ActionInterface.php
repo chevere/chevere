@@ -23,9 +23,12 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\StringParameter;
 use Chevere\Response\Interfaces\ResponseInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Describes the component in charge of defining a single action.
+ *
+ * @method ResponseInterface run(mixed ...$arguments) Defines the action run logic.
  */
 interface ActionInterface extends DescriptionInterface
 {
@@ -38,7 +41,22 @@ interface ActionInterface extends DescriptionInterface
         'object' => ObjectParameter::class,
     ];
 
-    public function __construct();
+    /**
+     * Defines expected container parameters when executing `run` method.
+     */
+    public function getContainerParameters(): ParametersInterface;
+
+    /**
+     * Provides access to the expected container parameters.
+     */
+    public function containerParameters(): ParametersInterface;
+
+    public function withContainer(ContainerInterface $container): ActionInterface;
+
+    /**
+     * Provides access to the container.
+     */
+    public function container(): ContainerInterface;
 
     /**
      * Defines expected response data parameters when executing `run` method.
@@ -65,8 +83,5 @@ interface ActionInterface extends DescriptionInterface
      */
     public function getArguments(mixed ...$namedArguments): ArgumentsInterface;
 
-    /**
-     * Retrieves a new success response with type-hinted data.
-     */
-    public function getResponse(mixed ...$namedData): ResponseInterface;
+    public function runner(mixed ...$namedArguments): ResponseInterface;
 }

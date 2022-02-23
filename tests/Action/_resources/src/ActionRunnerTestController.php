@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action\_resources\src;
 
-use Chevere\Attributes\DescriptionAttribute;
-use Chevere\Attributes\RegexAttribute;
+use Chevere\Common\Attributes\DescriptionAttribute;
 use Chevere\Controller\Controller;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
+use Chevere\Regex\Attributes\RegexAttribute;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 final class ActionRunnerTestController extends Controller

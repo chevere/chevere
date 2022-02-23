@@ -27,7 +27,6 @@ abstract class Controller extends Action implements ControllerInterface
     public function __construct()
     {
         $this->parameter = $this->parameter();
-        $this->setUp();
         $this->assertParametersType();
     }
 

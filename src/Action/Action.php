@@ -17,6 +17,7 @@ use Attribute;
 use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Common\Attributes\DescriptionAttribute;
 use Chevere\Common\Traits\DescriptionTrait;
+use Chevere\Container\Container;
 use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
@@ -28,8 +29,8 @@ use Chevere\Regex\Attributes\RegexAttribute;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
 use Chevere\Throwable\Exceptions\LogicException;
+use Psr\Container\ContainerInterface;
 use ReflectionAttribute;
-use ReflectionException;
 use ReflectionMethod;
 use ReflectionParameter;
 
@@ -37,37 +38,100 @@ abstract class Action implements ActionInterface
 {
     use DescriptionTrait;
 
-    protected string $description = '';
+    protected string $description;
 
     protected ParametersInterface $parameters;
 
     protected ParametersInterface $responseParameters;
 
+    protected ParametersInterface $containerParameters;
+
+    protected ContainerInterface $container;
+
     public function __construct()
     {
-        $this->setUp();
+        $this->parameters = $this->parameters();
     }
 
-    protected function setUp(): void
+    public function getContainerParameters(): ParametersInterface
     {
-        $this->description = $this->getDescription();
-        $this->parameters = $this->getParameters();
-        $this->responseParameters = $this->getResponseParameters();
+        return new Parameters();
+    }
+    
+    final public function containerParameters(): ParametersInterface
+    {
+        return $this->containerParameters ??= $this->getContainerParameters();
+    }
+
+    public function getResponseParameters(): ParametersInterface
+    {
+        return new Parameters();
+    }
+
+    final public function parameters(): ParametersInterface
+    {
+        return $this->parameters ??= $this->getParameters();
+    }
+
+    final public function responseParameters(): ParametersInterface
+    {
+        return $this->responseParameters ??= $this->getResponseParameters();
+    }
+
+    final public function getArguments(mixed ...$namedArguments): ArgumentsInterface
+    {
+        return new Arguments($this->parameters(), ...$namedArguments);
+    }
+
+    final protected function getResponse(mixed ...$namedData): ResponseInterface
+    {
+        new Arguments($this->responseParameters(), ...$namedData);
+
+        return new Response(...$namedData);
+    }
+
+    final public function withContainer(ContainerInterface $container): ActionInterface
+    {
+        $new = clone $this;
+        $new->container = $container;
+
+        return $new;
+    }
+
+    final public function container(): ContainerInterface
+    {
+        return $this->container ??= new Container();
+    }
+
+    final public function runner(mixed ...$namedArguments): ResponseInterface
+    {
+        $this->assertRunMethod();
+        $arguments = [];
+        $missing = [];
+        foreach ($this->containerParameters()->getIterator() as $name => $parameter) {
+            if (!$this->container()->has($name)) {
+                $missing[] = $name;
+
+                continue;
+            }
+            $arguments[$name] = $this->container()->get($name);
+        }
+        if ($missing !== []) {
+            throw new LogicException(
+                message('The container does not provide the parameter(s): [%missing%]')
+                    ->strtr('%missing%', implode(', ', $missing))
+            );
+        }
+        new Arguments($this->containerParameters(), ...$arguments);
+
+        return $this->run(...$namedArguments);
     }
 
     final protected function getParameters(): ParametersInterface
     {
-        try {
-            $reflection = new ReflectionMethod($this, 'run');
-        } catch (ReflectionException) {
-            throw new LogicException(
-                message('Action %action% does not provide %method% method')
-                    ->code('%action%', $this::class)
-                    ->code('%method%', 'run')
-            );
-        }
+        $this->assertRunMethod();
+        $reflection = new ReflectionMethod($this, 'run');
         $parameters = new Parameters();
-        
         $collection = [
             0 => [],
             1 => [],
@@ -112,7 +176,7 @@ abstract class Action implements ActionInterface
             ->withAddedOptional(...$collection[0]);
     }
 
-    private function getAttribute(ReflectionParameter $parameter, string $className): object
+    protected function getAttribute(ReflectionParameter $parameter, string $className): object
     {
         $reflectionAttributes = $parameter->getAttributes($className);
         /** @var ReflectionAttribute $reflectionAttribute */
@@ -124,30 +188,13 @@ abstract class Action implements ActionInterface
         return new Attribute();
     }
 
-    public function getResponseParameters(): ParametersInterface
+    protected function assertRunMethod(): void
     {
-        return new Parameters();
-    }
-
-    final public function parameters(): ParametersInterface
-    {
-        return $this->parameters;
-    }
-
-    final public function responseParameters(): ParametersInterface
-    {
-        return $this->responseParameters;
-    }
-
-    final public function getArguments(mixed ...$namedArguments): ArgumentsInterface
-    {
-        return new Arguments($this->parameters(), ...$namedArguments);
-    }
-
-    final public function getResponse(mixed ...$namedData): ResponseInterface
-    {
-        new Arguments($this->responseParameters, ...$namedData);
-
-        return new Response(...$namedData);
+        if (!method_exists($this, 'run')) {
+            throw new LogicException(
+                message('Action %action% does not define a run method')
+                    ->code('%action%', $this::class)
+            );
+        }
     }
 }
