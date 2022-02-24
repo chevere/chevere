@@ -41,6 +41,16 @@ interface ActionInterface extends DescriptionInterface
     ];
 
     /**
+     * This method runs on class instantiation (before __construct).
+     */
+    public function setUpBefore(): void;
+
+    /**
+     * This method runs on class instantiation (after __construct).
+     */
+    public function setUpAfter(): void;
+    
+    /**
      * Defines expected container parameters when executing `run` method.
      */
     public function getContainerParameters(): ParametersInterface;

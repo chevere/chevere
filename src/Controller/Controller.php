@@ -17,25 +17,11 @@ use Chevere\Action\Action;
 use Chevere\Controller\Interfaces\ControllerInterface;
 use Chevere\Message\Message;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
-use Chevere\Parameter\StringParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 
 abstract class Controller extends Action implements ControllerInterface
 {
-    protected StringParameterInterface $parameter;
-
-    public function __construct()
-    {
-        $this->parameter = $this->parameter();
-        $this->assertParametersType();
-    }
-
-    public function parameter(): StringParameterInterface
-    {
-        return new StringParameter();
-    }
-
-    protected function assertParametersType(): void
+    protected function assertRunParameters(): void
     {
         $invalid = [];
         foreach ($this->parameters()->getIterator() as $name => $parameter) {
@@ -47,7 +33,7 @@ abstract class Controller extends Action implements ControllerInterface
             throw new InvalidArgumentException(
                 (new Message('Parameter %parameters% must be of type %type% for controller %className%.'))
                     ->code('%parameters%', implode(', ', $invalid))
-                    ->strong('%type%', $this->parameter->type()->typeHinting())
+                    ->strong('%type%', 'string')
                     ->strong('%className%', static::class)
             );
         }

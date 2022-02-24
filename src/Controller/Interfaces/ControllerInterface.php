@@ -14,15 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Controller\Interfaces;
 
 use Chevere\Action\Interfaces\ActionInterface;
-use Chevere\Parameter\Interfaces\StringParameterInterface;
 
 /**
- * Describes the component in charge of defining a controller, which is an action
- * intended to be exposed closest to an application entry-point HTTP/CLI mapping.
- *
- * Key point of a controller is that it only takes string arguments as input.
+ * Describes the component in charge of defining a controller, which is an action that only accepts string parameters.
  */
 interface ControllerInterface extends ActionInterface
 {
-    public function parameter(): StringParameterInterface;
 }

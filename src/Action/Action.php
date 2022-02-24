@@ -15,12 +15,11 @@ namespace Chevere\Action;
 
 use Attribute;
 use Chevere\Action\Interfaces\ActionInterface;
+use Chevere\Action\Traits\ActionTrait;
 use Chevere\Common\Attributes\DescriptionAttribute;
 use Chevere\Common\Traits\DescriptionTrait;
-use Chevere\Container\Container;
 use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
-use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -39,6 +38,7 @@ use ReflectionParameter;
 abstract class Action implements ActionInterface
 {
     use DescriptionTrait;
+    use ActionTrait;
 
     protected string $description;
 
@@ -50,66 +50,17 @@ abstract class Action implements ActionInterface
 
     protected ContainerInterface $container;
 
-    public function __construct()
+    final public function __construct()
     {
+        $this->setUpBefore();
         $this->parameters = $this->parameters();
         $this->containerParameters = $this->containerParameters();
-    }
-
-    public function getContainerParameters(): ParametersInterface
-    {
-        return new Parameters();
-    }
-    
-    final public function containerParameters(): ParametersInterface
-    {
-        return $this->containerParameters ??= $this->getContainerParameters();
-    }
-
-    public function getResponseParameters(): ParametersInterface
-    {
-        return new Parameters();
-    }
-
-    final public function parameters(): ParametersInterface
-    {
-        return $this->parameters ??= $this->getParameters();
-    }
-
-    final public function responseParameters(): ParametersInterface
-    {
-        return $this->responseParameters ??= $this->getResponseParameters();
-    }
-
-    final public function getArguments(mixed ...$namedArguments): ArgumentsInterface
-    {
-        return new Arguments($this->parameters(), ...$namedArguments);
-    }
-
-    final protected function getResponse(mixed ...$namedData): ResponseInterface
-    {
-        $arguments = new Arguments($this->responseParameters(), ...$namedData);
-
-        return new Response(...$arguments->toArray());
-    }
-
-    final public function withContainer(ContainerInterface $container): ActionInterface
-    {
-        $new = clone $this;
-        $new->container = $container;
-        $new->assertContainer();
-
-        return $new;
-    }
-
-    final public function container(): ContainerInterface
-    {
-        return $this->container ??= new Container();
+        $this->assertRunParameters();
+        $this->setUpAfter();
     }
 
     final public function runner(mixed ...$namedArguments): ResponseInterface
     {
-        $this->assertRunMethod();
         $this->assertContainer();
         $arguments = $this->getArguments(...$namedArguments)->toArray();
         $response = $this->run(...$arguments);
@@ -121,6 +72,13 @@ abstract class Action implements ActionInterface
         }
 
         return $this->getResponse(...$response);
+    }
+
+    final protected function getResponse(mixed ...$namedData): ResponseInterface
+    {
+        $arguments = new Arguments($this->responseParameters(), ...$namedData);
+
+        return new Response(...$arguments->toArray());
     }
 
     final protected function assertContainer(): void
@@ -172,7 +130,7 @@ abstract class Action implements ActionInterface
             $pos = intval(!$reflectionParameter->isOptional());
             $collection[$pos][$reflectionParameter->getName()] = $parameter;
         }
-            
+
         return $parameters->withAdded(...$collection[1])
             ->withAddedOptional(...$collection[0]);
     }
@@ -199,7 +157,7 @@ abstract class Action implements ActionInterface
         }
     }
 
-    protected function getDescriptionAttribute(ReflectionParameter $parameter): string
+    final protected function getDescriptionAttribute(ReflectionParameter $parameter): string
     {
         $attribute = $this->getAttribute(
             $parameter,
@@ -211,14 +169,14 @@ abstract class Action implements ActionInterface
             : '';
     }
 
-    protected function getDefaultValue(ReflectionParameter $reflection): mixed
+    final protected function getDefaultValue(ReflectionParameter $reflection): mixed
     {
         return $reflection->isDefaultValueAvailable()
             ? $reflection->getDefaultValue()
             : null;
     }
 
-    protected function getParameterWithSome(
+    final protected function getParameterWithSome(
         ParameterInterface $parameter,
         ReflectionParameter $reflection
     ): ParameterInterface {
@@ -236,7 +194,7 @@ abstract class Action implements ActionInterface
         return $parameter;
     }
 
-    protected function getTypeToParameter(ReflectionParameter $reflection): string
+    final protected function getTypeToParameter(ReflectionParameter $reflection): string
     {
         $typeName = $reflection->getType()->getName();
         $type = self::TYPE_TO_PARAMETER[$typeName] ?? null;

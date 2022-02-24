@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ControllerTest extends TestCase
 {
-    public function testConstructInvalid(): void
+    public function testParameters(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new ControllerTestInvalidController();
