@@ -97,6 +97,7 @@ abstract class Action implements ActionInterface
     {
         $new = clone $this;
         $new->container = $container;
+        $new->assertContainer();
 
         return $new;
     }
@@ -109,6 +110,21 @@ abstract class Action implements ActionInterface
     final public function runner(mixed ...$namedArguments): ResponseInterface
     {
         $this->assertRunMethod();
+        $this->assertContainer();
+        $arguments = $this->getArguments(...$namedArguments)->toArray();
+        $response = $this->run(...$arguments);
+        if (!is_array($response)) {
+            throw new LogicException(
+                message('Method %method% must return an array.')
+                    ->strtr('%method%', $this::class . '::run')
+            );
+        }
+
+        return $this->getResponse(...$response);
+    }
+
+    final protected function assertContainer(): void
+    {
         $missingService = [];
         $services = [];
         $keys = array_keys(
@@ -124,20 +140,11 @@ abstract class Action implements ActionInterface
         }
         if ($missingService !== []) {
             throw new InvalidArgumentException(
-                message('The container does not provide the parameter(s): [%missing%]')
+                message('The container for %action% does not provide the parameter(s): [%missing%]')
+                    ->strtr('%action%', $this::class)
                     ->strtr('%missing%', implode(', ', $missingService))
             );
         }
-        $arguments = $this->getArguments(...$namedArguments)->toArray();
-        $response = $this->run(...$arguments);
-        if (!is_array($response)) {
-            throw new LogicException(
-                message('Method %method% must return an array.')
-                    ->strtr('%method%', $this::class . '::run')
-            );
-        }
-
-        return $this->getResponse(...$response);
     }
 
     final protected function getParameters(): ParametersInterface
@@ -170,7 +177,7 @@ abstract class Action implements ActionInterface
             ->withAddedOptional(...$collection[0]);
     }
 
-    protected function getAttribute(ReflectionParameter $parameter, string $className): object
+    final protected function getAttribute(ReflectionParameter $parameter, string $className): object
     {
         $reflectionAttributes = $parameter->getAttributes($className);
         /** @var ReflectionAttribute $reflectionAttribute */
@@ -182,7 +189,7 @@ abstract class Action implements ActionInterface
         return new Attribute();
     }
 
-    protected function assertRunMethod(): void
+    final protected function assertRunMethod(): void
     {
         if (!method_exists($this, 'run')) {
             throw new LogicException(
