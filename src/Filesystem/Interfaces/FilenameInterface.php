@@ -15,11 +15,12 @@ namespace Chevere\Filesystem\Interfaces;
 
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LengthException;
+use Stringable;
 
 /**
  * Describes the component in charge of providing filename handling.
  */
-interface FilenameInterface
+interface FilenameInterface extends Stringable
 {
     public const MAX_LENGTH_BYTES = 255;
 
@@ -28,8 +29,6 @@ interface FilenameInterface
      * @throws LengthException if $basename exceed MAX_LENGTH_BYTES
      */
     public function __construct(string $basename);
-
-    public function toString(): string;
 
     public function extension(): string;
 

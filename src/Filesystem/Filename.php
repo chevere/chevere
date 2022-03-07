@@ -27,16 +27,16 @@ final class Filename implements FilenameInterface
     private string $name;
 
     public function __construct(
-        private string $basename
+        private string $filename
     ) {
         $this->assertBasename();
-        $this->extension = pathinfo($this->basename, PATHINFO_EXTENSION);
-        $this->name = pathinfo($this->basename, PATHINFO_FILENAME);
+        $this->extension = pathinfo($this->filename, PATHINFO_EXTENSION);
+        $this->name = pathinfo($this->filename, PATHINFO_FILENAME);
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
-        return $this->basename;
+        return $this->filename;
     }
 
     public function extension(): string
@@ -52,16 +52,16 @@ final class Filename implements FilenameInterface
     private function assertBasename(): void
     {
         try {
-            (new StrAssert($this->basename))
+            (new StrAssert($this->filename))
                 ->notEmpty()
                 ->notCtypeSpace();
         } catch (Throwable $e) {
             throw new InvalidArgumentException(previous: $e, code: 100);
         }
-        if (strlen($this->basename) > self::MAX_LENGTH_BYTES) {
+        if (strlen($this->filename) > self::MAX_LENGTH_BYTES) {
             throw new LengthException(
                 message: (new Message('String %string% provided exceed the limit of %bytes% bytes'))
-                    ->code('%string%', $this->basename)
+                    ->code('%string%', $this->filename)
                     ->code('%bytes%', (string) self::MAX_LENGTH_BYTES),
                 code: 110
             );
