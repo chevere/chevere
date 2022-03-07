@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action\_resources\src;
 
-use Chevere\Common\Attributes\DescriptionAttribute;
 use Chevere\Controller\Controller;
+use Chevere\Parameter\Attributes\ParameterAttribute;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
-use Chevere\Regex\Attributes\RegexAttribute;
 
 final class ActionTestController extends Controller
 {
@@ -28,10 +27,7 @@ final class ActionTestController extends Controller
     }
 
     public function run(
-        #[
-        DescriptionAttribute('The username.'),
-        RegexAttribute('/^[a-zA-Z]+$/')
-        ]
+        #[ParameterAttribute(description: 'The username.', regex: '/^[a-zA-Z]+$/')]
         string $name
     ): array {
         return [

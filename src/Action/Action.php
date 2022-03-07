@@ -13,19 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Action;
 
-use Attribute;
 use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Action\Traits\ActionTrait;
-use Chevere\Common\Attributes\DescriptionAttribute;
 use Chevere\Common\Traits\DescriptionTrait;
 use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
+use Chevere\Parameter\Attributes\ParameterAttribute;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Parameters;
-use Chevere\Regex\Attributes\RegexAttribute;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -115,7 +113,8 @@ abstract class Action implements ActionInterface
             1 => [],
         ];
         foreach ($reflection->getParameters() as $reflectionParameter) {
-            $description = $this->getDescriptionAttribute($reflectionParameter);
+            $attribute = $this->getAttribute($reflectionParameter);
+            $description = $attribute->description();
             $default = $this->getDefaultValue($reflectionParameter);
             $typeName = $reflectionParameter->getType()->getName();
             $type = $this->getTypeToParameter($reflectionParameter);
@@ -126,7 +125,7 @@ abstract class Action implements ActionInterface
             if ($default !== null && method_exists($parameter, 'withDefault')) {
                 $parameter = $parameter->withDefault($default);
             }
-            $parameter = $this->getParameterWithSome($parameter, $reflectionParameter);
+            $parameter = $this->getParameterWithSome($parameter, $attribute);
             $pos = intval(!$reflectionParameter->isOptional());
             $collection[$pos][$reflectionParameter->getName()] = $parameter;
         }
@@ -135,16 +134,16 @@ abstract class Action implements ActionInterface
             ->withAddedOptional(...$collection[0]);
     }
 
-    final protected function getAttribute(ReflectionParameter $parameter, string $className): object
+    final protected function getAttribute(ReflectionParameter $parameter): ParameterAttribute
     {
-        $reflectionAttributes = $parameter->getAttributes($className);
+        $reflectionAttributes = $parameter->getAttributes(ParameterAttribute::class);
         /** @var ReflectionAttribute $reflectionAttribute */
         $reflectionAttribute = $reflectionAttributes[0] ?? null;
         if (isset($reflectionAttribute)) {
             return $reflectionAttribute->newInstance();
         }
 
-        return new Attribute();
+        return new ParameterAttribute();
     }
 
     final protected function assertRunMethod(): void
@@ -157,18 +156,6 @@ abstract class Action implements ActionInterface
         }
     }
 
-    final protected function getDescriptionAttribute(ReflectionParameter $parameter): string
-    {
-        $attribute = $this->getAttribute(
-            $parameter,
-            DescriptionAttribute::class
-        );
-
-        return $attribute instanceof DescriptionAttribute
-            ? $attribute->description()
-            : '';
-    }
-
     final protected function getDefaultValue(ReflectionParameter $reflection): mixed
     {
         return $reflection->isDefaultValueAvailable()
@@ -178,20 +165,13 @@ abstract class Action implements ActionInterface
 
     final protected function getParameterWithSome(
         ParameterInterface $parameter,
-        ReflectionParameter $reflection
+        ParameterAttribute $attribute
     ): ParameterInterface {
         if (!($parameter instanceof StringParameterInterface)) {
             return $parameter;
         }
-        $attribute = $this->getAttribute(
-            $reflection,
-            RegexAttribute::class
-        );
-        if ($attribute instanceof RegexAttribute) {
-            $parameter = $parameter->withRegex($attribute->regex());
-        }
 
-        return $parameter;
+        return $parameter->withRegex($attribute->regex());
     }
 
     final protected function getTypeToParameter(ReflectionParameter $reflection): string

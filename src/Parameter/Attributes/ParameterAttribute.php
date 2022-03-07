@@ -11,20 +11,25 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Regex\Attributes;
+namespace Chevere\Parameter\Attributes;
 
 use Attribute;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 
 #[Attribute]
-final class RegexAttribute
+final class ParameterAttribute
 {
     private RegexInterface $regex;
-    
-    public function __construct(string $regex = '')
+
+    public function __construct(private string $description = '', string $regex = '/.*/')
     {
         $this->regex = new Regex($regex);
+    }
+
+    public function description(): string
+    {
+        return $this->description;
     }
 
     public function regex(): RegexInterface
