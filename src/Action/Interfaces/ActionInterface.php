@@ -87,5 +87,11 @@ interface ActionInterface extends DescriptionInterface
      */
     public function responseParameters(): ParametersInterface;
 
-    public function runner(mixed ...$namedArguments): ResponseInterface;
+    /**
+     * Retrieves a new response instance typed against the defined response data parameters.
+     *
+     * This method will provide a response instance with data provided by
+     * executing the `run` method against `$namedArguments`.
+     */
+    public function getResponse(mixed ...$namedArguments): ResponseInterface;
 }

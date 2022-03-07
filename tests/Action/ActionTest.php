@@ -100,7 +100,7 @@ final class ActionTest extends TestCase
         $container = $container->withPut('id', 123);
         $action = new ActionTestContainerAction();
         $action = $action->withContainer($container);
-        $response = $action->runner();
+        $response = $action->getResponse();
         $this->assertSame(0, $response->code());
     }
 
@@ -108,7 +108,7 @@ final class ActionTest extends TestCase
     {
         $action = new ActionTestContainerAction();
         $this->expectException(InvalidArgumentException::class);
-        $action->runner();
+        $action->getResponse();
     }
 
     public function testActionRunWithArguments(): void
@@ -124,7 +124,7 @@ final class ActionTest extends TestCase
             'user' => $value,
         ];
         $this->assertSame($expected, $array);
-        $response = $action->runner(...$arguments);
+        $response = $action->getResponse(...$arguments);
         $this->assertSame(0, $response->code());
         $this->assertSame($expected, $response->data());
     }

@@ -57,24 +57,24 @@ abstract class Action implements ActionInterface
         $this->setUpAfter();
     }
 
-    final public function runner(mixed ...$namedArguments): ResponseInterface
+    final public function getResponse(mixed ...$namedArguments): ResponseInterface
     {
         $this->assertContainer();
         $arguments = $this->getArguments(...$namedArguments)->toArray();
-        $response = $this->run(...$arguments);
-        if (!is_array($response)) {
+        $data = $this->run(...$arguments);
+        if (!is_array($data)) {
             throw new LogicException(
                 message('Method %method% must return an array.')
                     ->strtr('%method%', $this::class . '::run')
             );
         }
 
-        return $this->getResponse(...$response);
+        return $this->getTypedResponse(...$data);
     }
 
-    final protected function getResponse(mixed ...$namedData): ResponseInterface
+    final protected function getTypedResponse(mixed ...$namedArguments): ResponseInterface
     {
-        $arguments = new Arguments($this->responseParameters(), ...$namedData);
+        $arguments = new Arguments($this->responseParameters(), ...$namedArguments);
 
         return new Response(...$arguments->toArray());
     }
