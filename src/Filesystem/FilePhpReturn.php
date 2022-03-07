@@ -36,7 +36,6 @@ final class FilePhpReturn implements FilePhpReturnInterface
     public function __construct(
         private FilePhpInterface $filePhp
     ) {
-        $this->filePhp->file()->assertExists();
     }
 
     public function filePhp(): FilePhpInterface
