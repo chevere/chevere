@@ -23,63 +23,52 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Regex;
 
+/**
+ * @param array<mixed, mixed> $default
+*/
 function arrayParameter(
-    ?string $description = null,
-    ?array $default = null,
+    string $description = '',
+    array $default = [],
 ): ArrayParameterInterface {
-    $parameter = new ArrayParameter($description ?? '');
-    if (isset($default)) {
-        $parameter = $parameter->withDefault($default);
-    }
+    $parameter = new ArrayParameter($description);
 
-    return $parameter;
+    return $parameter->withDefault($default);
 }
 
 function booleanParameter(
-    ?string $description = null,
-    ?bool $default = null,
+    string $description = '',
+    bool $default = false,
 ): BooleanParameterInterface {
-    $parameter = new BooleanParameter($description ?? '');
-    if (isset($default)) {
-        $parameter = $parameter->withDefault($default);
-    }
+    $parameter = new BooleanParameter($description);
 
-    return $parameter;
+    return $parameter->withDefault($default);
 }
 
 function floatParameter(
-    ?string $description = null,
-    ?float $default = null,
+    string $description = '',
+    float $default = 0.0,
 ): FloatParameterInterface {
-    $parameter = new FloatParameter($description ?? '');
-    if (isset($default)) {
-        $parameter = $parameter->withDefault($default);
-    }
+    $parameter = new FloatParameter($description);
 
-    return $parameter;
+    return $parameter->withDefault($default);
 }
 
 function integerParameter(
-    ?string $description = null,
-    ?int $default = null,
+    string $description = '',
+    int $default = 0,
 ): IntegerParameterInterface {
-    $parameter = new IntegerParameter($description ?? '');
-    if (isset($default)) {
-        $parameter = $parameter->withDefault($default);
-    }
+    $parameter = new IntegerParameter($description);
 
-    return $parameter;
+    return $parameter->withDefault($default);
 }
 
 function stringParameter(
-    ?string $description = null,
-    ?string $default = null,
+    ?string $description = '',
+    string $default = '',
     ?string $regex = null,
 ): StringParameterInterface {
-    $parameter = new StringParameter($description ?? '');
-    if (isset($default)) {
-        $parameter = $parameter->withDefault($default);
-    }
+    $parameter = new StringParameter($description);
+    $parameter = $parameter->withDefault($default);
     if (isset($regex)) {
         $parameter = $parameter->withRegex(new Regex($regex));
     }
@@ -89,9 +78,9 @@ function stringParameter(
 
 function objectParameter(
     string $className,
-    ?string $description = null,
+    ?string $description = '',
 ): ObjectParameterInterface {
-    $parameter = new ObjectParameter($description ?? '');
+    $parameter = new ObjectParameter($description);
 
     return $parameter->withClassName($className);
 }

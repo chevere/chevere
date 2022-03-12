@@ -26,12 +26,15 @@ interface ArrayParameterInterface extends ParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$default` value.
      *
+     * @param array<mixed, mixed> $value
      * @throws InvalidArgumentException
      */
     public function withDefault(array $value): self;
 
     /**
      * Provides access to the default value.
+     *
+     * @return array<mixed, mixed>
      */
     public function default(): array;
 }

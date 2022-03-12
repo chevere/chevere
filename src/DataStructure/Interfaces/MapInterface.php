@@ -26,5 +26,5 @@ interface MapInterface extends MappedInterface
 
     public function assertHas(string ...$keys): void;
 
-    public function get(string $key);
+    public function get(string $key): mixed;
 }

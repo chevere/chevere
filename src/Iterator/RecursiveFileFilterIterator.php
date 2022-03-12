@@ -21,6 +21,9 @@ use RecursiveIterator;
  */
 final class RecursiveFileFilterIterator extends RecursiveFilterIterator
 {
+    /**
+     * @param RecursiveIterator<mixed, mixed> $recursiveIterator
+     */
     public function __construct(
         RecursiveIterator $recursiveIterator,
         protected string $trailingName

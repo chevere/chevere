@@ -145,7 +145,10 @@ abstract class Action implements ActionInterface
     final protected function getAttribute(ReflectionParameter $parameter): ParameterAttribute
     {
         $reflectionAttributes = $parameter->getAttributes(ParameterAttribute::class);
-        /** @var ?ReflectionAttribute $reflectionAttribute */
+        /**
+         * @phpstan-ignore-next-line
+         * @var ?ReflectionAttribute $reflectionAttribute
+         */
         $reflectionAttribute = $reflectionAttributes[0] ?? null;
         if ($reflectionAttribute !== null) {
             return $reflectionAttribute->newInstance();

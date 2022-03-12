@@ -20,7 +20,7 @@ use Chevere\Throwable\Exceptions\OutOfRangeException;
 final class Breadcrumb implements BreadcrumbInterface
 {
     /**
-     * @var array [pos =>]
+     * @var array<int, string>
      */
     private array $items = [];
 

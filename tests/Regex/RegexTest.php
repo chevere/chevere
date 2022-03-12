@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Regex;
 
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Regex\Regex;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class RegexTest extends TestCase

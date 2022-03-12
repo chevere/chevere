@@ -22,6 +22,9 @@ final class ArrayParameter implements ArrayParameterInterface
 {
     use ParameterTrait;
 
+    /**
+     * @var array<mixed, mixed>
+     */
     private array $default = [];
 
     public function getType(): TypeInterface

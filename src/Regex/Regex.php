@@ -69,7 +69,6 @@ final class Regex implements RegexInterface
             );
         }
 
-        /** @var array $matches */
         return $match === 0 ? [] : $matches;
     }
 
@@ -88,7 +87,6 @@ final class Regex implements RegexInterface
             );
         }
 
-        /** @var array $matches */
         return $match === 0 ? [] : $matches;
     }
 

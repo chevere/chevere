@@ -85,7 +85,13 @@ interface ParametersInterface extends MappedInterface
      */
     public function get(string $parameter): ParameterInterface;
 
+    /**
+     * @return Set<string>
+     */
     public function required(): Set;
 
+    /**
+     * @return Set<string>
+     */
     public function optional(): Set;
 }

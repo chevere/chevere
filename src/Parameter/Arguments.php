@@ -26,15 +26,20 @@ use Throwable;
 
 final class Arguments implements ArgumentsInterface
 {
+    /**
+     * @var array<string, mixed>
+     */
     public array $arguments;
 
+    /**
+     * @var string[]
+     */
     private array $errors;
 
     public function __construct(
         private ParametersInterface $parameters,
         mixed ...$namedArguments
     ) {
-        /** @var array<string, mixed> $namedArguments */
         $this->arguments = $namedArguments;
         $this->assertCount();
         $this->errors = [];

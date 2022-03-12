@@ -44,6 +44,8 @@ interface MessageInterface extends Stringable
 
     /**
      * Provides access to the message translation table.
+     *
+     * @return array<string, string[]>
      */
     public function trTable(): array;
 

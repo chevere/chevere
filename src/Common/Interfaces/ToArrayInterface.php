@@ -20,6 +20,8 @@ interface ToArrayInterface
 {
     /**
      * Returns an array, representing the object itself or some of its data/properties.
+     *
+     * @return array<mixed, mixed>
      */
     public function toArray(): array;
 }

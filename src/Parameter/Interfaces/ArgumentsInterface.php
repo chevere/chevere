@@ -103,6 +103,8 @@ interface ArgumentsInterface extends ToArrayInterface
     /**
      * Provides access to the argument value for the parameter `$array` type-hinted as array.
      *
+     * @return array<mixed, mixed>
+     *
      * @throws OutOfBoundsException
      * @throws TypeError
      */

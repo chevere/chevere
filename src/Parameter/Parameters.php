@@ -15,19 +15,25 @@ namespace Chevere\Parameter;
 
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
-use Chevere\Throwable\Exceptions\OverflowException;
 use Chevere\Message\Message;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use Ds\Set;
 
 final class Parameters implements ParametersInterface
 {
     use MapTrait;
 
+    /**
+     * @var Set<string>
+     */
     private Set $required;
 
+    /**
+     * @var Set<string>
+     */
     private Set $optional;
 
     public function __construct(ParameterInterface ...$parameters)

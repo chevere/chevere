@@ -22,12 +22,14 @@ use Iterator;
 
 final class Map implements MapInterface
 {
+    /**
+     * @var DsMap<string, mixed>
+     */
     private DsMap $map;
 
     public function __construct(mixed ...$namedArguments)
     {
         $this->map = new DsMap();
-        /** @var array $namedArguments */
         if ($namedArguments !== []) {
             $this->map->putAll($namedArguments);
         }
@@ -97,7 +99,7 @@ final class Map implements MapInterface
     /**
      * @throws OutOfBoundsException
      */
-    public function get(string $key)
+    public function get(string $key): mixed
     {
         try {
             return $this->map->get($key);

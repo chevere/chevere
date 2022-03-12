@@ -23,7 +23,6 @@ use Stringable;
 interface RegexInterface extends Stringable
 {
     public const ERRORS = [
-        // duh!
         PREG_NO_ERROR => 'PREG_NO_ERROR',
         PREG_INTERNAL_ERROR => 'PREG_INTERNAL_ERROR',
         PREG_BACKTRACK_LIMIT_ERROR => 'PREG_BACKTRACK_LIMIT_ERROR',
@@ -51,12 +50,16 @@ interface RegexInterface extends Stringable
     /**
      * Matches string.
      *
+     * @return array<int, string>
+     *
      * @throws RuntimeException
      */
     public function match(string $string): array;
 
     /**
-     * Matches all string.
+     * Matches all strings.
+     *
+     * @return array<array<int, string>>
      *
      * @throws RuntimeException
      */

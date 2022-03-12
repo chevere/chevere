@@ -15,6 +15,8 @@ namespace Chevere\DataStructure;
 
 /**
  * Creates an ordered data map (array) from named arguments.
+ *
+ * @return array<string, mixed>
  */
 function data(mixed ...$namedArguments): array
 {

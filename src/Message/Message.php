@@ -18,6 +18,9 @@ use Colors\Color;
 
 final class Message implements MessageInterface
 {
+    /**
+     * @var array<string, string[]>
+     */
     private array $trTable = [];
 
     public function __construct(
@@ -51,7 +54,7 @@ final class Message implements MessageInterface
         $color = (new Color(''))->setUserStyles(self::CLI_TABLE);
         /**
          * @var string $wildcard
-         * @var array $formatting
+         * @var string[] $formatting
          */
         foreach ($this->trTable as $wildcard => $formatting) {
             $format = $formatting[0];

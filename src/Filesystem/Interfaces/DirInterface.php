@@ -68,7 +68,7 @@ interface DirInterface
     /**
      * Removes the contents from a path without deleting the path.
      *
-     * @return array an array with all the dir contents removed
+     * @return string[] dir contents removed
      *
      * @throws DirUnableToRemoveException if unable to remove the directory
      * @throws FileUnableToRemoveException if unable to remove a file in the directory
@@ -78,7 +78,7 @@ interface DirInterface
     /**
      * Removes the directory and its contents.
      *
-     * @return array An array with all the elements removed
+     * @return string[] elements removed
      *
      * @throws DirUnableToRemoveException if unable to remove the directory
      */
@@ -86,6 +86,8 @@ interface DirInterface
 
     /**
      * Same as remove, but only if the directory exists.
+     *
+     * @return string[] elements removed
      *
      * @throws DirUnableToRemoveException if unable to remove the directory
      */

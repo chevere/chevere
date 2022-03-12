@@ -96,7 +96,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         );
     }
 
-    private function getReturnVar($var): mixed
+    private function getReturnVar(mixed $var): mixed
     {
         if (is_string($var) && !ctype_space($var)) {
             try {
@@ -136,7 +136,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         }
     }
 
-    private function getFileReturnVar($var): mixed
+    private function getFileReturnVar(mixed $var): mixed
     {
         if (is_object($var)) {
             return (new Serialize($var))->__toString();
