@@ -20,5 +20,6 @@ namespace Chevere\DataStructure;
  */
 function data(mixed ...$namedArguments): array
 {
+    /** @var array<string, mixed> */
     return $namedArguments;
 }

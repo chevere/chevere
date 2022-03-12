@@ -23,6 +23,8 @@ use Chevere\Filesystem\Exceptions\PathIsDirException;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
 use Chevere\Message\Message;
+use function Chevere\Message\message;
+use Chevere\Throwable\Exceptions\RuntimeException;
 use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\filesize;
@@ -68,8 +70,15 @@ final class File implements FileInterface
     public function getChecksum(): string
     {
         $this->assertExists();
+        $hashFile = hash_file(FileInterface::CHECKSUM_ALGO, $this->path->__toString());
+        if ($hashFile !== false) {
+            return $hashFile;
+        }
 
-        return hash_file(FileInterface::CHECKSUM_ALGO, $this->path->__toString());
+        throw new RuntimeException(
+            message: message('Unable to get checksum for file %path%')
+                ->code('%path%', $this->path->__toString())
+        );
     }
 
     public function getSize(): int

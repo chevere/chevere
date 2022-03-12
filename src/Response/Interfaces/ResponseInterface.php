@@ -18,7 +18,7 @@ namespace Chevere\Response\Interfaces;
  */
 interface ResponseInterface
 {
-    public function __construct(mixed ...$namedData);
+    public function __construct(mixed ...$namedArguments);
 
     /**
      * Return an instance with the specified code.
@@ -34,9 +34,9 @@ interface ResponseInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified data.
      *
-     * @param mixed $namedData Named arguments for response data (name to data key)
+     * @param mixed $namedArguments Named arguments for response data (name to data key)
      */
-    public function withData(mixed ...$namedData): self;
+    public function withData(mixed ...$namedArguments): self;
 
     /**
      * Provides access to uuid (v4).

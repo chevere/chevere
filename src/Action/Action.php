@@ -151,6 +151,7 @@ abstract class Action implements ActionInterface
          */
         $reflectionAttribute = $reflectionAttributes[0] ?? null;
         if ($reflectionAttribute !== null) {
+            /** @var ParameterAttribute */
             return $reflectionAttribute->newInstance();
         }
 

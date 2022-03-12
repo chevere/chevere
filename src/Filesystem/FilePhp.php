@@ -41,7 +41,9 @@ final class FilePhp implements FilePhpInterface
     {
         $this->file->assertExists();
         $path = $this->file->path()->__toString();
-        $past = stat($path)['mtime'] - 10;
+        $stat = stat($path);
+        $mtime = !$stat ? time() : $stat['mtime'];
+        $past = $mtime - 10;
         touch($path, $past);
         if (opcache_get_status() === false) {
             throw new RangeException(

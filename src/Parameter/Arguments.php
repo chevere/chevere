@@ -40,6 +40,7 @@ final class Arguments implements ArgumentsInterface
         private ParametersInterface $parameters,
         mixed ...$namedArguments
     ) {
+        /** @var array<string, mixed> $namedArguments */
         $this->arguments = $namedArguments;
         $this->assertCount();
         $this->errors = [];
