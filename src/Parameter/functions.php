@@ -63,7 +63,7 @@ function integerParameter(
 }
 
 function stringParameter(
-    ?string $description = '',
+    string $description = '',
     string $default = '',
     ?string $regex = null,
 ): StringParameterInterface {
@@ -78,7 +78,7 @@ function stringParameter(
 
 function objectParameter(
     string $className,
-    ?string $description = '',
+    string $description = '',
 ): ObjectParameterInterface {
     $parameter = new ObjectParameter($description);
 
@@ -90,6 +90,7 @@ function parameters(
 ): ParametersInterface {
     $parameters = new Parameters();
     if ($required !== null) {
+        /** @var ParameterInterface[] $required */
         $parameters = $parameters->withAdded(...$required);
     }
 

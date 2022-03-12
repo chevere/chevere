@@ -126,7 +126,7 @@ final class Str implements StrInterface
     public function withStripANSIColors(): StrInterface
     {
         $new = clone $this;
-        $new->string = preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $new->string);
+        $new->string = preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $new->string) ?? '';
 
         return $new;
     }
