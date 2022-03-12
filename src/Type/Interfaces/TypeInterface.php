@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Type\Interfaces;
 
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+
 /**
  * Describes the component in charge of dynamic type validation.
  */
@@ -98,7 +100,7 @@ interface TypeInterface
     /**
      * Returns a boolean indicating if `$var` validates against the type.
      */
-    public function validate($var): bool;
+    public function validate(mixed $var): bool;
 
     /**
      * Returns the validator callable.

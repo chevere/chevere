@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Serialize\Interfaces;
 
 use Chevere\Type\Interfaces\TypeInterface;
+use LogicException;
 
 /**
  * Describes the component in charge of handling `unserialize()`.
@@ -28,7 +29,7 @@ interface DeserializeInterface
     /**
      * Provides access to the unserialize variable.
      */
-    public function var();
+    public function var(): mixed;
 
     /**
      * Provides access to the TypeInterface instance for the unserialize variable.

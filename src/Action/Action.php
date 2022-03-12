@@ -31,6 +31,7 @@ use Chevere\Throwable\Exceptions\LogicException;
 use Psr\Container\ContainerInterface;
 use ReflectionAttribute;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionParameter;
 
 abstract class Action implements ActionInterface
@@ -116,7 +117,14 @@ abstract class Action implements ActionInterface
             $attribute = $this->getAttribute($reflectionParameter);
             $description = $attribute->description();
             $default = $this->getDefaultValue($reflectionParameter);
-            $typeName = $reflectionParameter->getType()->getName();
+            $namedType = $reflectionParameter->getType();
+            if ($namedType === null) {
+                throw new LogicException(
+                    message: message('Unable to retrieve parameter type')
+                );
+            }
+            /** @var ReflectionNamedType $namedType */
+            $typeName = $namedType->getName();
             $type = $this->getTypeToParameter($reflectionParameter);
             $parameter = new $type($description);
             if ($parameter instanceof ObjectParameterInterface) {
@@ -137,9 +145,9 @@ abstract class Action implements ActionInterface
     final protected function getAttribute(ReflectionParameter $parameter): ParameterAttribute
     {
         $reflectionAttributes = $parameter->getAttributes(ParameterAttribute::class);
-        /** @var ReflectionAttribute $reflectionAttribute */
+        /** @var ?ReflectionAttribute $reflectionAttribute */
         $reflectionAttribute = $reflectionAttributes[0] ?? null;
-        if (isset($reflectionAttribute)) {
+        if ($reflectionAttribute !== null) {
             return $reflectionAttribute->newInstance();
         }
 
@@ -176,8 +184,9 @@ abstract class Action implements ActionInterface
 
     final protected function getTypeToParameter(ReflectionParameter $reflection): string
     {
-        $typeName = $reflection->getType()->getName();
-        $type = self::TYPE_TO_PARAMETER[$typeName] ?? null;
+        /** @var ReflectionNamedType $namedType */
+        $namedType = $reflection->getType();
+        $type = self::TYPE_TO_PARAMETER[$namedType->getName()] ?? null;
         if ($type === null) {
             $type = self::TYPE_TO_PARAMETER['object'];
         }

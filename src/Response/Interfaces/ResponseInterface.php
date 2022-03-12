@@ -50,6 +50,8 @@ interface ResponseInterface
 
     /**
      * Provides access to data.
+     *
+     * @return array<string, mixed>
      */
     public function data(): array;
 

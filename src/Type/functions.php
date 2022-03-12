@@ -21,7 +21,7 @@ use Chevere\Type\Interfaces\TypeInterface;
 /**
  * Same as `gettype` but more "standard" towards `get_debug_type`.
  */
-function getType($var): string
+function getType(mixed $var): string
 {
     $type = \gettype($var);
 
@@ -32,7 +32,7 @@ function getType($var): string
     };
 }
 
-function returnTypeExceptionMessage(string $expected, $provided): MessageInterface
+function returnTypeExceptionMessage(string $expected, mixed $provided): MessageInterface
 {
     return (new Message('Expecting return type %expected%, type %provided% provided'))
         ->code('%expected%', $expected)

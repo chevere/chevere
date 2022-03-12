@@ -41,5 +41,5 @@ interface ParameterInterface extends DescriptionInterface
     /**
      * Provides access to the default value.
      */
-    public function default();
+    public function default(): mixed;
 }

@@ -21,7 +21,7 @@ use Throwable;
 
 final class Deserialize implements DeserializeInterface
 {
-    private $var;
+    private mixed $var;
 
     private TypeInterface $type;
 
@@ -36,7 +36,7 @@ final class Deserialize implements DeserializeInterface
         $this->type = new Type(get_debug_type($this->var));
     }
 
-    public function var()
+    public function var(): mixed
     {
         return $this->var;
     }

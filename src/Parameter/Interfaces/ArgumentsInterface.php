@@ -51,7 +51,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified controller argument.
      *
-     * @throws ArgumentValueRegexMatchException
+     * @throws InvalidArgumentException
      * @throws OutOfBoundsException If `$name` is not a known controller parameter.
      */
     public function withArgument(mixed ...$nameValue): self;
@@ -66,7 +66,7 @@ interface ArgumentsInterface extends ToArrayInterface
      *
      * @throws OutOfBoundsException
      */
-    public function get(string $name);
+    public function get(string $name): mixed;
 
     /**
      * Provides access to the argument value for the parameter `$boolean` type-hinted as boolean.

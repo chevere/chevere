@@ -23,7 +23,7 @@ interface VarStorableInterface
     /**
      * @throws VarStorableException if `$var` is or contains a resource.
      */
-    public function __construct($var);
+    public function __construct(mixed $var);
 
     /**
      * Provides access to passed `$var`.

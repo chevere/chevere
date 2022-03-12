@@ -16,8 +16,10 @@ namespace Chevere\VarSupport;
 use Chevere\Iterator\Breadcrumb;
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
 use Chevere\Message\Message;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\VarSupport\Exceptions\VarObjectNotClonableException;
 use Chevere\VarSupport\Interfaces\VarObjectInterface;
+use ReflectionNamedType;
 use ReflectionObject;
 
 final class VarObject implements VarObjectInterface
@@ -52,6 +54,11 @@ final class VarObject implements VarObjectInterface
         }
     }
 
+    /**
+     * @param iterable<mixed, mixed> $var
+     * @throws VarObjectNotClonableException
+     * @throws OutOfBoundsException
+     */
     private function breadcrumbIterable(iterable $var): void
     {
         $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
@@ -83,8 +90,10 @@ final class VarObject implements VarObjectInterface
         }
         $properties = $reflection->getProperties();
         foreach ($properties as $property) {
-            $propertyType = $property->hasType()
-                ? $property->getType()->getName() . ' '
+            /** @var ?ReflectionNamedType $namedType */
+            $namedType = $property->getType();
+            $propertyType = $namedType !== null
+                ? $namedType->getName() . ' '
                 : '';
             $this->breadcrumb = $this->breadcrumb
                 ->withAddedItem(

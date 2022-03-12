@@ -21,6 +21,9 @@ trait ResponseTrait
 
     private string $token;
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $data = [];
 
     private int $code = 0;

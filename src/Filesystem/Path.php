@@ -101,12 +101,13 @@ final class Path implements PathInterface
         // @infection-ignore-all
         try {
             $handle = fopen($testFile, 'w');
-            if (!$handle || fwrite($handle, 't') === false) {
+            if (!is_resource($handle) || fwrite($handle, 't') === 0) {
                 return false;
             }
             fclose($handle);
+            unlink($testFile);
 
-            return unlink($testFile);
+            return true;
         } catch (Throwable $e) {
             throw new FilesystemException(previous: $e);
         }

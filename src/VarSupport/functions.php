@@ -30,5 +30,7 @@ function deepCopy(mixed $value, bool $useCloneMethod = false): mixed
             $object = new VarObject($value);
             $object->assertClonable();
         }
+
+        return null;
     }
 } // @codeCoverageIgnore

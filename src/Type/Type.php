@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Type;
 
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Message\Message;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 
 final class Type implements TypeInterface
@@ -55,7 +55,7 @@ final class Type implements TypeInterface
         return $this->typeHinting;
     }
 
-    public function validate($var): bool
+    public function validate(mixed $var): bool
     {
         if (is_object($var) && $this->isAbleToValidateObjects()) {
             return $this->validateObject($var);

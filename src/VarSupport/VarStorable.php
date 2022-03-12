@@ -16,8 +16,10 @@ namespace Chevere\VarSupport;
 use Chevere\Iterator\Breadcrumb;
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
 use Chevere\Message\Message;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\VarSupport\Exceptions\VarStorableException;
 use Chevere\VarSupport\Interfaces\VarStorableInterface;
+use ReflectionNamedType;
 use ReflectionObject;
 
 final class VarStorable implements VarStorableInterface
@@ -46,7 +48,7 @@ final class VarStorable implements VarStorableInterface
         return serialize($this->var);
     }
 
-    private function assertExportable($var): void
+    private function assertExportable(mixed $var): void
     {
         $this->assertIsNotResource($var);
         if (is_object($var)) {
@@ -59,7 +61,7 @@ final class VarStorable implements VarStorableInterface
     /**
      * @throws VarStorableException
      */
-    private function assertIsNotResource($var): void
+    private function assertIsNotResource(mixed $var): void
     {
         if (is_resource($var)) {
             $message = $this->breadcrumb->count() > 0
@@ -72,7 +74,9 @@ final class VarStorable implements VarStorableInterface
     }
 
     /**
-     * @throws VarExportableIsResourceException
+     * @param iterable<mixed, mixed> $var
+     * @throws VarStorableException
+     * @throws OutOfBoundsException
      */
     private function breadcrumbIterable(iterable $var): void
     {
@@ -99,8 +103,10 @@ final class VarStorable implements VarStorableInterface
         $reflection = new ReflectionObject($var);
         $properties = $reflection->getProperties();
         foreach ($properties as $property) {
-            $propertyType = $property->hasType()
-                ? $property->getType()->getName() . ' '
+            /** @var ?ReflectionNamedType $namedType */
+            $namedType = $property->getType();
+            $propertyType = $namedType !== null
+                ? $namedType->getName() . ' '
                 : '';
             $this->breadcrumb = $this->breadcrumb
                 ->withAddedItem(

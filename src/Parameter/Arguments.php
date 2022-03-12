@@ -58,6 +58,12 @@ final class Arguments implements ArgumentsInterface
         return $this->arguments;
     }
 
+    /**
+     *
+     * @throws OutOfBoundsException
+     * @throws TypeError
+     * @throws InvalidArgumentException
+     */
     public function withArgument(mixed ...$nameValue): ArgumentsInterface
     {
         $new = clone $this;
@@ -75,16 +81,16 @@ final class Arguments implements ArgumentsInterface
         return isset($this->arguments[$name]);
     }
 
-    public function get(string $name)
+    public function get(string $name): mixed
     {
-        try {
+        if (array_key_exists($name, $this->arguments)) {
             return $this->arguments[$name];
-        } catch (Throwable $e) {
-            throw new OutOfBoundsException(
-                (new Message('Argument %name% not found'))
-                    ->code('%name%', $name),
-            );
         }
+
+        throw new OutOfBoundsException(
+            (new Message('Argument %name% not found'))
+                ->code('%name%', $name),
+        );
     }
 
     public function getBoolean(string $name): bool

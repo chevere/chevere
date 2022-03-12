@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Controller\Interfaces;
 
+use InvalidArgumentException;
 use Stringable;
 
 /**

@@ -28,6 +28,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use function Safe\mkdir;
 use function Safe\rmdir;
+use SplFileInfo;
 use Throwable;
 
 final class Dir implements DirInterface
@@ -111,7 +112,7 @@ final class Dir implements DirInterface
             RecursiveIteratorIterator::CHILD_FIRST
         );
         $removed = [];
-        /** @var SplFileInfo */
+        /** @var SplFileInfo $fileInfo */
         foreach ($files as $fileInfo) {
             if ($fileInfo->isDir()) {
                 $realPath = tailDirPath($fileInfo->getRealPath());

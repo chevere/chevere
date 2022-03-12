@@ -100,7 +100,7 @@ function parameters(
     ?ParameterInterface ...$required,
 ): ParametersInterface {
     $parameters = new Parameters();
-    if (isset($required)) {
+    if ($required !== null) {
         $parameters = $parameters->withAdded(...$required);
     }
 
