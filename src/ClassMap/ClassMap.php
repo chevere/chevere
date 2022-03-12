@@ -62,12 +62,12 @@ final class ClassMap implements ClassMapInterface
         $known = $this->flip->has($key)
             ? $this->flip->get($key)
             : '';
-        if ($known !== $className) {
+        if ($known !== '' && $known !== $className) {
             throw new OverflowException(
-                (new Message('Attempting to map %className% to the same mapping of %known% -> %string%'))
+                (new Message('Attempting to map %className% to the same mapping of %known% -> %key%'))
                     ->code('%className%', $className)
                     ->code('%known%', $known)
-                    ->code('%string%', $key)
+                    ->code('%key%', $key)
             );
         }
         $new = clone $this;
