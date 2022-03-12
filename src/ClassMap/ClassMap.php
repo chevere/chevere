@@ -58,10 +58,11 @@ final class ClassMap implements ClassMapInterface
                     ->strong('%className%', $className)
             );
         }
+        /** @var string $known */
         $known = $this->flip->has($key)
             ? $this->flip->get($key)
-            : null;
-        if ($known && $known !== $className) {
+            : '';
+        if ($known !== $className) {
             throw new OverflowException(
                 (new Message('Attempting to map %className% to the same mapping of %known% -> %string%'))
                     ->code('%className%', $className)
@@ -89,6 +90,7 @@ final class ClassMap implements ClassMapInterface
     public function key(string $className): string
     {
         try {
+            /** @var string */
             return $this->map->get($className);
         } catch (OutOfBoundsException $e) {
             throw new OutOfBoundsException(
@@ -106,6 +108,7 @@ final class ClassMap implements ClassMapInterface
     public function className(string $key): string
     {
         try {
+            /** @var string */
             return $this->flip->get($key);
         } catch (OutOfBoundsException $e) {
             throw new OutOfBoundsException(

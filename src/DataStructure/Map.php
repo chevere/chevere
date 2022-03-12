@@ -31,13 +31,16 @@ final class Map implements MapInterface
     {
         $this->map = new DsMap();
         if ($namedArguments !== []) {
+            /** @var array<string, mixed> $namedArguments */
             $this->map->putAll($namedArguments);
         }
     }
 
     public function __clone()
     {
-        $this->map = deepCopy($this->map);
+        /** @var DsMap<string, mixed> $copy */
+        $copy = deepCopy($this->map);
+        $this->map = $copy;
     }
 
     public function keys(): array

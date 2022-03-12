@@ -111,6 +111,7 @@ final class Parameters implements ParametersInterface
     public function get(string $name): ParameterInterface
     {
         try {
+            /** @var ParameterInterface */
             return $this->map->get($name);
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(

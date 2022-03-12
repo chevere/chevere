@@ -15,10 +15,8 @@ namespace Chevere\Iterator;
 
 use RecursiveFilterIterator;
 use RecursiveIterator;
+use SplFileInfo;
 
-/**
- * @codeCoverageIgnore
- */
 final class RecursiveFileFilterIterator extends RecursiveFilterIterator
 {
     /**
@@ -36,9 +34,11 @@ final class RecursiveFileFilterIterator extends RecursiveFilterIterator
         if ($this->hasChildren()) {
             return true;
         }
+        /** @var SplFileInfo $fileInfo */
+        $fileInfo = $this->current();
 
         return str_ends_with(
-            $this->current()->getFilename(),
+            $fileInfo->getFilename(),
             $this->trailingName
         );
     }

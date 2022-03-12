@@ -101,26 +101,31 @@ final class Arguments implements ArgumentsInterface
 
     public function getBoolean(string $name): bool
     {
+        /** @var bool */
         return $this->get($name);
     }
 
     public function getString(string $name): string
     {
+        /** @var string */
         return $this->get($name);
     }
 
     public function getInteger(string $name): int
     {
+        /** @var int */
         return $this->get($name);
     }
 
     public function getFloat(string $name): float
     {
+        /** @var float */
         return $this->get($name);
     }
 
     public function getArray(string $name): array
     {
+        /** @var array<mixed, mixed> */
         return $this->get($name);
     }
 
@@ -162,7 +167,10 @@ final class Arguments implements ArgumentsInterface
             );
         }
         if ($parameter instanceof StringParameterInterface) {
-            /** @var StringParameterInterface $parameter */
+            /**
+             * @var StringParameterInterface $parameter
+             * @var string $value
+             */
             $this->assertStringArgument($name, $parameter, $value);
         }
     }
