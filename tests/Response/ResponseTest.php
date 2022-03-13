@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Response;
 
+use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Rfc4122\Validator;
@@ -28,26 +29,29 @@ final class ResponseTest extends TestCase
             (new Validator())->validate($response->uuid()),
             'Invalid UUID'
         );
+        $this->assertSame(ResponseInterface::TOKEN_LENGTH, strlen($response->token()));
         $this->assertIsString($response->token());
+        $data = ['key' => 'value'];
+        $response = new Response(...$data);
+        $this->assertSame($data, $response->data());
     }
 
     public function testWithData(): void
     {
         $response = new Response();
         $this->assertSame([], $response->data());
-        $data = ['data'];
-        $response = new Response(...$data);
-        $this->assertSame($data, $response->data());
+        $data = ['key' => 'value'];
+        $withData = $response->withData(...$data);
+        $this->assertNotSame($response, $withData);
+        $this->assertSame($data, $withData->data());
     }
 
-    public function testWithStatus(): void
+    public function testWithCode(): void
     {
-        $data = ['data'];
         $code = 123;
-        $response = (new Response())
-            ->withData(...$data)
-            ->withCode($code);
-        $this->assertSame($data, $response->data());
-        $this->assertSame($code, $response->code());
+        $response = new Response();
+        $withCode = $response->withCode($code);
+        $this->assertNotSame($response, $withCode);
+        $this->assertSame($code, $withCode->code());
     }
 }

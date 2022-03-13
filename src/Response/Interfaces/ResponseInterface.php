@@ -18,6 +18,8 @@ namespace Chevere\Response\Interfaces;
  */
 interface ResponseInterface
 {
+    public const TOKEN_LENGTH = 256;
+    
     public function __construct(mixed ...$namedArguments);
 
     /**

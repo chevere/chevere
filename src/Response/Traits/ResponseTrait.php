@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Response\Traits;
 
+use Chevere\Response\Interfaces\ResponseInterface;
 use Ramsey\Uuid\Uuid;
 
 trait ResponseTrait
@@ -31,7 +32,7 @@ trait ResponseTrait
     public function __construct(mixed ...$namedArguments)
     {
         $this->uuid = Uuid::uuid4()->toString();
-        $this->token = bin2hex(random_bytes(128));
+        $this->token = bin2hex(random_bytes(ResponseInterface::TOKEN_LENGTH / 2));
         /** @var array<string, mixed> $namedArguments */
         $this->data = $namedArguments;
     }

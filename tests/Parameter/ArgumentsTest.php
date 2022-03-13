@@ -23,11 +23,11 @@ use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Errors\ArgumentCountError;
+use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use TypeError;
 
 final class ArgumentsTest extends TestCase
 {
@@ -127,6 +127,25 @@ final class ArgumentsTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $argumentsWith->withArgument(...[
             $name => 'invalid',
+        ]);
+    }
+
+    public function testWithArgumentTypeError(): void
+    {
+        $name = 'id';
+        $value = '123';
+        $valueAlt = '321';
+        $arguments = new Arguments(
+            new Parameters(
+                id: new StringParameter()
+            ),
+            ...[
+                $name => $value,
+            ]
+        );
+        $this->expectException(TypeError::class);
+        $arguments->withArgument(...[
+            $name => 123,
         ]);
     }
 
@@ -245,7 +264,7 @@ final class ArgumentsTest extends TestCase
             ]
         );
         $this->assertSame($var, $arguments->getBoolean($name));
-        $this->expectException(TypeError::class);
+        $this->expectException(\TypeError::class);
         $arguments->getString($name);
     }
 
@@ -260,7 +279,7 @@ final class ArgumentsTest extends TestCase
             ]
         );
         $this->assertSame($var, $arguments->getString($name));
-        $this->expectException(TypeError::class);
+        $this->expectException(\TypeError::class);
         $arguments->getBoolean($name);
     }
 
@@ -275,7 +294,7 @@ final class ArgumentsTest extends TestCase
             ]
         );
         $this->assertSame($var, $arguments->getInteger($name));
-        $this->expectException(TypeError::class);
+        $this->expectException(\TypeError::class);
         $arguments->getArray($name);
     }
 
@@ -290,7 +309,7 @@ final class ArgumentsTest extends TestCase
             ]
         );
         $this->assertSame($var, $arguments->getFloat($name));
-        $this->expectException(TypeError::class);
+        $this->expectException(\TypeError::class);
         $arguments->getArray($name);
     }
 
@@ -305,7 +324,7 @@ final class ArgumentsTest extends TestCase
             ]
         );
         $this->assertSame($var, $arguments->getArray($name));
-        $this->expectException(TypeError::class);
+        $this->expectException(\TypeError::class);
         $arguments->getInteger($name);
     }
 }

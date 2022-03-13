@@ -57,9 +57,12 @@ final class Message implements MessageInterface
          * @var string[] $formatting
          */
         foreach ($this->trTable as $wildcard => $formatting) {
-            $format = $formatting[0];
+            $format = $formatting[0] ?? '';
             $colorTheme = 'message_' . $format;
-            $tr[$wildcard] = (string) $color($formatting[1])->apply($colorTheme);
+            if (array_key_exists($colorTheme, self::CLI_TABLE)) {
+                $colorTheme = self::CLI_TABLE[$colorTheme];
+                $tr[$wildcard] = (string) $color($formatting[1])->apply($colorTheme);
+            }
         }
 
         return strtr($this->template, $tr);
