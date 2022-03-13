@@ -61,25 +61,25 @@ final class VarObject implements VarObjectInterface
      */
     private function breadcrumbIterable(iterable $var): void
     {
-        $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
+        $this->breadcrumb = $this->breadcrumb->withAdded('(iterable)');
         $iterableKey = $this->breadcrumb->pos();
         foreach ($var as $key => $val) {
             $key = strval($key);
             $this->breadcrumb = $this->breadcrumb
-                ->withAddedItem('key: ' . $key);
+                ->withAdded('key: ' . $key);
             $memberKey = $this->breadcrumb->pos();
             $this->assertVarClonable($val);
             $this->breadcrumb = $this->breadcrumb
-                ->withRemovedItem($memberKey);
+                ->withRemoved($memberKey);
         }
         $this->breadcrumb = $this->breadcrumb
-            ->withRemovedItem($iterableKey);
+            ->withRemoved($iterableKey);
     }
 
     private function breadcrumbObject(object $var): void
     {
         $this->breadcrumb = $this->breadcrumb
-            ->withAddedItem('object: ' . $var::class);
+            ->withAdded('object: ' . $var::class);
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($var);
         if (!$reflection->isCloneable()) {
@@ -96,7 +96,7 @@ final class VarObject implements VarObjectInterface
                 ? $namedType->getName() . ' '
                 : '';
             $this->breadcrumb = $this->breadcrumb
-                ->withAddedItem(
+                ->withAdded(
                     'property: '
                     . $propertyType
                     . '$' . $property->getName()
@@ -108,9 +108,9 @@ final class VarObject implements VarObjectInterface
                 $this->assertVarClonable($property->getValue($var));
             }
             $this->breadcrumb = $this->breadcrumb
-                ->withRemovedItem($propertyKey);
+                ->withRemoved($propertyKey);
         }
         $this->breadcrumb = $this->breadcrumb
-            ->withRemovedItem($objectKey);
+            ->withRemoved($objectKey);
     }
 }

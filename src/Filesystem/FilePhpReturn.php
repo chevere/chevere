@@ -122,7 +122,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
 
         try {
             (new StrAssert($contents))->notEmpty()->notCtypeSpace();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             throw new FileWithoutContentsException(
                 (new Message("The file at %path% doesn't have any contents"))
                     ->code('%path%', $this->filePhp->file()->path()->__toString())

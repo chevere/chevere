@@ -37,23 +37,24 @@ final class BreadcrumbTest extends TestCase
             'test-2',
         ];
         $breadcrumb = new Breadcrumb();
+        $withAdded = $breadcrumb;
         foreach ($items as $pos => $item) {
-            $breadcrumb = $breadcrumb
-                ->withAddedItem($item);
-            $this->assertTrue($breadcrumb->has($pos));
-            $this->assertSame($pos, $breadcrumb->pos());
-            $this->assertContains($item, $breadcrumb->toArray());
-            $this->assertStringContainsString($item, $breadcrumb->__toString());
+            $withAdded = $withAdded->withAdded($item);
+            $this->assertTrue($withAdded->has($pos));
+            $this->assertSame($pos, $withAdded->pos());
+            $this->assertContains($item, $withAdded->toArray());
+            $this->assertStringContainsString($item, $withAdded->__toString());
         }
-        $this->assertSame($items, $breadcrumb->toArray());
+        $this->assertNotSame($breadcrumb, $withAdded);
+        $this->assertSame($items, $withAdded->toArray());
         $this->assertSame(
             '[' . implode('][', $items) . ']',
-            $breadcrumb->__toString()
+            $withAdded->__toString()
         );
-        $breadcrumb = $breadcrumb
-            ->withRemovedItem(1);
-        $this->assertNotContains($items[1], $breadcrumb->toArray());
-        $this->assertStringNotContainsString($items[1], $breadcrumb->__toString());
+        $withRemoved = $withAdded->withRemoved(1);
+        $this->assertNotSame($withAdded, $withRemoved);
+        $this->assertNotContains($items[1], $withRemoved->toArray());
+        $this->assertStringNotContainsString($items[1], $withRemoved->__toString());
     }
 
     public function testWithRemovedItems(): void
@@ -67,8 +68,8 @@ final class BreadcrumbTest extends TestCase
         $pos = 0;
         foreach ($items as $pos => $item) {
             $breadcrumb = $breadcrumb
-                ->withAddedItem($item)
-                ->withRemovedItem($pos);
+                ->withAdded($item)
+                ->withRemoved($pos);
             $this->assertFalse($breadcrumb->has($pos));
             $this->assertNotContains($item, $breadcrumb->toArray());
             $this->assertStringNotContainsString($item, $breadcrumb->__toString());
@@ -77,6 +78,6 @@ final class BreadcrumbTest extends TestCase
         $this->assertEmpty($breadcrumb->toArray());
         $this->assertEmpty($breadcrumb->__toString());
         $this->expectException(OutOfRangeException::class);
-        $breadcrumb->withRemovedItem($pos);
+        $breadcrumb->withRemoved($pos);
     }
 }

@@ -76,8 +76,7 @@ final class FilePhpReturnTest extends TestCase
     public function testEmptyFile(): void
     {
         $this->expectException(FileWithoutContentsException::class);
-        $this->filePhpReturn
-            ->raw();
+        $this->filePhpReturn->raw();
     }
 
     public function testContents(): void
@@ -164,7 +163,7 @@ final class FilePhpReturnTest extends TestCase
         $this->filePhpReturn->raw();
     }
 
-    public function testWithNoStrict(): void
+    public function testRawVar(): void
     {
         $this->file->put("<?php /* comment */ return 'test';");
         $string = 'test';
@@ -175,6 +174,20 @@ final class FilePhpReturnTest extends TestCase
         $this->assertSame($array, $this->filePhpReturn->raw());
         $this->assertSame($array, $this->filePhpReturn->var());
         $this->file->put('<?php $var = __FILE__;');
+        $this->expectException(FileInvalidContentsException::class);
+        $this->filePhpReturn->raw();
+    }
+
+    public function testStrictBegin(): void
+    {
+        $this->file->put('/* comment */<?php return __FILE__;');
+        $this->expectException(FileInvalidContentsException::class);
+        $this->filePhpReturn->raw();
+    }
+
+    public function testStrictEnd(): void
+    {
+        $this->file->put('<?php return __FILE__;/* comment */');
         $this->expectException(FileInvalidContentsException::class);
         $this->filePhpReturn->raw();
     }

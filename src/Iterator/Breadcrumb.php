@@ -43,7 +43,7 @@ final class Breadcrumb implements BreadcrumbInterface
         return $this->pos;
     }
 
-    public function withAddedItem(string $item): BreadcrumbInterface
+    public function withAdded(string $item): BreadcrumbInterface
     {
         $new = clone $this;
         ++$new->id;
@@ -53,7 +53,7 @@ final class Breadcrumb implements BreadcrumbInterface
         return $new;
     }
 
-    public function withRemovedItem(int $pos): BreadcrumbInterface
+    public function withRemoved(int $pos): BreadcrumbInterface
     {
         if (!array_key_exists($pos, $this->items)) {
             throw new OutOfRangeException(
