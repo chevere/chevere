@@ -16,6 +16,7 @@ namespace Chevere\Tests\Iterator;
 use Chevere\Iterator\RecursiveFileFilterIterator;
 use PHPUnit\Framework\TestCase;
 use RecursiveDirectoryIterator;
+use SplFileInfo;
 
 final class RecursiveFileFilterIteratorTest extends TestCase
 {
@@ -23,8 +24,13 @@ final class RecursiveFileFilterIteratorTest extends TestCase
     {
         $dirItr = new RecursiveDirectoryIterator(__DIR__);
         $iterator = new RecursiveFileFilterIterator($dirItr, 'Test.php');
+        /** @var SplFileInfo $wea */
         foreach ($iterator as $wea) {
+            if ($wea->isDir()) {
+                continue;
+            }
             $this->assertStringEndsWith('Test.php', $wea->getFilename());
         }
+        $iterator->getChildren();
     }
 }

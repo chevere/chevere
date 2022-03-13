@@ -26,6 +26,7 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Parameters;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
+use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use Psr\Container\ContainerInterface;
@@ -119,8 +120,9 @@ abstract class Action implements ActionInterface
             $default = $this->getDefaultValue($reflectionParameter);
             $namedType = $reflectionParameter->getType();
             if ($namedType === null) {
-                throw new LogicException(
-                    message: message('Unable to retrieve parameter type')
+                throw new TypeError(
+                    message: message('Missing type declaration for parameter %parameter%')
+                        ->strtr('%parameter%', '$' . $reflectionParameter->getName())
                 );
             }
             /** @var ReflectionNamedType $namedType */

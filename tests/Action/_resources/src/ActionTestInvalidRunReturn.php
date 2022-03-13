@@ -11,19 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Common\Attributes;
+namespace Chevere\Tests\Action\_resources\src;
 
-use Attribute;
+use Chevere\Action\Action;
 
-#[Attribute]
-final class DescriptionAttribute
+final class ActionTestInvalidRunReturn extends Action
 {
-    public function __construct(private string $description = '')
+    public function run(): bool
     {
-    }
-
-    public function description(): string
-    {
-        return $this->description;
+        return true;
     }
 }

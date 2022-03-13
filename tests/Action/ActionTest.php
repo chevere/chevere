@@ -24,9 +24,12 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
 use Chevere\Tests\Action\_resources\src\ActionTestContainerAction;
 use Chevere\Tests\Action\_resources\src\ActionTestController;
+use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunParameter;
+use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunReturn;
 use Chevere\Tests\Action\_resources\src\ActionTestMissingRunAction;
 use Chevere\Tests\Action\_resources\src\ActionTestParamsAction;
 use Chevere\Tests\Action\_resources\src\ActionTestParamsAttributesAction;
+use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use Ds\Vector;
@@ -127,5 +130,20 @@ final class ActionTest extends TestCase
         $response = $action->getResponse(...$arguments);
         $this->assertSame(0, $response->code());
         $this->assertSame($expected, $response->data());
+    }
+
+    public function testActionInvalidRunReturn(): void
+    {
+        $action = new ActionTestInvalidRunReturn();
+        $data = $action->run();
+        $this->assertIsNotArray($data);
+        $this->expectException(LogicException::class);
+        $action->getResponse();
+    }
+
+    public function testActionInvalidRunParameter(): void
+    {
+        $this->expectException(TypeError::class);
+        new ActionTestInvalidRunParameter();
     }
 }

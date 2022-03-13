@@ -74,11 +74,12 @@ final class File implements FileInterface
         if ($hashFile !== false) {
             return $hashFile;
         }
-
+        // @codeCoverageIgnoreStart
         throw new RuntimeException(
             message: message('Unable to get checksum for file %path%')
                 ->code('%path%', $this->path->__toString())
         );
+        // @codeCoverageIgnoreEnd
     }
 
     public function getSize(): int
