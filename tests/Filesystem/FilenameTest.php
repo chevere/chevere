@@ -28,9 +28,15 @@ final class FilenameTest extends TestCase
         new Filename(' ');
     }
 
-    public function testLength(): void
+    public function testValidLength(): void
     {
-        new Filename(str_repeat('e', 255));
+        $basename = str_repeat('e', 255);
+        $this->expectNotToPerformAssertions();
+        new Filename($basename);
+    }
+
+    public function testInvalidLength(): void
+    {
         $this->expectException(LengthException::class);
         $this->expectExceptionCode(110);
         new Filename(randomString(256));

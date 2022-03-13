@@ -41,7 +41,8 @@ final class Container implements ContainerInterface
             return $this->map->get($id);
         }
         // @codeCoverageIgnoreStart
-        catch (Throwable $e) {
+        // @infection-ignore-all
+        catch (Throwable) {
             throw new ContainerException();
         }
         // @codeCoverageIgnoreEnd

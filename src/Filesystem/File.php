@@ -71,10 +71,11 @@ final class File implements FileInterface
     {
         $this->assertExists();
         $hashFile = hash_file(FileInterface::CHECKSUM_ALGO, $this->path->__toString());
-        if ($hashFile !== false) {
+        if (is_string($hashFile)) {
             return $hashFile;
         }
         // @codeCoverageIgnoreStart
+        // @infection-ignore-all
         throw new RuntimeException(
             message: message('Unable to get checksum for file %path%')
                 ->code('%path%', $this->path->__toString())
