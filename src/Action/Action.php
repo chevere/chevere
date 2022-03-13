@@ -65,7 +65,7 @@ abstract class Action implements ActionInterface
         $arguments = $this->getArguments(...$namedArguments)->toArray();
         $data = $this->run(...$arguments);
         if (!is_array($data)) {
-            throw new LogicException(
+            throw new TypeError(
                 message('Method %method% must return an array.')
                     ->strtr('%method%', $this::class . '::run')
             );

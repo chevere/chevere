@@ -16,7 +16,7 @@ namespace Chevere\Tests\Action\_resources\src;
 use Chevere\Action\Action;
 use Chevere\Parameter\Attributes\ParameterAttribute;
 
-final class ActionTestParamsAttributesAction extends Action
+final class ActionTestParameterAttributes extends Action
 {
     public function run(
         #[ParameterAttribute(description: 'An int')]

@@ -31,11 +31,17 @@ trait ActionTrait
 
     protected ContainerInterface $container;
     
-    public function setUpBefore(): void
+    /**
+     * This method runs on class instantiation (before __construct).
+     */
+    protected function setUpBefore(): void
     {
     }
-
-    public function setUpAfter(): void
+    
+    /**
+     * This method runs on class instantiation (after __construct).
+     */
+    protected function setUpAfter(): void
     {
     }
 
@@ -53,22 +59,25 @@ trait ActionTrait
     {
     }
 
+    // @infection-ignore-all
     final public function containerParameters(): ParametersInterface
     {
         return $this->containerParameters ??= $this->getContainerParameters();
     }
 
+    // @infection-ignore-all
     final public function parameters(): ParametersInterface
     {
         return $this->parameters ??= $this->getParameters();
     }
 
+    // @infection-ignore-all
     final public function responseParameters(): ParametersInterface
     {
         return $this->responseParameters ??= $this->getResponseParameters();
     }
 
-    final public function getArguments(mixed ...$namedArguments): ArgumentsInterface
+    final protected function getArguments(mixed ...$namedArguments): ArgumentsInterface
     {
         return new Arguments($this->parameters(), ...$namedArguments);
     }
@@ -86,4 +95,6 @@ trait ActionTrait
     {
         return $this->container ??= new Container();
     }
+
+    abstract protected function assertContainer(): void;
 }

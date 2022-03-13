@@ -39,16 +39,6 @@ interface ActionInterface extends DescriptionInterface
         'string' => StringParameter::class,
         'object' => ObjectParameter::class,
     ];
-
-    /**
-     * This method runs on class instantiation (before __construct).
-     */
-    public function setUpBefore(): void;
-
-    /**
-     * This method runs on class instantiation (after __construct).
-     */
-    public function setUpAfter(): void;
     
     /**
      * Defines expected container parameters when executing `run` method.

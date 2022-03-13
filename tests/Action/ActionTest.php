@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action;
 
 use Chevere\Container\Container;
-use Chevere\Parameter\Arguments;
+use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
@@ -22,13 +22,14 @@ use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
-use Chevere\Tests\Action\_resources\src\ActionTestContainerAction;
+use Chevere\Tests\Action\_resources\src\ActionTestContainer;
 use Chevere\Tests\Action\_resources\src\ActionTestController;
 use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunParameter;
 use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunReturn;
-use Chevere\Tests\Action\_resources\src\ActionTestMissingRunAction;
-use Chevere\Tests\Action\_resources\src\ActionTestParamsAction;
-use Chevere\Tests\Action\_resources\src\ActionTestParamsAttributesAction;
+use Chevere\Tests\Action\_resources\src\ActionTestMissingRun;
+use Chevere\Tests\Action\_resources\src\ActionTestParameterAttributes;
+use Chevere\Tests\Action\_resources\src\ActionTestRunParameters;
+use Chevere\Tests\Action\_resources\src\ActionTestSetupBeforeAndAfter;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
@@ -43,14 +44,13 @@ final class ActionTest extends TestCase
         $this->assertSame('test', $action->description());
         $this->assertCount(0, $action->parameters());
         $this->assertCount(1, $action->responseParameters());
-        $arguments = new Arguments($action->parameters());
-        $action->run($arguments);
+        $action->run();
     }
 
     public function testActionMissingRun(): void
     {
         $this->expectException(LogicException::class);
-        new ActionTestMissingRunAction();
+        new ActionTestMissingRun();
     }
 
     public function testActionParams(): void
@@ -74,7 +74,7 @@ final class ActionTest extends TestCase
         ];
         $optional = new Vector(array_keys($defaults));
         $required = new Vector(array_keys($types));
-        $action = new ActionTestParamsAction();
+        $action = new ActionTestRunParameters();
         $this->assertTrue($optional->contains(...$action->parameters()->optional()));
         $this->assertTrue($required->contains(...$action->parameters()->required()));
         foreach ($defaults as $name => $value) {
@@ -85,11 +85,15 @@ final class ActionTest extends TestCase
             $parameter = strval($parameter);
             $this->assertInstanceOf($class, $action->parameters()->get($parameter));
         }
+        $this->assertSame(
+            FileInterface::class,
+            $action->parameters()->get('file')->type()->typeHinting()
+        );
     }
 
     public function testActionParamsAttributes(): void
     {
-        $action = new ActionTestParamsAttributesAction();
+        $action = new ActionTestParameterAttributes();
         $this->assertSame('An int', $action->parameters()->get('int')->description());
         /** @var StringParameterInterface $parameter */
         $parameter = $action->parameters()->get('name');
@@ -100,16 +104,21 @@ final class ActionTest extends TestCase
     public function testActionContainer(): void
     {
         $container = new Container();
-        $container = $container->withPut('id', 123);
-        $action = new ActionTestContainerAction();
-        $action = $action->withContainer($container);
-        $response = $action->getResponse();
+        $withPut = $container
+            ->withPut(id: 123, name: 'wea');
+        $action = new ActionTestContainer();
+        $withContainer = $action->withContainer($withPut);
+        $this->assertNotSame($action, $withContainer);
+        $response = $withContainer->getResponse();
         $this->assertSame(0, $response->code());
+        $this->expectException(InvalidArgumentException::class);
+        $action->withContainer($container);
     }
 
     public function testActionContainerMissingParameterException(): void
     {
-        $action = new ActionTestContainerAction();
+        $action = new ActionTestContainer();
+        $this->expectExceptionMessage('[id, name]');
         $this->expectException(InvalidArgumentException::class);
         $action->getResponse();
     }
@@ -137,13 +146,22 @@ final class ActionTest extends TestCase
         $action = new ActionTestInvalidRunReturn();
         $data = $action->run();
         $this->assertIsNotArray($data);
-        $this->expectException(LogicException::class);
+        $this->expectException(TypeError::class);
+        $this->expectExceptionMessage(ActionTestInvalidRunReturn::class . '::run');
         $action->getResponse();
     }
 
     public function testActionInvalidRunParameter(): void
     {
         $this->expectException(TypeError::class);
+        $this->expectExceptionMessage('$mixed');
         new ActionTestInvalidRunParameter();
+    }
+
+    public function testSetupBeforeAndAfter(): void
+    {
+        $action = new ActionTestSetupBeforeAndAfter();
+        $this->assertSame(1, $action->before());
+        $this->assertSame(2, $action->after());
     }
 }

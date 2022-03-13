@@ -16,7 +16,7 @@ namespace Chevere\Tests\Action\_resources\src;
 use Chevere\Action\Action;
 use Chevere\Filesystem\Interfaces\FileInterface;
 
-final class ActionTestParamsAction extends Action
+final class ActionTestRunParameters extends Action
 {
     public function run(
         int $int,

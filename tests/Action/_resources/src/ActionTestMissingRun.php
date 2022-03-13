@@ -15,10 +15,6 @@ namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Action\Action;
 
-final class ActionTestEmptyAction extends Action
+final class ActionTestMissingRun extends Action
 {
-    public function run(): array
-    {
-        return [];
-    }
 }
