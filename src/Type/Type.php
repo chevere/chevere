@@ -80,7 +80,7 @@ final class Type implements TypeInterface
 
         return match ($this->primitive) {
             self::PRIMITIVE_CLASS_NAME => $this->isClassName($objectClass),
-            default => $this->isInterfaceImplemented($object),
+            default => $object instanceof $this->type,
         };
     }
 
@@ -89,15 +89,9 @@ final class Type implements TypeInterface
         return $this->type === $objectClass;
     }
 
-    private function isInterfaceImplemented(object $object): bool
-    {
-        return $object instanceof $this->type;
-    }
-
     private function setPrimitive(): void
     {
-        if (isset(self::TYPE_VALIDATORS[$this->type])
-            && in_array($this->type, self::TYPE_ARGUMENTS)) {
+        if (in_array($this->type, self::TYPE_ARGUMENTS)) {
             $this->primitive = $this->type;
 
             return;
