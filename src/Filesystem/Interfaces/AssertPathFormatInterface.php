@@ -32,4 +32,6 @@ interface AssertPathFormatInterface
     public function __construct(string $path);
 
     public function path(): string;
+
+    public function driveLetter(): string;
 }

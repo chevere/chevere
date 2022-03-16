@@ -46,25 +46,48 @@ final class AssertPathFormatTest extends TestCase
         new AssertPathFormat('/some/../dir');
     }
 
-    public function testConstruct(): void
-    {
-        $path = '/path';
-        $assert = new AssertPathFormat($path);
-        $this->assertSame($path, $assert->path());
-    }
-
-    public function testConstructWindows(): void
+    public function testUnix(): void
     {
         $paths = [
-            '\Program Files' => '/Program Files',
-            '\Program Files\Custom Utilities\\' => '/Program Files/Custom Utilities/',
-            'C:\Documents' => 'C:/Documents',
-            'C:\Documents\Newsletters\\' => 'C:/Documents/Newsletters/',
-            'C:\Documents\Newsletters/' => 'C:/Documents/Newsletters/',
+            '/' => '/',
+            '/A' => '/A',
+            '/A/B/C/' => '/A/B/C/',
         ];
         foreach ($paths as $path => $expected) {
             $assert = new AssertPathFormat($path);
             $this->assertSame($expected, $assert->path());
+            $this->assertSame('', $assert->driveLetter());
+        }
+    }
+
+    public function testWindows(): void
+    {
+        $paths = [
+            '\\' => '/',
+            '\A' => '/A',
+            '\Program Files\Custom Utilities\\' => '/Program Files/Custom Utilities/',
+            '\Program Files' => '/Program Files',
+        ];
+        foreach ($paths as $path => $expected) {
+            $assert = new AssertPathFormat($path);
+            $this->assertSame($expected, $assert->path());
+            $this->assertSame('', $assert->driveLetter());
+        }
+    }
+
+    public function testWindowsDriveLetters(): void
+    {
+        $paths = [
+            'a:\\' => 'A:/',
+            'A:\Documents' => 'A:/Documents',
+            'B:\Documents\Newsletters\\' => 'B:/Documents/Newsletters/',
+            'C:\Documents\Newsletters/' => 'C:/Documents/Newsletters/',
+        ];
+        foreach ($paths as $path => $expected) {
+            $assert = new AssertPathFormat($path);
+            $letter = $expected[0];
+            $this->assertSame($expected, $assert->path());
+            $this->assertSame($letter, $assert->driveLetter());
         }
     }
 }
