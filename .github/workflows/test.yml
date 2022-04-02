@@ -60,13 +60,13 @@ jobs:
         run: composer install --no-progress --classmap-authoritative --ignore-platform-reqs
       - name: Tests (PHPUnit)
         run: vendor/bin/phpunit --coverage-xml=build/logs/xml-coverage --log-junit=build/logs/junit.xml
-      - name: Download Infection
-        uses: wei/wget@v1
-        with:
-          args: -O infection.phar https://github.com/infection/infection/releases/download/0.26.6/infection.phar
       - name: Mutation testing (Infection)
         env:
           INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
         run: |
-          chmod +x ./infection.phar
+          curl -sLOJ https://github.com/infection/infection/releases/download/0.26.6/infection.phar
+          curl -sLOJ https://github.com/infection/infection/releases/download/0.26.6/infection.phar.asc
+          gpg --recv-keys C6D76C329EBADE2FB9C458CFC5095986493B4AA0
+          gpg --with-fingerprint --verify infection.phar.asc infection.phar
+          chmod +x infection.phar
           ./infection.phar --coverage=build/logs --min-covered-msi=90 --threads=$(nproc) --logger-github --only-covered
