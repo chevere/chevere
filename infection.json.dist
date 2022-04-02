@@ -11,7 +11,7 @@
     "logs": {
         "html": "build/logs/html/infection.html",
         "stryker": {
-            "report": "/^release-.*$/"
+            "report": "/^.*$/"
         }
     },
     "mutators": {
