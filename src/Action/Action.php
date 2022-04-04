@@ -109,14 +109,12 @@ abstract class Action implements ActionInterface
     {
         $this->assertRunMethod();
         $reflection = new ReflectionMethod($this, 'run');
-        $parameters = new Parameters();
         $collection = [
             0 => [],
             1 => [],
         ];
         foreach ($reflection->getParameters() as $reflectionParameter) {
             $attribute = $this->getAttribute($reflectionParameter);
-            $description = $attribute->description();
             $default = $this->getDefaultValue($reflectionParameter);
             $namedType = $reflectionParameter->getType();
             if ($namedType === null) {
@@ -128,7 +126,7 @@ abstract class Action implements ActionInterface
             /** @var ReflectionNamedType $namedType */
             $typeName = $namedType->getName();
             $type = $this->getTypeToParameter($reflectionParameter);
-            $parameter = new $type($description);
+            $parameter = new $type($attribute->description());
             if ($parameter instanceof ObjectParameterInterface) {
                 $parameter = $parameter->withClassName($typeName);
             }
@@ -140,7 +138,7 @@ abstract class Action implements ActionInterface
             $collection[$pos][$reflectionParameter->getName()] = $parameter;
         }
 
-        return $parameters->withAdded(...$collection[1])
+        return (new Parameters())->withAdded(...$collection[1])
             ->withAddedOptional(...$collection[0]);
     }
 

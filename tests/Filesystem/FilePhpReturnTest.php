@@ -63,7 +63,8 @@ final class FilePhpReturnTest extends TestCase
                 $this->path->getChild($this->getFileName())
             )
         );
-        new FilePhpReturn($filePhp);
+        $return = new FilePhpReturn($filePhp);
+        $this->assertInstanceOf(FilePhpReturn::class, $return);
     }
 
     public function testFileNotFound(): void
