@@ -1,5 +1,5 @@
 {
-    "$schema": "https://raw.githubusercontent.com/infection/infection/0.26.1/resources/schema.json",
+    "$schema": "https://raw.githubusercontent.com/infection/infection/0.26.6/resources/schema.json",
     "source": {
         "directories": [
             "src/"
@@ -9,7 +9,10 @@
         ]
     },
     "logs": {
-        "html": "build/logs/html/infection.html"
+        "html": "build/logs/html/infection.html",
+        "stryker": {
+            "report": "/^.*$/"
+        }
     },
     "mutators": {
         "@default": true
