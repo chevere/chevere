@@ -46,8 +46,8 @@ jobs:
       - name: Tests (PHPUnit)
         run: vendor/bin/phpunit --coverage-xml=build/logs/xml-coverage --log-junit=build/logs/junit.xml
       - name: Mutation testing (Infection)
-        env:
-          # INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
+        # env:
+        #   INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
         run: |
           curl -sLOJ https://github.com/infection/infection/releases/download/0.26.6/infection.phar
           curl -sLOJ https://github.com/infection/infection/releases/download/0.26.6/infection.phar.asc
