@@ -63,10 +63,10 @@ final class FilePhpTest extends TestCase
      */
     public function testCompileDestroy(): void
     {
-        if (opcache_get_status() === false) {
-            $this->markTestSkipped('OPCache is not enabled');
-        }
         $this->expectNotToPerformAssertions();
+        if (opcache_get_status() === false) {
+            return;
+        }
         $file = new File(
             $this->path->getChild('var/FilePhpTest_' . uniqid() . '.php')
         );
