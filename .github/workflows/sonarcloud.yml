@@ -55,7 +55,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Install dependencies
-        run: composer install --no-progress --classmap-authoritative --ignore-platform-reqs
+        run: composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
       - name: Tests (PHPUnit)
         run: vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --log-junit=build/logs/junit.xml
       - name: Fix paths for sonar-scanner
