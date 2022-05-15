@@ -8,9 +8,8 @@ jobs:
         os: [ubuntu-20.04]
         php: ["8.0", "8.1"]
     env:
-      extensions: opcache, mbstring, ds, pcov
       tools: composer
-      ini-values: opcache.enable_cli = 0, precision=16, default_charset='UTF-8', pcov.directory=src
+      ini-values: default_charset='UTF-8'
       key: cache-1652276840262
     name: PHP ${{ matrix.php }} test on ${{ matrix.os }}
     steps:
@@ -18,26 +17,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Setup cache environment
-        if: ${{ !env.ACT }}
-        id: extcache
-        uses: shivammathur/cache-extensions@v1
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: ${{ env.extensions }}
-          key: ${{ env.key }}
-      - name: Cache extensions
-        if: ${{ !env.ACT }}
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.extcache.outputs.dir }}
-          key: ${{ steps.extcache.outputs.key }}
-          restore-keys: ${{ steps.extcache.outputs.key }}
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: ${{ env.extensions }}
           ini-values: ${{ env.ini-values }}
           coverage: pcov
           tools: ${{ env.tools }}
@@ -63,8 +46,8 @@ jobs:
       - name: Tests (PHPUnit)
         run: vendor/bin/phpunit --coverage-xml=build/logs/xml-coverage --log-junit=build/logs/junit.xml
       - name: Mutation testing (Infection)
-        env:
-          INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
+        # env:
+        #   INFECTION_BADGE_API_KEY: ${{ secrets.INFECTION_BADGE_API_KEY }}
         run: |
           curl -sLOJ https://github.com/infection/infection/releases/download/0.26.6/infection.phar
           curl -sLOJ https://github.com/infection/infection/releases/download/0.26.6/infection.phar.asc
