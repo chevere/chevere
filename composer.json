@@ -26,7 +26,7 @@
     "require-dev": {
         "phpstan/phpstan": "^1.6",
         "phpunit/phpunit": "^9.5",
-        "symplify/easy-coding-standard": "^10.2"
+        "symplify/easy-coding-standard": "~10.1.4"
     },
     "autoload": {
         "files": [
