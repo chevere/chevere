@@ -194,7 +194,7 @@ abstract class Action implements ActionInterface
         if ($type === null) {
             $type = self::TYPE_TO_PARAMETER['object'];
         }
-        
+
         return $type;
     }
 }
