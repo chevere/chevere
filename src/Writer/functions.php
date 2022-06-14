@@ -45,8 +45,8 @@ function streamFor(string $stream, string $mode): StreamInterface
         throw new InvalidArgumentException(
             previous: $e,
             message: (new Message('Unable to create a stream for %stream% %mode%'))
-                ->code('%stream%', $stream)
-                ->code('%mode%', $mode),
+                ->withCode('%stream%', $stream)
+                ->withCode('%mode%', $mode),
         );
     }
 }
@@ -68,20 +68,20 @@ function streamTemp(string $content = ''): StreamInterface
         throw new RuntimeException(
             previous: $e,
             message: (new Message('Unable to handle %stream% as stream resource'))
-                ->code('%stream%', $stream),
+                ->withCode('%stream%', $stream),
         );
     }
     if (!is_resource($resource)) {
         throw new RuntimeException(
             (new Message('Unable to create resource at %stream%'))
-                ->code('%stream%', $stream)
+                ->withCode('%stream%', $stream)
         );
     }
     if (get_resource_type($resource) !== 'stream') {
         throw new RuntimeException(
             (new Message('Resource at %stream% is not of type %type%'))
-                ->code('%stream%', $stream)
-                ->code('%type%', 'stream')
+                ->withCode('%stream%', $stream)
+                ->withCode('%type%', 'stream')
         );
     }
 

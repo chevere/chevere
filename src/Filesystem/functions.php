@@ -30,8 +30,8 @@ use Throwable;
 function getFilesystemInstanceMessage(string $instance, string $path): MessageInterface
 {
     return (new Message('Unable to create a %instance% for %path%'))
-        ->code('%instance%', $instance)
-        ->code('%path%', $path);
+        ->withCode('%instance%', $instance)
+        ->withCode('%path%', $path);
 }
 
 function tailDirPath(string $path): string
@@ -94,7 +94,7 @@ function varForFilePhpReturn(FilePhpReturnInterface $filePhpReturn, TypeInterfac
         throw new LogicException(
             previous: $e,
             message: (new Message('Unable to retrieve the expected variable of type %type%'))
-                ->code('%type%', $type->typeHinting()),
+                ->withCode('%type%', $type->typeHinting()),
         );
     }
 }

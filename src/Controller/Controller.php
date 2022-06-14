@@ -32,9 +32,9 @@ abstract class Controller extends Action implements ControllerInterface
         if ($invalid !== []) {
             throw new InvalidArgumentException(
                 (new Message('Parameter %parameters% must be of type %type% for controller %className%.'))
-                    ->code('%parameters%', implode(', ', $invalid))
-                    ->strong('%type%', 'string')
-                    ->strong('%className%', static::class)
+                    ->withCode('%parameters%', implode(', ', $invalid))
+                    ->withStrong('%type%', 'string')
+                    ->withStrong('%className%', static::class)
             );
         }
     }

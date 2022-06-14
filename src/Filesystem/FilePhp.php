@@ -74,8 +74,8 @@ final class FilePhp implements FilePhpInterface
         if (!$this->file->isPhp()) {
             throw new FileNotPhpException(
                 (new Message('Instance of %className% must represents a PHP script in the path %path%'))
-                    ->code('%className%', $this->file::class)
-                    ->code('%path%', $this->file->path()->__toString())
+                    ->withCode('%className%', $this->file::class)
+                    ->withCode('%path%', $this->file->path()->__toString())
             );
         }
     }

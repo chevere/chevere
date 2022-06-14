@@ -62,7 +62,7 @@ final class File implements FileInterface
         if (!$this->exists()) {
             throw new FileNotExistsException(
                 (new Message("File %path% doesn't exists"))
-                    ->code('%path%', $this->path->__toString())
+                    ->withCode('%path%', $this->path->__toString())
             );
         }
     }
@@ -78,7 +78,7 @@ final class File implements FileInterface
         // @infection-ignore-all
         throw new RuntimeException(
             message: message('Unable to get checksum for file %path%')
-                ->code('%path%', $this->path->__toString())
+                ->withCode('%path%', $this->path->__toString())
         );
         // @codeCoverageIgnoreEnd
     }
@@ -106,7 +106,7 @@ final class File implements FileInterface
         catch (Throwable $e) {
             throw new FileUnableToGetException(
                 (new Message('Unable to read the contents of the file at %path%'))
-                    ->code('%path%', $this->path->__toString())
+                    ->withCode('%path%', $this->path->__toString())
             );
         }
         // @codeCoverageIgnoreEnd
@@ -131,7 +131,7 @@ final class File implements FileInterface
         if ($this->path->exists()) {
             throw new PathExistsException(
                 (new Message('Unable to create file %path% (file already exists)'))
-                    ->code('%path%', $this->path->__toString())
+                    ->withCode('%path%', $this->path->__toString())
             );
         }
         $this->createPath();
@@ -167,7 +167,7 @@ final class File implements FileInterface
         catch (Throwable $e) {
             throw new FileUnableToPutException(
                 (new Message('Unable to write content to file %filepath%'))
-                    ->code('%filepath%', $this->path->__toString())
+                    ->withCode('%filepath%', $this->path->__toString())
             );
         }
         // @codeCoverageIgnoreEnd
@@ -187,7 +187,7 @@ final class File implements FileInterface
         if ($this->path->isDir()) {
             throw new PathIsDirException(
                 (new Message('Path %path% is a directory'))
-                    ->code('%path%', $this->path->__toString())
+                    ->withCode('%path%', $this->path->__toString())
             );
         }
     }

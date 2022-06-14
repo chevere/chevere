@@ -60,7 +60,7 @@ final class Dir implements DirInterface
         if (!$this->exists()) {
             throw new DirNotExistsException(
                 (new Message("Dir %path% doesn't exists"))
-                    ->code('%path%', $this->path->__toString())
+                    ->withCode('%path%', $this->path->__toString())
             );
         }
     }
@@ -71,7 +71,7 @@ final class Dir implements DirInterface
         if ($this->exists()) {
             throw new DirExistsException(
                 (new Message('Directory %path% already exists'))
-                    ->code('%path%', $this->path->__toString())
+                    ->withCode('%path%', $this->path->__toString())
             );
         }
         $this->assertCreate($mode);
@@ -137,7 +137,7 @@ final class Dir implements DirInterface
         if ($this->path->isFile()) {
             throw new PathIsFileException(
                 (new Message('Path %path% is a file'))
-                    ->code('%path%', $this->path->__toString())
+                    ->withCode('%path%', $this->path->__toString())
             );
         }
     }
@@ -148,9 +148,9 @@ final class Dir implements DirInterface
         if ($absolute[-1] !== '/') {
             throw new PathTailException(
                 (new Message('Instance of %className% must provide an absolute path ending with %tailChar%, path %provided% provided'))
-                    ->code('%className%', $this->path::class)
-                    ->code('%tailChar%', '/')
-                    ->code('%provided%', $absolute)
+                    ->withCode('%className%', $this->path::class)
+                    ->withCode('%tailChar%', '/')
+                    ->withCode('%provided%', $absolute)
             );
         }
     }
@@ -160,7 +160,7 @@ final class Dir implements DirInterface
         if (!$this->path->isDir()) {
             throw new PathIsNotDirectoryException(
                 (new Message('Path %path% is not a directory'))
-                    ->code('%path%', $this->path->__toString())
+                    ->withCode('%path%', $this->path->__toString())
             );
         }
     }

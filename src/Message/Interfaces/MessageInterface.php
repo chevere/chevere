@@ -70,7 +70,7 @@ interface MessageInterface extends Stringable
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified string translation.
      */
-    public function strtr(string $search, string $replace): self;
+    public function withStrtr(string $search, string $replace): self;
 
     /**
      * Return an instance with the specified `$search` replaced with `$replace` emphasis tag.
@@ -78,7 +78,7 @@ interface MessageInterface extends Stringable
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$search` replaced with `$replace` emphasis tag.
      */
-    public function emphasis(string $search, string $replace): self;
+    public function withEmphasis(string $search, string $replace): self;
 
     /**
      * Return an instance with the specified `$search` replaced with `$replace` as strong tag.
@@ -86,7 +86,7 @@ interface MessageInterface extends Stringable
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$search` replaced with `$replace` as strong tag.
      */
-    public function strong(string $search, string $replace): self;
+    public function withStrong(string $search, string $replace): self;
 
     /**
      * Return an instance with the specified underline.
@@ -94,7 +94,7 @@ interface MessageInterface extends Stringable
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified underline.
      */
-    public function underline(string $search, string $replace): self;
+    public function withUnderline(string $search, string $replace): self;
 
     /**
      * Return an instance with the specified `$search` replaced with `$replace` as code tag.
@@ -102,5 +102,5 @@ interface MessageInterface extends Stringable
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$search` replaced with `$replace` as code tag.
      */
-    public function code(string $search, string $replace): self;
+    public function withCode(string $search, string $replace): self;
 }

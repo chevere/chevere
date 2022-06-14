@@ -37,14 +37,14 @@ final class ControllerName implements ControllerNameInterface
         if (!class_exists($this->name)) {
             throw new ControllerNameNotExistsException(
                 (new Message("Controller %controllerName% doesn't exists"))
-                    ->code('%controllerName%', $this->name)
+                    ->withCode('%controllerName%', $this->name)
             );
         }
         if (!is_subclass_of($this->name, ControllerInterface::class)) {
             throw new ControllerNameInterfaceException(
                 (new Message('Controller %controllerName% must implement the %interface% interface'))
-                    ->code('%controllerName%', $this->name)
-                    ->code('%interface%', ControllerInterface::class)
+                    ->withCode('%controllerName%', $this->name)
+                    ->withCode('%interface%', ControllerInterface::class)
             );
         }
     }

@@ -28,7 +28,7 @@ final class Serialize implements SerializeInterface
         if (is_resource($var)) {
             throw new InvalidArgumentException(
                 (new Message('Argument of type %type% is not supported.'))
-                    ->code('%type%', 'resource')
+                    ->withCode('%type%', 'resource')
             );
         }
 

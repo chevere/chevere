@@ -77,9 +77,9 @@ final class FilePhpReturn implements FilePhpReturnInterface
 
             throw new FileReturnInvalidTypeException(
                 (new Message("File PHP return of type %return% at %path% doesn't match the expected type %expected%"))
-                    ->code('%return%', $typeReturn)
-                    ->code('%path%', $this->filePhp->file()->path()->__toString())
-                    ->code('%expected%', $type->typeHinting())
+                    ->withCode('%return%', $typeReturn)
+                    ->withCode('%path%', $this->filePhp->file()->path()->__toString())
+                    ->withCode('%expected%', $type->typeHinting())
             );
         }
 
@@ -125,13 +125,13 @@ final class FilePhpReturn implements FilePhpReturnInterface
         } catch (Throwable) {
             throw new FileWithoutContentsException(
                 (new Message("The file at %path% doesn't have any contents"))
-                    ->code('%path%', $this->filePhp->file()->path()->__toString())
+                    ->withCode('%path%', $this->filePhp->file()->path()->__toString())
             );
         }
         if (preg_match('#^<\?php[\S\s]*return[\S\s]*;$#', $contents) !== 1) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path%'))
-                    ->code('%path%', $this->filePhp->file()->path()->__toString())
+                    ->withCode('%path%', $this->filePhp->file()->path()->__toString())
             );
         }
     }

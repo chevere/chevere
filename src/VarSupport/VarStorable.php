@@ -66,7 +66,7 @@ final class VarStorable implements VarStorableInterface
         if (is_resource($var)) {
             $message = $this->breadcrumb->count() > 0
                 ? (new Message("Argument contains a resource at %at%"))
-                    ->code('%at%', $this->breadcrumb->__toString())
+                    ->withCode('%at%', $this->breadcrumb->__toString())
                 : new Message("Argument is of type resource.");
 
             throw new VarStorableException(message: $message);

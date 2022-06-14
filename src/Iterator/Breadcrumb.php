@@ -58,7 +58,7 @@ final class Breadcrumb implements BreadcrumbInterface
         if (!array_key_exists($pos, $this->items)) {
             throw new OutOfRangeException(
                 (new Message('Pos %pos% not found'))
-                    ->code('%pos%', (string) $pos)
+                    ->withCode('%pos%', (string) $pos)
             );
         }
         $new = clone $this;

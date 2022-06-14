@@ -65,7 +65,7 @@ final class Regex implements RegexInterface
         } catch (PcreException $e) {
             throw new RuntimeException(
                 (new Message('Unable to %function%'))
-                    ->code('%function%', 'preg_match'),
+                    ->withCode('%function%', 'preg_match'),
             );
         }
 
@@ -83,7 +83,7 @@ final class Regex implements RegexInterface
         } catch (\Exception $e) {
             throw new RuntimeException(
                 (new Message('Unable to %function%'))
-                    ->code('%function%', 'preg_match_all'),
+                    ->withCode('%function%', 'preg_match_all'),
             );
         }
 
@@ -98,8 +98,8 @@ final class Regex implements RegexInterface
             throw new InvalidArgumentException(
                 previous: $e,
                 message: (new Message('Invalid regex string %regex% provided [%preg%]'))
-                    ->code('%regex%', $this->pattern)
-                    ->strtr('%preg%', static::ERRORS[preg_last_error()]),
+                    ->withCode('%regex%', $this->pattern)
+                    ->withStrtr('%preg%', static::ERRORS[preg_last_error()]),
             );
         }
     }

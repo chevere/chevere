@@ -25,7 +25,6 @@ use Chevere\Throwable\Exceptions\OverflowException;
 final class ClassMap implements ClassMapInterface
 {
     use MapTrait;
-
     use MapToArrayTrait;
 
     /**
@@ -55,7 +54,7 @@ final class ClassMap implements ClassMapInterface
         if (!class_exists($className) && !interface_exists($className)) {
             throw new ClassNotExistsException(
                 (new Message("Class name or interface %className% doesn't exists"))
-                    ->strong('%className%', $className)
+                    ->withStrong('%className%', $className)
             );
         }
         /** @var string $known */
@@ -65,9 +64,9 @@ final class ClassMap implements ClassMapInterface
         if ($known !== '' && $known !== $className) {
             throw new OverflowException(
                 (new Message('Attempting to map %className% to the same mapping of %known% -> %key%'))
-                    ->code('%className%', $className)
-                    ->code('%known%', $known)
-                    ->code('%key%', $key)
+                    ->withCode('%className%', $className)
+                    ->withCode('%known%', $known)
+                    ->withCode('%key%', $key)
             );
         }
         $new = clone $this;
@@ -95,7 +94,7 @@ final class ClassMap implements ClassMapInterface
         } catch (OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message("Class %className% doesn't exists in the class map"))
-                    ->code('%className%', $className)
+                    ->withCode('%className%', $className)
             );
         }
     }
@@ -113,7 +112,7 @@ final class ClassMap implements ClassMapInterface
         } catch (OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message("Key %key% doesn't map any class"))
-                    ->code('%key%', $key)
+                    ->withCode('%key%', $key)
             );
         }
     }

@@ -95,7 +95,7 @@ final class Arguments implements ArgumentsInterface
 
         throw new OutOfBoundsException(
             (new Message('Argument %name% not found'))
-                ->code('%name%', $name),
+                ->withCode('%name%', $name),
         );
     }
 
@@ -139,7 +139,7 @@ final class Arguments implements ArgumentsInterface
         if ($diffRequired !== []) {
             throw new ArgumentCountError(
                 (new Message('Missing required argument(s): %missing%'))
-                    ->code('%missing%', implode(', ', $diffRequired))
+                    ->withCode('%missing%', implode(', ', $diffRequired))
             );
         }
         $diffExtra = array_diff(
@@ -149,7 +149,7 @@ final class Arguments implements ArgumentsInterface
         if ($diffExtra !== []) {
             throw new ArgumentCountError(
                 (new Message('Passing extra arguments: %extra%'))
-                    ->code('%extra%', implode(', ', $diffExtra))
+                    ->withCode('%extra%', implode(', ', $diffExtra))
             );
         }
     }
@@ -161,9 +161,9 @@ final class Arguments implements ArgumentsInterface
         if (!$type->validate($value)) {
             throw new TypeError(
                 message: (new Message('Parameter %name%: Expecting value of type %expected%, %provided% provided'))
-                    ->strong('%name%', $name)
-                    ->strong('%expected%', $type->typeHinting())
-                    ->code('%provided%', get_debug_type($value))
+                    ->withStrong('%name%', $name)
+                    ->withStrong('%expected%', $type->typeHinting())
+                    ->withCode('%provided%', get_debug_type($value))
             );
         }
         if ($parameter instanceof StringParameterInterface) {
@@ -184,9 +184,9 @@ final class Arguments implements ArgumentsInterface
         if (preg_match($regexString, $argument) !== 1) {
             throw new InvalidArgumentException(
                 (new Message("Parameter [%name%]: Argument value provided doesn't match the regex %regex%"))
-                    ->strong('%name%', $name)
-                    ->code('%parameter%', $name)
-                    ->code('%regex%', $regexString)
+                    ->withStrong('%name%', $name)
+                    ->withCode('%parameter%', $name)
+                    ->withCode('%regex%', $regexString)
             );
         }
     }

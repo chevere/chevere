@@ -29,7 +29,7 @@ final class StringParameter implements StringParameterInterface
     private RegexInterface $regex;
 
     private string $default = '';
-    
+
     public function setUp(): void
     {
         $this->regex = new Regex('/^.*$/');
@@ -53,8 +53,8 @@ final class StringParameter implements StringParameterInterface
         if ($this->regex->match($value) === []) {
             throw new InvalidArgumentException(
                 (new Message('Default value `%value%` must match the parameter regex %regexString%'))
-                    ->code('%value%', $value)
-                    ->code('%regexString%', $this->regex->__toString())
+                    ->withCode('%value%', $value)
+                    ->withCode('%regexString%', $this->regex->__toString())
             );
         }
         $new = clone $this;

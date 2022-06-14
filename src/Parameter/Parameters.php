@@ -68,7 +68,7 @@ final class Parameters implements ParametersInterface
             $new->map = $new->map->withPut($name, $param);
             $new->optional->add($name);
         }
-        
+
         return $new;
     }
 
@@ -80,7 +80,7 @@ final class Parameters implements ParametersInterface
             if (!$new->map->has($name)) {
                 throw new OutOfBoundsException(
                     (new Message("Parameter %name% doesn't exists"))
-                        ->code('%name%', $name)
+                        ->withCode('%name%', $name)
                 );
             }
             $new->map = $new->map->withPut($name, $param);
@@ -116,7 +116,7 @@ final class Parameters implements ParametersInterface
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
                 (new Message('Parameter %name% not found'))
-                    ->code('%name%', $name)
+                    ->withCode('%name%', $name)
             );
         }
     }
@@ -146,7 +146,7 @@ final class Parameters implements ParametersInterface
         if (!$this->has($parameter)) {
             throw new OutOfBoundsException(
                 (new Message("Parameter %name% doesn't exists"))
-                    ->code('%name%', $parameter)
+                    ->withCode('%name%', $parameter)
             );
         }
     }
@@ -156,7 +156,7 @@ final class Parameters implements ParametersInterface
         if ($this->has($name)) {
             throw new OverflowException(
                 (new Message('Parameter %name% has been already added'))
-                    ->code('%name%', $name)
+                    ->withCode('%name%', $name)
             );
         }
     }

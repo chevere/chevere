@@ -35,7 +35,7 @@ final class MessageTest extends TestCase
         $search = '%translate%';
         $replace = '1';
         $var = 'string ' . $search;
-        $message = (new Message($var))->strtr($search, $replace);
+        $message = (new Message($var))->withStrtr($search, $replace);
         $varTr = strtr($var, [
             $search => $replace,
         ]);
@@ -58,7 +58,7 @@ final class MessageTest extends TestCase
         $message = new Message($var);
         $tr = [];
         foreach ($tags as $tag => $value) {
-            $withReplaces = ($withReplaces ?? $message)->{$tag}(...$value);
+            $withReplaces = ($withReplaces ?? $message)->{'with' . ucfirst($tag)}(...$value);
             $this->assertNotSame($message, $withReplaces);
             $tag = MessageInterface::HTML_TABLE[$tag] ?? $tag;
             $tr[$value[0]] = "<${tag}>" . $value[1] . "</${tag}>";

@@ -109,7 +109,7 @@ final class Type implements TypeInterface
         if ($this->primitive === '') {
             throw new InvalidArgumentException(
                 (new Message("Type %type% doesn't exists"))
-                    ->code('%type%', $this->type)
+                    ->withCode('%type%', $this->type)
             );
         }
     }

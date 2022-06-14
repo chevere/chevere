@@ -84,27 +84,27 @@ final class Message implements MessageInterface
         return strtr($this->template, $tr);
     }
 
-    public function strtr(string $search, string $replace): MessageInterface
+    public function withStrtr(string $search, string $replace): MessageInterface
     {
         return $this->put('', $search, $replace);
     }
 
-    public function emphasis(string $search, string $replace): MessageInterface
+    public function withEmphasis(string $search, string $replace): MessageInterface
     {
         return $this->put('emphasis', $search, $replace);
     }
 
-    public function strong(string $search, string $replace): MessageInterface
+    public function withStrong(string $search, string $replace): MessageInterface
     {
         return $this->put('strong', $search, $replace);
     }
 
-    public function underline(string $search, string $replace): MessageInterface
+    public function withUnderline(string $search, string $replace): MessageInterface
     {
         return $this->put('underline', $search, $replace);
     }
 
-    public function code(string $search, string $replace): MessageInterface
+    public function withCode(string $search, string $replace): MessageInterface
     {
         return $this->put('code', $search, $replace);
     }

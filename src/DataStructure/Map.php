@@ -94,7 +94,7 @@ final class Map implements MapInterface
         if ($missing !== []) {
             throw new OutOfBoundsException(
                 (new Message('Missing key(s) %keys%'))
-                    ->code('%keys%', implode(', ', $missing))
+                    ->withCode('%keys%', implode(', ', $missing))
             );
         }
     }
@@ -108,7 +108,7 @@ final class Map implements MapInterface
             return $this->map->get($key);
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
-                (new Message('Key %key% not found'))->code('%key%', $key)
+                (new Message('Key %key% not found'))->withCode('%key%', $key)
             );
         }
     }

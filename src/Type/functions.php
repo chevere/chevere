@@ -35,8 +35,8 @@ function getType(mixed $var): string
 function returnTypeExceptionMessage(string $expected, mixed $provided): MessageInterface
 {
     return (new Message('Expecting return type %expected%, type %provided% provided'))
-        ->code('%expected%', $expected)
-        ->code('%provided%', getType($provided));
+        ->withCode('%expected%', $expected)
+        ->withCode('%provided%', getType($provided));
 }
 
 function typeBoolean(): TypeInterface
