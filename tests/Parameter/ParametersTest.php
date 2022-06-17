@@ -34,6 +34,14 @@ final class ParametersTest extends TestCase
         $parameters->get($name);
     }
 
+    public function testAssertEmpty(): void
+    {
+        $name = 'name';
+        $parameters = new Parameters();
+        $this->expectException(OutOfBoundsException::class);
+        $parameters->assertHas($name);
+    }
+
     public function testConstruct(): void
     {
         $name = 'name';
@@ -44,6 +52,7 @@ final class ParametersTest extends TestCase
         $this->assertCount(1, $parameters);
         $this->assertCount(0, $parameters->optional());
         $this->assertCount(1, $parameters->required());
+        $parameters->assertHas($name);
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
@@ -80,6 +89,7 @@ final class ParametersTest extends TestCase
         $this->assertCount(1, $parameters);
         $this->assertCount(0, $parameters->optional());
         $this->assertCount(1, $parameters->required());
+        $parameters->assertHas($name);
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
@@ -132,6 +142,7 @@ final class ParametersTest extends TestCase
                 name: (new StringParameter())->withDefault('eee')
             );
         $this->assertNotSame($parameters, $parametersWithModify);
+        $parameters->assertHas($name);
         $this->assertTrue($parametersWithModify->has($name));
         $this->expectException(OutOfBoundsException::class);
         $parametersWithModify->withModify(notFound: new StringParameter());

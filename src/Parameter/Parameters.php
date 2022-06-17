@@ -89,6 +89,11 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
+    public function assertHas(string ...$parameter): void
+    {
+        $this->map->assertHas(...$parameter);
+    }
+
     public function has(string ...$parameter): bool
     {
         return $this->map->has(...$parameter);

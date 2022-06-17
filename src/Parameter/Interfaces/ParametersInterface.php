@@ -62,6 +62,11 @@ interface ParametersInterface extends MappedInterface
     public function withModify(ParameterInterface ...$parameters): self;
 
     /**
+     * Asserts whether the instance has a parameter by name(s).
+     */
+    public function assertHas(string ...$parameter): void;
+
+    /**
      * Indicates whether the instance has a parameter by name(s).
      */
     public function has(string ...$parameter): bool;
