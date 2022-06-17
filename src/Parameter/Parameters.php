@@ -20,35 +20,27 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
-use Ds\Set;
 
 final class Parameters implements ParametersInterface
 {
     use MapTrait;
 
     /**
-     * @var Set<string>
+     * @var array<string>
      */
-    private Set $required;
+    private array $required;
 
     /**
-     * @var Set<string>
+     * @var array<string>
      */
-    private Set $optional;
+    private array $optional;
 
     public function __construct(ParameterInterface ...$parameters)
     {
         $this->map = new Map();
-        $this->required = new Set();
-        $this->optional = new Set();
+        $this->required = [];
+        $this->optional = [];
         $this->putAdded(...$parameters);
-    }
-
-    public function __clone()
-    {
-        $this->map = clone $this->map;
-        $this->required = new Set($this->required->toArray());
-        $this->optional = new Set($this->optional->toArray());
     }
 
     public function withAdded(ParameterInterface ...$parameters): ParametersInterface
@@ -66,7 +58,7 @@ final class Parameters implements ParametersInterface
             $name = strval($name);
             $new->assertNoOverflow($name);
             $new->map = $new->map->withPut($name, $param);
-            $new->optional->add($name);
+            $new->optional[] = $name;
         }
 
         return $new;
@@ -103,14 +95,16 @@ final class Parameters implements ParametersInterface
     {
         $this->assertNoOutOfBounds($parameter);
 
-        return $this->required->contains($parameter);
+        return array_search($parameter, $this->required)
+            !== false;
     }
 
     public function isOptional(string $parameter): bool
     {
         $this->assertNoOutOfBounds($parameter);
 
-        return !$this->required->contains($parameter);
+        return array_search($parameter, $this->required)
+            === false;
     }
 
     public function get(string $name): ParameterInterface
@@ -126,14 +120,14 @@ final class Parameters implements ParametersInterface
         }
     }
 
-    public function required(): Set
+    public function required(): array
     {
-        return new Set($this->required->toArray());
+        return $this->required;
     }
 
-    public function optional(): Set
+    public function optional(): array
     {
-        return new Set($this->optional->toArray());
+        return $this->optional;
     }
 
     private function putAdded(ParameterInterface ...$parameters): void
@@ -142,7 +136,7 @@ final class Parameters implements ParametersInterface
             $name = strval($name);
             $this->assertNoOverflow($name);
             $this->map = $this->map->withPut($name, $parameter);
-            $this->required->add($name);
+            $this->required[] = $name;
         }
     }
 

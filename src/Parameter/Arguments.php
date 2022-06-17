@@ -133,7 +133,7 @@ final class Arguments implements ArgumentsInterface
     {
         $argumentsKeys = array_keys($this->arguments);
         $diffRequired = array_diff(
-            $this->parameters->required()->toArray(),
+            $this->parameters->required(),
             $argumentsKeys
         );
         if ($diffRequired !== []) {

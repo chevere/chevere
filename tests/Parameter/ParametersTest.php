@@ -15,7 +15,6 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
-use Chevere\Tests\src\ObjectHelper;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
@@ -60,21 +59,6 @@ final class ParametersTest extends TestCase
         $parameters->withAdded(...[
             $name => $parameter,
         ]);
-    }
-
-    public function testClone(): void
-    {
-        $parameters = new Parameters(test: new StringParameter());
-        $clone = clone $parameters;
-        $this->assertNotSame($parameters, $clone);
-        $helper = new ObjectHelper($parameters);
-        $cloneHelper = new ObjectHelper($clone);
-        foreach (['map', 'required', 'optional'] as $property) {
-            $this->assertNotSame(
-                $helper->getPropertyValue($property),
-                $cloneHelper->getPropertyValue($property)
-            );
-        }
     }
 
     public function testWithAddedOverflow(): void
