@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -49,7 +49,7 @@ final class Arguments implements ArgumentsInterface
         }
         if ($this->errors !== []) {
             throw new InvalidArgumentException(
-                (new Message(implode(', ', $this->errors)))
+                message(implode(', ', $this->errors))
             );
         }
     }
@@ -94,7 +94,7 @@ final class Arguments implements ArgumentsInterface
         }
 
         throw new OutOfBoundsException(
-            (new Message('Argument %name% not found'))
+            message('Argument %name% not found')
                 ->withCode('%name%', $name),
         );
     }
@@ -138,7 +138,7 @@ final class Arguments implements ArgumentsInterface
         );
         if ($diffRequired !== []) {
             throw new ArgumentCountError(
-                (new Message('Missing required argument(s): %missing%'))
+                message('Missing required argument(s): %missing%')
                     ->withCode('%missing%', implode(', ', $diffRequired))
             );
         }
@@ -148,7 +148,7 @@ final class Arguments implements ArgumentsInterface
         );
         if ($diffExtra !== []) {
             throw new ArgumentCountError(
-                (new Message('Passing extra arguments: %extra%'))
+                message('Passing extra arguments: %extra%')
                     ->withCode('%extra%', implode(', ', $diffExtra))
             );
         }
@@ -160,7 +160,7 @@ final class Arguments implements ArgumentsInterface
         $type = $parameter->type();
         if (!$type->validate($value)) {
             throw new TypeError(
-                message: (new Message('Parameter %name%: Expecting value of type %expected%, %provided% provided'))
+                message: message('Parameter %name%: Expecting value of type %expected%, %provided% provided')
                     ->withStrong('%name%', $name)
                     ->withStrong('%expected%', $type->typeHinting())
                     ->withCode('%provided%', get_debug_type($value))
@@ -183,7 +183,7 @@ final class Arguments implements ArgumentsInterface
         $regexString = $parameter->regex()->__toString();
         if (preg_match($regexString, $argument) !== 1) {
             throw new InvalidArgumentException(
-                (new Message("Parameter [%name%]: Argument value provided doesn't match the regex %regex%"))
+                message("Parameter [%name%]: Argument value provided doesn't match the regex %regex%")
                     ->withStrong('%name%', $name)
                     ->withCode('%parameter%', $name)
                     ->withCode('%regex%', $regexString)

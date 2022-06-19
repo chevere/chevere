@@ -21,7 +21,7 @@ use Chevere\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Serialize\Deserialize;
 use Chevere\Serialize\Serialize;
 use Chevere\Str\StrAssert;
@@ -76,7 +76,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
             $typeReturn = get_debug_type($this->var());
 
             throw new FileReturnInvalidTypeException(
-                (new Message("File PHP return of type %return% at %path% doesn't match the expected type %expected%"))
+                message("File PHP return of type %return% at %path% doesn't match the expected type %expected%")
                     ->withCode('%return%', $typeReturn)
                     ->withCode('%path%', $this->filePhp->file()->path()->__toString())
                     ->withCode('%expected%', $type->typeHinting())
@@ -124,13 +124,13 @@ final class FilePhpReturn implements FilePhpReturnInterface
             (new StrAssert($contents))->notEmpty()->notCtypeSpace();
         } catch (Throwable) {
             throw new FileWithoutContentsException(
-                (new Message("The file at %path% doesn't have any contents"))
+                message("The file at %path% doesn't have any contents")
                     ->withCode('%path%', $this->filePhp->file()->path()->__toString())
             );
         }
         if (preg_match('#^<\?php[\S\s]*return[\S\s]*;$#', $contents) !== 1) {
             throw new FileInvalidContentsException(
-                (new Message('Unexpected contents in %path%'))
+                message('Unexpected contents in %path%')
                     ->withCode('%path%', $this->filePhp->file()->path()->__toString())
             );
         }

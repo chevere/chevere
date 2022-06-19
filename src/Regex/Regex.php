@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Regex;
 
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\RuntimeException;
@@ -64,7 +64,7 @@ final class Regex implements RegexInterface
             $match = preg_match($this->pattern, $string, $matches);
         } catch (PcreException $e) {
             throw new RuntimeException(
-                (new Message('Unable to %function%'))
+                message('Unable to %function%')
                     ->withCode('%function%', 'preg_match'),
             );
         }
@@ -82,7 +82,7 @@ final class Regex implements RegexInterface
             $match = preg_match_all($this->pattern, $string, $matches);
         } catch (\Exception $e) {
             throw new RuntimeException(
-                (new Message('Unable to %function%'))
+                message('Unable to %function%')
                     ->withCode('%function%', 'preg_match_all'),
             );
         }
@@ -97,7 +97,7 @@ final class Regex implements RegexInterface
         } catch (\Exception $e) {
             throw new InvalidArgumentException(
                 previous: $e,
-                message: (new Message('Invalid regex string %regex% provided [%preg%]'))
+                message: message('Invalid regex string %regex% provided [%preg%]')
                     ->withCode('%regex%', $this->pattern)
                     ->withStrtr('%preg%', static::ERRORS[preg_last_error()]),
             );

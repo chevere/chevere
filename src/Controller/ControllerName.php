@@ -17,7 +17,7 @@ use Chevere\Controller\Exceptions\ControllerNameInterfaceException;
 use Chevere\Controller\Exceptions\ControllerNameNotExistsException;
 use Chevere\Controller\Interfaces\ControllerInterface;
 use Chevere\Controller\Interfaces\ControllerNameInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 
 final class ControllerName implements ControllerNameInterface
 {
@@ -36,13 +36,13 @@ final class ControllerName implements ControllerNameInterface
     {
         if (!class_exists($this->name)) {
             throw new ControllerNameNotExistsException(
-                (new Message("Controller %controllerName% doesn't exists"))
+                message("Controller %controllerName% doesn't exists")
                     ->withCode('%controllerName%', $this->name)
             );
         }
         if (!is_subclass_of($this->name, ControllerInterface::class)) {
             throw new ControllerNameInterfaceException(
-                (new Message('Controller %controllerName% must implement the %interface% interface'))
+                message('Controller %controllerName% must implement the %interface% interface')
                     ->withCode('%controllerName%', $this->name)
                     ->withCode('%interface%', ControllerInterface::class)
             );

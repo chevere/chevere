@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Str;
 
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Str\Exceptions\StrContainsException;
 use Chevere\Str\Exceptions\StrCtypeDigitException;
 use Chevere\Str\Exceptions\StrCtypeSpaceException;
@@ -46,7 +46,7 @@ final class StrAssert implements StrAssertInterface
         }
 
         throw new StrNotEmptyException(
-            (new Message('String %string% is not empty'))
+            message('String %string% is not empty')
                 ->withCode('%string%', $this->string)
         );
     }
@@ -55,7 +55,7 @@ final class StrAssert implements StrAssertInterface
     {
         if ((new StrCondition($this->string))->isEmpty()) {
             throw new StrEmptyException(
-                (new Message('String is empty'))
+                message('String is empty')
             );
         }
 
@@ -69,7 +69,7 @@ final class StrAssert implements StrAssertInterface
         }
 
         throw new StrNotCtypeSpaceException(
-            (new Message('String %string% is not %algo%'))
+            message('String %string% is not %algo%')
                 ->withCode('%string%', $this->string)
                 ->withStrong('%algo%', 'ctype space')
         );
@@ -79,7 +79,7 @@ final class StrAssert implements StrAssertInterface
     {
         if ((new StrCondition($this->string))->isCtypeSpace()) {
             throw new StrCtypeSpaceException(
-                (new Message('String %algo% provided'))
+                message('String %algo% provided')
                     ->withStrong('%algo%', 'ctype space')
             );
         }
@@ -94,7 +94,7 @@ final class StrAssert implements StrAssertInterface
         }
 
         throw new StrNotCtypeDigitException(
-            (new Message('String %string% is not %algo%'))
+            message('String %string% is not %algo%')
                 ->withCode('%string%', $this->string)
                 ->withStrong('%algo%', 'ctype digit')
         );
@@ -104,7 +104,7 @@ final class StrAssert implements StrAssertInterface
     {
         if ((new StrCondition($this->string))->isCtypeDigit()) {
             throw new StrCtypeDigitException(
-                (new Message('String %algo% provided'))
+                message('String %algo% provided')
                     ->withStrong('%algo%', 'ctype digit')
             );
         }
@@ -119,7 +119,7 @@ final class StrAssert implements StrAssertInterface
         }
 
         throw new StrNotStartsWithCtypeDigitException(
-            (new Message('String %string% does not starts with a %algo% character'))
+            message('String %string% does not starts with a %algo% character')
                 ->withCode('%string%', $this->string)
                 ->withStrong('%algo%', 'ctype digit')
         );
@@ -129,7 +129,7 @@ final class StrAssert implements StrAssertInterface
     {
         if ((new StrCondition($this->string))->isStartingWithCtypeDigit()) {
             throw new StrStartsWithCtypeDigitException(
-                (new Message('String %string% starts with a %algo% character'))
+                message('String %string% starts with a %algo% character')
                     ->withCode('%string%', $this->string)
                     ->withStrong('%algo%', 'ctype digit')
             );
@@ -145,7 +145,7 @@ final class StrAssert implements StrAssertInterface
         }
 
         throw new StrNotStartsWithException(
-            (new Message('String %string% does not starts with %needle%'))
+            message('String %string% does not starts with %needle%')
                 ->withCode('%string%', $this->string)
                 ->withCode('%needle%', $needle)
         );
@@ -155,7 +155,7 @@ final class StrAssert implements StrAssertInterface
     {
         if ((new StrCondition($this->string))->isStartingWith($needle)) {
             throw new StrStartsWithException(
-                (new Message('String %string% starts with %needle%'))
+                message('String %string% starts with %needle%')
                     ->withCode('%string%', $this->string)
                     ->withCode('%needle%', $needle)
             );
@@ -171,7 +171,7 @@ final class StrAssert implements StrAssertInterface
         }
 
         throw new StrNotEndsWithException(
-            (new Message('String %string% does not ends with %needle%'))
+            message('String %string% does not ends with %needle%')
                 ->withCode('%string%', $this->string)
                 ->withCode('%needle%', $needle)
         );
@@ -181,7 +181,7 @@ final class StrAssert implements StrAssertInterface
     {
         if ((new StrCondition($this->string))->isEndingWith($needle)) {
             throw new StrEndsWithException(
-                (new Message('String %string% ends with %needle%'))
+                message('String %string% ends with %needle%')
                     ->withCode('%string%', $this->string)
                     ->withCode('%needle%', $needle)
             );
@@ -197,7 +197,7 @@ final class StrAssert implements StrAssertInterface
         }
 
         throw new StrNotSameException(
-            (new Message('Provided string %provided% is not the same as %string%'))
+            message('Provided string %provided% is not the same as %string%')
                 ->withCode('%provided%', $string)
                 ->withCode('%string%', $this->string)
         );
@@ -207,7 +207,7 @@ final class StrAssert implements StrAssertInterface
     {
         if ((new StrCondition($this->string))->isSame($string)) {
             throw new StrSameException(
-                (new Message('Provided string %provided% is the same as %string%'))
+                message('Provided string %provided% is the same as %string%')
                     ->withCode('%provided%', $string)
                     ->withCode('%string%', $this->string)
             );
@@ -223,7 +223,7 @@ final class StrAssert implements StrAssertInterface
         }
 
         throw new StrNotContainsException(
-            (new Message('String %string% not contains %provided%'))
+            message('String %string% not contains %provided%')
                 ->withCode('%provided%', $string)
                 ->withCode('%string%', $this->string)
         );
@@ -233,7 +233,7 @@ final class StrAssert implements StrAssertInterface
     {
         if ((new StrCondition($this->string))->contains($string)) {
             throw new StrContainsException(
-                (new Message('String %string% contains %provided%'))
+                message('String %string% contains %provided%')
                     ->withCode('%provided%', $string)
                     ->withCode('%string%', $this->string)
             );

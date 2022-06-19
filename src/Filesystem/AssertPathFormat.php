@@ -18,7 +18,7 @@ use Chevere\Filesystem\Exceptions\PathDoubleDotsDashException;
 use Chevere\Filesystem\Exceptions\PathExtraSlashesException;
 use Chevere\Filesystem\Exceptions\PathNotAbsoluteException;
 use Chevere\Filesystem\Interfaces\AssertPathFormatInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 
 final class AssertPathFormat implements AssertPathFormatInterface
 {
@@ -63,7 +63,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if ($this->driveLetter === '' && !str_starts_with($this->path, '/')) {
             throw new PathNotAbsoluteException(
-                (new Message('Path %path% must start with %char%'))
+                message('Path %path% must start with %char%')
                     ->withCode('%path%', $this->path)
                     ->withCode('%char%', '/')
             );
@@ -74,7 +74,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if (strpos($this->path, '../') !== false) {
             throw new PathDoubleDotsDashException(
-                (new Message('Must omit %chars% for path %path%'))
+                message('Must omit %chars% for path %path%')
                     ->withCode('%chars%', '../')
                     ->withCode('%path%', $this->path)
             );
@@ -85,7 +85,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if (strpos($this->path, './') !== false) {
             throw new PathDotSlashException(
-                (new Message('Must omit %chars% for path %path%'))
+                message('Must omit %chars% for path %path%')
                     ->withCode('%chars%', './')
                     ->withCode('%path%', $this->path)
             );
@@ -96,7 +96,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if (strpos($this->path, '//') !== false) {
             throw new PathExtraSlashesException(
-                (new Message('Path %path% contains extra-slashes'))
+                message('Path %path% contains extra-slashes')
                     ->withCode('%path%', $this->path)
             );
         }

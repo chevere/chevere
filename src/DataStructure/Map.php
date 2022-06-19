@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\DataStructure;
 
 use Chevere\DataStructure\Interfaces\MapInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use function Chevere\VarSupport\deepCopy;
 use Ds\Map as DsMap;
@@ -93,7 +93,7 @@ final class Map implements MapInterface
         }
         if ($missing !== []) {
             throw new OutOfBoundsException(
-                (new Message('Missing key(s) %keys%'))
+                message('Missing key(s) %keys%')
                     ->withCode('%keys%', implode(', ', $missing))
             );
         }
@@ -108,7 +108,8 @@ final class Map implements MapInterface
             return $this->map->get($key);
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
-                (new Message('Key %key% not found'))->withCode('%key%', $key)
+                message('Key %key% not found')
+                    ->withCode('%key%', $key)
             );
         }
     }

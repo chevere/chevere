@@ -22,7 +22,6 @@ use Chevere\Filesystem\Exceptions\PathExistsException;
 use Chevere\Filesystem\Exceptions\PathIsDirException;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
-use Chevere\Message\Message;
 use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\RuntimeException;
 use function Safe\file_get_contents;
@@ -61,7 +60,7 @@ final class File implements FileInterface
     {
         if (!$this->exists()) {
             throw new FileNotExistsException(
-                (new Message("File %path% doesn't exists"))
+                message("File %path% doesn't exists")
                     ->withCode('%path%', $this->path->__toString())
             );
         }
@@ -105,7 +104,7 @@ final class File implements FileInterface
         // @infection-ignore-all
         catch (Throwable $e) {
             throw new FileUnableToGetException(
-                (new Message('Unable to read the contents of the file at %path%'))
+                message('Unable to read the contents of the file at %path%')
                     ->withCode('%path%', $this->path->__toString())
             );
         }
@@ -130,7 +129,7 @@ final class File implements FileInterface
     {
         if ($this->path->exists()) {
             throw new PathExistsException(
-                (new Message('Unable to create file %path% (file already exists)'))
+                message('Unable to create file %path% (file already exists)')
                     ->withCode('%path%', $this->path->__toString())
             );
         }
@@ -166,7 +165,7 @@ final class File implements FileInterface
         // @infection-ignore-all
         catch (Throwable $e) {
             throw new FileUnableToPutException(
-                (new Message('Unable to write content to file %filepath%'))
+                message('Unable to write content to file %filepath%')
                     ->withCode('%filepath%', $this->path->__toString())
             );
         }
@@ -186,7 +185,7 @@ final class File implements FileInterface
     {
         if ($this->path->isDir()) {
             throw new PathIsDirException(
-                (new Message('Path %path% is a directory'))
+                message('Path %path% is a directory')
                     ->withCode('%path%', $this->path->__toString())
             );
         }

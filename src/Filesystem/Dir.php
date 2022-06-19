@@ -23,7 +23,7 @@ use Chevere\Filesystem\Exceptions\PathTailException;
 use Chevere\Filesystem\Interfaces\DirInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
 use function Chevere\Iterator\recursiveDirectoryIteratorFor;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use function Safe\mkdir;
@@ -59,7 +59,7 @@ final class Dir implements DirInterface
     {
         if (!$this->exists()) {
             throw new DirNotExistsException(
-                (new Message("Dir %path% doesn't exists"))
+                message("Dir %path% doesn't exists")
                     ->withCode('%path%', $this->path->__toString())
             );
         }
@@ -70,7 +70,7 @@ final class Dir implements DirInterface
     {
         if ($this->exists()) {
             throw new DirExistsException(
-                (new Message('Directory %path% already exists'))
+                message('Directory %path% already exists')
                     ->withCode('%path%', $this->path->__toString())
             );
         }
@@ -136,7 +136,7 @@ final class Dir implements DirInterface
     {
         if ($this->path->isFile()) {
             throw new PathIsFileException(
-                (new Message('Path %path% is a file'))
+                message('Path %path% is a file')
                     ->withCode('%path%', $this->path->__toString())
             );
         }
@@ -147,7 +147,7 @@ final class Dir implements DirInterface
         $absolute = $this->path->__toString();
         if ($absolute[-1] !== '/') {
             throw new PathTailException(
-                (new Message('Instance of %className% must provide an absolute path ending with %tailChar%, path %provided% provided'))
+                message('Instance of %className% must provide an absolute path ending with %tailChar% path %provided% provided')
                     ->withCode('%className%', $this->path::class)
                     ->withCode('%tailChar%', '/')
                     ->withCode('%provided%', $absolute)
@@ -159,7 +159,7 @@ final class Dir implements DirInterface
     {
         if (!$this->path->isDir()) {
             throw new PathIsNotDirectoryException(
-                (new Message('Path %path% is not a directory'))
+                message('Path %path% is not a directory')
                     ->withCode('%path%', $this->path->__toString())
             );
         }

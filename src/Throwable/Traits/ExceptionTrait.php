@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Throwable\Traits;
 
 use Chevere\Message\Interfaces\MessageInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Throwable;
 
 /**
@@ -26,7 +26,7 @@ trait ExceptionTrait
 
     public function __construct(?MessageInterface $message = null, int $code = 0, Throwable $previous = null)
     {
-        $this->_message = $message ?? new Message('');
+        $this->_message = $message ?? message('');
 
         parent::__construct($this->_message->__toString(), $code, $previous);
     }

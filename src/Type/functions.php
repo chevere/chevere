@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Type;
 
 use Chevere\Message\Interfaces\MessageInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 
@@ -34,7 +34,7 @@ function getType(mixed $var): string
 
 function returnTypeExceptionMessage(string $expected, mixed $provided): MessageInterface
 {
-    return (new Message('Expecting return type %expected%, type %provided% provided'))
+    return message('Expecting return type %expected%, type %provided% provided')
         ->withCode('%expected%', $expected)
         ->withCode('%provided%', getType($provided));
 }

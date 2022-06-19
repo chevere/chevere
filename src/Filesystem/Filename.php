@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Filesystem;
 
 use Chevere\Filesystem\Interfaces\FilenameInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Str\StrAssert;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LengthException;
@@ -60,7 +60,7 @@ final class Filename implements FilenameInterface
         }
         if (strlen($this->filename) > self::MAX_LENGTH_BYTES) {
             throw new LengthException(
-                message: (new Message('String %string% provided exceed the limit of %bytes% bytes'))
+                message: message('String %string% provided exceed the limit of %bytes% bytes')
                     ->withCode('%string%', $this->filename)
                     ->withCode('%bytes%', (string) self::MAX_LENGTH_BYTES),
                 code: 110

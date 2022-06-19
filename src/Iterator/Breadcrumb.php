@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Iterator;
 
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfRangeException;
 
 final class Breadcrumb implements BreadcrumbInterface
@@ -57,7 +57,7 @@ final class Breadcrumb implements BreadcrumbInterface
     {
         if (!array_key_exists($pos, $this->items)) {
             throw new OutOfRangeException(
-                (new Message('Pos %pos% not found'))
+                message('Pos %pos% not found')
                     ->withCode('%pos%', (string) $pos)
             );
         }

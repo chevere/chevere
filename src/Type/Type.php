@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Type;
 
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 
@@ -108,7 +108,7 @@ final class Type implements TypeInterface
     {
         if ($this->primitive === '') {
             throw new InvalidArgumentException(
-                (new Message("Type %type% doesn't exists"))
+                message("Type %type% doesn't exists")
                     ->withCode('%type%', $this->type)
             );
         }

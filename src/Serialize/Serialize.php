@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Serialize;
 
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Serialize\Interfaces\SerializeInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
@@ -27,7 +27,7 @@ final class Serialize implements SerializeInterface
     {
         if (is_resource($var)) {
             throw new InvalidArgumentException(
-                (new Message('Argument of type %type% is not supported.'))
+                message('Argument of type %type% is not supported.')
                     ->withCode('%type%', 'resource')
             );
         }

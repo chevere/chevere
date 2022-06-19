@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Writer;
 
-use Chevere\Message\Message;
-use Chevere\Writer\Interfaces\WriterInterface;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\RuntimeException;
+use Chevere\Writer\Interfaces\WriterInterface;
 use Psr\Http\Message\StreamInterface;
 use Throwable;
 
@@ -31,7 +31,7 @@ final class StreamWriter implements WriterInterface
     ) {
         if (!$this->stream->isWritable()) {
             throw new InvalidArgumentException(
-                (new Message('Stream provided is not writable'))
+                message('Stream provided is not writable')
             );
         }
     }
@@ -43,7 +43,7 @@ final class StreamWriter implements WriterInterface
         } catch (Throwable $e) {
             throw new RuntimeException(
                 previous: $e,
-                message: (new Message('Unable to write provided string')),
+                message: message('Unable to write provided string')
             );
         }
     }

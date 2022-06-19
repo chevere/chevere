@@ -15,7 +15,7 @@ namespace Chevere\VarSupport;
 
 use Chevere\Iterator\Breadcrumb;
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\VarSupport\Exceptions\VarStorableException;
 use Chevere\VarSupport\Interfaces\VarStorableInterface;
@@ -65,9 +65,9 @@ final class VarStorable implements VarStorableInterface
     {
         if (is_resource($var)) {
             $message = $this->breadcrumb->count() > 0
-                ? (new Message("Argument contains a resource at %at%"))
+                ? message("Argument contains a resource at %at%")
                     ->withCode('%at%', $this->breadcrumb->__toString())
-                : new Message("Argument is of type resource.");
+                : message("Argument is of type resource.");
 
             throw new VarStorableException(message: $message);
         }

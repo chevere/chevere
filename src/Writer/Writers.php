@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Writer;
 
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\LogicException;
 use Chevere\Writer\Interfaces\WriterInterface;
 use Chevere\Writer\Interfaces\WritersInterface;
@@ -40,7 +40,7 @@ final class Writers implements WritersInterface
         catch (InvalidArgumentException $e) {
             throw new LogicException(
                 previous: $e,
-                message: new Message('Unable to create default streams'),
+                message: message('Unable to create default streams'),
             );
         }
         // @codeCoverageIgnoreEnd

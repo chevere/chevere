@@ -15,7 +15,7 @@ namespace Chevere\Parameter;
 
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
@@ -71,7 +71,7 @@ final class Parameters implements ParametersInterface
             $name = strval($name);
             if (!$new->map->has($name)) {
                 throw new OutOfBoundsException(
-                    (new Message("Parameter %name% doesn't exists"))
+                    message("Parameter %name% doesn't exists")
                         ->withCode('%name%', $name)
                 );
             }
@@ -114,7 +114,7 @@ final class Parameters implements ParametersInterface
             return $this->map->get($name);
         } catch (\OutOfBoundsException $e) {
             throw new OutOfBoundsException(
-                (new Message('Parameter %name% not found'))
+                message('Parameter %name% not found')
                     ->withCode('%name%', $name)
             );
         }
@@ -144,7 +144,7 @@ final class Parameters implements ParametersInterface
     {
         if (!$this->has($parameter)) {
             throw new OutOfBoundsException(
-                (new Message("Parameter %name% doesn't exists"))
+                message("Parameter %name% doesn't exists")
                     ->withCode('%name%', $parameter)
             );
         }
@@ -154,7 +154,7 @@ final class Parameters implements ParametersInterface
     {
         if ($this->has($name)) {
             throw new OverflowException(
-                (new Message('Parameter %name% has been already added'))
+                message('Parameter %name% has been already added')
                     ->withCode('%name%', $name)
             );
         }

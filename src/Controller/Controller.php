@@ -15,7 +15,7 @@ namespace Chevere\Controller;
 
 use Chevere\Action\Action;
 use Chevere\Controller\Interfaces\ControllerInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 
@@ -31,7 +31,7 @@ abstract class Controller extends Action implements ControllerInterface
         }
         if ($invalid !== []) {
             throw new InvalidArgumentException(
-                (new Message('Parameter %parameters% must be of type %type% for controller %className%.'))
+                message('Parameter %parameters% must be of type %type% for controller %className%.')
                     ->withCode('%parameters%', implode(', ', $invalid))
                     ->withStrong('%type%', 'string')
                     ->withStrong('%className%', static::class)

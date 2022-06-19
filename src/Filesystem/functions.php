@@ -19,7 +19,7 @@ use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
 use Chevere\Message\Interfaces\MessageInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\LogicException;
 use Chevere\Type\Interfaces\TypeInterface;
 use Throwable;
@@ -29,7 +29,7 @@ use Throwable;
  */
 function getFilesystemInstanceMessage(string $instance, string $path): MessageInterface
 {
-    return (new Message('Unable to create a %instance% for %path%'))
+    return message('Unable to create a %instance% for %path%')
         ->withCode('%instance%', $instance)
         ->withCode('%path%', $path);
 }
@@ -93,7 +93,7 @@ function varForFilePhpReturn(FilePhpReturnInterface $filePhpReturn, TypeInterfac
     } catch (Throwable $e) {
         throw new LogicException(
             previous: $e,
-            message: (new Message('Unable to retrieve the expected variable of type %type%'))
+            message: message('Unable to retrieve the expected variable of type %type%')
                 ->withCode('%type%', $type->typeHinting()),
         );
     }

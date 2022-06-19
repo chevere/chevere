@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Writer;
 
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\RuntimeException;
 use Chevere\Writer\Interfaces\WritersInterface;
@@ -44,7 +44,7 @@ function streamFor(string $stream, string $mode): StreamInterface
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             previous: $e,
-            message: (new Message('Unable to create a stream for %stream% %mode%'))
+            message: message('Unable to create a stream for %stream% %mode%')
                 ->withCode('%stream%', $stream)
                 ->withCode('%mode%', $mode),
         );
@@ -67,19 +67,19 @@ function streamTemp(string $content = ''): StreamInterface
     } catch (Throwable $e) {
         throw new RuntimeException(
             previous: $e,
-            message: (new Message('Unable to handle %stream% as stream resource'))
+            message: message('Unable to handle %stream% as stream resource')
                 ->withCode('%stream%', $stream),
         );
     }
     if (!is_resource($resource)) {
         throw new RuntimeException(
-            (new Message('Unable to create resource at %stream%'))
+            message('Unable to create resource at %stream%')
                 ->withCode('%stream%', $stream)
         );
     }
     if (get_resource_type($resource) !== 'stream') {
         throw new RuntimeException(
-            (new Message('Resource at %stream% is not of type %type%'))
+            message('Resource at %stream% is not of type %type%')
                 ->withCode('%stream%', $stream)
                 ->withCode('%type%', 'stream')
         );

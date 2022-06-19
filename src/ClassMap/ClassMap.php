@@ -17,7 +17,7 @@ use Chevere\ClassMap\Interfaces\ClassMapInterface;
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapToArrayTrait;
 use Chevere\DataStructure\Traits\MapTrait;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\ClassNotExistsException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
@@ -53,7 +53,7 @@ final class ClassMap implements ClassMapInterface
     {
         if (!class_exists($className) && !interface_exists($className)) {
             throw new ClassNotExistsException(
-                (new Message("Class name or interface %className% doesn't exists"))
+                message("Class name or interface %className% doesn't exists")
                     ->withStrong('%className%', $className)
             );
         }
@@ -63,7 +63,7 @@ final class ClassMap implements ClassMapInterface
             : '';
         if ($known !== '' && $known !== $className) {
             throw new OverflowException(
-                (new Message('Attempting to map %className% to the same mapping of %known% -> %key%'))
+                message('Attempting to map %className% to the same mapping of %known% -> %key%')
                     ->withCode('%className%', $className)
                     ->withCode('%known%', $known)
                     ->withCode('%key%', $key)
@@ -93,7 +93,7 @@ final class ClassMap implements ClassMapInterface
             return $this->map->get($className);
         } catch (OutOfBoundsException $e) {
             throw new OutOfBoundsException(
-                (new Message("Class %className% doesn't exists in the class map"))
+                message("Class %className% doesn't exists in the class map")
                     ->withCode('%className%', $className)
             );
         }
@@ -111,7 +111,7 @@ final class ClassMap implements ClassMapInterface
             return $this->flip->get($key);
         } catch (OutOfBoundsException $e) {
             throw new OutOfBoundsException(
-                (new Message("Key %key% doesn't map any class"))
+                message("Key %key% doesn't map any class")
                     ->withCode('%key%', $key)
             );
         }

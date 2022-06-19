@@ -15,7 +15,7 @@ namespace Chevere\VarSupport;
 
 use Chevere\Iterator\Breadcrumb;
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\VarSupport\Exceptions\VarObjectNotClonableException;
 use Chevere\VarSupport\Interfaces\VarObjectInterface;
@@ -84,7 +84,7 @@ final class VarObject implements VarObjectInterface
         $reflection = new ReflectionObject($var);
         if (!$reflection->isCloneable()) {
             throw new VarObjectNotClonableException(
-                message: (new Message('Object is not clonable at %at%'))
+                message: message('Object is not clonable at %at%')
                     ->withCode('%at%', $this->breadcrumb->__toString())
             );
         }

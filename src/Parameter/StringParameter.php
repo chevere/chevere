@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Message\Message;
+use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Regex\Interfaces\RegexInterface;
@@ -52,7 +52,7 @@ final class StringParameter implements StringParameterInterface
     {
         if ($this->regex->match($value) === []) {
             throw new InvalidArgumentException(
-                (new Message('Default value `%value%` must match the parameter regex %regexString%'))
+                message('Default value `%value%` must match the parameter regex %regexString%')
                     ->withCode('%value%', $value)
                     ->withCode('%regexString%', $this->regex->__toString())
             );
