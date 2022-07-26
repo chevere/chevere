@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use function Chevere\Filesystem\dirForPath;
+use function Chevere\Filesystem\directoryForPath;
 use Chevere\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Filesystem\Exceptions\PathExistsException;
-use Chevere\Filesystem\Exceptions\PathIsDirException;
+use Chevere\Filesystem\Exceptions\PathIsDirectoryException;
 use Chevere\Filesystem\File;
-use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
@@ -26,51 +26,51 @@ use Throwable;
 
 final class FileTest extends TestCase
 {
-    private DirInterface $testDir;
+    private DirectoryInterface $testDirectory;
 
     protected function setUp(): void
     {
-        $this->testDir = dirForPath(__DIR__ . '/FileTest_' . uniqid() . '/');
+        $this->testDirectory = directoryForPath(__DIR__ . '/FileTest_' . uniqid() . '/');
     }
 
     protected function tearDown(): void
     {
         try {
-            $this->getTestDirChildFile('.test')->remove();
+            $this->getTestDirectoryChildFile('.test')->remove();
         } catch (Throwable $e) {
             //$e
         }
 
         try {
-            $this->testDir->removeContents();
+            $this->testDirectory->removeContents();
         } catch (Throwable $e) {
             //$e
         }
 
         try {
-            $this->testDir->remove();
+            $this->testDirectory->remove();
         } catch (Throwable $e) {
             //$e
         }
     }
 
-    public function getTestDirChildFile(string $filename): FileInterface
+    public function getTestDirectoryChildFile(string $filename): FileInterface
     {
-        $child = $this->testDir->path()->getChild($filename);
+        $child = $this->testDirectory->path()->getChild($filename);
 
         return new File($child);
     }
 
-    public function testWithDirPath(): void
+    public function testWithDirectoryPath(): void
     {
         $path = new Path(__DIR__);
-        $this->expectException(PathIsDirException::class);
+        $this->expectException(PathIsDirectoryException::class);
         new File($path);
     }
 
     public function testWithNonExistentPath(): void
     {
-        $path = $this->testDir->path();
+        $path = $this->testDirectory->path();
         $file = new File($path);
         $this->assertSame($path, $file->path());
         $this->assertFalse($file->exists());
@@ -79,7 +79,7 @@ final class FileTest extends TestCase
 
     public function testWithExistentPath(): void
     {
-        $file = $this->getTestDirChildFile('.test');
+        $file = $this->getTestDirectoryChildFile('.test');
         $file->create();
         $this->assertSame(FileInterface::CHECKSUM_LENGTH, strlen($file->getChecksum()));
         $this->assertSame(filesize($file->path()->__toString()), $file->getSize());
@@ -90,13 +90,13 @@ final class FileTest extends TestCase
 
     public function testWithPhpPath(): void
     {
-        $file = $this->getTestDirChildFile('.php');
+        $file = $this->getTestDirectoryChildFile('.php');
         $this->assertTrue($file->isPhp());
     }
 
     public function testRemoveNonExistentPath(): void
     {
-        $file = $this->getTestDirChildFile('.php');
+        $file = $this->getTestDirectoryChildFile('.php');
         $file->removeIfExists();
         $this->expectException(FileNotExistsException::class);
         $file->remove();
@@ -104,7 +104,7 @@ final class FileTest extends TestCase
 
     public function testRemoveExistentPath(): void
     {
-        $file = $this->getTestDirChildFile('.test');
+        $file = $this->getTestDirectoryChildFile('.test');
         $file->create();
         $file->removeIfExists();
         $file->create();
@@ -114,7 +114,7 @@ final class FileTest extends TestCase
 
     public function testCreate(): void
     {
-        $file = $this->getTestDirChildFile('.create');
+        $file = $this->getTestDirectoryChildFile('.create');
         $this->assertFalse($file->exists());
         $file->create();
         $file->createIfNotExists();
@@ -127,7 +127,7 @@ final class FileTest extends TestCase
 
     public function testPut(): void
     {
-        $file = $this->getTestDirChildFile('.put');
+        $file = $this->getTestDirectoryChildFile('.put');
         $file->create();
         $id = uniqid();
         $file->put($id);
@@ -137,21 +137,21 @@ final class FileTest extends TestCase
 
     public function testGetChecksum(): void
     {
-        $file = $this->getTestDirChildFile('.checksum');
+        $file = $this->getTestDirectoryChildFile('.checksum');
         $this->expectException(FileNotExistsException::class);
         $file->getChecksum();
     }
 
     public function testGetSize(): void
     {
-        $file = $this->getTestDirChildFile('.size');
+        $file = $this->getTestDirectoryChildFile('.size');
         $this->expectException(FileNotExistsException::class);
         $file->getSize();
     }
 
     public function testGetContents(): void
     {
-        $file = $this->getTestDirChildFile('.contents');
+        $file = $this->getTestDirectoryChildFile('.contents');
         $this->expectException(FileNotExistsException::class);
         $file->getContents();
     }

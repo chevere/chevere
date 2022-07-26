@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
-use function Chevere\Filesystem\dirForPath;
+use function Chevere\Filesystem\directoryForPath;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\Type\Type;
@@ -72,6 +72,6 @@ final class TypeTest extends TestCase
         $this->assertSame(Type::PRIMITIVE_INTERFACE_NAME, $type->primitive());
         $this->assertSame(TypeInterface::class, $type->typeHinting());
         $this->assertTrue($type->validate(new Type(Type::STRING)));
-        $this->assertFalse($type->validate(dirForPath(__DIR__)));
+        $this->assertFalse($type->validate(directoryForPath(__DIR__)));
     }
 }

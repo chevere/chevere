@@ -16,8 +16,8 @@ namespace Chevere\Filesystem\Exceptions;
 use Chevere\Throwable\Exception;
 
 /**
- * Exception thrown when unable to remove a directory.
+ * Exception thrown when the PathInterface represents a directory.
  */
-final class DirUnableToRemoveException extends Exception
+final class PathIsDirectoryException extends Exception
 {
 }

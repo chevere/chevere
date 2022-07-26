@@ -19,7 +19,7 @@ use Chevere\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Filesystem\Exceptions\FileUnableToPutException;
 use Chevere\Filesystem\Exceptions\FileUnableToRemoveException;
 use Chevere\Filesystem\Exceptions\PathExistsException;
-use Chevere\Filesystem\Exceptions\PathIsDirException;
+use Chevere\Filesystem\Exceptions\PathIsDirectoryException;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
 use function Chevere\Message\message;
@@ -38,7 +38,7 @@ final class File implements FileInterface
         private PathInterface $path
     ) {
         $this->isPhp = str_ends_with($this->path->__toString(), '.php');
-        $this->assertIsNotDir();
+        $this->assertIsNotDirectory();
     }
 
     public function path(): PathInterface
@@ -177,14 +177,14 @@ final class File implements FileInterface
         $dirname = dirname($this->path->__toString());
         $path = new Path($dirname . '/');
         if (!$path->exists()) {
-            (new Dir($path))->create();
+            (new Directory($path))->create();
         }
     }
 
-    private function assertIsNotDir(): void
+    private function assertIsNotDirectory(): void
     {
-        if ($this->path->isDir()) {
-            throw new PathIsDirException(
+        if ($this->path->isDirectory()) {
+            throw new PathIsDirectoryException(
                 message('Path %path% is a directory')
                     ->withCode('%path%', $this->path->__toString())
             );

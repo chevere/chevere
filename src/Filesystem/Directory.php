@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Filesystem;
 
-use Chevere\Filesystem\Exceptions\DirExistsException;
-use Chevere\Filesystem\Exceptions\DirNotExistsException;
-use Chevere\Filesystem\Exceptions\DirUnableToCreateException;
-use Chevere\Filesystem\Exceptions\DirUnableToRemoveException;
+use Chevere\Filesystem\Exceptions\DirectoryExistsException;
+use Chevere\Filesystem\Exceptions\DirectoryNotExistsException;
+use Chevere\Filesystem\Exceptions\DirectoryUnableToCreateException;
+use Chevere\Filesystem\Exceptions\DirectoryUnableToRemoveException;
 use Chevere\Filesystem\Exceptions\PathIsFileException;
 use Chevere\Filesystem\Exceptions\PathIsNotDirectoryException;
 use Chevere\Filesystem\Exceptions\PathTailException;
-use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
 use function Chevere\Iterator\recursiveDirectoryIteratorFor;
 use function Chevere\Message\message;
@@ -31,16 +31,16 @@ use function Safe\rmdir;
 use SplFileInfo;
 use Throwable;
 
-final class Dir implements DirInterface
+final class Directory implements DirectoryInterface
 {
     public function __construct(
         private PathInterface $path
     ) {
         $this->assertIsNotFile();
-        $this->assertTailDir();
+        $this->assertPathTail();
     }
 
-    public function getChild(string $path): DirInterface
+    public function getChild(string $path): DirectoryInterface
     {
         return new self($this->path->getChild($path));
     }
@@ -52,14 +52,14 @@ final class Dir implements DirInterface
 
     public function exists(): bool
     {
-        return $this->path->isDir();
+        return $this->path->isDirectory();
     }
 
     public function assertExists(): void
     {
         if (!$this->exists()) {
-            throw new DirNotExistsException(
-                message("Dir %path% doesn't exists")
+            throw new DirectoryNotExistsException(
+                message("Directory %path% doesn't exists")
                     ->withCode('%path%', $this->path->__toString())
             );
         }
@@ -69,7 +69,7 @@ final class Dir implements DirInterface
     public function create(int $mode = 0755): void
     {
         if ($this->exists()) {
-            throw new DirExistsException(
+            throw new DirectoryExistsException(
                 message('Directory %path% already exists')
                     ->withCode('%path%', $this->path->__toString())
             );
@@ -106,7 +106,7 @@ final class Dir implements DirInterface
 
     public function removeContents(): array
     {
-        $this->assertIsDir();
+        $this->assertIsDirectory();
         $files = new RecursiveIteratorIterator(
             recursiveDirectoryIteratorFor($this, RecursiveDirectoryIterator::SKIP_DOTS),
             RecursiveIteratorIterator::CHILD_FIRST
@@ -115,7 +115,7 @@ final class Dir implements DirInterface
         /** @var SplFileInfo $fileInfo */
         foreach ($files as $fileInfo) {
             if ($fileInfo->isDir()) {
-                $realPath = tailDirPath($fileInfo->getRealPath());
+                $realPath = tailDirectoryPath($fileInfo->getRealPath());
                 $path = new Path($realPath);
                 (new self($path))->rmdir();
                 $removed[] = $path->__toString();
@@ -142,7 +142,7 @@ final class Dir implements DirInterface
         }
     }
 
-    private function assertTailDir(): void
+    private function assertPathTail(): void
     {
         $absolute = $this->path->__toString();
         if ($absolute[-1] !== '/') {
@@ -155,9 +155,9 @@ final class Dir implements DirInterface
         }
     }
 
-    private function assertIsDir(): void
+    private function assertIsDirectory(): void
     {
-        if (!$this->path->isDir()) {
+        if (!$this->path->isDirectory()) {
             throw new PathIsNotDirectoryException(
                 message('Path %path% is not a directory')
                     ->withCode('%path%', $this->path->__toString())
@@ -174,7 +174,7 @@ final class Dir implements DirInterface
         try {
             mkdir($this->path->__toString(), $mode, true);
         } catch (Throwable $e) {
-            throw new DirUnableToCreateException(previous: $e, );
+            throw new DirectoryUnableToCreateException(previous: $e, );
         }
     }
 
@@ -187,7 +187,7 @@ final class Dir implements DirInterface
         try {
             rmdir($this->path->__toString());
         } catch (Throwable $e) {
-            throw new DirUnableToRemoveException(previous: $e);
+            throw new DirectoryUnableToRemoveException(previous: $e);
         }
     }
 }

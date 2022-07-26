@@ -16,8 +16,8 @@ namespace Chevere\Filesystem\Exceptions;
 use Chevere\Throwable\Exception;
 
 /**
- * Exception thrown when the PathInterface represents a directory.
+ * Exception thrown when unable to create a directory.
  */
-final class PathIsDirException extends Exception
+final class DirectoryUnableToCreateException extends Exception
 {
 }

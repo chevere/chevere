@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Filesystem\Interfaces;
 
-use Chevere\Filesystem\Exceptions\DirNotExistsException;
-use Chevere\Filesystem\Exceptions\DirUnableToCreateException;
-use Chevere\Filesystem\Exceptions\DirUnableToRemoveException;
+use Chevere\Filesystem\Exceptions\DirectoryNotExistsException;
+use Chevere\Filesystem\Exceptions\DirectoryUnableToCreateException;
+use Chevere\Filesystem\Exceptions\DirectoryUnableToRemoveException;
 use Chevere\Filesystem\Exceptions\FileUnableToRemoveException;
 use Chevere\Filesystem\Exceptions\PathInvalidException;
 use Chevere\Filesystem\Exceptions\PathIsFileException;
 use Chevere\Filesystem\Exceptions\PathTailException;
 
 /**
- * Describes the component in charge of interacting with filesystem directories.
+ * Describes the component in charge of interacting with filesystem directory.
  */
-interface DirInterface
+interface DirectoryInterface
 {
     /**
      * @throws PathIsFileException
@@ -42,7 +42,7 @@ interface DirInterface
      *
      * @param int $mode Octal mask
      *
-     * @throws DirUnableToCreateException
+     * @throws DirectoryUnableToCreateException
      */
     public function create(int $mode = 0755): void;
 
@@ -51,7 +51,7 @@ interface DirInterface
      *
      * @param int $mode Octal mask
      *
-     * @throws DirUnableToCreateException
+     * @throws DirectoryUnableToCreateException
      */
     public function createIfNotExists(int $mode = 0755): void;
 
@@ -61,7 +61,7 @@ interface DirInterface
     public function exists(): bool;
 
     /**
-     * @throws DirNotExistsException
+     * @throws DirectoryNotExistsException
      */
     public function assertExists(): void;
 
@@ -70,7 +70,7 @@ interface DirInterface
      *
      * @return string[] dir contents removed
      *
-     * @throws DirUnableToRemoveException if unable to remove the directory
+     * @throws DirectoryUnableToRemoveException if unable to remove the directory
      * @throws FileUnableToRemoveException if unable to remove a file in the directory
      */
     public function removeContents(): array;
@@ -80,7 +80,7 @@ interface DirInterface
      *
      * @return string[] elements removed
      *
-     * @throws DirUnableToRemoveException if unable to remove the directory
+     * @throws DirectoryUnableToRemoveException if unable to remove the directory
      */
     public function remove(): array;
 
@@ -89,7 +89,7 @@ interface DirInterface
      *
      * @return string[] elements removed
      *
-     * @throws DirUnableToRemoveException if unable to remove the directory
+     * @throws DirectoryUnableToRemoveException if unable to remove the directory
      */
     public function removeIfExists(): array;
 

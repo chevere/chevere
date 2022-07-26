@@ -57,7 +57,7 @@ final class Path implements PathInterface
         }
     }
 
-    public function isDir(): bool
+    public function isDirectory(): bool
     {
         // @infection-ignore-all
         $this->clearStatCache();

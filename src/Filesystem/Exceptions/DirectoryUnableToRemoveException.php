@@ -16,8 +16,8 @@ namespace Chevere\Filesystem\Exceptions;
 use Chevere\Throwable\Exception;
 
 /**
- * Exception thrown when the directory doesn't exists.
+ * Exception thrown when unable to remove a directory.
  */
-final class DirNotExistsException extends Exception
+final class DirectoryUnableToRemoveException extends Exception
 {
 }

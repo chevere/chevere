@@ -55,7 +55,7 @@ interface PathInterface extends Stringable
     /**
      * Indicates whether the path is a directory and exists.
      */
-    public function isDir(): bool;
+    public function isDirectory(): bool;
 
     /**
      * Indicates whether the path is a file and exists.

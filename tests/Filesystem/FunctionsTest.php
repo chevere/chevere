@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use function Chevere\Filesystem\dirForPath;
-use function Chevere\Filesystem\tailDirPath;
+use function Chevere\Filesystem\directoryForPath;
+use function Chevere\Filesystem\tailDirectoryPath;
 use PHPUnit\Framework\TestCase;
 
 final class FunctionsTest extends TestCase
 {
-    public function testTailDir(): void
+    public function testTailDirectory(): void
     {
         $paths = [
             'string' => 'string/',
@@ -28,12 +28,12 @@ final class FunctionsTest extends TestCase
             '/\//string\\' => '/\//string/',
         ];
         foreach ($paths as $value => $expected) {
-            $path = tailDirPath($value);
+            $path = tailDirectoryPath($value);
             $this->assertSame($expected, $path);
         }
     }
 
-    public function testDirForPath(): void
+    public function testDirectoryForPath(): void
     {
         $unix = [
             '/string' => '/string/',
@@ -49,8 +49,8 @@ final class FunctionsTest extends TestCase
             'c:\string\\' => 'C:/string/',
         ];
         foreach (($unix + $windows) as $value => $expected) {
-            $dir = dirForPath($value);
-            $this->assertSame($expected, $dir->path()->__toString());
+            $directory = directoryForPath($value);
+            $this->assertSame($expected, $directory->path()->__toString());
         }
     }
 }

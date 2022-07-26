@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Filesystem;
 
 use Chevere\Filesystem\Exceptions\FilesystemException;
-use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
@@ -34,7 +34,7 @@ function getFilesystemInstanceMessage(string $instance, string $path): MessageIn
         ->withCode('%path%', $path);
 }
 
-function tailDirPath(string $path): string
+function tailDirectoryPath(string $path): string
 {
     if (substr($path, -1) === '\\') {
         $path = substr($path, 0, -1);
@@ -49,11 +49,11 @@ function tailDirPath(string $path): string
 /**
  * @codeCoverageIgnore
  */
-function dirForPath(string $path): DirInterface
+function directoryForPath(string $path): DirectoryInterface
 {
-    $path = tailDirPath($path);
+    $path = tailDirectoryPath($path);
 
-    return new Dir(new Path($path));
+    return new Directory(new Path($path));
 }
 
 /**

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Filesystem\Dir;
+use Chevere\Filesystem\Directory;
 use Chevere\Filesystem\Exceptions\PathNotExistsException;
-use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
 use Chevere\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
@@ -26,24 +26,24 @@ final class PathTest extends TestCase
 {
     private PathInterface $testPath;
 
-    private DirInterface $testDir;
+    private DirectoryInterface $testDirectory;
 
     protected function setUp(): void
     {
         $this->testPath = new Path(__DIR__ . '/PathTest_' . uniqid() . '/');
-        $this->testDir = new Dir(new Path($this->testPath->__toString()));
+        $this->testDirectory = new Directory(new Path($this->testPath->__toString()));
     }
 
     protected function tearDown(): void
     {
         try {
-            $this->testDir->removeContents();
+            $this->testDirectory->removeContents();
         } catch (Throwable $e) {
             //$e
         }
 
         try {
-            $this->testDir->remove();
+            $this->testDirectory->remove();
         } catch (Throwable $e) {
             //$e
         }
@@ -51,18 +51,18 @@ final class PathTest extends TestCase
 
     public function testIsReadable(): void
     {
-        $this->testDir->create();
+        $this->testDirectory->create();
         $this->assertTrue($this->testPath->isWritable());
-        $this->testDir->remove();
+        $this->testDirectory->remove();
         $this->expectException(PathNotExistsException::class);
         $this->testPath->isReadable();
     }
 
     public function testIsWritable(): void
     {
-        $this->testDir->create();
+        $this->testDirectory->create();
         $this->assertTrue($this->testPath->isWritable());
-        $this->testDir->remove();
+        $this->testDirectory->remove();
         $this->expectException(PathNotExistsException::class);
         $this->testPath->isWritable();
     }
@@ -70,18 +70,18 @@ final class PathTest extends TestCase
     public function testNonExistentPath(): void
     {
         $this->assertFalse($this->testPath->exists());
-        $this->assertFalse($this->testPath->isDir());
+        $this->assertFalse($this->testPath->isDirectory());
         $this->assertFalse($this->testPath->isFile());
         $this->expectException(PathNotExistsException::class);
         $this->testPath->assertExists();
     }
 
-    public function testExistentDirPath(): void
+    public function testExistentDirectoryPath(): void
     {
         $path = new Path(__DIR__);
         $path->assertExists();
         $this->assertTrue($path->exists());
-        $this->assertTrue($path->isDir());
+        $this->assertTrue($path->isDirectory());
         $this->assertFalse($path->isFile());
         $this->assertTrue($path->isReadable());
         $this->assertTrue($path->isWritable());
@@ -93,27 +93,27 @@ final class PathTest extends TestCase
         $path->assertExists();
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isFile());
-        $this->assertFalse($path->isDir());
+        $this->assertFalse($path->isDirectory());
     }
 
-    public function testExistentDirPathRemoved(): void
+    public function testExistentDirectoryPathRemoved(): void
     {
         $this->assertFalse($this->testPath->exists());
         if (!mkdir($this->testPath->__toString(), 0777, true)) {
-            throw new RuntimeException('Unable to create dir ' . $this->testPath->__toString());
+            throw new RuntimeException('Unable to create directory ' . $this->testPath->__toString());
         }
         $this->assertTrue($this->testPath->exists());
-        $this->assertTrue($this->testPath->isDir());
+        $this->assertTrue($this->testPath->isDirectory());
         if (!rmdir($this->testPath->__toString())) {
-            throw new RuntimeException('Unable to remove dir ' . $this->testPath->__toString());
+            throw new RuntimeException('Unable to remove directory ' . $this->testPath->__toString());
         }
         $this->assertFalse($this->testPath->exists());
-        $this->assertFalse($this->testPath->isDir());
+        $this->assertFalse($this->testPath->isDirectory());
     }
 
     public function testExistentFilePathRemoved(): void
     {
-        $this->testDir->create();
+        $this->testDirectory->create();
         $path = $this->testPath->getChild('test.txt');
         $this->assertFalse($path->exists());
         if (file_put_contents($path->__toString(), 'file put contents') === false) {

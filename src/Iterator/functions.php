@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Iterator;
 
-use Chevere\Filesystem\Interfaces\DirInterface;
+use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use RecursiveDirectoryIterator;
 
 /**
  * @codeCoverageIgnore
  */
-function recursiveDirectoryIteratorFor(DirInterface $dir, int $flags): RecursiveDirectoryIterator
+function recursiveDirectoryIteratorFor(DirectoryInterface $directory, int $flags): RecursiveDirectoryIterator
 {
     return new RecursiveDirectoryIterator(
-        $dir->path()->__toString(),
+        $directory->path()->__toString(),
         $flags
     );
 }

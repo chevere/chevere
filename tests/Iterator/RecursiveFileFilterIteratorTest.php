@@ -23,8 +23,8 @@ final class RecursiveFileFilterIteratorTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $dirItr = new RecursiveDirectoryIterator(__DIR__ . '/_resources/');
-        $filter = new RecursiveFileFilterIterator($dirItr, 'Test.php');
+        $directoryIterator = new RecursiveDirectoryIterator(__DIR__ . '/_resources/');
+        $filter = new RecursiveFileFilterIterator($directoryIterator, 'Test.php');
         $iterator = new RecursiveIteratorIterator($filter, RecursiveIteratorIterator::SELF_FIRST);
         $collection = [];
         /** @var SplFileInfo $wea */

@@ -19,7 +19,7 @@ use Chevere\Filesystem\Exceptions\FileUnableToCreateException;
 use Chevere\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Filesystem\Exceptions\FileUnableToPutException;
 use Chevere\Filesystem\Exceptions\FileUnableToRemoveException;
-use Chevere\Filesystem\Exceptions\PathIsDirException;
+use Chevere\Filesystem\Exceptions\PathIsDirectoryException;
 
 /**
  * Describes the component in charge of interacting with filesystem files.
@@ -31,7 +31,7 @@ interface FileInterface
     public const CHECKSUM_LENGTH = 64;
 
     /**
-     * @throws PathIsDirException
+     * @throws PathIsDirectoryException
      */
     public function __construct(PathInterface $path);
 
