@@ -11,25 +11,25 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\VarSupport;
+namespace Chevere\Tests\VariableSupport;
 
-use Chevere\VarSupport\Exceptions\VarObjectNotClonableException;
-use Chevere\VarSupport\VarObject;
-use Chevere\Tests\VarSupport\_resources\ClassWithResource;
+use Chevere\Tests\VariableSupport\_resources\ClassWithResource;
+use Chevere\VariableSupport\Exceptions\ObjectNotClonableException;
+use Chevere\VariableSupport\ObjectVariable;
 use finfo;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class VarObjectTest extends TestCase
+final class ObjectVariableTest extends TestCase
 {
     public function testClonable(): void
     {
         $anonObject = new class() {
             private string $property = 'test';
         };
-        $varObject = new VarObject($anonObject);
-        $varObject->assertClonable();
-        $this->assertSame($anonObject, $varObject->var());
+        $objectVariable = new ObjectVariable($anonObject);
+        $objectVariable->assertClonable();
+        $this->assertSame($anonObject, $objectVariable->variable());
     }
 
     public function testNotClonable(): void
@@ -39,9 +39,9 @@ final class VarObjectTest extends TestCase
             {
             }
         };
-        $varObject = new VarObject($class);
-        $this->expectException(VarObjectNotClonableException::class);
-        $varObject->assertClonable();
+        $objectVariable = new ObjectVariable($class);
+        $this->expectException(ObjectNotClonableException::class);
+        $objectVariable->assertClonable();
     }
 
     public function testNestedNotClonable(): void
@@ -71,9 +71,9 @@ final class VarObjectTest extends TestCase
             'object: finfo',
         ];
         $atString = '[' . implode('][', $atBreadcrumb) . ']';
-        $varObject = new VarObject($object);
-        $this->expectException(VarObjectNotClonableException::class);
+        $objectVariable = new ObjectVariable($object);
+        $this->expectException(ObjectNotClonableException::class);
         $this->expectExceptionMessage($atString);
-        $varObject->assertClonable();
+        $objectVariable->assertClonable();
     }
 }

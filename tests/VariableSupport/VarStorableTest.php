@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\VarSupport;
+namespace Chevere\Tests\VariableSupport;
 
-use Chevere\VarSupport\Exceptions\VarStorableException;
-use Chevere\VarSupport\VarStorable;
-use Chevere\Tests\VarSupport\_resources\ClassWithResource;
+use Chevere\Tests\VariableSupport\_resources\ClassWithResource;
+use Chevere\VariableSupport\Exceptions\UnableToStoreException;
+use Chevere\VariableSupport\StorableVariable;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -27,10 +27,10 @@ final class VarStorableTest extends TestCase
         if (!is_resource($resource)) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
-        $this->expectException(VarStorableException::class);
+        $this->expectException(UnableToStoreException::class);
         $this->expectExceptionMessageMatches('/ of type resource/');
         /** @var resource $resource */
-        new VarStorable($resource);
+        new StorableVariable($resource);
         fclose($resource);
     }
 
@@ -54,9 +54,9 @@ final class VarStorableTest extends TestCase
             'key: 0',
         ];
         $atString = '[' . implode('][', $atBreadcrumb) . ']';
-        $this->expectException(VarStorableException::class);
+        $this->expectException(UnableToStoreException::class);
         $this->expectExceptionMessage($atString);
-        new VarStorable($object);
+        new StorableVariable($object);
         /** @var resource $resource */
         fclose($resource);
     }
@@ -74,10 +74,10 @@ final class VarStorableTest extends TestCase
             new stdClass(),
             ['test', [1, false], new stdClass()],
         ] as $val) {
-            $varStorable = new VarStorable($val);
-            $this->assertSame($val, $varStorable->var());
-            $this->assertSame(serialize($val), $varStorable->toSerialize());
-            $this->assertSame(var_export($val, true), $varStorable->toExport());
+            $storableVariable = new StorableVariable($val);
+            $this->assertSame($val, $storableVariable->variable());
+            $this->assertSame(serialize($val), $storableVariable->toSerialize());
+            $this->assertSame(var_export($val, true), $storableVariable->toExport());
         }
     }
 }

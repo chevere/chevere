@@ -37,7 +37,7 @@
             "src/Parameter/functions.php",
             "src/String/functions.php",
             "src/Type/functions.php",
-            "src/VarSupport/functions.php",
+            "src/VariableSupport/functions.php",
             "src/Writer/functions.php"
         ],
         "psr-4": {

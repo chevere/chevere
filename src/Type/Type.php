@@ -55,13 +55,13 @@ final class Type implements TypeInterface
         return $this->typeHinting;
     }
 
-    public function validate(mixed $var): bool
+    public function validate(mixed $variable): bool
     {
-        if (is_object($var) && $this->isAbleToValidateObjects()) {
-            return $this->validateObject($var);
+        if (is_object($variable) && $this->isAbleToValidateObjects()) {
+            return $this->validateObject($variable);
         }
 
-        return $this->validator()($var);
+        return $this->validator()($variable);
     }
 
     public function isScalar(): bool

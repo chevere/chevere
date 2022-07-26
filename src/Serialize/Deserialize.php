@@ -21,24 +21,24 @@ use Throwable;
 
 final class Deserialize implements DeserializeInterface
 {
-    private mixed $var;
+    private mixed $variable;
 
     private TypeInterface $type;
 
     public function __construct(string $unserializable)
     {
         try {
-            $this->var = unserialize($unserializable);
+            $this->variable = unserialize($unserializable);
         } catch (Throwable $e) {
             throw new InvalidArgumentException(previous: $e);
         }
 
-        $this->type = new Type(get_debug_type($this->var));
+        $this->type = new Type(get_debug_type($this->variable));
     }
 
-    public function var(): mixed
+    public function variable(): mixed
     {
-        return $this->var;
+        return $this->variable;
     }
 
     public function type(): TypeInterface

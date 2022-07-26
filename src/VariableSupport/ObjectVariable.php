@@ -11,83 +11,64 @@
 
 declare(strict_types=1);
 
-namespace Chevere\VarSupport;
+namespace Chevere\VariableSupport;
 
 use Chevere\Iterator\Breadcrumb;
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
 use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
-use Chevere\VarSupport\Exceptions\VarStorableException;
-use Chevere\VarSupport\Interfaces\VarStorableInterface;
+use Chevere\VariableSupport\Exceptions\ObjectNotClonableException;
+use Chevere\VariableSupport\Interfaces\ObjectVariableInterface;
 use ReflectionNamedType;
 use ReflectionObject;
 
-final class VarStorable implements VarStorableInterface
+final class ObjectVariable implements ObjectVariableInterface
 {
     private BreadcrumbInterface $breadcrumb;
 
     public function __construct(
-        private mixed $var
+        private object $variable
     ) {
         $this->breadcrumb = new Breadcrumb();
-        $this->assertExportable($this->var);
     }
 
-    public function var(): mixed
+    public function variable(): object
     {
-        return $this->var;
-    }
-
-    public function toExport(): string
-    {
-        return var_export($this->var, true);
-    }
-
-    public function toSerialize(): string
-    {
-        return serialize($this->var);
-    }
-
-    private function assertExportable(mixed $var): void
-    {
-        $this->assertIsNotResource($var);
-        if (is_object($var)) {
-            $this->breadcrumbObject($var);
-        } elseif (is_iterable($var)) {
-            $this->breadcrumbIterable($var);
-        }
+        return $this->variable;
     }
 
     /**
-     * @throws VarStorableException
+     * @throws ObjectNotClonableException
      */
-    private function assertIsNotResource(mixed $var): void
+    public function assertClonable(): void
     {
-        if (is_resource($var)) {
-            $message = $this->breadcrumb->count() > 0
-                ? message("Argument contains a resource at %at%")
-                    ->withCode('%at%', $this->breadcrumb->__toString())
-                : message("Argument is of type resource.");
+        $this->assertVariableClonable($this->variable);
+    }
 
-            throw new VarStorableException(message: $message);
+    private function assertVariableClonable(mixed $variable): void
+    {
+        if (is_object($variable)) {
+            $this->breadcrumbObject($variable);
+        } elseif (is_iterable($variable)) {
+            $this->breadcrumbIterable($variable);
         }
     }
 
     /**
-     * @param iterable<mixed, mixed> $var
-     * @throws VarStorableException
+     * @param iterable<mixed, mixed> $variable
+     * @throws ObjectNotClonableException
      * @throws OutOfBoundsException
      */
-    private function breadcrumbIterable(iterable $var): void
+    private function breadcrumbIterable(iterable $variable): void
     {
         $this->breadcrumb = $this->breadcrumb->withAdded('(iterable)');
         $iterableKey = $this->breadcrumb->pos();
-        foreach ($var as $key => $val) {
+        foreach ($variable as $key => $val) {
             $key = strval($key);
             $this->breadcrumb = $this->breadcrumb
                 ->withAdded('key: ' . $key);
             $memberKey = $this->breadcrumb->pos();
-            $this->assertExportable($val);
+            $this->assertVariableClonable($val);
             $this->breadcrumb = $this->breadcrumb
                 ->withRemoved($memberKey);
         }
@@ -95,12 +76,18 @@ final class VarStorable implements VarStorableInterface
             ->withRemoved($iterableKey);
     }
 
-    private function breadcrumbObject(object $var): void
+    private function breadcrumbObject(object $variable): void
     {
         $this->breadcrumb = $this->breadcrumb
-            ->withAdded('object: ' . $var::class);
+            ->withAdded('object: ' . $variable::class);
         $objectKey = $this->breadcrumb->pos();
-        $reflection = new ReflectionObject($var);
+        $reflection = new ReflectionObject($variable);
+        if (!$reflection->isCloneable()) {
+            throw new ObjectNotClonableException(
+                message: message('Object is not clonable at %at%')
+                    ->withCode('%at%', $this->breadcrumb->__toString())
+            );
+        }
         $properties = $reflection->getProperties();
         foreach ($properties as $property) {
             /** @var ?ReflectionNamedType $namedType */
@@ -117,8 +104,8 @@ final class VarStorable implements VarStorableInterface
             $propertyKey = $this->breadcrumb->pos();
             // @infection-ignore-all
             $property->setAccessible(true);
-            if ($property->isInitialized($var)) {
-                $this->assertExportable($property->getValue($var));
+            if ($property->isInitialized($variable)) {
+                $this->assertVariableClonable($property->getValue($variable));
             }
             $this->breadcrumb = $this->breadcrumb
                 ->withRemoved($propertyKey);

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\VarSupport\_resources;
+namespace Chevere\Tests\VariableSupport\_resources;
 
 use function Chevere\Filesystem\fileForPath;
 use Chevere\Filesystem\Interfaces\FileInterface;

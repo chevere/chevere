@@ -86,10 +86,10 @@ function filePhpReturnForPath(string $path): FilePhpReturnInterface
  * @codeCoverageIgnore
  * @throws LogicException
  */
-function varForFilePhpReturn(FilePhpReturnInterface $filePhpReturn, TypeInterface $type): mixed
+function variableForFilePhpReturn(FilePhpReturnInterface $filePhpReturn, TypeInterface $type): mixed
 {
     try {
-        return $filePhpReturn->varType($type);
+        return $filePhpReturn->variableTyped($type);
     } catch (Throwable $e) {
         throw new LogicException(
             previous: $e,

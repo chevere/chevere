@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\VarSupport\Exceptions;
+namespace Chevere\VariableSupport\Exceptions;
 
 use Chevere\Throwable\Exceptions\LogicException;
 
 /**
- * Exception thrown when a `$var` can't be stored.
+ * Exception thrown when failing to provide a clonable object.
  */
-final class VarStorableException extends LogicException
+final class ObjectNotClonableException extends LogicException
 {
 }

@@ -22,7 +22,7 @@ use Chevere\Filesystem\Exceptions\FileUnableToPutException;
 use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Throwable\Exceptions\RuntimeException;
 use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\VarSupport\Interfaces\VarStorableInterface;
+use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 
 /**
  * Describes the component in charge of interact with `.php` files that return a variable.
@@ -64,10 +64,10 @@ interface FilePhpReturnInterface
      * @throws FileUnableToGetException
      * @throws RuntimeException
      */
-    public function var(): mixed;
+    public function variable(): mixed;
 
     /**
-     * Same as `var()`, but checking the variable `$type`.
+     * Same as `variable()`, but checking the variable `$type`.
      *
      * @throws FileNotExistsException
      * @throws FileHandleException
@@ -77,13 +77,13 @@ interface FilePhpReturnInterface
      * @throws RuntimeException
      * @throws FileReturnInvalidTypeException
      */
-    public function varType(TypeInterface $type): mixed;
+    public function variableTyped(TypeInterface $type): mixed;
 
     /**
-     * Put `$var` into the file using var_export return and strict format.
+     * Put `$storableVariable` into the file using var_export return and strict format.
      *
      * @throws FileNotExistsException
      * @throws FileUnableToPutException
      */
-    public function put(VarStorableInterface $varStorable): void;
+    public function put(StorableVariableInterface $storableVariable): void;
 }

@@ -51,7 +51,7 @@ final class DeserializeTest extends TestCase
         $serialized = serialize($object);
         $unserialize = new Deserialize($serialized);
         $this->assertSame($objectClass, $unserialize->type()->typeHinting());
-        $this->assertEqualsCanonicalizing($object, $unserialize->var());
-        $this->assertInstanceOf($objectClass, $unserialize->var());
+        $this->assertEqualsCanonicalizing($object, $unserialize->variable());
+        $this->assertInstanceOf($objectClass, $unserialize->variable());
     }
 }

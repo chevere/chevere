@@ -28,7 +28,7 @@ use Chevere\String\AssertString;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\RuntimeException;
 use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\VarSupport\Interfaces\VarStorableInterface;
+use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 use Throwable;
 
 final class FilePhpReturn implements FilePhpReturnInterface
@@ -65,15 +65,15 @@ final class FilePhpReturn implements FilePhpReturnInterface
         // @codeCoverageIgnoreEnd
     }
 
-    public function var(): mixed
+    public function variable(): mixed
     {
-        return $this->getReturnVar($this->raw());
+        return $this->getReturnVariable($this->raw());
     }
 
-    public function varType(TypeInterface $type): mixed
+    public function variableTyped(TypeInterface $type): mixed
     {
-        if (!$type->validate($this->var())) {
-            $typeReturn = get_debug_type($this->var());
+        if (!$type->validate($this->variable())) {
+            $typeReturn = get_debug_type($this->variable());
 
             throw new FileReturnInvalidTypeException(
                 message("File PHP return of type %return% at %path% doesn't match the expected type %expected%")
@@ -83,31 +83,31 @@ final class FilePhpReturn implements FilePhpReturnInterface
             );
         }
 
-        return $this->var();
+        return $this->variable();
     }
 
-    public function put(VarStorableInterface $varStorable): void
+    public function put(StorableVariableInterface $storableVariable): void
     {
-        $var = $varStorable->var();
-        $var = $this->getFileReturnVar($var);
-        $varExport = var_export($var, true);
+        $variable = $storableVariable->variable();
+        $variable = $this->getFileReturnVariable($variable);
+        $varExport = var_export($variable, true);
         $this->filePhp->file()->put(
             self::PHP_RETURN . $varExport . ';'
         );
     }
 
-    private function getReturnVar(mixed $var): mixed
+    private function getReturnVariable(mixed $variable): mixed
     {
-        if (is_string($var) && !ctype_space($var)) {
+        if (is_string($variable) && !ctype_space($variable)) {
             try {
-                $unserialize = new Deserialize($var);
-                $var = $unserialize->var();
+                $unserialize = new Deserialize($variable);
+                $variable = $unserialize->variable();
             } catch (InvalidArgumentException $e) {
                 // $e
             }
         }
 
-        return $var;
+        return $variable;
     }
 
     /**
@@ -136,12 +136,12 @@ final class FilePhpReturn implements FilePhpReturnInterface
         }
     }
 
-    private function getFileReturnVar(mixed $var): mixed
+    private function getFileReturnVariable(mixed $variable): mixed
     {
-        if (is_object($var)) {
-            return (new Serialize($var))->__toString();
+        if (is_object($variable)) {
+            return (new Serialize($variable))->__toString();
         }
 
-        return $var;
+        return $variable;
     }
 }

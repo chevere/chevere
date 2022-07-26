@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\VarSupport;
+namespace Chevere\VariableSupport;
 
 use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\LogicException;
@@ -29,7 +29,7 @@ function deepCopy(mixed $value, bool $useCloneMethod = false): mixed
             ->copy($value);
     } catch (CloneException $e) {
         if (is_object($value)) {
-            $object = new VarObject($value);
+            $object = new ObjectVariable($value);
             $object->assertClonable();
         }
         // @codeCoverageIgnoreStart

@@ -21,9 +21,9 @@ use Chevere\Type\Interfaces\TypeInterface;
 /**
  * Same as `gettype` but more "standard" towards `get_debug_type`.
  */
-function getType(mixed $var): string
+function getType(mixed $variable): string
 {
-    $type = \gettype($var);
+    $type = \gettype($variable);
 
     return match ($type) {
         'double' => 'float',

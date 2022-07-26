@@ -16,7 +16,7 @@ namespace Chevere\DataStructure;
 use Chevere\DataStructure\Interfaces\MapInterface;
 use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
-use function Chevere\VarSupport\deepCopy;
+use function Chevere\VariableSupport\deepCopy;
 use Ds\Map as DsMap;
 use Iterator;
 

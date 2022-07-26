@@ -98,9 +98,9 @@ interface TypeInterface
     public function typeHinting(): string;
 
     /**
-     * Returns a boolean indicating if `$var` validates against the type.
+     * Returns a boolean indicating if `$variable` validates against the type.
      */
-    public function validate(mixed $var): bool;
+    public function validate(mixed $variable): bool;
 
     /**
      * Returns the validator callable.

@@ -27,9 +27,9 @@ interface DeserializeInterface
     public function __construct(string $unserializable);
 
     /**
-     * Provides access to the unserialize variable.
+     * Provides access to the unserialize'd variable.
      */
-    public function var(): mixed;
+    public function variable(): mixed;
 
     /**
      * Provides access to the TypeInterface instance for the unserialize variable.

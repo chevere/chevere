@@ -23,9 +23,9 @@ final class Serialize implements SerializeInterface
 {
     private string $serialize;
 
-    public function __construct(mixed $var)
+    public function __construct(mixed $variable)
     {
-        if (is_resource($var)) {
+        if (is_resource($variable)) {
             throw new InvalidArgumentException(
                 message('Argument of type %type% is not supported.')
                     ->withCode('%type%', 'resource')
@@ -33,7 +33,7 @@ final class Serialize implements SerializeInterface
         }
 
         try {
-            $this->serialize = serialize($var);
+            $this->serialize = serialize($variable);
         } catch (Throwable $e) {
             throw new LogicException(previous: $e);
         }

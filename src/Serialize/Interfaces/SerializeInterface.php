@@ -20,5 +20,5 @@ use Stringable;
  */
 interface SerializeInterface extends Stringable
 {
-    public function __construct(mixed $var);
+    public function __construct(mixed $variable);
 }

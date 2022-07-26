@@ -20,15 +20,15 @@ use PHPUnit\Framework\TestCase;
 
 final class FunctionsTest extends TestCase
 {
-    public function testVarType(): void
+    public function testVariableType(): void
     {
         $table = [
             'object' => $this,
             'float' => 10.10,
             'null' => null,
         ];
-        foreach ($table as $type => $var) {
-            $this->assertSame($type, getType($var));
+        foreach ($table as $type => $variable) {
+            $this->assertSame($type, getType($variable));
         }
     }
 
