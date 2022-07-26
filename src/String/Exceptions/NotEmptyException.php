@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str\Exceptions;
+namespace Chevere\String\Exceptions;
 
 use Chevere\Throwable\Exception;
 
 /**
- * Exception thrown when the string is not ctype space.
+ * Exception thrown when the string is not empty.
  */
-final class StrNotCtypeSpaceException extends Exception
+final class NotEmptyException extends Exception
 {
 }

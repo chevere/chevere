@@ -11,14 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str;
+namespace Chevere\String\Exceptions;
+
+use Chevere\Throwable\Exception;
 
 /**
- * @param int<1, max> $length
+ * Exception thrown when the string is ctype space.
  */
-function randomString(int $length): string
+final class CtypeSpaceException extends Exception
 {
-    $randomBytes = random_bytes($length);
-
-    return substr(bin2hex($randomBytes), 0, $length);
 }

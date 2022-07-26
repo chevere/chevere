@@ -35,7 +35,7 @@
             "src/Iterator/functions.php",
             "src/Message/functions.php",
             "src/Parameter/functions.php",
-            "src/Str/functions.php",
+            "src/String/functions.php",
             "src/Type/functions.php",
             "src/VarSupport/functions.php",
             "src/Writer/functions.php"

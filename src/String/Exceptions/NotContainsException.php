@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str\Exceptions;
+namespace Chevere\String\Exceptions;
 
 use Chevere\Throwable\Exception;
 
 /**
- * Exception thrown when the string is not the same as provided.
+ * Exception thrown when the string not contains a provided sub-string.
  */
-final class StrNotSameException extends Exception
+final class NotContainsException extends Exception
 {
 }

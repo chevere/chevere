@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str;
+namespace Chevere\String;
 
-use Chevere\Str\Interfaces\StrConditionInterface;
+use Chevere\String\Interfaces\ValidateStringInterface;
 
-final class StrCondition implements StrConditionInterface
+final class ValidateString implements ValidateStringInterface
 {
     public function __construct(
         private string $string

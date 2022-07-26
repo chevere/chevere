@@ -11,141 +11,141 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str\Interfaces;
+namespace Chevere\String\Interfaces;
 
-use Chevere\Str\Exceptions\StrContainsException;
-use Chevere\Str\Exceptions\StrCtypeDigitException;
-use Chevere\Str\Exceptions\StrCtypeSpaceException;
-use Chevere\Str\Exceptions\StrEmptyException;
-use Chevere\Str\Exceptions\StrEndsWithException;
-use Chevere\Str\Exceptions\StrNotContainsException;
-use Chevere\Str\Exceptions\StrNotCtypeDigitException;
-use Chevere\Str\Exceptions\StrNotCtypeSpaceException;
-use Chevere\Str\Exceptions\StrNotEmptyException;
-use Chevere\Str\Exceptions\StrNotEndsWithException;
-use Chevere\Str\Exceptions\StrNotSameException;
-use Chevere\Str\Exceptions\StrNotStartsWithCtypeDigitException;
-use Chevere\Str\Exceptions\StrNotStartsWithException;
-use Chevere\Str\Exceptions\StrSameException;
-use Chevere\Str\Exceptions\StrStartsWithCtypeDigitException;
-use Chevere\Str\Exceptions\StrStartsWithException;
+use Chevere\String\Exceptions\ContainsException;
+use Chevere\String\Exceptions\CtypeDigitException;
+use Chevere\String\Exceptions\CtypeSpaceException;
+use Chevere\String\Exceptions\EmptyException;
+use Chevere\String\Exceptions\EndsWithException;
+use Chevere\String\Exceptions\NotContainsException;
+use Chevere\String\Exceptions\NotCtypeDigitException;
+use Chevere\String\Exceptions\NotCtypeSpaceException;
+use Chevere\String\Exceptions\NotEmptyException;
+use Chevere\String\Exceptions\NotEndsWithException;
+use Chevere\String\Exceptions\NotSameException;
+use Chevere\String\Exceptions\NotStartsWithCtypeDigitException;
+use Chevere\String\Exceptions\NotStartsWithException;
+use Chevere\String\Exceptions\SameException;
+use Chevere\String\Exceptions\StartsWithCtypeDigitException;
+use Chevere\String\Exceptions\StartsWithException;
 
 /**
- * Describes the component in charge of string asserting.
+ * Describes the component in charge of string assertions.
  */
-interface StrAssertInterface
+interface AssertStringInterface
 {
     public function __construct(string $string);
 
     /**
      * Asserts that the string is empty.
      *
-     * @throws StrNotEmptyException
+     * @throws NotEmptyException
      */
     public function empty(): self;
 
     /**
      * Asserts that the string is not empty.
      *
-     * @throws StrEmptyException
+     * @throws EmptyException
      */
     public function notEmpty(): self;
 
     /**
      * Asserts that the string is ctype space.
      *
-     * @throws StrNotCtypeSpaceException
+     * @throws NotCtypeSpaceException
      */
     public function ctypeSpace(): self;
 
     /**
      * Asserts that the string is not ctype space.
      *
-     * @throws StrCtypeSpaceException
+     * @throws CtypeSpaceException
      */
     public function notCtypeSpace(): self;
 
     /**
      * Asserts that the string is ctype digit.
      *
-     * @throws StrNotCtypeDigitException
+     * @throws NotCtypeDigitException
      */
     public function ctypeDigit(): self;
 
     /**
      * Asserts that the string is not ctype digit.
      *
-     * @throws StrCtypeDigitException
+     * @throws CtypeDigitException
      */
     public function notCtypeDigit(): self;
 
     /**
      * Asserts that the string is starts with ctype digit.
      *
-     * @throws StrNotStartsWithCtypeDigitException
+     * @throws NotStartsWithCtypeDigitException
      */
     public function startsWithCtypeDigit(): self;
 
     /**
      * Asserts that the string not starts with ctype digit.
      *
-     * @throws StrStartsWithCtypeDigitException
+     * @throws StartsWithCtypeDigitException
      */
     public function notStartsWithCtypeDigit(): self;
 
     /**
      * Asserts that the string is starts with `$needle`.
      *
-     * @throws StrNotStartsWithException
+     * @throws NotStartsWithException
      */
     public function startsWith(string $needle): self;
 
     /**
      * Asserts that the string not starts with `$needle`.
      *
-     * @throws StrStartsWithException
+     * @throws StartsWithException
      */
     public function notStartsWith(string $needle): self;
 
     /**
      * Asserts that the string ends with `$needle`.
      *
-     * @throws StrNotEndsWithException
+     * @throws NotEndsWithException
      */
     public function endsWith(string $needle): self;
 
     /**
      * Asserts that the string not ends with `$needle`.
      *
-     * @throws StrEndsWithException
+     * @throws EndsWithException
      */
     public function notEndsWith(string $needle): self;
 
     /**
      * Asserts that the string is same as `$string`.
      *
-     * @throws StrNotSameException
+     * @throws NotSameException
      */
     public function same(string $string): self;
 
     /**
      * Asserts that the string is not same as `$string`.
      *
-     * @throws StrSameException
+     * @throws SameException
      */
     public function notSame(string $string): self;
 
     /**
      * Asserts that the string contains `$string`.
      *
-     * @throws StrNotContainsException
+     * @throws NotContainsException
      */
     public function contains(string $string): self;
 
     /**
      * Asserts that the string not contains `$string`.
      *
-     * @throws StrContainsException
+     * @throws ContainsException
      */
     public function notContains(string $string): self;
 }

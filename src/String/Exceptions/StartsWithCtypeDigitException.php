@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str\Exceptions;
+namespace Chevere\String\Exceptions;
 
 use Chevere\Throwable\Exception;
 
 /**
- * Exception thrown when the string starts with a given string.
+ * Exception thrown when the string starts with a ctype digit.
  */
-final class StrStartsWithException extends Exception
+final class StartsWithCtypeDigitException extends Exception
 {
 }

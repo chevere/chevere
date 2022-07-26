@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str\Exceptions;
+namespace Chevere\String\Exceptions;
 
 use Chevere\Throwable\Exception;
 
 /**
- * Exception thrown when the string is the same as provided.
+ * Exception thrown when the string not ends with a given string.
  */
-final class StrSameException extends Exception
+final class NotEndsWithException extends Exception
 {
 }

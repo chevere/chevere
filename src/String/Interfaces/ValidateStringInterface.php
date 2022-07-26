@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str\Interfaces;
+namespace Chevere\String\Interfaces;
 
 /**
- * Describes the component in charge of string conditionals.
+ * Describes the component in charge of string validations.
  */
-interface StrConditionInterface
+interface ValidateStringInterface
 {
     public function __construct(string $string);
 

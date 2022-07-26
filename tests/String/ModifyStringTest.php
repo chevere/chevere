@@ -11,24 +11,24 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Str;
+namespace Chevere\Tests\String;
 
-use Chevere\Str\Str;
+use Chevere\String\ModifyString;
 use PHPUnit\Framework\TestCase;
 
-final class StrTest extends TestCase
+final class ModifyStringTest extends TestCase
 {
     public function testToString(): void
     {
         $string = 'string';
-        $this->assertSame($string, (new Str($string))->__toString());
+        $this->assertSame($string, (new ModifyString($string))->__toString());
     }
 
     public function testWithLowercase(): void
     {
         $string = 'sTrÍnG';
         $expected = 'stríng';
-        $str = new Str($string);
+        $str = new ModifyString($string);
         $strWithLowercase = $str->withLowercase();
         $this->assertNotSame($str, $strWithLowercase);
         $this->assertSame($expected, $strWithLowercase->__toString());
@@ -38,7 +38,7 @@ final class StrTest extends TestCase
     {
         $string = 'sTrínG';
         $expected = 'STRÍNG';
-        $str = new Str($string);
+        $str = new ModifyString($string);
         $strWithUppercase = $str->withUppercase();
         $this->assertNotSame($str, $strWithUppercase);
         $this->assertSame($expected, $strWithUppercase->__toString());
@@ -48,7 +48,7 @@ final class StrTest extends TestCase
     {
         $string = 'st ri ng';
         $expected = 'string';
-        $str = new Str($string);
+        $str = new ModifyString($string);
         $strWithStripWhitespace = $str->withStripWhitespace();
         $this->assertNotSame($str, $strWithStripWhitespace);
         $this->assertSame($expected, $strWithStripWhitespace->__toString());
@@ -58,7 +58,7 @@ final class StrTest extends TestCase
     {
         $string = 'str  in  g';
         $expected = 'str in g';
-        $str = new Str($string);
+        $str = new ModifyString($string);
         $strWithStripExtraWhitespace = $str->withStripExtraWhitespace();
         $this->assertNotSame($str, $strWithStripExtraWhitespace);
         $this->assertSame($expected, $strWithStripExtraWhitespace->__toString());
@@ -68,7 +68,7 @@ final class StrTest extends TestCase
     {
         $string = '$7r |n,;:g! %~';
         $expected = '7rng';
-        $str = new Str($string);
+        $str = new ModifyString($string);
         $strWithStripNonAlphanumerics = $str->withStripNonAlphanumerics();
         $this->assertNotSame($str, $strWithStripNonAlphanumerics);
         $this->assertSame(
@@ -81,7 +81,7 @@ final class StrTest extends TestCase
     {
         $string = '\\str\in\\\\g';
         $expected = '/str/in//g';
-        $str = new Str($string);
+        $str = new ModifyString($string);
         $strWithForwardSlashes = $str->withForwardSlashes();
         $this->assertNotSame($str, $strWithForwardSlashes);
         $this->assertSame($expected, $strWithForwardSlashes->__toString());
@@ -92,7 +92,7 @@ final class StrTest extends TestCase
         $string = 'string';
         $tail = 'lt';
         $expected = $tail . $string;
-        $str = new Str($tail . $tail . $string);
+        $str = new ModifyString($tail . $tail . $string);
         $strWithLeftTail = $str->withLeftTail($tail);
         $this->assertNotSame($str, $strWithLeftTail);
         $this->assertSame($expected, $strWithLeftTail->__toString());
@@ -103,7 +103,7 @@ final class StrTest extends TestCase
         $string = 'string';
         $tail = 'rt';
         $expected = $string . $tail;
-        $str = new Str($string . $tail . $tail);
+        $str = new ModifyString($string . $tail . $tail);
         $strWithRightTail = $str->withRightTail($tail);
         $this->assertNotSame($str, $strWithRightTail);
         $this->assertSame($expected, $strWithRightTail->__toString());
@@ -115,7 +115,7 @@ final class StrTest extends TestCase
         $search = 'eést ';
         $replace = 'the ';
         $expected = 'the string';
-        $str = new Str($string);
+        $str = new ModifyString($string);
         $strWithReplaceFirst = $str->withReplaceFirst($search, $replace);
         $this->assertNotSame($str, $strWithReplaceFirst);
         $this->assertSame($expected, $strWithReplaceFirst->__toString());
@@ -130,8 +130,8 @@ final class StrTest extends TestCase
         $search = '.phpé';
         $replace = '.md';
         $expected = 'string.md';
-        $str = new Str($string);
-        $strAlt = new Str($stringAlt);
+        $str = new ModifyString($string);
+        $strAlt = new ModifyString($stringAlt);
         $strWithReplaceLast = $str->withReplaceLast($search, $replace);
         $this->assertNotSame($str, $strWithReplaceLast);
         $this->assertSame($expected, $strWithReplaceLast->__toString());
@@ -144,7 +144,7 @@ final class StrTest extends TestCase
     {
         $string = 'hola mundo po';
         $search = ' ';
-        $str = new Str($string);
+        $str = new ModifyString($string);
         $strWithReplaceAll = $str->withReplaceAll($search, '');
         $this->assertNotSame($str, $strWithReplaceAll);
         $this->assertSame(
@@ -156,7 +156,7 @@ final class StrTest extends TestCase
     public function testWithStripANSIColors(): void
     {
         $string = 'Arg#1 [38;5;245mnull[0m';
-        $str = new Str($string);
+        $str = new ModifyString($string);
         $strWithStripANSIColors = $str->withStripANSIColors();
         $this->assertNotSame($str, $strWithStripANSIColors);
         $this->assertSame(

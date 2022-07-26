@@ -11,13 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str\Exceptions;
-
-use Chevere\Throwable\Exception;
+namespace Chevere\String;
 
 /**
- * Exception thrown when the string not starts with a given string.
+ * @param int<1, max> $length
  */
-final class StrNotStartsWithException extends Exception
+function randomString(int $length): string
 {
+    $randomBytes = random_bytes($length);
+
+    return substr(bin2hex($randomBytes), 0, $length);
 }

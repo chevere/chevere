@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str;
+namespace Chevere\String;
 
-use Chevere\Str\Interfaces\StrInterface;
+use Chevere\String\Interfaces\ModifyStringInterface;
 
-final class Str implements StrInterface
+final class ModifyString implements ModifyStringInterface
 {
     public function __construct(
         private string $string
@@ -27,7 +27,7 @@ final class Str implements StrInterface
         return $this->string;
     }
 
-    public function withLowercase(): StrInterface
+    public function withLowercase(): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = mb_strtolower($new->string, 'UTF-8');
@@ -35,7 +35,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withUppercase(): StrInterface
+    public function withUppercase(): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = mb_strtoupper($new->string, 'UTF-8');
@@ -43,7 +43,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withStripWhitespace(): StrInterface
+    public function withStripWhitespace(): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = preg_replace('/\s+/', '', $new->string) ?? '';
@@ -51,7 +51,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withStripExtraWhitespace(): StrInterface
+    public function withStripExtraWhitespace(): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = preg_replace('/\s+/', ' ', $new->string) ?? '';
@@ -59,7 +59,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withStripNonAlphanumerics(): StrInterface
+    public function withStripNonAlphanumerics(): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = preg_replace('/[^[:alnum:]]/u', '', $new->string) ?? '';
@@ -67,7 +67,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withForwardSlashes(): StrInterface
+    public function withForwardSlashes(): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = str_replace('\\', '/', $new->string);
@@ -75,7 +75,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withLeftTail(string $tail): StrInterface
+    public function withLeftTail(string $tail): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = $tail . ltrim($new->string, $tail);
@@ -83,7 +83,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withRightTail(string $tail): StrInterface
+    public function withRightTail(string $tail): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = rtrim($new->string, $tail) . $tail;
@@ -91,7 +91,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withReplaceFirst(string $search, string $replace): StrInterface
+    public function withReplaceFirst(string $search, string $replace): ModifyStringInterface
     {
         $new = clone $this;
         $pos = strpos($new->string, $search);
@@ -103,7 +103,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withReplaceLast(string $search, string $replace): StrInterface
+    public function withReplaceLast(string $search, string $replace): ModifyStringInterface
     {
         $new = clone $this;
         $pos = strrpos($new->string, $search);
@@ -115,7 +115,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withReplaceAll(string $search, string $replace): StrInterface
+    public function withReplaceAll(string $search, string $replace): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = str_replace($search, $replace, $new->string);
@@ -123,7 +123,7 @@ final class Str implements StrInterface
         return $new;
     }
 
-    public function withStripANSIColors(): StrInterface
+    public function withStripANSIColors(): ModifyStringInterface
     {
         $new = clone $this;
         $new->string = preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $new->string) ?? '';

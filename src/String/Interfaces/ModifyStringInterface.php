@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Str\Interfaces;
+namespace Chevere\String\Interfaces;
 
 use Stringable;
 
 /**
  * Describes the component in charge of string manipulation.
  */
-interface StrInterface extends Stringable
+interface ModifyStringInterface extends Stringable
 {
     public function __construct(string $string);
 
