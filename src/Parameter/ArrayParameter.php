@@ -27,7 +27,7 @@ final class ArrayParameter implements ArrayParameterInterface
      */
     private array $default = [];
 
-    public function getType(): TypeInterface
+    private function getType(): TypeInterface
     {
         return new Type(Type::ARRAY);
     }

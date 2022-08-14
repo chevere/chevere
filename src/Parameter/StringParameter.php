@@ -35,7 +35,7 @@ final class StringParameter implements StringParameterInterface
         $this->regex = new Regex('/^.*$/');
     }
 
-    public function getType(): TypeInterface
+    private function getType(): TypeInterface
     {
         return new Type(Type::STRING);
     }

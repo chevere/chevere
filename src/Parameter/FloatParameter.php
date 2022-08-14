@@ -24,7 +24,7 @@ final class FloatParameter implements FloatParameterInterface
 
     private float $default = 0.0;
 
-    public function getType(): TypeInterface
+    private function getType(): TypeInterface
     {
         return new Type(Type::FLOAT);
     }

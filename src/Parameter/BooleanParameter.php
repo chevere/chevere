@@ -24,7 +24,7 @@ final class BooleanParameter implements BooleanParameterInterface
 
     private bool $default = false;
 
-    public function getType(): TypeInterface
+    private function getType(): TypeInterface
     {
         return new Type(Type::BOOLEAN);
     }

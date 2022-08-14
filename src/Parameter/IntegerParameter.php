@@ -24,7 +24,7 @@ final class IntegerParameter implements IntegerParameterInterface
 
     private int $default = 0;
 
-    public function getType(): TypeInterface
+    private function getType(): TypeInterface
     {
         return new Type(Type::INTEGER);
     }

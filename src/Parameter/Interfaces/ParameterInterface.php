@@ -34,11 +34,6 @@ interface ParameterInterface extends DescriptionInterface
     public function type(): TypeInterface;
 
     /**
-     * Gets a new parameter type instance.
-     */
-    public function getType(): TypeInterface;
-
-    /**
      * Provides access to the default value.
      */
     public function default(): mixed;

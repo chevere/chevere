@@ -26,6 +26,6 @@ class ParameterHelper extends TestCase
         $this->assertNotSame($parameter, $parameterWithDefault);
         $this->assertSame($default, $parameterWithDefault->default());
         $this->assertSame($default, $parameterWithDefault->default());
-        $this->assertSame($primitive, $parameterWithDefault->getType()->primitive());
+        $this->assertSame($primitive, $parameterWithDefault->type()->primitive());
     }
 }

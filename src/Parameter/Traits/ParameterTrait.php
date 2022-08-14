@@ -22,7 +22,7 @@ trait ParameterTrait
 
     private TypeInterface $type;
 
-    abstract public function getType(): TypeInterface;
+    abstract private function getType(): TypeInterface;
 
     public function setUp(): void
     {
