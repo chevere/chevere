@@ -61,18 +61,20 @@ final class ArgumentsTest extends TestCase
         $arguments->get($notFoundKey);
     }
 
-    public function testInvalidArgumentCount(): void
-    {
-        $parameters = new Parameters();
-        $this->expectException(ArgumentCountError::class);
-        new Arguments($parameters, id: '123');
-    }
-
-    public function testInvalidExtraArguments(): void
+    public function testMissingArgument(): void
     {
         $parameters = new Parameters(test: new StringParameter());
         $this->expectException(ArgumentCountError::class);
-        new Arguments($parameters, test: '123', extra: 'nono');
+        new Arguments($parameters);
+    }
+
+    public function testIgnoreExtraArguments(): void
+    {
+        $parameters = new Parameters(test: new StringParameter());
+        $arguments = new Arguments($parameters, test: '123', extra: 'nono');
+        $this->assertSame([
+            'test' => '123',
+        ], $arguments->toArray());
     }
 
     public function testInvalidArgumentType(): void
@@ -198,7 +200,7 @@ final class ArgumentsTest extends TestCase
                 ...[
                     $optional => (new StringParameter())
                         ->withRegex(new Regex('/^a|b$/'))
-                        ->withDefault($optionalDefault)
+                        ->withDefault($optionalDefault),
                 ]
             );
         $arguments = new Arguments(
@@ -212,7 +214,7 @@ final class ArgumentsTest extends TestCase
         $this->assertSame(
             [
                 $required => $requiredValue,
-                $optional => $optionalDefault
+                $optional => $optionalDefault,
             ],
             $arguments->toArray()
         );

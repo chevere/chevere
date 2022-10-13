@@ -41,8 +41,13 @@ final class Arguments implements ArgumentsInterface
         mixed ...$namedArguments
     ) {
         /** @var array<string, mixed> $namedArguments */
+        foreach (array_keys($namedArguments) as $name) {
+            if (! $this->parameters()->has($name)) {
+                unset($namedArguments[$name]);
+            }
+        }
         $this->arguments = $namedArguments;
-        $this->assertCount();
+        $this->assertRequired();
         $this->errors = [];
         foreach ($this->parameters->getIterator() as $name => $parameter) {
             $this->handleParameter($name, $parameter);
@@ -65,7 +70,6 @@ final class Arguments implements ArgumentsInterface
     }
 
     /**
-     *
      * @throws OutOfBoundsException
      * @throws TypeError
      * @throws InvalidArgumentException
@@ -129,7 +133,7 @@ final class Arguments implements ArgumentsInterface
         return $this->get($name);
     }
 
-    private function assertCount(): void
+    private function assertRequired(): void
     {
         $argumentsKeys = array_keys($this->arguments);
         $diffRequired = array_diff(
@@ -142,23 +146,13 @@ final class Arguments implements ArgumentsInterface
                     ->withCode('%missing%', implode(', ', $diffRequired))
             );
         }
-        $diffExtra = array_diff(
-            $argumentsKeys,
-            $this->parameters->keys()
-        );
-        if ($diffExtra !== []) {
-            throw new ArgumentCountError(
-                message('Passing extra arguments: %extra%')
-                    ->withCode('%extra%', implode(', ', $diffExtra))
-            );
-        }
     }
 
     private function assertType(string $name, mixed $value): void
     {
         $parameter = $this->parameters->get($name);
         $type = $parameter->type();
-        if (!$type->validate($value)) {
+        if (! $type->validate($value)) {
             throw new TypeError(
                 message: message('Parameter %name%: Expecting value of type %expected%, %provided% provided')
                     ->withStrong('%name%', $name)
@@ -207,7 +201,7 @@ final class Arguments implements ArgumentsInterface
 
     private function handleParameterDefault(string $name, ParameterInterface $parameter): void
     {
-        if (!$this->has($name)) {
+        if (! $this->has($name)) {
             $this->arguments[$name] = $parameter->default();
         }
     }
