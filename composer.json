@@ -24,9 +24,10 @@
         "thecodingmachine/safe": "^2"
     },
     "require-dev": {
+        "chevere/var-dump": "^0.6.0",
         "phpstan/phpstan": "^1.6",
         "phpunit/phpunit": "^9.5",
-        "symplify/easy-coding-standard": "^10.3"
+        "symplify/easy-coding-standard": "^11.1"
     },
     "autoload": {
         "files": [
@@ -60,9 +61,13 @@
         "sort-packages": true
     },
     "scripts": {
+        "test": "vendor/bin/phpunit -c phpunit.xml",
+        "test-rep": "vendor/bin/phpunit -c phpunit-report.xml",
         "update-cs": "mkdir -p .ecs && cd .ecs && curl -O https://raw.githubusercontent.com/chevere/code-style/main/.ecs/ecs-chevere.php"
     },
     "scripts-descriptions": {
+        "test": "Run test suite",
+        "test-rep": "Run test suite (report)",
         "update-cs": "Update Chevere code style definition"
     }
 }
