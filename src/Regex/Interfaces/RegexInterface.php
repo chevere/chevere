@@ -40,12 +40,12 @@ interface RegexInterface extends Stringable
     /**
      * Provides access to the the regex string without delimiters.
      */
-    public function toNoDelimiters(): string;
+    public function noDelimiters(): string;
 
     /**
      * Provides access to the regex string without delimiters and without anchors (`^`, `$`).
      */
-    public function toNoDelimitersNoAnchors(): string;
+    public function noDelimitersNoAnchors(): string;
 
     /**
      * Matches string.

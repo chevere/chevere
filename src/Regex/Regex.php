@@ -44,12 +44,12 @@ final class Regex implements RegexInterface
         return $this->pattern;
     }
 
-    public function toNoDelimiters(): string
+    public function noDelimiters(): string
     {
         return $this->noDelimiters;
     }
 
-    public function toNoDelimitersNoAnchors(): string
+    public function noDelimitersNoAnchors(): string
     {
         return $this->noDelimitersNoAnchors;
     }

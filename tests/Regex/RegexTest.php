@@ -32,8 +32,8 @@ final class RegexTest extends TestCase
         $patternDelimitersAnchors = "/${patternAnchors}/";
         $regex = new Regex($patternDelimitersAnchors);
         $this->assertSame($patternDelimitersAnchors, $regex->__toString());
-        $this->assertSame($patternAnchors, $regex->toNoDelimiters());
-        $this->assertSame($pattern, $regex->toNoDelimitersNoAnchors());
+        $this->assertSame($patternAnchors, $regex->noDelimiters());
+        $this->assertSame($pattern, $regex->noDelimitersNoAnchors());
     }
 
     public function testMatch(): void
