@@ -36,7 +36,7 @@ final class Container implements ContainerInterface
 
     public function get(string $id): mixed
     {
-        if (!$this->has($id)) {
+        if (! $this->has($id)) {
             throw new ContainerNotFoundException();
         }
 

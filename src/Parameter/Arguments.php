@@ -40,13 +40,17 @@ final class Arguments implements ArgumentsInterface
         private ParametersInterface $parameters,
         mixed ...$namedArguments
     ) {
-        /** @var array<string, mixed> $namedArguments */
+        $storeArguments = [];
         foreach (array_keys($namedArguments) as $name) {
+            $name = strval($name);
             if (! $this->parameters()->has($name)) {
                 unset($namedArguments[$name]);
+
+                continue;
             }
+            $storeArguments[$name] = $namedArguments[$name];
         }
-        $this->arguments = $namedArguments;
+        $this->arguments = $storeArguments;
         $this->assertRequired();
         $this->errors = [];
         foreach ($this->parameters->getIterator() as $name => $parameter) {

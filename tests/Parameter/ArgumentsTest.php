@@ -116,6 +116,7 @@ final class ArgumentsTest extends TestCase
                     ->withRegex(new Regex('/^[0-9]+$/'))
             ),
             ...[
+                'this' => 'should be ignored',
                 $name => $value,
             ]
         );

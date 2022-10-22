@@ -41,7 +41,8 @@ final class ClassMapTest extends TestCase
         foreach (['map', 'flip'] as $property) {
             $this->assertNotSame(
                 $helper->getPropertyValue($property),
-                $cloneHelper->getPropertyValue($property)
+                $cloneHelper->getPropertyValue($property),
+                "Property {$property} is not cloned"
             );
         }
     }
@@ -64,7 +65,9 @@ final class ClassMapTest extends TestCase
         $this->assertCount(1, $classMapWithPut);
         $this->assertTrue($classMapWithPut->has($className));
         $this->assertTrue($classMapWithPut->hasKey($key));
-        $this->assertSame([$className => $key], $classMapWithPut->toArray());
+        $this->assertSame([
+            $className => $key,
+        ], $classMapWithPut->toArray());
         $this->assertSame($key, $classMapWithPut->key($className));
         $this->assertSame($className, $classMapWithPut->className($key));
         $this->assertSame([$key], $classMapWithPut->keys());
