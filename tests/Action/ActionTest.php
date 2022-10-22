@@ -104,10 +104,11 @@ final class ActionTest extends TestCase
     public function testActionContainer(): void
     {
         $container = new Container();
-        $withPut = $container
-            ->withPut(id: 123, name: 'wea');
+        $containerWithPut = $container->withPut(id: 123, name: 'wea');
+        $this->assertNotSame($container, $containerWithPut);
+        $this->assertNotEquals($container, $containerWithPut);
         $action = new ActionTestContainer();
-        $withContainer = $action->withContainer($withPut);
+        $withContainer = $action->withContainer($containerWithPut);
         $this->assertNotSame($action, $withContainer);
         $response = $withContainer->getResponse();
         $this->assertSame(0, $response->code());

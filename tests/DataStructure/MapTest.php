@@ -52,7 +52,7 @@ final class MapTest extends TestCase
         $map = new Map(...[]);
         $immutable = $map->withPut($key, $value);
         $this->assertNotSame($map, $immutable);
-        $this->assertNotSame($map->keys(), $immutable->keys());
+        $this->assertSame($map->keys(), $immutable->keys());
         $this->assertSame($value, $immutable->get($key));
         $immutable->assertHas($key);
     }

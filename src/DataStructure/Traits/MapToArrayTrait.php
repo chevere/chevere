@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\DataStructure\Traits;
 
-use Chevere\DataStructure\Map;
+use Chevere\DataStructure\Interfaces\MapInterface;
 
 trait MapToArrayTrait
 {
-    private Map $map;
+    private MapInterface $map;
 
     public function toArray(): array
     {

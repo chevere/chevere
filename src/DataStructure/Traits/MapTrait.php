@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\DataStructure\Traits;
 
+use Chevere\DataStructure\Interfaces\MapInterface;
 use Chevere\DataStructure\Map;
+use function Chevere\VariableSupport\deepCopy;
 use Iterator;
 
 trait MapTrait
 {
-    private Map $map;
+    private MapInterface $map;
 
     public function __construct()
     {
@@ -27,7 +29,9 @@ trait MapTrait
 
     public function __clone()
     {
-        $this->map = clone $this->map;
+        /** @var MapInterface $copy */
+        $copy = deepCopy($this->map, true);
+        $this->map = $copy;
     }
 
     public function keys(): array

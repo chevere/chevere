@@ -28,11 +28,6 @@ final class ClassMap implements ClassMapInterface
     use MapToArrayTrait;
 
     /**
-     * @var Map [className => key]
-     */
-    private Map $map;
-
-    /**
      * @var Map [key => className]
      */
     private Map $flip;
@@ -51,7 +46,7 @@ final class ClassMap implements ClassMapInterface
 
     public function withPut(string $className, string $key): ClassMapInterface
     {
-        if (!class_exists($className) && !interface_exists($className)) {
+        if (! class_exists($className) && ! interface_exists($className)) {
             throw new ClassNotExistsException(
                 message("Class name or interface %className% doesn't exists")
                     ->withStrong('%className%', $className)
