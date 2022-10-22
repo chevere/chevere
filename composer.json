@@ -61,6 +61,11 @@
         "sort-packages": true
     },
     "scripts": {
+        "check": [
+            "composer phpstan",
+            "composer test-rep",
+            "composer infection"
+        ],
         "infection": "infection --only-covered -j10",
         "phpstan": "vendor/bin/phpstan analyze src/ --memory-limit 512M --level 9",
         "test": "vendor/bin/phpunit -c phpunit.xml",
@@ -68,6 +73,7 @@
         "update-cs": "mkdir -p .ecs && cd .ecs && curl -O https://raw.githubusercontent.com/chevere/code-style/main/.ecs/ecs-chevere.php"
     },
     "scripts-descriptions": {
+        "check": "Runs all checks",
         "infection": "Runs infection",
         "phpstan": "Runs phpstan",
         "test": "Run test suite",
