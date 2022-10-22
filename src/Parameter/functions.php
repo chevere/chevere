@@ -25,7 +25,7 @@ use Chevere\Regex\Regex;
 
 /**
  * @param array<mixed, mixed> $default
-*/
+ */
 function arrayParameter(
     string $description = '',
     array $default = [],
@@ -63,13 +63,13 @@ function integerParameter(
 }
 
 function stringParameter(
+    string $regex = '',
     string $description = '',
     string $default = '',
-    ?string $regex = null,
 ): StringParameterInterface {
     $parameter = new StringParameter($description);
     $parameter = $parameter->withDefault($default);
-    if (isset($regex)) {
+    if ($regex !== '') {
         $parameter = $parameter->withRegex(new Regex($regex));
     }
 
