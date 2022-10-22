@@ -29,7 +29,7 @@ final class Arguments implements ArgumentsInterface
     /**
      * @var array<string, mixed>
      */
-    public array $arguments;
+    private array $arguments;
 
     /**
      * @var string[]
