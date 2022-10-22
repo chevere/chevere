@@ -106,7 +106,6 @@ final class ActionTest extends TestCase
         $container = new Container();
         $containerWithPut = $container->withPut(id: 123, name: 'wea');
         $this->assertNotSame($container, $containerWithPut);
-        $this->assertNotEquals($container, $containerWithPut);
         $action = new ActionTestContainer();
         $withContainer = $action->withContainer($containerWithPut);
         $this->assertNotSame($action, $withContainer);

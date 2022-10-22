@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Http;
+namespace Chevere\Tests\Controller;
 
 use Chevere\Tests\Controller\_resources\TestHttpController;
 use Chevere\Throwable\Errors\ArgumentCountError;
