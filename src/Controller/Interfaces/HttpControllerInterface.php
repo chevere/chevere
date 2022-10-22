@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Interfaces;
+namespace Chevere\Controller\Interfaces;
 
 use Chevere\Parameter\Interfaces\ParametersInterface;
 

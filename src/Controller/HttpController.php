@@ -11,10 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http;
+namespace Chevere\Controller;
 
-use Chevere\Controller\Controller;
-use Chevere\Http\Interfaces\HttpControllerInterface;
+use Chevere\Controller\Interfaces\HttpControllerInterface;
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\Interfaces\ParametersInterface;
