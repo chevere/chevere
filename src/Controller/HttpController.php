@@ -15,10 +15,9 @@ namespace Chevere\Controller;
 
 use Chevere\Controller\Interfaces\HttpControllerInterface;
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\fileParameters;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\stringParameter;
 
 abstract class HttpController extends Controller implements HttpControllerInterface
 {
@@ -89,13 +88,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         );
         /** @var array<int|string, array<string, int|string>> */
         $array = $arguments->toArray();
-        $required = parameters(
-            type: stringParameter(),
-            tmp_name: stringParameter(),
-            size: integerParameter(),
-            name: stringParameter(),
-            error: integerParameter()
-        );
+        $required = fileParameters();
         foreach ($array as $file) {
             $arguments = new Arguments($required, ...$file);
         }

@@ -86,13 +86,18 @@ function objectParameter(
 }
 
 function parameters(
-    ?ParameterInterface ...$required,
+    ParameterInterface ...$required,
 ): ParametersInterface {
-    $parameters = new Parameters();
-    if ($required !== null) {
-        /** @var ParameterInterface[] $required */
-        $parameters = $parameters->withAdded(...$required);
-    }
+    return (new Parameters())->withAdded(...$required);
+}
 
-    return $parameters;
+function fileParameters(): ParametersInterface
+{
+    return parameters(
+        error: integerParameter(),
+        name: stringParameter(),
+        size: integerParameter(),
+        tmp_name: stringParameter(),
+        type: stringParameter(),
+    );
 }

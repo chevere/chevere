@@ -18,7 +18,7 @@ use Chevere\Action\Traits\ActionTrait;
 use Chevere\Common\Traits\DescriptionTrait;
 use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
-use Chevere\Parameter\Attributes\ParameterAttribute;
+use Chevere\Parameter\Attributes\StringParameterAttribute;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -64,7 +64,7 @@ abstract class Action implements ActionInterface
         $this->assertContainer();
         $arguments = $this->getArguments(...$namedArguments)->toArray();
         $data = $this->run(...$arguments);
-        if (!is_array($data)) {
+        if (! is_array($data)) {
             throw new TypeError(
                 message('Method %method% must return an array.')
                     ->withStrtr('%method%', $this::class . '::run')
@@ -89,7 +89,7 @@ abstract class Action implements ActionInterface
             iterator_to_array($this->containerParameters()->getIterator())
         );
         foreach ($keys as $name) {
-            if (!$this->container()->has($name)) {
+            if (! $this->container()->has($name)) {
                 $missingService[] = $name;
 
                 continue;
@@ -134,7 +134,7 @@ abstract class Action implements ActionInterface
                 $parameter = $parameter->withDefault($default);
             }
             $parameter = $this->getParameterWithSome($parameter, $attribute);
-            $pos = intval(!$reflectionParameter->isOptional());
+            $pos = intval(! $reflectionParameter->isOptional());
             $collection[$pos][$reflectionParameter->getName()] = $parameter;
         }
 
@@ -142,25 +142,25 @@ abstract class Action implements ActionInterface
             ->withAddedOptional(...$collection[0]);
     }
 
-    final protected function getAttribute(ReflectionParameter $parameter): ParameterAttribute
+    final protected function getAttribute(ReflectionParameter $parameter): StringParameterAttribute
     {
-        $reflectionAttributes = $parameter->getAttributes(ParameterAttribute::class);
+        $reflectionAttributes = $parameter->getAttributes(StringParameterAttribute::class);
         /**
          * @phpstan-ignore-next-line
          * @var ?ReflectionAttribute $reflectionAttribute
          */
         $reflectionAttribute = $reflectionAttributes[0] ?? null;
         if ($reflectionAttribute !== null) {
-            /** @var ParameterAttribute */
+            /** @var StringParameterAttribute */
             return $reflectionAttribute->newInstance();
         }
 
-        return new ParameterAttribute();
+        return new StringParameterAttribute();
     }
 
     final protected function assertRunMethod(): void
     {
-        if (!method_exists($this, 'run')) {
+        if (! method_exists($this, 'run')) {
             throw new LogicException(
                 message('Action %action% does not define a run method')
                     ->withCode('%action%', $this::class)
@@ -177,9 +177,9 @@ abstract class Action implements ActionInterface
 
     final protected function getParameterWithSome(
         ParameterInterface $parameter,
-        ParameterAttribute $attribute
+        StringParameterAttribute $attribute
     ): ParameterInterface {
-        if (!($parameter instanceof StringParameterInterface)) {
+        if (! ($parameter instanceof StringParameterInterface)) {
             return $parameter;
         }
 

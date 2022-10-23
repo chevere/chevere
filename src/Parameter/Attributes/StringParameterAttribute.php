@@ -18,12 +18,14 @@ use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 
 #[Attribute]
-final class ParameterAttribute
+final class StringParameterAttribute
 {
     private RegexInterface $regex;
 
-    public function __construct(private string $description = '', string $regex = '/.*/')
-    {
+    public function __construct(
+        string $regex = '/.*/',
+        private string $description = '',
+    ) {
         $this->regex = new Regex($regex);
     }
 
