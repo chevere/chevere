@@ -16,9 +16,9 @@ namespace Chevere\Controller\Interfaces;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 
 /**
- * Describes the component in charge of defining the Http Controller.
+ * Describes the component in charge of defining an Http Controller which adds methods for handling HTTP requests.
  */
-interface HttpControllerInterface
+interface HttpControllerInterface extends ControllerInterface
 {
     /**
      * Defines the GET parameters accepted.
