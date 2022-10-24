@@ -15,7 +15,6 @@ namespace Chevere\Writer;
 
 use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\RuntimeException;
 use Chevere\Writer\Interfaces\WritersInterface;
 use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
@@ -50,10 +49,15 @@ function streamFor(string $stream, string $mode): StreamInterface
 
 /**
  * @codeCoverageIgnore
- *
- * @throws RuntimeException
  */
 function streamTemp(string $content = ''): StreamInterface
 {
-    return Stream::create($content);
+    try {
+        return Stream::create($content);
+    } catch(Throwable $e) {
+        throw new InvalidArgumentException(
+            previous: $e,
+            message: message('Unable to create temp stream')
+        );
+    }
 }

@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Writer;
 
-use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
 use Chevere\Writer\Interfaces\WriterInterface;
 use Chevere\Writer\Interfaces\WritersInterface;
-use Laminas\Diactoros\Exception\InvalidArgumentException;
 
 final class Writers implements WritersInterface
 {
@@ -31,19 +28,8 @@ final class Writers implements WritersInterface
 
     public function __construct()
     {
-        try {
-            $this->output = new StreamWriter(streamTemp(''));
-            $this->error = new StreamWriter(streamTemp(''));
-        }
-        // @codeCoverageIgnoreStart
-        // @infection-ignore-all
-        catch (InvalidArgumentException $e) {
-            throw new LogicException(
-                previous: $e,
-                message: message('Unable to create default streams'),
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        $this->output = new StreamWriter(streamTemp(''));
+        $this->error = new StreamWriter(streamTemp(''));
         $this->debug = new NullWriter();
         $this->log = new NullWriter();
     }

@@ -27,6 +27,7 @@ trait VectorTrait
 
     public function __clone()
     {
+        /** @phpstan-ignore-next-line */
         $this->vector = $this->vector->copy();
     }
 
@@ -46,6 +47,8 @@ trait VectorTrait
 
     public function getIterator(): Iterator
     {
-        return $this->vector->getIterator();
+        foreach ($this->vector->toArray() as $value) {
+            yield $value;
+        }
     }
 }

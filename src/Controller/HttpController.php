@@ -37,7 +37,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
      */
     protected array $files = [];
 
-    protected HttpMiddlewareInterface $middlewares;
+    protected HttpMiddlewareInterface $middleware;
 
     public function acceptGet(): ParametersInterface
     {
