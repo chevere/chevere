@@ -8,5 +8,11 @@
             "runningStatusMessage": "ECS ${fileBasename}",
             "finishStatusMessage": "${fileBasename} OK"
         },
+    ],
+    "cSpell.words": [
+        "Diactoros",
+        "middlewares",
+        "Middlewares",
+        "Nyholm"
     ]
 }
