@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\DataStructure\Interfaces;
 
-use Countable;
-
 /**
- * Describes the component in charge of defining a mapped interface.
+ * Describes the component in charge of providing an interface exposing integer keys.
  */
-interface MappedInterface extends Countable, StringKeysInterface, GetIteratorInterface
+interface IntegerKeysInterface
 {
+    /**
+     * @return array<int>
+     */
+    public function keys(): array;
 }

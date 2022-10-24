@@ -18,6 +18,6 @@ use Countable;
 /**
  * Describes the component in charge of defining a vector interface.
  */
-interface VectorInterface extends Countable, KeysInterface, GetIteratorInterface
+interface VectorInterface extends Countable, IntegerKeysInterface, GetIteratorInterface
 {
 }
