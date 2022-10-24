@@ -27,5 +27,5 @@ interface ContainerInterface extends MappedInterface, PsrContainerInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified service.
      */
-    public function withPut(mixed ...$namedArguments): ContainerInterface;
+    public function withPut(mixed ...$arguments): self;
 }

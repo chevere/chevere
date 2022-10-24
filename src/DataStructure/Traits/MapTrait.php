@@ -30,7 +30,7 @@ trait MapTrait
     public function __clone()
     {
         /** @var MapInterface $copy */
-        $copy = deepCopy($this->map, true);
+        $copy = deepCopy($this->map);
         $this->map = $copy;
     }
 

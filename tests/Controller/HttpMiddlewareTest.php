@@ -17,6 +17,7 @@ use Chevere\Controller\HttpMiddleware;
 use Chevere\Tests\Controller\_resources\MiddlewareAltTest;
 use Chevere\Tests\Controller\_resources\MiddlewareTest;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Server\MiddlewareInterface;
 
 final class HttpMiddlewareTest extends TestCase
 {
@@ -45,12 +46,15 @@ final class HttpMiddlewareTest extends TestCase
         $httpMiddleware = new HttpMiddleware($middlewareTest);
         $httpMiddlewareWith = $httpMiddleware->withAppend($middlewareAlt);
         $this->assertNotSame($httpMiddleware, $httpMiddlewareWith);
-        $this->assertNotEquals($httpMiddleware, $httpMiddlewareWith);
+        $this->assertCount(1, $httpMiddleware);
         $this->assertCount(2, $httpMiddlewareWith);
         $this->assertSame([0, 1], $httpMiddlewareWith->keys());
+        $array = array_map(function (MiddlewareInterface $middleware) {
+            return $middleware::class;
+        }, iterator_to_array($httpMiddlewareWith->getIterator()));
         $this->assertSame(
-            [$middlewareTest, $middlewareAlt],
-            iterator_to_array($httpMiddlewareWith->getIterator())
+            [$middlewareTest::class, $middlewareAlt::class],
+            $array
         );
     }
 
@@ -61,12 +65,15 @@ final class HttpMiddlewareTest extends TestCase
         $httpMiddleware = new HttpMiddleware($middlewareTest);
         $httpMiddlewareWith = $httpMiddleware->withPrepend($middlewareAlt);
         $this->assertNotSame($httpMiddleware, $httpMiddlewareWith);
-        $this->assertNotEquals($httpMiddleware, $httpMiddlewareWith);
+        $this->assertCount(1, $httpMiddleware);
         $this->assertCount(2, $httpMiddlewareWith);
         $this->assertSame([0, 1], $httpMiddlewareWith->keys());
+        $array = array_map(function (MiddlewareInterface $middleware) {
+            return $middleware::class;
+        }, iterator_to_array($httpMiddlewareWith->getIterator()));
         $this->assertSame(
-            [$middlewareAlt, $middlewareTest],
-            iterator_to_array($httpMiddlewareWith->getIterator())
+            [$middlewareAlt::class, $middlewareTest::class],
+            $array
         );
     }
 }

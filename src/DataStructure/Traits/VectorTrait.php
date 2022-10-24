@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\DataStructure\Traits;
 
+use function Chevere\VariableSupport\deepCopy;
 use Ds\Vector;
 use Iterator;
 
@@ -27,8 +28,10 @@ trait VectorTrait
 
     public function __clone()
     {
+        /** @var Vector<mixed> $copy */
+        $copy = deepCopy($this->vector);
         /** @phpstan-ignore-next-line */
-        $this->vector = $this->vector->copy();
+        $this->vector = $copy;
     }
 
     public function keys(): array

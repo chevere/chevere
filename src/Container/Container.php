@@ -23,10 +23,10 @@ final class Container implements ContainerInterface
 {
     use MapTrait;
 
-    public function withPut(mixed ...$namedArguments): ContainerInterface
+    public function withPut(mixed ...$arguments): ContainerInterface
     {
         $new = clone $this;
-        foreach ($namedArguments as $key => $service) {
+        foreach ($arguments as $key => $service) {
             $new->map = $new->map
                 ->withPut(strval($key), $service);
         }

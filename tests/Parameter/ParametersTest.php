@@ -91,7 +91,9 @@ final class ParametersTest extends TestCase
         $parameter = new StringParameter();
         $parameters = new Parameters();
         $parametersWithAddedOptional = $parameters
-            ->withAddedOptional(...[$name => $parameter]);
+            ->withAddedOptional(...[
+                $name => $parameter,
+            ]);
         $this->assertNotSame($parameters, $parametersWithAddedOptional);
         $this->assertCount(1, $parametersWithAddedOptional);
         $this->assertCount(1, $parametersWithAddedOptional->optional());
@@ -100,7 +102,9 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parametersWithAddedOptional->isOptional($name));
         $this->assertSame($parameter, $parametersWithAddedOptional->get($name));
         $this->expectException(OverflowException::class);
-        $parametersWithAddedOptional->withAddedOptional(...[$name => $parameter]);
+        $parametersWithAddedOptional->withAddedOptional(...[
+            $name => $parameter,
+        ]);
     }
 
     public function testIsRequiredOutOfBounds(): void
