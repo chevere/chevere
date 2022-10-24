@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Controller;
 
 use Chevere\Controller\Interfaces\HttpControllerInterface;
+use Chevere\Controller\Interfaces\HttpMiddlewareInterface;
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\fileParameters;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -24,17 +25,19 @@ abstract class HttpController extends Controller implements HttpControllerInterf
     /**
      * @var array<int|string, string>
      */
-    protected $get = [];
+    protected array $get = [];
 
     /**
      * @var array<int|string, string>
      */
-    protected $post = [];
+    protected array $post = [];
 
     /**
      * @var array<int|string, array<string, int|string>>
      */
-    protected $files = [];
+    protected array $files = [];
+
+    protected HttpMiddlewareInterface $middlewares;
 
     public function acceptGet(): ParametersInterface
     {
@@ -95,6 +98,19 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         $new->files = $array;
 
         return $new;
+    }
+
+    public function withMiddleware(HttpMiddlewareInterface $middleware): static
+    {
+        $new = clone $this;
+        $new->middleware = $middleware;
+
+        return $new;
+    }
+
+    public function middleware(): HttpMiddlewareInterface
+    {
+        return $this->middleware ??= new HttpMiddleware();
     }
 
     final public function get(): array

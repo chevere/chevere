@@ -20,8 +20,6 @@ use Chevere\Writer\Interfaces\WritersInterface;
 use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 use function Safe\fopen;
-use function Safe\fwrite;
-use function Safe\rewind;
 use Throwable;
 
 /**
@@ -37,14 +35,14 @@ function writers(): WritersInterface
  *
  * @throws InvalidArgumentException
  */
-function streamFor(string $stream): StreamInterface
+function streamFor(string $stream, string $mode): StreamInterface
 {
     try {
-        return Stream::create($stream);
+        return Stream::create(fopen($stream, $mode));
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             previous: $e,
-            message: message('Unable to create a stream for %stream%')
+            message: message('Unable to create stream for %stream%')
                 ->withCode('%stream%', $stream)
         );
     }
@@ -57,32 +55,5 @@ function streamFor(string $stream): StreamInterface
  */
 function streamTemp(string $content = ''): StreamInterface
 {
-    $stream = 'php://temp';
-
-    try {
-        $resource = fopen($stream, 'r+');
-        fwrite($resource, $content);
-        rewind($resource);
-    } catch (Throwable $e) {
-        throw new RuntimeException(
-            previous: $e,
-            message: message('Unable to handle %stream% as stream resource')
-                ->withCode('%stream%', $stream),
-        );
-    }
-    if (! is_resource($resource)) {
-        throw new RuntimeException(
-            message('Unable to create resource at %stream%')
-                ->withCode('%stream%', $stream)
-        );
-    }
-    if (get_resource_type($resource) !== 'stream') {
-        throw new RuntimeException(
-            message('Resource at %stream% is not of type %type%')
-                ->withCode('%stream%', $stream)
-                ->withCode('%type%', 'stream')
-        );
-    }
-
-    return Stream::create($resource);
+    return Stream::create($content);
 }

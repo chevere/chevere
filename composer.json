@@ -19,13 +19,14 @@
         "php-ds/php-ds": "^1.4",
         "psr/container": "^1 || ^2",
         "psr/http-message": "^1",
+        "psr/http-server-middleware": "^1.0",
         "ramsey/uuid": "^4.1",
         "symfony/polyfill-ctype": "^1.25",
         "symfony/polyfill-mbstring": "^1.25",
         "thecodingmachine/safe": "^2"
     },
     "require-dev": {
-        "chevere/var-dump": "^0.6.0",
+        "chevere/var-dump": "^0.7.x-dev",
         "phpstan/phpstan": "^1.6",
         "phpunit/phpunit": "^9.5",
         "symplify/easy-coding-standard": "^11.1"

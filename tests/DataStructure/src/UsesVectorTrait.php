@@ -11,15 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\DataStructure\Interfaces;
+namespace Chevere\Tests\DataStructure\src;
 
-/**
- * Describes the component in charge of providing an interface exposing object keys.
- */
-interface KeysInterface
+use Chevere\DataStructure\Interfaces\VectorInterface;
+use Chevere\DataStructure\Traits\VectorTrait;
+
+final class UsesVectorTrait implements VectorInterface
 {
-    /**
-     * @return array<string|int>
-     */
-    public function keys(): array;
+    use VectorTrait;
 }

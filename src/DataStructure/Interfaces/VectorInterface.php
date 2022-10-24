@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\DataStructure\Interfaces;
 
+use Countable;
+
 /**
- * Describes the component in charge of providing an interface exposing object keys.
+ * Describes the component in charge of defining a vector interface.
  */
-interface KeysInterface
+interface VectorInterface extends Countable, KeysInterface, GetIteratorInterface
 {
-    /**
-     * @return array<string|int>
-     */
-    public function keys(): array;
 }

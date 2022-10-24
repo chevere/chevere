@@ -50,6 +50,10 @@ interface HttpControllerInterface extends ControllerInterface
      */
     public function withFiles(array $files): static;
 
+    public function withMiddleware(HttpMiddlewareInterface $middleware): static;
+
+    public function middleware(): HttpMiddlewareInterface;
+
     /**
      * @return array<int|string, string>
      */

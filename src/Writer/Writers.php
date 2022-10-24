@@ -17,6 +17,7 @@ use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\LogicException;
 use Chevere\Writer\Interfaces\WriterInterface;
 use Chevere\Writer\Interfaces\WritersInterface;
+use Laminas\Diactoros\Exception\InvalidArgumentException;
 
 final class Writers implements WritersInterface
 {
@@ -36,7 +37,7 @@ final class Writers implements WritersInterface
         }
         // @codeCoverageIgnoreStart
         // @infection-ignore-all
-        catch (\InvalidArgumentException $e) {
+        catch (InvalidArgumentException $e) {
             throw new LogicException(
                 previous: $e,
                 message: message('Unable to create default streams'),
