@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
+use Chevere\Tests\Controller\_resources\TestHttpAcceptController;
 use Chevere\Tests\Controller\_resources\TestHttpController;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use InvalidArgumentException;
@@ -20,9 +21,17 @@ use PHPUnit\Framework\TestCase;
 
 final class HttpControllerTest extends TestCase
 {
-    public function testAcceptGetParameters(): void
+    public function testAcceptDefault(): void
     {
         $controller = new TestHttpController();
+        $this->assertCount(0, $controller->acceptGet());
+        $this->assertCount(0, $controller->acceptPost());
+        $this->assertCount(0, $controller->acceptFiles());
+    }
+
+    public function testAcceptGetParameters(): void
+    {
+        $controller = new TestHttpAcceptController();
         $this->assertSame([], $controller->get());
         $controllerWith = $controller->withGet([
             'foo-foo' => 'abc',
@@ -38,7 +47,7 @@ final class HttpControllerTest extends TestCase
 
     public function testAcceptPostParameters(): void
     {
-        $controller = new TestHttpController();
+        $controller = new TestHttpAcceptController();
         $this->assertSame([], $controller->post());
         $controllerWith = $controller->withPost([
             'bar.bar' => '123',
@@ -54,7 +63,7 @@ final class HttpControllerTest extends TestCase
 
     public function testAcceptFileParameters(): void
     {
-        $controller = new TestHttpController();
+        $controller = new TestHttpAcceptController();
         $file = [
             'type' => 'text/plain',
             'tmp_name' => '/tmp/file.yx5kVl',

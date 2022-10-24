@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Traits;
 
-use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Container\Container;
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
@@ -30,20 +29,6 @@ trait ActionTrait
     protected ParametersInterface $containerParameters;
 
     protected ContainerInterface $container;
-    
-    /**
-     * This method runs on class instantiation (before __construct).
-     */
-    protected function setUpBefore(): void
-    {
-    }
-    
-    /**
-     * This method runs on class instantiation (after __construct).
-     */
-    protected function setUpAfter(): void
-    {
-    }
 
     public function getContainerParameters(): ParametersInterface
     {
@@ -53,11 +38,6 @@ trait ActionTrait
     public function getResponseParameters(): ParametersInterface
     {
         return new Parameters();
-    }
-
-    protected function assertRunParameters(): void
-    {
-        // enables override
     }
 
     // @infection-ignore-all
@@ -78,12 +58,7 @@ trait ActionTrait
         return $this->responseParameters ??= $this->getResponseParameters();
     }
 
-    final protected function getArguments(mixed ...$namedArguments): ArgumentsInterface
-    {
-        return new Arguments($this->parameters(), ...$namedArguments);
-    }
-
-    final public function withContainer(ContainerInterface $container): ActionInterface
+    final public function withContainer(ContainerInterface $container): static
     {
         $new = clone $this;
         $new->container = $container;
@@ -95,6 +70,30 @@ trait ActionTrait
     final public function container(): ContainerInterface
     {
         return $this->container ??= new Container();
+    }
+
+    /**
+     * This method runs on class instantiation (before __construct).
+     */
+    protected function setUpBefore(): void
+    {
+    }
+
+    /**
+     * This method runs on class instantiation (after __construct).
+     */
+    protected function setUpAfter(): void
+    {
+    }
+
+    protected function assertRunParameters(): void
+    {
+        // enables override
+    }
+
+    final protected function getArguments(mixed ...$namedArguments): ArgumentsInterface
+    {
+        return new Arguments($this->parameters(), ...$namedArguments);
     }
 
     abstract protected function assertContainer(): void;

@@ -21,11 +21,11 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 
 abstract class Controller extends Action implements ControllerInterface
 {
-    protected function assertRunParameters(): void
+    final protected function assertRunParameters(): void
     {
         $invalid = [];
         foreach ($this->parameters()->getIterator() as $name => $parameter) {
-            if (!($parameter instanceof StringParameterInterface)) {
+            if (! ($parameter instanceof StringParameterInterface)) {
                 $invalid[] = $name;
             }
         }

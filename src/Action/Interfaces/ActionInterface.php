@@ -39,7 +39,7 @@ interface ActionInterface extends DescriptionInterface
         'string' => StringParameter::class,
         'object' => ObjectParameter::class,
     ];
-    
+
     /**
      * Defines expected container parameters when executing `run` method.
      */
@@ -50,7 +50,7 @@ interface ActionInterface extends DescriptionInterface
      */
     public function containerParameters(): ParametersInterface;
 
-    public function withContainer(ContainerInterface $container): ActionInterface;
+    public function withContainer(ContainerInterface $container): static;
 
     /**
      * Provides access to the container.

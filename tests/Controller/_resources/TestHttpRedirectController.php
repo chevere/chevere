@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller\_resources;
 
-use Chevere\Controller\HttpController;
+use Chevere\Controller\HttpRedirectController;
 
-final class TestHttpController extends HttpController
+final class TestHttpRedirectController extends HttpRedirectController
 {
     public function run(): array
     {

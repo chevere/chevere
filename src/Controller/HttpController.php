@@ -51,7 +51,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return parameters();
     }
 
-    public function withGet(array $get): static
+    final public function withGet(array $get): static
     {
         $new = clone $this;
         $arguments = new Arguments(
@@ -65,7 +65,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return $new;
     }
 
-    public function withPost(array $post): static
+    final public function withPost(array $post): static
     {
         $new = clone $this;
         $arguments = new Arguments(
@@ -79,7 +79,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return $new;
     }
 
-    public function withFiles(array $files): static
+    final public function withFiles(array $files): static
     {
         $new = clone $this;
         $arguments = new Arguments(
@@ -97,17 +97,17 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return $new;
     }
 
-    public function get(): array
+    final public function get(): array
     {
         return $this->get;
     }
 
-    public function post(): array
+    final public function post(): array
     {
         return $this->post;
     }
 
-    public function files(): array
+    final public function files(): array
     {
         return $this->files;
     }

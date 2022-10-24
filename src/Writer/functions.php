@@ -17,7 +17,7 @@ use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\RuntimeException;
 use Chevere\Writer\Interfaces\WritersInterface;
-use Laminas\Diactoros\Stream;
+use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 use function Safe\fopen;
 use function Safe\fwrite;
@@ -37,16 +37,15 @@ function writers(): WritersInterface
  *
  * @throws InvalidArgumentException
  */
-function streamFor(string $stream, string $mode): StreamInterface
+function streamFor(string $stream): StreamInterface
 {
     try {
-        return new Stream($stream, $mode);
+        return Stream::create($stream);
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             previous: $e,
-            message: message('Unable to create a stream for %stream% %mode%')
+            message: message('Unable to create a stream for %stream%')
                 ->withCode('%stream%', $stream)
-                ->withCode('%mode%', $mode),
         );
     }
 }
@@ -71,7 +70,7 @@ function streamTemp(string $content = ''): StreamInterface
                 ->withCode('%stream%', $stream),
         );
     }
-    if (!is_resource($resource)) {
+    if (! is_resource($resource)) {
         throw new RuntimeException(
             message('Unable to create resource at %stream%')
                 ->withCode('%stream%', $stream)
@@ -85,5 +84,5 @@ function streamTemp(string $content = ''): StreamInterface
         );
     }
 
-    return new Stream($resource);
+    return Stream::create($resource);
 }
