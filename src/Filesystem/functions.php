@@ -39,7 +39,7 @@ function tailDirectoryPath(string $path): string
     if (substr($path, -1) === '\\') {
         $path = substr($path, 0, -1);
     }
-    $path .= substr($path, -1) == '/'
+    $path .= substr($path, -1) === '/'
         ? ''
         : '/';
 
