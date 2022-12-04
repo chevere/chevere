@@ -9,7 +9,7 @@ jobs:
         php: ["8.0", "8.1"]
     env:
       extensions: opcache, mbstring, ds, pcov
-      tools: composer
+      tools: composer, phpstan
       ini-values: opcache.enable_cli = 0, precision=16, default_charset='UTF-8', pcov.directory=src
       key: cache-1652276840262
     name: PHP ${{ matrix.php }} test on ${{ matrix.os }}
