@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Regex;
 
+use Chevere\Regex\Exceptions\NoMatchException;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -39,18 +40,28 @@ final class RegexTest extends TestCase
     public function testMatch(): void
     {
         $test = 'Hello World!';
+        $fail = 'Hola mundo!';
         $pattern = '/^' . $test . '$/';
         $regex = new Regex($pattern);
         $this->assertSame([$test], $regex->match($test));
-        $this->assertSame([[$test]], $regex->matchAll($test));
+        $this->assertSame([], $regex->match($fail));
+        $regex->assertMatch($test);
+        $this->expectException(NoMatchException::class);
+        $this->expectExceptionCode(100);
+        $regex->assertMatch($fail);
     }
 
-    public function testMatchRegex(): void
+    public function testMatchAll(): void
     {
         $pattern = '/^id-[\d]+$/';
         $test = 'id-123';
+        $fail = '123-id';
         $regex = new Regex($pattern);
-        $this->assertSame([$test], $regex->match($test));
         $this->assertSame([[$test]], $regex->matchAll($test));
+        $this->assertSame([], $regex->matchAll($fail));
+        $regex->assertMatchAll($test);
+        $this->expectException(NoMatchException::class);
+        $this->expectExceptionCode(110);
+        $regex->assertMatchAll($fail);
     }
 }

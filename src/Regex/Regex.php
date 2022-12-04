@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Regex;
 
 use function Chevere\Message\message;
+use Chevere\Regex\Exceptions\NoMatchException;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\RuntimeException;
 use Safe\Exceptions\PcreException;
 use function Safe\preg_match;
 use function Safe\preg_match_all;
+use Throwable;
 
 final class Regex implements RegexInterface
 {
@@ -54,47 +56,69 @@ final class Regex implements RegexInterface
         return $this->noDelimitersNoAnchors;
     }
 
-    /**
-     * @codeCoverageIgnore
-     * @infection-ignore-all
-     */
     public function match(string $string): array
     {
         try {
             $match = preg_match($this->pattern, $string, $matches);
-        } catch (PcreException $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (PcreException $e) {
             throw new RuntimeException(
                 message('Unable to %function%')
                     ->withCode('%function%', 'preg_match'),
             );
         }
+        // @codeCoverageIgnoreEnd
 
-        return $match === 0 ? [] : $matches;
+        return $match === 1 ? $matches : [];
     }
 
-    /**
-     * @codeCoverageIgnore
-     * @infection-ignore-all
-     */
+    public function assertMatch(string $string): void
+    {
+        if (! $this->match($string)) {
+            throw new NoMatchException(
+                message('String %string% does not match regex %pattern%')
+                    ->withCode('%pattern%', $this->pattern)
+                    ->withCode('%string% ', $string),
+                100,
+            );
+        }
+    }
+
     public function matchAll(string $string): array
     {
         try {
             $match = preg_match_all($this->pattern, $string, $matches);
-        } catch (\Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (PcreException $e) {
             throw new RuntimeException(
                 message('Unable to %function%')
                     ->withCode('%function%', 'preg_match_all'),
             );
         }
+        // @codeCoverageIgnoreEnd
 
-        return $match === 0 ? [] : $matches;
+        return $match === 1 ? $matches : [];
+    }
+
+    public function assertMatchAll(string $string): void
+    {
+        if (! $this->matchAll($string)) {
+            throw new NoMatchException(
+                message('String %string% does not match all regex %pattern%')
+                    ->withCode('%pattern%', $this->pattern)
+                    ->withCode('%string% ', $string),
+                110
+            );
+        }
     }
 
     private function assertRegex(): void
     {
         try {
             preg_match($this->pattern, '');
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             throw new InvalidArgumentException(
                 previous: $e,
                 message: message('Invalid regex string %regex% provided [%preg%]')
