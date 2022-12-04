@@ -54,7 +54,7 @@ function streamTemp(string $content = ''): StreamInterface
 {
     try {
         return Stream::create($content);
-    } catch(Throwable $e) {
+    } catch (Throwable $e) {
         throw new InvalidArgumentException(
             previous: $e,
             message: message('Unable to create temp stream')

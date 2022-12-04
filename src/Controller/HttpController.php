@@ -93,7 +93,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         $array = $arguments->toArray();
         $required = fileParameters();
         foreach ($array as $file) {
-            $arguments = new Arguments($required, ...$file);
+            new Arguments($required, ...$file);
         }
         $new->files = $array;
 
