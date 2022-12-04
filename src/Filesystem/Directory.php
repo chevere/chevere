@@ -57,7 +57,7 @@ final class Directory implements DirectoryInterface
 
     public function assertExists(): void
     {
-        if (!$this->exists()) {
+        if (! $this->exists()) {
             throw new DirectoryNotExistsException(
                 message("Directory %path% doesn't exists")
                     ->withCode('%path%', $this->path->__toString())
@@ -97,7 +97,7 @@ final class Directory implements DirectoryInterface
 
     public function removeIfExists(): array
     {
-        if (!$this->exists()) {
+        if (! $this->exists()) {
             return [];
         }
 
@@ -157,7 +157,7 @@ final class Directory implements DirectoryInterface
 
     private function assertIsDirectory(): void
     {
-        if (!$this->path->isDirectory()) {
+        if (! $this->path->isDirectory()) {
             throw new PathIsNotDirectoryException(
                 message('Path %path% is not a directory')
                     ->withCode('%path%', $this->path->__toString())
@@ -174,7 +174,7 @@ final class Directory implements DirectoryInterface
         try {
             mkdir($this->path->__toString(), $mode, true);
         } catch (Throwable $e) {
-            throw new DirectoryUnableToCreateException(previous: $e, );
+            throw new DirectoryUnableToCreateException(previous: $e);
         }
     }
 

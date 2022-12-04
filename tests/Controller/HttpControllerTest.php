@@ -38,6 +38,7 @@ final class HttpControllerTest extends TestCase
         $controllerWith = $controller->withMiddleware($middleware);
         $this->assertNotSame($controller, $controllerWith);
         $this->assertNotEquals($controller, $controllerWith);
+        $this->assertSame($middleware, $controllerWith->middleware());
     }
 
     public function testAcceptGetParameters(): void

@@ -86,6 +86,7 @@ trait ActionTrait
     {
     }
 
+    // @infection-ignore-all
     protected function assertRunParameters(): void
     {
         // enables override

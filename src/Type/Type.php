@@ -19,13 +19,13 @@ use Chevere\Type\Interfaces\TypeInterface;
 
 final class Type implements TypeInterface
 {
+    public const CLASS_TYPES = [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME];
+
     private string $validator;
 
     private string $primitive = '';
 
     private string $typeHinting;
-
-    public const CLASS_TYPES = [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME];
 
     public function __construct(
         private string $type
@@ -76,22 +76,12 @@ final class Type implements TypeInterface
 
     private function validateObject(object $object): bool
     {
-        $objectClass = $object::class;
-
-        return match ($this->primitive) {
-            self::PRIMITIVE_CLASS_NAME => $this->isClassName($objectClass),
-            default => $object instanceof $this->type,
-        };
-    }
-
-    private function isClassName(string $objectClass): bool
-    {
-        return $this->type === $objectClass;
+        return $object instanceof $this->type;
     }
 
     private function setPrimitive(): void
     {
-        if (in_array($this->type, self::TYPE_ARGUMENTS)) {
+        if (in_array($this->type, self::TYPE_ARGUMENTS, true)) {
             $this->primitive = $this->type;
 
             return;
