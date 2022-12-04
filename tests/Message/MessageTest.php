@@ -35,7 +35,7 @@ final class MessageTest extends TestCase
         $search = '%translate%';
         $replace = '1';
         $var = 'string ' . $search;
-        $message = (new Message($var))->withStrtr($search, $replace);
+        $message = (new Message($var))->withTranslate($search, $replace);
         $varTr = strtr($var, [
             $search => $replace,
         ]);

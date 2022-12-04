@@ -67,7 +67,7 @@ abstract class Action implements ActionInterface
         if (! is_array($data)) {
             throw new TypeError(
                 message('Method %method% must return an array.')
-                    ->withStrtr('%method%', $this::class . '::run')
+                    ->withTranslate('%method%', $this::class . '::run')
             );
         }
 
@@ -99,8 +99,8 @@ abstract class Action implements ActionInterface
         if ($missingService !== []) {
             throw new InvalidArgumentException(
                 message('The container for %action% does not provide the parameter(s): [%missing%]')
-                    ->withStrtr('%action%', $this::class)
-                    ->withStrtr('%missing%', implode(', ', $missingService))
+                    ->withTranslate('%action%', $this::class)
+                    ->withTranslate('%missing%', implode(', ', $missingService))
             );
         }
     }
@@ -120,7 +120,7 @@ abstract class Action implements ActionInterface
             if ($namedType === null) {
                 throw new TypeError(
                     message: message('Missing type declaration for parameter %parameter%')
-                        ->withStrtr('%parameter%', '$' . $reflectionParameter->getName())
+                        ->withTranslate('%parameter%', '$' . $reflectionParameter->getName())
                 );
             }
             /** @var ReflectionNamedType $namedType */

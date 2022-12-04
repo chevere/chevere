@@ -38,6 +38,11 @@ interface MessageInterface extends Stringable
     public function __construct(string $template);
 
     /**
+     *  Returns a text message representation.
+     */
+    public function __toString(): string;
+
+    /**
      * Provides access to the message template.
      */
     public function template(): string;
@@ -60,17 +65,12 @@ interface MessageInterface extends Stringable
     public function toHtml(): string;
 
     /**
-     *  Returns a text message representation.
-     */
-    public function __toString(): string;
-
-    /**
      * Return an instance with the specified string translation.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified string translation.
      */
-    public function withStrtr(string $search, string $replace): self;
+    public function withTranslate(string $search, string $replace): self;
 
     /**
      * Return an instance with the specified `$search` replaced with `$replace` emphasis tag.

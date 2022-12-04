@@ -84,7 +84,7 @@ final class Message implements MessageInterface
         return strtr($this->template, $tr);
     }
 
-    public function withStrtr(string $search, string $replace): MessageInterface
+    public function withTranslate(string $search, string $replace): MessageInterface
     {
         return $this->put('', $search, $replace);
     }

@@ -123,7 +123,7 @@ final class Regex implements RegexInterface
                 previous: $e,
                 message: message('Invalid regex string %regex% provided [%preg%]')
                     ->withCode('%regex%', $this->pattern)
-                    ->withStrtr('%preg%', static::ERRORS[preg_last_error()]),
+                    ->withTranslate('%preg%', static::ERRORS[preg_last_error()]),
             );
         }
     }
