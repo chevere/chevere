@@ -18,7 +18,7 @@ use Chevere\Action\Traits\ActionTrait;
 use Chevere\Common\Traits\DescriptionTrait;
 use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
-use Chevere\Parameter\Attributes\StringParameterAttribute;
+use Chevere\Parameter\Attributes\StringAttribute;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -142,20 +142,20 @@ abstract class Action implements ActionInterface
             ->withAddedOptional(...$collection[0]);
     }
 
-    final protected function getAttribute(ReflectionParameter $parameter): StringParameterAttribute
+    final protected function getAttribute(ReflectionParameter $parameter): StringAttribute
     {
-        $reflectionAttributes = $parameter->getAttributes(StringParameterAttribute::class);
+        $reflectionAttributes = $parameter->getAttributes(StringAttribute::class);
         /**
          * @phpstan-ignore-next-line
          * @var ?ReflectionAttribute $reflectionAttribute
          */
         $reflectionAttribute = $reflectionAttributes[0] ?? null;
         if ($reflectionAttribute !== null) {
-            /** @var StringParameterAttribute */
+            /** @var StringAttribute */
             return $reflectionAttribute->newInstance();
         }
 
-        return new StringParameterAttribute();
+        return new StringAttribute();
     }
 
     final protected function assertRunMethod(): void
@@ -177,7 +177,7 @@ abstract class Action implements ActionInterface
 
     final protected function getParameterWithSome(
         ParameterInterface $parameter,
-        StringParameterAttribute $attribute
+        StringAttribute $attribute
     ): ParameterInterface {
         if (! ($parameter instanceof StringParameterInterface)) {
             return $parameter;

@@ -18,7 +18,7 @@ use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 
 #[Attribute]
-final class StringParameterAttribute
+final class StringAttribute
 {
     private RegexInterface $regex;
 

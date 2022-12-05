@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Action\Action;
-use Chevere\Parameter\Attributes\StringParameterAttribute;
+use Chevere\Parameter\Attributes\StringAttribute;
 
 final class ActionTestParameterAttributes extends Action
 {
     public function run(
-        #[StringParameterAttribute(description: 'An int')]
+        #[StringAttribute(description: 'An int')]
         int $int,
-        #[StringParameterAttribute(description: 'The name', regex: '/^[a-z]$/')]
+        #[StringAttribute(description: 'The name', regex: '/^[a-z]$/')]
         string $name,
     ): array {
         return [];
