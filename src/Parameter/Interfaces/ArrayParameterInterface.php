@@ -48,5 +48,8 @@ interface ArrayParameterInterface extends ParameterInterface
      */
     public function default(): array;
 
+    /**
+     * Provides access to the parameters.
+     */
     public function parameters(): ParametersInterface;
 }

@@ -15,6 +15,8 @@ namespace Chevere\Tests\Controller\_resources;
 
 use Chevere\Controller\HttpController;
 use function Chevere\Parameter\arrayParameter;
+use function Chevere\Parameter\fileParameter;
+use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\stringParameter;
@@ -39,11 +41,13 @@ final class TestHttpAcceptController extends HttpController
         );
     }
 
-    public function acceptFiles(): ParametersInterface
+    public function acceptFiles(): ArrayParameterInterface
     {
-        return parameters(
+        return arrayParameter(
             ...[
-                'MyFile!' => arrayParameter(),
+                'MyFile!' => fileParameter(
+                    type: stringParameter('/^text\/plain$/')
+                ),
             ]
         );
     }

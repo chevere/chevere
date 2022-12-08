@@ -27,7 +27,7 @@ final class HttpControllerTest extends TestCase
         $controller = new TestHttpController();
         $this->assertCount(0, $controller->acceptGet());
         $this->assertCount(0, $controller->acceptPost());
-        $this->assertCount(0, $controller->acceptFiles());
+        $this->assertCount(0, $controller->acceptFiles()->parameters());
         $this->assertCount(0, $controller->middleware());
     }
 
@@ -81,7 +81,7 @@ final class HttpControllerTest extends TestCase
             'tmp_name' => '/tmp/file.yx5kVl',
             'size' => 1313,
             'name' => 'readme.txt',
-            'error' => 0,
+            'error' => UPLOAD_ERR_OK,
         ];
         $this->assertSame([], $controller->files());
         $controllerWith = $controller->withFiles([

@@ -15,6 +15,7 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
+use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
@@ -110,13 +111,18 @@ function parameters(
     return (new Parameters())->withAddedRequired(...$required);
 }
 
-function fileParameters(): ParametersInterface
-{
-    return parameters(
-        error: integerParameter(),
-        name: stringParameter(),
-        size: integerParameter(),
-        tmp_name: stringParameter(),
-        type: stringParameter(),
+function fileParameter(
+    string $description = '',
+    ?StringParameterInterface $name = null,
+    ?IntegerParameterInterface $size = null,
+    ?StringParameterInterface $tmp_name = null,
+    ?StringParameterInterface $type = null,
+): FileParameterInterface {
+    return new FileParameter(
+        name: $name ?? stringParameter(),
+        size: $size ?? integerParameter(),
+        tmp_name: $tmp_name ?? stringParameter(),
+        type: $type ?? stringParameter(),
+        description: $description,
     );
 }

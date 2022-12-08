@@ -16,7 +16,9 @@ namespace Chevere\Controller;
 use Chevere\Controller\Interfaces\HttpControllerInterface;
 use Chevere\Controller\Interfaces\HttpMiddlewareInterface;
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\fileParameters;
+use function Chevere\Parameter\arrayParameter;
+use Chevere\Parameter\Interfaces\ArrayParameterInterface;
+use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use function Chevere\Parameter\parameters;
 
@@ -49,9 +51,9 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return parameters();
     }
 
-    public function acceptFiles(): ParametersInterface
+    public function acceptFiles(): ArrayParameterInterface
     {
-        return parameters();
+        return arrayParameter();
     }
 
     final public function withGet(array $get): static
@@ -85,15 +87,15 @@ abstract class HttpController extends Controller implements HttpControllerInterf
     final public function withFiles(array $files): static
     {
         $new = clone $this;
-        $arguments = new Arguments(
-            $new->acceptFiles(),
-            ...$files
-        );
-        /** @var array<int|string, array<string, int|string>> */
-        $array = $arguments->toArray();
-        $required = fileParameters();
-        foreach ($array as $file) {
-            new Arguments($required, ...$file);
+        $array = [];
+        /** @var FileParameterInterface $parameter */
+        foreach ($new->acceptFiles()->parameters()->getIterator() as $key => $parameter) {
+            $arguments = new Arguments(
+                $parameter->parameters(),
+                ...$files[$key]
+            );
+            /** @var array<int|string, array<string, int|string>> $array */
+            $array[$key] = $arguments->toArray();
         }
         $new->files = $array;
 

@@ -164,26 +164,27 @@ final class Arguments implements ArgumentsInterface
                     ->withCode('%provided%', get_debug_type($value))
             );
         }
-        if ($parameter instanceof StringParameterInterface) {
-            /**
-             * @var StringParameterInterface $parameter
-             * @var string $value
-             */
-            $this->assertStringArgument($name, $parameter, $value);
-        }
+        $this->assertStringArgument($name, $parameter, $value);
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    private function assertStringArgument(string $name, StringParameterInterface $parameter, string $argument): void
+    private function assertStringArgument(string $name, ParameterInterface $parameter, mixed $value): void
     {
+        if (! $parameter instanceof StringParameterInterface) {
+            return;
+        }
+        /**
+         * @var StringParameterInterface $parameter
+         * @var string $value
+         */
         $regexString = $parameter->regex()->__toString();
-        if (preg_match($regexString, $argument) !== 1) {
+        if (preg_match($regexString, $value) !== 1) {
             throw new InvalidArgumentException(
-                message("Parameter [%name%]: Argument value provided doesn't match the regex %regex%")
+                message("Parameter [%name%]: Argument value provided %provided% doesn't match the regex %regex%")
                     ->withStrong('%name%', $name)
-                    ->withCode('%parameter%', $name)
+                    ->withCode('%provided%', $value)
                     ->withCode('%regex%', $regexString)
             );
         }

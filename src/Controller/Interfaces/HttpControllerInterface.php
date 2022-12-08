@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Controller\Interfaces;
 
+use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 
 /**
@@ -33,7 +34,7 @@ interface HttpControllerInterface extends ControllerInterface
     /**
      * Defines the FILES parameters accepted.
      */
-    public function acceptFiles(): ParametersInterface;
+    public function acceptFiles(): ArrayParameterInterface;
 
     /**
      * @param array<int|string, string> $get
