@@ -15,6 +15,7 @@ namespace Chevere\Parameter;
 
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
@@ -152,40 +153,103 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    private function assertType(string $name, mixed $value): void
+    private function assertType(string $name, mixed $argument): void
     {
         $parameter = $this->parameters->get($name);
         $type = $parameter->type();
-        if (! $type->validate($value)) {
+        if (! $type->validate($argument)) {
             throw new TypeError(
                 message: message('Parameter %name%: Expecting value of type %expected%, %provided% provided')
                     ->withStrong('%name%', $name)
                     ->withStrong('%expected%', $type->typeHinting())
-                    ->withCode('%provided%', get_debug_type($value))
+                    ->withCode('%provided%', get_debug_type($argument))
             );
         }
-        $this->assertStringArgument($name, $parameter, $value);
+        if ($parameter instanceof StringParameterInterface) {
+            /**
+             * @var StringParameterInterface $parameter
+             * @var string $argument
+             */
+            $this->assertStringArgument($name, $parameter, $argument);
+        }
+        if ($parameter instanceof IntegerParameterInterface) {
+            /**
+             * @var IntegerParameterInterface $parameter
+             * @var int $argument
+             */
+            $this->assertIntegerArgument($name, $parameter, $argument);
+        }
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    private function assertStringArgument(string $name, ParameterInterface $parameter, mixed $value): void
-    {
-        if (! $parameter instanceof StringParameterInterface) {
-            return;
-        }
-        /**
-         * @var StringParameterInterface $parameter
-         * @var string $value
-         */
-        $regexString = $parameter->regex()->__toString();
-        if (preg_match($regexString, $value) !== 1) {
+    private function assertStringArgument(
+        string $name,
+        StringParameterInterface $parameter,
+        string $argument
+    ): void {
+        $regex = $parameter->regex();
+        if ($regex->match($argument) === []) {
             throw new InvalidArgumentException(
                 message("Parameter [%name%]: Argument value provided %provided% doesn't match the regex %regex%")
                     ->withStrong('%name%', $name)
-                    ->withCode('%provided%', $value)
-                    ->withCode('%regex%', $regexString)
+                    ->withCode('%provided%', $argument)
+                    ->withCode('%regex%', strval($regex))
+            );
+        }
+    }
+
+    private function assertIntegerArgument(
+        string $name,
+        IntegerParameterInterface $parameter,
+        int $argument
+    ): void {
+        $value = $parameter->value();
+        if (isset($value)) {
+            if ($value === $argument) {
+                return;
+            }
+
+            throw new InvalidArgumentException(
+                message('Parameter [%name%]: Argument value provided %provided% is not same as %value%')
+                    ->withStrong('%name%', $name)
+                    ->withCode('%provided%', strval($argument))
+                    ->withCode('%value%', strval($value))
+            );
+        }
+        $this->assertIntegerMinimum(
+            $name,
+            $argument,
+            $parameter->minimum() ?? PHP_INT_MIN
+        );
+        $this->assertIntegerMaximum(
+            $name,
+            $argument,
+            $parameter->maximum() ?? PHP_INT_MAX
+        );
+    }
+
+    private function assertIntegerMinimum(string $name, int $argument, int $minimum): void
+    {
+        if ($argument < $minimum) {
+            throw new InvalidArgumentException(
+                message('Parameter [%name%]: Argument value provided %provided% is less than %minimum%')
+                    ->withStrong('%name%', $name)
+                    ->withCode('%provided%', strval($argument))
+                    ->withCode('%minimum%', strval($minimum))
+            );
+        }
+    }
+
+    private function assertIntegerMaximum(string $name, int $argument, int $maximum): void
+    {
+        if ($argument > $maximum) {
+            throw new InvalidArgumentException(
+                message('Parameter [%name%]: Argument value provided %provided% is greater than %maximum%')
+                    ->withStrong('%name%', $name)
+                    ->withCode('%provided%', strval($argument))
+                    ->withCode('%maximum%', strval($maximum))
             );
         }
     }
