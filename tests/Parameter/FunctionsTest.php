@@ -41,12 +41,6 @@ final class ParameterFunctionsTest extends TestCase
         $parameter = arrayParameter();
         $this->assertSame('', $parameter->description());
         $this->assertSame([], $parameter->default());
-        $parameter = arrayParameter(
-            description: 'name',
-            default: ['default']
-        );
-        $this->assertSame('name', $parameter->description());
-        $this->assertSame(['default'], $parameter->default());
     }
 
     public function testBooleanParameter(): void
@@ -110,5 +104,17 @@ final class ParameterFunctionsTest extends TestCase
         $this->assertSame($description, $parameter->description());
         $this->assertSame($default, $parameter->default());
         $this->assertSame($regex, $parameter->regex()->__toString());
+    }
+
+    public function testFunctionArrayParameter(): void
+    {
+        $description = 'ola k ase';
+        $parameter = arrayParameter(
+            wea: arrayParameter(
+                one: stringParameter(),
+                two: integerParameter()
+            )
+        );
+        $this->assertCount(1, $parameter->parameters());
     }
 }

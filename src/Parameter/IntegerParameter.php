@@ -28,9 +28,9 @@ final class IntegerParameter implements IntegerParameterInterface
 
     private ?int $default = null;
 
-    private ?int $minimum = null;
+    private ?int $minimum = PHP_INT_MIN;
 
-    private ?int $maximum = null;
+    private ?int $maximum = PHP_INT_MAX;
 
     private ?int $value = null;
 
@@ -76,9 +76,10 @@ final class IntegerParameter implements IntegerParameterInterface
 
     public function withValue(int $value): IntegerParameterInterface
     {
-        $this->assertNoRangeOverflow();
         $new = clone $this;
         $new->value = $value;
+        $new->minimum = null;
+        $new->maximum = null;
 
         return $new;
     }
@@ -106,15 +107,6 @@ final class IntegerParameter implements IntegerParameterInterface
     private function getType(): TypeInterface
     {
         return new Type(Type::INTEGER);
-    }
-
-    private function assertNoRangeOverflow(): void
-    {
-        if (isset($this->minimum) || isset($this->maximum)) {
-            throw new OverflowException(
-                message('Cannot set value when a minimum/maximum range is set')
-            );
-        }
     }
 
     private function assertNoValueOverflow(MessageInterface $message): void

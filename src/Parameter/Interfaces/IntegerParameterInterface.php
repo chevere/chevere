@@ -61,22 +61,22 @@ interface IntegerParameterInterface extends ParameterInterface
     public function withValue(int $value): self;
 
     /**
-     * Provides access to the default value.
+     * Provides access to the default value (if any).
      */
     public function default(): ?int;
 
     /**
-     * Provides access to the minimum value.
+     * Provides access to the minimum value (if any).
      */
     public function minimum(): ?int;
 
     /**
-     * Provides access to the maximum value.
+     * Provides access to the maximum value (if any).
      */
     public function maximum(): ?int;
 
     /**
-     * Provides access to the maximum value.
+     * Provides access to the maximum value (if any).
      */
     public function value(): ?int;
 }

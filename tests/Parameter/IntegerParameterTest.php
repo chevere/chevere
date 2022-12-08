@@ -22,10 +22,10 @@ final class IntegerParameterTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $parameter = new IntegerParameter('name');
+        $parameter = new IntegerParameter();
         $this->assertSame(null, $parameter->default());
-        $this->assertSame(null, $parameter->minimum());
-        $this->assertSame(null, $parameter->maximum());
+        $this->assertSame(PHP_INT_MIN, $parameter->minimum());
+        $this->assertSame(PHP_INT_MAX, $parameter->maximum());
         $this->assertSame(null, $parameter->value());
         $default = 1234;
         $parameterWithDefault = $parameter->withDefault($default);
@@ -37,6 +37,14 @@ final class IntegerParameterTest extends TestCase
         );
     }
 
+    public function testWithValue(): void
+    {
+        $parameter = new IntegerParameter();
+        $withValue = $parameter->withValue(1);
+        $this->assertNotSame($parameter, $withValue);
+        $this->assertSame(1, $withValue->value());
+    }
+
     public function testWithMinimum(): void
     {
         $parameter = new IntegerParameter();
@@ -44,6 +52,8 @@ final class IntegerParameterTest extends TestCase
         $this->assertNotSame($parameter, $parameterWithMinimum);
         $this->assertSame(1, $parameterWithMinimum->minimum());
         $parameterWithValue = $parameter->withValue(1);
+        $this->assertSame(null, $parameterWithValue->maximum());
+        $this->assertSame(null, $parameterWithValue->minimum());
         $this->expectException(OverflowException::class);
         $parameterWithValue->withMinimum(0);
     }
@@ -55,6 +65,8 @@ final class IntegerParameterTest extends TestCase
         $this->assertNotSame($parameter, $parameterWithMaximum);
         $this->assertSame(1, $parameterWithMaximum->maximum());
         $parameterWithValue = $parameter->withValue(1);
+        $this->assertSame(null, $parameterWithValue->maximum());
+        $this->assertSame(null, $parameterWithValue->minimum());
         $this->expectException(OverflowException::class);
         $parameterWithValue->withMaximum(0);
     }
@@ -77,28 +89,5 @@ final class IntegerParameterTest extends TestCase
             ->withMaximum(2);
         $this->expectException(InvalidArgumentException::class);
         $parameterWith->withMaximum(1);
-    }
-
-    public function testNoMinimumOverflow(): void
-    {
-        $this->expectException(OverflowException::class);
-        (new IntegerParameter())
-            ->withMinimum(0)
-            ->withValue(1);
-    }
-
-    public function testNoMaxOverflow(): void
-    {
-        $this->expectException(OverflowException::class);
-        (new IntegerParameter())
-            ->withMaximum(0)
-            ->withValue(1);
-    }
-
-    public function testWithValue(): void
-    {
-        $parameter = new IntegerParameter();
-        $parameterWithValue = $parameter->withValue(1);
-        $this->assertNotSame($parameter, $parameterWithValue);
     }
 }

@@ -23,16 +23,15 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Regex;
 
-/**
- * @param array<mixed, mixed> $default
- */
 function arrayParameter(
-    string $description = '',
-    array $default = [],
+    ParameterInterface ...$parameter
 ): ArrayParameterInterface {
-    $parameter = new ArrayParameter($description);
+    $array = new ArrayParameter();
+    if ($parameter) {
+        $array = $array->withParameter(...$parameter);
+    }
 
-    return $parameter->withDefault($default);
+    return $array;
 }
 
 function booleanParameter(

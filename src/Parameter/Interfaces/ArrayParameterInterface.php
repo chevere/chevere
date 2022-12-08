@@ -21,10 +21,10 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 interface ArrayParameterInterface extends ParameterInterface
 {
     /**
-     * Return an instance with the specified `$default` value.
+     * Return an instance with the specified default value.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$default` value.
+     * an instance that contains the specified default value.
      *
      * @param array<mixed, mixed> $value
      * @throws InvalidArgumentException
@@ -32,9 +32,21 @@ interface ArrayParameterInterface extends ParameterInterface
     public function withDefault(array $value): self;
 
     /**
+     * Return an instance with the specified property.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified property.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function withParameter(ParameterInterface ...$parameter): self;
+
+    /**
      * Provides access to the default value.
      *
      * @return array<mixed, mixed>
      */
     public function default(): array;
+
+    public function parameters(): ParametersInterface;
 }

@@ -31,63 +31,63 @@ interface ParametersInterface extends MappedInterface
     public function getIterator(): Iterator;
 
     /**
-     * Return an instance with the specified required `$parameters` instance added.
+     * Return an instance with the specified required parameter(s) instance added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified required `$parameters` instance added.
+     * an instance that contains the specified required parameter(s) instance added.
      *
      * @throws OverflowException
      */
-    public function withAdded(ParameterInterface ...$parameters): self;
+    public function withAdded(ParameterInterface ...$parameter): self;
 
     /**
-     * Return an instance with the specified optional `$parameters` instance added.
+     * Return an instance with the specified optional parameter(s) instance added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified optional `$parameters` instance added.
+     * an instance that contains the specified optional parameter(s) instance added.
      *
      * @throws OverflowException
      */
-    public function withAddedOptional(ParameterInterface ...$parameters): self;
+    public function withAddedOptional(ParameterInterface ...$parameter): self;
 
     /**
-     * Return an instance with the specified `$parameters` modifying an already added parameter.
+     * Return an instance with the specified parameter(s) modifying an already added parameter.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$parameters` modifying an already added parameter.
+     * an instance that contains the specified parameter(s) modifying an already added parameter.
      *
      * @throws OutOfBoundsException
      */
-    public function withModify(ParameterInterface ...$parameters): self;
+    public function withModify(ParameterInterface ...$parameter): self;
 
     /**
      * Asserts whether the instance has a parameter by name(s).
      */
-    public function assertHas(string ...$parameter): void;
+    public function assertHas(string ...$name): void;
 
     /**
      * Indicates whether the instance has a parameter by name(s).
      */
-    public function has(string ...$parameter): bool;
+    public function has(string ...$name): bool;
 
     /**
-     * Indicates whether the `$parameter` identified by its name is required.
+     * Indicates whether the parameter(s) identified by its name is required.
      *
      * @throws OutOfBoundsException
      */
-    public function isRequired(string $parameter): bool;
+    public function isRequired(string ...$name): bool;
 
     /**
-     * Indicates whether the `$parameter` identified by its name is optional.
+     * Indicates whether the parameter(s) identified by its name is optional.
      *
      * @throws OutOfBoundsException
      */
-    public function isOptional(string $parameter): bool;
+    public function isOptional(string ...$name): bool;
 
     /**
      * @throws OutOfBoundsException
      */
-    public function get(string $parameter): ParameterInterface;
+    public function get(string $name): ParameterInterface;
 
     /**
      * @return array<string>

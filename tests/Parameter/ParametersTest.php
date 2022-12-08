@@ -100,6 +100,7 @@ final class ParametersTest extends TestCase
         $this->assertCount(0, $parametersWithAddedOptional->required());
         $this->assertTrue($parametersWithAddedOptional->has($name));
         $this->assertTrue($parametersWithAddedOptional->isOptional($name));
+        $this->assertFalse($parametersWithAddedOptional->isRequired($name));
         $this->assertSame($parameter, $parametersWithAddedOptional->get($name));
         $this->expectException(OverflowException::class);
         $parametersWithAddedOptional->withAddedOptional(...[

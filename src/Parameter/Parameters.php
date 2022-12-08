@@ -35,26 +35,26 @@ final class Parameters implements ParametersInterface
      */
     private array $optional;
 
-    public function __construct(ParameterInterface ...$parameters)
+    public function __construct(ParameterInterface ...$parameter)
     {
         $this->map = new Map();
         $this->required = [];
         $this->optional = [];
-        $this->putAdded(...$parameters);
+        $this->putAdded(...$parameter);
     }
 
-    public function withAdded(ParameterInterface ...$parameters): ParametersInterface
+    public function withAdded(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
-        $new->putAdded(...$parameters);
+        $new->putAdded(...$parameter);
 
         return $new;
     }
 
-    public function withAddedOptional(ParameterInterface ...$parameters): ParametersInterface
+    public function withAddedOptional(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
-        foreach ($parameters as $name => $param) {
+        foreach ($parameter as $name => $param) {
             $name = strval($name);
             $new->assertNoOverflow($name);
             $new->map = $new->map->withPut($name, $param);
@@ -64,10 +64,10 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    public function withModify(ParameterInterface ...$parameters): ParametersInterface
+    public function withModify(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
-        foreach ($parameters as $name => $param) {
+        foreach ($parameter as $name => $param) {
             $name = strval($name);
             if (! $new->map->has($name)) {
                 throw new OutOfBoundsException(
@@ -81,30 +81,38 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    public function assertHas(string ...$parameter): void
+    public function assertHas(string ...$name): void
     {
-        $this->map->assertHas(...$parameter);
+        $this->map->assertHas(...$name);
     }
 
-    public function has(string ...$parameter): bool
+    public function has(string ...$name): bool
     {
-        return $this->map->has(...$parameter);
+        return $this->map->has(...$name);
     }
 
-    public function isRequired(string $parameter): bool
+    public function isRequired(string ...$name): bool
     {
-        $this->assertNoOutOfBounds($parameter);
+        foreach ($name as $item) {
+            $this->assertNoOutOfBounds($item);
+            if (array_search($item, $this->required, true) === false) {
+                return false;
+            }
+        }
 
-        return array_search($parameter, $this->required, true)
-            !== false;
+        return true;
     }
 
-    public function isOptional(string $parameter): bool
+    public function isOptional(string ...$name): bool
     {
-        $this->assertNoOutOfBounds($parameter);
+        foreach ($name as $item) {
+            $this->assertNoOutOfBounds($item);
+            if (array_search($item, $this->required, true) !== false) {
+                return false;
+            }
+        }
 
-        return array_search($parameter, $this->required, true)
-            === false;
+        return true;
     }
 
     public function get(string $name): ParameterInterface

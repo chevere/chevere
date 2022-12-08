@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
+use Chevere\Parameter\Interfaces\ParameterInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\Type\Type;
@@ -27,9 +29,11 @@ final class ArrayParameter implements ArrayParameterInterface
      */
     private array $default = [];
 
-    private function getType(): TypeInterface
+    private ParametersInterface $parameters;
+
+    public function setUp(): void
     {
-        return new Type(Type::ARRAY);
+        $this->parameters = new Parameters();
     }
 
     public function withDefault(array $value): ArrayParameterInterface
@@ -40,8 +44,27 @@ final class ArrayParameter implements ArrayParameterInterface
         return $new;
     }
 
+    public function withParameter(ParameterInterface ...$parameter): ArrayParameterInterface
+    {
+        $new = clone $this;
+        $new->parameters = $new->parameters
+            ->withAdded(...$parameter);
+
+        return $new;
+    }
+
     public function default(): array
     {
         return $this->default;
+    }
+
+    public function parameters(): ParametersInterface
+    {
+        return $this->parameters;
+    }
+
+    private function getType(): TypeInterface
+    {
+        return new Type(Type::ARRAY);
     }
 }
