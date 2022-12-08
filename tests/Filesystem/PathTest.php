@@ -30,7 +30,7 @@ final class PathTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->testPath = new Path(__DIR__ . '/PathTest_' . uniqid() . '/');
+        $this->testPath = new Path(__DIR__ . '/temp/PathTest_' . uniqid() . '/');
         $this->testDirectory = new Directory(new Path($this->testPath->__toString()));
     }
 
@@ -99,12 +99,12 @@ final class PathTest extends TestCase
     public function testExistentDirectoryPathRemoved(): void
     {
         $this->assertFalse($this->testPath->exists());
-        if (!mkdir($this->testPath->__toString(), 0777, true)) {
+        if (! mkdir($this->testPath->__toString(), 0777, true)) {
             throw new RuntimeException('Unable to create directory ' . $this->testPath->__toString());
         }
         $this->assertTrue($this->testPath->exists());
         $this->assertTrue($this->testPath->isDirectory());
-        if (!rmdir($this->testPath->__toString())) {
+        if (! rmdir($this->testPath->__toString())) {
             throw new RuntimeException('Unable to remove directory ' . $this->testPath->__toString());
         }
         $this->assertFalse($this->testPath->exists());
@@ -121,7 +121,7 @@ final class PathTest extends TestCase
         }
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isFile());
-        if (!unlink($path->__toString())) {
+        if (! unlink($path->__toString())) {
             throw new RuntimeException('Unable to remove file ' . $path->__toString());
         }
         $this->assertFalse($path->exists());

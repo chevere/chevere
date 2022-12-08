@@ -30,7 +30,7 @@ final class FileTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->testDirectory = directoryForPath(__DIR__ . '/FileTest_' . uniqid() . '/');
+        $this->testDirectory = directoryForPath(__DIR__ . '/temp/FileTest_' . uniqid() . '/');
     }
 
     protected function tearDown(): void

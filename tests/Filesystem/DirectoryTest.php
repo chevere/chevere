@@ -34,7 +34,7 @@ final class DirectoryTest extends TestCase
         $backTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['line'];
 
         $this->testDirectory = new Directory(
-            new Path(__DIR__ . '/DirTest_' . uniqid() . '_' . $backTrace . '/')
+            new Path(__DIR__ . '/temp/DirTest_' . uniqid() . '_' . $backTrace . '/')
         );
     }
 
