@@ -53,22 +53,42 @@ function floatParameter(
     return $parameter->withDefault($default);
 }
 
+/**
+ * @codeCoverageIgnore
+ */
 function integerParameter(
     string $description = '',
-    int $default = 0,
+    ?int $default = null,
+    ?int $minimum = null,
+    ?int $maximum = null,
+    ?int $value = null
 ): IntegerParameterInterface {
     $parameter = new IntegerParameter($description);
+    if ($default) {
+        $parameter = $parameter->withDefault($default);
+    }
+    if ($minimum) {
+        $parameter = $parameter->withMinimum($minimum);
+    }
+    if ($maximum) {
+        $parameter = $parameter->withMaximum($maximum);
+    }
+    if ($value) {
+        $parameter = $parameter->withValue($value);
+    }
 
-    return $parameter->withDefault($default);
+    return $parameter;
 }
 
 function stringParameter(
     string $regex = '',
     string $description = '',
-    string $default = '',
+    ?string $default = null,
 ): StringParameterInterface {
     $parameter = new StringParameter($description);
-    $parameter = $parameter->withDefault($default);
+    if ($default) {
+        $parameter = $parameter->withDefault($default);
+    }
     if ($regex !== '') {
         $parameter = $parameter->withRegex(new Regex($regex));
     }

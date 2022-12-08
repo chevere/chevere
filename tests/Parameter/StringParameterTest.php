@@ -25,8 +25,13 @@ final class StringParameterTest extends TestCase
     {
         $regex = '/^.*$/';
         $parameter = new StringParameter();
+        $this->assertSame('', $parameter->default());
+        $this->assertSame('', $parameter->description());
         $this->assertEquals($parameter, stringParameter());
         $this->assertSame($regex, $parameter->regex()->__toString());
+        $description = 'ola k ase';
+        $parameter = new StringParameter($description);
+        $this->assertSame($description, $parameter->description());
     }
 
     public function testWithRegex(): void

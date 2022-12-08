@@ -79,7 +79,7 @@ final class ParameterFunctionsTest extends TestCase
     {
         $parameter = integerParameter();
         $this->assertSame('', $parameter->description());
-        $this->assertSame(0, $parameter->default());
+        $this->assertSame(null, $parameter->default());
         $parameter = integerParameter(
             description: 'name',
             default: 10

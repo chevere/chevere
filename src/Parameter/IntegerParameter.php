@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use Chevere\Message\Interfaces\MessageInterface;
+use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\OverflowException;
 use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\Type\Type;
 
@@ -22,12 +26,13 @@ final class IntegerParameter implements IntegerParameterInterface
 {
     use ParameterTrait;
 
-    private int $default = 0;
+    private ?int $default = null;
 
-    private function getType(): TypeInterface
-    {
-        return new Type(Type::INTEGER);
-    }
+    private ?int $minimum = null;
+
+    private ?int $maximum = null;
+
+    private ?int $value = null;
 
     public function withDefault(int $value): IntegerParameterInterface
     {
@@ -37,8 +42,85 @@ final class IntegerParameter implements IntegerParameterInterface
         return $new;
     }
 
-    public function default(): int
+    public function withMinimum(int $value): IntegerParameterInterface
+    {
+        $this->assertNoValueOverflow(
+            message('Cannot set minimum value when value is set')
+        );
+        if (isset($this->maximum) && $value >= $this->maximum) {
+            throw new InvalidArgumentException(
+                message('Minimum value cannot be greater than maximum value')
+            );
+        }
+        $new = clone $this;
+        $new->minimum = $value;
+
+        return $new;
+    }
+
+    public function withMaximum(int $value): IntegerParameterInterface
+    {
+        $this->assertNoValueOverflow(
+            message('Cannot set maximum value when value is set')
+        );
+        if (isset($this->minimum) && $value <= $this->minimum) {
+            throw new InvalidArgumentException(
+                message('Maximum value cannot be less than minimum value')
+            );
+        }
+        $new = clone $this;
+        $new->maximum = $value;
+
+        return $new;
+    }
+
+    public function withValue(int $value): IntegerParameterInterface
+    {
+        $this->assertNoRangeOverflow();
+        $new = clone $this;
+        $new->value = $value;
+
+        return $new;
+    }
+
+    public function default(): ?int
     {
         return $this->default;
+    }
+
+    public function minimum(): ?int
+    {
+        return $this->minimum;
+    }
+
+    public function maximum(): ?int
+    {
+        return $this->maximum;
+    }
+
+    public function value(): ?int
+    {
+        return $this->value;
+    }
+
+    private function getType(): TypeInterface
+    {
+        return new Type(Type::INTEGER);
+    }
+
+    private function assertNoRangeOverflow(): void
+    {
+        if (isset($this->minimum) || isset($this->maximum)) {
+            throw new OverflowException(
+                message('Cannot set value when a minimum/maximum range is set')
+            );
+        }
+    }
+
+    private function assertNoValueOverflow(MessageInterface $message): void
+    {
+        if (isset($this->value)) {
+            throw new OverflowException($message);
+        }
     }
 }

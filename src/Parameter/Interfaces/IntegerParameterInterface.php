@@ -21,17 +21,62 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 interface IntegerParameterInterface extends ParameterInterface
 {
     /**
-     * Return an instance with the specified `$default` value.
+     * Return an instance with the specified default value.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$default` value.
+     * an instance that contains the specified default value.
      *
      * @throws InvalidArgumentException
      */
     public function withDefault(int $value): self;
 
     /**
+     * Return an instance with the specified minimum value.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified minimum value.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function withMinimum(int $value): self;
+
+    /**
+     * Return an instance with the specified maximum value.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified maximum value.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function withMaximum(int $value): self;
+
+    /**
+     * Return an instance with the specified expected value.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified expected value.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function withValue(int $value): self;
+
+    /**
      * Provides access to the default value.
      */
-    public function default(): int;
+    public function default(): ?int;
+
+    /**
+     * Provides access to the minimum value.
+     */
+    public function minimum(): ?int;
+
+    /**
+     * Provides access to the maximum value.
+     */
+    public function maximum(): ?int;
+
+    /**
+     * Provides access to the maximum value.
+     */
+    public function value(): ?int;
 }
