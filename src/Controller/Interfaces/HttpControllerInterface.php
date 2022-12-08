@@ -50,8 +50,17 @@ interface HttpControllerInterface extends ControllerInterface
      */
     public function withFiles(array $files): static;
 
+    /**
+     * Return an instance with the specified middleware.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified middleware.
+     */
     public function withMiddleware(HttpMiddlewareInterface $middleware): static;
 
+    /**
+     * Provides access to the controller middleware.
+     */
     public function middleware(): HttpMiddlewareInterface;
 
     /**
