@@ -138,7 +138,7 @@ abstract class Action implements ActionInterface
             $collection[$pos][$reflectionParameter->getName()] = $parameter;
         }
 
-        return (new Parameters())->withAdded(...$collection[1])
+        return (new Parameters())->withAddedRequired(...$collection[1])
             ->withAddedOptional(...$collection[0]);
     }
 

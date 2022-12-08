@@ -78,7 +78,7 @@ final class Arguments implements ArgumentsInterface
      * @throws TypeError
      * @throws InvalidArgumentException
      */
-    public function withArgument(mixed ...$nameValue): ArgumentsInterface
+    public function withPut(mixed ...$nameValue): ArgumentsInterface
     {
         $new = clone $this;
         foreach ($nameValue as $name => $value) {

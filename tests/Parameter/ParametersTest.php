@@ -56,7 +56,7 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
         $this->expectException(OverflowException::class);
-        $parameters->withAdded(...[
+        $parameters->withAddedRequired(...[
             $name => $parameter,
         ]);
     }
@@ -77,10 +77,10 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
-        $parametersWithAdded = $parameters->withAdded(test: $parameter);
+        $parametersWithAdded = $parameters->withAddedRequired(test: $parameter);
         $this->assertNotSame($parameters, $parametersWithAdded);
         $this->expectException(OverflowException::class);
-        $parameters->withAdded(...[
+        $parameters->withAddedRequired(...[
             $name => $parameter,
         ]);
     }

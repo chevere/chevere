@@ -48,7 +48,7 @@ final class ArrayParameter implements ArrayParameterInterface
     {
         $new = clone $this;
         $new->parameters = $new->parameters
-            ->withAdded(...$parameter);
+            ->withAddedRequired(...$parameter);
 
         return $new;
     }

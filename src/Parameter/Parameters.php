@@ -43,7 +43,7 @@ final class Parameters implements ParametersInterface
         $this->putAdded(...$parameter);
     }
 
-    public function withAdded(ParameterInterface ...$parameter): ParametersInterface
+    public function withAddedRequired(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
         $new->putAdded(...$parameter);

@@ -24,11 +24,6 @@ final class FloatParameter implements FloatParameterInterface
 
     private float $default = 0.0;
 
-    private function getType(): TypeInterface
-    {
-        return new Type(Type::FLOAT);
-    }
-
     public function withDefault(float $value): FloatParameterInterface
     {
         $new = clone $this;
@@ -40,5 +35,10 @@ final class FloatParameter implements FloatParameterInterface
     public function default(): float
     {
         return $this->default;
+    }
+
+    private function getType(): TypeInterface
+    {
+        return new Type(Type::FLOAT);
     }
 }

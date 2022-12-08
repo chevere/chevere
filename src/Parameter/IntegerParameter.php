@@ -26,7 +26,7 @@ final class IntegerParameter implements IntegerParameterInterface
 {
     use ParameterTrait;
 
-    private ?int $default = null;
+    private int $default = 0;
 
     private ?int $minimum = PHP_INT_MIN;
 
@@ -84,7 +84,7 @@ final class IntegerParameter implements IntegerParameterInterface
         return $new;
     }
 
-    public function default(): ?int
+    public function default(): int
     {
         return $this->default;
     }

@@ -23,7 +23,7 @@ final class IntegerParameterTest extends TestCase
     public function testConstruct(): void
     {
         $parameter = new IntegerParameter();
-        $this->assertSame(null, $parameter->default());
+        $this->assertSame(0, $parameter->default());
         $this->assertSame(PHP_INT_MIN, $parameter->minimum());
         $this->assertSame(PHP_INT_MAX, $parameter->maximum());
         $this->assertSame(null, $parameter->value());

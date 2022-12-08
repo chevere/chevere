@@ -46,15 +46,15 @@ interface ArgumentsInterface extends ToArrayInterface
     public function toArray(): array;
 
     /**
-     * Return an instance with the specified controller argument.
+     * Return an instance with the specified argument.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified controller argument.
+     * an instance that contains the specified argument.
      *
      * @throws InvalidArgumentException
-     * @throws OutOfBoundsException If `$name` is not a known controller parameter.
+     * @throws OutOfBoundsException If `$name` is not a known parameter.
      */
-    public function withArgument(mixed ...$nameValue): self;
+    public function withPut(mixed ...$nameValue): self;
 
     /**
      * Indicates whether the instance has an argument for the parameter `$name`.

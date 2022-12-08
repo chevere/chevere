@@ -24,11 +24,6 @@ final class BooleanParameter implements BooleanParameterInterface
 
     private bool $default = false;
 
-    private function getType(): TypeInterface
-    {
-        return new Type(Type::BOOLEAN);
-    }
-
     public function withDefault(bool $value): BooleanParameterInterface
     {
         $new = clone $this;
@@ -40,5 +35,10 @@ final class BooleanParameter implements BooleanParameterInterface
     public function default(): bool
     {
         return $this->default;
+    }
+
+    private function getType(): TypeInterface
+    {
+        return new Type(Type::BOOLEAN);
     }
 }

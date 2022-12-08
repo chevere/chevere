@@ -63,16 +63,16 @@ function integerParameter(
     ?int $value = null
 ): IntegerParameterInterface {
     $parameter = new IntegerParameter($description);
-    if ($default) {
+    if ($default !== null) {
         $parameter = $parameter->withDefault($default);
     }
-    if ($minimum) {
+    if ($minimum !== null) {
         $parameter = $parameter->withMinimum($minimum);
     }
-    if ($maximum) {
+    if ($maximum !== null) {
         $parameter = $parameter->withMaximum($maximum);
     }
-    if ($value) {
+    if ($value !== null) {
         $parameter = $parameter->withValue($value);
     }
 
@@ -107,7 +107,7 @@ function objectParameter(
 function parameters(
     ParameterInterface ...$required,
 ): ParametersInterface {
-    return (new Parameters())->withAdded(...$required);
+    return (new Parameters())->withAddedRequired(...$required);
 }
 
 function fileParameters(): ParametersInterface

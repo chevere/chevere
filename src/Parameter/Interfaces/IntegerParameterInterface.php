@@ -56,27 +56,29 @@ interface IntegerParameterInterface extends ParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified expected value.
      *
+     * When using this method it will nullify the minimum and maximum values.
+     *
      * @throws InvalidArgumentException
      */
     public function withValue(int $value): self;
 
     /**
-     * Provides access to the default value (if any).
+     * Provides access to the default value.
      */
-    public function default(): ?int;
+    public function default(): int;
 
     /**
-     * Provides access to the minimum value (if any).
+     * Provides access to the minimum value.
      */
     public function minimum(): ?int;
 
     /**
-     * Provides access to the maximum value (if any).
+     * Provides access to the maximum value.
      */
     public function maximum(): ?int;
 
     /**
-     * Provides access to the maximum value (if any).
+     * Provides access to the maximum value.
      */
     public function value(): ?int;
 }
