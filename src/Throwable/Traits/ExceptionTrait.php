@@ -22,17 +22,17 @@ use Throwable;
  */
 trait ExceptionTrait
 {
-    private MessageInterface $_message;
+    private MessageInterface $chevereMessage;
 
     public function __construct(?MessageInterface $message = null, int $code = 0, Throwable $previous = null)
     {
-        $this->_message = $message ?? message('');
+        $this->chevereMessage = $message ?? message('');
 
-        parent::__construct($this->_message->__toString(), $code, $previous);
+        parent::__construct($this->chevereMessage->__toString(), $code, $previous);
     }
 
     public function message(): MessageInterface
     {
-        return $this->_message;
+        return $this->chevereMessage;
     }
 }

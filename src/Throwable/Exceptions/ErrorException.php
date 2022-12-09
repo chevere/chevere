@@ -34,7 +34,7 @@ class ErrorException extends \ErrorException implements ThrowableInterface
         int $lineno = __LINE__,
         Throwable $previous = null
     ) {
-        $this->_message = $message;
+        $this->chevereMessage = $message;
 
         parent::__construct($message->__toString(), $code, $severity, $filename, $lineno, $previous);
     }
