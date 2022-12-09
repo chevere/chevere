@@ -22,10 +22,7 @@ use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 
-/**
- * @codeCoverageIgnore
- */
-trait ParametersGetTypesTrait
+trait ParametersGetTypedTrait
 {
     abstract public function get(string $name): ParameterInterface;
 

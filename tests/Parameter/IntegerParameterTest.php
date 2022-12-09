@@ -80,7 +80,7 @@ final class IntegerParameterTest extends TestCase
         $expect = [
             'test' => 1,
         ];
-        $parameter = (new IntegerParameter())->withMinimum(0);
+        $parameter = (new IntegerParameter())->withMinimum(1);
         $parameters = new Parameters(test: $parameter);
         $arguments = new Arguments($parameters, ...$expect);
         $this->assertSame($expect, $arguments->toArray());

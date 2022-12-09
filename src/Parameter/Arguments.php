@@ -19,6 +19,7 @@ use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Parameter\Traits\ArgumentsGetTypedTrait;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -27,6 +28,8 @@ use Throwable;
 
 final class Arguments implements ArgumentsInterface
 {
+    use ArgumentsGetTypedTrait;
+
     /**
      * @var array<string, mixed>
      */
@@ -106,36 +109,6 @@ final class Arguments implements ArgumentsInterface
             message('Argument %name% not found')
                 ->withCode('%name%', $name),
         );
-    }
-
-    public function getBoolean(string $name): bool
-    {
-        /** @var bool */
-        return $this->get($name);
-    }
-
-    public function getString(string $name): string
-    {
-        /** @var string */
-        return $this->get($name);
-    }
-
-    public function getInteger(string $name): int
-    {
-        /** @var int */
-        return $this->get($name);
-    }
-
-    public function getFloat(string $name): float
-    {
-        /** @var float */
-        return $this->get($name);
-    }
-
-    public function getArray(string $name): array
-    {
-        /** @var array<mixed, mixed> */
-        return $this->get($name);
     }
 
     private function assertRequired(): void

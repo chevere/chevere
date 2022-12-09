@@ -52,7 +52,7 @@ final class IntegerParameter implements IntegerParameterInterface
         );
         if (isset($this->maximum) && $value >= $this->maximum) {
             throw new InvalidArgumentException(
-                message('Minimum value cannot be greater than maximum value')
+                message('Minimum value cannot be greater or equal than maximum value')
             );
         }
         $new = clone $this;
@@ -68,7 +68,7 @@ final class IntegerParameter implements IntegerParameterInterface
         );
         if (isset($this->minimum) && $value <= $this->minimum) {
             throw new InvalidArgumentException(
-                message('Maximum value cannot be less than minimum value')
+                message('Maximum value cannot be less or equal than minimum value')
             );
         }
         $new = clone $this;

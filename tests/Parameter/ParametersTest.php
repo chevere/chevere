@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use Chevere\Parameter\ArrayParameter;
+use Chevere\Parameter\BooleanParameter;
+use Chevere\Parameter\FileParameter;
+use Chevere\Parameter\FloatParameter;
+use Chevere\Parameter\IntegerParameter;
+use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
@@ -135,5 +141,81 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parametersWithModify->has($name));
         $this->expectException(OutOfBoundsException::class);
         $parametersWithModify->withModify(notFound: new StringParameter());
+    }
+
+    public function testGetArray(): void
+    {
+        $name = 'test';
+        $parameter = new ArrayParameter();
+        $parameters = new Parameters(...[
+            $name => $parameter,
+        ]);
+        $this->assertSame($parameter, $parameters->getArray($name));
+        $this->expectException(\TypeError::class);
+        $parameters->getInteger($name);
+    }
+
+    public function testGetBoolean(): void
+    {
+        $name = 'test';
+        $parameter = new BooleanParameter();
+        $parameters = new Parameters(...[
+            $name => $parameter,
+        ]);
+        $this->assertSame($parameter, $parameters->getBoolean($name));
+        $this->expectException(\TypeError::class);
+        $parameters->getInteger($name);
+    }
+
+    public function testGetFile(): void
+    {
+        $name = 'test';
+        $parameter = new FileParameter(
+            name: new StringParameter(),
+            size: new IntegerParameter(),
+            type: new StringParameter(),
+        );
+        $parameters = new Parameters(...[
+            $name => $parameter,
+        ]);
+        $this->assertSame($parameter, $parameters->getFile($name));
+        $this->expectException(\TypeError::class);
+        $parameters->getInteger($name);
+    }
+
+    public function testGetFloat(): void
+    {
+        $name = 'test';
+        $parameter = new FloatParameter();
+        $parameters = new Parameters(...[
+            $name => $parameter,
+        ]);
+        $this->assertSame($parameter, $parameters->getFloat($name));
+        $this->expectException(\TypeError::class);
+        $parameters->getInteger($name);
+    }
+
+    public function testGetObject(): void
+    {
+        $name = 'test';
+        $parameter = new ObjectParameter();
+        $parameters = new Parameters(...[
+            $name => $parameter,
+        ]);
+        $this->assertSame($parameter, $parameters->getObject($name));
+        $this->expectException(\TypeError::class);
+        $parameters->getInteger($name);
+    }
+
+    public function testGetString(): void
+    {
+        $name = 'test';
+        $parameter = new StringParameter();
+        $parameters = new Parameters(...[
+            $name => $parameter,
+        ]);
+        $this->assertSame($parameter, $parameters->getString($name));
+        $this->expectException(\TypeError::class);
+        $parameters->getInteger($name);
     }
 }
