@@ -87,7 +87,7 @@ final class ParametersTest extends TestCase
 
     public function testWithAddedOptional(): void
     {
-        $name = 'named';
+        $name = 'name';
         $parameter = new StringParameter();
         $parameters = new Parameters();
         $parametersWithAddedOptional = $parameters

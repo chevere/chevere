@@ -27,7 +27,6 @@ use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 final class ArgumentsTest extends TestCase
 {
@@ -229,7 +228,6 @@ final class ArgumentsTest extends TestCase
         $optionalDefault = 'a';
         $optionalNameValue = 'b';
         $optionalObject = 'object';
-        $optionalObjectValue = new stdClass();
         $parameters = (new Parameters(id: new StringParameter()))
             ->withAddedOptional(
                 ...[

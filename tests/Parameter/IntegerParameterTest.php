@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use Chevere\Parameter\Arguments;
 use Chevere\Parameter\IntegerParameter;
+use Chevere\Parameter\Parameters;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use OverflowException;
 use PHPUnit\Framework\TestCase;
@@ -37,13 +39,27 @@ final class IntegerParameterTest extends TestCase
         );
     }
 
-    public function testWithValue(): void
+    public function testWithAccept(): void
     {
         $accept = [1, 2, 3];
         $parameter = new IntegerParameter();
         $withValue = $parameter->withAccept(...$accept);
         $this->assertNotSame($parameter, $withValue);
         $this->assertSame($accept, $withValue->accept());
+    }
+
+    public function testWithAcceptOnArguments(): void
+    {
+        $accept = [1, 2, 3];
+        $expect = [
+            'test' => 1,
+        ];
+        $parameter = (new IntegerParameter())->withAccept(...$accept);
+        $parameters = new Parameters(test: $parameter);
+        $arguments = new Arguments($parameters, ...$expect);
+        $this->assertSame($expect, $arguments->toArray());
+        $this->expectException(InvalidArgumentException::class);
+        new Arguments($parameters, test: 0);
     }
 
     public function testWithMinimum(): void
@@ -59,6 +75,19 @@ final class IntegerParameterTest extends TestCase
         $parameterWithValue->withMinimum(0);
     }
 
+    public function testWithMinimumOnArguments(): void
+    {
+        $expect = [
+            'test' => 1,
+        ];
+        $parameter = (new IntegerParameter())->withMinimum(0);
+        $parameters = new Parameters(test: $parameter);
+        $arguments = new Arguments($parameters, ...$expect);
+        $this->assertSame($expect, $arguments->toArray());
+        $this->expectException(InvalidArgumentException::class);
+        new Arguments($parameters, test: -1);
+    }
+
     public function testWithMaximum(): void
     {
         $parameter = new IntegerParameter();
@@ -70,6 +99,19 @@ final class IntegerParameterTest extends TestCase
         $this->assertSame(null, $parameterWithValue->minimum());
         $this->expectException(OverflowException::class);
         $parameterWithValue->withMaximum(0);
+    }
+
+    public function testWithMaximumOnArguments(): void
+    {
+        $expect = [
+            'test' => 1,
+        ];
+        $parameter = (new IntegerParameter())->withMaximum(1);
+        $parameters = new Parameters(test: $parameter);
+        $arguments = new Arguments($parameters, ...$expect);
+        $this->assertSame($expect, $arguments->toArray());
+        $this->expectException(InvalidArgumentException::class);
+        new Arguments($parameters, test: 2);
     }
 
     public function testWithMinimumMaximum(): void

@@ -55,13 +55,14 @@ function floatParameter(
 
 /**
  * @codeCoverageIgnore
+ * @param int[] $accept
  */
 function integerParameter(
     string $description = '',
     ?int $default = null,
     ?int $minimum = null,
     ?int $maximum = null,
-    ?int $value = null
+    array $accept = [],
 ): IntegerParameterInterface {
     $parameter = new IntegerParameter($description);
     if ($default !== null) {
@@ -73,8 +74,8 @@ function integerParameter(
     if ($maximum !== null) {
         $parameter = $parameter->withMaximum($maximum);
     }
-    if ($value !== null) {
-        $parameter = $parameter->withAccept($value);
+    if ($accept !== null) {
+        $parameter = $parameter->withAccept(...$accept);
     }
 
     return $parameter;
