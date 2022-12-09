@@ -205,17 +205,17 @@ final class Arguments implements ArgumentsInterface
         IntegerParameterInterface $parameter,
         int $argument
     ): void {
-        $value = $parameter->value();
-        if (isset($value)) {
-            if ($value === $argument) {
+        $value = $parameter->accept();
+        if ($value !== []) {
+            if (in_array($argument, $value, true)) {
                 return;
             }
 
             throw new InvalidArgumentException(
-                message('Parameter [%name%]: Argument value provided %provided% is not same as %value%')
+                message('Parameter [%name%]: Argument value provided %provided% is not an accepted value %value%')
                     ->withStrong('%name%', $name)
                     ->withCode('%provided%', strval($argument))
-                    ->withCode('%value%', strval($value))
+                    ->withCode('%value%', implode(',', $value))
             );
         }
         $this->assertIntegerMinimum(

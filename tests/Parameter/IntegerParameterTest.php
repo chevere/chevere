@@ -26,7 +26,7 @@ final class IntegerParameterTest extends TestCase
         $this->assertSame(0, $parameter->default());
         $this->assertSame(PHP_INT_MIN, $parameter->minimum());
         $this->assertSame(PHP_INT_MAX, $parameter->maximum());
-        $this->assertSame(null, $parameter->value());
+        $this->assertSame([], $parameter->accept());
         $default = 1234;
         $parameterWithDefault = $parameter->withDefault($default);
         (new ParameterHelper())->testWithParameterDefault(
@@ -39,10 +39,11 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithValue(): void
     {
+        $accept = [1, 2, 3];
         $parameter = new IntegerParameter();
-        $withValue = $parameter->withValue(1);
+        $withValue = $parameter->withAccept(...$accept);
         $this->assertNotSame($parameter, $withValue);
-        $this->assertSame(1, $withValue->value());
+        $this->assertSame($accept, $withValue->accept());
     }
 
     public function testWithMinimum(): void
@@ -51,7 +52,7 @@ final class IntegerParameterTest extends TestCase
         $parameterWithMinimum = $parameter->withMinimum(1);
         $this->assertNotSame($parameter, $parameterWithMinimum);
         $this->assertSame(1, $parameterWithMinimum->minimum());
-        $parameterWithValue = $parameter->withValue(1);
+        $parameterWithValue = $parameter->withAccept(1);
         $this->assertSame(null, $parameterWithValue->maximum());
         $this->assertSame(null, $parameterWithValue->minimum());
         $this->expectException(OverflowException::class);
@@ -64,7 +65,7 @@ final class IntegerParameterTest extends TestCase
         $parameterWithMaximum = $parameter->withMaximum(1);
         $this->assertNotSame($parameter, $parameterWithMaximum);
         $this->assertSame(1, $parameterWithMaximum->maximum());
-        $parameterWithValue = $parameter->withValue(1);
+        $parameterWithValue = $parameter->withAccept(1);
         $this->assertSame(null, $parameterWithValue->maximum());
         $this->assertSame(null, $parameterWithValue->minimum());
         $this->expectException(OverflowException::class);

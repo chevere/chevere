@@ -32,7 +32,10 @@ final class IntegerParameter implements IntegerParameterInterface
 
     private ?int $maximum = PHP_INT_MAX;
 
-    private ?int $value = null;
+    /**
+     * @var int[]
+     */
+    private array $value = [];
 
     public function withDefault(int $value): IntegerParameterInterface
     {
@@ -74,7 +77,7 @@ final class IntegerParameter implements IntegerParameterInterface
         return $new;
     }
 
-    public function withValue(int $value): IntegerParameterInterface
+    public function withAccept(int ...$value): IntegerParameterInterface
     {
         $new = clone $this;
         $new->value = $value;
@@ -99,7 +102,7 @@ final class IntegerParameter implements IntegerParameterInterface
         return $this->maximum;
     }
 
-    public function value(): ?int
+    public function accept(): array
     {
         return $this->value;
     }
@@ -111,7 +114,7 @@ final class IntegerParameter implements IntegerParameterInterface
 
     private function assertNoValueOverflow(MessageInterface $message): void
     {
-        if (isset($this->value)) {
+        if ($this->value !== []) {
             throw new OverflowException($message);
         }
     }

@@ -18,12 +18,14 @@ use Chevere\DataStructure\Traits\MapTrait;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Traits\ParametersGetTypesTrait;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
 
 final class Parameters implements ParametersInterface
 {
     use MapTrait;
+    use ParametersGetTypesTrait;
 
     /**
      * @var array<string>

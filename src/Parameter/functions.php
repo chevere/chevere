@@ -74,7 +74,7 @@ function integerParameter(
         $parameter = $parameter->withMaximum($maximum);
     }
     if ($value !== null) {
-        $parameter = $parameter->withValue($value);
+        $parameter = $parameter->withAccept($value);
     }
 
     return $parameter;
@@ -115,13 +115,11 @@ function fileParameter(
     string $description = '',
     ?StringParameterInterface $name = null,
     ?IntegerParameterInterface $size = null,
-    ?StringParameterInterface $tmp_name = null,
     ?StringParameterInterface $type = null,
 ): FileParameterInterface {
     return new FileParameter(
         name: $name ?? stringParameter(),
         size: $size ?? integerParameter(),
-        tmp_name: $tmp_name ?? stringParameter(),
         type: $type ?? stringParameter(),
         description: $description,
     );

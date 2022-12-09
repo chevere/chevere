@@ -51,16 +51,16 @@ interface IntegerParameterInterface extends ParameterInterface
     public function withMaximum(int $value): self;
 
     /**
-     * Return an instance with the specified expected value.
+     * Return an instance with the specified accepted value(s).
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified expected value.
+     * an instance that contains the specified accepted value(s).
      *
      * When using this method it will nullify the minimum and maximum values.
      *
      * @throws InvalidArgumentException
      */
-    public function withValue(int $value): self;
+    public function withAccept(int ...$value): self;
 
     /**
      * Provides access to the default value.
@@ -78,7 +78,9 @@ interface IntegerParameterInterface extends ParameterInterface
     public function maximum(): ?int;
 
     /**
-     * Provides access to the maximum value.
+     * Provides access to the accepted value(s).
+     *
+     * @return int[]
      */
-    public function value(): ?int;
+    public function accept(): array;
 }

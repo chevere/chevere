@@ -41,17 +41,16 @@ final class FileParameter implements FileParameterInterface
     final public function __construct(
         StringParameterInterface $name,
         IntegerParameterInterface $size,
-        StringParameterInterface $tmp_name,
         StringParameterInterface $type,
         private string $description = '',
     ) {
         $this->type = $this->type();
         $this->parameters = new Parameters(
             error: integerParameter()
-                ->withValue(UPLOAD_ERR_OK),
+                ->withAccept(UPLOAD_ERR_OK),
             name: $name,
             size: $size,
-            tmp_name: $tmp_name,
+            tmp_name: stringParameter(),
             type: $type,
         );
     }
