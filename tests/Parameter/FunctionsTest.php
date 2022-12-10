@@ -23,7 +23,7 @@ use function Chevere\Parameter\stringParameter;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class ParameterFunctionsTest extends TestCase
+final class FunctionsTest extends TestCase
 {
     public function testFunctionParameters(): void
     {
