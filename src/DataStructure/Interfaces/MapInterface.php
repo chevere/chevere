@@ -18,9 +18,9 @@ namespace Chevere\DataStructure\Interfaces;
  */
 interface MapInterface extends MappedInterface
 {
-    public function __construct(mixed ...$namedArguments);
+    public function __construct(mixed ...$value);
 
-    public function withPut(string $key, mixed $value): self;
+    public function withPut(mixed ...$value): self;
 
     public function has(string ...$keys): bool;
 

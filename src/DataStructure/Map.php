@@ -26,13 +26,10 @@ final class Map implements MapInterface
      */
     private DsMap $map;
 
-    public function __construct(mixed ...$namedArguments)
+    public function __construct(mixed ...$value)
     {
         $this->map = new DsMap();
-        if ($namedArguments !== []) {
-            /** @var array<string, mixed> $namedArguments */
-            $this->map->putAll($namedArguments);
-        }
+        $this->map->putAll($value);
     }
 
     public function keys(): array
@@ -53,10 +50,11 @@ final class Map implements MapInterface
         }
     }
 
-    public function withPut(string $key, mixed $value): self
+    public function withPut(mixed ...$value): self
     {
         $new = clone $this;
-        $new->map->put($key, $value);
+        // @phpstan-ignore-next-line
+        $new->map->putAll($value);
 
         return $new;
     }

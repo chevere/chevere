@@ -42,12 +42,12 @@ final class FilePhp implements FilePhpInterface
         $this->file->assertExists();
         $path = $this->file->path()->__toString();
         $stat = stat($path);
-        $mtime = !$stat ? time() : $stat['mtime'];
+        $mtime = ! $stat ? time() : $stat['mtime'];
         $past = $mtime - 10;
         touch($path, $past);
         if (opcache_get_status() === false) {
             throw new RangeException(
-                message('OPCache is not enabled')
+                message('OPcache is not enabled')
             );
         }
         opcache_compile_file($path);
@@ -59,19 +59,19 @@ final class FilePhp implements FilePhpInterface
      */
     public function flushCache(): void
     {
-        if (!opcache_is_script_cached($this->file->path()->__toString())) {
+        if (! opcache_is_script_cached($this->file->path()->__toString())) {
             return;
         }
-        if (!opcache_invalidate($this->file->path()->__toString())) {
+        if (! opcache_invalidate($this->file->path()->__toString())) {
             throw new RuntimeException(
-                message('OPCache is not enabled')
+                message('OPcache is not enabled')
             );
         }
     }
 
     private function assertFilePhp(): void
     {
-        if (!$this->file->isPhp()) {
+        if (! $this->file->isPhp()) {
             throw new FileNotPhpException(
                 message('Instance of %className% must represents a PHP script in the path %path%')
                     ->withCode('%className%', $this->file::class)

@@ -59,7 +59,9 @@ final class Parameters implements ParametersInterface
         foreach ($parameter as $name => $param) {
             $name = strval($name);
             $new->assertNoOverflow($name);
-            $new->map = $new->map->withPut($name, $param);
+            $new->map = $new->map->withPut(...[
+                $name => $param,
+            ]);
             $new->optional[] = $name;
         }
 
@@ -77,7 +79,10 @@ final class Parameters implements ParametersInterface
                         ->withCode('%name%', $name)
                 );
             }
-            $new->map = $new->map->withPut($name, $param);
+            $new->map = $new->map
+                ->withPut(...[
+                    $name => $param,
+                ]);
         }
 
         return $new;
@@ -145,7 +150,9 @@ final class Parameters implements ParametersInterface
         foreach ($parameters as $name => $parameter) {
             $name = strval($name);
             $this->assertNoOverflow($name);
-            $this->map = $this->map->withPut($name, $parameter);
+            $this->map = $this->map->withPut(...[
+                $name => $parameter,
+            ]);
             $this->required[] = $name;
         }
     }

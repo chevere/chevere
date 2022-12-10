@@ -65,8 +65,12 @@ final class ClassMap implements ClassMapInterface
             );
         }
         $new = clone $this;
-        $new->map = $new->map->withPut($className, $key);
-        $new->flip = $new->flip->withPut($key, $className);
+        $new->map = $new->map->withPut(...[
+            $className => $key,
+        ]);
+        $new->flip = $new->flip->withPut(...[
+            $key => $className,
+        ]);
 
         return $new;
     }

@@ -33,17 +33,17 @@ interface FilePhpInterface
     public function file(): FileInterface;
 
     /**
-     * Applies OPCache.
+     * Applies OPcache.
      *
      * @throws FileNotExistsException
-     * @throws RuntimeException If OPCache is not enabled.
+     * @throws RuntimeException If OPcache is not enabled.
      */
     public function compileCache(): void;
 
     /**
-     * Flushes OPCache.
+     * Flushes OPcache.
      *
-     * @throws RuntimeException If OPCache is not enabled.
+     * @throws RuntimeException If OPcache is not enabled.
      */
     public function flushCache(): void;
 }

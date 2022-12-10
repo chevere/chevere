@@ -21,6 +21,7 @@ use Chevere\VariableSupport\Exceptions\UnableToStoreException;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 use ReflectionNamedType;
 use ReflectionObject;
+use stdClass;
 
 final class StorableVariable implements StorableVariableInterface
 {
@@ -30,7 +31,6 @@ final class StorableVariable implements StorableVariableInterface
         private mixed $variable
     ) {
         $this->breadcrumb = new Breadcrumb();
-        $this->assertExportable($this->variable);
     }
 
     public function variable(): mixed
@@ -40,6 +40,8 @@ final class StorableVariable implements StorableVariableInterface
 
     public function toExport(): string
     {
+        $this->assertExportable($this->variable);
+
         return var_export($this->variable, true);
     }
 
@@ -65,11 +67,11 @@ final class StorableVariable implements StorableVariableInterface
     {
         if (is_resource($variable)) {
             $message = $this->breadcrumb->count() > 0
-                ? message("Argument contains a resource at %at%")
+                ? message('Argument contains a resource at %at%')
                     ->withCode('%at%', $this->breadcrumb->__toString())
-                : message("Argument is of type resource.");
+                : message('Argument is of type resource.');
 
-            throw new UnableToStoreException(message: $message);
+            throw new UnableToStoreException($message);
         }
     }
 
@@ -99,6 +101,7 @@ final class StorableVariable implements StorableVariableInterface
     {
         $this->breadcrumb = $this->breadcrumb
             ->withAdded('object: ' . $variable::class);
+        $this->assertObjectExportable($variable);
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($variable);
         $properties = $reflection->getProperties();
@@ -106,8 +109,7 @@ final class StorableVariable implements StorableVariableInterface
             /** @var ?ReflectionNamedType $namedType */
             $namedType = $property->getType();
             $propertyType = $namedType !== null
-                ? $namedType->getName() . ' '
-                : '';
+                ? ($namedType->getName() . ' ') : '';
             $this->breadcrumb = $this->breadcrumb
                 ->withAdded(
                     'property: '
@@ -120,10 +122,23 @@ final class StorableVariable implements StorableVariableInterface
             if ($property->isInitialized($variable)) {
                 $this->assertExportable($property->getValue($variable));
             }
-            $this->breadcrumb = $this->breadcrumb
-                ->withRemoved($propertyKey);
+            $this->breadcrumb = $this->breadcrumb->withRemoved($propertyKey);
         }
-        $this->breadcrumb = $this->breadcrumb
-            ->withRemoved($objectKey);
+        $this->breadcrumb = $this->breadcrumb->withRemoved($objectKey);
+    }
+
+    private function assertObjectExportable(object $variable): void
+    {
+        if ($variable instanceof stdClass
+            || method_exists($variable, '__set_state')
+        ) {
+            return;
+        }
+
+        throw new UnableToStoreException(
+            message('Object without %method% method at %at%')
+                ->withCode('%method%', '__set_state')
+                ->withCode('%at%', $this->breadcrumb->__toString())
+        );
     }
 }

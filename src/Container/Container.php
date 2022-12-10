@@ -26,10 +26,8 @@ final class Container implements ContainerInterface
     public function withPut(mixed ...$arguments): ContainerInterface
     {
         $new = clone $this;
-        foreach ($arguments as $key => $service) {
-            $new->map = $new->map
-                ->withPut(strval($key), $service);
-        }
+        $new->map = $new->map
+            ->withPut(...$arguments);
 
         return $new;
     }

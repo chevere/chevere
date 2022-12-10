@@ -19,8 +19,8 @@ namespace Chevere\Response\Interfaces;
 interface ResponseInterface
 {
     public const TOKEN_LENGTH = 256;
-    
-    public function __construct(mixed ...$namedArguments);
+
+    public function __construct(mixed ...$value);
 
     /**
      * Return an instance with the specified code.
@@ -36,9 +36,9 @@ interface ResponseInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified data.
      *
-     * @param mixed $namedArguments Named arguments for response data (name to data key)
+     * @param mixed $value Named arguments for response data (name to data key)
      */
-    public function withData(mixed ...$namedArguments): self;
+    public function withData(mixed ...$value): self;
 
     /**
      * Provides access to uuid (v4).

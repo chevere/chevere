@@ -50,7 +50,9 @@ final class MapTest extends TestCase
         $key = 'key';
         $value = 1234;
         $map = new Map(...[]);
-        $immutable = $map->withPut($key, $value);
+        $immutable = $map->withPut(...[
+            $key => $value,
+        ]);
         $this->assertNotSame($map, $immutable);
         $this->assertSame($map->keys(), $immutable->keys());
         $this->assertSame($value, $immutable->get($key));

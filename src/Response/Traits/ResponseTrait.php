@@ -29,12 +29,12 @@ trait ResponseTrait
 
     private int $code = 0;
 
-    public function __construct(mixed ...$namedArguments)
+    public function __construct(mixed ...$value)
     {
         $this->uuid = Uuid::uuid4()->toString();
         $this->token = bin2hex(random_bytes(ResponseInterface::TOKEN_LENGTH / 2));
-        /** @var array<string, mixed> $namedArguments */
-        $this->data = $namedArguments;
+        /** @var array<string, mixed> $value */
+        $this->data = $value;
     }
 
     public function withCode(int $code): static
@@ -45,11 +45,11 @@ trait ResponseTrait
         return $new;
     }
 
-    public function withData(mixed ...$namedArguments): static
+    public function withData(mixed ...$value): static
     {
         $new = clone $this;
-        /** @var array<string, mixed> $namedArguments */
-        $new->data = $namedArguments;
+        /** @var array<string, mixed> $value */
+        $new->data = $value;
 
         return $new;
     }

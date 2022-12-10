@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Serialize\Interfaces;
 
-use Chevere\Type\Interfaces\TypeInterface;
 use LogicException;
 
 /**
@@ -30,9 +29,4 @@ interface DeserializeInterface
      * Provides access to the unserialize'd variable.
      */
     public function variable(): mixed;
-
-    /**
-     * Provides access to the TypeInterface instance for the unserialize variable.
-     */
-    public function type(): TypeInterface;
 }

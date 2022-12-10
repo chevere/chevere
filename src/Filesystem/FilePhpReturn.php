@@ -23,12 +23,11 @@ use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
 use function Chevere\Message\message;
 use Chevere\Serialize\Deserialize;
-use Chevere\Serialize\Serialize;
 use Chevere\String\AssertString;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\RuntimeException;
 use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
+use Chevere\VariableSupport\StorableVariable;
 use Throwable;
 
 final class FilePhpReturn implements FilePhpReturnInterface
@@ -57,11 +56,11 @@ final class FilePhpReturn implements FilePhpReturnInterface
         $filePath = $this->filePhp->file()->path()->__toString();
         // @codeCoverageIgnoreStart
         // @infection-ignore-all
-        try {
-            return include $filePath;
-        } catch (Throwable $e) {
-            throw new RuntimeException(previous: $e);
-        }
+        // try {
+        return include $filePath;
+        // } catch (Throwable $e) {
+        //     throw new RuntimeException(previous: $e);
+        // }
         // @codeCoverageIgnoreEnd
     }
 
@@ -72,7 +71,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
 
     public function variableTyped(TypeInterface $type): mixed
     {
-        if (!$type->validate($this->variable())) {
+        if (! $type->validate($this->variable())) {
             $typeReturn = get_debug_type($this->variable());
 
             throw new FileReturnInvalidTypeException(
@@ -89,21 +88,19 @@ final class FilePhpReturn implements FilePhpReturnInterface
     public function put(StorableVariableInterface $storableVariable): void
     {
         $variable = $storableVariable->variable();
-        $variable = $this->getFileReturnVariable($variable);
-        $varExport = var_export($variable, true);
+        $export = $this->getFileReturnVariable($variable);
         $this->filePhp->file()->put(
-            self::PHP_RETURN . $varExport . ';'
+            self::PHP_RETURN . "'" . $export . "';"
         );
     }
 
     private function getReturnVariable(mixed $variable): mixed
     {
-        if (is_string($variable) && !ctype_space($variable)) {
+        if (is_string($variable) && ! ctype_space($variable)) {
             try {
-                $unserialize = new Deserialize($variable);
-                $variable = $unserialize->variable();
-            } catch (InvalidArgumentException $e) {
-                // $e
+                $variable = (new Deserialize($variable))->variable();
+            } catch (Throwable) {
+                // do nothing
             }
         }
 
@@ -138,10 +135,6 @@ final class FilePhpReturn implements FilePhpReturnInterface
 
     private function getFileReturnVariable(mixed $variable): mixed
     {
-        if (is_object($variable)) {
-            return (new Serialize($variable))->__toString();
-        }
-
-        return $variable;
+        return (new StorableVariable($variable))->toSerialize();
     }
 }
