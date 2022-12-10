@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources\src;
 
 use Chevere\Action\Action;
-use Chevere\Parameter\Attributes\StringAttribute;
+use Chevere\Attribute\StringAttribute;
 
 final class ActionTestParameterAttributes extends Action
 {

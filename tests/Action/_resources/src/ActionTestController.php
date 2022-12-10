@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action\_resources\src;
 
+use Chevere\Attribute\StringAttribute;
 use Chevere\Controller\Controller;
-use Chevere\Parameter\Attributes\StringAttribute;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;

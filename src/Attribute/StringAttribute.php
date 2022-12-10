@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Parameter\Attributes;
+namespace Chevere\Attribute;
 
 use Attribute;
 use Chevere\Regex\Interfaces\RegexInterface;
