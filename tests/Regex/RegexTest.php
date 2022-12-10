@@ -29,8 +29,8 @@ final class RegexTest extends TestCase
     public function testConstruct(): void
     {
         $pattern = '\w+';
-        $patternAnchors = "^${pattern}$";
-        $patternDelimitersAnchors = "/${patternAnchors}/";
+        $patternAnchors = "^{$pattern}$";
+        $patternDelimitersAnchors = "/{$patternAnchors}/";
         $regex = new Regex($patternDelimitersAnchors);
         $this->assertSame($patternDelimitersAnchors, $regex->__toString());
         $this->assertSame($patternAnchors, $regex->noDelimiters());

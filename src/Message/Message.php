@@ -78,7 +78,7 @@ final class Message implements MessageInterface
                 $tag = $html;
             }
             $replace = $format[1];
-            $tr[$search] = "<${tag}>${replace}</${tag}>";
+            $tr[$search] = "<{$tag}>{$replace}</{$tag}>";
         }
 
         return strtr($this->template, $tr);

@@ -61,7 +61,7 @@ final class MessageTest extends TestCase
             $withReplaces = ($withReplaces ?? $message)->{'with' . ucfirst($tag)}(...$value);
             $this->assertNotSame($message, $withReplaces);
             $tag = MessageInterface::HTML_TABLE[$tag] ?? $tag;
-            $tr[$value[0]] = "<${tag}>" . $value[1] . "</${tag}>";
+            $tr[$value[0]] = "<{$tag}>" . $value[1] . "</{$tag}>";
         }
         $html = strtr($var, $tr);
         $plain = strip_tags($html);

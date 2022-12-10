@@ -46,7 +46,7 @@ final class FilenameTest extends TestCase
     {
         $name = 'test';
         $extension = 'JPEG';
-        $filename = "${name}.${extension}";
+        $filename = "{$name}.{$extension}";
         $basename = new Filename($filename);
         $this->assertSame($filename, $basename->__toString());
         $this->assertSame($extension, $basename->extension());
@@ -68,7 +68,7 @@ final class FilenameTest extends TestCase
     {
         $name = '';
         $extension = 'png';
-        $filename = $filename = "${name}.${extension}";
+        $filename = "{$name}.{$extension}";
         $basename = new Filename($filename);
         $this->assertSame($filename, $basename->__toString());
         $this->assertSame($extension, $basename->extension());

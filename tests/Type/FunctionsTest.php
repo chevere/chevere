@@ -36,7 +36,7 @@ final class FunctionsTest extends TestCase
     {
         $expected = 'string';
         $message = returnTypeExceptionMessage($expected, $expected);
-        $this->assertSame("Expecting return type ${expected}, type ${expected} provided", $message->__toString());
+        $this->assertSame("Expecting return type {$expected}, type {$expected} provided", $message->__toString());
     }
 
     public function testTypeFunctions(): void
