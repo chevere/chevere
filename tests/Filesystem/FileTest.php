@@ -22,7 +22,6 @@ use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
-use Throwable;
 
 final class FileTest extends TestCase
 {
@@ -35,23 +34,7 @@ final class FileTest extends TestCase
 
     protected function tearDown(): void
     {
-        try {
-            $this->getTestDirectoryChildFile('.test')->remove();
-        } catch (Throwable $e) {
-            //$e
-        }
-
-        try {
-            $this->testDirectory->removeContents();
-        } catch (Throwable $e) {
-            //$e
-        }
-
-        try {
-            $this->testDirectory->remove();
-        } catch (Throwable $e) {
-            //$e
-        }
+        $this->testDirectory->removeIfExists();
     }
 
     public function getTestDirectoryChildFile(string $filename): FileInterface
@@ -75,6 +58,8 @@ final class FileTest extends TestCase
         $this->assertSame($path, $file->path());
         $this->assertFalse($file->exists());
         $this->assertFalse($file->isPhp());
+        $this->expectException(FileNotExistsException::class);
+        $file->put('test');
     }
 
     public function testWithExistentPath(): void

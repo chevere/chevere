@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\VariableSupport;
 
 use function Chevere\Filesystem\fileForPath;
+use Chevere\Tests\VariableSupport\_resources\ClassWithPropertyNotExportable;
 use Chevere\VariableSupport\Exceptions\UnableToStoreException;
 use Chevere\VariableSupport\StorableVariable;
 use PHPUnit\Framework\TestCase;
@@ -58,18 +59,17 @@ final class StorableVariableTest extends TestCase
 
     public function testContainsNotExportableClass(): void
     {
-        $childObject = fileForPath(__FILE__);
-        $object = new stdClass();
-        $subObject = new stdClass();
-        $subObject->file = [$childObject];
-        $childType = $childObject::class;
-        $object->string = 'test';
-        $object->array = [1, 2, 3, $subObject];
+        $file = fileForPath(__FILE__);
+        $fileClassName = $file::class;
+        $exportable = new stdClass();
+        $notExportable = new ClassWithPropertyNotExportable($file);
+        $notExportableClassName = ClassWithPropertyNotExportable::class;
+        $exportable->array = [$notExportable];
         $atBreadcrumb =
             <<<STRING
-            Object without __set_state method at [object: stdClass][property: \$array][(iterable)][key: 3][object: stdClass][property: \$file][(iterable)][key: 0][object: {$childType}]
+            Object without __set_state method at [object: stdClass][property: \$array][(iterable)][key: 0][object: {$notExportableClassName}][property: {$fileClassName} \$file][object: {$fileClassName}]
             STRING;
-        $storable = new StorableVariable($object);
+        $storable = new StorableVariable($exportable);
         $this->expectException(UnableToStoreException::class);
         $this->expectExceptionMessage($atBreadcrumb);
         $storable->toExport();
@@ -77,11 +77,13 @@ final class StorableVariableTest extends TestCase
 
     public function testContainsNotExportableResource(): void
     {
+        $object = new stdClass();
         $resource = fopen(__FILE__, 'r');
-        $array = [1, 2, 3, $resource];
+        $object->resource = $resource;
+        $array = [1, 2, 3, $object];
         $atBreadcrumb =
             <<<STRING
-            Argument contains a resource at [(iterable)][key: 3]
+            Argument contains a resource at [(iterable)][key: 3][object: stdClass][property: \$resource]
             STRING;
         $storable = new StorableVariable($array);
         $this->expectException(UnableToStoreException::class);

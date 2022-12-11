@@ -110,12 +110,12 @@ final class StorableVariable implements StorableVariableInterface
             $namedType = $property->getType();
             $propertyType = $namedType !== null
                 ? ($namedType->getName() . ' ') : '';
-            $this->breadcrumb = $this->breadcrumb
-                ->withAdded(
-                    'property: '
-                    . $propertyType
-                    . '$' . $property->getName()
-                );
+            $propertyName = '$' . $property->getName();
+            $this->breadcrumb = $this->breadcrumb->withAdded(
+                <<<STRING
+                property: {$propertyType}{$propertyName}
+                STRING
+            );
             $propertyKey = $this->breadcrumb->pos();
             // @infection-ignore-all
             $property->setAccessible(true);

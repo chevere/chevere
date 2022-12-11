@@ -85,9 +85,9 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return $this->variable();
     }
 
-    public function put(StorableVariableInterface $storableVariable): void
+    public function put(StorableVariableInterface $storable): void
     {
-        $variable = $storableVariable->variable();
+        $variable = $storable->variable();
         $export = $this->getFileReturnVariable($variable);
         $this->filePhp->file()->put(
             self::PHP_RETURN . "'" . $export . "';"
@@ -96,7 +96,10 @@ final class FilePhpReturn implements FilePhpReturnInterface
 
     private function getReturnVariable(mixed $variable): mixed
     {
-        if (is_string($variable) && ! ctype_space($variable)) {
+        if (! is_string($variable)) {
+            return $variable;
+        }
+        if (! ctype_space($variable)) {
             try {
                 $variable = (new Deserialize($variable))->variable();
             } catch (Throwable) {

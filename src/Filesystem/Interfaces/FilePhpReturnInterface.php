@@ -85,5 +85,5 @@ interface FilePhpReturnInterface
      * @throws FileNotExistsException
      * @throws FileUnableToPutException
      */
-    public function put(StorableVariableInterface $storableVariable): void;
+    public function put(StorableVariableInterface $storable): void;
 }

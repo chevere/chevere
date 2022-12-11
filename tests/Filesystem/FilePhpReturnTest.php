@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Filesystem\Directory;
+use function Chevere\Filesystem\directoryForPath;
 use Chevere\Filesystem\Exceptions\FileInvalidContentsException;
 use Chevere\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Filesystem\Exceptions\FileReturnInvalidTypeException;
@@ -21,20 +21,17 @@ use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Filesystem\File;
 use Chevere\Filesystem\FilePhp;
 use Chevere\Filesystem\FilePhpReturn;
+use function Chevere\Filesystem\filePhpReturnForPath;
 use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
-use Chevere\Filesystem\Interfaces\PathInterface;
-use Chevere\Filesystem\Path;
 use Chevere\Type\Type;
 use Chevere\VariableSupport\StorableVariable;
 use PHPUnit\Framework\TestCase;
 
 final class FilePhpReturnTest extends TestCase
 {
-    private PathInterface $path;
-
-    private DirectoryInterface $directory;
+    private DirectoryInterface $testDirectory;
 
     private FileInterface $file;
 
@@ -42,10 +39,9 @@ final class FilePhpReturnTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->path = new Path(__DIR__ . '/temp/FileReturnTest/');
-        $this->directory = new Directory($this->path);
+        $this->testDirectory = directoryForPath(__DIR__ . '/temp/FilePhpReturnTest_' . uniqid() . '/');
         $this->file = new File(
-            $this->path->getChild($this->getFileName())
+            $this->testDirectory->path()->getChild($this->getFileName())
         );
         $this->file->create();
         $this->filePhpReturn = new FilePhpReturn(
@@ -56,14 +52,14 @@ final class FilePhpReturnTest extends TestCase
 
     protected function tearDown(): void
     {
-        $this->directory->removeIfExists();
+        $this->testDirectory->removeIfExists();
     }
 
     public function testConstructFileNotExists(): void
     {
         $filePhp = new FilePhp(
             new File(
-                $this->path->getChild($this->getFileName())
+                $this->testDirectory->path()->getChild($this->getFileName())
             )
         );
         $return = new FilePhpReturn($filePhp);
@@ -115,12 +111,28 @@ final class FilePhpReturnTest extends TestCase
         $this->assertSame(['test', 1], $this->filePhpReturn->variable());
     }
 
-    // public function testPutFileNotFound(): void
-    // {
-    //     $this->file->remove();
-    //     $this->expectException(FileNotExistsException::class);
-    //     $this->filePhpReturn->put(new StorableVariable('test'));
-    // }
+    public function testPutFileNotFound(): void
+    {
+        $this->file->remove();
+        $this->expectException(FileNotExistsException::class);
+        $this->filePhpReturn->put(new StorableVariable('test'));
+    }
+
+    public function testPhpReturnStringFile(): void
+    {
+        $phpFilePath = __DIR__ . '/_resources/return-string.php';
+        $file = filePhpReturnForPath($phpFilePath);
+        $this->assertSame(include $phpFilePath, $file->variable());
+    }
+
+    public function testPhpReturnObjectFile(): void
+    {
+        $phpFilePath = __DIR__ . '/_resources/return-object.php';
+        $file = filePhpReturnForPath($phpFilePath);
+        $phpFileObject = include $phpFilePath;
+        $this->assertEquals($phpFileObject, $file->variable());
+        $this->assertNotSame($phpFileObject, $file->variable());
+    }
 
     public function testPut(): void
     {
@@ -138,9 +150,8 @@ final class FilePhpReturnTest extends TestCase
             );
             $this->assertSame($value, $this->filePhpReturn->variable());
         }
-
         $types = [
-            Type::OBJECT => $this->path->getChild('test'),
+            Type::OBJECT => $this->testDirectory->path()->getChild('test'),
             Type::ARRAY => ['test', [1, false], 1.1, null],
         ];
         foreach ($types as $type => $value) {

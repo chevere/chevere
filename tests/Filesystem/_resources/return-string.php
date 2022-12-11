@@ -11,4 +11,4 @@
 
 declare(strict_types=1);
 
-return 'string';
+return 'a string';
