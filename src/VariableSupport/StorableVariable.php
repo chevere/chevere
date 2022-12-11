@@ -40,23 +40,25 @@ final class StorableVariable implements StorableVariableInterface
 
     public function toExport(): string
     {
-        $this->assertExportable($this->variable);
+        $this->assertStorable($this->variable, __FUNCTION__);
 
         return var_export($this->variable, true);
     }
 
     public function toSerialize(): string
     {
+        $this->assertStorable($this->variable, __FUNCTION__);
+
         return serialize($this->variable);
     }
 
-    private function assertExportable(mixed $variable): void
+    private function assertStorable(mixed $variable, string $callable): void
     {
         $this->assertIsNotResource($variable);
         if (is_object($variable)) {
-            $this->breadcrumbObject($variable);
+            $this->breadcrumbObject($variable, $callable);
         } elseif (is_iterable($variable)) {
-            $this->breadcrumbIterable($variable);
+            $this->breadcrumbIterable($variable, $callable);
         }
     }
 
@@ -65,14 +67,15 @@ final class StorableVariable implements StorableVariableInterface
      */
     private function assertIsNotResource(mixed $variable): void
     {
-        if (is_resource($variable)) {
-            $message = $this->breadcrumb->count() > 0
-                ? message('Argument contains a resource at %at%')
-                    ->withCode('%at%', $this->breadcrumb->__toString())
-                : message('Argument is of type resource.');
-
-            throw new UnableToStoreException($message);
+        if (! is_resource($variable)) {
+            return;
         }
+        $message = $this->breadcrumb->count() > 0
+            ? message('Argument contains a resource at %at%')
+                ->withCode('%at%', $this->breadcrumb->__toString())
+            : message('Argument is of type resource.');
+
+        throw new UnableToStoreException($message);
     }
 
     /**
@@ -80,7 +83,7 @@ final class StorableVariable implements StorableVariableInterface
      * @throws UnableToStoreException
      * @throws OutOfBoundsException
      */
-    private function breadcrumbIterable(iterable $variable): void
+    private function breadcrumbIterable(iterable $variable, string $callable): void
     {
         $this->breadcrumb = $this->breadcrumb->withAdded('(iterable)');
         $iterableKey = $this->breadcrumb->pos();
@@ -89,7 +92,7 @@ final class StorableVariable implements StorableVariableInterface
             $this->breadcrumb = $this->breadcrumb
                 ->withAdded('key: ' . $key);
             $memberKey = $this->breadcrumb->pos();
-            $this->assertExportable($val);
+            $this->assertStorable($val, $callable);
             $this->breadcrumb = $this->breadcrumb
                 ->withRemoved($memberKey);
         }
@@ -97,11 +100,13 @@ final class StorableVariable implements StorableVariableInterface
             ->withRemoved($iterableKey);
     }
 
-    private function breadcrumbObject(object $variable): void
+    private function breadcrumbObject(object $variable, string $callable): void
     {
         $this->breadcrumb = $this->breadcrumb
             ->withAdded('object: ' . $variable::class);
-        $this->assertObjectExportable($variable);
+        if ($callable === 'toExport') {
+            $this->assertObjectExportable($variable);
+        }
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($variable);
         $properties = $reflection->getProperties();
@@ -120,7 +125,7 @@ final class StorableVariable implements StorableVariableInterface
             // @infection-ignore-all
             $property->setAccessible(true);
             if ($property->isInitialized($variable)) {
-                $this->assertExportable($property->getValue($variable));
+                $this->assertStorable($property->getValue($variable), $callable);
             }
             $this->breadcrumb = $this->breadcrumb->withRemoved($propertyKey);
         }

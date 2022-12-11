@@ -40,6 +40,14 @@ final class StorableVariableTest extends TestCase
         fclose($this->resource);
     }
 
+    public function testNotSerializable(): void
+    {
+        $this->expectException(UnableToStoreException::class);
+        $this->expectExceptionMessageMatches('/ of type resource/');
+        $storable = new StorableVariable($this->resource);
+        $storable->toSerialize();
+    }
+
     public function testNotExportable(): void
     {
         $this->expectException(UnableToStoreException::class);
