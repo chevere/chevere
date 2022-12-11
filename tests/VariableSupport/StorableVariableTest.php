@@ -64,6 +64,7 @@ final class StorableVariableTest extends TestCase
         $exportable = new stdClass();
         $notExportable = new ClassWithPropertyNotExportable($file);
         $notExportableClassName = ClassWithPropertyNotExportable::class;
+        $exportable->string = 'test';
         $exportable->array = [$notExportable];
         $atBreadcrumb =
             <<<STRING
