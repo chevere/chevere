@@ -13,17 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VariableSupport\_resources;
 
-use Chevere\Filesystem\File;
-
 final class ClassWithPropertyNotExportable
 {
+    /**
+     * @param resource[] $files
+     */
     public function __construct(
-        private File $file
+        private array $files
     ) {
-    }
-
-    public static function __set_state($state)
-    {
-        return new self($state);
     }
 }

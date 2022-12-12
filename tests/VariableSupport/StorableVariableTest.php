@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VariableSupport;
 
-use function Chevere\Filesystem\fileForPath;
 use Chevere\Tests\VariableSupport\_resources\ClassWithPropertyNotExportable;
 use Chevere\VariableSupport\Exceptions\UnableToStoreException;
 use Chevere\VariableSupport\StorableVariable;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use Symfony\Component\VarExporter\VarExporter;
 
 final class StorableVariableTest extends TestCase
 {
@@ -67,16 +67,15 @@ final class StorableVariableTest extends TestCase
 
     public function testContainsNotExportableClass(): void
     {
-        $file = fileForPath(__FILE__);
-        $fileClassName = $file::class;
+        $file = fopen(__FILE__, 'r');
         $exportable = new stdClass();
-        $notExportable = new ClassWithPropertyNotExportable($file);
+        $notExportable = new ClassWithPropertyNotExportable([$file]);
         $notExportableClassName = ClassWithPropertyNotExportable::class;
         $exportable->string = 'test';
         $exportable->array = [$notExportable];
         $atBreadcrumb =
             <<<STRING
-            Object without __set_state method at [object: stdClass][property: \$array][(iterable)][key: 0][object: {$notExportableClassName}][property: {$fileClassName} \$file][object: {$fileClassName}]
+            Argument contains a resource at [object: stdClass][property: \$array][(iterable)][key: 0][object: {$notExportableClassName}][property: array \$files][(iterable)][key: 0]
             STRING;
         $storable = new StorableVariable($exportable);
         $this->expectException(UnableToStoreException::class);
@@ -116,7 +115,7 @@ final class StorableVariableTest extends TestCase
             $storableVariable = new StorableVariable($val);
             $this->assertSame($val, $storableVariable->variable());
             $this->assertSame(serialize($val), $storableVariable->toSerialize());
-            $this->assertSame(var_export($val, true), $storableVariable->toExport());
+            $this->assertSame(VarExporter::export($val), $storableVariable->toExport());
         }
     }
 }

@@ -21,7 +21,7 @@ use Chevere\VariableSupport\Exceptions\UnableToStoreException;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 use ReflectionNamedType;
 use ReflectionObject;
-use stdClass;
+use Symfony\Component\VarExporter\VarExporter;
 
 final class StorableVariable implements StorableVariableInterface
 {
@@ -42,7 +42,7 @@ final class StorableVariable implements StorableVariableInterface
     {
         $this->assertStorable($this->variable, __FUNCTION__);
 
-        return var_export($this->variable, true);
+        return VarExporter::export($this->variable);
     }
 
     public function toSerialize(): string
@@ -104,9 +104,6 @@ final class StorableVariable implements StorableVariableInterface
     {
         $this->breadcrumb = $this->breadcrumb
             ->withAdded('object: ' . $variable::class);
-        if ($callable === 'toExport') {
-            $this->assertObjectExportable($variable);
-        }
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($variable);
         $properties = $reflection->getProperties();
@@ -130,20 +127,5 @@ final class StorableVariable implements StorableVariableInterface
             $this->breadcrumb = $this->breadcrumb->withRemoved($propertyKey);
         }
         $this->breadcrumb = $this->breadcrumb->withRemoved($objectKey);
-    }
-
-    private function assertObjectExportable(object $variable): void
-    {
-        if ($variable instanceof stdClass
-            || method_exists($variable, '__set_state')
-        ) {
-            return;
-        }
-
-        throw new UnableToStoreException(
-            message('Object without %method% method at %at%')
-                ->withCode('%method%', '__set_state')
-                ->withCode('%at%', $this->breadcrumb->__toString())
-        );
     }
 }
