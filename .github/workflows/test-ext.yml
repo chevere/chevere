@@ -57,7 +57,7 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --classmap-authoritative --ignore-platform-reqs
+        run: composer install --no-progress
       - name: Run PHPStan
         run: phpstan analyse src -l 9
       - name: Tests (PHPUnit)

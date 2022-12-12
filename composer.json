@@ -23,7 +23,7 @@
         "ramsey/uuid": "^4.6",
         "symfony/polyfill-ctype": "^1.27",
         "symfony/polyfill-mbstring": "^1.27",
-        "symfony/var-exporter": "^6.2",
+        "symfony/var-exporter": "^6.0",
         "thecodingmachine/safe": "^2.4"
     },
     "require-dev": {
