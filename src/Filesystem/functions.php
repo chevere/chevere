@@ -20,9 +20,6 @@ use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
 use Chevere\Message\Interfaces\MessageInterface;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\LogicException;
-use Chevere\Type\Interfaces\TypeInterface;
-use Throwable;
 
 /**
  * @codeCoverageIgnore
@@ -80,21 +77,4 @@ function filePhpForPath(string $path): FilePhpInterface
 function filePhpReturnForPath(string $path): FilePhpReturnInterface
 {
     return new FilePhpReturn(filePhpForPath($path));
-}
-
-/**
- * @codeCoverageIgnore
- * @throws LogicException
- */
-function variableForFilePhpReturn(FilePhpReturnInterface $filePhpReturn, TypeInterface $type): mixed
-{
-    try {
-        return $filePhpReturn->variableTyped($type);
-    } catch (Throwable $e) {
-        throw new LogicException(
-            previous: $e,
-            message: message('Unable to retrieve the expected variable of type %type%')
-                ->withCode('%type%', $type->typeHinting()),
-        );
-    }
 }

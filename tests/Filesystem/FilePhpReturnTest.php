@@ -16,7 +16,6 @@ namespace Chevere\Tests\Filesystem;
 use function Chevere\Filesystem\directoryForPath;
 use Chevere\Filesystem\Exceptions\FileInvalidContentsException;
 use Chevere\Filesystem\Exceptions\FileNotExistsException;
-use Chevere\Filesystem\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Filesystem\File;
 use Chevere\Filesystem\FilePhp;
@@ -25,6 +24,7 @@ use function Chevere\Filesystem\filePhpReturnForPath;
 use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
+use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\Type\Type;
 use Chevere\VariableSupport\StorableVariable;
 use PHPUnit\Framework\TestCase;
@@ -70,45 +70,45 @@ final class FilePhpReturnTest extends TestCase
     {
         $this->file->remove();
         $this->expectException(FileNotExistsException::class);
-        $this->filePhpReturn->raw();
+        $this->filePhpReturn->get();
     }
 
     public function testEmptyFile(): void
     {
         $this->expectException(FileWithoutContentsException::class);
-        $this->filePhpReturn->raw();
+        $this->filePhpReturn->get();
     }
 
     public function testContents(): void
     {
         $this->file->put(FilePhpReturnInterface::PHP_RETURN . '"test";');
-        $this->assertSame('test', $this->filePhpReturn->raw());
+        $this->assertSame('test', $this->filePhpReturn->get());
     }
 
     public function testVariableFileNotFound(): void
     {
         $this->file->remove();
         $this->expectException(FileNotExistsException::class);
-        $this->filePhpReturn->variable();
+        $this->filePhpReturn->get();
     }
 
     public function testVariableEmptyFile(): void
     {
         $this->expectException(FileWithoutContentsException::class);
-        $this->filePhpReturn->variable();
+        $this->filePhpReturn->get();
     }
 
     public function testVariableInvalidContents(): void
     {
         $this->file->put('test');
         $this->expectException(FileInvalidContentsException::class);
-        $this->filePhpReturn->variable();
+        $this->filePhpReturn->get();
     }
 
     public function testVariableContents(): void
     {
         $this->file->put(FilePhpReturnInterface::PHP_RETURN . '["test", 1];');
-        $this->assertSame(['test', 1], $this->filePhpReturn->variable());
+        $this->assertSame(['test', 1], $this->filePhpReturn->get());
     }
 
     public function testPutFileNotFound(): void
@@ -122,7 +122,7 @@ final class FilePhpReturnTest extends TestCase
     {
         $phpFilePath = __DIR__ . '/_resources/return-string.php';
         $file = filePhpReturnForPath($phpFilePath);
-        $this->assertSame(include $phpFilePath, $file->variable());
+        $this->assertSame(include $phpFilePath, $file->get());
     }
 
     public function testPhpReturnObjectFile(): void
@@ -130,81 +130,76 @@ final class FilePhpReturnTest extends TestCase
         $phpFilePath = __DIR__ . '/_resources/return-object.php';
         $file = filePhpReturnForPath($phpFilePath);
         $phpFileObject = include $phpFilePath;
-        $this->assertEquals($phpFileObject, $file->variable());
-        $this->assertNotSame($phpFileObject, $file->variable());
+        $this->assertEquals($phpFileObject, $file->get());
+        $this->assertNotSame($phpFileObject, $file->get());
     }
 
     public function testPut(): void
     {
         foreach ([
-            1,
-            1.1,
-            true,
-            'test',
-            [1, 2, 3],
-            [1, 1.1, true, 'test'],
-            [[1, 1.1, true, 'test']],
-        ] as $value) {
-            $this->filePhpReturn->put(
-                new StorableVariable($value)
-            );
-            $this->assertSame($value, $this->filePhpReturn->variable());
+            TypeInterface::INTEGER => 1,
+            TypeInterface::FLOAT => 1.1,
+            TypeInterface::BOOLEAN => true,
+            TypeInterface::STRING => 'test',
+            TypeInterface::ARRAY => [1, 2, 3],
+            TypeInterface::ARRAY => [1, 1.1, true, 'test'],
+            TypeInterface::ARRAY => [[1, 1.1, true, 'test']],
+        ] as $type => $value) {
+            $storable = new StorableVariable($value);
+            $this->filePhpReturn->put($storable);
+            $this->assertSame($value, $this->filePhpReturn->get());
+            $variableType = 'get' . ucfirst($type);
+            $this->assertSame($value, $this->filePhpReturn->{$variableType}());
         }
+        $object = $this->testDirectory->path()->getChild('test');
         $types = [
-            Type::OBJECT => $this->testDirectory->path()->getChild('test'),
-            Type::ARRAY => ['test', [1, false], 1.1, null],
+            Type::OBJECT => $object,
+            Type::ARRAY => ['test', [1, false, $object], 1.1, null],
         ];
         foreach ($types as $type => $value) {
-            $this->filePhpReturn->put(
-                new StorableVariable($value)
-            );
-            $this->assertEqualsCanonicalizing(
-                $value,
-                $this->filePhpReturn->variable()
-            );
-            $this->assertEqualsCanonicalizing(
-                $value,
-                $this->filePhpReturn->variableTyped(new Type($type))
-            );
+            $storable = new StorableVariable($value);
+            $this->filePhpReturn->put($storable);
+            $this->assertNotSame($value, $this->filePhpReturn->get());
+            $this->assertEquals($value, $this->filePhpReturn->get());
+            $variableType = 'get' . ucfirst($type);
+            $this->assertEquals($value, $this->filePhpReturn->{$variableType}());
         }
-        $this->expectException(FileReturnInvalidTypeException::class);
-        $this->filePhpReturn->variableTyped(new Type(Type::INTEGER));
     }
 
     public function testFileWithoutContentsException(): void
     {
         $this->file->put('');
         $this->expectException(FileWithoutContentsException::class);
-        $this->filePhpReturn->raw();
+        $this->filePhpReturn->get();
     }
 
     public function testRawVariable(): void
     {
         $this->file->put("<?php /* comment */ return 'test';");
         $string = 'test';
-        $this->assertSame($string, $this->filePhpReturn->raw());
-        $this->assertSame($string, $this->filePhpReturn->variable());
+        $this->assertSame($string, $this->filePhpReturn->get());
+        $this->assertSame($string, $this->filePhpReturn->get());
         $array = [1, 1.1, 'test'];
         $this->file->put("<?php return [1, 1.1, 'test'];");
-        $this->assertSame($array, $this->filePhpReturn->raw());
-        $this->assertSame($array, $this->filePhpReturn->variable());
+        $this->assertSame($array, $this->filePhpReturn->get());
+        $this->assertSame($array, $this->filePhpReturn->get());
         $this->file->put('<?php $var = __FILE__;');
         $this->expectException(FileInvalidContentsException::class);
-        $this->filePhpReturn->raw();
+        $this->filePhpReturn->get();
     }
 
     public function testStrictBegin(): void
     {
         $this->file->put('/* comment */<?php return __FILE__;');
         $this->expectException(FileInvalidContentsException::class);
-        $this->filePhpReturn->raw();
+        $this->filePhpReturn->get();
     }
 
     public function testStrictEnd(): void
     {
         $this->file->put('<?php return __FILE__;/* comment */');
         $this->expectException(FileInvalidContentsException::class);
-        $this->filePhpReturn->raw();
+        $this->filePhpReturn->get();
     }
 
     private function getFileName(): string

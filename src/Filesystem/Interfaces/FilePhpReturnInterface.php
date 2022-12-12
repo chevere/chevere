@@ -16,12 +16,10 @@ namespace Chevere\Filesystem\Interfaces;
 use Chevere\Filesystem\Exceptions\FileHandleException;
 use Chevere\Filesystem\Exceptions\FileInvalidContentsException;
 use Chevere\Filesystem\Exceptions\FileNotExistsException;
-use Chevere\Filesystem\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Filesystem\Exceptions\FileUnableToPutException;
 use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Throwable\Exceptions\RuntimeException;
-use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 
 /**
@@ -52,32 +50,22 @@ interface FilePhpReturnInterface
      * @throws FileUnableToGetException
      * @throws RuntimeException
      */
-    public function raw(): mixed;
+    public function get(): mixed;
 
     /**
-     * Retrieves a PHP variable, applying unserialize to objects (if any).
-     *
-     * @throws FileNotExistsException
-     * @throws FileHandleException
-     * @throws FileWithoutContentsException
-     * @throws FileInvalidContentsException
-     * @throws FileUnableToGetException
-     * @throws RuntimeException
+     * @return array<mixed>
      */
-    public function variable(): mixed;
+    public function getArray(): array;
 
-    /**
-     * Same as `variable()`, but checking the variable `$type`.
-     *
-     * @throws FileNotExistsException
-     * @throws FileHandleException
-     * @throws FileWithoutContentsException
-     * @throws FileInvalidContentsException
-     * @throws FileUnableToGetException
-     * @throws RuntimeException
-     * @throws FileReturnInvalidTypeException
-     */
-    public function variableTyped(TypeInterface $type): mixed;
+    public function getBoolean(): bool;
+
+    public function getFloat(): float;
+
+    public function getInteger(): int;
+
+    public function getObject(): object;
+
+    public function getString(): string;
 
     /**
      * Put `$storableVariable` into the file using var_export return and strict format.
