@@ -42,7 +42,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         $this->assert();
         $filePath = $this->filePhp->file()->path()->__toString();
 
-        return include $filePath;
+        return require $filePath;
     }
 
     public function getArray(): array
