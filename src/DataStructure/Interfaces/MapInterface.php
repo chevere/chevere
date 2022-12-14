@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\DataStructure\Interfaces;
 
 /**
- * Describes the component in charge of providing an immutable Ds\Map interface.
+ * Describes the component in charge of providing a Map interface.
  */
 interface MapInterface extends MappedInterface
 {

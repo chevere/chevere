@@ -33,7 +33,6 @@ use Chevere\Tests\Action\_resources\src\ActionTestSetupBeforeAndAfter;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
-use Ds\Vector;
 use PHPUnit\Framework\TestCase;
 
 final class ActionTest extends TestCase
@@ -72,11 +71,11 @@ final class ActionTest extends TestCase
             'object' => ObjectParameterInterface::class,
             'file' => ObjectParameterInterface::class,
         ];
-        $optional = new Vector(array_keys($defaults));
-        $required = new Vector(array_keys($types));
+        $optional = array_keys($defaults);
+        $required = array_keys($types);
         $action = new ActionTestRunParameters();
-        $this->assertTrue($optional->contains(...$action->parameters()->optional()));
-        $this->assertTrue($required->contains(...$action->parameters()->required()));
+        $this->assertSame($optional, $action->parameters()->optional());
+        $this->assertSame($required, $action->parameters()->required());
         foreach ($defaults as $name => $value) {
             $parameter = $action->parameters()->get(strval($name));
             $this->assertSame($value, $parameter->default());

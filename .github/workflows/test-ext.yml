@@ -8,7 +8,7 @@ jobs:
         os: [ubuntu-latest]
         php: ["8.0", "8.1", "8.2"]
     env:
-      extensions: opcache, mbstring, ds, pcov
+      extensions: opcache, mbstring, pcov, ctype
       tools: composer, phpstan
       ini-values: opcache.enable_cli = 0, precision=16, default_charset='UTF-8', pcov.directory=src
       key: cache-1652276840262

@@ -16,10 +16,10 @@ namespace Chevere\DataStructure\Interfaces;
 /**
  * Describes the component in charge of providing an interface exposing string keys.
  */
-interface StringKeysInterface
+interface KeysInterface
 {
     /**
-     * @return array<string>
+     * @return array<string|int>
      */
     public function keys(): array;
 }

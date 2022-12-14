@@ -14,21 +14,17 @@ declare(strict_types=1);
 namespace Chevere\DataStructure\Traits;
 
 use function Chevere\VariableSupport\deepCopy;
-use Ds\Vector;
 use Iterator;
 
 trait VectorTrait
 {
-    private Vector $vector;
+    private array $vector = [];
 
-    public function __construct()
-    {
-        $this->vector = new Vector();
-    }
+    private int $count = 0;
 
     public function __clone()
     {
-        /** @var Vector<mixed> $copy */
+        /** @var array<mixed> $copy */
         $copy = deepCopy($this->vector);
         /** @phpstan-ignore-next-line */
         $this->vector = $copy;
@@ -36,21 +32,21 @@ trait VectorTrait
 
     public function keys(): array
     {
-        if (count($this->vector) === 0) {
+        if ($this->count === 0) {
             return [];
         }
 
-        return range(0, $this->vector->count() - 1);
+        return range(0, $this->count - 1);
     }
 
     public function count(): int
     {
-        return $this->vector->count();
+        return $this->count;
     }
 
     public function getIterator(): Iterator
     {
-        foreach ($this->vector->toArray() as $value) {
+        foreach ($this->vector as $value) {
             yield $value;
         }
     }
