@@ -63,6 +63,7 @@
     "scripts": {
         "all": [
             "composer phpstan",
+            "composer test",
             "composer test-rep",
             "composer infection"
         ],
