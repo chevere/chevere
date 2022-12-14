@@ -19,7 +19,7 @@ use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ParametersGetTypedTrait;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Chevere\Throwable\Exceptions\OverflowException;
 
 final class Parameters implements ParametersInterface
@@ -74,7 +74,7 @@ final class Parameters implements ParametersInterface
         foreach ($parameter as $name => $param) {
             $name = strval($name);
             if (! $new->map->has($name)) {
-                throw new OutOfBoundsException(
+                throw new OutOfRangeException(
                     message("Parameter %name% doesn't exists")
                         ->withCode('%name%', $name)
                 );
@@ -101,7 +101,7 @@ final class Parameters implements ParametersInterface
     public function isRequired(string ...$name): bool
     {
         foreach ($name as $item) {
-            $this->assertNoOutOfBounds($item);
+            $this->assertNoOutOfRange($item);
             if (array_search($item, $this->required, true) === false) {
                 return false;
             }
@@ -113,7 +113,7 @@ final class Parameters implements ParametersInterface
     public function isOptional(string ...$name): bool
     {
         foreach ($name as $item) {
-            $this->assertNoOutOfBounds($item);
+            $this->assertNoOutOfRange($item);
             if (array_search($item, $this->required, true) !== false) {
                 return false;
             }
@@ -127,8 +127,8 @@ final class Parameters implements ParametersInterface
         try {
             /** @var ParameterInterface */
             return $this->map->get($name);
-        } catch (\OutOfBoundsException $e) {
-            throw new OutOfBoundsException(
+        } catch (OutOfRangeException) {
+            throw new OutOfRangeException(
                 message('Parameter %name% not found')
                     ->withCode('%name%', $name)
             );
@@ -157,10 +157,10 @@ final class Parameters implements ParametersInterface
         }
     }
 
-    private function assertNoOutOfBounds(string $parameter): void
+    private function assertNoOutOfRange(string $parameter): void
     {
         if (! $this->has($parameter)) {
-            throw new OutOfBoundsException(
+            throw new OutOfRangeException(
                 message("Parameter %name% doesn't exists")
                     ->withCode('%name%', $parameter)
             );

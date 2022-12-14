@@ -21,7 +21,7 @@ final class VectorTraitTest extends TestCase
     public function testEmpty(): void
     {
         $vector = new UsesVectorTrait();
-        $this->assertCount(0, $vector);
+        $this->assertSame(0, $vector->count());
         $this->assertSame([], $vector->keys());
         $array = iterator_to_array($vector->getIterator());
         $this->assertSame([], $array);

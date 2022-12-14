@@ -14,11 +14,16 @@ declare(strict_types=1);
 namespace Chevere\DataStructure\Interfaces;
 
 use Iterator;
+use IteratorAggregate;
 
 /**
  * Describes the component in charge of providing access to the iterator.
+ *
+ * @template-covariant TKey
+ * @template-covariant TValue
+ * @extends IteratorAggregate<TKey, TValue>
  */
-interface GetIteratorInterface
+interface GetIteratorInterface extends IteratorAggregate
 {
     public function getIterator(): Iterator;
 }

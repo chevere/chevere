@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructure\src;
 
-use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Traits\VectorTrait;
 
-final class UsesVectorTrait implements VectorInterface
+final class UsesVectorTrait
 {
     use VectorTrait;
 }

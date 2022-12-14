@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\DataStructure;
 
 use Chevere\DataStructure\Map;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 
 final class MapTest extends TestCase
@@ -22,14 +22,14 @@ final class MapTest extends TestCase
     public function testAssertEmpty(): void
     {
         $map = new Map(...[]);
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(OutOfRangeException::class);
         $map->assertHas('not-found');
     }
 
     public function testGetEmpty(): void
     {
         $map = new Map(...[]);
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(OutOfRangeException::class);
         $map->get('not-found');
     }
 

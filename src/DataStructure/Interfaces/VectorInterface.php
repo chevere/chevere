@@ -18,6 +18,18 @@ use Countable;
 /**
  * Describes the component in charge of defining a vector interface.
  */
+// @phpstan-ignore-next-line
 interface VectorInterface extends Countable, IntegerKeysInterface, GetIteratorInterface
 {
+    public function withPush(mixed ...$value): self;
+
+    public function withSet(int $key, mixed $value): self;
+
+    public function withUnshift(mixed ...$value): self;
+
+    public function has(int ...$key): bool;
+
+    public function get(int $key): mixed;
+
+    public function find(mixed $value): ?int;
 }

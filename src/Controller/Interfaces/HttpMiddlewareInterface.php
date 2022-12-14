@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Controller\Interfaces;
 
-use Chevere\DataStructure\Interfaces\VectorInterface;
+use Countable;
 use Iterator;
 use Psr\Http\Server\MiddlewareInterface;
 
 /**
  * Describes the component in charge of collecting middleware.
  */
-interface HttpMiddlewareInterface extends VectorInterface
+interface HttpMiddlewareInterface extends Countable
 {
     /**
      * Return an instance with the specified appended `$middleware`.

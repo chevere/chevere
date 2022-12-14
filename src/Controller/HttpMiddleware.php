@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Controller;
 
 use Chevere\Controller\Interfaces\HttpMiddlewareInterface;
+use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Traits\VectorTrait;
+use Chevere\DataStructure\Vector;
 use Psr\Http\Server\MiddlewareInterface;
 
 final class HttpMiddleware implements HttpMiddlewareInterface
@@ -22,23 +24,19 @@ final class HttpMiddleware implements HttpMiddlewareInterface
     use VectorTrait;
 
     /**
-     * @var array<MiddlewareInterface>
+     * @var VectorInterface<MiddlewareInterface>
      */
-    private array $vector = [];
+    private VectorInterface $vector;
 
     public function __construct(MiddlewareInterface ...$middleware)
     {
-        $this->vector = $middleware;
-        $this->count = count($middleware);
+        $this->vector = new Vector(...$middleware);
     }
 
     public function withAppend(MiddlewareInterface ...$middleware): self
     {
         $new = clone $this;
-        foreach ($middleware as $item) {
-            $new->vector[] = $item;
-            $new->count++;
-        }
+        $new->vector = $new->vector->withPush(...$middleware);
 
         return $new;
     }
@@ -46,10 +44,7 @@ final class HttpMiddleware implements HttpMiddlewareInterface
     public function withPrepend(MiddlewareInterface ...$middleware): self
     {
         $new = clone $this;
-        foreach ($middleware as $item) {
-            array_unshift($new->vector, $item);
-            $new->count++;
-        }
+        $new->vector = $new->vector->withUnshift(...$middleware);
 
         return $new;
     }

@@ -13,22 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\DataStructure;
 
-use Chevere\DataStructure\Interfaces\MapInterface;
+use Chevere\DataStructure\Interfaces\VectorInterface;
 use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Iterator;
 
-final class Map implements MapInterface
+final class Vector implements VectorInterface
 {
     /**
      * @var array<mixed>
      */
     private array $values = [];
-
-    /**
-     * @var array<string>
-     */
-    private array $keys = [];
 
     private int $count = 0;
 
@@ -39,7 +34,7 @@ final class Map implements MapInterface
 
     public function keys(): array
     {
-        return $this->keys;
+        return array_keys($this->values);
     }
 
     public function count(): int
@@ -50,14 +45,12 @@ final class Map implements MapInterface
     #[\ReturnTypeWillChange]
     public function getIterator(): Iterator
     {
-        foreach ($this->keys as $key) {
-            /** @var string $lookup */
-            $lookup = $this->lookupKey($key);
-            yield $key => $this->values[$lookup];
+        foreach ($this->values as $value) {
+            yield $value;
         }
     }
 
-    public function withPut(mixed ...$value): self
+    public function withPush(mixed ...$value): self
     {
         $new = clone $this;
         $new->put(...$value);
@@ -65,7 +58,25 @@ final class Map implements MapInterface
         return $new;
     }
 
-    public function has(string ...$key): bool
+    public function withSet(int $key, mixed $value): self
+    {
+        $this->assertHas($key);
+        $new = clone $this;
+        $new->values[$key] = $value;
+
+        return $new;
+    }
+
+    public function withUnshift(mixed ...$value): self
+    {
+        $new = clone $this;
+        array_unshift($new->values, ...$value);
+        $new->count += count($value);
+
+        return $new;
+    }
+
+    public function has(int ...$key): bool
     {
         try {
             $this->assertHas(...$key);
@@ -79,11 +90,11 @@ final class Map implements MapInterface
     /**
      * @throws OutOfRangeException
      */
-    public function assertHas(string ...$key): void
+    public function assertHas(int ...$key): void
     {
         $missing = [];
         foreach ($key as $item) {
-            if ($this->lookupKey($item) === null) {
+            if (! $this->lookupKey($item)) {
                 $missing[] = strval($item);
             }
         }
@@ -100,39 +111,36 @@ final class Map implements MapInterface
     /**
      * @throws OutOfRangeException
      */
-    public function get(string $key): mixed
+    public function get(int $key): mixed
     {
-        $lookup = $this->lookupKey($key);
-        if ($lookup === null) {
+        if (! $this->lookupKey($key)) {
             throw new OutOfRangeException(
                 message('Key %key% not found')
-                    ->withCode('%key%', $key)
+                    ->withCode('%key%', strval($key))
             );
         }
 
-        return $this->values[$lookup];
+        return $this->values[$key];
     }
 
-    private function lookupKey(string $key): ?string
+    public function find(mixed $value): ?int
     {
-        $lookup = array_search($key, $this->keys, true);
+        /** @var int|false $lookup */
+        $lookup = array_search($value, $this->values, true);
 
-        return $lookup === false ? null : strval($lookup);
+        return $lookup === false ? null : $lookup;
+    }
+
+    private function lookupKey(int $key): bool
+    {
+        return array_key_exists($key, $this->values);
     }
 
     private function put(mixed ...$values): void
     {
-        foreach ($values as $key => $value) {
-            $key = strval($key);
-            $lookUp = $this->lookupKey($key);
-            if ($lookUp === null) {
-                $this->keys[] = $key;
-                $this->values[] = $value;
-                $this->count++;
-
-                continue;
-            }
-            $this->values[$lookUp] = $value;
+        foreach ($values as $value) {
+            $this->values[] = $value;
+            $this->count++;
         }
     }
 }
