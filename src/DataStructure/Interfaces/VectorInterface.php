@@ -32,4 +32,6 @@ interface VectorInterface extends Countable, IntegerKeysInterface, GetIteratorIn
     public function get(int $key): mixed;
 
     public function find(mixed $value): ?int;
+
+    public function contains(mixed ...$value): bool;
 }

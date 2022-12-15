@@ -131,6 +131,17 @@ final class Vector implements VectorInterface
         return $lookup === false ? null : $lookup;
     }
 
+    public function contains(mixed ...$value): bool
+    {
+        foreach ($value as $item) {
+            if ($this->find($item) === null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private function lookupKey(int $key): bool
     {
         return array_key_exists($key, $this->values);

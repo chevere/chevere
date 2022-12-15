@@ -32,6 +32,7 @@ final class VectorTest extends TestCase
     {
         $vector = new Vector();
         $this->assertFalse($vector->has(0));
+        $this->assertFalse($vector->contains(0));
         $this->assertSame(null, $vector->find(0));
         $this->expectException(OutOfRangeException::class);
         $vector->get(0);
@@ -48,9 +49,11 @@ final class VectorTest extends TestCase
         foreach ($arguments as $pos => $value) {
             $vector->assertHas($pos);
             $this->assertTrue($vector->has($pos));
+            $this->assertTrue($vector->contains($value));
             $this->assertSame($value, $vector->get($pos));
             $this->assertSame($pos, $vector->find($value));
         }
+        $this->assertTrue($vector->contains(...$arguments));
         $array = iterator_to_array($vector->getIterator());
         $this->assertSame($arguments, $array);
     }
