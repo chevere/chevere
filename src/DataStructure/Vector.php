@@ -76,6 +76,16 @@ final class Vector implements VectorInterface
         return $new;
     }
 
+    public function withInsert(int $key, mixed ...$values): VectorInterface
+    {
+        $this->assertHas($key);
+        $new = clone $this;
+        array_splice($new->values, $key, 0, ...$values);
+        $new->count += count($values);
+
+        return $new;
+    }
+
     public function withRemove(int ...$key): VectorInterface
     {
         $this->assertHas(...$key);

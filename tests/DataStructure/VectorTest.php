@@ -113,4 +113,20 @@ final class VectorTest extends TestCase
         $this->expectException(OutOfRangeException::class);
         $immutable->withRemove(count($values) + 1);
     }
+
+    public function testWithInsert(): void
+    {
+        $values = [1, 2, 3];
+        $vector = new Vector(...$values);
+        $immutable = $vector->withInsert(1, 11);
+        $this->assertNotSame($vector, $immutable);
+        $this->assertCount(count($values) + 1, $immutable);
+        array_splice($values, 1, 0, 11);
+        $values = array_values($values);
+        $this->assertSame(array_keys($values), $immutable->keys());
+        $array = vectorToArray($immutable);
+        $this->assertSame($values, $array);
+        $this->expectException(OutOfRangeException::class);
+        $immutable->withInsert(count($values) + 1, 'fail');
+    }
 }
