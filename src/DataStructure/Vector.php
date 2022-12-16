@@ -80,7 +80,7 @@ final class Vector implements VectorInterface
     {
         $this->assertHas($key);
         $new = clone $this;
-        array_splice($new->values, $key, 0, ...$values);
+        array_splice($new->values, $key, 0, $values);
         $new->count += count($values);
 
         return $new;
