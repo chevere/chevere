@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\DataStructure;
 
 use Chevere\DataStructure\Vector;
+use function Chevere\DataStructure\vectorToArray;
 use Chevere\Throwable\Exceptions\OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -54,7 +55,7 @@ final class VectorTest extends TestCase
             $this->assertSame($pos, $vector->find($value));
         }
         $this->assertTrue($vector->contains(...$arguments));
-        $array = iterator_to_array($vector->getIterator());
+        $array = vectorToArray($vector);
         $this->assertSame($arguments, $array);
     }
 
@@ -65,7 +66,7 @@ final class VectorTest extends TestCase
         $immutable = $vector->withPush(...$values);
         $this->assertCount(count($values), $immutable);
         $this->assertNotSame($vector, $immutable);
-        $array = iterator_to_array($immutable->getIterator());
+        $array = vectorToArray($immutable);
         $this->assertSame($values, $array);
     }
 
@@ -90,10 +91,26 @@ final class VectorTest extends TestCase
         $vector = new Vector(...$values);
         $this->assertCount(count($values), $vector);
         $immutable = $vector->withUnshift(...$unshift);
-        $this->assertCount(count($values) + count($unshift), $immutable);
         $this->assertNotSame($vector, $immutable);
-        $array = iterator_to_array($immutable->getIterator());
+        $this->assertCount(count($values) + count($unshift), $immutable);
+        $array = vectorToArray($immutable);
         $expected = array_merge($unshift, $values);
         $this->assertSame($expected, $array);
+    }
+
+    public function testWithRemove(): void
+    {
+        $values = [1, 2, 3];
+        $vector = new Vector(...$values);
+        $immutable = $vector->withRemove(1);
+        $this->assertNotSame($vector, $immutable);
+        $this->assertCount(count($values) - 1, $immutable);
+        unset($values[1]);
+        $values = array_values($values);
+        $this->assertSame(array_keys($values), $immutable->keys());
+        $array = vectorToArray($immutable);
+        $this->assertSame($values, $array);
+        $this->expectException(OutOfRangeException::class);
+        $immutable->withRemove(count($values) + 1);
     }
 }

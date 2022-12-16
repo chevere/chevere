@@ -27,6 +27,8 @@ interface VectorInterface extends Countable, IntegerKeysInterface, GetIteratorIn
 
     public function withUnshift(mixed ...$value): self;
 
+    public function withRemove(int ...$key): self;
+
     public function has(int ...$key): bool;
 
     public function get(int $key): mixed;

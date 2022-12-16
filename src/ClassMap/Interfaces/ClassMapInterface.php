@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\ClassMap\Interfaces;
 
+use Chevere\Common\Interfaces\ToArrayInterface;
 use Chevere\DataStructure\Interfaces\MappedInterface;
 use Chevere\Throwable\Exceptions\ClassNotExistsException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
@@ -22,7 +23,7 @@ use Iterator;
 /**
  * Describes the component in charge of mapping classes to keys.
  */
-interface ClassMapInterface extends MappedInterface
+interface ClassMapInterface extends MappedInterface, ToArrayInterface
 {
     /**
      * Return an instance with the specified className mapping.

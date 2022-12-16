@@ -76,6 +76,19 @@ final class Vector implements VectorInterface
         return $new;
     }
 
+    public function withRemove(int ...$key): VectorInterface
+    {
+        $this->assertHas(...$key);
+        $new = clone $this;
+        foreach ($key as $item) {
+            unset($new->values[$item]);
+            $new->count--;
+        }
+        $new->values = array_values($new->values);
+
+        return $new;
+    }
+
     public function has(int ...$key): bool
     {
         try {

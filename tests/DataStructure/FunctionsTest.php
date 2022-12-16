@@ -22,7 +22,11 @@ final class FunctionsTest extends TestCase
     {
         return [
             [[0, 1, 2]],
-            [['cero' => 0, 'uno' => 1, 'dos' => 2]],
+            [[
+                'cero' => 0,
+                'uno' => 1,
+                'dos' => 2,
+            ]],
         ];
     }
 
@@ -31,7 +35,7 @@ final class FunctionsTest extends TestCase
      */
     public function testData(array $arguments): void
     {
-        $nargs = data(...$arguments);
-        $this->assertSame($arguments, $nargs);
+        $args = data(...$arguments);
+        $this->assertSame($arguments, $args);
     }
 }

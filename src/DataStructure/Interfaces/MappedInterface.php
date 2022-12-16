@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\DataStructure\Interfaces;
 
 use Countable;
+use Iterator;
 
 /**
  * Describes the component in charge of defining a mapped interface.
@@ -21,4 +22,9 @@ use Countable;
 // @phpstan-ignore-next-line
 interface MappedInterface extends Countable, StringKeysInterface, GetIteratorInterface
 {
+    public function keys(): array;
+
+    public function count(): int;
+
+    public function getIterator(): Iterator;
 }

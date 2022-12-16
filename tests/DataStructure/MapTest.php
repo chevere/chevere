@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\DataStructure;
 
 use Chevere\DataStructure\Map;
+use function Chevere\DataStructure\mapToArray;
 use Chevere\Throwable\Exceptions\OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 
@@ -21,14 +22,15 @@ final class MapTest extends TestCase
 {
     public function testAssertEmpty(): void
     {
-        $map = new Map(...[]);
+        $map = new Map();
+        $this->assertSame([], mapToArray($map));
         $this->expectException(OutOfRangeException::class);
         $map->assertHas('not-found');
     }
 
     public function testGetEmpty(): void
     {
-        $map = new Map(...[]);
+        $map = new Map();
         $this->expectException(OutOfRangeException::class);
         $map->get('not-found');
     }
@@ -43,19 +45,22 @@ final class MapTest extends TestCase
         foreach ($arguments as $name => $value) {
             $this->assertSame($value, $map->get($name));
         }
+        $this->assertSame($arguments, mapToArray($map));
     }
 
     public function testWithPut(): void
     {
         $key = 'key';
         $value = 1234;
-        $map = new Map(...[]);
-        $immutable = $map->withPut(...[
+        $map = new Map();
+        $arguments = [
             $key => $value,
-        ]);
+        ];
+        $immutable = $map->withPut(...$arguments);
         $this->assertNotSame($map, $immutable);
         $this->assertNotSame($map->keys(), $immutable->keys());
         $this->assertSame($value, $immutable->get($key));
         $immutable->assertHas($key);
+        $this->assertSame($arguments, mapToArray($immutable));
     }
 }
