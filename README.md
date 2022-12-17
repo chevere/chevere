@@ -4,7 +4,7 @@
 
 ![Chevere](chevere.svg)
 
-[![Build](https://img.shields.io/github/workflow/status/chevere/chevere/Test?style=flat-square)](https://github.com/chevere/chevere/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/chevere/chevere/test.yml?branch=2.0&style=flat-square)](https://github.com/chevere/chevere/actions)
 ![Code size](https://img.shields.io/github/languages/code-size/chevere/chevere?style=flat-square)
 [![Apache-2.0](https://img.shields.io/github/license/chevere/chevere?style=flat-square)](LICENSE)
 [![PHPStan](https://img.shields.io/badge/PHPStan-level%209-blueviolet?style=flat-square)](https://phpstan.org/)
