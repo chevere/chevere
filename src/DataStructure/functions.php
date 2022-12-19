@@ -30,7 +30,8 @@ function data(mixed ...$argument): array
 /**
  * Convert MapInterface to array.
  *
- * @param MapInterface<mixed> $map
+ * @template TValue
+ * @param MapInterface<TValue> $map
  * @return array<string, mixed>
  */
 function mapToArray(MapInterface $map): array
@@ -41,7 +42,8 @@ function mapToArray(MapInterface $map): array
 /**
  * Convert VectorInterface to array.
  *
- * @param VectorInterface<mixed> $vector
+ * @template TValue
+ * @param VectorInterface<TValue> $vector
  * @return array<mixed> $vector
  */
 function vectorToArray(VectorInterface $vector): array
