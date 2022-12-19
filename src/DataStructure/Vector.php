@@ -15,13 +15,9 @@ namespace Chevere\DataStructure;
 
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Iterator;
 
-/**
- * @template TValue
- * @implements VectorInterface<TValue>
- */
 final class Vector implements VectorInterface
 {
     /**
@@ -38,10 +34,7 @@ final class Vector implements VectorInterface
 
     public function keys(): array
     {
-        return match ($this->count) {
-            0 => [],
-            default => range(0, $this->count - 1),
-        };
+        return array_keys($this->values);
     }
 
     public function count(): int
@@ -49,9 +42,7 @@ final class Vector implements VectorInterface
         return $this->count;
     }
 
-    /**
-     * @return Iterator<int, TValue>
-     */
+    #[\ReturnTypeWillChange]
     public function getIterator(): Iterator
     {
         foreach ($this->values as $value) {
@@ -59,7 +50,7 @@ final class Vector implements VectorInterface
         }
     }
 
-    public function withPush(mixed ...$value): static
+    public function withPush(mixed ...$value): self
     {
         $new = clone $this;
         $new->put(...$value);
@@ -67,16 +58,16 @@ final class Vector implements VectorInterface
         return $new;
     }
 
-    public function withSet(int $pos, mixed $value): static
+    public function withSet(int $key, mixed $value): self
     {
-        $this->assertHas($pos);
+        $this->assertHas($key);
         $new = clone $this;
-        $new->values[$pos] = $value;
+        $new->values[$key] = $value;
 
         return $new;
     }
 
-    public function withUnshift(mixed ...$value): static
+    public function withUnshift(mixed ...$value): self
     {
         $new = clone $this;
         array_unshift($new->values, ...$value);
@@ -85,7 +76,7 @@ final class Vector implements VectorInterface
         return $new;
     }
 
-    public function withInsert(int $key, mixed ...$values): static
+    public function withInsert(int $key, mixed ...$values): VectorInterface
     {
         $this->assertHas($key);
         $new = clone $this;
@@ -95,7 +86,7 @@ final class Vector implements VectorInterface
         return $new;
     }
 
-    public function withRemove(int ...$key): static
+    public function withRemove(int ...$key): VectorInterface
     {
         $this->assertHas(...$key);
         $new = clone $this;
@@ -114,13 +105,13 @@ final class Vector implements VectorInterface
             $this->assertHas(...$key);
 
             return true;
-        } catch (OutOfBoundsException) {
+        } catch (OutOfRangeException) {
             return false;
         }
     }
 
     /**
-     * @throws OutOfBoundsException
+     * @throws OutOfRangeException
      */
     public function assertHas(int ...$key): void
     {
@@ -134,19 +125,19 @@ final class Vector implements VectorInterface
             return;
         }
 
-        throw new OutOfBoundsException(
+        throw new OutOfRangeException(
             message('Missing key(s) %keys%')
                 ->withCode('%keys%', implode(', ', $missing))
         );
     }
 
     /**
-     * @throws OutOfBoundsException
+     * @throws OutOfRangeException
      */
     public function get(int $key): mixed
     {
         if (! $this->lookupKey($key)) {
-            throw new OutOfBoundsException(
+            throw new OutOfRangeException(
                 message('Key %key% not found')
                     ->withCode('%key%', strval($key))
             );
@@ -176,7 +167,7 @@ final class Vector implements VectorInterface
 
     private function lookupKey(int $key): bool
     {
-        return $key < $this->count;
+        return array_key_exists($key, $this->values);
     }
 
     private function put(mixed ...$values): void

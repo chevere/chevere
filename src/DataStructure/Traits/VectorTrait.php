@@ -18,15 +18,9 @@ use Chevere\DataStructure\Vector;
 use function Chevere\VariableSupport\deepCopy;
 use Iterator;
 
-/**
- * @template TValue
- */
 trait VectorTrait
 {
-    /**
-     * @var Vector<TValue>
-     */
-    private Vector $vector;
+    private VectorInterface $vector;
 
     public function __construct()
     {
@@ -35,7 +29,7 @@ trait VectorTrait
 
     public function __clone()
     {
-        /** @var VectorInterface<TValue> $copy */
+        /** @var array<mixed> $copy */
         $copy = deepCopy($this->vector);
         /** @phpstan-ignore-next-line */
         $this->vector = $copy;

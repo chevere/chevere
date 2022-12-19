@@ -15,13 +15,9 @@ namespace Chevere\DataStructure;
 
 use Chevere\DataStructure\Interfaces\MapInterface;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Iterator;
 
-/**
- * @template TValue
- * @implements MapInterface<TValue>
- */
 final class Map implements MapInterface
 {
     /**
@@ -51,14 +47,6 @@ final class Map implements MapInterface
         return $this->count;
     }
 
-    public function find(mixed $value): ?string
-    {
-        /** @var string|false $lookup */
-        $lookup = array_search($value, $this->values, true);
-
-        return $lookup === false ? null : $this->keys[$lookup];
-    }
-
     #[\ReturnTypeWillChange]
     public function getIterator(): Iterator
     {
@@ -69,7 +57,7 @@ final class Map implements MapInterface
         }
     }
 
-    public function withPut(mixed ...$value): static
+    public function withPut(mixed ...$value): self
     {
         $new = clone $this;
         $new->put(...$value);
@@ -77,22 +65,19 @@ final class Map implements MapInterface
         return $new;
     }
 
-    /**
-     * @throws OutOfBoundsException
-     */
     public function has(string ...$key): bool
     {
         try {
             $this->assertHas(...$key);
 
             return true;
-        } catch (OutOfBoundsException) {
+        } catch (OutOfRangeException) {
             return false;
         }
     }
 
     /**
-     * @throws OutOfBoundsException
+     * @throws OutOfRangeException
      */
     public function assertHas(string ...$key): void
     {
@@ -106,56 +91,20 @@ final class Map implements MapInterface
             return;
         }
 
-        throw new OutOfBoundsException(
+        throw new OutOfRangeException(
             message('Missing key(s) %keys%')
                 ->withCode('%keys%', implode(', ', $missing))
         );
     }
 
     /**
-     * @param TValue ...$value
-     */
-    public function contains(mixed ...$value): bool
-    {
-        try {
-            $this->assertContains(...$value);
-
-            return true;
-        } catch (OutOfBoundsException) {
-            return false;
-        }
-    }
-
-    /**
-     * @param TValue ...$value
-     * @throws OutOfBoundsException
-     */
-    public function assertContains(mixed ...$value): void
-    {
-        $missing = [];
-        foreach ($value as $name => $item) {
-            if (array_search($item, $this->values, true) === false) {
-                $missing[] = strval($name);
-            }
-        }
-        if ($missing === []) {
-            return;
-        }
-
-        throw new OutOfBoundsException(
-            message('Missing value(s) %values%')
-                ->withCode('%values%', implode(', ', $missing))
-        );
-    }
-
-    /**
-     * @throws OutOfBoundsException
+     * @throws OutOfRangeException
      */
     public function get(string $key): mixed
     {
         $lookup = $this->lookupKey($key);
         if ($lookup === null) {
-            throw new OutOfBoundsException(
+            throw new OutOfRangeException(
                 message('Key %key% not found')
                     ->withCode('%key%', $key)
             );

@@ -16,7 +16,7 @@ namespace Chevere\Tests\ClassMap;
 use Chevere\ClassMap\ClassMap;
 use Chevere\Tests\src\ObjectHelper;
 use Chevere\Throwable\Exceptions\ClassNotExistsException;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +28,7 @@ final class ClassMapTest extends TestCase
         $classMap = new ClassMap();
         $this->assertCount(0, $classMap);
         $this->assertFalse($classMap->has($test));
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(OutOfRangeException::class);
         $classMap->key($test);
     }
 
@@ -51,7 +51,7 @@ final class ClassMapTest extends TestCase
     {
         $key = 'test';
         $classMap = new ClassMap();
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(OutOfRangeException::class);
         $classMap->className($key);
     }
 

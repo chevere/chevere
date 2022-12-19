@@ -15,7 +15,7 @@ namespace Chevere\Tests\DataStructure;
 
 use Chevere\DataStructure\Map;
 use function Chevere\DataStructure\mapToArray;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 
 final class MapTest extends TestCase
@@ -24,29 +24,15 @@ final class MapTest extends TestCase
     {
         $map = new Map();
         $this->assertSame([], mapToArray($map));
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(OutOfRangeException::class);
         $map->assertHas('not-found');
     }
 
     public function testGetEmpty(): void
     {
         $map = new Map();
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(OutOfRangeException::class);
         $map->get('not-found');
-    }
-
-    public function testFindEmpty(): void
-    {
-        $map = new Map();
-        $this->assertSame(null, $map->find('not-found'));
-    }
-
-    public function testContainsEmpty(): void
-    {
-        $map = new Map();
-        $this->assertFalse($map->contains('not-found'));
-        $this->expectException(OutOfBoundsException::class);
-        $map->assertContains('not-found');
     }
 
     public function testConstructWithArguments(): void
@@ -58,12 +44,8 @@ final class MapTest extends TestCase
         $map = new Map(...$arguments);
         foreach ($arguments as $name => $value) {
             $this->assertSame($value, $map->get($name));
-            $this->assertSame($name, $map->find($value));
-            $this->assertTrue($map->contains($value));
-            $map->assertContains($value);
         }
         $this->assertSame($arguments, mapToArray($map));
-        $map->assertContains(...$arguments);
     }
 
     public function testWithPut(): void

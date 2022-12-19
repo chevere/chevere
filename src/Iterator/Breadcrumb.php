@@ -13,70 +13,76 @@ declare(strict_types=1);
 
 namespace Chevere\Iterator;
 
-use Chevere\DataStructure\Traits\VectorTrait;
-use Chevere\DataStructure\Vector;
-use function Chevere\DataStructure\vectorToArray;
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
+use function Chevere\Message\message;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
 
 final class Breadcrumb implements BreadcrumbInterface
 {
     /**
-     * @template-use VectorTrait<string>
+     * @var array<int, string>
      */
-    use VectorTrait;
+    private array $items = [];
 
-    public function __construct()
-    {
-        $this->vector = new Vector();
-    }
+    private int $pos = -1;
 
-    public function __toString(): string
-    {
-        if (count($this->vector) === 0) {
-            return '';
-        }
-
-        $return = '';
-        foreach ($this->vector->getIterator() as $item) {
-            $return .= sprintf('[%s]', $item);
-        }
-
-        return $return;
-    }
+    private int $id = -1;
 
     public function has(int $pos): bool
     {
-        return $this->vector->has($pos);
+        return array_key_exists($pos, $this->items);
     }
 
     public function count(): int
     {
-        return count($this->vector);
+        return count($this->items);
     }
 
     public function pos(): int
     {
-        return $this->vector->count() - 1;
+        return $this->pos;
     }
 
     public function withAdded(string $item): BreadcrumbInterface
     {
         $new = clone $this;
-        $new->vector = $new->vector->withPush($item);
+        ++$new->id;
+        $new->items[$new->id] = $item;
+        $new->pos = $new->id;
 
         return $new;
     }
 
     public function withRemoved(int $pos): BreadcrumbInterface
     {
+        if (!array_key_exists($pos, $this->items)) {
+            throw new OutOfRangeException(
+                message('Pos %pos% not found')
+                    ->withCode('%pos%', (string) $pos)
+            );
+        }
         $new = clone $this;
-        $new->vector = $new->vector->withRemove($pos);
+        unset($new->items[$pos]);
 
         return $new;
     }
 
     public function toArray(): array
     {
-        return vectorToArray($this->vector);
+        return $this->items;
+    }
+
+    public function __toString(): string
+    {
+        if ($this->items === []) {
+            return '';
+        }
+
+        $return = '';
+        foreach ($this->items as $item) {
+            $return .= sprintf('[%s]', $item);
+        }
+
+        return $return;
     }
 }

@@ -18,11 +18,10 @@ use Chevere\DataStructure\Interfaces\MappedInterface;
 use Chevere\Throwable\Exceptions\ClassNotExistsException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
+use Iterator;
 
 /**
  * Describes the component in charge of mapping classes to keys.
- *
- * @extends MappedInterface<string>
  */
 interface ClassMapInterface extends MappedInterface, ToArrayInterface
 {
@@ -38,9 +37,14 @@ interface ClassMapInterface extends MappedInterface, ToArrayInterface
     public function withPut(string $className, string $key): self;
 
     /**
+     * Indicates whether the instance is mapping the given class name.
+     */
+    public function has(string $className): bool;
+
+    /**
      * Indicates whether the instance maps the given key.
      */
-    public function has(string ...$key): bool;
+    public function hasKey(string $key): bool;
 
     /**
      * Provides access to the class name mapping.
@@ -48,6 +52,20 @@ interface ClassMapInterface extends MappedInterface, ToArrayInterface
      * @throws OutOfBoundsException
      */
     public function key(string $className): string;
+
+    /**
+     * Provides access to the class name mapped by key.
+     *
+     * @throws OutOfBoundsException
+     */
+    public function className(string $key): string;
+
+    /**
+     * Provides a traversable with `className => key`
+     *
+     * @return Iterator<string, string>
+     */
+    public function getIterator(): Iterator;
 
     /**
      * Provides access to the class map `className => key`

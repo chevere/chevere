@@ -21,8 +21,6 @@ use Iterator;
 
 /**
  * Describes the component in charge of collecting objects implementing `ParameterInterface`.
- *
- * @extends MappedInterface<ParameterInterface>
  */
 interface ParametersInterface extends MappedInterface
 {
@@ -69,6 +67,11 @@ interface ParametersInterface extends MappedInterface
     public function assertHas(string ...$name): void;
 
     /**
+     * Indicates whether the instance has a parameter by name(s).
+     */
+    public function has(string ...$name): bool;
+
+    /**
      * Indicates whether the parameter(s) identified by its name is required.
      *
      * @throws OutOfBoundsException
@@ -81,6 +84,11 @@ interface ParametersInterface extends MappedInterface
      * @throws OutOfBoundsException
      */
     public function isOptional(string ...$name): bool;
+
+    /**
+     * @throws OutOfBoundsException
+     */
+    public function get(string $name): ParameterInterface;
 
     /**
      * @throws OutOfBoundsException

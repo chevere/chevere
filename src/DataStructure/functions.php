@@ -30,9 +30,9 @@ function data(mixed ...$argument): array
 /**
  * Convert MapInterface to array.
  *
+ * @param MapInterface<string, mixed> $map
  * @return array<string, mixed>
  */
-// @phpstan-ignore-next-line
 function mapToArray(MapInterface $map): array
 {
     return iterator_to_array($map->getIterator());
@@ -41,9 +41,9 @@ function mapToArray(MapInterface $map): array
 /**
  * Convert VectorInterface to array.
  *
+ * @param VectorInterface<mixed> $vector
  * @return array<mixed> $vector
  */
-// @phpstan-ignore-next-line
 function vectorToArray(VectorInterface $vector): array
 {
     return iterator_to_array($vector->getIterator());
