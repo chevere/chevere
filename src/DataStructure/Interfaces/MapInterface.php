@@ -16,9 +16,8 @@ namespace Chevere\DataStructure\Interfaces;
 /**
  * Describes the component in charge of providing a Map interface.
  *
- * @template TKey
  * @template TValue
- * @extends MappedInterface<TKey, TValue>
+ * @extends MappedInterface<TValue>
  */
 interface MapInterface extends MappedInterface
 {

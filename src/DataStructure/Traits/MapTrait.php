@@ -18,13 +18,12 @@ use function Chevere\VariableSupport\deepCopy;
 use Iterator;
 
 /**
- * @template TKey
  * @template TValue
  */
 trait MapTrait
 {
     /**
-     * @var Map<TKey, TValue>
+     * @var Map<TValue>
      */
     private Map $map;
 
@@ -35,7 +34,7 @@ trait MapTrait
 
     public function __clone()
     {
-        /** @var Map<TKey, TValue> $copy */
+        /** @var Map<TValue> $copy */
         $copy = deepCopy($this->map);
         // @phpstan-ignore-next-line
         $this->map = $copy;

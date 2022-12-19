@@ -19,13 +19,10 @@ use IteratorAggregate;
 /**
  * Describes the component in charge of defining a mapped interface.
  *
- * @template TKey
  * @template TValue
- * @extends IteratorAggregate<TKey, TValue>
+ * @extends IteratorAggregate<string, TValue>
  */
 interface MappedInterface extends Countable, StringKeysInterface, IteratorAggregate
 {
-    public function keys(): array;
-
     public function count(): int;
 }

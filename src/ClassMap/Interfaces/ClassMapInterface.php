@@ -23,7 +23,7 @@ use Iterator;
 /**
  * Describes the component in charge of mapping classes to keys.
  *
- * @extends MappedInterface<string, string>
+ * @extends MappedInterface<string>
  */
 interface ClassMapInterface extends MappedInterface, ToArrayInterface
 {

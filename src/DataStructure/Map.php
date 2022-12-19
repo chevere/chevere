@@ -19,9 +19,8 @@ use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Iterator;
 
 /**
- * @template TKey
  * @template TValue
- * @implements MapInterface<TKey, TValue>
+ * @implements MapInterface<TValue>
  */
 final class Map implements MapInterface
 {

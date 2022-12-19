@@ -16,22 +16,21 @@ namespace Chevere\DataStructure\Traits;
 use Chevere\DataStructure\Map;
 
 /**
- * @template TKey
  * @template TValue
  */
 trait MapToArrayTrait
 {
     /**
-     * @var Map<TKey, TValue>
+     * @var Map<TValue>
      */
     private Map $map;
 
     /**
-     * @return array<TKey, TValue>
+     * @return array<string, TValue>
      */
     public function toArray(): array
     {
-        /** @var array<TKey, TValue> */
+        /** @var array<string, TValue> */
         return iterator_to_array($this->map->getIterator(), true);
     }
 }

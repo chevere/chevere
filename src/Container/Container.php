@@ -22,7 +22,7 @@ use Throwable;
 final class Container implements ContainerInterface
 {
     /**
-     * @template-use MapTrait<string, mixed>
+     * @template-use MapTrait<mixed>
      */
     use MapTrait;
 

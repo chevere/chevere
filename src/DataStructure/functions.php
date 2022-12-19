@@ -30,7 +30,7 @@ function data(mixed ...$argument): array
 /**
  * Convert MapInterface to array.
  *
- * @param MapInterface<string, mixed> $map
+ * @param MapInterface<mixed> $map
  * @return array<string, mixed>
  */
 function mapToArray(MapInterface $map): array
