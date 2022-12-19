@@ -26,7 +26,6 @@ use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
-use Chevere\Throwable\Exceptions\OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 
 final class ArgumentsTest extends TestCase
@@ -101,7 +100,7 @@ final class ArgumentsTest extends TestCase
         $arguments = new Arguments($parameters, ...[
             $name => '123',
         ]);
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $arguments->withPut(notFound: '1234');
     }
 

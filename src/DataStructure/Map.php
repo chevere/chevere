@@ -15,7 +15,7 @@ namespace Chevere\DataStructure;
 
 use Chevere\DataStructure\Interfaces\MapInterface;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\OutOfRangeException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Iterator;
 
 /**
@@ -79,13 +79,13 @@ final class Map implements MapInterface
             $this->assertHas(...$key);
 
             return true;
-        } catch (OutOfRangeException) {
+        } catch (OutOfBoundsException) {
             return false;
         }
     }
 
     /**
-     * @throws OutOfRangeException
+     * @throws OutOfBoundsException
      */
     public function assertHas(string ...$key): void
     {
@@ -99,20 +99,20 @@ final class Map implements MapInterface
             return;
         }
 
-        throw new OutOfRangeException(
+        throw new OutOfBoundsException(
             message('Missing key(s) %keys%')
                 ->withCode('%keys%', implode(', ', $missing))
         );
     }
 
     /**
-     * @throws OutOfRangeException
+     * @throws OutOfBoundsException
      */
     public function get(string $key): mixed
     {
         $lookup = $this->lookupKey($key);
         if ($lookup === null) {
-            throw new OutOfRangeException(
+            throw new OutOfBoundsException(
                 message('Key %key% not found')
                     ->withCode('%key%', $key)
             );

@@ -22,7 +22,7 @@ use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
 use Chevere\Throwable\Exceptions\OverflowException;
-use OutOfRangeException;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase
@@ -35,7 +35,7 @@ final class ParametersTest extends TestCase
         $this->assertCount(0, $parameters->optional());
         $this->assertCount(0, $parameters->required());
         $this->assertFalse($parameters->has($name));
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $parameters->get($name);
     }
 
@@ -43,7 +43,7 @@ final class ParametersTest extends TestCase
     {
         $name = 'name';
         $parameters = new Parameters();
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $parameters->assertHas($name);
     }
 
@@ -117,14 +117,14 @@ final class ParametersTest extends TestCase
     public function testIsRequiredOutOfRange(): void
     {
         $parameters = new Parameters();
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $parameters->isRequired('not-found');
     }
 
     public function testIsOptionalOutOfRange(): void
     {
         $parameters = new Parameters();
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $parameters->isOptional('not-found');
     }
 
@@ -150,7 +150,7 @@ final class ParametersTest extends TestCase
         );
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parametersWithModify->has($name));
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $parametersWithModify->withModify(notFound: new StringParameter());
     }
 

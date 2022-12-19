@@ -15,7 +15,7 @@ namespace Chevere\Iterator;
 
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\OutOfRangeException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 
 final class Breadcrumb implements BreadcrumbInterface
 {
@@ -27,6 +27,20 @@ final class Breadcrumb implements BreadcrumbInterface
     private int $pos = -1;
 
     private int $id = -1;
+
+    public function __toString(): string
+    {
+        if ($this->items === []) {
+            return '';
+        }
+
+        $return = '';
+        foreach ($this->items as $item) {
+            $return .= sprintf('[%s]', $item);
+        }
+
+        return $return;
+    }
 
     public function has(int $pos): bool
     {
@@ -55,8 +69,8 @@ final class Breadcrumb implements BreadcrumbInterface
 
     public function withRemoved(int $pos): BreadcrumbInterface
     {
-        if (!array_key_exists($pos, $this->items)) {
-            throw new OutOfRangeException(
+        if (! array_key_exists($pos, $this->items)) {
+            throw new OutOfBoundsException(
                 message('Pos %pos% not found')
                     ->withCode('%pos%', (string) $pos)
             );
@@ -70,19 +84,5 @@ final class Breadcrumb implements BreadcrumbInterface
     public function toArray(): array
     {
         return $this->items;
-    }
-
-    public function __toString(): string
-    {
-        if ($this->items === []) {
-            return '';
-        }
-
-        $return = '';
-        foreach ($this->items as $item) {
-            $return .= sprintf('[%s]', $item);
-        }
-
-        return $return;
     }
 }

@@ -15,7 +15,7 @@ namespace Chevere\DataStructure;
 
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\OutOfRangeException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Iterator;
 
 final class Vector implements VectorInterface
@@ -105,13 +105,13 @@ final class Vector implements VectorInterface
             $this->assertHas(...$key);
 
             return true;
-        } catch (OutOfRangeException) {
+        } catch (OutOfBoundsException) {
             return false;
         }
     }
 
     /**
-     * @throws OutOfRangeException
+     * @throws OutOfBoundsException
      */
     public function assertHas(int ...$key): void
     {
@@ -125,19 +125,19 @@ final class Vector implements VectorInterface
             return;
         }
 
-        throw new OutOfRangeException(
+        throw new OutOfBoundsException(
             message('Missing key(s) %keys%')
                 ->withCode('%keys%', implode(', ', $missing))
         );
     }
 
     /**
-     * @throws OutOfRangeException
+     * @throws OutOfBoundsException
      */
     public function get(int $key): mixed
     {
         if (! $this->lookupKey($key)) {
-            throw new OutOfRangeException(
+            throw new OutOfBoundsException(
                 message('Key %key% not found')
                     ->withCode('%key%', strval($key))
             );
