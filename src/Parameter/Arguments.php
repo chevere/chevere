@@ -57,7 +57,7 @@ final class Arguments implements ArgumentsInterface
         $this->arguments = $storeArguments;
         $this->assertRequired();
         $this->errors = [];
-        foreach ($this->parameters->getIterator() as $name => $parameter) {
+        foreach ($this->parameters as $name => $parameter) {
             $this->handleParameter($name, $parameter);
         }
         if ($this->errors !== []) {

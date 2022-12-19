@@ -52,7 +52,7 @@ final class MapTraitTest extends TestCase
          * @var string $string
          * @var object $value
          */
-        foreach ($mapClone->getIterator() as $string => $value) {
+        foreach ($mapClone as $string => $value) {
             $this->assertSame($key, $string);
             $this->assertSame($object, $value);
         }
