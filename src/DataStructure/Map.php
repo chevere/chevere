@@ -18,6 +18,10 @@ use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Iterator;
 
+/**
+ * @template TValue
+ * @implements MapInterface<TValue>
+ */
 final class Map implements MapInterface
 {
     /**
@@ -57,6 +61,10 @@ final class Map implements MapInterface
         }
     }
 
+    /**
+     * @param TValue ...$value
+     * @return self<TValue>
+     */
     public function withPut(mixed ...$value): self
     {
         $new = clone $this;

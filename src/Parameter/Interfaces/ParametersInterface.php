@@ -21,6 +21,8 @@ use Iterator;
 
 /**
  * Describes the component in charge of collecting objects implementing `ParameterInterface`.
+ *
+ * @extends MappedInterface<ParameterInterface>
  */
 interface ParametersInterface extends MappedInterface
 {

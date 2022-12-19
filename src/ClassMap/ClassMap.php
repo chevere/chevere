@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\ClassMap;
 
 use Chevere\ClassMap\Interfaces\ClassMapInterface;
+use Chevere\DataStructure\Interfaces\MapInterface;
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapToArrayTrait;
 use Chevere\DataStructure\Traits\MapTrait;
@@ -24,13 +25,17 @@ use Chevere\Throwable\Exceptions\OverflowException;
 
 final class ClassMap implements ClassMapInterface
 {
+    /**
+     * @template-use MapTrait<string>
+     */
     use MapTrait;
+
     use MapToArrayTrait;
 
     /**
-     * @var Map [key => className]
+     * @var MapInterface<string>
      */
-    private Map $flip;
+    private MapInterface $flip;
 
     public function __construct()
     {

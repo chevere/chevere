@@ -18,8 +18,14 @@ use Chevere\DataStructure\Map;
 use function Chevere\VariableSupport\deepCopy;
 use Iterator;
 
+/**
+ * @template-covariant TValue
+ */
 trait MapTrait
 {
+    /**
+     * @var MapInterface<TValue>
+     */
     private MapInterface $map;
 
     public function __construct()
@@ -29,7 +35,7 @@ trait MapTrait
 
     public function __clone()
     {
-        /** @var MapInterface $copy */
+        /** @var MapInterface<TValue> $copy */
         $copy = deepCopy($this->map);
         $this->map = $copy;
     }

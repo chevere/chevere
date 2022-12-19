@@ -18,6 +18,8 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
 
 /**
  * Describes the component in charge of defining the workflow container interface.
+ *
+ * @extends MappedInterface<mixed>
  */
 interface ContainerInterface extends MappedInterface, PsrContainerInterface
 {

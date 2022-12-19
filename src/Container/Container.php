@@ -21,6 +21,9 @@ use Throwable;
 
 final class Container implements ContainerInterface
 {
+    /**
+     * @template-use MapTrait<mixed>
+     */
     use MapTrait;
 
     public function withPut(mixed ...$arguments): ContainerInterface

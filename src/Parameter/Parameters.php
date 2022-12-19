@@ -24,7 +24,11 @@ use Chevere\Throwable\Exceptions\OverflowException;
 
 final class Parameters implements ParametersInterface
 {
+    /**
+     * @template-use MapTrait<ParameterInterface>
+     */
     use MapTrait;
+
     use ParametersGetTypedTrait;
 
     /**
