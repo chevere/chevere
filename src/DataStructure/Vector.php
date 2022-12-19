@@ -15,7 +15,7 @@ namespace Chevere\DataStructure;
 
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\OutOfRangeException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Iterator;
 
 /**
@@ -38,7 +38,10 @@ final class Vector implements VectorInterface
 
     public function keys(): array
     {
-        return array_keys($this->values);
+        return match ($this->count) {
+            0 => [],
+            default => range(0, $this->count - 1),
+        };
     }
 
     public function count(): int
@@ -46,7 +49,9 @@ final class Vector implements VectorInterface
         return $this->count;
     }
 
-    #[\ReturnTypeWillChange]
+    /**
+     * @return Iterator<int, TValue>
+     */
     public function getIterator(): Iterator
     {
         foreach ($this->values as $value) {
@@ -62,11 +67,11 @@ final class Vector implements VectorInterface
         return $new;
     }
 
-    public function withSet(int $key, mixed $value): static
+    public function withSet(int $pos, mixed $value): static
     {
-        $this->assertHas($key);
+        $this->assertHas($pos);
         $new = clone $this;
-        $new->values[$key] = $value;
+        $new->values[$pos] = $value;
 
         return $new;
     }
@@ -109,13 +114,13 @@ final class Vector implements VectorInterface
             $this->assertHas(...$key);
 
             return true;
-        } catch (OutOfRangeException) {
+        } catch (OutOfBoundsException) {
             return false;
         }
     }
 
     /**
-     * @throws OutOfRangeException
+     * @throws OutOfBoundsException
      */
     public function assertHas(int ...$key): void
     {
@@ -129,19 +134,19 @@ final class Vector implements VectorInterface
             return;
         }
 
-        throw new OutOfRangeException(
+        throw new OutOfBoundsException(
             message('Missing key(s) %keys%')
                 ->withCode('%keys%', implode(', ', $missing))
         );
     }
 
     /**
-     * @throws OutOfRangeException
+     * @throws OutOfBoundsException
      */
     public function get(int $key): mixed
     {
         if (! $this->lookupKey($key)) {
-            throw new OutOfRangeException(
+            throw new OutOfBoundsException(
                 message('Key %key% not found')
                     ->withCode('%key%', strval($key))
             );
@@ -171,7 +176,7 @@ final class Vector implements VectorInterface
 
     private function lookupKey(int $key): bool
     {
-        return array_key_exists($key, $this->values);
+        return $key < $this->count;
     }
 
     private function put(mixed ...$values): void

@@ -15,7 +15,7 @@ namespace Chevere\Tests\DataStructure;
 
 use Chevere\DataStructure\Vector;
 use function Chevere\DataStructure\vectorToArray;
-use Chevere\Throwable\Exceptions\OutOfRangeException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -25,7 +25,7 @@ final class VectorTest extends TestCase
     {
         $vector = new Vector();
         $this->assertCount(0, $vector);
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $vector->assertHas(0);
     }
 
@@ -35,7 +35,7 @@ final class VectorTest extends TestCase
         $this->assertFalse($vector->has(0));
         $this->assertFalse($vector->contains(0));
         $this->assertSame(null, $vector->find(0));
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $vector->get(0);
     }
 
@@ -80,7 +80,7 @@ final class VectorTest extends TestCase
         $this->assertSame($vector->keys(), $immutable->keys());
         $immutable->assertHas(1);
         $this->assertSame($value, $immutable->get(1));
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $vector->withSet(count($init), 'fail');
     }
 
@@ -110,7 +110,7 @@ final class VectorTest extends TestCase
         $this->assertSame(array_keys($values), $immutable->keys());
         $array = vectorToArray($immutable);
         $this->assertSame($values, $array);
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $immutable->withRemove(count($values) + 1);
     }
 
@@ -126,7 +126,7 @@ final class VectorTest extends TestCase
         $this->assertSame(array_keys($values), $immutable->keys());
         $array = vectorToArray($immutable);
         $this->assertSame($values, $array);
-        $this->expectException(OutOfRangeException::class);
+        $this->expectException(OutOfBoundsException::class);
         $immutable->withInsert(count($values) + 1, 'fail');
     }
 }

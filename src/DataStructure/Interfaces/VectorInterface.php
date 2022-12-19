@@ -24,10 +24,19 @@ use IteratorAggregate;
  */
 interface VectorInterface extends Countable, IntegerKeysInterface, IteratorAggregate
 {
+    /**
+     * @param TValue ...$value
+     */
     public function withPush(mixed ...$value): static;
 
-    public function withSet(int $key, mixed $value): static;
+    /**
+     * @param TValue ...$value
+     */
+    public function withSet(int $pos, mixed $value): static;
 
+    /**
+     * @param TValue ...$value
+     */
     public function withUnshift(mixed ...$value): static;
 
     public function withInsert(int $key, mixed ...$values): static;
@@ -38,7 +47,13 @@ interface VectorInterface extends Countable, IntegerKeysInterface, IteratorAggre
 
     public function get(int $key): mixed;
 
+    /**
+     * @param TValue $value
+     */
     public function find(mixed $value): ?int;
 
+    /**
+     * @param TValue ...$value
+     */
     public function contains(mixed ...$value): bool;
 }

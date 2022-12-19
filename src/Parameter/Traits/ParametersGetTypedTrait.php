@@ -19,13 +19,10 @@ use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
-use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 
 trait ParametersGetTypedTrait
 {
-    abstract public function get(string $name): ParameterInterface;
-
     public function getArray(string $name): ArrayParameterInterface
     {
         /** @var ArrayParameterInterface */

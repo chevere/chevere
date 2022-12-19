@@ -51,9 +51,4 @@ final class Container implements ContainerInterface
         }
         // @codeCoverageIgnoreEnd
     }
-
-    public function has(string $id): bool
-    {
-        return $this->map->has($id);
-    }
 }

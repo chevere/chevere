@@ -24,6 +24,7 @@ use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Throwable;
 
 final class Arguments implements ArgumentsInterface
@@ -42,17 +43,17 @@ final class Arguments implements ArgumentsInterface
 
     public function __construct(
         private ParametersInterface $parameters,
-        mixed ...$namedArguments
+        mixed ...$argument
     ) {
         $storeArguments = [];
-        foreach (array_keys($namedArguments) as $name) {
+        foreach (array_keys($argument) as $name) {
             $name = strval($name);
             if (! $this->parameters()->has($name)) {
-                unset($namedArguments[$name]);
+                unset($argument[$name]);
 
                 continue;
             }
-            $storeArguments[$name] = $namedArguments[$name];
+            $storeArguments[$name] = $argument[$name];
         }
         $this->arguments = $storeArguments;
         $this->assertRequired();
@@ -128,7 +129,14 @@ final class Arguments implements ArgumentsInterface
 
     private function assertType(string $name, mixed $argument): void
     {
-        $parameter = $this->parameters->get($name);
+        try {
+            $parameter = $this->parameters->get($name);
+        } catch(OutOfBoundsException) {
+            throw new OutOfRangeException(
+                message('Parameter %name% not found')
+                    ->withCode('%name%', $name)
+            );
+        }
         $type = $parameter->type();
         if (! $type->validate($argument)) {
             throw new TypeError(

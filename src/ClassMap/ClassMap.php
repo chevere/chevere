@@ -19,7 +19,6 @@ use Chevere\DataStructure\Traits\MapToArrayTrait;
 use Chevere\DataStructure\Traits\MapTrait;
 use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\ClassNotExistsException;
-use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Chevere\Throwable\Exceptions\OverflowException;
 
 final class ClassMap implements ClassMapInterface
@@ -82,9 +81,9 @@ final class ClassMap implements ClassMapInterface
         return $new;
     }
 
-    public function has(string $className): bool
+    public function has(string ...$className): bool
     {
-        return $this->map->has($className);
+        return $this->map->has(...$className);
     }
 
     public function hasKey(string $key): bool
@@ -94,15 +93,7 @@ final class ClassMap implements ClassMapInterface
 
     public function key(string $className): string
     {
-        try {
-            /** @var string */
-            return $this->map->get($className);
-        } catch (OutOfRangeException $e) {
-            throw new OutOfRangeException(
-                message("Class %className% doesn't exists in the class map")
-                    ->withCode('%className%', $className)
-            );
-        }
+        return $this->map->get($className);
     }
 
     public function keys(): array
@@ -112,14 +103,6 @@ final class ClassMap implements ClassMapInterface
 
     public function className(string $key): string
     {
-        try {
-            /** @var string */
-            return $this->flip->get($key);
-        } catch (OutOfRangeException $e) {
-            throw new OutOfRangeException(
-                message("Key %key% doesn't map any class")
-                    ->withCode('%key%', $key)
-            );
-        }
+        return $this->flip->get($key);
     }
 }

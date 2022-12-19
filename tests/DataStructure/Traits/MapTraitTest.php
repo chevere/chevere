@@ -14,18 +14,45 @@ declare(strict_types=1);
 namespace Chevere\Tests\DataStructure\Traits;
 
 use Chevere\Tests\DataStructure\src\UsesMapTrait;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use function Chevere\VariableSupport\deepCopy;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 final class MapTraitTest extends TestCase
 {
-    public function testConstruct(): void
+    public function testEmpty(): void
     {
         $map = new UsesMapTrait();
         $this->assertSame(0, $map->count());
         $this->assertSame([], $map->keys());
         $this->assertCount(0, $map->getIterator());
+    }
+
+    public function testAssertHas(): void
+    {
+        $key = 'test';
+        $object = new stdClass();
+        $map = new UsesMapTrait();
+        $mapClone = $map->withPut(...[
+            $key => $object,
+        ]);
+        $mapClone->assertHas($key);
+        $this->expectException(OutOfBoundsException::class);
+        $mapClone->assertHas('not-found');
+    }
+
+    public function testAssertContains(): void
+    {
+        $key = 'test';
+        $object = new stdClass();
+        $map = new UsesMapTrait();
+        $mapClone = $map->withPut(...[
+            $key => $object,
+        ]);
+        $mapClone->assertContains($object);
+        $this->expectException(OutOfBoundsException::class);
+        $mapClone->assertContains(false);
     }
 
     public function testClone(): void
@@ -48,6 +75,10 @@ final class MapTraitTest extends TestCase
         $this->assertSame([$key], $mapClone->keys());
         $this->assertNotSame($map, $mapClone);
         $this->assertNotSame($map->map(), $mapClone->map());
+        $this->assertSame($key, $mapClone->find($object));
+        $this->assertTrue($mapClone->contains($object));
+        $mapClone->assertHas($key);
+        $mapClone->assertContains($object);
         /**
          * @var string $string
          * @var object $value
