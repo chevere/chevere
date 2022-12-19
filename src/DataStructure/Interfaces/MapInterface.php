@@ -15,12 +15,19 @@ namespace Chevere\DataStructure\Interfaces;
 
 /**
  * Describes the component in charge of providing a Map interface.
+ *
+ * @template TKey
+ * @template TValue
+ * @extends MappedInterface<TKey, TValue>
  */
 interface MapInterface extends MappedInterface
 {
     public function __construct(mixed ...$value);
 
-    public function withPut(mixed ...$value): self;
+    /**
+     * @param TValue ...$value
+     */
+    public function withPut(mixed ...$value): static;
 
     public function has(string ...$key): bool;
 

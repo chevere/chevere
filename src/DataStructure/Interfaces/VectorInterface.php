@@ -14,22 +14,25 @@ declare(strict_types=1);
 namespace Chevere\DataStructure\Interfaces;
 
 use Countable;
+use IteratorAggregate;
 
 /**
  * Describes the component in charge of defining a vector interface.
+ *
+ * @template TValue
+ * @extends IteratorAggregate<TValue>
  */
-// @phpstan-ignore-next-line
-interface VectorInterface extends Countable, IntegerKeysInterface, GetIteratorInterface
+interface VectorInterface extends Countable, IntegerKeysInterface, IteratorAggregate
 {
-    public function withPush(mixed ...$value): self;
+    public function withPush(mixed ...$value): static;
 
-    public function withSet(int $key, mixed $value): self;
+    public function withSet(int $key, mixed $value): static;
 
-    public function withUnshift(mixed ...$value): self;
+    public function withUnshift(mixed ...$value): static;
 
-    public function withInsert(int $key, mixed ...$values): self;
+    public function withInsert(int $key, mixed ...$values): static;
 
-    public function withRemove(int ...$key): self;
+    public function withRemove(int ...$key): static;
 
     public function has(int ...$key): bool;
 

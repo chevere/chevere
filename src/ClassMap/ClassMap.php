@@ -24,11 +24,18 @@ use Chevere\Throwable\Exceptions\OverflowException;
 
 final class ClassMap implements ClassMapInterface
 {
+    /**
+     * @template-use MapTrait<string, string>
+     */
     use MapTrait;
+
+    /**
+     * @template-use MapToArrayTrait<string, string>
+     */
     use MapToArrayTrait;
 
     /**
-     * @var Map [key => className]
+     * @var Map<string, string>
      */
     private Map $flip;
 

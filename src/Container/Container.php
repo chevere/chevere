@@ -21,13 +21,16 @@ use Throwable;
 
 final class Container implements ContainerInterface
 {
+    /**
+     * @template-use MapTrait<string, mixed>
+     */
     use MapTrait;
 
-    public function withPut(mixed ...$arguments): ContainerInterface
+    public function withPut(mixed ...$service): ContainerInterface
     {
         $new = clone $this;
         $new->map = $new->map
-            ->withPut(...$arguments);
+            ->withPut(...$service);
 
         return $new;
     }

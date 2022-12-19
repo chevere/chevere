@@ -18,6 +18,10 @@ use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfRangeException;
 use Iterator;
 
+/**
+ * @template TValue
+ * @implements VectorInterface<TValue>
+ */
 final class Vector implements VectorInterface
 {
     /**
@@ -50,7 +54,7 @@ final class Vector implements VectorInterface
         }
     }
 
-    public function withPush(mixed ...$value): self
+    public function withPush(mixed ...$value): static
     {
         $new = clone $this;
         $new->put(...$value);
@@ -58,7 +62,7 @@ final class Vector implements VectorInterface
         return $new;
     }
 
-    public function withSet(int $key, mixed $value): self
+    public function withSet(int $key, mixed $value): static
     {
         $this->assertHas($key);
         $new = clone $this;
@@ -67,7 +71,7 @@ final class Vector implements VectorInterface
         return $new;
     }
 
-    public function withUnshift(mixed ...$value): self
+    public function withUnshift(mixed ...$value): static
     {
         $new = clone $this;
         array_unshift($new->values, ...$value);
@@ -76,7 +80,7 @@ final class Vector implements VectorInterface
         return $new;
     }
 
-    public function withInsert(int $key, mixed ...$values): VectorInterface
+    public function withInsert(int $key, mixed ...$values): static
     {
         $this->assertHas($key);
         $new = clone $this;
@@ -86,7 +90,7 @@ final class Vector implements VectorInterface
         return $new;
     }
 
-    public function withRemove(int ...$key): VectorInterface
+    public function withRemove(int ...$key): static
     {
         $this->assertHas(...$key);
         $new = clone $this;

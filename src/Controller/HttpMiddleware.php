@@ -14,19 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Controller;
 
 use Chevere\Controller\Interfaces\HttpMiddlewareInterface;
-use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Traits\VectorTrait;
 use Chevere\DataStructure\Vector;
 use Psr\Http\Server\MiddlewareInterface;
 
 final class HttpMiddleware implements HttpMiddlewareInterface
 {
-    use VectorTrait;
-
     /**
-     * @var VectorInterface<MiddlewareInterface>
+     * @template-use VectorTrait<MiddlewareInterface>
      */
-    private VectorInterface $vector;
+    use VectorTrait;
 
     public function __construct(MiddlewareInterface ...$middleware)
     {

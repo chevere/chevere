@@ -18,6 +18,8 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
 
 /**
  * Describes the component in charge of defining the workflow container interface.
+ *
+ * @extends MappedInterface<string, mixed>
  */
 interface ContainerInterface extends MappedInterface, PsrContainerInterface
 {
@@ -27,5 +29,5 @@ interface ContainerInterface extends MappedInterface, PsrContainerInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified service.
      */
-    public function withPut(mixed ...$arguments): self;
+    public function withPut(mixed ...$service): self;
 }

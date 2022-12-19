@@ -13,15 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\DataStructure\Traits;
 
-use Chevere\DataStructure\Interfaces\MapInterface;
+use Chevere\DataStructure\Map;
 
+/**
+ * @template TKey
+ * @template TValue
+ */
 trait MapToArrayTrait
 {
-    private MapInterface $map;
+    /**
+     * @var Map<TKey, TValue>
+     */
+    private Map $map;
 
+    /**
+     * @return array<TKey, TValue>
+     */
     public function toArray(): array
     {
-        /** @phpstan-ignore-next-line */
+        /** @var array<TKey, TValue> */
         return iterator_to_array($this->map->getIterator(), true);
     }
 }
