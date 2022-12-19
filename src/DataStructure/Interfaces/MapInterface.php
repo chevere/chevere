@@ -21,8 +21,6 @@ namespace Chevere\DataStructure\Interfaces;
  */
 interface MapInterface extends MappedInterface
 {
-    public function __construct(mixed ...$value);
-
     /**
      * @param TValue ...$value
      * @return self<TValue>
@@ -33,5 +31,8 @@ interface MapInterface extends MappedInterface
 
     public function assertHas(string ...$key): void;
 
+    /**
+     * @return TValue
+     */
     public function get(string $key): mixed;
 }
