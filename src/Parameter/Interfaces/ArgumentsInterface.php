@@ -27,7 +27,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws OutOfBoundsException
      * @throws InvalidArgumentException
      */
-    public function __construct(ParametersInterface $parameters, mixed ...$namedArguments);
+    public function __construct(ParametersInterface $parameters, mixed ...$argument);
 
     /**
      * Provides access to the parameters instance.
@@ -54,7 +54,7 @@ interface ArgumentsInterface extends ToArrayInterface
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException If `$name` is not a known parameter.
      */
-    public function withPut(mixed ...$nameValue): self;
+    public function withPut(mixed ...$value): self;
 
     /**
      * Indicates whether the instance has an argument for the parameter `$name`.

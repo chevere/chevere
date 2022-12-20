@@ -50,6 +50,12 @@ interface ActionInterface extends DescriptionInterface
      */
     public function containerParameters(): ParametersInterface;
 
+    /**
+     * Return an instance with the specified `$container`.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$container`.
+     */
     public function withContainer(ContainerInterface $container): static;
 
     /**
@@ -61,11 +67,6 @@ interface ActionInterface extends DescriptionInterface
      * Defines expected response data parameters when executing `run` method.
      */
     public function getResponseParameters(): ParametersInterface;
-
-    /**
-     * Method called when running the action.
-     */
-    // public function run({...}): ResponseInterface;
 
     /**
      * Provides access to the parameters.
@@ -83,5 +84,5 @@ interface ActionInterface extends DescriptionInterface
      * This method will provide a response instance with data provided by
      * executing the `run` method against `$namedArguments`.
      */
-    public function getResponse(mixed ...$namedArguments): ResponseInterface;
+    public function getResponse(mixed ...$argument): ResponseInterface;
 }

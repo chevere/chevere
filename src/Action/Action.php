@@ -59,10 +59,10 @@ abstract class Action implements ActionInterface
         $this->setUpAfter();
     }
 
-    final public function getResponse(mixed ...$namedArguments): ResponseInterface
+    final public function getResponse(mixed ...$argument): ResponseInterface
     {
         $this->assertContainer();
-        $arguments = $this->getArguments(...$namedArguments)->toArray();
+        $arguments = $this->getArguments(...$argument)->toArray();
         $data = $this->run(...$arguments);
         if (! is_array($data)) {
             throw new TypeError(
@@ -74,11 +74,11 @@ abstract class Action implements ActionInterface
         return $this->getTypedResponse(...$data);
     }
 
-    final protected function getTypedResponse(mixed ...$namedArguments): ResponseInterface
+    final protected function getTypedResponse(mixed ...$arguments): ResponseInterface
     {
-        $arguments = new Arguments($this->responseParameters(), ...$namedArguments);
+        new Arguments($this->responseParameters(), ...$arguments);
 
-        return new Response(...$arguments->toArray());
+        return new Response(...$arguments);
     }
 
     final protected function assertContainer(): void
@@ -138,7 +138,8 @@ abstract class Action implements ActionInterface
             $collection[$pos][$reflectionParameter->getName()] = $parameter;
         }
 
-        return (new Parameters())->withAddedRequired(...$collection[1])
+        return (new Parameters())
+            ->withAddedRequired(...$collection[1])
             ->withAddedOptional(...$collection[0]);
     }
 

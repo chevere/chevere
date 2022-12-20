@@ -24,6 +24,7 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
 use Chevere\Tests\Action\_resources\src\ActionTestContainer;
 use Chevere\Tests\Action\_resources\src\ActionTestController;
+use Chevere\Tests\Action\_resources\src\ActionTestGetResponseMerge;
 use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunParameter;
 use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunReturn;
 use Chevere\Tests\Action\_resources\src\ActionTestMissingRun;
@@ -46,13 +47,13 @@ final class ActionTest extends TestCase
         $action->run();
     }
 
-    public function testActionMissingRun(): void
+    public function testMissingRunMethod(): void
     {
         $this->expectException(LogicException::class);
         new ActionTestMissingRun();
     }
 
-    public function testActionParams(): void
+    public function testRunParams(): void
     {
         $defaults = [
             'intDefault' => 1,
@@ -90,7 +91,7 @@ final class ActionTest extends TestCase
         );
     }
 
-    public function testActionParamsAttributes(): void
+    public function testParamsAttributes(): void
     {
         $action = new ActionTestParameterAttributes();
         $this->assertSame('An int', $action->parameters()->get('int')->description());
@@ -100,7 +101,7 @@ final class ActionTest extends TestCase
         $this->assertSame('/^[a-z]$/', $parameter->regex()->__toString());
     }
 
-    public function testActionContainer(): void
+    public function testContainer(): void
     {
         $container = new Container();
         $containerWith = $container->withPut(id: 123, name: 'wea');
@@ -114,7 +115,7 @@ final class ActionTest extends TestCase
         $action->withContainer($container);
     }
 
-    public function testActionContainerMissingParameterException(): void
+    public function testContainerMissingParameterException(): void
     {
         $action = new ActionTestContainer();
         $this->expectExceptionMessage('[id, name]');
@@ -122,7 +123,7 @@ final class ActionTest extends TestCase
         $action->getResponse();
     }
 
-    public function testActionRunWithArguments(): void
+    public function testRunWithArguments(): void
     {
         $parameter = 'name';
         $value = 'PeoplesHernandez';
@@ -140,7 +141,7 @@ final class ActionTest extends TestCase
         $this->assertSame($expected, $response->data());
     }
 
-    public function testActionInvalidRunReturn(): void
+    public function testInvalidRunReturn(): void
     {
         $action = new ActionTestInvalidRunReturn();
         $data = $action->run();
@@ -150,7 +151,7 @@ final class ActionTest extends TestCase
         $action->getResponse();
     }
 
-    public function testActionInvalidRunParameter(): void
+    public function testInvalidRunParameter(): void
     {
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('$mixed');
@@ -162,5 +163,13 @@ final class ActionTest extends TestCase
         $action = new ActionTestSetupBeforeAndAfter();
         $this->assertSame(1, $action->before());
         $this->assertSame(2, $action->after());
+    }
+
+    public function testResponseMerge(): void
+    {
+        $action = new ActionTestGetResponseMerge();
+        $typedResponse = $action->getResponse();
+        $runResponse = $action->run();
+        $this->assertSame($runResponse, $typedResponse->data());
     }
 }

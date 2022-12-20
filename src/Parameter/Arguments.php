@@ -42,17 +42,17 @@ final class Arguments implements ArgumentsInterface
 
     public function __construct(
         private ParametersInterface $parameters,
-        mixed ...$namedArguments
+        mixed ...$argument
     ) {
         $storeArguments = [];
-        foreach (array_keys($namedArguments) as $name) {
+        foreach (array_keys($argument) as $name) {
             $name = strval($name);
             if (! $this->parameters()->has($name)) {
-                unset($namedArguments[$name]);
+                unset($argument[$name]);
 
                 continue;
             }
-            $storeArguments[$name] = $namedArguments[$name];
+            $storeArguments[$name] = $argument[$name];
         }
         $this->arguments = $storeArguments;
         $this->assertRequired();
@@ -82,13 +82,13 @@ final class Arguments implements ArgumentsInterface
      * @throws TypeError
      * @throws InvalidArgumentException
      */
-    public function withPut(mixed ...$nameValue): ArgumentsInterface
+    public function withPut(mixed ...$value): ArgumentsInterface
     {
         $new = clone $this;
-        foreach ($nameValue as $name => $value) {
+        foreach ($value as $name => $item) {
             $name = strval($name);
-            $new->assertType($name, $value);
-            $new->arguments[$name] = $value;
+            $new->assertType($name, $item);
+            $new->arguments[$name] = $item;
         }
 
         return $new;
