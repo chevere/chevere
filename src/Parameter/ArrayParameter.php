@@ -85,7 +85,7 @@ final class ArrayParameter implements ArrayParameterInterface
 
             try {
                 $item->assertCompatible($tryParameter);
-            } catch(\TypeError) {
+            } catch (\TypeError) {
                 throw new InvalidArgumentException(
                     message('Parameter %name% of type %type% is not compatible with type %provided%')
                         ->withCode('%name%', $name)

@@ -42,7 +42,6 @@ final class FloatParameter implements FloatParameterInterface
      */
     public function assertCompatible(FloatParameterInterface $parameter): void
     {
-        return;
     }
 
     private function getType(): TypeInterface

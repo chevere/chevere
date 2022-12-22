@@ -70,7 +70,6 @@ final class FileParameter implements FileParameterInterface
      */
     public function assertCompatible(FileParameterInterface $parameter): void
     {
-        return;
     }
 
     private function getType(): TypeInterface

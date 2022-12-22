@@ -42,7 +42,6 @@ final class BooleanParameter implements BooleanParameterInterface
      */
     public function assertCompatible(BooleanParameterInterface $parameter): void
     {
-        return;
     }
 
     private function getType(): TypeInterface
