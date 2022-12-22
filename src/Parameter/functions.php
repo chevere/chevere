@@ -23,6 +23,7 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Regex;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 
 function arrayParameter(
     ParameterInterface ...$parameter
@@ -123,5 +124,22 @@ function fileParameter(
         size: $size ?? integerParameter(),
         type: $type ?? stringParameter(),
         description: $description,
+    );
+}
+
+/**
+ * @throws InvalidArgumentException
+ */
+function assertArgument(ParameterInterface $parameter, string $name, mixed $value): void
+{
+    $parameters = [
+        $name => $parameter,
+    ];
+    $arguments = [
+        $name => $value,
+    ];
+    new Arguments(
+        parameters(...$parameters),
+        ...$arguments
     );
 }

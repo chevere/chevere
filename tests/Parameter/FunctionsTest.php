@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\arrayParameter;
+use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\booleanParameter;
 use function Chevere\Parameter\floatParameter;
 use function Chevere\Parameter\integerParameter;
 use function Chevere\Parameter\objectParameter;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\stringParameter;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -114,5 +116,12 @@ final class FunctionsTest extends TestCase
             )
         );
         $this->assertCount(1, $parameter->parameters());
+    }
+
+    public function testFunctionAssertArgument(): void
+    {
+        assertArgument(integerParameter(), 'test', 123);
+        $this->expectException(InvalidArgumentException::class);
+        assertArgument(stringParameter(), 'fail', 13.13);
     }
 }
