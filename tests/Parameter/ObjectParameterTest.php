@@ -42,4 +42,15 @@ final class ObjectParameterTest extends TestCase
         $this->assertNotSame($parameter, $parameterWithClassName);
         $this->assertSame($parameterWithClassName->className(), __CLASS__);
     }
+
+    public function testAssertCompatible(): void
+    {
+        $parameter = (new ObjectParameter())->withClassName(__CLASS__);
+        $compatible = (new ObjectParameter())->withClassName(__CLASS__);
+        $parameter->assertCompatible($compatible);
+        $compatible->assertCompatible($parameter);
+        $notCompatible = (new ObjectParameter())->withClassName(ObjectParameter::class);
+        $this->expectException(InvalidArgumentException::class);
+        $parameter->assertCompatible($notCompatible);
+    }
 }

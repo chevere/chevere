@@ -108,7 +108,6 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionArrayParameter(): void
     {
-        $description = 'ola k ase';
         $parameter = arrayParameter(
             wea: arrayParameter(
                 one: stringParameter(),

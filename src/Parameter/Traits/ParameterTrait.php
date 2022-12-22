@@ -22,18 +22,16 @@ trait ParameterTrait
 
     private TypeInterface $type;
 
-    abstract private function getType(): TypeInterface;
-
-    public function setUp(): void
-    {
-        // Nothing to do
-    }
-
     final public function __construct(
         private string $description = ''
     ) {
         $this->setUp();
         $this->type = $this->type();
+    }
+
+    public function setUp(): void
+    {
+        // Nothing to do
     }
 
     /**
@@ -48,4 +46,6 @@ trait ParameterTrait
     {
         return $this->description;
     }
+
+    abstract private function getType(): TypeInterface;
 }

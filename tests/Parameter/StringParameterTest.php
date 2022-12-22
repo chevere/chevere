@@ -71,4 +71,17 @@ final class StringParameterTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $parameterWithRegex->withDefault('');
     }
+
+    public function testAssertCompatible(): void
+    {
+        $regex = new Regex('/^[0-9+]$/');
+        $regexAlt = new Regex('/^[a-z+]$/');
+        $parameter = (new StringParameter())->withRegex($regex);
+        $compatible = (new StringParameter())->withRegex($regex);
+        $parameter->assertCompatible($compatible);
+        $compatible->assertCompatible($parameter);
+        $notCompatible = (new StringParameter())->withRegex($regexAlt);
+        $this->expectException(InvalidArgumentException::class);
+        $parameter->assertCompatible($notCompatible);
+    }
 }

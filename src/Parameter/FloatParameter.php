@@ -37,6 +37,14 @@ final class FloatParameter implements FloatParameterInterface
         return $this->default;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
+    public function assertCompatible(FloatParameterInterface $parameter): void
+    {
+        return;
+    }
+
     private function getType(): TypeInterface
     {
         return new Type(Type::FLOAT);

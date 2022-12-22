@@ -133,4 +133,43 @@ final class IntegerParameterTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $parameterWith->withMaximum(1);
     }
+
+    public function testAssertCompatibleMinimum(): void
+    {
+        $value = 1;
+        $parameter = (new IntegerParameter())->withMinimum($value);
+        $compatible = (new IntegerParameter())->withMinimum($value);
+        $parameter->assertCompatible($compatible);
+        $compatible->assertCompatible($parameter);
+        $notCompatible = (new IntegerParameter())->withMinimum($value * 2);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectDeprecationMessage('value ' . strval($value));
+        $parameter->assertCompatible($notCompatible);
+    }
+
+    public function testAssertCompatibleMaximum(): void
+    {
+        $value = 1;
+        $compatible = (new IntegerParameter())->withMaximum($value);
+        $parameter = (new IntegerParameter())->withMaximum($value);
+        $compatible = (new IntegerParameter())->withMaximum($value);
+        $parameter->assertCompatible($compatible);
+        $compatible->assertCompatible($parameter);
+        $notCompatible = (new IntegerParameter())->withMaximum($value * 2);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectDeprecationMessage('value ' . strval($value));
+        $parameter->assertCompatible($notCompatible);
+    }
+
+    public function testAssertCompatibleAccept(): void
+    {
+        $parameter = (new IntegerParameter())->withAccept(1, 2, 3);
+        $compatible = (new IntegerParameter())->withAccept(3, 2, 1);
+        $parameter->assertCompatible($compatible);
+        $compatible->assertCompatible($parameter);
+        $notCompatible = (new IntegerParameter())->withAccept(0);
+        $this->expectException(InvalidArgumentException::class);
+        $this->getExpectedExceptionMessage('[' . implode(', ', $parameter->accept()) . ']');
+        $parameter->assertCompatible($notCompatible);
+    }
 }

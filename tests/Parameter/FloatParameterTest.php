@@ -33,4 +33,13 @@ final class FloatParameterTest extends TestCase
             parameterWithDefault: $parameterWithDefault
         );
     }
+
+    public function testAssertCompatible(): void
+    {
+        $parameter = (new FloatParameter())->withDefault(12.34);
+        $compatible = (new FloatParameter());
+        $this->expectNotToPerformAssertions();
+        $parameter->assertCompatible($compatible);
+        $compatible->assertCompatible($parameter);
+    }
 }

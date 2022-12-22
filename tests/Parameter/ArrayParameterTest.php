@@ -16,6 +16,8 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Parameter\ArrayParameter;
 use function Chevere\Parameter\integerParameter;
 use function Chevere\Parameter\stringParameter;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class ArrayParameterTest extends TestCase
@@ -37,14 +39,54 @@ final class ArrayParameterTest extends TestCase
 
     public function testWithParameter(): void
     {
-        $parameter1 = stringParameter();
-        $parameter2 = integerParameter();
+        $string = stringParameter();
+        $integer = integerParameter();
         $parameter = new ArrayParameter();
         $parameterWith = $parameter->withParameter(
-            one: $parameter1,
-            two: $parameter2
+            one: $string,
+            two: $integer
         );
         $this->assertNotSame($parameter, $parameterWith);
         $this->assertCount(2, $parameterWith->parameters());
+    }
+
+    public function testAssertCompatibleConflict(): void
+    {
+        $string = stringParameter();
+        $integer = integerParameter();
+        $parameter = (new ArrayParameter())->withParameter(
+            one: $string,
+        );
+        $altString = stringParameter();
+        $compatible = (new ArrayParameter())->withParameter(
+            one: $altString,
+        );
+        $parameter->assertCompatible($compatible);
+        $compatible->assertCompatible($parameter);
+        $notCompatible = (new ArrayParameter())->withParameter(
+            one: $integer,
+        );
+        $expectedType = $string::class;
+        $failType = $integer::class;
+        $this->expectExceptionMessage(
+            <<<STRING
+            Parameter one of type {$expectedType} is not compatible with type {$failType}
+            STRING
+        );
+        $this->expectException(InvalidArgumentException::class);
+        $parameter->assertCompatible($notCompatible);
+    }
+
+    public function testAssertCompatibleMissingKey(): void
+    {
+        $string = stringParameter();
+        $parameter = (new ArrayParameter())->withParameter(
+            one: $string,
+        );
+        $notCompatible = (new ArrayParameter())->withParameter(
+            two: $string,
+        );
+        $this->expectException(OutOfBoundsException::class);
+        $parameter->assertCompatible($notCompatible);
     }
 }

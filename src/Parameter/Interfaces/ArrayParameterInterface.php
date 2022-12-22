@@ -52,4 +52,6 @@ interface ArrayParameterInterface extends ParameterInterface
      * Provides access to the parameters.
      */
     public function parameters(): ParametersInterface;
+
+    public function assertCompatible(self $parameter): void;
 }

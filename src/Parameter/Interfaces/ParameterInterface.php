@@ -18,6 +18,7 @@ use Chevere\Type\Interfaces\TypeInterface;
 
 /**
  * Describes the component in charge of defining a parameter.
+ * @method void assertCompatible(self $parameter) Asserts parameter compatibility against the provided `$parameter`.
  */
 interface ParameterInterface extends DescriptionInterface
 {

@@ -83,4 +83,6 @@ interface IntegerParameterInterface extends ParameterInterface
      * @return int[]
      */
     public function accept(): array;
+
+    public function assertCompatible(self $parameter): void;
 }

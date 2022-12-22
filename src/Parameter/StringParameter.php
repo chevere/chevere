@@ -68,6 +68,18 @@ final class StringParameter implements StringParameterInterface
         return $this->default;
     }
 
+    public function assertCompatible(StringParameterInterface $parameter): void
+    {
+        if ($this->regex->__toString() === $parameter->regex()->__toString()) {
+            return;
+        }
+
+        throw new InvalidArgumentException(
+            message('Expected regex %regexString%')
+                ->withCode('%regexString%', $this->regex->__toString())
+        );
+    }
+
     private function getType(): TypeInterface
     {
         return new Type(Type::STRING);

@@ -65,6 +65,14 @@ final class FileParameter implements FileParameterInterface
         return $this->default;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
+    public function assertCompatible(FileParameterInterface $parameter): void
+    {
+        return;
+    }
+
     private function getType(): TypeInterface
     {
         return new Type(Type::ARRAY);

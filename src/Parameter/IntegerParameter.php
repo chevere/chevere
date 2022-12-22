@@ -107,6 +107,28 @@ final class IntegerParameter implements IntegerParameterInterface
         return $this->value;
     }
 
+    public function assertCompatible(IntegerParameterInterface $parameter): void
+    {
+        if ($this->minimum() !== $parameter->minimum()) {
+            throw new InvalidArgumentException(
+                message('Expected minimum value %value%')
+                    ->withCode('%value%', strval($this->minimum() ?? 'null'))
+            );
+        }
+        if ($this->maximum() !== $parameter->maximum()) {
+            throw new InvalidArgumentException(
+                message('Expected maximum value %value%')
+                    ->withCode('%value%', strval($this->maximum() ?? 'null'))
+            );
+        }
+        if (array_diff($this->accept(), $parameter->accept()) !== []) {
+            throw new InvalidArgumentException(
+                message('Expecting accept %value%')
+                    ->withCode('%value%', implode(', ', $this->accept()))
+            );
+        }
+    }
+
     private function getType(): TypeInterface
     {
         return new Type(Type::INTEGER);

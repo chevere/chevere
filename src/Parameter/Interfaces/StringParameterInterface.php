@@ -51,4 +51,6 @@ interface StringParameterInterface extends ParameterInterface
      * Provides access to the default value.
      */
     public function default(): string;
+
+    public function assertCompatible(self $parameter): void;
 }

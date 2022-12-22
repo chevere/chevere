@@ -27,4 +27,6 @@ interface FileParameterInterface extends ParameterInterface
      * @return array<string, mixed>
      */
     public function default(): array;
+
+    public function assertCompatible(self $parameter): void;
 }

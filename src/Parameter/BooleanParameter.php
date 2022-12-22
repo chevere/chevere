@@ -37,6 +37,14 @@ final class BooleanParameter implements BooleanParameterInterface
         return $this->default;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
+    public function assertCompatible(BooleanParameterInterface $parameter): void
+    {
+        return;
+    }
+
     private function getType(): TypeInterface
     {
         return new Type(Type::BOOLEAN);

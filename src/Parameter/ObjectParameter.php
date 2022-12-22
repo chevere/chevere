@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeObject;
 use stdClass;
@@ -28,11 +30,6 @@ final class ObjectParameter implements ObjectParameterInterface
     public function setUp(): void
     {
         $this->className = stdClass::class;
-    }
-
-    private function getType(): TypeInterface
-    {
-        return typeObject($this->className);
     }
 
     public function className(): string
@@ -52,5 +49,22 @@ final class ObjectParameter implements ObjectParameterInterface
     public function default(): mixed
     {
         return null;
+    }
+
+    public function assertCompatible(ObjectParameterInterface $parameter): void
+    {
+        if ($this->className === $parameter->className()) {
+            return;
+        }
+
+        throw new InvalidArgumentException(
+            message('Parameter must be of type %type%')
+                ->withCode('%type%', $this->className)
+        );
+    }
+
+    private function getType(): TypeInterface
+    {
+        return typeObject($this->className);
     }
 }
