@@ -22,6 +22,8 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
  */
 interface StringParameterInterface extends ParameterInterface
 {
+    public const REGEX_DEFAULT = '/^.*$/';
+
     /**
      * Provides access to the regex instance.
      */

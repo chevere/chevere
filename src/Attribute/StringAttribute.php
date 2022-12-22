@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Attribute;
 
 use Attribute;
+use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 
@@ -23,7 +24,7 @@ final class StringAttribute
     private RegexInterface $regex;
 
     public function __construct(
-        string $regex = '/.*/',
+        string $regex = StringParameterInterface::REGEX_DEFAULT,
         private string $description = '',
     ) {
         $this->regex = new Regex($regex);

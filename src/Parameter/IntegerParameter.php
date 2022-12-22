@@ -111,20 +111,23 @@ final class IntegerParameter implements IntegerParameterInterface
     {
         if ($this->minimum() !== $parameter->minimum()) {
             throw new InvalidArgumentException(
-                message('Expected minimum value %value%')
+                message('Expected minimum value %value%, provided %provided%')
                     ->withCode('%value%', strval($this->minimum() ?? 'null'))
+                    ->withCode('%provided%', strval($parameter->minimum() ?? 'null'))
             );
         }
         if ($this->maximum() !== $parameter->maximum()) {
             throw new InvalidArgumentException(
-                message('Expected maximum value %value%')
+                message('Expected maximum value %value%, provided %provided%')
                     ->withCode('%value%', strval($this->maximum() ?? 'null'))
+                    ->withCode('%provided%', strval($parameter->maximum() ?? 'null'))
             );
         }
         if (array_diff($this->accept(), $parameter->accept()) !== []) {
             throw new InvalidArgumentException(
-                message('Expecting accept %value%')
+                message('Expecting accept %value%, provided %provided%')
                     ->withCode('%value%', implode(', ', $this->accept()))
+                    ->withCode('%provided%', implode(', ', $parameter->accept()))
             );
         }
     }

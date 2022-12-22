@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\StringParameter;
 use function Chevere\Parameter\stringParameter;
 use Chevere\Regex\Regex;
@@ -23,7 +24,7 @@ final class StringParameterTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $regex = '/^.*$/';
+        $regex = StringParameterInterface::REGEX_DEFAULT;
         $parameter = new StringParameter();
         $this->assertSame('', $parameter->default());
         $this->assertSame('', $parameter->description());

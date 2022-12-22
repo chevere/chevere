@@ -32,7 +32,7 @@ final class StringParameter implements StringParameterInterface
 
     public function setUp(): void
     {
-        $this->regex = new Regex('/^.*$/');
+        $this->regex = new Regex(self::REGEX_DEFAULT);
     }
 
     public function withRegex(RegexInterface $regex): StringParameterInterface
@@ -75,8 +75,9 @@ final class StringParameter implements StringParameterInterface
         }
 
         throw new InvalidArgumentException(
-            message('Expected regex %regexString%')
-                ->withCode('%regexString%', $this->regex->__toString())
+            message('Expected regex %expected%, provided %provided%')
+                ->withCode('%expected%', $this->regex->__toString())
+                ->withCode('%provided%', $parameter->regex()->__toString())
         );
     }
 

@@ -141,9 +141,14 @@ final class IntegerParameterTest extends TestCase
         $compatible = (new IntegerParameter())->withMinimum($value);
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
-        $notCompatible = (new IntegerParameter())->withMinimum($value * 2);
+        $provided = $value * 2;
+        $notCompatible = (new IntegerParameter())->withMinimum($provided);
         $this->expectException(InvalidArgumentException::class);
-        $this->expectDeprecationMessage('value ' . strval($value));
+        $this->expectExceptionMessage(
+            <<<STRING
+            Expected minimum value {$value}, provided {$provided}
+            STRING
+        );
         $parameter->assertCompatible($notCompatible);
     }
 
@@ -155,9 +160,14 @@ final class IntegerParameterTest extends TestCase
         $compatible = (new IntegerParameter())->withMaximum($value);
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
-        $notCompatible = (new IntegerParameter())->withMaximum($value * 2);
+        $provided = $value * 2;
+        $notCompatible = (new IntegerParameter())->withMaximum($provided);
         $this->expectException(InvalidArgumentException::class);
-        $this->expectDeprecationMessage('value ' . strval($value));
+        $this->expectExceptionMessage(
+            <<<STRING
+            Expected maximum value {$value}, provided {$provided}
+            STRING
+        );
         $parameter->assertCompatible($notCompatible);
     }
 
@@ -170,6 +180,15 @@ final class IntegerParameterTest extends TestCase
         $notCompatible = (new IntegerParameter())->withAccept(0);
         $this->expectException(InvalidArgumentException::class);
         $this->getExpectedExceptionMessage('[' . implode(', ', $parameter->accept()) . ']');
+        $parameter->assertCompatible($notCompatible);
+    }
+
+    public function testAssertCompatibleAcceptMinimum(): void
+    {
+        $parameter = (new IntegerParameter())->withAccept(1, 2, 3);
+        $notCompatible = (new IntegerParameter())->withMinimum(0);
+        $this->expectException(InvalidArgumentException::class);
+        $this->getExpectedExceptionMessage('value null');
         $parameter->assertCompatible($notCompatible);
     }
 }
