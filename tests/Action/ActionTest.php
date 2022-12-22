@@ -24,12 +24,12 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
 use Chevere\Tests\Action\_resources\src\ActionTestContainer;
 use Chevere\Tests\Action\_resources\src\ActionTestController;
-use Chevere\Tests\Action\_resources\src\ActionTestGetResponseMerge;
 use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunParameter;
 use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunReturn;
 use Chevere\Tests\Action\_resources\src\ActionTestMissingRun;
 use Chevere\Tests\Action\_resources\src\ActionTestParameterAttributes;
 use Chevere\Tests\Action\_resources\src\ActionTestRunParameters;
+use Chevere\Tests\Action\_resources\src\ActionTestRunReturnExtraArguments;
 use Chevere\Tests\Action\_resources\src\ActionTestSetupBeforeAndAfter;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -165,11 +165,11 @@ final class ActionTest extends TestCase
         $this->assertSame(2, $action->after());
     }
 
-    public function testResponseMerge(): void
+    public function testRunReturnExtraArguments(): void
     {
-        $action = new ActionTestGetResponseMerge();
+        $action = new ActionTestRunReturnExtraArguments();
         $typedResponse = $action->getResponse();
         $runResponse = $action->run();
-        $this->assertSame($runResponse, $typedResponse->data());
+        $this->assertNotSame($runResponse, $typedResponse->data());
     }
 }
