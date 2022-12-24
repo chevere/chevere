@@ -21,13 +21,13 @@ use Psr\Http\Message\UriInterface;
 interface HttpRedirectControllerInterface extends HttpControllerInterface
 {
     public const STATUSES = [
-        300 => 'Multiple Choice',
-        301 => 'Moved Permanently',
-        302 => 'Found',
-        303 => 'See Other',
-        304 => 'Not Modified',
-        307 => 'Temporary Redirect',
-        308 => 'Permanent Redirect',
+        300,
+        301,
+        302,
+        303,
+        304,
+        307,
+        308,
     ];
 
     public function withUri(UriInterface $uri): static;

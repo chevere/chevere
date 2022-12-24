@@ -17,8 +17,4 @@ use Chevere\Controller\HttpRedirectController;
 
 final class TestHttpRedirectController extends HttpRedirectController
 {
-    public function run(): array
-    {
-        return [];
-    }
 }

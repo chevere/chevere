@@ -34,6 +34,13 @@ final class HttpRedirectControllerTest extends TestCase
         $controller = new TestHttpRedirectController();
         $uri = new Uri('https://chevere.org');
         $controllerWithUri = $controller->withUri($uri);
+        $this->assertSame(
+            [
+                'uri' => $controllerWithUri->uri(),
+                'status' => $controllerWithUri->status(),
+            ],
+            $controllerWithUri->getResponse()->data()
+        );
         $this->assertNotSame($controller, $controllerWithUri);
         $this->assertNotEquals($controller, $controllerWithUri);
         $this->assertSame($uri, $controllerWithUri->uri());
