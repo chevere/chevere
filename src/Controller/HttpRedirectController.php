@@ -29,7 +29,7 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
 
     private int $status = 302;
 
-    final public function getResponseParameters(): ParametersInterface
+    public function getResponseParameters(): ParametersInterface
     {
         return parameters(
             uri: objectParameter(UriInterface::class),
@@ -66,9 +66,9 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
     }
 
     /**
-     * @return array<string, UriInterface|int>
+     * @return array<string, mixed>
      */
-    final protected function data(): array
+    protected function data(): array
     {
         return [
             'uri' => $this->uri(),

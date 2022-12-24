@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Controller;
 
-use Psr\Http\Message\UriInterface;
-
 final class HttpRedirectStaticController extends HttpRedirectController
 {
     /**
-     * @return array<string, UriInterface|int>
+     * @return array<string, mixed>
      * @codeCoverageIgnore
      */
     public function run(): array
