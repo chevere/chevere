@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Controller;
 
 use Chevere\Controller\Interfaces\HttpRedirectControllerInterface;
-use function Chevere\DataStructure\data;
 use function Chevere\Message\message;
 use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -36,18 +35,6 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
             uri: objectParameter(UriInterface::class),
             status: integerParameter()
                 ->withAccept(...static::STATUSES),
-        );
-    }
-
-    /**
-     * @return array<string, mixed>
-     * @codeCoverageIgnore
-     */
-    public function run(): array
-    {
-        return data(
-            uri: $this->uri(),
-            status: $this->status(),
         );
     }
 
