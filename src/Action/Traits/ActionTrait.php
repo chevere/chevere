@@ -106,31 +106,29 @@ trait ActionTrait
 
     final protected function assertContainer(): void
     {
-        $missingService = [];
-        $services = [];
-        $keys = array_keys(
-            iterator_to_array($this->containerParameters()->getIterator())
-        );
-        foreach ($keys as $name) {
+        $missing = [];
+        foreach ($this->containerParameters() as $name => $parameter) {
             if (! $this->container()->has($name)) {
-                $missingService[] = $name;
+                $className = $parameter::class;
+                $missing[] = <<<STRING
+                {$className} {$name}
+                STRING;
 
                 continue;
             }
-            $services[$name] = $this->container()->get($name);
         }
-        if ($missingService !== []) {
+        if ($missing !== []) {
             throw new InvalidArgumentException(
-                message('The container for %action% does not provide the parameter(s): [%missing%]')
+                message('Container for %action% does not provide parameter(s): %missing%')
                     ->withTranslate('%action%', $this::class)
-                    ->withTranslate('%missing%', implode(', ', $missingService))
+                    ->withTranslate('%missing%', implode(', ', $missing))
             );
         }
     }
 
-    final protected function getArguments(mixed ...$namedArguments): ArgumentsInterface
+    final protected function getArguments(mixed ...$argument): ArgumentsInterface
     {
-        return new Arguments($this->parameters(), ...$namedArguments);
+        return new Arguments($this->parameters(), ...$argument);
     }
 
     final protected function getTypedResponse(mixed ...$argument): ResponseInterface

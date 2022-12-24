@@ -15,12 +15,14 @@ namespace Chevere\Tests\Action;
 
 use Chevere\Container\Container;
 use Chevere\Filesystem\Interfaces\FileInterface;
+use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Parameter\StringParameter;
 use Chevere\Tests\Action\_resources\src\ActionTestAction;
 use Chevere\Tests\Action\_resources\src\ActionTestContainer;
 use Chevere\Tests\Action\_resources\src\ActionTestController;
@@ -118,7 +120,11 @@ final class ActionTest extends TestCase
     public function testContainerMissingParameterException(): void
     {
         $action = new ActionTestContainer();
-        $this->expectExceptionMessage('[id, name]');
+        $classInteger = IntegerParameter::class;
+        $classString = StringParameter::class;
+        $this->expectExceptionMessage(<<<STRING
+        {$classInteger} id, {$classString} name
+        STRING);
         $this->expectException(InvalidArgumentException::class);
         $action->getResponse();
     }
