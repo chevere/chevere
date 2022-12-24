@@ -65,6 +65,17 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
         return $this->status;
     }
 
+    /**
+     * @return array<string, UriInterface|int>
+     */
+    final protected function data(): array
+    {
+        return [
+            'uri' => $this->uri(),
+            'status' => $this->status(),
+        ];
+    }
+
     final protected function assertStatus(): void
     {
         if (! in_array($this->status, static::STATUSES, true)) {

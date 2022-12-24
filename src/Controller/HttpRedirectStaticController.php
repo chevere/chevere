@@ -13,19 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Controller;
 
-use function Chevere\DataStructure\data;
+use Psr\Http\Message\UriInterface;
 
 final class HttpRedirectStaticController extends HttpRedirectController
 {
     /**
-     * @return array<string, mixed>
+     * @return array<string, UriInterface|int>
      * @codeCoverageIgnore
      */
     public function run(): array
     {
-        return data(
-            uri: $this->uri(),
-            status: $this->status(),
-        );
+        return $this->data();
     }
 }
