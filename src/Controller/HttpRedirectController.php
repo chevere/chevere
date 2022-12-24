@@ -38,19 +38,18 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
         );
     }
 
-    public function withUri(UriInterface $uri): static
+    final public function withUri(UriInterface $uri): static
     {
         $new = clone $this;
-        $new->uri = $uri;
+        $new->setUri($uri);
 
         return $new;
     }
 
-    public function withStatus(int $status): static
+    final public function withStatus(int $status): static
     {
-        $this->assertStatus($status);
         $new = clone $this;
-        $new->status = $status;
+        $new->setStatus($status);
 
         return $new;
     }
@@ -66,14 +65,25 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
         return $this->status;
     }
 
-    final protected function assertStatus(int $status): void
+    final protected function assertStatus(): void
     {
-        if (! in_array($status, static::STATUSES, true)) {
+        if (! in_array($this->status, static::STATUSES, true)) {
             throw new InvalidArgumentException(
                 message('Invalid status code %status% provided, must be one of %statuses%')
-                    ->withCode('%status%', strval($status))
+                    ->withCode('%status%', strval($this->status))
                     ->withCode('%statuses%', implode(', ', static::STATUSES))
             );
         }
+    }
+
+    final protected function setUri(UriInterface $uri): void
+    {
+        $this->uri = $uri;
+    }
+
+    final protected function setStatus(int $status): void
+    {
+        $this->status = $status;
+        $this->assertStatus();
     }
 }
