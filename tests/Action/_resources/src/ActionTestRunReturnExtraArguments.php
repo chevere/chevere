@@ -18,7 +18,7 @@ use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Parameters;
 
-final class ActionTestResponseExtraArguments extends Action
+final class ActionTestRunReturnExtraArguments extends Action
 {
     public function getResponseParameters(): ParametersInterface
     {
