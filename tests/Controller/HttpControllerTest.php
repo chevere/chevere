@@ -25,6 +25,8 @@ final class HttpControllerTest extends TestCase
     public function testDefaults(): void
     {
         $controller = new TestHttpController();
+        $this->assertSame(200, $controller::STATUS_SUCCESS);
+        $this->assertSame(500, $controller::STATUS_ERROR);
         $this->assertCount(0, $controller->acceptGet());
         $this->assertCount(0, $controller->acceptPost());
         $this->assertCount(0, $controller->acceptFiles()->parameters());

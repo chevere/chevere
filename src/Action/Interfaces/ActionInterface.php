@@ -14,13 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Action\Interfaces;
 
 use Chevere\Common\Interfaces\DescriptionInterface;
-use Chevere\Parameter\ArrayParameter;
-use Chevere\Parameter\BooleanParameter;
-use Chevere\Parameter\FloatParameter;
-use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Parameter\ObjectParameter;
-use Chevere\Parameter\StringParameter;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Psr\Container\ContainerInterface;
 
@@ -31,15 +25,6 @@ use Psr\Container\ContainerInterface;
  */
 interface ActionInterface extends DescriptionInterface
 {
-    public const TYPE_TO_PARAMETER = [
-        'array' => ArrayParameter::class,
-        'bool' => BooleanParameter::class,
-        'float' => FloatParameter::class,
-        'int' => IntegerParameter::class,
-        'string' => StringParameter::class,
-        'object' => ObjectParameter::class,
-    ];
-
     /**
      * Defines expected container parameters when executing `run` method.
      */

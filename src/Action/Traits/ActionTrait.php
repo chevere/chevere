@@ -13,17 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Traits;
 
-use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Attribute\StringAttribute;
 use Chevere\Container\Container;
 use function Chevere\Message\message;
 use Chevere\Parameter\Arguments;
+use Chevere\Parameter\ArrayParameter;
+use Chevere\Parameter\BooleanParameter;
+use Chevere\Parameter\FloatParameter;
+use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
+use Chevere\Parameter\StringParameter;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
 use Chevere\Throwable\Errors\TypeError;
@@ -39,6 +44,18 @@ use ReflectionParameter;
  */
 trait ActionTrait
 {
+    /**
+     * @var array<string, class-string<ParameterInterface>>
+     */
+    protected array $typeToParameter = [
+        'array' => ArrayParameter::class,
+        'bool' => BooleanParameter::class,
+        'float' => FloatParameter::class,
+        'int' => IntegerParameter::class,
+        'string' => StringParameter::class,
+        'object' => ObjectParameter::class,
+    ];
+
     protected ParametersInterface $parameters;
 
     protected ParametersInterface $responseParameters;
@@ -213,9 +230,9 @@ trait ActionTrait
     {
         /** @var ReflectionNamedType $namedType */
         $namedType = $reflection->getType();
-        $type = ActionInterface::TYPE_TO_PARAMETER[$namedType->getName()] ?? null;
+        $type = $this->typeToParameter[$namedType->getName()] ?? null;
         if ($type === null) {
-            $type = ActionInterface::TYPE_TO_PARAMETER['object'];
+            $type = $this->typeToParameter['object'];
         }
 
         return $type;

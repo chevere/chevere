@@ -22,6 +22,16 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 interface HttpControllerInterface extends ControllerInterface
 {
     /**
+     * @var int
+     */
+    public const STATUS_SUCCESS = 200;
+
+    /**
+     * @var int
+     */
+    public const STATUS_ERROR = 500;
+
+    /**
      * Defines the GET parameters accepted.
      */
     public function acceptGet(): ParametersInterface;
