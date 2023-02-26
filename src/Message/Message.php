@@ -119,6 +119,9 @@ final class Message implements MessageInterface
         return $new;
     }
 
+    /**
+     * @param array<string, string> $tr
+     */
     private function toExport(array $tr): string
     {
         return strtr($this->template, $tr);
