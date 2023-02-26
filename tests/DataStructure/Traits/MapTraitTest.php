@@ -25,7 +25,8 @@ final class MapTraitTest extends TestCase
         $map = new UsesMapTrait();
         $this->assertSame(0, $map->count());
         $this->assertSame([], $map->keys());
-        $this->assertCount(0, $map->getIterator());
+        $iterable = iterator_to_array($map->getIterator());
+        $this->assertCount(0, $iterable);
     }
 
     public function testClone(): void
