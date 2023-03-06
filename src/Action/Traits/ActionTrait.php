@@ -148,9 +148,9 @@ trait ActionTrait
         return new Arguments($this->parameters(), ...$argument);
     }
 
-    final protected function getTypedResponse(mixed ...$argument): ResponseInterface
+    final protected function getTypedResponse(mixed ...$data): ResponseInterface
     {
-        $arguments = new Arguments($this->responseParameters(), ...$argument);
+        $arguments = new Arguments($this->responseParameters(), ...$data);
 
         return new Response(...$arguments->toArray());
     }
