@@ -11,12 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Interfaces;
+namespace Chevere\HttpController;
 
-/**
- * @deprecated Use Chevere\Components\Http\Interfaces\StatusInterface instead
- * This will be removed in 3.0.0
- */
-interface HttpStatusInterface extends StatusInterface
+class HttpRedirectStaticController extends HttpRedirectController
 {
+    /**
+     * @return array<string, mixed>
+     * @codeCoverageIgnore
+     */
+    public function run(): array
+    {
+        return $this->data();
+    }
 }

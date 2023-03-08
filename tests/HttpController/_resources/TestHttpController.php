@@ -11,12 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Interfaces;
+namespace Chevere\Tests\HttpController\_resources;
 
-/**
- * @deprecated Use Chevere\Components\Http\Interfaces\StatusInterface instead
- * This will be removed in 3.0.0
- */
-interface HttpStatusInterface extends StatusInterface
+use Chevere\HttpController\HttpController;
+
+final class TestHttpController extends HttpController
 {
+    public function run(): array
+    {
+        return [];
+    }
 }

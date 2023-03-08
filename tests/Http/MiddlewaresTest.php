@@ -11,31 +11,31 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\Http;
 
-use Chevere\Controller\HttpMiddleware;
-use Chevere\Tests\Controller\_resources\MiddlewareAltTest;
-use Chevere\Tests\Controller\_resources\MiddlewareTest;
+use Chevere\Http\Middlewares;
+use Chevere\Tests\Http\_resources\MiddlewareAltTest;
+use Chevere\Tests\Http\_resources\MiddlewareTest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Server\MiddlewareInterface;
 
-final class HttpMiddlewareTest extends TestCase
+final class MiddlewaresTest extends TestCase
 {
     public function testEmpty(): void
     {
-        $httpMiddleware = new HttpMiddleware();
-        $this->assertCount(0, $httpMiddleware);
+        $middlewares = new Middlewares();
+        $this->assertCount(0, $middlewares);
     }
 
     public function testConstruct(): void
     {
         $middleware = new MiddlewareTest();
-        $httpMiddleware = new HttpMiddleware($middleware);
-        $this->assertCount(1, $httpMiddleware);
-        $this->assertSame([0], $httpMiddleware->keys());
+        $middlewares = new Middlewares($middleware);
+        $this->assertCount(1, $middlewares);
+        $this->assertSame([0], $middlewares->keys());
         $this->assertSame(
             [$middleware],
-            iterator_to_array($httpMiddleware->getIterator())
+            iterator_to_array($middlewares->getIterator())
         );
     }
 
@@ -43,10 +43,10 @@ final class HttpMiddlewareTest extends TestCase
     {
         $middlewareTest = new MiddlewareTest();
         $middlewareAlt = new MiddlewareAltTest();
-        $httpMiddleware = new HttpMiddleware($middlewareTest);
-        $httpMiddlewareWith = $httpMiddleware->withAppend($middlewareAlt);
-        $this->assertNotSame($httpMiddleware, $httpMiddlewareWith);
-        $this->assertCount(1, $httpMiddleware);
+        $middlewares = new Middlewares($middlewareTest);
+        $httpMiddlewareWith = $middlewares->withAppend($middlewareAlt);
+        $this->assertNotSame($middlewares, $httpMiddlewareWith);
+        $this->assertCount(1, $middlewares);
         $this->assertCount(2, $httpMiddlewareWith);
         $this->assertSame([0, 1], $httpMiddlewareWith->keys());
         $array = array_map(function (MiddlewareInterface $middleware) {
@@ -62,7 +62,7 @@ final class HttpMiddlewareTest extends TestCase
     {
         $middlewareTest = new MiddlewareTest();
         $middlewareAlt = new MiddlewareAltTest();
-        $httpMiddleware = new HttpMiddleware($middlewareTest);
+        $httpMiddleware = new Middlewares($middlewareTest);
         $httpMiddlewareWith = $httpMiddleware->withPrepend($middlewareAlt);
         $this->assertNotSame($httpMiddleware, $httpMiddlewareWith);
         $this->assertCount(1, $httpMiddleware);

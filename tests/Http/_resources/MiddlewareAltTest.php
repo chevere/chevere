@@ -11,17 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller\_resources;
+namespace Chevere\Tests\Http\_resources;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class MiddlewareTest implements MiddlewareInterface
+final class MiddlewareAltTest implements MiddlewareInterface
 {
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-    {
+    public function process(
+        ServerRequestInterface $request,
+        RequestHandlerInterface $handler
+    ): ResponseInterface {
         return $handler->handle($request);
     }
 }

@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Controller;
 
-final class HttpRedirectStaticController extends HttpRedirectController
+use Chevere\HttpController\HttpRedirectStaticController as NewHttpRedirectStaticController;
+
+/**
+ * @deprecated use Chevere\HttpController\HttpRedirectStaticController instead.
+ * This will be removed in 3.0.0
+ */
+final class HttpRedirectStaticController extends NewHttpRedirectStaticController
 {
-    /**
-     * @return array<string, mixed>
-     * @codeCoverageIgnore
-     */
-    public function run(): array
-    {
-        return $this->data();
-    }
 }

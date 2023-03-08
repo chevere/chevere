@@ -13,28 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Controller\Interfaces;
 
-use Psr\Http\Message\UriInterface;
+use Chevere\HttpController\Interfaces\HttpRedirectControllerInterface as NewHttpRedirectControllerInterface;
 
 /**
- * Describes the component in charge of defining a HTTP Redirect Controller.
+ * @deprecated Use Chevere\HttpController\Interfaces\HttpRedirectControllerInterface instead.
+ * This will be removed in 3.0.0
  */
-interface HttpRedirectControllerInterface extends HttpControllerInterface
+interface HttpRedirectControllerInterface extends NewHttpRedirectControllerInterface
 {
-    public const STATUSES = [
-        300,
-        301,
-        302,
-        303,
-        304,
-        307,
-        308,
-    ];
-
-    public function withUri(UriInterface $uri): static;
-
-    public function withStatus(int $status): static;
-
-    public function uri(): UriInterface;
-
-    public function status(): int;
 }

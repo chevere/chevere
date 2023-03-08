@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\HttpController;
 
-use Chevere\Controller\HttpRedirectStaticController;
+use Chevere\HttpController\HttpRedirectStaticController;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use Nyholm\Psr7\Uri;

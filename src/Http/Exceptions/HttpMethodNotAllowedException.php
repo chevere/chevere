@@ -16,7 +16,7 @@ namespace Chevere\Http\Exceptions;
 use Chevere\Throwable\Exception;
 
 /**
- * Exception thrown when a method is not allowed.
+ * @deprecated Use MethodNotAllowedException instead
  */
 final class HttpMethodNotAllowedException extends Exception
 {

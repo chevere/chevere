@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller\_resources;
+namespace Chevere\Tests\HttpController\_resources;
 
-use Chevere\Controller\HttpController;
+use Chevere\HttpController\HttpController;
 use function Chevere\Parameter\arrayParameter;
 use function Chevere\Parameter\fileParameter;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;

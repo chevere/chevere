@@ -11,14 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Controller\Interfaces;
+namespace Chevere\Http\Exceptions;
 
-use Chevere\Http\Interfaces\MiddlewaresInterface;
+use Chevere\Throwable\Exception;
 
 /**
- * @deprecated Use Chevere\Http\Interfaces\MiddlewaresInterface instead.
- * This will be removed in 3.0.0
+ * Exception thrown when a HTTP method is not allowed.
  */
-interface HttpMiddlewareInterface extends MiddlewaresInterface
+final class MethodNotAllowedException extends Exception
 {
 }

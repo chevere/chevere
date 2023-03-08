@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Controller;
+namespace Chevere\Http;
 
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Traits\VectorTrait;
@@ -19,11 +19,7 @@ use Chevere\DataStructure\Vector;
 use Chevere\Http\Interfaces\MiddlewaresInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-/**
- * @deprecated use Chevere\HttpController\HttpMiddleware instead.
- * This will be removed in 3.0.0
- */
-final class HttpMiddleware implements MiddlewaresInterface
+final class Middlewares implements MiddlewaresInterface
 {
     use VectorTrait;
 

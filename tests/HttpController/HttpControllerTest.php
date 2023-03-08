@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\HttpController;
 
-use Chevere\Controller\HttpMiddleware;
-use Chevere\Tests\Controller\_resources\TestHttpAcceptController;
-use Chevere\Tests\Controller\_resources\TestHttpController;
+use Chevere\Http\Middlewares;
+use Chevere\Tests\HttpController\_resources\TestHttpAcceptController;
+use Chevere\Tests\HttpController\_resources\TestHttpController;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -30,17 +30,17 @@ final class HttpControllerTest extends TestCase
         $this->assertCount(0, $controller->acceptGet());
         $this->assertCount(0, $controller->acceptPost());
         $this->assertCount(0, $controller->acceptFiles()->parameters());
-        $this->assertCount(0, $controller->middleware());
+        $this->assertCount(0, $controller->middlewares());
     }
 
     public function testMiddleware(): void
     {
         $controller = new TestHttpController();
-        $middleware = new HttpMiddleware();
-        $controllerWith = $controller->withMiddleware($middleware);
+        $middlewares = new Middlewares();
+        $controllerWith = $controller->withMiddlewares($middlewares);
         $this->assertNotSame($controller, $controllerWith);
         $this->assertNotEquals($controller, $controllerWith);
-        $this->assertSame($middleware, $controllerWith->middleware());
+        $this->assertSame($middlewares, $controllerWith->middlewares());
     }
 
     public function testAcceptGetParameters(): void
