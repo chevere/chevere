@@ -19,7 +19,7 @@ use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 
 #[Attribute]
-final class StringAttribute
+class StringAttribute
 {
     private RegexInterface $regex;
 
