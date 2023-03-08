@@ -21,6 +21,9 @@
         <include>
             <directory suffix=".php">src/</directory>
         </include>
+        <exclude phpVersion="8.2.0" phpVersionOperator="lt">
+            <directory suffix=".php">src/HttpController/Traits/</directory>
+        </exclude>
         <report>
             <clover outputFile="build/logs/clover.xml"/>
             <html outputDirectory="build/logs/html" lowUpperBound="50" highLowerBound="90"/>
