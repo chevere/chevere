@@ -11,14 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller\_resources;
+namespace Chevere\HttpController\Traits;
 
-use Chevere\Controller\HttpController;
-
-final class TestHttpController extends HttpController
+trait StatusNoContentTrait
 {
-    public function run(): array
-    {
-        return [];
-    }
+    public const STATUS_SUCCESS = 204;
 }

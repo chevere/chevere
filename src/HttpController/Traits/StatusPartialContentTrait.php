@@ -11,10 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller\_resources;
+namespace Chevere\HttpController\Traits;
 
-use Chevere\Controller\HttpRedirectController;
-
-final class TestHttpRedirectController extends HttpRedirectController
+trait StatusPartialContentTrait
 {
+    public const STATUS_SUCCESS = 206;
 }
