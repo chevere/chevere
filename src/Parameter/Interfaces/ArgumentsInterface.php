@@ -37,11 +37,7 @@ interface ArgumentsInterface extends ToArrayInterface
     /**
      * Provides access to the controller arguments as array.
      *
-     * ```php
-     * return [
-     *     'parameterName' => 'argument',
-     * ];
-     * ```
+     * @return array<string, mixed>
      */
     public function toArray(): array;
 

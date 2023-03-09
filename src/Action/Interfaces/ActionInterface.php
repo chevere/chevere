@@ -21,10 +21,19 @@ use Psr\Container\ContainerInterface;
 /**
  * Describes the component in charge of defining a single action.
  *
- * @method array<string, mixed> run(mixed ...$argument) Defines the action run logic.
+ * @method array<string, mixed> run(mixed ...$argument) Defines the action run
+ * logic.
  */
 interface ActionInterface extends DescriptionInterface
 {
+    /**
+     * Determines if action is strict or not.
+     *
+     * When the action is strict the `run` method return value will be matched
+     * against the defined response parameters at `getResponseParameters`.
+     */
+    public function isStrict(): bool;
+
     /**
      * Defines expected container parameters when executing `run` method.
      */

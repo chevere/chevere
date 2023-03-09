@@ -29,9 +29,10 @@ use Chevere\Tests\Action\_resources\src\ActionTestController;
 use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunParameter;
 use Chevere\Tests\Action\_resources\src\ActionTestInvalidRunReturn;
 use Chevere\Tests\Action\_resources\src\ActionTestMissingRun;
+use Chevere\Tests\Action\_resources\src\ActionTestNoStrict;
 use Chevere\Tests\Action\_resources\src\ActionTestParameterAttributes;
-use Chevere\Tests\Action\_resources\src\ActionTestResponseExtraArguments;
 use Chevere\Tests\Action\_resources\src\ActionTestRunParameters;
+use Chevere\Tests\Action\_resources\src\ActionTestRunReturnExtraArguments;
 use Chevere\Tests\Action\_resources\src\ActionTestSetupBeforeAndAfter;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -173,9 +174,17 @@ final class ActionTest extends TestCase
 
     public function testRunReturnExtraArguments(): void
     {
-        $action = new ActionTestResponseExtraArguments();
+        $action = new ActionTestRunReturnExtraArguments();
         $typedResponse = $action->getResponse();
         $runResponse = $action->run();
         $this->assertNotSame($runResponse, $typedResponse->data());
+    }
+
+    public function testActionNoStrict(): void
+    {
+        $action = new ActionTestNoStrict();
+        $typedResponse = $action->getResponse();
+        $runResponse = $action->run();
+        $this->assertSame($runResponse, $typedResponse->data());
     }
 }

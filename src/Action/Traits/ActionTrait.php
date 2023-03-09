@@ -64,6 +64,11 @@ trait ActionTrait
 
     protected ContainerInterface $container;
 
+    public function isStrict(): bool
+    {
+        return true;
+    }
+
     public function getContainerParameters(): ParametersInterface
     {
         return new Parameters();
@@ -99,8 +104,11 @@ trait ActionTrait
                     ->withTranslate('%method%', $this::class . '::run')
             );
         }
+        if ($this->isStrict()) {
+            $data = $this->getTypedData(...$data);
+        }
 
-        return $this->getTypedResponse(...$data);
+        return new Response(...$data);
     }
 
     // @infection-ignore-all
@@ -148,11 +156,14 @@ trait ActionTrait
         return new Arguments($this->parameters(), ...$argument);
     }
 
-    final protected function getTypedResponse(mixed ...$data): ResponseInterface
+    /**
+     * @return array<string, mixed>
+     */
+    final protected function getTypedData(mixed ...$data): array
     {
         $arguments = new Arguments($this->responseParameters(), ...$data);
 
-        return new Response(...$arguments->toArray());
+        return $arguments->toArray();
     }
 
     final protected function getParameters(): ParametersInterface
