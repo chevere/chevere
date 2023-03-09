@@ -17,6 +17,8 @@ use Chevere\Controller\Controller;
 use Chevere\Http\Interfaces\MiddlewaresInterface;
 use Chevere\Http\Middlewares;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
+use Chevere\HttpController\Traits\StatusInternalServerErrorTrait;
+use Chevere\HttpController\Traits\StatusOkTrait;
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\arrayParameter;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
@@ -26,6 +28,9 @@ use function Chevere\Parameter\parameters;
 
 abstract class HttpController extends Controller implements HttpControllerInterface
 {
+    use StatusOkTrait;
+    use StatusInternalServerErrorTrait;
+
     /**
      * @var array<int|string, string>
      */

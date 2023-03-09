@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\HttpController;
 
 use Chevere\Http\Middlewares;
-use Chevere\Tests\HttpController\_resources\TestHttpAcceptController;
-use Chevere\Tests\HttpController\_resources\TestHttpController;
+use Chevere\Tests\HttpController\_resources\src\TestHttpAcceptController;
+use Chevere\Tests\HttpController\_resources\src\TestHttpController;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -25,8 +25,8 @@ final class HttpControllerTest extends TestCase
     public function testDefaults(): void
     {
         $controller = new TestHttpController();
-        $this->assertSame(200, $controller::STATUS_SUCCESS);
-        $this->assertSame(500, $controller::STATUS_ERROR);
+        $this->assertSame(200, $controller->statusSuccess());
+        $this->assertSame(500, $controller->statusError());
         $this->assertCount(0, $controller->acceptGet());
         $this->assertCount(0, $controller->acceptPost());
         $this->assertCount(0, $controller->acceptFiles()->parameters());

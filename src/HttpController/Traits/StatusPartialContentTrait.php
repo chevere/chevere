@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\HttpController\Traits;
 
+/**
+ * 206
+ */
 trait StatusPartialContentTrait
 {
-    public const STATUS_SUCCESS = 206;
+    public function statusSuccess(): int
+    {
+        return 206;
+    }
 }

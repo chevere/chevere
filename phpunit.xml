@@ -18,8 +18,5 @@
         <include>
             <directory suffix=".php">src/</directory>
         </include>
-        <exclude>
-            <directory suffix=".php" phpVersion="8.2.0" phpVersionOperator="lt">src/HttpController/Traits/</directory>
-        </exclude>
     </coverage>
 </phpunit>

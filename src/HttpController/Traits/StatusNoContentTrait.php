@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\HttpController\Traits;
 
+/**
+ * 204
+ */
 trait StatusNoContentTrait
 {
-    public const STATUS_SUCCESS = 204;
+    public function statusSuccess(): int
+    {
+        return 204;
+    }
 }

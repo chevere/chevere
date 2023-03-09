@@ -11,15 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\HttpController\Traits;
+namespace Chevere\Tests\HttpController\_resources\src;
 
-/**
- * 208
- */
-trait StatusAlreadyReportedTrait
+use Chevere\HttpController\HttpController;
+
+class TestHttpController extends HttpController
 {
-    public function statusSuccess(): int
+    public function run(): array
     {
-        return 208;
+        return [];
     }
 }

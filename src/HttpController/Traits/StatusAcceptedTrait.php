@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\HttpController\Traits;
 
+/**
+ * 202
+ */
 trait StatusAcceptedTrait
 {
-    public const STATUS_SUCCESS = 202;
+    public function statusSuccess(): int
+    {
+        return 202;
+    }
 }

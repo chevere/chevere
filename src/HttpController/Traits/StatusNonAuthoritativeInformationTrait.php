@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\HttpController\Traits;
 
+/**
+ * 203
+ */
 trait StatusNonAuthoritativeInformationTrait
 {
-    public const STATUS_SUCCESS = 203;
+    public function statusSuccess(): int
+    {
+        return 203;
+    }
 }

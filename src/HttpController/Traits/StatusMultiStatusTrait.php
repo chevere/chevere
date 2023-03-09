@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\HttpController\Traits;
 
+/**
+ * 207
+ */
 trait StatusMultiStatusTrait
 {
-    public const STATUS_SUCCESS = 207;
+    public function statusSuccess(): int
+    {
+        return 207;
+    }
 }

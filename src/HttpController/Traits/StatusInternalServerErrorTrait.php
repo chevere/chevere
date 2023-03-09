@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\HttpController\Traits;
 
-trait StausCreatedTrait
+/**
+ * 500
+ */
+trait StatusInternalServerErrorTrait
 {
-    public const STATUS_SUCCESS = 201;
+    public function statusError(): int
+    {
+        return 500;
+    }
 }

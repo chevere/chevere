@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\HttpController\Traits;
 
+/**
+ * 226
+ */
 trait StatusIMUsedTrait
 {
-    public const STATUS_SUCCESS = 226;
+    public function statusSuccess(): int
+    {
+        return 226;
+    }
 }
