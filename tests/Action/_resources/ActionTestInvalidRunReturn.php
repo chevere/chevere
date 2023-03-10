@@ -11,10 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources\src;
+namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
 
-final class ActionTestMissingRun extends Action
+final class ActionTestInvalidRunReturn extends Action
 {
+    public function run(): bool
+    {
+        return true;
+    }
 }

@@ -11,28 +11,29 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources\src;
+namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
-use function Chevere\Parameter\integerParameter;
+use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Parameters;
 
-final class ActionTestRunReturnExtraArguments extends Action
+final class ActionTestAction extends Action
 {
+    public function getDescription(): string
+    {
+        return 'test';
+    }
+
     public function getResponseParameters(): ParametersInterface
     {
-        return new Parameters(
-            id: integerParameter(),
-        );
+        return new Parameters(id: new IntegerParameter());
     }
 
     public function run(): array
     {
         return [
-            'id' => 1,
-            'name' => 'name',
-            'extra' => 'extra',
+            'id' => 123,
         ];
     }
 }

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources\src;
+namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
 
@@ -30,7 +30,7 @@ final class ActionTestSetupBeforeAndAfter extends Action
     {
         return $this->before;
     }
-    
+
     public function after(): int
     {
         return $this->after;

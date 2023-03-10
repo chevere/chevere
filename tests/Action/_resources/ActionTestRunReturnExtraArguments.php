@@ -11,14 +11,21 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources\src;
+namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
-use Chevere\Action\Traits\NoStrictActionTrait;
+use function Chevere\Parameter\integerParameter;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Parameters;
 
-final class ActionTestNoStrict extends Action
+final class ActionTestRunReturnExtraArguments extends Action
 {
-    use NoStrictActionTrait;
+    public function getResponseParameters(): ParametersInterface
+    {
+        return new Parameters(
+            id: integerParameter(),
+        );
+    }
 
     public function run(): array
     {

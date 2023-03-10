@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources\src;
+namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
 use function Chevere\Parameter\integerParameter;
@@ -28,6 +28,7 @@ final class ActionTestContainer extends Action
             name: stringParameter()
         );
     }
+
     public function run(): array
     {
         return [];
