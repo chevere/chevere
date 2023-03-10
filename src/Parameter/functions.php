@@ -17,6 +17,7 @@ use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
+use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
@@ -105,6 +106,22 @@ function objectParameter(
     $parameter = new ObjectParameter($description);
 
     return $parameter->withClassName($className);
+}
+
+/**
+ * @param ParameterInterface $_K Generic key parameter
+ * @param ParameterInterface $_V Generic value parameter
+ */
+function genericParameter(
+    ParameterInterface $_K,
+    ParameterInterface $_V,
+    string $description = '',
+): GenericParameterInterface {
+    $parameter = new GenericParameter($description);
+
+    return $parameter
+        ->withKey($_K)
+        ->withValue($_V);
 }
 
 function parameters(

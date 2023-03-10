@@ -17,6 +17,7 @@ use function Chevere\Parameter\arrayParameter;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\booleanParameter;
 use function Chevere\Parameter\floatParameter;
+use function Chevere\Parameter\genericParameter;
 use function Chevere\Parameter\integerParameter;
 use function Chevere\Parameter\objectParameter;
 use function Chevere\Parameter\parameters;
@@ -122,5 +123,20 @@ final class FunctionsTest extends TestCase
         assertArgument(integerParameter(), 'test', 123);
         $this->expectException(InvalidArgumentException::class);
         assertArgument(stringParameter(), 'fail', 13.13);
+    }
+
+    public function testFunctionGenericParameter(): void
+    {
+        $parameter = genericParameter(
+            _K: stringParameter(),
+            _V: stringParameter()
+        );
+        $this->assertSame('', $parameter->description());
+        $parameter = genericParameter(
+            _K: stringParameter(),
+            _V: stringParameter(),
+            description: 'foo'
+        );
+        $this->assertSame('foo', $parameter->description());
     }
 }
