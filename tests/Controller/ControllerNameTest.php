@@ -16,7 +16,7 @@ namespace Chevere\Tests\Controller;
 use Chevere\Controller\ControllerName;
 use Chevere\Controller\Exceptions\ControllerNameInterfaceException;
 use Chevere\Controller\Exceptions\ControllerNameNotExistsException;
-use Chevere\Tests\Controller\_resources\src\ControllerNameTestController;
+use Chevere\Tests\Controller\_resources\ControllerNameTestController;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerNameTest extends TestCase

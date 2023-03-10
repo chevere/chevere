@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller\_resources\src;
+namespace Chevere\Tests\Controller\_resources;
 
 use Chevere\Controller\Controller;
 
-final class ControllerTestController extends Controller
+final class ControllerTestInvalidController extends Controller
 {
-    public function run(string $string): array
+    public function run(int $integer): array
     {
         return [];
     }

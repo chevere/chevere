@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
-use Chevere\Tests\Controller\_resources\src\ControllerTestInvalidController;
+use Chevere\Tests\Controller\_resources\ControllerTestInvalidController;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
