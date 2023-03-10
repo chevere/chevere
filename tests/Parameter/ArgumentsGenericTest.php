@@ -28,9 +28,29 @@ final class ArgumentsGenericTest extends TestCase
         return [
             [
                 [
-                    'test' => [
+                    'top' => [
                         1 => 'one',
                         2 => 'two',
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    public function genericNestedPropertyProvider(): array
+    {
+        return [
+            [
+                [
+                    'nested' => [
+                        1 => [
+                            'foo' => 1,
+                            'bar' => 2,
+                        ],
+                        2 => [
+                            'wea' => 3,
+                            'baz' => 4,
+                        ],
                     ],
                 ],
             ],
@@ -43,7 +63,7 @@ final class ArgumentsGenericTest extends TestCase
     public function testGeneric(array $args): void
     {
         $parameters = parameters(
-            test: genericParameter(
+            top: genericParameter(
                 _K: integerParameter(),
                 _V: stringParameter()
             )
@@ -55,10 +75,10 @@ final class ArgumentsGenericTest extends TestCase
     /**
      * @dataProvider genericPropertyProvider
      */
-    public function testConflict(array $args): void
+    public function testGenericConflict(array $args): void
     {
         $parameters = parameters(
-            test: genericParameter(
+            top: genericParameter(
                 _K: integerParameter(),
                 _V: stringParameter('/^one$/')
             )
@@ -66,6 +86,43 @@ final class ArgumentsGenericTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument value provided');
         $this->expectExceptionMessage("doesn't match the regex /^one$/");
+        $arguments = new Arguments($parameters, ...$args);
+    }
+
+    /**
+     * @dataProvider genericNestedPropertyProvider
+     */
+    public function testNestedGeneric(array $args): void
+    {
+        $parameters = parameters(
+            nested: genericParameter(
+                _K: integerParameter(),
+                _V: genericParameter(
+                    _K: stringParameter(),
+                    _V: integerParameter()
+                )
+            )
+        );
+        $this->expectNotToPerformAssertions();
+        $arguments = new Arguments($parameters, ...$args);
+    }
+
+    /**
+     * @dataProvider genericNestedPropertyProvider
+     */
+    public function testNestedGenericConflict(array $args): void
+    {
+        $parameters = parameters(
+            nested: genericParameter(
+                _K: integerParameter(),
+                _V: genericParameter(
+                    _K: stringParameter(),
+                    _V: stringParameter()
+                )
+            )
+        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Expecting value of type string, int provided');
         $arguments = new Arguments($parameters, ...$args);
     }
 }
