@@ -120,9 +120,9 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionAssertArgument(): void
     {
-        assertArgument(integerParameter(), 'test', 123);
+        assertArgument('test', integerParameter(), 123);
         $this->expectException(InvalidArgumentException::class);
-        assertArgument(stringParameter(), 'fail', 13.13);
+        assertArgument('fail', stringParameter(), 13.13);
     }
 
     public function testFunctionGenericParameter(): void

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
@@ -25,6 +26,7 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Throwable;
 
 function arrayParameter(
     ParameterInterface ...$parameter
@@ -76,7 +78,7 @@ function integerParameter(
     if ($maximum !== null) {
         $parameter = $parameter->withMaximum($maximum);
     }
-    if ($accept !== null) {
+    if ($accept !== []) {
         $parameter = $parameter->withAccept(...$accept);
     }
 
@@ -144,19 +146,130 @@ function fileParameter(
     );
 }
 
+function assertStringArgument(
+    StringParameterInterface $parameter,
+    string $argument,
+): void {
+    $regex = $parameter->regex();
+    if ($regex->match($argument) === []) {
+        throw new InvalidArgumentException(
+            message("Argument value provided %provided% doesn't match the regex %regex%")
+                ->withCode('%provided%', $argument)
+                ->withCode('%regex%', strval($regex))
+        );
+    }
+}
+
+function assertIntegerArgument(
+    IntegerParameterInterface $parameter,
+    int $argument,
+): void {
+    $value = $parameter->accept();
+    if ($value !== []) {
+        if (in_array($argument, $value, true)) {
+            return;
+        }
+
+        throw new InvalidArgumentException(
+            message('Argument value provided %provided% is not an accepted value %value%')
+                ->withCode('%provided%', strval($argument))
+                ->withCode('%value%', implode(',', $value))
+        );
+    }
+    $minimum = $parameter->minimum() ?? PHP_INT_MIN;
+    if ($argument < $minimum) {
+        throw new InvalidArgumentException(
+            message('Argument value provided %provided% is less than %minimum%')
+                ->withCode('%provided%', strval($argument))
+                ->withCode('%minimum%', strval($minimum))
+        );
+    }
+    $maximum = $parameter->maximum() ?? PHP_INT_MAX;
+    if ($argument > $maximum) {
+        throw new InvalidArgumentException(
+            message('Argument value provided %provided% is greater than %maximum%')
+                ->withCode('%provided%', strval($argument))
+                ->withCode('%maximum%', strval($maximum))
+        );
+    }
+}
+
 /**
- * @throws InvalidArgumentException
+ * @param iterable<mixed, mixed> $argument
  */
-function assertArgument(ParameterInterface $parameter, string $name, mixed $value): void
+function assertIterableArgument(
+    ArrayParameterInterface $parameter,
+    iterable $argument,
+): void {
+    foreach ($argument as $key => $value) {
+        $key = strval($key);
+        assertArgument($key, $parameter->parameters()->get($key), $value);
+    }
+}
+
+/**
+ * @param iterable<mixed, mixed> $argument
+ */
+function assertGenericArgument(
+    GenericParameterInterface $parameter,
+    iterable $argument,
+): void {
+    $generic = '<generic>';
+    $genericKey = '_K' . $generic;
+    $genericValue = '_V' . $generic;
+    foreach ($argument as $key => $value) {
+        assertArgument($genericKey, $parameter->key(), $key);
+        assertArgument($genericValue, $parameter->value(), $value);
+    }
+}
+
+function assertArgument(string $name, ParameterInterface $parameter, mixed $argument): void
 {
     $parameters = [
         $name => $parameter,
     ];
     $arguments = [
-        $name => $value,
+        $name => $argument,
     ];
-    new Arguments(
-        parameters(...$parameters),
-        ...$arguments
-    );
+
+    try {
+        new Arguments(
+            parameters(...$parameters),
+            ...$arguments
+        );
+    } catch(Throwable $e) {
+        throw new InvalidArgumentException(
+            message('Parameter [%name%]: %message%')
+                ->withTranslate('%name%', $name)
+                ->withTranslate('%message%', $e->getMessage())
+        );
+    }
+}
+
+function assertParameter(ParameterInterface $parameter, mixed $argument): void
+{
+    if ($parameter instanceof StringParameterInterface) {
+        /**
+         * @var string $argument
+         */
+        assertStringArgument($parameter, $argument);
+    }
+    if ($parameter instanceof IntegerParameterInterface) {
+        /**
+         * @var int $argument
+         */
+        assertIntegerArgument($parameter, $argument);
+    }
+    if ($parameter instanceof ArrayParameterInterface) {
+        /**
+         * @var iterable<mixed, mixed> $argument
+         */
+        assertIterableArgument($parameter, $argument);
+    }
+    if ($parameter instanceof GenericParameterInterface) {
+        /**
+         * @var iterable<mixed, mixed> $argument
+         */
+        assertGenericArgument($parameter, $argument);
+    }
 }
