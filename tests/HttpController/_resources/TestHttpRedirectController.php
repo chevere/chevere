@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\HttpController\_resources\src;
+namespace Chevere\Tests\HttpController\_resources;
 
 use Chevere\HttpController\HttpRedirectController;
 

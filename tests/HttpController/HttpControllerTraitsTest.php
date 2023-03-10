@@ -24,7 +24,7 @@ use Chevere\HttpController\Traits\StatusNonAuthoritativeInformationTrait;
 use Chevere\HttpController\Traits\StatusOkTrait;
 use Chevere\HttpController\Traits\StatusPartialContentTrait;
 use Chevere\HttpController\Traits\StatusResetContentTrait;
-use Chevere\Tests\HttpController\_resources\src\TestHttpController;
+use Chevere\Tests\HttpController\_resources\TestHttpController;
 use PHPUnit\Framework\TestCase;
 
 final class HttpControllerTraitsTest extends TestCase

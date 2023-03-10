@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\HttpController;
 
 use Chevere\Http\Middlewares;
-use Chevere\Tests\HttpController\_resources\src\TestHttpAcceptController;
-use Chevere\Tests\HttpController\_resources\src\TestHttpController;
+use Chevere\Tests\HttpController\_resources\TestHttpAcceptController;
+use Chevere\Tests\HttpController\_resources\TestHttpController;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
