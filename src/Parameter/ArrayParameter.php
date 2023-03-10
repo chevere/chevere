@@ -17,23 +17,23 @@ use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
-use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeArray;
 
 final class ArrayParameter implements ArrayParameterInterface
 {
     use ParameterTrait;
+    use ArrayParameterTrait;
+
+    private ParametersInterface $parameters;
 
     /**
      * @var array<mixed, mixed>
      */
     private array $default = [];
-
-    private ParametersInterface $parameters;
 
     public function setUp(): void
     {
@@ -55,11 +55,6 @@ final class ArrayParameter implements ArrayParameterInterface
             ->withAddedRequired(...$parameter);
 
         return $new;
-    }
-
-    public function default(): array
-    {
-        return $this->default;
     }
 
     public function parameters(): ParametersInterface
@@ -94,10 +89,5 @@ final class ArrayParameter implements ArrayParameterInterface
                 );
             }
         }
-    }
-
-    private function getType(): TypeInterface
-    {
-        return typeArray();
     }
 }

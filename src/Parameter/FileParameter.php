@@ -17,13 +17,13 @@ use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
-use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeArray;
 
 final class FileParameter implements FileParameterInterface
 {
     use ParameterTrait;
+    use ArrayParameterTrait;
 
     /**
      * @var array<string, mixed>
@@ -60,20 +60,10 @@ final class FileParameter implements FileParameterInterface
         return $this->parameters;
     }
 
-    public function default(): array
-    {
-        return $this->default;
-    }
-
     /**
      * @codeCoverageIgnore
      */
     public function assertCompatible(FileParameterInterface $parameter): void
     {
-    }
-
-    private function getType(): TypeInterface
-    {
-        return typeArray();
     }
 }
