@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\DataStructure\src;
+namespace Chevere\Tests\DataStructure\_resources;
 
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Traits\VectorToArrayTrait;

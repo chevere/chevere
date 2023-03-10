@@ -11,20 +11,21 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\DataStructure\src;
+namespace Chevere\Tests\DataStructure\_resources;
 
 use Chevere\DataStructure\Map;
-use Chevere\DataStructure\Traits\MapToArrayTrait;
+use Chevere\DataStructure\Traits\MapTrait;
 
-final class UsesMapToArrayTrait
+final class UsesMapTrait
 {
-    use MapToArrayTrait;
+    use MapTrait;
 
-    public function __construct()
+    public function withPut(object ...$object): static
     {
-        $this->map = new Map(...[
-            0 => 'test',
-        ]);
+        $new = clone $this;
+        $new->map = $new->map->withPut(...$object);
+
+        return $new;
     }
 
     public function map(): Map

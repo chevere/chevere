@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructure\Traits;
 
-use Chevere\Tests\DataStructure\src\UsesVectorTrait;
+use Chevere\Tests\DataStructure\_resources\UsesVectorTrait;
 use PHPUnit\Framework\TestCase;
 
 final class VectorTraitTest extends TestCase
