@@ -20,7 +20,7 @@ use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
+use function Chevere\Type\typeString;
 
 final class StringParameter implements StringParameterInterface
 {
@@ -83,6 +83,6 @@ final class StringParameter implements StringParameterInterface
 
     private function getType(): TypeInterface
     {
-        return new Type(Type::STRING);
+        return typeString();
     }
 }

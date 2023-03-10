@@ -19,7 +19,7 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
+use function Chevere\Type\typeArray;
 
 final class FileParameter implements FileParameterInterface
 {
@@ -74,6 +74,6 @@ final class FileParameter implements FileParameterInterface
 
     private function getType(): TypeInterface
     {
-        return new Type(Type::ARRAY);
+        return typeArray();
     }
 }

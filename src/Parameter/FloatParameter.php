@@ -16,7 +16,7 @@ namespace Chevere\Parameter;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
+use function Chevere\Type\typeFloat;
 
 final class FloatParameter implements FloatParameterInterface
 {
@@ -46,6 +46,6 @@ final class FloatParameter implements FloatParameterInterface
 
     private function getType(): TypeInterface
     {
-        return new Type(Type::FLOAT);
+        return typeFloat();
     }
 }

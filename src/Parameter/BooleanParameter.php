@@ -16,7 +16,7 @@ namespace Chevere\Parameter;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
+use function Chevere\Type\typeBoolean;
 
 final class BooleanParameter implements BooleanParameterInterface
 {
@@ -46,6 +46,6 @@ final class BooleanParameter implements BooleanParameterInterface
 
     private function getType(): TypeInterface
     {
-        return new Type(Type::BOOLEAN);
+        return typeBoolean();
     }
 }

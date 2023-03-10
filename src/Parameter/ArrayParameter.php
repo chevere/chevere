@@ -22,7 +22,7 @@ use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
+use function Chevere\Type\typeArray;
 
 final class ArrayParameter implements ArrayParameterInterface
 {
@@ -98,6 +98,6 @@ final class ArrayParameter implements ArrayParameterInterface
 
     private function getType(): TypeInterface
     {
-        return new Type(Type::ARRAY);
+        return typeArray();
     }
 }

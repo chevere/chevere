@@ -20,7 +20,7 @@ use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
+use function Chevere\Type\typeInteger;
 
 final class IntegerParameter implements IntegerParameterInterface
 {
@@ -134,7 +134,7 @@ final class IntegerParameter implements IntegerParameterInterface
 
     private function getType(): TypeInterface
     {
-        return new Type(Type::INTEGER);
+        return typeInteger();
     }
 
     private function assertNoValueOverflow(MessageInterface $message): void
