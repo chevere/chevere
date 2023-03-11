@@ -29,9 +29,9 @@ interface ArgumentsInterface extends ToArrayInterface
     public function parameters(): ParametersInterface;
 
     /**
-     * Provides access to the controller arguments as array.
+     * Provides access to the arguments as array.
      *
-     * @return array<string, mixed>
+     * @return array<int|string, mixed>
      */
     public function toArray(): array;
 

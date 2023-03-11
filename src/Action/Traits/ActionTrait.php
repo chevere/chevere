@@ -157,7 +157,7 @@ trait ActionTrait
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<int|string, mixed>
      */
     final protected function getTypedData(mixed ...$data): array
     {

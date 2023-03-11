@@ -15,6 +15,7 @@ namespace Chevere\Parameter;
 
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\GenericInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ArgumentsGetTypedTrait;
@@ -29,7 +30,7 @@ final class Arguments implements ArgumentsInterface
     use ArgumentsGetTypedTrait;
 
     /**
-     * @var array<string, mixed>
+     * @var array<int|string, mixed>
      */
     private array $arguments;
 
@@ -42,17 +43,23 @@ final class Arguments implements ArgumentsInterface
         private ParametersInterface $parameters,
         mixed ...$argument
     ) {
-        $storeArguments = [];
-        foreach (array_keys($argument) as $name) {
-            $name = strval($name);
-            if (! $this->parameters()->has($name)) {
-                unset($argument[$name]);
+        $this->arguments = [];
+        if ($parameters instanceof GenericInterface) {
+            try {
+                assertGenericArgument($parameters->parameter(), $argument);
+            } catch(Throwable $e) {
+                $message = strstr($e->getMessage(), ':', false) ?: '';
+                $message = substr($message, 2);
 
-                continue;
+                throw new InvalidArgumentException(
+                    message($message)
+                );
             }
-            $storeArguments[$name] = $argument[$name];
+            $this->arguments = $argument;
+
+            return;
         }
-        $this->arguments = $storeArguments;
+        $this->processArguments($argument);
         $this->assertRequired();
         $this->errors = [];
         foreach ($this->parameters as $name => $parameter) {
@@ -130,7 +137,7 @@ final class Arguments implements ArgumentsInterface
         $type = $parameter->type();
         if (! $type->validate($argument)) {
             throw new TypeError(
-                message: message('[Parameter %name%]: Expecting value of type %expected%, %provided% provided')
+                message: message('[Property %name%]: Expecting value of type %expected%, %provided% provided')
                     ->withTranslate('%name%', $name)
                     ->withStrong('%expected%', $type->typeHinting())
                     ->withCode('%provided%', get_debug_type($argument))
@@ -141,7 +148,7 @@ final class Arguments implements ArgumentsInterface
             assertParameter($parameter, $argument);
         } catch(Throwable $e) {
             throw new InvalidArgumentException(
-                message: message('[Parameter %name%]: %message%')
+                message: message('[Property %name%]: %message%')
                     ->withTranslate('%name%', $name)
                     ->withTranslate('%message%', $e->getMessage())
             );
@@ -156,7 +163,10 @@ final class Arguments implements ArgumentsInterface
         }
 
         try {
-            $this->assertType($name, $this->get($name));
+            $this->assertType(
+                $name,
+                $this->get($name)
+            );
         } catch (Throwable $e) {
             $this->errors[] = $e->getMessage();
         }
@@ -166,6 +176,23 @@ final class Arguments implements ArgumentsInterface
     {
         if (! $this->has($name)) {
             $this->arguments[$name] = $parameter->default();
+        }
+    }
+
+    /**
+     * @param array<int|string, mixed> $argument
+     */
+    private function processArguments(array $argument): void
+    {
+        foreach (array_keys($argument) as $name) {
+            $name = strval($name);
+
+            if (! $this->parameters()->has($name)) {
+                unset($argument[$name]);
+
+                continue;
+            }
+            $this->arguments[$name] = $argument[$name];
         }
     }
 }

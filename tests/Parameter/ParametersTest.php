@@ -83,8 +83,8 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
         $this->assertSame($parameter, $parameters->get($name));
-        $parametersWithAdded = $parameters->withAddedRequired(test: $parameter);
-        $this->assertNotSame($parameters, $parametersWithAdded);
+        $parametersWith = $parameters->withAddedRequired(test: $parameter);
+        $this->assertNotSame($parameters, $parametersWith);
         $this->expectException(OverflowException::class);
         $parameters->withAddedRequired(...[
             $name => $parameter,
@@ -96,20 +96,20 @@ final class ParametersTest extends TestCase
         $name = 'name';
         $parameter = new StringParameter();
         $parameters = new Parameters();
-        $parametersWithAddedOptional = $parameters
+        $parametersWith = $parameters
             ->withAddedOptional(...[
                 $name => $parameter,
             ]);
-        $this->assertNotSame($parameters, $parametersWithAddedOptional);
-        $this->assertCount(1, $parametersWithAddedOptional);
-        $this->assertCount(1, $parametersWithAddedOptional->optional());
-        $this->assertCount(0, $parametersWithAddedOptional->required());
-        $this->assertTrue($parametersWithAddedOptional->has($name));
-        $this->assertTrue($parametersWithAddedOptional->isOptional($name));
-        $this->assertFalse($parametersWithAddedOptional->isRequired($name));
-        $this->assertSame($parameter, $parametersWithAddedOptional->get($name));
+        $this->assertNotSame($parameters, $parametersWith);
+        $this->assertCount(1, $parametersWith);
+        $this->assertCount(1, $parametersWith->optional());
+        $this->assertCount(0, $parametersWith->required());
+        $this->assertTrue($parametersWith->has($name));
+        $this->assertTrue($parametersWith->isOptional($name));
+        $this->assertFalse($parametersWith->isRequired($name));
+        $this->assertSame($parameter, $parametersWith->get($name));
         $this->expectException(OverflowException::class);
-        $parametersWithAddedOptional->withAddedOptional(...[
+        $parametersWith->withAddedOptional(...[
             $name => $parameter,
         ]);
     }
@@ -137,21 +137,21 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(...[
             $name => $stockParameter,
         ]);
-        $parametersWithModify = $parameters
+        $parametersWith = $parameters
             ->withModify(...[
                 $name => $modifyParameter,
             ]);
-        $this->assertNotSame($parameters, $parametersWithModify);
+        $this->assertNotSame($parameters, $parametersWith);
         $this->assertSame($stockParameter, $parameters->get($name));
-        $this->assertSame($modifyParameter, $parametersWithModify->get($name));
+        $this->assertSame($modifyParameter, $parametersWith->get($name));
         $this->assertNotSame(
             $parameters->get($name),
-            $parametersWithModify->get($name)
+            $parametersWith->get($name)
         );
         $this->assertTrue($parameters->has($name));
-        $this->assertTrue($parametersWithModify->has($name));
+        $this->assertTrue($parametersWith->has($name));
         $this->expectException(OutOfBoundsException::class);
-        $parametersWithModify->withModify(notFound: new StringParameter());
+        $parametersWith->withModify(notFound: new StringParameter());
     }
 
     public function testGetArray(): void

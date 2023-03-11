@@ -115,21 +115,32 @@ function objectParameter(
  * @param ParameterInterface $_V Generic value parameter
  */
 function genericParameter(
-    ParameterInterface $_K,
     ParameterInterface $_V,
+    ?ParameterInterface $_K = null,
     string $description = '',
 ): GenericParameterInterface {
     $parameter = new GenericParameter($description);
+    if ($_K !== null) {
+        $parameter = $parameter->withKey($_K);
+    }
 
-    return $parameter
-        ->withKey($_K)
-        ->withValue($_V);
+    return $parameter->withValue($_V);
 }
 
 function parameters(
     ParameterInterface ...$required,
 ): ParametersInterface {
     return (new Parameters())->withAddedRequired(...$required);
+}
+
+function generic(
+    ParameterInterface $_V,
+    ?ParameterInterface $_K = null,
+    string $description = '',
+): ParametersInterface {
+    $parameter = genericParameter($_V, $_K, $description);
+
+    return new Generic($parameter);
 }
 
 function fileParameter(
@@ -214,7 +225,7 @@ function assertGenericArgument(
     GenericParameterInterface $parameter,
     iterable $argument,
 ): void {
-    $generic = '<generic>';
+    $generic = ' *generic';
     $genericKey = '_K' . $generic;
     $genericValue = '_V' . $generic;
     foreach ($argument as $key => $value) {
@@ -239,7 +250,7 @@ function assertArgument(string $name, ParameterInterface $parameter, mixed $argu
         );
     } catch(Throwable $e) {
         throw new InvalidArgumentException(
-            message('Parameter [%name%]: %message%')
+            message('Argument [%name%]: %message%')
                 ->withTranslate('%name%', $name)
                 ->withTranslate('%message%', $e->getMessage())
         );

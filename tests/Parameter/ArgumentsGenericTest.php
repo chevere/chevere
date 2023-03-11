@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
+use function Chevere\Parameter\generic;
 use function Chevere\Parameter\genericParameter;
 use function Chevere\Parameter\integerParameter;
 use function Chevere\Parameter\parameters;
@@ -23,7 +24,19 @@ use PHPUnit\Framework\TestCase;
 
 final class ArgumentsGenericTest extends TestCase
 {
-    public function genericPropertyProvider(): array
+    public function genericArrayProvider(): array
+    {
+        return [
+            [
+                [
+                    'a' => 'foo',
+                    'b' => 'bar',
+                ],
+            ],
+        ];
+    }
+
+    public function genericArrayPropertyProvider(): array
     {
         return [
             [
@@ -37,7 +50,7 @@ final class ArgumentsGenericTest extends TestCase
         ];
     }
 
-    public function genericNestedPropertyProvider(): array
+    public function genericArrayNestedPropertyProvider(): array
     {
         return [
             [
@@ -58,7 +71,7 @@ final class ArgumentsGenericTest extends TestCase
     }
 
     /**
-     * @dataProvider genericPropertyProvider
+     * @dataProvider genericArrayPropertyProvider
      */
     public function testGeneric(array $args): void
     {
@@ -69,11 +82,11 @@ final class ArgumentsGenericTest extends TestCase
             )
         );
         $this->expectNotToPerformAssertions();
-        $arguments = new Arguments($parameters, ...$args);
+        new Arguments($parameters, ...$args);
     }
 
     /**
-     * @dataProvider genericPropertyProvider
+     * @dataProvider genericArrayPropertyProvider
      */
     public function testGenericConflict(array $args): void
     {
@@ -86,11 +99,11 @@ final class ArgumentsGenericTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument value provided');
         $this->expectExceptionMessage("doesn't match the regex /^one$/");
-        $arguments = new Arguments($parameters, ...$args);
+        new Arguments($parameters, ...$args);
     }
 
     /**
-     * @dataProvider genericNestedPropertyProvider
+     * @dataProvider genericArrayNestedPropertyProvider
      */
     public function testNestedGeneric(array $args): void
     {
@@ -104,11 +117,11 @@ final class ArgumentsGenericTest extends TestCase
             )
         );
         $this->expectNotToPerformAssertions();
-        $arguments = new Arguments($parameters, ...$args);
+        new Arguments($parameters, ...$args);
     }
 
     /**
-     * @dataProvider genericNestedPropertyProvider
+     * @dataProvider genericArrayNestedPropertyProvider
      */
     public function testNestedGenericConflict(array $args): void
     {
@@ -123,6 +136,33 @@ final class ArgumentsGenericTest extends TestCase
         );
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Expecting value of type string, int provided');
+        new Arguments($parameters, ...$args);
+    }
+
+    /**
+     * @dataProvider genericArrayProvider
+     */
+    public function testGenericArguments(array $args): void
+    {
+        $parameters = generic(
+            _V: stringParameter(),
+            _K: stringParameter()
+        );
         $arguments = new Arguments($parameters, ...$args);
+        $this->assertSame($args, $arguments->toArray());
+    }
+
+    /**
+     * @dataProvider genericArrayProvider
+     */
+    public function testGenericArgumentsConflict(array $args): void
+    {
+        $parameters = generic(
+            _V: integerParameter(),
+            _K: stringParameter()
+        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches('/^\[Property _V \*generic\]\:.*/');
+        new Arguments($parameters, ...$args);
     }
 }
