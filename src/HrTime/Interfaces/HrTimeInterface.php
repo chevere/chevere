@@ -15,8 +15,6 @@ namespace Chevere\HrTime\Interfaces;
 
 interface HrTimeInterface
 {
-    public function __construct(int $hrTime);
-
     /**
      * @return string Readable time in ms
      */

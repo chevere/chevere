@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Controller\Interfaces;
 
-use InvalidArgumentException;
 use Stringable;
 
 /**
@@ -21,8 +20,4 @@ use Stringable;
  */
 interface ControllerNameInterface extends Stringable
 {
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function __construct(string $name);
 }

@@ -24,12 +24,6 @@ use TypeError;
 interface ArgumentsInterface extends ToArrayInterface
 {
     /**
-     * @throws OutOfBoundsException
-     * @throws InvalidArgumentException
-     */
-    public function __construct(ParametersInterface $parameters, mixed ...$argument);
-
-    /**
      * Provides access to the parameters instance.
      */
     public function parameters(): ParametersInterface;

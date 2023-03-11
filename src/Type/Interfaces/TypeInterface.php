@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Type\Interfaces;
 
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-
 /**
  * Describes the component in charge of dynamic type validation.
  */
@@ -78,12 +76,6 @@ interface TypeInterface
         self::RESOURCE,
         self::STRING,
     ];
-
-    /**
-     * @param string $type A debug type.
-     * @throws InvalidArgumentException if the type doesn't exists
-     */
-    public function __construct(string $type);
 
     /**
      * Returns the type primitive (array, bool, object, ..., className, interfaceName).

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Regex\Interfaces;
 
 use Chevere\Regex\Exceptions\NoMatchException;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\RuntimeException;
 use Stringable;
 
@@ -32,11 +31,6 @@ interface RegexInterface extends Stringable
         PREG_BAD_UTF8_OFFSET_ERROR => 'PREG_BAD_UTF8_OFFSET_ERROR',
         PREG_JIT_STACKLIMIT_ERROR => 'PREG_JIT_STACKLIMIT_ERROR',
     ];
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    public function __construct(string $pattern);
 
     /**
      * Provides access to the the regex string without delimiters.

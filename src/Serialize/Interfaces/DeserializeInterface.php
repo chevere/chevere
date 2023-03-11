@@ -13,18 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Serialize\Interfaces;
 
-use LogicException;
-
 /**
  * Describes the component in charge of handling `unserialize()`.
  */
 interface DeserializeInterface
 {
-    /**
-     * @throws LogicException
-     */
-    public function __construct(string $unserializable);
-
     /**
      * Provides access to the unserialize'd variable.
      */

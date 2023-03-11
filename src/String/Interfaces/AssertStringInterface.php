@@ -35,8 +35,6 @@ use Chevere\String\Exceptions\StartsWithException;
  */
 interface AssertStringInterface
 {
-    public function __construct(string $string);
-
     /**
      * Asserts that the string is empty.
      *

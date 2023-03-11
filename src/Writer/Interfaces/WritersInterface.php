@@ -13,15 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Writer\Interfaces;
 
-use Chevere\Throwable\Exceptions\LogicException;
-
 interface WritersInterface
 {
-    /**
-     * @throws LogicException
-     */
-    public function __construct();
-
     /**
      * Return an instance with the specified $writer for all writers.
      *

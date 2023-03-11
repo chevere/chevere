@@ -27,6 +27,9 @@ final class Type implements TypeInterface
 
     private string $typeHinting;
 
+    /**
+     * @param string $type A debug type
+     */
     public function __construct(
         private string $type
     ) {

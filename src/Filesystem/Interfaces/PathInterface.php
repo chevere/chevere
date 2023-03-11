@@ -28,14 +28,6 @@ use Stringable;
 interface PathInterface extends Stringable
 {
     /**
-     * @throws PathDotSlashException
-     * @throws PathDoubleDotsDashException
-     * @throws PathExtraSlashesException
-     * @throws PathNotAbsoluteException
-     */
-    public function __construct(string $absolute);
-
-    /**
      * @return string absolute filesystem path
      */
     public function __toString(): string;

@@ -26,8 +26,6 @@ use Iterator;
  */
 interface ParametersInterface extends MappedInterface
 {
-    public function __construct(ParameterInterface ...$parameters);
-
     /**
      * @return Iterator<string, ParameterInterface>
      */

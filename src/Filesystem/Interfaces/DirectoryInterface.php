@@ -18,20 +18,12 @@ use Chevere\Filesystem\Exceptions\DirectoryUnableToCreateException;
 use Chevere\Filesystem\Exceptions\DirectoryUnableToRemoveException;
 use Chevere\Filesystem\Exceptions\FileUnableToRemoveException;
 use Chevere\Filesystem\Exceptions\PathInvalidException;
-use Chevere\Filesystem\Exceptions\PathIsFileException;
-use Chevere\Filesystem\Exceptions\PathTailException;
 
 /**
  * Describes the component in charge of interacting with filesystem directory.
  */
 interface DirectoryInterface
 {
-    /**
-     * @throws PathIsFileException
-     * @throws PathTailException
-     */
-    public function __construct(PathInterface $path);
-
     /**
      * Provides access to the PathInterface instance.
      */

@@ -23,6 +23,9 @@ final class Message implements MessageInterface
      */
     private array $trTable = [];
 
+    /**
+     * @param string $template A message template, i.e: `Disk %foo% is %percent% full`
+     */
     public function __construct(
         private string $template
     ) {

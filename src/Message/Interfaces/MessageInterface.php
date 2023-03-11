@@ -33,11 +33,6 @@ interface MessageInterface extends Stringable
     ];
 
     /**
-     * @param string $template A message template, i.e: `Disk %foo% is %percent% full`
-     */
-    public function __construct(string $template);
-
-    /**
      *  Returns a text message representation.
      */
     public function __toString(): string;

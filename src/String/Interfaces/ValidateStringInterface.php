@@ -18,8 +18,6 @@ namespace Chevere\String\Interfaces;
  */
 interface ValidateStringInterface
 {
-    public function __construct(string $string);
-
     /**
      * Indicates whether the string is empty.
      */

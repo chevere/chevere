@@ -13,24 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Filesystem\Interfaces;
 
-use Chevere\Filesystem\Exceptions\PathDotSlashException;
-use Chevere\Filesystem\Exceptions\PathDoubleDotsDashException;
-use Chevere\Filesystem\Exceptions\PathExtraSlashesException;
-use Chevere\Filesystem\Exceptions\PathNotAbsoluteException;
-
 /**
  * Describes the component in charge of asserting filesystem path format.
  */
 interface AssertPathFormatInterface
 {
-    /**
-     * @throws PathNotAbsoluteException
-     * @throws PathDoubleDotsDashException
-     * @throws PathDotSlashException
-     * @throws PathExtraSlashesException
-     */
-    public function __construct(string $path);
-
     public function path(): string;
 
     public function driveLetter(): string;

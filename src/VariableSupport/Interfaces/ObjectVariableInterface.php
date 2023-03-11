@@ -20,8 +20,6 @@ use Chevere\VariableSupport\Exceptions\ObjectNotClonableException;
  */
 interface ObjectVariableInterface
 {
-    public function __construct(object $variable);
-
     public function variable(): object;
 
     /**
