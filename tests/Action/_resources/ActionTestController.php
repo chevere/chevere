@@ -16,12 +16,12 @@ namespace Chevere\Tests\Action\_resources;
 use Chevere\Attribute\StringAttribute;
 use Chevere\Controller\Controller;
 use function Chevere\Parameter\arrayParameter;
-use Chevere\Parameter\Interfaces\ArrayTypeInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\StringParameter;
 
 final class ActionTestController extends Controller
 {
-    public function getResponseParameter(): ArrayTypeInterface
+    public function getResponseParameter(): ArrayTypeParameterInterface
     {
         return arrayParameter(user: new StringParameter());
     }

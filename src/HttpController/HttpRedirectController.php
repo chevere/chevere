@@ -17,7 +17,7 @@ use Chevere\HttpController\Interfaces\HttpRedirectControllerInterface;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arrayParameter;
 use function Chevere\Parameter\integerParameter;
-use Chevere\Parameter\Interfaces\ArrayTypeInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\objectParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
@@ -29,7 +29,7 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
 
     private int $status = 302;
 
-    public function getResponseParameter(): ArrayTypeInterface
+    public function getResponseParameter(): ArrayTypeParameterInterface
     {
         return arrayParameter(
             uri: objectParameter(UriInterface::class),

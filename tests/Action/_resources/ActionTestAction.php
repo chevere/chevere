@@ -16,7 +16,7 @@ namespace Chevere\Tests\Action\_resources;
 use Chevere\Action\Action;
 use function Chevere\Parameter\arrayParameter;
 use Chevere\Parameter\IntegerParameter;
-use Chevere\Parameter\Interfaces\ArrayTypeInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 
 final class ActionTestAction extends Action
 {
@@ -25,7 +25,7 @@ final class ActionTestAction extends Action
         return 'test';
     }
 
-    public function getResponseParameter(): ArrayTypeInterface
+    public function getResponseParameter(): ArrayTypeParameterInterface
     {
         return arrayParameter(id: new IntegerParameter());
     }

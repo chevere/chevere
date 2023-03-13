@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Interfaces;
 
 /**
- * Describes the component in charge of defining an Array type parameter to be
+ * Describes the component in charge of defining an array type parameter to be
  * used as a base for other array-like parameters.
  */
-interface ArrayTypeInterface extends ParameterInterface
+interface ArrayTypeParameterInterface extends ParameterInterface
 {
     /**
      * Provides access to the default value.

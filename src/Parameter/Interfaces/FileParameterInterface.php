@@ -16,7 +16,7 @@ namespace Chevere\Parameter\Interfaces;
 /**
  * Describes the component in charge of defining a file parameter of type array.
  */
-interface FileParameterInterface extends ArrayTypeInterface
+interface FileParameterInterface extends ArrayTypeParameterInterface
 {
     /**
      * Provides access to the parameters.

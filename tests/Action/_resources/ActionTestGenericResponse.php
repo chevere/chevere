@@ -16,12 +16,12 @@ namespace Chevere\Tests\Action\_resources;
 use Chevere\Action\Action;
 use function Chevere\Parameter\genericParameter;
 use function Chevere\Parameter\integerParameter;
-use Chevere\Parameter\Interfaces\ArrayTypeInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\stringParameter;
 
 final class ActionTestGenericResponse extends Action
 {
-    public function getResponseParameter(): ArrayTypeInterface
+    public function getResponseParameter(): ArrayTypeParameterInterface
     {
         return genericParameter(
             V: integerParameter(),

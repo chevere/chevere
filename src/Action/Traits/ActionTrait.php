@@ -23,7 +23,7 @@ use function Chevere\Parameter\assertParameter;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
-use Chevere\Parameter\Interfaces\ArrayTypeInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -61,7 +61,7 @@ trait ActionTrait
 
     protected ParametersInterface $parameters;
 
-    protected ArrayTypeInterface $responseParameter;
+    protected ArrayTypeParameterInterface $responseParameter;
 
     protected ParametersInterface $containerParameters;
 
@@ -77,7 +77,7 @@ trait ActionTrait
         return parameters();
     }
 
-    public function getResponseParameter(): ArrayTypeInterface
+    public function getResponseParameter(): ArrayTypeParameterInterface
     {
         return arrayParameter();
     }
@@ -127,7 +127,7 @@ trait ActionTrait
     }
 
     // @infection-ignore-all
-    final public function responseParameter(): ArrayTypeInterface
+    final public function responseParameter(): ArrayTypeParameterInterface
     {
         return $this->responseParameter ??= $this->getResponseParameter();
     }

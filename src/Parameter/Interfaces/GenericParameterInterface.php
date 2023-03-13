@@ -16,7 +16,7 @@ namespace Chevere\Parameter\Interfaces;
 /**
  * Describes the component in charge of defining a parameter of type generic.
  */
-interface GenericParameterInterface extends ArrayTypeInterface
+interface GenericParameterInterface extends ArrayTypeParameterInterface
 {
     public function withKey(ParameterInterface $key): self;
 
