@@ -39,9 +39,12 @@ final class Generic implements GenericInterface
         private GenericParameterInterface $parameter
     ) {
         $this->reset();
-        $this->putAdded('required', ...[
-            self::GENERIC_NAME => $parameter,
-        ]);
+        $this->putAdded(
+            'required',
+            ...[
+                self::GENERIC_NAME => $parameter,
+            ]
+        );
     }
 
     public function withAddedRequired(ParameterInterface ...$parameter): ParametersInterface
@@ -49,9 +52,12 @@ final class Generic implements GenericInterface
         $new = clone $this;
         $new->assertParameterArgument(...$parameter);
         $new->reset();
-        $new->putAdded('required', ...[
-            self::GENERIC_NAME => $new->parameter,
-        ]);
+        $new->putAdded(
+            'required',
+            ...[
+                self::GENERIC_NAME => $new->parameter,
+            ]
+        );
 
         return $new;
     }

@@ -50,7 +50,7 @@ final class Arguments implements ArgumentsInterface
         if ($parameters instanceof GenericInterface) {
             try {
                 assertGenericArgument($parameters->parameter(), $arguments);
-            } catch(Throwable $e) {
+            } catch (Throwable $e) {
                 $message = strstr($e->getMessage(), ':', false) ?: '';
                 $message = substr($message, 2);
 
@@ -150,7 +150,7 @@ final class Arguments implements ArgumentsInterface
 
         try {
             assertParameter($parameter, $argument);
-        } catch(Throwable $e) {
+        } catch (Throwable $e) {
             throw new InvalidArgumentException(
                 message: message('[Property %name%]: %message%')
                     ->withTranslate('%name%', $name)

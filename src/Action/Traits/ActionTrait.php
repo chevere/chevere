@@ -138,8 +138,6 @@ trait ActionTrait
                 $missing[] = <<<STRING
                 {$className} {$name}
                 STRING;
-
-                continue;
             }
         }
         if ($missing !== []) {

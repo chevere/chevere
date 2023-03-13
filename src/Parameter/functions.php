@@ -258,7 +258,7 @@ function assertArgument(string $name, ParameterInterface $parameter, mixed $argu
 
     try {
         new Arguments($parameters, $arguments);
-    } catch(Throwable $e) {
+    } catch (Throwable $e) {
         throw new InvalidArgumentException(
             message('Argument [%name%]: %message%')
                 ->withTranslate('%name%', $name)
