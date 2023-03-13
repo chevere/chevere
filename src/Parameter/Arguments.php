@@ -188,9 +188,8 @@ final class Arguments implements ArgumentsInterface
      */
     private function processArguments(array $argument): void
     {
-        // @phpstan-ignore-next-line
-        $array = iterator_to_array($argument);
-        foreach (array_keys($array) as $name) {
+        $keys = array_keys($argument);
+        foreach ($keys as $name) {
             $name = strval($name);
 
             if (! $this->parameters()->has($name)) {
