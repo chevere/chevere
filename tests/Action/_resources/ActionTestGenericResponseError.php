@@ -14,25 +14,28 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
-use function Chevere\Parameter\arrayParameter;
+use function Chevere\Parameter\genericParameter;
 use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\Interfaces\ArrayTypeInterface;
+use function Chevere\Parameter\stringParameter;
 
-final class ActionTestRunReturnExtraArguments extends Action
+final class ActionTestGenericResponseError extends Action
 {
     public function getResponseParameter(): ArrayTypeInterface
     {
-        return arrayParameter(
-            name: integerParameter()
+        return genericParameter(
+            V: integerParameter(),
+            K: stringParameter()
         );
     }
 
     public function run(): array
     {
         return [
-            'id' => 1,
-            'name' => 'name',
-            'extra' => 'extra',
+            'a' => 123,
+            'b' => '124',
+            'c' => 125,
+            // ...
         ];
     }
 }

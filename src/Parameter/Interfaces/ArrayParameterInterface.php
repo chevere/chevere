@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Interfaces;
 
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-
 /**
  * Describes the component in charge of defining a parameter of type array.
  */
-interface ArrayParameterInterface extends ParameterInterface
+interface ArrayParameterInterface extends ArrayTypeInterface
 {
     /**
      * Return an instance with the specified default value.
@@ -27,7 +25,6 @@ interface ArrayParameterInterface extends ParameterInterface
      * an instance that contains the specified default value.
      *
      * @param array<mixed, mixed> $value
-     * @throws InvalidArgumentException
      */
     public function withDefault(array $value): self;
 
@@ -36,22 +33,8 @@ interface ArrayParameterInterface extends ParameterInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified property.
-     *
-     * @throws InvalidArgumentException
      */
     public function withParameter(ParameterInterface ...$parameter): self;
-
-    /**
-     * Provides access to the default value.
-     *
-     * @return array<mixed, mixed>
-     */
-    public function default(): array;
-
-    /**
-     * Provides access to the parameters.
-     */
-    public function parameters(): ParametersInterface;
 
     public function assertCompatible(self $parameter): void;
 }

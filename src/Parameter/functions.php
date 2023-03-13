@@ -217,7 +217,7 @@ function assertIntegerArgument(
 }
 
 /**
- * @param array<mixed, mixed> $argument
+ * @param array<int|string, mixed> $argument
  */
 function assertArrayArgument(
     ArrayParameterInterface $parameter,
@@ -257,7 +257,7 @@ function assertArgument(string $name, ParameterInterface $parameter, mixed $argu
     ];
 
     try {
-        new Arguments($parameters, $arguments);
+        arguments($parameters, $arguments);
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             message('Argument [%name%]: %message%')

@@ -40,7 +40,7 @@ final class ArrayParameter implements ArrayParameterInterface
         $this->parameters = new Parameters();
     }
 
-    public function withDefault(array $value): ArrayParameterInterface
+    public function withDefault(array $value): static
     {
         $new = clone $this;
         $new->default = $value;
@@ -48,7 +48,7 @@ final class ArrayParameter implements ArrayParameterInterface
         return $new;
     }
 
-    public function withParameter(ParameterInterface ...$parameter): ArrayParameterInterface
+    public function withParameter(ParameterInterface ...$parameter): static
     {
         $new = clone $this;
         $new->parameters = $new->parameters

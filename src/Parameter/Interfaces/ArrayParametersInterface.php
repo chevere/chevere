@@ -14,19 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Interfaces;
 
 /**
- * Describes the component in charge of defining a file parameter of type array.
+ * Describes the component in charge of providing access to parameters.
  */
-interface FileParameterInterface extends ArrayTypeInterface
+interface ArrayParametersInterface
 {
     /**
      * Provides access to the parameters.
      */
     public function parameters(): ParametersInterface;
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function default(): array;
-
-    public function assertCompatible(self $parameter): void;
 }

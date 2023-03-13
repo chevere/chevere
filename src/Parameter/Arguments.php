@@ -122,15 +122,15 @@ final class Arguments implements ArgumentsInterface
 
     private function assertRequired(): void
     {
-        $argumentsKeys = array_keys($this->arguments);
-        $diffRequired = array_diff(
+        $keys = array_keys($this->arguments);
+        $diff = array_diff(
             $this->parameters->required(),
-            $argumentsKeys
+            $keys
         );
-        if ($diffRequired !== []) {
+        if ($diff !== []) {
             throw new ArgumentCountError(
                 message('Missing required argument(s): %missing%')
-                    ->withCode('%missing%', implode(', ', $diffRequired))
+                    ->withCode('%missing%', implode(', ', $diff))
             );
         }
     }

@@ -17,16 +17,19 @@ use Chevere\Attribute\StringAttribute;
 use Chevere\Container\Container;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
-use Chevere\Parameter\Arguments;
+use function Chevere\Parameter\arrayParameter;
 use Chevere\Parameter\ArrayParameter;
+use function Chevere\Parameter\assertParameter;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
+use Chevere\Parameter\Interfaces\ArrayTypeInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\ObjectParameter;
+use function Chevere\Parameter\parameters;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
 use Chevere\Response\Interfaces\ResponseInterface;
@@ -58,7 +61,7 @@ trait ActionTrait
 
     protected ParametersInterface $parameters;
 
-    protected ParametersInterface $responseParameters;
+    protected ArrayTypeInterface $responseParameter;
 
     protected ParametersInterface $containerParameters;
 
@@ -71,12 +74,12 @@ trait ActionTrait
 
     public function getContainerParameters(): ParametersInterface
     {
-        return new Parameters();
+        return parameters();
     }
 
-    public function getResponseParameters(): ParametersInterface
+    public function getResponseParameter(): ArrayTypeInterface
     {
-        return new Parameters();
+        return arrayParameter();
     }
 
     final public function withContainer(ContainerInterface $container): static
@@ -105,7 +108,7 @@ trait ActionTrait
             );
         }
         if ($this->isStrict()) {
-            $data = $this->getTypedData(...$data);
+            assertParameter($this->responseParameter(), $data);
         }
 
         return new Response(...$data);
@@ -124,9 +127,9 @@ trait ActionTrait
     }
 
     // @infection-ignore-all
-    final public function responseParameters(): ParametersInterface
+    final public function responseParameter(): ArrayTypeInterface
     {
-        return $this->responseParameters ??= $this->getResponseParameters();
+        return $this->responseParameter ??= $this->getResponseParameter();
     }
 
     final protected function assertContainer(): void
@@ -147,16 +150,6 @@ trait ActionTrait
                     ->withTranslate('%missing%', implode(', ', $missing))
             );
         }
-    }
-
-    /**
-     * @return array<int|string, mixed>
-     */
-    final protected function getTypedData(mixed ...$data): array
-    {
-        $arguments = new Arguments($this->responseParameters(), $data);
-
-        return $arguments->toArray();
     }
 
     final protected function getParameters(): ParametersInterface

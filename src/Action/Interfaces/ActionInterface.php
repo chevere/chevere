@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Action\Interfaces;
 
 use Chevere\Common\Interfaces\DescriptionInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Psr\Container\ContainerInterface;
@@ -60,7 +61,7 @@ interface ActionInterface extends DescriptionInterface
     /**
      * Defines expected response data parameters when executing `run` method.
      */
-    public function getResponseParameters(): ParametersInterface;
+    public function getResponseParameter(): ArrayTypeInterface;
 
     /**
      * Provides access to the parameters.
@@ -68,9 +69,9 @@ interface ActionInterface extends DescriptionInterface
     public function parameters(): ParametersInterface;
 
     /**
-     * Provides access to the expected response data parameters.
+     * Provides access to the expected response parameter.
      */
-    public function responseParameters(): ParametersInterface;
+    public function responseParameter(): ArrayTypeInterface;
 
     /**
      * Retrieves a new response instance typed against the defined response data parameters.

@@ -15,6 +15,7 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 
@@ -68,5 +69,10 @@ final class GenericParameter implements GenericParameterInterface
     {
         $this->key->assertCompatible($parameter->key());
         $this->value->assertCompatible($parameter->value());
+    }
+
+    public function parameters(): ParametersInterface
+    {
+        return generic(V: $this->value, K: $this->key);
     }
 }

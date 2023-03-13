@@ -26,6 +26,8 @@ use Chevere\Parameter\StringParameter;
 use Chevere\Tests\Action\_resources\ActionTestAction;
 use Chevere\Tests\Action\_resources\ActionTestContainer;
 use Chevere\Tests\Action\_resources\ActionTestController;
+use Chevere\Tests\Action\_resources\ActionTestGenericResponse;
+use Chevere\Tests\Action\_resources\ActionTestGenericResponseError;
 use Chevere\Tests\Action\_resources\ActionTestInvalidRunParameter;
 use Chevere\Tests\Action\_resources\ActionTestInvalidRunReturn;
 use Chevere\Tests\Action\_resources\ActionTestMissingRun;
@@ -37,6 +39,7 @@ use Chevere\Tests\Action\_resources\ActionTestSetupBeforeAndAfter;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class ActionTest extends TestCase
@@ -46,7 +49,10 @@ final class ActionTest extends TestCase
         $action = new ActionTestAction();
         $this->assertSame('test', $action->description());
         $this->assertCount(0, $action->parameters());
-        $this->assertCount(1, $action->responseParameters());
+        $this->assertInstanceOf(
+            ArrayParameterInterface::class,
+            $action->responseParameter()
+        );
         $action->run();
     }
 
@@ -175,16 +181,29 @@ final class ActionTest extends TestCase
     public function testRunReturnExtraArguments(): void
     {
         $action = new ActionTestRunReturnExtraArguments();
-        $typedResponse = $action->getResponse();
-        $runResponse = $action->run();
-        $this->assertNotSame($runResponse, $typedResponse->data());
+        $this->expectException(OutOfBoundsException::class);
+        $action->getResponse();
     }
 
     public function testActionNoStrict(): void
     {
         $action = new ActionTestNoStrict();
-        $typedResponse = $action->getResponse();
-        $runResponse = $action->run();
-        $this->assertSame($runResponse, $typedResponse->data());
+        $response = $action->getResponse();
+        $run = $action->run();
+        $this->assertSame($run, $response->data());
+    }
+
+    public function testActionGenericResponse(): void
+    {
+        $action = new ActionTestGenericResponse();
+        $this->expectNotToPerformAssertions();
+        $action->getResponse();
+    }
+
+    public function testActionGenericResponseError(): void
+    {
+        $action = new ActionTestGenericResponseError();
+        $this->expectException(InvalidArgumentException::class);
+        $action->getResponse();
     }
 }

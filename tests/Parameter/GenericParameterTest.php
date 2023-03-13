@@ -15,6 +15,8 @@ namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\arrayParameter;
 use Chevere\Parameter\GenericParameter;
+use Chevere\Parameter\Interfaces\GenericInterface;
+use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use function Chevere\Parameter\stringParameter;
@@ -29,6 +31,9 @@ final class GenericParameterTest extends TestCase
         $this->assertInstanceOf(IntegerParameterInterface::class, $parameter->key());
         $this->assertInstanceOf(StringParameterInterface::class, $parameter->value());
         $this->assertSame([], $parameter->default());
+        /** @var GenericParameterInterface $genericParameter */
+        $genericParameter = $parameter->parameters()->get(GenericInterface::GENERIC_NAME);
+        $this->assertEquals($genericParameter, $parameter);
     }
 
     public function testWithKey(): void
