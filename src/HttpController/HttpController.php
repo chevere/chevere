@@ -68,7 +68,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         $new = clone $this;
         $arguments = new Arguments(
             $new->acceptGet(),
-            ...$get
+            $get
         );
         /** @var array<int|string, string> */
         $array = $arguments->toArray();
@@ -82,7 +82,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         $new = clone $this;
         $arguments = new Arguments(
             $new->acceptPost(),
-            ...$post
+            $post
         );
         /** @var array<int|string, string> */
         $array = $arguments->toArray();
@@ -99,7 +99,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         foreach ($new->acceptFiles()->parameters() as $key => $parameter) {
             $arguments = new Arguments(
                 $parameter->parameters(),
-                ...$files[$key]
+                $files[$key]
             );
             /** @var array<int|string, array<string, int|string>> $array */
             $array[$key] = $arguments->toArray();

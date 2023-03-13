@@ -48,7 +48,7 @@ final class ArgumentsIterableTest extends TestCase
             )
         );
         $this->expectNotToPerformAssertions();
-        $arguments = new Arguments($parameters, ...$args);
+        $arguments = new Arguments($parameters, $args);
     }
 
     /**
@@ -63,6 +63,6 @@ final class ArgumentsIterableTest extends TestCase
             )
         );
         $this->expectException(InvalidArgumentException::class);
-        $arguments = new Arguments($parameters, ...$args);
+        $arguments = new Arguments($parameters, $args);
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use function Chevere\Message\message;
+use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
@@ -110,39 +111,6 @@ function objectParameter(
     return $parameter->withClassName($className);
 }
 
-/**
- * @param ParameterInterface $_K Generic key parameter
- * @param ParameterInterface $_V Generic value parameter
- */
-function genericParameter(
-    ParameterInterface $_V,
-    ?ParameterInterface $_K = null,
-    string $description = '',
-): GenericParameterInterface {
-    $parameter = new GenericParameter($description);
-    if ($_K !== null) {
-        $parameter = $parameter->withKey($_K);
-    }
-
-    return $parameter->withValue($_V);
-}
-
-function parameters(
-    ParameterInterface ...$required,
-): ParametersInterface {
-    return (new Parameters())->withAddedRequired(...$required);
-}
-
-function generic(
-    ParameterInterface $_V,
-    ?ParameterInterface $_K = null,
-    string $description = '',
-): ParametersInterface {
-    $parameter = genericParameter($_V, $_K, $description);
-
-    return new Generic($parameter);
-}
-
 function fileParameter(
     string $description = '',
     ?StringParameterInterface $name = null,
@@ -155,6 +123,49 @@ function fileParameter(
         type: $type ?? stringParameter(),
         description: $description,
     );
+}
+
+/**
+ * @param ParameterInterface $K Generic key parameter
+ * @param ParameterInterface $V Generic value parameter
+ */
+function genericParameter(
+    ParameterInterface $V,
+    ?ParameterInterface $K = null,
+    string $description = '',
+): GenericParameterInterface {
+    $parameter = new GenericParameter($description);
+    if ($K !== null) {
+        $parameter = $parameter->withKey($K);
+    }
+
+    return $parameter->withValue($V);
+}
+
+function parameters(
+    ParameterInterface ...$required,
+): ParametersInterface {
+    return (new Parameters())->withAddedRequired(...$required);
+}
+
+function generic(
+    ParameterInterface $V,
+    ?ParameterInterface $K = null,
+    string $description = '',
+): ParametersInterface {
+    $parameter = genericParameter($V, $K, $description);
+
+    return new Generic($parameter);
+}
+
+/**
+ * @param array<int|string, mixed> $arguments
+ */
+function arguments(
+    ParametersInterface $parameters,
+    array $arguments
+): ArgumentsInterface {
+    return new Arguments($parameters, $arguments);
 }
 
 function assertStringArgument(
@@ -206,11 +217,11 @@ function assertIntegerArgument(
 }
 
 /**
- * @param iterable<mixed, mixed> $argument
+ * @param array<mixed, mixed> $argument
  */
-function assertIterableArgument(
+function assertArrayArgument(
     ArrayParameterInterface $parameter,
-    iterable $argument,
+    array $argument,
 ): void {
     foreach ($argument as $key => $value) {
         $key = strval($key);
@@ -236,18 +247,17 @@ function assertGenericArgument(
 
 function assertArgument(string $name, ParameterInterface $parameter, mixed $argument): void
 {
-    $parameters = [
-        $name => $parameter,
-    ];
+    $parameters = parameters(
+        ...[
+            $name => $parameter,
+        ]
+    );
     $arguments = [
         $name => $argument,
     ];
 
     try {
-        new Arguments(
-            parameters(...$parameters),
-            ...$arguments
-        );
+        new Arguments($parameters, $arguments);
     } catch(Throwable $e) {
         throw new InvalidArgumentException(
             message('Argument [%name%]: %message%')
@@ -259,28 +269,19 @@ function assertArgument(string $name, ParameterInterface $parameter, mixed $argu
 
 function assertParameter(ParameterInterface $parameter, mixed $argument): void
 {
-    if ($parameter instanceof StringParameterInterface) {
-        /**
-         * @var string $argument
-         */
-        assertStringArgument($parameter, $argument);
-    }
-    if ($parameter instanceof IntegerParameterInterface) {
-        /**
-         * @var int $argument
-         */
-        assertIntegerArgument($parameter, $argument);
-    }
-    if ($parameter instanceof ArrayParameterInterface) {
-        /**
-         * @var iterable<mixed, mixed> $argument
-         */
-        assertIterableArgument($parameter, $argument);
-    }
-    if ($parameter instanceof GenericParameterInterface) {
-        /**
-         * @var iterable<mixed, mixed> $argument
-         */
-        assertGenericArgument($parameter, $argument);
-    }
+    match (true) {
+        $parameter instanceof StringParameterInterface
+            // @phpstan-ignore-next-line
+            => assertStringArgument($parameter, $argument),
+        $parameter instanceof IntegerParameterInterface
+            // @phpstan-ignore-next-line
+            => assertIntegerArgument($parameter, $argument),
+        $parameter instanceof ArrayParameterInterface
+            // @phpstan-ignore-next-line
+            => assertArrayArgument($parameter, $argument),
+        $parameter instanceof GenericParameterInterface
+            // @phpstan-ignore-next-line
+            => assertGenericArgument($parameter, $argument),
+        default => '',
+    };
 }

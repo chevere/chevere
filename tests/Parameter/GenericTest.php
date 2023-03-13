@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\arrayParameter;
 use function Chevere\Parameter\generic;
+use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\Interfaces\GenericInterface;
 use function Chevere\Parameter\stringParameter;
 use Chevere\Throwable\Errors\ArgumentCountError;
@@ -103,10 +105,33 @@ final class GenericTest extends TestCase
         $parameters->withAddedOptional($parameters->parameter(), $parameters->parameter());
     }
 
+    public function testWea(): void
+    {
+        $parameters = generic(
+            V: arrayParameter(
+                id: integerParameter(),
+                name: stringParameter(),
+            ),
+            K: integerParameter(minimum: 99)
+        );
+        $weas = [
+            100 => [
+                'id' => 1,
+                'name' => 'luis',
+            ],
+            200 => [
+                'id' => 2,
+                'name' => 'miguel',
+            ],
+        ];
+        $this->expectNotToPerformAssertions();
+        new Arguments($parameters, $weas);
+    }
+
     private function getParameters(): GenericInterface
     {
         return generic(
-            _V: arrayParameter()
+            V: arrayParameter()
         );
     }
 }

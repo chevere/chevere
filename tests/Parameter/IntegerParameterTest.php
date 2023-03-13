@@ -56,10 +56,12 @@ final class IntegerParameterTest extends TestCase
         ];
         $parameter = (new IntegerParameter())->withAccept(...$accept);
         $parameters = new Parameters(test: $parameter);
-        $arguments = new Arguments($parameters, ...$expect);
+        $arguments = new Arguments($parameters, $expect);
         $this->assertSame($expect, $arguments->toArray());
         $this->expectException(InvalidArgumentException::class);
-        new Arguments($parameters, test: 0);
+        new Arguments($parameters, [
+            'test' => 0,
+        ]);
     }
 
     public function testWithMinimum(): void
@@ -82,10 +84,12 @@ final class IntegerParameterTest extends TestCase
         ];
         $parameter = (new IntegerParameter())->withMinimum(1);
         $parameters = new Parameters(test: $parameter);
-        $arguments = new Arguments($parameters, ...$expect);
+        $arguments = new Arguments($parameters, $expect);
         $this->assertSame($expect, $arguments->toArray());
         $this->expectException(InvalidArgumentException::class);
-        new Arguments($parameters, test: -1);
+        new Arguments($parameters, [
+            'test' => -1,
+        ]);
     }
 
     public function testWithMaximum(): void
@@ -108,10 +112,12 @@ final class IntegerParameterTest extends TestCase
         ];
         $parameter = (new IntegerParameter())->withMaximum(1);
         $parameters = new Parameters(test: $parameter);
-        $arguments = new Arguments($parameters, ...$expect);
+        $arguments = new Arguments($parameters, $expect);
         $this->assertSame($expect, $arguments->toArray());
         $this->expectException(InvalidArgumentException::class);
-        new Arguments($parameters, test: 2);
+        new Arguments($parameters, [
+            'test' => 2,
+        ]);
     }
 
     public function testWithMinimumMaximum(): void

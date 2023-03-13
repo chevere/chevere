@@ -39,14 +39,17 @@ final class Arguments implements ArgumentsInterface
      */
     private array $errors;
 
+    /**
+     * @param array<int|string, mixed> $arguments
+     */
     public function __construct(
         private ParametersInterface $parameters,
-        mixed ...$argument
+        array $arguments
     ) {
         $this->arguments = [];
         if ($parameters instanceof GenericInterface) {
             try {
-                assertGenericArgument($parameters->parameter(), $argument);
+                assertGenericArgument($parameters->parameter(), $arguments);
             } catch(Throwable $e) {
                 $message = strstr($e->getMessage(), ':', false) ?: '';
                 $message = substr($message, 2);
@@ -55,11 +58,12 @@ final class Arguments implements ArgumentsInterface
                     message($message)
                 );
             }
-            $this->arguments = $argument;
+            $this->arguments = $arguments;
 
             return;
         }
-        $this->processArguments($argument);
+
+        $this->processArguments($arguments);
         $this->assertRequired();
         $this->errors = [];
         foreach ($this->parameters as $name => $parameter) {
@@ -184,7 +188,9 @@ final class Arguments implements ArgumentsInterface
      */
     private function processArguments(array $argument): void
     {
-        foreach (array_keys($argument) as $name) {
+        // @phpstan-ignore-next-line
+        $array = iterator_to_array($argument);
+        foreach (array_keys($array) as $name) {
             $name = strval($name);
 
             if (! $this->parameters()->has($name)) {

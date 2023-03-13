@@ -77,12 +77,12 @@ final class ArgumentsGenericTest extends TestCase
     {
         $parameters = parameters(
             top: genericParameter(
-                _K: integerParameter(),
-                _V: stringParameter()
+                K: integerParameter(),
+                V: stringParameter()
             )
         );
         $this->expectNotToPerformAssertions();
-        new Arguments($parameters, ...$args);
+        new Arguments($parameters, $args);
     }
 
     /**
@@ -92,14 +92,14 @@ final class ArgumentsGenericTest extends TestCase
     {
         $parameters = parameters(
             top: genericParameter(
-                _K: integerParameter(),
-                _V: stringParameter('/^one$/')
+                K: integerParameter(),
+                V: stringParameter('/^one$/')
             )
         );
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument value provided');
         $this->expectExceptionMessage("doesn't match the regex /^one$/");
-        new Arguments($parameters, ...$args);
+        new Arguments($parameters, $args);
     }
 
     /**
@@ -109,15 +109,15 @@ final class ArgumentsGenericTest extends TestCase
     {
         $parameters = parameters(
             nested: genericParameter(
-                _K: integerParameter(),
-                _V: genericParameter(
-                    _K: stringParameter(),
-                    _V: integerParameter()
+                K: integerParameter(),
+                V: genericParameter(
+                    K: stringParameter(),
+                    V: integerParameter()
                 )
             )
         );
         $this->expectNotToPerformAssertions();
-        new Arguments($parameters, ...$args);
+        new Arguments($parameters, $args);
     }
 
     /**
@@ -127,16 +127,16 @@ final class ArgumentsGenericTest extends TestCase
     {
         $parameters = parameters(
             nested: genericParameter(
-                _K: integerParameter(),
-                _V: genericParameter(
-                    _K: stringParameter(),
-                    _V: stringParameter()
+                K: integerParameter(),
+                V: genericParameter(
+                    K: stringParameter(),
+                    V: stringParameter()
                 )
             )
         );
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Expecting value of type string, int provided');
-        new Arguments($parameters, ...$args);
+        new Arguments($parameters, $args);
     }
 
     /**
@@ -145,10 +145,10 @@ final class ArgumentsGenericTest extends TestCase
     public function testGenericArguments(array $args): void
     {
         $parameters = generic(
-            _V: stringParameter(),
-            _K: stringParameter()
+            V: stringParameter(),
+            K: stringParameter()
         );
-        $arguments = new Arguments($parameters, ...$args);
+        $arguments = new Arguments($parameters, $args);
         $this->assertSame($args, $arguments->toArray());
     }
 
@@ -158,11 +158,11 @@ final class ArgumentsGenericTest extends TestCase
     public function testGenericArgumentsConflict(array $args): void
     {
         $parameters = generic(
-            _V: integerParameter(),
-            _K: stringParameter()
+            V: integerParameter(),
+            K: stringParameter()
         );
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^\[Property _V \*generic\]\:.*/');
-        new Arguments($parameters, ...$args);
+        new Arguments($parameters, $args);
     }
 }

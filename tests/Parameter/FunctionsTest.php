@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayParameter;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\booleanParameter;
@@ -28,7 +29,7 @@ use stdClass;
 
 final class FunctionsTest extends TestCase
 {
-    public function testFunctionParameters(): void
+    public function testParameters(): void
     {
         $parameters = parameters();
         $this->assertCount(0, $parameters);
@@ -37,6 +38,18 @@ final class FunctionsTest extends TestCase
         );
         $this->assertCount(1, $parameters);
         $this->assertTrue($parameters->isRequired('foo'));
+    }
+
+    public function testArguments(): void
+    {
+        $parameters = parameters(
+            foo: stringParameter()
+        );
+        $args = [
+            'foo' => 'bar',
+        ];
+        $arguments = arguments($parameters, $args);
+        $this->assertSame($args, $arguments->toArray());
     }
 
     public function testArrayParameter(): void
@@ -128,13 +141,13 @@ final class FunctionsTest extends TestCase
     public function testFunctionGenericParameter(): void
     {
         $parameter = genericParameter(
-            _K: stringParameter(),
-            _V: stringParameter()
+            K: stringParameter(),
+            V: stringParameter()
         );
         $this->assertSame('', $parameter->description());
         $parameter = genericParameter(
-            _K: stringParameter(),
-            _V: stringParameter(),
+            K: stringParameter(),
+            V: stringParameter(),
             description: 'foo'
         );
         $this->assertSame('foo', $parameter->description());

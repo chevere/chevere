@@ -16,12 +16,12 @@ namespace Chevere\Action\Traits;
 use Chevere\Attribute\StringAttribute;
 use Chevere\Container\Container;
 use function Chevere\Message\message;
+use function Chevere\Parameter\arguments;
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\ArrayParameter;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
-use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -96,7 +96,7 @@ trait ActionTrait
     final public function getResponse(mixed ...$argument): ResponseInterface
     {
         $this->assertContainer();
-        $arguments = $this->getArguments(...$argument)->toArray();
+        $arguments = arguments($this->parameters(), $argument)->toArray();
         $data = $this->run(...$arguments);
         if (! is_array($data)) {
             throw new TypeError(
@@ -151,17 +151,12 @@ trait ActionTrait
         }
     }
 
-    final protected function getArguments(mixed ...$argument): ArgumentsInterface
-    {
-        return new Arguments($this->parameters(), ...$argument);
-    }
-
     /**
      * @return array<int|string, mixed>
      */
     final protected function getTypedData(mixed ...$data): array
     {
-        $arguments = new Arguments($this->responseParameters(), ...$data);
+        $arguments = new Arguments($this->responseParameters(), $data);
 
         return $arguments->toArray();
     }
