@@ -15,7 +15,7 @@ namespace Chevere\Parameter;
 
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
-use Chevere\Parameter\Interfaces\GenericInterface;
+use Chevere\Parameter\Interfaces\GenericsInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ArgumentsGetTypedTrait;
@@ -47,7 +47,7 @@ final class Arguments implements ArgumentsInterface
         array $arguments
     ) {
         $this->arguments = [];
-        if ($parameters instanceof GenericInterface) {
+        if ($parameters instanceof GenericsInterface) {
             try {
                 assertGenericArgument($parameters->parameter(), $arguments);
             } catch (Throwable $e) {

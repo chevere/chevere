@@ -16,8 +16,8 @@ namespace Chevere\Parameter;
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
 use function Chevere\Message\message;
-use Chevere\Parameter\Interfaces\GenericInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
+use Chevere\Parameter\Interfaces\GenericsInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ParametersGetTypedTrait;
@@ -25,7 +25,7 @@ use Chevere\Parameter\Traits\ParametersTrait;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 
-final class Generic implements GenericInterface
+final class Generics implements GenericsInterface
 {
     /**
      * @template-use MapTrait<ParameterInterface>

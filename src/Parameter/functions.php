@@ -134,28 +134,17 @@ function genericParameter(
     ?ParameterInterface $K = null,
     string $description = '',
 ): GenericParameterInterface {
-    $parameter = new GenericParameter($description);
-    if ($K !== null) {
-        $parameter = $parameter->withKey($K);
+    if ($K === null) {
+        $K = integerParameter();
     }
 
-    return $parameter->withValue($V);
+    return new GenericParameter($V, $K, $description);
 }
 
 function parameters(
     ParameterInterface ...$required,
 ): ParametersInterface {
     return (new Parameters())->withAddedRequired(...$required);
-}
-
-function generic(
-    ParameterInterface $V,
-    ?ParameterInterface $K = null,
-    string $description = '',
-): ParametersInterface {
-    $parameter = genericParameter($V, $K, $description);
-
-    return new Generic($parameter);
 }
 
 /**

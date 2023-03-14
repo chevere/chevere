@@ -18,10 +18,6 @@ namespace Chevere\Parameter\Interfaces;
  */
 interface GenericParameterInterface extends ArrayTypeParameterInterface
 {
-    public function withKey(ParameterInterface $key): self;
-
-    public function withValue(ParameterInterface $parameter): self;
-
     public function key(): ParameterInterface;
 
     public function value(): ParameterInterface;

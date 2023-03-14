@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Interfaces;
 
-interface GenericInterface extends ParametersInterface
+interface GenericsInterface extends ParametersInterface
 {
     public const GENERIC_NAME = 'generic';
 

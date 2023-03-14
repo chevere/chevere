@@ -24,35 +24,20 @@ final class GenericParameter implements GenericParameterInterface
     use ParameterTrait;
     use ArrayParameterTrait;
 
-    private ParameterInterface $key;
-
-    private ParameterInterface $value;
-
     /**
      * @var array<mixed, mixed>
      */
     private array $default = [];
 
-    public function setUp(): void
-    {
-        $this->key = integerParameter();
-        $this->value = stringParameter();
-    }
+    private ParametersInterface $parameters;
 
-    public function withKey(ParameterInterface $key): GenericParameterInterface
-    {
-        $new = clone $this;
-        $new->key = $key;
-
-        return $new;
-    }
-
-    public function withValue(ParameterInterface $parameter): GenericParameterInterface
-    {
-        $new = clone $this;
-        $new->value = $parameter;
-
-        return $new;
+    final public function __construct(
+        private ParameterInterface $value,
+        private ParameterInterface $key,
+        private string $description = ''
+    ) {
+        $this->setUp();
+        $this->type = $this->type();
     }
 
     public function key(): ParameterInterface
@@ -73,6 +58,6 @@ final class GenericParameter implements GenericParameterInterface
 
     public function parameters(): ParametersInterface
     {
-        return generic(V: $this->value, K: $this->key);
+        return $this->parameters ??= new Generics($this);
     }
 }

@@ -15,28 +15,29 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\arrayParameter;
-use function Chevere\Parameter\generic;
+use function Chevere\Parameter\genericParameter;
+use Chevere\Parameter\Generics;
 use function Chevere\Parameter\integerParameter;
-use Chevere\Parameter\Interfaces\GenericInterface;
+use Chevere\Parameter\Interfaces\GenericsInterface;
 use function Chevere\Parameter\stringParameter;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use PHPUnit\Framework\TestCase;
 
-final class GenericTest extends TestCase
+final class GenericsTest extends TestCase
 {
     public function testConstruct(): void
     {
         $parameters = $this->getParameters();
-        $parameters->assertHas(GenericInterface::GENERIC_NAME);
+        $parameters->assertHas(GenericsInterface::GENERIC_NAME);
         $this->assertCount(1, $parameters);
         $this->assertSame(
-            [GenericInterface::GENERIC_NAME],
+            [GenericsInterface::GENERIC_NAME],
             $parameters->required()
         );
         $this->assertSame([], $parameters->optional());
         $this->assertSame(
-            $parameters->get(GenericInterface::GENERIC_NAME),
+            $parameters->get(GenericsInterface::GENERIC_NAME),
             $parameters->parameter()
         );
     }
@@ -46,14 +47,14 @@ final class GenericTest extends TestCase
         $parameters = $this->getParameters();
         $parametersWith = $parameters->withAddedRequired($parameters->parameter());
         $this->assertNotSame($parameters, $parametersWith);
-        $parametersWith->assertHas(GenericInterface::GENERIC_NAME);
+        $parametersWith->assertHas(GenericsInterface::GENERIC_NAME);
         $this->assertSame([], $parametersWith->optional());
         $this->assertSame(
-            [GenericInterface::GENERIC_NAME],
+            [GenericsInterface::GENERIC_NAME],
             $parametersWith->required()
         );
         $this->assertSame(
-            $parametersWith->get(GenericInterface::GENERIC_NAME),
+            $parametersWith->get(GenericsInterface::GENERIC_NAME),
             $parameters->parameter()
         );
     }
@@ -63,14 +64,14 @@ final class GenericTest extends TestCase
         $parameters = $this->getParameters();
         $parametersWith = $parameters->withAddedOptional($parameters->parameter());
         $this->assertNotSame($parameters, $parametersWith);
-        $parametersWith->assertHas(GenericInterface::GENERIC_NAME);
+        $parametersWith->assertHas(GenericsInterface::GENERIC_NAME);
         $this->assertSame([], $parametersWith->required());
         $this->assertSame(
-            [GenericInterface::GENERIC_NAME],
+            [GenericsInterface::GENERIC_NAME],
             $parametersWith->optional()
         );
         $this->assertSame(
-            $parametersWith->get(GenericInterface::GENERIC_NAME),
+            $parametersWith->get(GenericsInterface::GENERIC_NAME),
             $parameters->parameter()
         );
     }
@@ -107,12 +108,14 @@ final class GenericTest extends TestCase
 
     public function testWea(): void
     {
-        $parameters = generic(
-            V: arrayParameter(
-                id: integerParameter(),
-                name: stringParameter(),
-            ),
-            K: integerParameter(minimum: 99)
+        $parameters = new Generics(
+            genericParameter(
+                V: arrayParameter(
+                    id: integerParameter(),
+                    name: stringParameter(),
+                ),
+                K: integerParameter(minimum: 99)
+            )
         );
         $weas = [
             100 => [
@@ -128,10 +131,12 @@ final class GenericTest extends TestCase
         new Arguments($parameters, $weas);
     }
 
-    private function getParameters(): GenericInterface
+    private function getParameters(): GenericsInterface
     {
-        return generic(
-            V: arrayParameter()
+        return new Generics(
+            genericParameter(
+                V: arrayParameter()
+            )
         );
     }
 }
