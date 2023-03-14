@@ -29,14 +29,12 @@ final class GenericParameter implements GenericParameterInterface
      */
     private array $default = [];
 
-    private ParametersInterface $parameters;
-
     final public function __construct(
         private ParameterInterface $value,
         private ParameterInterface $key,
         private string $description = ''
     ) {
-        $this->setUp();
+        $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();
     }
 

@@ -141,6 +141,16 @@ function genericParameter(
     return new GenericParameter($V, $K, $description);
 }
 
+function generics(
+    ParameterInterface $V,
+    ?ParameterInterface $K = null,
+    string $description = '',
+): ParametersInterface {
+    return new Generics(
+        genericParameter($V, $K, $description)
+    );
+}
+
 function parameters(
     ParameterInterface ...$required,
 ): ParametersInterface {

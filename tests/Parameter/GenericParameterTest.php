@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use function Chevere\Parameter\arrayParameter;
 use Chevere\Parameter\GenericParameter;
-use Chevere\Parameter\Interfaces\GenericParameterInterface;
+use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\Interfaces\GenericsInterface;
 use function Chevere\Parameter\stringParameter;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class GenericParameterTest extends TestCase
@@ -36,8 +36,10 @@ final class GenericParameterTest extends TestCase
         $this->assertSame($key, $parameter->key());
         $this->assertSame([], $parameter->default());
         $this->assertSame($description, $parameter->description());
-        /** @var GenericParameterInterface $genericParameter */
-        $genericParameter = $parameter->parameters()->get(GenericsInterface::GENERIC_NAME);
+        $parameters = $parameter->parameters();
+        $this->assertSame($parameters, $parameter->parameters());
+        $this->assertInstanceOf(GenericsInterface::class, $parameters);
+        $genericParameter = $parameters->get(GenericsInterface::GENERIC_NAME);
         $this->assertEquals($genericParameter, $parameter);
     }
 
@@ -45,9 +47,33 @@ final class GenericParameterTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         $key = stringParameter();
-        $value = arrayParameter();
+        $value = integerParameter(description: 'compatible');
+        $keyAlt = stringParameter(description: 'compatible');
+        $valueAlt = integerParameter();
         $parameter = new GenericParameter($value, $key);
-        $parameterAlt = new GenericParameter($value, $key, 'compatible');
-        $parameterAlt->assertCompatible($parameter);
+        $compatible = new GenericParameter($valueAlt, $keyAlt, 'compatible');
+        $parameter->assertCompatible($compatible);
+    }
+
+    public function testAssertCompatibleConflictValue(): void
+    {
+        $key = stringParameter();
+        $value = integerParameter();
+        $valueAlt = integerParameter(minimum: 1);
+        $parameter = new GenericParameter($value, $key);
+        $notCompatible = new GenericParameter($valueAlt, $key);
+        $this->expectException(InvalidArgumentException::class);
+        $parameter->assertCompatible($notCompatible);
+    }
+
+    public function testAssertCompatibleConflictKey(): void
+    {
+        $key = stringParameter();
+        $value = integerParameter();
+        $keyAlt = stringParameter('/^[a-z]+&/');
+        $parameter = new GenericParameter($value, $key);
+        $notCompatible = new GenericParameter($value, $keyAlt);
+        $this->expectException(InvalidArgumentException::class);
+        $parameter->assertCompatible($notCompatible);
     }
 }

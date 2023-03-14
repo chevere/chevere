@@ -36,8 +36,6 @@ final class FileParameter implements FileParameterInterface
         'type' => '',
     ];
 
-    private ParametersInterface $parameters;
-
     final public function __construct(
         StringParameterInterface $name,
         IntegerParameterInterface $size,

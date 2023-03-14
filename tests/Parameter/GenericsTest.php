@@ -16,6 +16,7 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\arrayParameter;
 use function Chevere\Parameter\genericParameter;
+use function Chevere\Parameter\generics;
 use Chevere\Parameter\Generics;
 use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\Interfaces\GenericsInterface;
@@ -133,10 +134,8 @@ final class GenericsTest extends TestCase
 
     private function getParameters(): GenericsInterface
     {
-        return new Generics(
-            genericParameter(
-                V: arrayParameter()
-            )
+        return generics(
+            V: arrayParameter()
         );
     }
 }

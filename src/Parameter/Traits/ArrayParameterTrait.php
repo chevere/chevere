@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
+use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeArray;
 
 trait ArrayParameterTrait
 {
+    private ParametersInterface $parameters;
+
     /**
      * @return array<mixed, mixed>
      */

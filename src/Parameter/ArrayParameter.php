@@ -28,8 +28,6 @@ final class ArrayParameter implements ArrayParameterInterface
     use ParameterTrait;
     use ArrayParameterTrait;
 
-    private ParametersInterface $parameters;
-
     /**
      * @var array<mixed, mixed>
      */
