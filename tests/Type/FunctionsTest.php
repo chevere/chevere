@@ -16,6 +16,7 @@ namespace Chevere\Tests\Type;
 use function Chevere\Type\getType;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\returnTypeExceptionMessage;
+use function Chevere\Type\typeUnion;
 use PHPUnit\Framework\TestCase;
 
 final class FunctionsTest extends TestCase
@@ -48,5 +49,12 @@ final class FunctionsTest extends TestCase
             $object = $name();
             $this->assertSame($v, $object->typeHinting());
         }
+    }
+
+    public function testUnionFunction(): void
+    {
+        $type = typeUnion();
+        $this->assertFalse($type->validate('test'));
+        $this->assertTrue($type->validate(['a', 'b', 'c']));
     }
 }

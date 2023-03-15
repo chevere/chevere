@@ -19,12 +19,12 @@ namespace Chevere\Parameter\Interfaces;
 interface UnionParameterInterface extends ParameterInterface
 {
     /**
-     * Return an instance with the specified property.
+     * Return an instance with added optional parameters.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified property.
+     * an instance that contains the specified parameters.
      */
-    public function withAddedRequired(ParameterInterface ...$parameter): self;
+    public function withAdded(ParameterInterface ...$parameter): self;
 
     public function assertCompatible(self $parameter): void;
 }

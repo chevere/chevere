@@ -38,6 +38,8 @@ interface TypeInterface
 
     public const NULL = 'null';
 
+    public const UNION = '|';
+
     public const PRIMITIVE_CLASS_NAME = 'className';
 
     public const PRIMITIVE_INTERFACE_NAME = 'interfaceName';
@@ -59,6 +61,7 @@ interface TypeInterface
         self::STRING => 'is_string',
         self::PRIMITIVE_CLASS_NAME => 'is_object',
         self::PRIMITIVE_INTERFACE_NAME => 'is_object',
+        self::UNION => 'is_array',
     ];
 
     /**
@@ -75,6 +78,7 @@ interface TypeInterface
         self::OBJECT,
         self::RESOURCE,
         self::STRING,
+        self::UNION,
     ];
 
     /**

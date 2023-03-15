@@ -38,13 +38,13 @@ final class Parameters implements ParametersInterface
         $this->map = new Map();
         $this->required = [];
         $this->optional = [];
-        $this->putAdded('required', ...$parameter);
+        $this->putAdded('required', $parameter);
     }
 
     public function withAddedRequired(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
-        $new->putAdded('required', ...$parameter);
+        $new->putAdded('required', $parameter);
 
         return $new;
     }
@@ -52,7 +52,7 @@ final class Parameters implements ParametersInterface
     public function withAddedOptional(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
-        $new->putAdded('optional', ...$parameter);
+        $new->putAdded('optional', $parameter);
 
         return $new;
     }

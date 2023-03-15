@@ -84,6 +84,11 @@ function typeNull(): TypeInterface
     return new Type(Type::NULL);
 }
 
+function typeUnion(): TypeInterface
+{
+    return new Type(Type::UNION);
+}
+
 /**
  * @throws InvalidArgumentException
  */

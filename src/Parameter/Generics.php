@@ -41,7 +41,7 @@ final class Generics implements GenericsInterface
         $this->reset();
         $this->putAdded(
             'required',
-            ...[
+            [
                 self::GENERIC_NAME => $parameter,
             ]
         );
@@ -54,7 +54,7 @@ final class Generics implements GenericsInterface
         $new->reset();
         $new->putAdded(
             'required',
-            ...[
+            [
                 self::GENERIC_NAME => $new->parameter,
             ]
         );
@@ -67,7 +67,7 @@ final class Generics implements GenericsInterface
         $new = clone $this;
         $new->assertParameterArgument(...$parameter);
         $new->reset();
-        $new->putAdded('optional', ...[
+        $new->putAdded('optional', [
             self::GENERIC_NAME => $new->parameter,
         ]);
 
