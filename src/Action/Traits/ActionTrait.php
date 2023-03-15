@@ -154,7 +154,8 @@ trait ActionTrait
             0 => [],
             1 => [],
         ];
-        foreach ($this->reflection->getParameters() as $reflectionParameter) {
+        $reflection = new ReflectionMethod($this, 'run');
+        foreach ($reflection->getParameters() as $reflectionParameter) {
             $attribute = $this->getAttribute($reflectionParameter);
             $default = $this->getDefaultValue($reflectionParameter);
             $namedType = $reflectionParameter->getType();

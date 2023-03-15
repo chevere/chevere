@@ -35,8 +35,6 @@ abstract class Action implements ActionInterface
 
     protected ParametersInterface $containerParameters;
 
-    protected ReflectionMethod $reflection;
-
     public function __construct()
     {
         $this->onConstruct();
@@ -82,25 +80,24 @@ abstract class Action implements ActionInterface
                     ->withCode('%action%', $this::class)
             );
         }
-
-        $this->reflection = new ReflectionMethod($this, 'run');
+        $reflection = new ReflectionMethod($this, 'run');
         $translate = [
             '%method%', $this::class . '::run',
         ];
-        if (! $this->reflection->isPublic()) {
+        if (! $reflection->isPublic()) {
             throw new ErrorException(
                 message('Method %method% must be public')
                     ->withTranslate(...$translate)
             );
         }
-        if (! $this->reflection->hasReturnType()) {
+        if (! $reflection->hasReturnType()) {
             throw new ErrorException(
                 message('Method %method% must declare array return type')
                     ->withTranslate(...$translate)
             );
         }
         /** @var ReflectionNamedType $reflectionType */
-        $reflectionType = $this->reflection->getReturnType();
+        $reflectionType = $reflection->getReturnType();
         if ($reflectionType->getName() !== 'array') {
             throw new TypeError(
                 message('Method %method% must return an array')
