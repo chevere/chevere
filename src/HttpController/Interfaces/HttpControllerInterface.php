@@ -28,29 +28,29 @@ interface HttpControllerInterface extends ControllerInterface
     public function statusError(): int;
 
     /**
-     * Defines the GET parameters accepted.
+     * Defines the query parameters accepted.
      */
-    public function acceptGet(): ParametersInterface;
+    public function acceptQuery(): ParametersInterface;
 
     /**
-     * Defines the POST parameters accepted.
+     * Defines the body parameters accepted.
      */
-    public function acceptPost(): ParametersInterface;
+    public function acceptBody(): ParametersInterface;
 
     /**
-     * Defines the FILES parameters accepted.
+     * Defines the FILES parameter accepted.
      */
     public function acceptFiles(): ArrayParameterInterface;
 
     /**
-     * @param array<int|string, string> $get
+     * @param array<int|string, string> $query
      */
-    public function withGet(array $get): static;
+    public function withQuery(array $query): static;
 
     /**
-     * @param array<int|string, string> $post
+     * @param array<int|string, string> $body
      */
-    public function withPost(array $post): static;
+    public function withBody(array $body): static;
 
     /**
      * @param array<int|string, array<string, int|string>> $files

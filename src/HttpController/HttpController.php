@@ -34,12 +34,12 @@ abstract class HttpController extends Controller implements HttpControllerInterf
     /**
      * @var array<int|string, string>
      */
-    protected array $get = [];
+    protected array $query = [];
 
     /**
      * @var array<int|string, string>
      */
-    protected array $post = [];
+    protected array $body = [];
 
     /**
      * @var array<int|string, array<string, int|string>>
@@ -48,12 +48,12 @@ abstract class HttpController extends Controller implements HttpControllerInterf
 
     protected MiddlewaresInterface $middlewares;
 
-    public function acceptGet(): ParametersInterface
+    public function acceptQuery(): ParametersInterface
     {
         return parameters();
     }
 
-    public function acceptPost(): ParametersInterface
+    public function acceptBody(): ParametersInterface
     {
         return parameters();
     }
@@ -63,30 +63,30 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return arrayParameter();
     }
 
-    final public function withGet(array $get): static
+    final public function withQuery(array $query): static
     {
         $new = clone $this;
         $arguments = new Arguments(
-            $new->acceptGet(),
-            $get
+            $new->acceptQuery(),
+            $query
         );
         /** @var array<int|string, string> */
         $array = $arguments->toArray();
-        $new->get = $array;
+        $new->query = $array;
 
         return $new;
     }
 
-    final public function withPost(array $post): static
+    final public function withBody(array $body): static
     {
         $new = clone $this;
         $arguments = new Arguments(
-            $new->acceptPost(),
-            $post
+            $new->acceptBody(),
+            $body
         );
         /** @var array<int|string, string> */
         $array = $arguments->toArray();
-        $new->post = $array;
+        $new->body = $array;
 
         return $new;
     }
@@ -142,12 +142,12 @@ abstract class HttpController extends Controller implements HttpControllerInterf
 
     final public function get(): array
     {
-        return $this->get;
+        return $this->query;
     }
 
     final public function post(): array
     {
-        return $this->post;
+        return $this->body;
     }
 
     final public function files(): array

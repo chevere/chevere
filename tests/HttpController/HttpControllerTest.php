@@ -27,8 +27,8 @@ final class HttpControllerTest extends TestCase
         $controller = new TestHttpController();
         $this->assertSame(200, $controller->statusSuccess());
         $this->assertSame(500, $controller->statusError());
-        $this->assertCount(0, $controller->acceptGet());
-        $this->assertCount(0, $controller->acceptPost());
+        $this->assertCount(0, $controller->acceptQuery());
+        $this->assertCount(0, $controller->acceptBody());
         $this->assertCount(0, $controller->acceptFiles()->parameters());
         $this->assertCount(0, $controller->middlewares());
     }
@@ -47,14 +47,14 @@ final class HttpControllerTest extends TestCase
     {
         $controller = new TestHttpAcceptController();
         $this->assertSame([], $controller->get());
-        $controllerWith = $controller->withGet([
+        $controllerWith = $controller->withQuery([
             'foo-foo' => 'abc',
         ]);
         $this->assertNotSame($controller, $controllerWith);
         $this->assertNotEquals($controller, $controllerWith);
         $this->assertSame('abc', $controllerWith->get()['foo-foo']);
         $this->expectException(InvalidArgumentException::class);
-        $controller->withGet([
+        $controller->withQuery([
             'foo-foo' => '123',
         ]);
     }
@@ -63,14 +63,14 @@ final class HttpControllerTest extends TestCase
     {
         $controller = new TestHttpAcceptController();
         $this->assertSame([], $controller->post());
-        $controllerWith = $controller->withPost([
+        $controllerWith = $controller->withBody([
             'bar.bar' => '123',
         ]);
         $this->assertNotSame($controller, $controllerWith);
         $this->assertNotEquals($controller, $controllerWith);
         $this->assertSame('123', $controllerWith->post()['bar.bar']);
         $this->expectException(InvalidArgumentException::class);
-        $controller->withPost([
+        $controller->withBody([
             'bar.bar' => 'abc',
         ]);
     }

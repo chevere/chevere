@@ -23,7 +23,7 @@ use function Chevere\Parameter\stringParameter;
 
 final class TestHttpAcceptController extends HttpController
 {
-    public function acceptGet(): ParametersInterface
+    public function acceptQuery(): ParametersInterface
     {
         return parameters(
             ...[
@@ -32,7 +32,7 @@ final class TestHttpAcceptController extends HttpController
         );
     }
 
-    public function acceptPost(): ParametersInterface
+    public function acceptBody(): ParametersInterface
     {
         return parameters(
             ...[

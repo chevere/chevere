@@ -29,7 +29,9 @@ use Chevere\Tests\Action\_resources\ActionTestController;
 use Chevere\Tests\Action\_resources\ActionTestGenericResponse;
 use Chevere\Tests\Action\_resources\ActionTestGenericResponseError;
 use Chevere\Tests\Action\_resources\ActionTestInvalidRunReturn;
+use Chevere\Tests\Action\_resources\ActionTestInvalidScope;
 use Chevere\Tests\Action\_resources\ActionTestMissingRun;
+use Chevere\Tests\Action\_resources\ActionTestNoReturnType;
 use Chevere\Tests\Action\_resources\ActionTestNoStrict;
 use Chevere\Tests\Action\_resources\ActionTestParameterAttributes;
 use Chevere\Tests\Action\_resources\ActionTestRunParameterMissingType;
@@ -37,6 +39,7 @@ use Chevere\Tests\Action\_resources\ActionTestRunParameters;
 use Chevere\Tests\Action\_resources\ActionTestRunReturnExtraArguments;
 use Chevere\Tests\Action\_resources\ActionTestSetupBeforeAndAfter;
 use Chevere\Throwable\Errors\TypeError;
+use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use OutOfBoundsException;
@@ -203,4 +206,16 @@ final class ActionTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $action->getResponse();
     }
+
+        public function testActionInvalidScope(): void
+        {
+            $this->expectException(ErrorException::class);
+            new ActionTestInvalidScope();
+        }
+
+        public function testActionNoReturnType(): void
+        {
+            $this->expectException(ErrorException::class);
+            new ActionTestNoReturnType();
+        }
 }
