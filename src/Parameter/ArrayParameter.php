@@ -46,7 +46,16 @@ final class ArrayParameter implements ArrayParameterInterface
         return $new;
     }
 
+    /**
+     * @deprecated Use withAddedRequiredParameter
+     * @codeCoverageIgnore
+     */
     public function withParameter(ParameterInterface ...$parameter): static
+    {
+        return $this->withAddedRequiredParameter(...$parameter);
+    }
+
+    public function withAddedRequiredParameter(ParameterInterface ...$parameter): static
     {
         $new = clone $this;
         $new->parameters = $new->parameters

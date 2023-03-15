@@ -34,7 +34,7 @@ function arrayParameter(
 ): ArrayParameterInterface {
     $array = new ArrayParameter();
     if ($parameter) {
-        $array = $array->withParameter(...$parameter);
+        $array = $array->withAddedRequiredParameter(...$parameter);
     }
 
     return $array;

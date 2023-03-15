@@ -34,7 +34,7 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified property.
      */
-    public function withParameter(ParameterInterface ...$parameter): self;
+    public function withAddedRequiredParameter(ParameterInterface ...$parameter): self;
 
     public function assertCompatible(self $parameter): void;
 }
