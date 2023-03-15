@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\NullParameterInterface;
+use Chevere\Parameter\Traits\ParameterDefaultNullTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeNull;
@@ -21,11 +22,7 @@ use function Chevere\Type\typeNull;
 final class NullParameter implements NullParameterInterface
 {
     use ParameterTrait;
-
-    public function default(): mixed
-    {
-        return null;
-    }
+    use ParameterDefaultNullTrait;
 
     /**
      * @codeCoverageIgnore

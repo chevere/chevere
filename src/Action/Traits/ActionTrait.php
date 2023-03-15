@@ -43,7 +43,7 @@ use ReflectionNamedType;
 use ReflectionParameter;
 
 /**
- * @method array<string, mixed> run(mixed ...$argument)
+ * @method array<string, mixed> run()
  */
 trait ActionTrait
 {

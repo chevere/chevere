@@ -32,7 +32,7 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
      * Return an instance with added required parameters.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified property.
+     * an instance that contains the specified added required parameters.
      */
     public function withAddedRequired(ParameterInterface ...$parameter): self;
 

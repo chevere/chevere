@@ -56,11 +56,29 @@ final class MapTest extends TestCase
         $arguments = [
             $key => $value,
         ];
-        $immutable = $map->withPut(...$arguments);
-        $this->assertNotSame($map, $immutable);
-        $this->assertNotSame($map->keys(), $immutable->keys());
-        $this->assertSame($value, $immutable->get($key));
-        $immutable->assertHas($key);
-        $this->assertSame($arguments, mapToArray($immutable));
+        $mapWith = $map->withPut(...$arguments);
+        $this->assertNotSame($map, $mapWith);
+        $this->assertNotSame($map->keys(), $mapWith->keys());
+        $this->assertSame($value, $mapWith->get($key));
+        $mapWith->assertHas($key);
+        $this->assertSame($arguments, mapToArray($mapWith));
+    }
+
+    public function testWithPutConsecutiveNamed(): void
+    {
+        $map = new Map();
+        $mapWith = $map
+            ->withPut(a: 'a')
+            ->withPut(b: 'b');
+        $this->assertCount(2, $mapWith);
+    }
+
+    public function testWithPutConsecutivePositional(): void
+    {
+        $map = new Map();
+        $mapWith = $map
+            ->withPut(...['a'])
+            ->withPut(...['b']);
+        $this->assertCount(1, $mapWith);
     }
 }

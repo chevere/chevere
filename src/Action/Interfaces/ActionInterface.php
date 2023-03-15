@@ -22,7 +22,7 @@ use Psr\Container\ContainerInterface;
 /**
  * Describes the component in charge of defining a single action.
  *
- * @method array<string, mixed> run(mixed ...$argument) Defines the action run
+ * @method array<string, mixed> run() Defines the action run
  * logic.
  */
 interface ActionInterface extends DescriptionInterface

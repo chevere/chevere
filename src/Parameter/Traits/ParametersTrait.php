@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
+use Chevere\DataStructure\Map;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -21,6 +22,11 @@ use Chevere\Throwable\Exceptions\OverflowException;
 
 trait ParametersTrait
 {
+    /**
+     * @var Map<TValue>
+     */
+    private Map $map;
+
     /**
      * @var array<string>
      */
@@ -120,15 +126,21 @@ trait ParametersTrait
         }
     }
 
-    private function putAdded(string $property, ParameterInterface ...$parameters): void
+    /**
+     * @param array<string|int, ParameterInterface> $parameters
+     */
+    private function putAdded(string $property, array $parameters): void
     {
+        if (count($parameters) === 0) {
+            return;
+        }
+        $map = [];
         foreach ($parameters as $name => $parameter) {
             $name = strval($name);
             $this->assertNoOverflow($name);
-            $this->map = $this->map->withPut(...[
-                $name => $parameter,
-            ]);
             $this->{$property}[] = $name;
+            $map[$name] = $parameter;
         }
+        $this->map = $this->map->withPut(...$map);
     }
 }

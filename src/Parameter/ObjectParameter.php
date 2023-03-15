@@ -15,6 +15,7 @@ namespace Chevere\Parameter;
 
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
+use Chevere\Parameter\Traits\ParameterDefaultNullTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
@@ -24,6 +25,7 @@ use stdClass;
 final class ObjectParameter implements ObjectParameterInterface
 {
     use ParameterTrait;
+    use ParameterDefaultNullTrait;
 
     private string $className;
 
@@ -44,11 +46,6 @@ final class ObjectParameter implements ObjectParameterInterface
         $new->type = typeObject($className);
 
         return $new;
-    }
-
-    public function default(): mixed
-    {
-        return null;
     }
 
     public function assertCompatible(ObjectParameterInterface $parameter): void

@@ -18,9 +18,11 @@ use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FileParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
+use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
+use function Chevere\Parameter\stringParameter;
 use Chevere\Throwable\Exceptions\OverflowException;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
@@ -65,6 +67,16 @@ final class ParametersTest extends TestCase
         $parameters->withAddedRequired(...[
             $name => $parameter,
         ]);
+    }
+
+    public function testConstructPositional(): void
+    {
+        $parameters = new Parameters(
+            stringParameter(),
+            integerParameter(),
+            integerParameter(),
+        );
+        $this->assertCount(3, $parameters);
     }
 
     public function testWithAddedOverflow(): void
