@@ -25,7 +25,7 @@ final class ActionTestAction extends Action
         return 'test';
     }
 
-    public function getResponseParameter(): ArrayTypeParameterInterface
+    public function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayParameter(id: new IntegerParameter());
     }

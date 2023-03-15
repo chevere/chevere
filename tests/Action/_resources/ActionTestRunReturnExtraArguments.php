@@ -20,7 +20,7 @@ use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 
 final class ActionTestRunReturnExtraArguments extends Action
 {
-    public function getResponseParameter(): ArrayTypeParameterInterface
+    public function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayParameter(
             name: integerParameter()

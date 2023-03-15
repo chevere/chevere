@@ -31,7 +31,7 @@ interface ActionInterface extends DescriptionInterface
      * Determines if action is strict or not.
      *
      * When the action is strict the `run` method return value will be matched
-     * against the defined response parameters at `getResponseParameters`.
+     * against the defined response parameters at `acceptResponseParameter`.
      */
     public function isStrict(): bool;
 
@@ -61,7 +61,7 @@ interface ActionInterface extends DescriptionInterface
     /**
      * Defines expected response data parameters when executing `run` method.
      */
-    public function getResponseParameter(): ArrayTypeParameterInterface;
+    public function acceptResponse(): ArrayTypeParameterInterface;
 
     /**
      * Provides access to the parameters.

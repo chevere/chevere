@@ -79,7 +79,7 @@ trait ActionTrait
         return parameters();
     }
 
-    public function getResponseParameter(): ArrayTypeParameterInterface
+    public function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayParameter();
     }
@@ -125,7 +125,7 @@ trait ActionTrait
     // @infection-ignore-all
     final public function responseParameter(): ArrayTypeParameterInterface
     {
-        return $this->responseParameter ??= $this->getResponseParameter();
+        return $this->responseParameter ??= $this->acceptResponse();
     }
 
     final protected function assertContainer(): void

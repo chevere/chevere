@@ -29,7 +29,7 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
 
     private int $status = 302;
 
-    public function getResponseParameter(): ArrayTypeParameterInterface
+    public function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayParameter(
             uri: objectParameter(UriInterface::class),
