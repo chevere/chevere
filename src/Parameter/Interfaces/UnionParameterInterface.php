@@ -14,22 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Interfaces;
 
 /**
- * Describes the component in charge of defining a parameter of type array.
+ * Describes the component in charge of defining a parameter of type union.
  */
-interface ArrayParameterInterface extends ArrayTypeParameterInterface
+interface UnionParameterInterface extends ParameterInterface
 {
     /**
-     * Return an instance with the specified default value.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified default value.
-     *
-     * @param array<mixed, mixed> $value
-     */
-    public function withDefault(array $value): self;
-
-    /**
-     * Return an instance with added required parameters.
+     * Return an instance with the specified property.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified property.

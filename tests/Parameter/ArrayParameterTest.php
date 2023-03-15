@@ -42,7 +42,7 @@ final class ArrayParameterTest extends TestCase
         $string = stringParameter();
         $integer = integerParameter();
         $parameter = new ArrayParameter();
-        $parameterWith = $parameter->withAddedRequiredParameter(
+        $parameterWith = $parameter->withAddedRequired(
             one: $string,
             two: $integer
         );
@@ -54,16 +54,16 @@ final class ArrayParameterTest extends TestCase
     {
         $string = stringParameter();
         $integer = integerParameter();
-        $parameter = (new ArrayParameter())->withAddedRequiredParameter(
+        $parameter = (new ArrayParameter())->withAddedRequired(
             one: $string,
         );
         $altString = stringParameter();
-        $compatible = (new ArrayParameter())->withAddedRequiredParameter(
+        $compatible = (new ArrayParameter())->withAddedRequired(
             one: $altString,
         );
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
-        $notCompatible = (new ArrayParameter())->withAddedRequiredParameter(
+        $notCompatible = (new ArrayParameter())->withAddedRequired(
             one: $integer,
         );
         $expectedType = $string::class;
@@ -80,10 +80,10 @@ final class ArrayParameterTest extends TestCase
     public function testAssertCompatibleMissingKey(): void
     {
         $string = stringParameter();
-        $parameter = (new ArrayParameter())->withAddedRequiredParameter(
+        $parameter = (new ArrayParameter())->withAddedRequired(
             one: $string,
         );
-        $notCompatible = (new ArrayParameter())->withAddedRequiredParameter(
+        $notCompatible = (new ArrayParameter())->withAddedRequired(
             two: $string,
         );
         $this->expectException(OutOfBoundsException::class);

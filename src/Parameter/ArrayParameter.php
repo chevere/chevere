@@ -52,10 +52,10 @@ final class ArrayParameter implements ArrayParameterInterface
      */
     public function withParameter(ParameterInterface ...$parameter): static
     {
-        return $this->withAddedRequiredParameter(...$parameter);
+        return $this->withAddedRequired(...$parameter);
     }
 
-    public function withAddedRequiredParameter(ParameterInterface ...$parameter): static
+    public function withAddedRequired(ParameterInterface ...$parameter): static
     {
         $new = clone $this;
         $new->parameters = $new->parameters
