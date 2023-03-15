@@ -21,10 +21,9 @@ use Chevere\HttpController\Traits\StatusInternalServerErrorTrait;
 use Chevere\HttpController\Traits\StatusOkTrait;
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\arrayParameter;
-use Chevere\Parameter\Interfaces\ArrayParameterInterface;
+use function Chevere\Parameter\assertParameter;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
-use function Chevere\Parameter\parameters;
 
 abstract class HttpController extends Controller implements HttpControllerInterface
 {
@@ -48,17 +47,17 @@ abstract class HttpController extends Controller implements HttpControllerInterf
 
     protected MiddlewaresInterface $middlewares;
 
-    public function acceptQuery(): ParametersInterface
+    public function acceptQuery(): ArrayTypeParameterInterface
     {
-        return parameters();
+        return arrayParameter();
     }
 
-    public function acceptBody(): ParametersInterface
+    public function acceptBody(): ArrayTypeParameterInterface
     {
-        return parameters();
+        return arrayParameter();
     }
 
-    public function acceptFiles(): ArrayParameterInterface
+    public function acceptFiles(): ArrayTypeParameterInterface
     {
         return arrayParameter();
     }
@@ -66,13 +65,8 @@ abstract class HttpController extends Controller implements HttpControllerInterf
     final public function withQuery(array $query): static
     {
         $new = clone $this;
-        $arguments = new Arguments(
-            $new->acceptQuery(),
-            $query
-        );
-        /** @var array<int|string, string> */
-        $array = $arguments->toArray();
-        $new->query = $array;
+        assertParameter($new->acceptQuery(), $query);
+        $new->query = $query;
 
         return $new;
     }
@@ -80,13 +74,8 @@ abstract class HttpController extends Controller implements HttpControllerInterf
     final public function withBody(array $body): static
     {
         $new = clone $this;
-        $arguments = new Arguments(
-            $new->acceptBody(),
-            $body
-        );
-        /** @var array<int|string, string> */
-        $array = $arguments->toArray();
-        $new->body = $array;
+        assertParameter($new->acceptBody(), $body);
+        $new->body = $body;
 
         return $new;
     }

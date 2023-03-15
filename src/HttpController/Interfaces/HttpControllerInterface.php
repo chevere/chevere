@@ -15,8 +15,7 @@ namespace Chevere\HttpController\Interfaces;
 
 use Chevere\Controller\Interfaces\ControllerInterface;
 use Chevere\Http\Interfaces\MiddlewaresInterface;
-use Chevere\Parameter\Interfaces\ArrayParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 
 /**
  * Describes the component in charge of defining an Http Controller which adds methods for handling HTTP requests.
@@ -28,19 +27,19 @@ interface HttpControllerInterface extends ControllerInterface
     public function statusError(): int;
 
     /**
-     * Defines the query parameters accepted.
+     * Defines the query accepted.
      */
-    public function acceptQuery(): ParametersInterface;
+    public function acceptQuery(): ArrayTypeParameterInterface;
 
     /**
-     * Defines the body parameters accepted.
+     * Defines the body accepted.
      */
-    public function acceptBody(): ParametersInterface;
+    public function acceptBody(): ArrayTypeParameterInterface;
 
     /**
-     * Defines the FILES parameter accepted.
+     * Defines the FILES accepted.
      */
-    public function acceptFiles(): ArrayParameterInterface;
+    public function acceptFiles(): ArrayTypeParameterInterface;
 
     /**
      * @param array<int|string, string> $query
