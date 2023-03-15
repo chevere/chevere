@@ -20,6 +20,7 @@ use function Chevere\Parameter\booleanParameter;
 use function Chevere\Parameter\floatParameter;
 use function Chevere\Parameter\genericParameter;
 use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\nullParameter;
 use function Chevere\Parameter\objectParameter;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\stringParameter;
@@ -70,6 +71,15 @@ final class FunctionsTest extends TestCase
         );
         $this->assertSame('name', $parameter->description());
         $this->assertSame(true, $parameter->default());
+    }
+
+    public function testNullParameter(): void
+    {
+        $parameter = nullParameter();
+        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->default());
+        $parameter = booleanParameter('name');
+        $this->assertSame('name', $parameter->description());
     }
 
     public function testFloatParameter(): void

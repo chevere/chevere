@@ -21,6 +21,7 @@ use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\NullParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
@@ -47,6 +48,12 @@ function booleanParameter(
     $parameter = new BooleanParameter($description);
 
     return $parameter->withDefault($default);
+}
+
+function nullParameter(
+    string $description = '',
+): NullParameterInterface {
+    return new NullParameter($description);
 }
 
 function floatParameter(
@@ -260,17 +267,17 @@ function assertParameter(ParameterInterface $parameter, mixed $argument): void
 {
     match (true) {
         $parameter instanceof StringParameterInterface
-            // @phpstan-ignore-next-line
-            => assertStringArgument($parameter, $argument),
+        // @phpstan-ignore-next-line
+        => assertStringArgument($parameter, $argument),
         $parameter instanceof IntegerParameterInterface
-            // @phpstan-ignore-next-line
-            => assertIntegerArgument($parameter, $argument),
+        // @phpstan-ignore-next-line
+        => assertIntegerArgument($parameter, $argument),
         $parameter instanceof ArrayParameterInterface
-            // @phpstan-ignore-next-line
-            => assertArrayArgument($parameter, $argument),
+        // @phpstan-ignore-next-line
+        => assertArrayArgument($parameter, $argument),
         $parameter instanceof GenericParameterInterface
-            // @phpstan-ignore-next-line
-            => assertGenericArgument($parameter, $argument),
+        // @phpstan-ignore-next-line
+        => assertGenericArgument($parameter, $argument),
         default => '',
     };
 }
