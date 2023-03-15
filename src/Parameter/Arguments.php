@@ -62,7 +62,6 @@ final class Arguments implements ArgumentsInterface
 
             return;
         }
-
         $this->processArguments($arguments);
         $this->assertRequired();
         $this->errors = [];

@@ -16,6 +16,7 @@ namespace Chevere\Tests\Parameter;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayParameter;
 use function Chevere\Parameter\assertArgument;
+use function Chevere\Parameter\assertUnionArgument;
 use function Chevere\Parameter\booleanParameter;
 use function Chevere\Parameter\floatParameter;
 use function Chevere\Parameter\genericParameter;
@@ -24,6 +25,7 @@ use function Chevere\Parameter\nullParameter;
 use function Chevere\Parameter\objectParameter;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\stringParameter;
+use function Chevere\Parameter\unionParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -161,5 +163,17 @@ final class FunctionsTest extends TestCase
             description: 'foo'
         );
         $this->assertSame('foo', $parameter->description());
+    }
+
+    public function testFunctionUnionParameter(): void
+    {
+        $parameter = unionParameter(
+            integerParameter(),
+            stringParameter(),
+        );
+        assertUnionArgument($parameter, 'foo');
+        assertUnionArgument($parameter, 123);
+        $this->expectException(InvalidArgumentException::class);
+        assertUnionArgument($parameter, []);
     }
 }

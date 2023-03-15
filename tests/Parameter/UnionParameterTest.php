@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\stringParameter;
 use Chevere\Parameter\UnionParameter;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +25,9 @@ final class UnionParameterTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $parameter = new UnionParameter();
+        $parameter = new UnionParameter(
+            parameters()
+        );
         $this->assertSame(
             TypeInterface::UNION,
             $parameter->getType()->primitive()
@@ -33,14 +37,46 @@ final class UnionParameterTest extends TestCase
 
     public function testWithAdded(): void
     {
-        $parameter = new UnionParameter();
-        $parameterOne = stringParameter();
-        $parameterTwo = integerParameter();
+        $parameter = new UnionParameter(
+            parameters()
+        );
+        $one = stringParameter();
+        $two = integerParameter();
         $parameterWith = $parameter->withAdded(
-            $parameterOne,
-            $parameterTwo
+            $one,
+            $two
         );
         $this->assertNotSame($parameter, $parameterWith);
         $this->assertCount(2, $parameterWith->parameters());
+        $this->assertSame($one, $parameterWith->parameters()->get('0'));
+        $this->assertSame($two, $parameterWith->parameters()->get('1'));
+    }
+
+    public function testAssertCompatible(): void
+    {
+        $parameters = parameters(
+            stringParameter(),
+        );
+        $parametersAlt = parameters(
+            stringParameter(description: 'one'),
+        );
+        $parameter = new UnionParameter($parameters);
+        $compatible = new UnionParameter($parametersAlt);
+        $this->expectNotToPerformAssertions();
+        $parameter->assertCompatible($compatible);
+    }
+
+    public function testAssertNotCompatible(): void
+    {
+        $parameters = parameters(
+            stringParameter(),
+        );
+        $parametersAlt = parameters(
+            integerParameter(),
+        );
+        $parameter = new UnionParameter($parameters);
+        $compatible = new UnionParameter($parametersAlt);
+        $this->expectException(InvalidArgumentException::class);
+        $parameter->assertCompatible($compatible);
     }
 }

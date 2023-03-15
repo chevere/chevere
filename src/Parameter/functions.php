@@ -26,6 +26,7 @@ use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Throwable;
@@ -148,6 +149,14 @@ function genericParameter(
     return new GenericParameter($V, $K, $description);
 }
 
+function unionParameter(
+    ParameterInterface ...$parameter
+): UnionParameterInterface {
+    $parameters = parameters(...$parameter);
+
+    return new UnionParameter($parameters);
+}
+
 function parameters(
     ParameterInterface ...$required,
 ): ParametersInterface {
@@ -241,6 +250,27 @@ function assertGenericArgument(
     }
 }
 
+function assertUnionArgument(
+    UnionParameterInterface $parameter,
+    mixed $argument,
+): void {
+    $types = [];
+    foreach ($parameter->parameters() as $parameter) {
+        try {
+            assertArgument('', $parameter, $argument);
+
+            return;
+        } catch (Throwable $e) {
+            $types[] = $parameter::class;
+        }
+    }
+
+    throw new InvalidArgumentException(
+        message("Argument provided doesn't match the union type %type%")
+            ->withCode('%type%', implode(',', $types))
+    );
+}
+
 function assertArgument(string $name, ParameterInterface $parameter, mixed $argument): void
 {
     $parameters = parameters(
@@ -278,6 +308,8 @@ function assertParameter(ParameterInterface $parameter, mixed $argument): void
         $parameter instanceof GenericParameterInterface
         // @phpstan-ignore-next-line
         => assertGenericArgument($parameter, $argument),
+        $parameter instanceof UnionParameterInterface
+        => assertUnionArgument($parameter, $argument),
         default => '',
     };
 }
