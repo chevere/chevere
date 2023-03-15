@@ -67,6 +67,8 @@ trait ActionTrait
 
     protected ContainerInterface $container;
 
+    protected ReflectionMethod $reflection;
+
     public function isStrict(): bool
     {
         return true;
@@ -101,12 +103,6 @@ trait ActionTrait
         $this->assertContainer();
         $arguments = arguments($this->parameters(), $argument)->toArray();
         $data = $this->run(...$arguments);
-        if (! is_array($data)) {
-            throw new TypeError(
-                message('Method %method% must return an array.')
-                    ->withTranslate('%method%', $this::class . '::run')
-            );
-        }
         if ($this->isStrict()) {
             assertParameter($this->responseParameter(), $data);
         }
@@ -154,12 +150,11 @@ trait ActionTrait
 
     final protected function getParameters(): ParametersInterface
     {
-        $reflection = new ReflectionMethod($this, 'run');
         $collection = [
             0 => [],
             1 => [],
         ];
-        foreach ($reflection->getParameters() as $reflectionParameter) {
+        foreach ($this->reflection->getParameters() as $reflectionParameter) {
             $attribute = $this->getAttribute($reflectionParameter);
             $default = $this->getDefaultValue($reflectionParameter);
             $namedType = $reflectionParameter->getType();

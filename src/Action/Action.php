@@ -18,7 +18,11 @@ use Chevere\Action\Traits\ActionTrait;
 use Chevere\Common\Traits\DescriptionTrait;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Throwable\Errors\TypeError;
+use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\LogicException;
+use ReflectionMethod;
+use ReflectionNamedType;
 
 abstract class Action implements ActionInterface
 {
@@ -30,6 +34,8 @@ abstract class Action implements ActionInterface
     protected ParametersInterface $parameters;
 
     protected ParametersInterface $containerParameters;
+
+    protected ReflectionMethod $reflection;
 
     public function __construct()
     {
@@ -74,6 +80,31 @@ abstract class Action implements ActionInterface
             throw new LogicException(
                 message('Action %action% does not define a run method')
                     ->withCode('%action%', $this::class)
+            );
+        }
+
+        $this->reflection = new ReflectionMethod($this, 'run');
+        $translate = [
+            '%method%', $this::class . '::run',
+        ];
+        if (! $this->reflection->isPublic()) {
+            throw new ErrorException(
+                message('Method %method% must be public')
+                    ->withTranslate(...$translate)
+            );
+        }
+        if (! $this->reflection->hasReturnType()) {
+            throw new ErrorException(
+                message('Method %method% must declare array return type')
+                    ->withTranslate(...$translate)
+            );
+        }
+        /** @var ReflectionNamedType $reflectionType */
+        $reflectionType = $this->reflection->getReturnType();
+        if ($reflectionType->getName() !== 'array') {
+            throw new TypeError(
+                message('Method %method% must return an array')
+                    ->withTranslate(...$translate)
             );
         }
     }

@@ -28,11 +28,11 @@ use Chevere\Tests\Action\_resources\ActionTestContainer;
 use Chevere\Tests\Action\_resources\ActionTestController;
 use Chevere\Tests\Action\_resources\ActionTestGenericResponse;
 use Chevere\Tests\Action\_resources\ActionTestGenericResponseError;
-use Chevere\Tests\Action\_resources\ActionTestInvalidRunParameter;
 use Chevere\Tests\Action\_resources\ActionTestInvalidRunReturn;
 use Chevere\Tests\Action\_resources\ActionTestMissingRun;
 use Chevere\Tests\Action\_resources\ActionTestNoStrict;
 use Chevere\Tests\Action\_resources\ActionTestParameterAttributes;
+use Chevere\Tests\Action\_resources\ActionTestRunParameterMissingType;
 use Chevere\Tests\Action\_resources\ActionTestRunParameters;
 use Chevere\Tests\Action\_resources\ActionTestRunReturnExtraArguments;
 use Chevere\Tests\Action\_resources\ActionTestSetupBeforeAndAfter;
@@ -156,19 +156,16 @@ final class ActionTest extends TestCase
 
     public function testInvalidRunReturn(): void
     {
-        $action = new ActionTestInvalidRunReturn();
-        $data = $action->run();
-        $this->assertIsNotArray($data);
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage(ActionTestInvalidRunReturn::class . '::run');
-        $action->getResponse();
+        new ActionTestInvalidRunReturn();
     }
 
     public function testInvalidRunParameter(): void
     {
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('$mixed');
-        new ActionTestInvalidRunParameter();
+        new ActionTestRunParameterMissingType();
     }
 
     public function testSetupBeforeAndAfter(): void

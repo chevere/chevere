@@ -15,10 +15,10 @@ namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
 
-final class ActionTestInvalidRunParameter extends Action
+final class ActionTestRunParameterMissingType extends Action
 {
-    public function run($mixed): bool
+    public function run($mixed): array
     {
-        return true;
+        return [];
     }
 }
