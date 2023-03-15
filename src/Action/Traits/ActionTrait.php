@@ -74,7 +74,7 @@ trait ActionTrait
         return true;
     }
 
-    public function getContainerParameters(): ParametersInterface
+    public function acceptContainer(): ParametersInterface
     {
         return parameters();
     }
@@ -113,7 +113,7 @@ trait ActionTrait
     // @infection-ignore-all
     final public function containerParameters(): ParametersInterface
     {
-        return $this->containerParameters ??= $this->getContainerParameters();
+        return $this->containerParameters ??= $this->acceptContainer();
     }
 
     // @infection-ignore-all

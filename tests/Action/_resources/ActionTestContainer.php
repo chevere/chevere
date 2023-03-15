@@ -21,7 +21,7 @@ use function Chevere\Parameter\stringParameter;
 
 final class ActionTestContainer extends Action
 {
-    public function getContainerParameters(): ParametersInterface
+    public function acceptContainer(): ParametersInterface
     {
         return new Parameters(
             id: integerParameter(),

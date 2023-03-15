@@ -38,7 +38,7 @@ interface ActionInterface extends DescriptionInterface
     /**
      * Defines expected container parameters when executing `run` method.
      */
-    public function getContainerParameters(): ParametersInterface;
+    public function acceptContainer(): ParametersInterface;
 
     /**
      * Provides access to the expected container parameters.
