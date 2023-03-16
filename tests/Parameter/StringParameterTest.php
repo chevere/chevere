@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use function Chevere\Parameter\stringp;
 use Chevere\Parameter\StringParameter;
-use function Chevere\Parameter\stringParameter;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +28,7 @@ final class StringParameterTest extends TestCase
         $parameter = new StringParameter();
         $this->assertSame('', $parameter->default());
         $this->assertSame('', $parameter->description());
-        $this->assertEquals($parameter, stringParameter());
+        $this->assertEquals($parameter, stringp());
         $this->assertSame($regex, $parameter->regex()->__toString());
         $description = 'ola k ase';
         $parameter = new StringParameter($description);

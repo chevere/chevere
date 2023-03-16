@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
-use function Chevere\Parameter\arrayParameter;
-use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\integerp;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 
 final class ActionTestRunReturnExtraArguments extends Action
 {
     public function acceptResponse(): ArrayTypeParameterInterface
     {
-        return arrayParameter(
-            name: integerParameter()
+        return arrayp(
+            name: integerp()
         );
     }
 

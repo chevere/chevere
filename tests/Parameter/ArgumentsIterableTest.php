@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\arrayParameter;
-use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\integerp;
 use function Chevere\Parameter\parameters;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -42,9 +42,9 @@ final class ArgumentsIterableTest extends TestCase
     public function testIterableArguments(array $args): void
     {
         $parameters = parameters(
-            test: arrayParameter(
-                one: integerParameter(),
-                two: integerParameter(),
+            test: arrayp(
+                one: integerp(),
+                two: integerp(),
             )
         );
         $this->expectNotToPerformAssertions();
@@ -57,9 +57,9 @@ final class ArgumentsIterableTest extends TestCase
     public function testIterableArgumentsConflict(array $args): void
     {
         $parameters = parameters(
-            test: arrayParameter(
-                one: integerParameter(maximum: 1),
-                two: integerParameter(),
+            test: arrayp(
+                one: integerp(maximum: 1),
+                two: integerp(),
             )
         );
         $this->expectException(InvalidArgumentException::class);

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use function Chevere\Parameter\objectp;
 use Chevere\Parameter\ObjectParameter;
-use function Chevere\Parameter\objectParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -24,7 +24,7 @@ final class ObjectParameterTest extends TestCase
     public function testConstruct(): void
     {
         $parameter = new ObjectParameter();
-        $this->assertEquals($parameter, objectParameter(stdClass::class));
+        $this->assertEquals($parameter, objectp(stdClass::class));
         $this->assertSame(stdClass::class, $parameter->className());
     }
 

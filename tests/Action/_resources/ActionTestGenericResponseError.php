@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
-use function Chevere\Parameter\genericParameter;
-use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\genericp;
+use function Chevere\Parameter\integerp;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
-use function Chevere\Parameter\stringParameter;
+use function Chevere\Parameter\stringp;
 
 final class ActionTestGenericResponseError extends Action
 {
     public function acceptResponse(): ArrayTypeParameterInterface
     {
-        return genericParameter(
-            V: integerParameter(),
-            K: stringParameter()
+        return genericp(
+            V: integerp(),
+            K: stringp()
         );
     }
 

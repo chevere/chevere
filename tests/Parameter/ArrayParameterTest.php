@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\ArrayParameter;
-use function Chevere\Parameter\integerParameter;
-use function Chevere\Parameter\stringParameter;
+use function Chevere\Parameter\integerp;
+use function Chevere\Parameter\stringp;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
@@ -39,8 +39,8 @@ final class ArrayParameterTest extends TestCase
 
     public function testWithParameter(): void
     {
-        $string = stringParameter();
-        $integer = integerParameter();
+        $string = stringp();
+        $integer = integerp();
         $parameter = new ArrayParameter();
         $parameterWith = $parameter->withAddedRequired(
             one: $string,
@@ -52,12 +52,12 @@ final class ArrayParameterTest extends TestCase
 
     public function testAssertCompatibleConflict(): void
     {
-        $string = stringParameter();
-        $integer = integerParameter();
+        $string = stringp();
+        $integer = integerp();
         $parameter = (new ArrayParameter())->withAddedRequired(
             one: $string,
         );
-        $altString = stringParameter();
+        $altString = stringp();
         $compatible = (new ArrayParameter())->withAddedRequired(
             one: $altString,
         );
@@ -79,7 +79,7 @@ final class ArrayParameterTest extends TestCase
 
     public function testAssertCompatibleMissingKey(): void
     {
-        $string = stringParameter();
+        $string = stringp();
         $parameter = (new ArrayParameter())->withAddedRequired(
             one: $string,
         );

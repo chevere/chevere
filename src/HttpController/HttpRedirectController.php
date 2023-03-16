@@ -15,10 +15,10 @@ namespace Chevere\HttpController;
 
 use Chevere\HttpController\Interfaces\HttpRedirectControllerInterface;
 use function Chevere\Message\message;
-use function Chevere\Parameter\arrayParameter;
-use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\integerp;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
-use function Chevere\Parameter\objectParameter;
+use function Chevere\Parameter\objectp;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use Psr\Http\Message\UriInterface;
@@ -31,9 +31,9 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
 
     public function acceptResponse(): ArrayTypeParameterInterface
     {
-        return arrayParameter(
-            uri: objectParameter(UriInterface::class),
-            status: integerParameter()
+        return arrayp(
+            uri: objectp(UriInterface::class),
+            status: integerp()
                 ->withAccept(...static::STATUSES),
         );
     }

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use function Chevere\Parameter\floatp;
 use Chevere\Parameter\FloatParameter;
-use function Chevere\Parameter\floatParameter;
 use PHPUnit\Framework\TestCase;
 
 final class FloatParameterTest extends TestCase
@@ -22,7 +22,7 @@ final class FloatParameterTest extends TestCase
     public function testConstruct(): void
     {
         $parameter = new FloatParameter('name');
-        $this->assertEquals($parameter, floatParameter('name'));
+        $this->assertEquals($parameter, floatp('name'));
         $this->assertSame(0.0, $parameter->default());
         $default = 12.34;
         $parameterWithDefault = $parameter->withDefault($default);

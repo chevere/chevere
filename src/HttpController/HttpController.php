@@ -20,8 +20,8 @@ use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\HttpController\Traits\StatusInternalServerErrorTrait;
 use Chevere\HttpController\Traits\StatusOkTrait;
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\arrayParameter;
-use function Chevere\Parameter\assertParameter;
+use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\assertArgument;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 
@@ -49,23 +49,23 @@ abstract class HttpController extends Controller implements HttpControllerInterf
 
     public function acceptQuery(): ArrayTypeParameterInterface
     {
-        return arrayParameter();
+        return arrayp();
     }
 
     public function acceptBody(): ArrayTypeParameterInterface
     {
-        return arrayParameter();
+        return arrayp();
     }
 
     public function acceptFiles(): ArrayTypeParameterInterface
     {
-        return arrayParameter();
+        return arrayp();
     }
 
     final public function withQuery(array $query): static
     {
         $new = clone $this;
-        assertParameter($new->acceptQuery(), $query);
+        assertArgument($new->acceptQuery(), $query);
         $new->query = $query;
 
         return $new;
@@ -74,7 +74,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
     final public function withBody(array $body): static
     {
         $new = clone $this;
-        assertParameter($new->acceptBody(), $body);
+        assertArgument($new->acceptBody(), $body);
         $new->body = $body;
 
         return $new;

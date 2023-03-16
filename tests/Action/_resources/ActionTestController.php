@@ -15,15 +15,15 @@ namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Attribute\StringAttribute;
 use Chevere\Controller\Controller;
-use function Chevere\Parameter\arrayParameter;
+use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
-use Chevere\Parameter\StringParameter;
+use function Chevere\Parameter\stringp;
 
 final class ActionTestController extends Controller
 {
     public function acceptResponse(): ArrayTypeParameterInterface
     {
-        return arrayParameter(user: new StringParameter());
+        return arrayp(user: stringp());
     }
 
     public function run(

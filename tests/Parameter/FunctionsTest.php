@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\arguments;
-use function Chevere\Parameter\arrayParameter;
-use function Chevere\Parameter\assertArgument;
-use function Chevere\Parameter\assertUnionArgument;
-use function Chevere\Parameter\booleanParameter;
-use function Chevere\Parameter\floatParameter;
-use function Chevere\Parameter\genericParameter;
-use function Chevere\Parameter\integerParameter;
-use function Chevere\Parameter\nullParameter;
-use function Chevere\Parameter\objectParameter;
+use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\assertNamedArgument;
+use function Chevere\Parameter\assertUnion;
+use function Chevere\Parameter\booleanp;
+use function Chevere\Parameter\floatp;
+use function Chevere\Parameter\genericp;
+use function Chevere\Parameter\integerp;
+use function Chevere\Parameter\nullp;
+use function Chevere\Parameter\objectp;
 use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\stringParameter;
-use function Chevere\Parameter\unionParameter;
+use function Chevere\Parameter\stringp;
+use function Chevere\Parameter\unionp;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -37,7 +37,7 @@ final class FunctionsTest extends TestCase
         $parameters = parameters();
         $this->assertCount(0, $parameters);
         $parameters = parameters(
-            foo: stringParameter()
+            foo: stringp()
         );
         $this->assertCount(1, $parameters);
         $this->assertTrue($parameters->isRequired('foo'));
@@ -46,7 +46,7 @@ final class FunctionsTest extends TestCase
     public function testArguments(): void
     {
         $parameters = parameters(
-            foo: stringParameter()
+            foo: stringp()
         );
         $args = [
             'foo' => 'bar',
@@ -57,17 +57,17 @@ final class FunctionsTest extends TestCase
 
     public function testArrayParameter(): void
     {
-        $parameter = arrayParameter();
+        $parameter = arrayp();
         $this->assertSame('', $parameter->description());
         $this->assertSame([], $parameter->default());
     }
 
     public function testBooleanParameter(): void
     {
-        $parameter = booleanParameter();
+        $parameter = booleanp();
         $this->assertSame('', $parameter->description());
         $this->assertSame(false, $parameter->default());
-        $parameter = booleanParameter(
+        $parameter = booleanp(
             description: 'name',
             default: true
         );
@@ -77,19 +77,19 @@ final class FunctionsTest extends TestCase
 
     public function testNullParameter(): void
     {
-        $parameter = nullParameter();
+        $parameter = nullp();
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
-        $parameter = booleanParameter('name');
+        $parameter = booleanp('name');
         $this->assertSame('name', $parameter->description());
     }
 
     public function testFloatParameter(): void
     {
-        $parameter = floatParameter();
+        $parameter = floatp();
         $this->assertSame('', $parameter->description());
         $this->assertSame(0.0, $parameter->default());
-        $parameter = floatParameter(
+        $parameter = floatp(
             description: 'name',
             default: 5.5
         );
@@ -99,10 +99,10 @@ final class FunctionsTest extends TestCase
 
     public function testIntegerParameter(): void
     {
-        $parameter = integerParameter();
+        $parameter = integerp();
         $this->assertSame('', $parameter->description());
         $this->assertSame(0, $parameter->default());
-        $parameter = integerParameter(
+        $parameter = integerp(
             default: 10
         );
         $this->assertSame(10, $parameter->default());
@@ -110,10 +110,10 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionObjectParameter(): void
     {
-        $parameter = objectParameter(stdClass::class);
+        $parameter = objectp(stdClass::class);
         $this->assertSame('', $parameter->description());
         $this->assertSame(stdClass::class, $parameter->className());
-        $parameter = objectParameter(stdClass::class, 'foo');
+        $parameter = objectp(stdClass::class, 'foo');
         $this->assertSame('foo', $parameter->description());
     }
 
@@ -122,7 +122,7 @@ final class FunctionsTest extends TestCase
         $description = 'some description';
         $default = 'abcd';
         $regex = '/^[a-z]+$/';
-        $parameter = stringParameter(
+        $parameter = stringp(
             description: $description,
             default: $default,
             regex: $regex,
@@ -134,10 +134,10 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionArrayParameter(): void
     {
-        $parameter = arrayParameter(
-            wea: arrayParameter(
-                one: stringParameter(),
-                two: integerParameter()
+        $parameter = arrayp(
+            wea: arrayp(
+                one: stringp(),
+                two: integerp()
             )
         );
         $this->assertCount(1, $parameter->parameters());
@@ -145,21 +145,21 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionAssertArgument(): void
     {
-        assertArgument('test', integerParameter(), 123);
+        assertNamedArgument('test', integerp(), 123);
         $this->expectException(InvalidArgumentException::class);
-        assertArgument('fail', stringParameter(), 13.13);
+        assertNamedArgument('fail', stringp(), 13.13);
     }
 
     public function testFunctionGenericParameter(): void
     {
-        $parameter = genericParameter(
-            K: stringParameter(),
-            V: stringParameter()
+        $parameter = genericp(
+            K: stringp(),
+            V: stringp()
         );
         $this->assertSame('', $parameter->description());
-        $parameter = genericParameter(
-            K: stringParameter(),
-            V: stringParameter(),
+        $parameter = genericp(
+            K: stringp(),
+            V: stringp(),
             description: 'foo'
         );
         $this->assertSame('foo', $parameter->description());
@@ -167,13 +167,13 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionUnionParameter(): void
     {
-        $parameter = unionParameter(
-            integerParameter(),
-            stringParameter(),
+        $parameter = unionp(
+            integerp(),
+            stringp(),
         );
-        assertUnionArgument($parameter, 'foo');
-        assertUnionArgument($parameter, 123);
+        assertUnion($parameter, 'foo');
+        assertUnion($parameter, 123);
         $this->expectException(InvalidArgumentException::class);
-        assertUnionArgument($parameter, []);
+        assertUnion($parameter, []);
     }
 }

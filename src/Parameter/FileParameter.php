@@ -44,11 +44,11 @@ final class FileParameter implements FileParameterInterface
     ) {
         $this->type = $this->type();
         $this->parameters = new Parameters(
-            error: integerParameter()
+            error: integerp()
                 ->withAccept(UPLOAD_ERR_OK),
             name: $name,
             size: $size,
-            tmp_name: stringParameter(),
+            tmp_name: stringp(),
             type: $type,
         );
     }

@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\arrayParameter;
+use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\ObjectParameter;
 use function Chevere\Parameter\parameters;
 use Chevere\Parameter\Parameters;
-use function Chevere\Parameter\stringParameter;
+use function Chevere\Parameter\stringp;
 use Chevere\Parameter\StringParameter;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Errors\ArgumentCountError;
@@ -336,10 +336,10 @@ final class ArgumentsTest extends TestCase
             'c' => 'C',
         ];
         $parameters = parameters(
-            test: arrayParameter(
-                a: stringParameter('/^A$/'),
-                b: stringParameter('/^B$/'),
-                c: stringParameter('/^C$/'),
+            test: arrayp(
+                a: stringp('/^A$/'),
+                b: stringp('/^B$/'),
+                c: stringp('/^C$/'),
             )
         );
         $arguments = new Arguments(

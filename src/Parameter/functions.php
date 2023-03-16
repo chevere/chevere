@@ -31,7 +31,7 @@ use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Throwable;
 
-function arrayParameter(
+function arrayp(
     ParameterInterface ...$parameter
 ): ArrayParameterInterface {
     $array = new ArrayParameter();
@@ -42,7 +42,7 @@ function arrayParameter(
     return $array;
 }
 
-function booleanParameter(
+function booleanp(
     string $description = '',
     bool $default = false,
 ): BooleanParameterInterface {
@@ -51,13 +51,13 @@ function booleanParameter(
     return $parameter->withDefault($default);
 }
 
-function nullParameter(
+function nullp(
     string $description = '',
 ): NullParameterInterface {
     return new NullParameter($description);
 }
 
-function floatParameter(
+function floatp(
     string $description = '',
     float $default = 0.0,
 ): FloatParameterInterface {
@@ -70,7 +70,7 @@ function floatParameter(
  * @codeCoverageIgnore
  * @param int[] $accept
  */
-function integerParameter(
+function integerp(
     string $description = '',
     ?int $default = null,
     ?int $minimum = null,
@@ -94,7 +94,7 @@ function integerParameter(
     return $parameter;
 }
 
-function stringParameter(
+function stringp(
     string $regex = '',
     string $description = '',
     ?string $default = null,
@@ -110,7 +110,7 @@ function stringParameter(
     return $parameter;
 }
 
-function objectParameter(
+function objectp(
     string $className,
     string $description = '',
 ): ObjectParameterInterface {
@@ -119,37 +119,37 @@ function objectParameter(
     return $parameter->withClassName($className);
 }
 
-function fileParameter(
+function filep(
     string $description = '',
     ?StringParameterInterface $name = null,
     ?IntegerParameterInterface $size = null,
     ?StringParameterInterface $type = null,
 ): FileParameterInterface {
     return new FileParameter(
-        name: $name ?? stringParameter(),
-        size: $size ?? integerParameter(),
-        type: $type ?? stringParameter(),
+        name: $name ?? stringp(),
+        size: $size ?? integerp(),
+        type: $type ?? stringp(),
         description: $description,
     );
 }
 
 /**
- * @param ParameterInterface $K Generic key parameter
  * @param ParameterInterface $V Generic value parameter
+ * @param ParameterInterface|null $K Generic key parameter
  */
-function genericParameter(
+function genericp(
     ParameterInterface $V,
     ?ParameterInterface $K = null,
     string $description = '',
 ): GenericParameterInterface {
     if ($K === null) {
-        $K = integerParameter();
+        $K = integerp();
     }
 
     return new GenericParameter($V, $K, $description);
 }
 
-function unionParameter(
+function unionp(
     ParameterInterface ...$parameter
 ): UnionParameterInterface {
     $parameters = parameters(...$parameter);
@@ -173,7 +173,7 @@ function arguments(
     return new Arguments($parameters, $arguments);
 }
 
-function assertStringArgument(
+function assertString(
     StringParameterInterface $parameter,
     string $argument,
 ): void {
@@ -187,7 +187,7 @@ function assertStringArgument(
     }
 }
 
-function assertIntegerArgument(
+function assertInteger(
     IntegerParameterInterface $parameter,
     int $argument,
 ): void {
@@ -224,20 +224,20 @@ function assertIntegerArgument(
 /**
  * @param array<int|string, mixed> $argument
  */
-function assertArrayArgument(
+function assertArray(
     ArrayParameterInterface $parameter,
     array $argument,
 ): void {
     foreach ($argument as $key => $value) {
         $key = strval($key);
-        assertArgument($key, $parameter->parameters()->get($key), $value);
+        assertNamedArgument($key, $parameter->parameters()->get($key), $value);
     }
 }
 
 /**
  * @param iterable<mixed, mixed> $argument
  */
-function assertGenericArgument(
+function assertGeneric(
     GenericParameterInterface $parameter,
     iterable $argument,
 ): void {
@@ -245,19 +245,19 @@ function assertGenericArgument(
     $genericKey = '_K' . $generic;
     $genericValue = '_V' . $generic;
     foreach ($argument as $key => $value) {
-        assertArgument($genericKey, $parameter->key(), $key);
-        assertArgument($genericValue, $parameter->value(), $value);
+        assertNamedArgument($genericKey, $parameter->key(), $key);
+        assertNamedArgument($genericValue, $parameter->value(), $value);
     }
 }
 
-function assertUnionArgument(
+function assertUnion(
     UnionParameterInterface $parameter,
     mixed $argument,
 ): void {
     $types = [];
     foreach ($parameter->parameters() as $parameter) {
         try {
-            assertArgument('', $parameter, $argument);
+            assertNamedArgument('', $parameter, $argument);
 
             return;
         } catch (Throwable $e) {
@@ -271,7 +271,7 @@ function assertUnionArgument(
     );
 }
 
-function assertArgument(string $name, ParameterInterface $parameter, mixed $argument): void
+function assertNamedArgument(string $name, ParameterInterface $parameter, mixed $argument): void
 {
     $parameters = parameters(
         ...[
@@ -293,23 +293,23 @@ function assertArgument(string $name, ParameterInterface $parameter, mixed $argu
     }
 }
 
-function assertParameter(ParameterInterface $parameter, mixed $argument): void
+function assertArgument(ParameterInterface $parameter, mixed $argument): void
 {
     match (true) {
         $parameter instanceof StringParameterInterface
         // @phpstan-ignore-next-line
-        => assertStringArgument($parameter, $argument),
+        => assertString($parameter, $argument),
         $parameter instanceof IntegerParameterInterface
         // @phpstan-ignore-next-line
-        => assertIntegerArgument($parameter, $argument),
+        => assertInteger($parameter, $argument),
         $parameter instanceof ArrayParameterInterface
         // @phpstan-ignore-next-line
-        => assertArrayArgument($parameter, $argument),
+        => assertArray($parameter, $argument),
         $parameter instanceof GenericParameterInterface
         // @phpstan-ignore-next-line
-        => assertGenericArgument($parameter, $argument),
+        => assertGeneric($parameter, $argument),
         $parameter instanceof UnionParameterInterface
-        => assertUnionArgument($parameter, $argument),
+        => assertUnion($parameter, $argument),
         default => '',
     };
 }

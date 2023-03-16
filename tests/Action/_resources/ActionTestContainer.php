@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
-use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\integerp;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Parameter\Parameters;
-use function Chevere\Parameter\stringParameter;
+use function Chevere\Parameter\parameters;
+use function Chevere\Parameter\stringp;
 
 final class ActionTestContainer extends Action
 {
     public function acceptContainer(): ParametersInterface
     {
-        return new Parameters(
-            id: integerParameter(),
-            name: stringParameter()
+        return parameters(
+            id: integerp(),
+            name: stringp()
         );
     }
 

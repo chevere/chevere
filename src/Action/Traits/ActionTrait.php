@@ -17,9 +17,9 @@ use Chevere\Attribute\StringAttribute;
 use Chevere\Container\Container;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
-use function Chevere\Parameter\arrayParameter;
+use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\ArrayParameter;
-use function Chevere\Parameter\assertParameter;
+use function Chevere\Parameter\assertArgument;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
@@ -81,7 +81,7 @@ trait ActionTrait
 
     public function acceptResponse(): ArrayTypeParameterInterface
     {
-        return arrayParameter();
+        return arrayp();
     }
 
     final public function withContainer(ContainerInterface $container): static
@@ -104,7 +104,7 @@ trait ActionTrait
         $arguments = arguments($this->parameters(), $argument)->toArray();
         $data = $this->run(...$arguments);
         if ($this->isStrict()) {
-            assertParameter($this->responseParameter(), $data);
+            assertArgument($this->responseParameter(), $data);
         }
 
         return new Response(...$data);

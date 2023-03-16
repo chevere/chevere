@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\arrayParameter;
-use function Chevere\Parameter\genericParameter;
+use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\genericp;
 use Chevere\Parameter\Generics;
-use function Chevere\Parameter\integerParameter;
+use function Chevere\Parameter\integerp;
 use Chevere\Parameter\Interfaces\GenericsInterface;
-use function Chevere\Parameter\stringParameter;
+use function Chevere\Parameter\stringp;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use PHPUnit\Framework\TestCase;
@@ -80,7 +80,7 @@ final class GenericsTest extends TestCase
     {
         $this->expectException(TypeError::class);
         $this->getParameters()->withAddedRequired(
-            stringParameter()
+            stringp()
         );
     }
 
@@ -88,7 +88,7 @@ final class GenericsTest extends TestCase
     {
         $this->expectException(TypeError::class);
         $this->getParameters()->withAddedOptional(
-            stringParameter()
+            stringp()
         );
     }
 
@@ -109,12 +109,12 @@ final class GenericsTest extends TestCase
     public function testWea(): void
     {
         $parameters = new Generics(
-            genericParameter(
-                V: arrayParameter(
-                    id: integerParameter(),
-                    name: stringParameter(),
+            genericp(
+                V: arrayp(
+                    id: integerp(),
+                    name: stringp(),
                 ),
-                K: integerParameter(minimum: 99)
+                K: integerp(minimum: 99)
             )
         );
         $weas = [
@@ -134,8 +134,8 @@ final class GenericsTest extends TestCase
     private function getParameters(): GenericsInterface
     {
         return new Generics(
-            genericParameter(
-                V: arrayParameter()
+            genericp(
+                V: arrayp()
             )
         );
     }

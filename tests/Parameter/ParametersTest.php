@@ -17,12 +17,12 @@ use Chevere\Parameter\ArrayParameter;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FileParameter;
 use Chevere\Parameter\FloatParameter;
+use function Chevere\Parameter\integerp;
 use Chevere\Parameter\IntegerParameter;
-use function Chevere\Parameter\integerParameter;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
+use function Chevere\Parameter\stringp;
 use Chevere\Parameter\StringParameter;
-use function Chevere\Parameter\stringParameter;
 use Chevere\Throwable\Exceptions\OverflowException;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
@@ -72,9 +72,9 @@ final class ParametersTest extends TestCase
     public function testConstructPositional(): void
     {
         $parameters = new Parameters(
-            stringParameter(),
-            integerParameter(),
-            integerParameter(),
+            stringp(),
+            integerp(),
+            integerp(),
         );
         $this->assertCount(3, $parameters);
     }
