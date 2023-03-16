@@ -28,6 +28,7 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Regex\Regex;
+use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Throwable;
 
@@ -173,6 +174,16 @@ function arguments(
     return new Arguments($parameters, $arguments);
 }
 
+function assertBoolean(BooleanParameterInterface $parameter, bool $argument): void
+{
+    return;
+}
+
+function assertFloat(FloatParameterInterface $parameter, float $argument): void
+{
+    return;
+}
+
 function assertString(
     StringParameterInterface $parameter,
     string $argument,
@@ -219,6 +230,29 @@ function assertInteger(
                 ->withCode('%maximum%', strval($maximum))
         );
     }
+}
+
+function assertNull(NullParameterInterface $parameter, mixed $argument): void
+{
+    if ($argument === null) {
+        return;
+    }
+
+    throw new TypeError(
+        message('Argument value provided is not of type null')
+    );
+}
+
+function assertObject(ObjectParameterInterface $parameter, object $argument): void
+{
+    if ($parameter->type()->validate($argument)) {
+        return;
+    }
+
+    throw new InvalidArgumentException(
+        message('Argument value provided is not of type %type%')
+            ->withCode('%type%', $parameter->className())
+    );
 }
 
 /**
@@ -296,18 +330,29 @@ function assertNamedArgument(string $name, ParameterInterface $parameter, mixed 
 function assertArgument(ParameterInterface $parameter, mixed $argument): void
 {
     match (true) {
-        $parameter instanceof StringParameterInterface
-        // @phpstan-ignore-next-line
-        => assertString($parameter, $argument),
-        $parameter instanceof IntegerParameterInterface
-        // @phpstan-ignore-next-line
-        => assertInteger($parameter, $argument),
         $parameter instanceof ArrayParameterInterface
         // @phpstan-ignore-next-line
         => assertArray($parameter, $argument),
+        $parameter instanceof BooleanParameterInterface
+        // @phpstan-ignore-next-line
+        => assertBoolean($parameter, $argument),
+        $parameter instanceof FloatParameterInterface
+        // @phpstan-ignore-next-line
+        => assertFloat($parameter, $argument),
         $parameter instanceof GenericParameterInterface
         // @phpstan-ignore-next-line
         => assertGeneric($parameter, $argument),
+        $parameter instanceof IntegerParameterInterface
+        // @phpstan-ignore-next-line
+        => assertInteger($parameter, $argument),
+        $parameter instanceof NullParameterInterface
+        => assertNull($parameter, $argument),
+        $parameter instanceof ObjectParameterInterface
+        // @phpstan-ignore-next-line
+        => assertObject($parameter, $argument),
+        $parameter instanceof StringParameterInterface
+        // @phpstan-ignore-next-line
+        => assertString($parameter, $argument),
         $parameter instanceof UnionParameterInterface
         => assertUnion($parameter, $argument),
         default => '',

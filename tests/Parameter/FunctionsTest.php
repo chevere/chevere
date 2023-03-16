@@ -15,6 +15,7 @@ namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertNamedArgument;
 use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\booleanp;
@@ -29,6 +30,7 @@ use function Chevere\Parameter\unionp;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use TypeError;
 
 final class FunctionsTest extends TestCase
 {
@@ -60,11 +62,13 @@ final class FunctionsTest extends TestCase
         $parameter = arrayp();
         $this->assertSame('', $parameter->description());
         $this->assertSame([], $parameter->default());
+        assertArgument($parameter, []);
     }
 
     public function testBooleanParameter(): void
     {
         $parameter = booleanp();
+        assertArgument($parameter, true);
         $this->assertSame('', $parameter->description());
         $this->assertSame(false, $parameter->default());
         $parameter = booleanp(
@@ -73,20 +77,24 @@ final class FunctionsTest extends TestCase
         );
         $this->assertSame('name', $parameter->description());
         $this->assertSame(true, $parameter->default());
+        $this->expectException(TypeError::class);
+        assertArgument($parameter, null);
     }
 
     public function testNullParameter(): void
     {
         $parameter = nullp();
+        assertArgument($parameter, null);
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
-        $parameter = booleanp('name');
-        $this->assertSame('name', $parameter->description());
+        $this->expectException(TypeError::class);
+        assertArgument($parameter, 1);
     }
 
     public function testFloatParameter(): void
     {
         $parameter = floatp();
+        assertArgument($parameter, 1.1);
         $this->assertSame('', $parameter->description());
         $this->assertSame(0.0, $parameter->default());
         $parameter = floatp(
@@ -95,26 +103,34 @@ final class FunctionsTest extends TestCase
         );
         $this->assertSame('name', $parameter->description());
         $this->assertSame(5.5, $parameter->default());
+        $this->expectException(TypeError::class);
+        assertArgument($parameter, []);
     }
 
     public function testIntegerParameter(): void
     {
         $parameter = integerp();
+        assertArgument($parameter, 1);
         $this->assertSame('', $parameter->description());
         $this->assertSame(0, $parameter->default());
         $parameter = integerp(
             default: 10
         );
         $this->assertSame(10, $parameter->default());
+        $this->expectException(TypeError::class);
+        assertArgument($parameter, '');
     }
 
     public function testFunctionObjectParameter(): void
     {
         $parameter = objectp(stdClass::class);
+        assertArgument($parameter, new stdClass());
         $this->assertSame('', $parameter->description());
         $this->assertSame(stdClass::class, $parameter->className());
         $parameter = objectp(stdClass::class, 'foo');
         $this->assertSame('foo', $parameter->description());
+        $this->expectException(InvalidArgumentException::class);
+        assertArgument($parameter, parameters());
     }
 
     public function testFunctionStringParameter(): void
@@ -127,9 +143,12 @@ final class FunctionsTest extends TestCase
             default: $default,
             regex: $regex,
         );
+        assertArgument($parameter, $default);
         $this->assertSame($description, $parameter->description());
         $this->assertSame($default, $parameter->default());
         $this->assertSame($regex, $parameter->regex()->__toString());
+        $this->expectException(TypeError::class);
+        assertArgument($parameter, 123);
     }
 
     public function testFunctionArrayParameter(): void
@@ -140,7 +159,15 @@ final class FunctionsTest extends TestCase
                 two: integerp()
             )
         );
+        assertArgument($parameter, [
+            'wea' => [
+                'one' => 'foo',
+                'two' => 123,
+            ],
+        ]);
         $this->assertCount(1, $parameter->parameters());
+        $this->expectException(TypeError::class);
+        assertArgument($parameter, 1);
     }
 
     public function testFunctionAssertArgument(): void
