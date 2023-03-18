@@ -46,13 +46,13 @@ final class HttpControllerTest extends TestCase
     public function testAcceptGetParameters(): void
     {
         $controller = new TestHttpAcceptController();
-        $this->assertSame([], $controller->get());
+        $this->assertSame([], $controller->query());
         $controllerWith = $controller->withQuery([
             'foo-foo' => 'abc',
         ]);
         $this->assertNotSame($controller, $controllerWith);
         $this->assertNotEquals($controller, $controllerWith);
-        $this->assertSame('abc', $controllerWith->get()['foo-foo']);
+        $this->assertSame('abc', $controllerWith->query()['foo-foo']);
         $this->expectException(InvalidArgumentException::class);
         $controller->withQuery([
             'foo-foo' => '123',
@@ -62,13 +62,13 @@ final class HttpControllerTest extends TestCase
     public function testAcceptPostParameters(): void
     {
         $controller = new TestHttpAcceptController();
-        $this->assertSame([], $controller->post());
+        $this->assertSame([], $controller->body());
         $controllerWith = $controller->withBody([
             'bar.bar' => '123',
         ]);
         $this->assertNotSame($controller, $controllerWith);
         $this->assertNotEquals($controller, $controllerWith);
-        $this->assertSame('123', $controllerWith->post()['bar.bar']);
+        $this->assertSame('123', $controllerWith->body()['bar.bar']);
         $this->expectException(InvalidArgumentException::class);
         $controller->withBody([
             'bar.bar' => 'abc',

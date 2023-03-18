@@ -84,12 +84,12 @@ interface HttpControllerInterface extends ControllerInterface
     /**
      * @return array<int|string, string>
      */
-    public function get(): array;
+    public function query(): array;
 
     /**
      * @return array<int|string, string>
      */
-    public function post(): array;
+    public function body(): array;
 
     /**
      * @return array<int|string, array<string, int|string>>

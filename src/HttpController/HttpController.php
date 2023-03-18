@@ -129,12 +129,12 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return $new->withMiddlewares($middleware);
     }
 
-    final public function get(): array
+    final public function query(): array
     {
         return $this->query;
     }
 
-    final public function post(): array
+    final public function body(): array
     {
         return $this->body;
     }
