@@ -51,11 +51,12 @@ final class Arguments implements ArgumentsInterface
             try {
                 assertGeneric($parameters->parameter(), $arguments);
             } catch (Throwable $e) {
-                $message = strstr($e->getMessage(), ':', false) ?: '';
-                $message = substr($message, 2);
-
                 throw new InvalidArgumentException(
-                    message($message)
+                    message(
+                        $this->getFixedMessage(
+                            $e->getMessage()
+                        )
+                    )
                 );
             }
             $this->arguments = $arguments;
@@ -70,7 +71,9 @@ final class Arguments implements ArgumentsInterface
         }
         if ($this->errors !== []) {
             throw new InvalidArgumentException(
-                message(implode(', ', $this->errors))
+                message(
+                    implode(', ', $this->errors)
+                )
             );
         }
     }
@@ -117,6 +120,16 @@ final class Arguments implements ArgumentsInterface
             message('Argument %name% not found')
                 ->withCode('%name%', $name),
         );
+    }
+
+    private function getFixedMessage(string $message): string
+    {
+        $strstr = strstr($message, ':', false);
+        if (! is_string($strstr)) {
+            return ''; // @codeCoverageIgnore
+        }
+
+        return substr($strstr, 2);
     }
 
     private function assertRequired(): void
