@@ -179,11 +179,6 @@ function assertBoolean(BooleanParameterInterface $parameter, bool $argument): vo
     return;
 }
 
-function assertFloat(FloatParameterInterface $parameter, float $argument): void
-{
-    return;
-}
-
 function assertString(
     StringParameterInterface $parameter,
     string $argument,
@@ -198,23 +193,23 @@ function assertString(
     }
 }
 
-function assertInteger(
-    IntegerParameterInterface $parameter,
-    int $argument,
+function assertNumeric(
+    IntegerParameterInterface|FloatParameterInterface $parameter,
+    int|float $argument,
 ): void {
-    $value = $parameter->accept();
-    if ($value !== []) {
-        if (in_array($argument, $value, true)) {
+    $accept = $parameter->accept();
+    if ($accept !== []) {
+        if (in_array($argument, $accept, true)) {
             return;
         }
 
         throw new InvalidArgumentException(
             message('Argument value provided %provided% is not an accepted value %value%')
                 ->withCode('%provided%', strval($argument))
-                ->withCode('%value%', implode(',', $value))
+                ->withCode('%value%', implode(',', $accept))
         );
     }
-    $minimum = $parameter->minimum() ?? PHP_INT_MIN;
+    $minimum = $parameter->minimum();
     if ($argument < $minimum) {
         throw new InvalidArgumentException(
             message('Argument value provided %provided% is less than %minimum%')
@@ -222,7 +217,7 @@ function assertInteger(
                 ->withCode('%minimum%', strval($minimum))
         );
     }
-    $maximum = $parameter->maximum() ?? PHP_INT_MAX;
+    $maximum = $parameter->maximum();
     if ($argument > $maximum) {
         throw new InvalidArgumentException(
             message('Argument value provided %provided% is greater than %maximum%')
@@ -230,6 +225,20 @@ function assertInteger(
                 ->withCode('%maximum%', strval($maximum))
         );
     }
+}
+
+function assertInteger(
+    IntegerParameterInterface $parameter,
+    int $argument,
+): void {
+    assertNumeric($parameter, $argument);
+}
+
+function assertFloat(
+    FloatParameterInterface $parameter,
+    float $argument
+): void {
+    assertNumeric($parameter, $argument);
 }
 
 function assertNull(NullParameterInterface $parameter, mixed $argument): void
@@ -243,8 +252,10 @@ function assertNull(NullParameterInterface $parameter, mixed $argument): void
     );
 }
 
-function assertObject(ObjectParameterInterface $parameter, object $argument): void
-{
+function assertObject(
+    ObjectParameterInterface $parameter,
+    object $argument
+): void {
     if ($parameter->type()->validate($argument)) {
         return;
     }
@@ -305,8 +316,11 @@ function assertUnion(
     );
 }
 
-function assertNamedArgument(string $name, ParameterInterface $parameter, mixed $argument): void
-{
+function assertNamedArgument(
+    string $name,
+    ParameterInterface $parameter,
+    mixed $argument
+): void {
     $parameters = parameters(
         ...[
             $name => $parameter,

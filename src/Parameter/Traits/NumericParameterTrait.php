@@ -89,6 +89,16 @@ trait NumericParameterTrait
     private function assertNumericCompatible(
         IntegerParameterInterface|FloatParameterInterface $parameter
     ): void {
+        if (array_diff($this->accept, $parameter->accept()) !== []) {
+            $value = implode(', ', $this->accept());
+            $provided = implode(', ', $parameter->accept());
+
+            throw new InvalidArgumentException(
+                message('Expected value in %value%, provided %provided%')
+                    ->withCode('%value%', "[{$value}]")
+                    ->withCode('%provided%', $provided)
+            );
+        }
         if ($this->minimum !== $parameter->minimum()) {
             $value = strval($this->minimum());
             $provided = strval($parameter->minimum());
@@ -105,16 +115,6 @@ trait NumericParameterTrait
 
             throw new InvalidArgumentException(
                 message('Expected maximum value %value%, provided %provided%')
-                    ->withCode('%value%', $value)
-                    ->withCode('%provided%', $provided)
-            );
-        }
-        if (array_diff($this->accept, $parameter->accept()) !== []) {
-            $value = implode(', ', $this->accept());
-            $provided = implode(', ', $parameter->accept());
-
-            throw new InvalidArgumentException(
-                message('Expecting accept %value%, provided %provided%')
                     ->withCode('%value%', $value)
                     ->withCode('%provided%', $provided)
             );

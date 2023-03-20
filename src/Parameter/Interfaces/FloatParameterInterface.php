@@ -31,9 +31,58 @@ interface FloatParameterInterface extends ParameterInterface
     public function withDefault(float $value): self;
 
     /**
+     * Return an instance with the specified minimum value.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified minimum value.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function withMinimum(float $value): self;
+
+    /**
+     * Return an instance with the specified maximum value.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified maximum value.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function withMaximum(float $value): self;
+
+    /**
+     * Return an instance with the specified accepted value(s).
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified accepted value(s).
+     *
+     * When using this method it will nullify the minimum and maximum values.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function withAccept(float ...$value): self;
+
+    /**
      * Provides access to the default value.
      */
     public function default(): float;
+
+    /**
+     * Provides access to the minimum value.
+     */
+    public function minimum(): float;
+
+    /**
+     * Provides access to the maximum value.
+     */
+    public function maximum(): float;
+
+    /**
+     * Provides access to the accepted value(s).
+     *
+     * @return float[]
+     */
+    public function accept(): array;
 
     public function assertCompatible(self $parameter): void;
 }
