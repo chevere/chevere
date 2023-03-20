@@ -81,4 +81,15 @@ final class MapTest extends TestCase
             ->withPut(...['b']);
         $this->assertCount(1, $mapWith);
     }
+
+    public function testWithOut(): void
+    {
+        $map = (new Map())->withPut(a: 'foo', b: 'bar');
+        $mapWith = $map->withOut('a');
+        $this->assertNotSame($map, $mapWith);
+        $this->assertFalse($mapWith->has('a'));
+        $this->assertSame(['b'], $mapWith->keys());
+        $this->expectException(OutOfBoundsException::class);
+        $mapWith->withOut('a');
+    }
 }

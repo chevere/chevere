@@ -15,15 +15,15 @@ namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
 use function Chevere\Parameter\arrayp;
-use function Chevere\Parameter\integerp;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use function Chevere\Parameter\stringp;
 
 final class ActionTestRunReturnExtraArguments extends Action
 {
     public function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayp(
-            name: integerp()
+            name: stringp()
         );
     }
 

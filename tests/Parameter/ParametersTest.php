@@ -103,6 +103,26 @@ final class ParametersTest extends TestCase
         ]);
     }
 
+    public function testWithout(): void
+    {
+        $parameters = (new Parameters())
+            ->withAddedRequired(
+                a: stringp(),
+                b: stringp(),
+                c: stringp(),
+            )
+            ->withAddedOptional(
+                x: stringp(),
+                y: stringp(),
+                z: stringp(),
+            );
+        $parametersWith = $parameters->withOut('a', 'y');
+        $this->assertNotSame($parameters, $parametersWith);
+        $this->assertCount(4, $parametersWith);
+        $this->assertSame(['b', 'c'], $parametersWith->required());
+        $this->assertSame(['x', 'z'], $parametersWith->optional());
+    }
+
     public function testWithAddedOptional(): void
     {
         $name = 'name';

@@ -16,6 +16,7 @@ namespace Chevere\Tests\Parameter;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArgument;
+use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertNamedArgument;
 use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\booleanp;
@@ -27,6 +28,7 @@ use function Chevere\Parameter\objectp;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\stringp;
 use function Chevere\Parameter\unionp;
+use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -180,7 +182,6 @@ final class FunctionsTest extends TestCase
     public function testFunctionGenericParameter(): void
     {
         $parameter = genericp(
-            K: stringp(),
             V: stringp()
         );
         $this->assertSame('', $parameter->description());
@@ -202,5 +203,39 @@ final class FunctionsTest extends TestCase
         assertUnion($parameter, 123);
         $this->expectException(InvalidArgumentException::class);
         assertUnion($parameter, []);
+    }
+
+    public function testAssertArrayExtraArguments(): void
+    {
+        $parameter = arrayp(
+            OK: stringp(),
+        );
+        $this->expectException(ArgumentCountError::class);
+        assertArray($parameter, [
+            'OK' => 'abc',
+            'ERROR' => 123,
+        ]);
+    }
+
+    public function testAssertArrayConflictType(): void
+    {
+        $parameter = arrayp(
+            OK: stringp(),
+        );
+        $this->expectException(InvalidArgumentException::class);
+        assertArray($parameter, [
+            'OK' => 123,
+        ]);
+    }
+
+    public function testAssertArrayConflictNull(): void
+    {
+        $parameter = arrayp(
+            OK: stringp(),
+        );
+        $this->expectException(InvalidArgumentException::class);
+        assertArray($parameter, [
+            'OK' => null,
+        ]);
     }
 }

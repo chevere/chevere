@@ -15,7 +15,6 @@ namespace Chevere\Parameter;
 
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
-use Chevere\Parameter\Interfaces\GenericsInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ArgumentsGetTypedTrait;
@@ -40,6 +39,11 @@ final class Arguments implements ArgumentsInterface
     private array $errors;
 
     /**
+     * @var array<int|string>
+     */
+    private array $argumentsKeys = [];
+
+    /**
      * @param array<int|string, mixed> $arguments
      */
     public function __construct(
@@ -47,23 +51,9 @@ final class Arguments implements ArgumentsInterface
         array $arguments
     ) {
         $this->arguments = [];
-        if ($parameters instanceof GenericsInterface) {
-            try {
-                assertGeneric($parameters->parameter(), $arguments);
-            } catch (Throwable $e) {
-                throw new InvalidArgumentException(
-                    message(
-                        $this->getFixedMessage(
-                            $e->getMessage()
-                        )
-                    )
-                );
-            }
-            $this->arguments = $arguments;
-
-            return;
-        }
+        $this->argumentsKeys = array_keys($arguments);
         $this->processArguments($arguments);
+        $this->assertNoArgumentOverflow();
         $this->assertRequired();
         $this->errors = [];
         foreach ($this->parameters as $name => $parameter) {
@@ -107,7 +97,7 @@ final class Arguments implements ArgumentsInterface
 
     public function has(string $name): bool
     {
-        return isset($this->arguments[$name]);
+        return array_key_exists($name, $this->arguments);
     }
 
     public function get(string $name): mixed
@@ -122,27 +112,30 @@ final class Arguments implements ArgumentsInterface
         );
     }
 
-    private function getFixedMessage(string $message): string
+    private function assertNoArgumentOverflow(): void
     {
-        $strstr = strstr($message, ':', false);
-        if (! is_string($strstr)) {
-            return ''; // @codeCoverageIgnore
+        $overflow = array_diff(
+            $this->argumentsKeys,
+            $this->parameters()->keys()
+        );
+        if ($overflow !== []) {
+            throw new ArgumentCountError(
+                message('Invalid argument(s) provided: %extra%')
+                    ->withCode('%extra%', implode(', ', $overflow))
+            );
         }
-
-        return substr($strstr, 2);
     }
 
     private function assertRequired(): void
     {
-        $keys = array_keys($this->arguments);
-        $diff = array_diff(
+        $missing = array_diff(
             $this->parameters->required(),
-            $keys
+            $this->argumentsKeys
         );
-        if ($diff !== []) {
+        if ($missing !== []) {
             throw new ArgumentCountError(
                 message('Missing required argument(s): %missing%')
-                    ->withCode('%missing%', implode(', ', $diff))
+                    ->withCode('%missing%', implode(', ', $missing))
             );
         }
     }
@@ -203,12 +196,6 @@ final class Arguments implements ArgumentsInterface
         $keys = array_keys($argument);
         foreach ($keys as $name) {
             $name = strval($name);
-
-            if (! $this->parameters()->has($name)) {
-                unset($argument[$name]);
-
-                continue;
-            }
             $this->arguments[$name] = $argument[$name];
         }
     }

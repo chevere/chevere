@@ -50,14 +50,23 @@ final class ArrayParameter implements ArrayParameterInterface
      */
     public function withParameter(ParameterInterface ...$parameter): static
     {
-        return $this->withAddedRequired(...$parameter);
+        return $this->withAdded(...$parameter);
     }
 
-    public function withAddedRequired(ParameterInterface ...$parameter): static
+    public function withAdded(ParameterInterface ...$parameter): static
     {
         $new = clone $this;
         $new->parameters = $new->parameters
             ->withAddedRequired(...$parameter);
+
+        return $new;
+    }
+
+    public function withOut(string ...$name): static
+    {
+        $new = clone $this;
+        $new->parameters = $new->parameters
+            ->withOut(...$name);
 
         return $new;
     }

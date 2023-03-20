@@ -73,6 +73,17 @@ final class Map implements MapInterface
         return $new;
     }
 
+    /**
+     * @return self<TValue>
+     */
+    public function withOut(string ...$key): self
+    {
+        $new = clone $this;
+        $new->out(...$key);
+
+        return $new;
+    }
+
     public function has(string ...$key): bool
     {
         try {
@@ -142,5 +153,23 @@ final class Map implements MapInterface
             }
             $this->values[$lookUp] = $value;
         }
+    }
+
+    private function out(string ...$key): void
+    {
+        foreach ($key as $item) {
+            $lookup = $this->lookupKey($item);
+            if ($lookup === null) {
+                throw new OutOfBoundsException(
+                    message('Key %key% not found')
+                        ->withCode('%key%', $item)
+                );
+            }
+            unset($this->keys[$lookup], $this->values[$lookup]);
+            $this->count--;
+        }
+        $this->keys = array_values($this->keys);
+        // @infection-ignore-all
+        $this->values = array_values($this->values);
     }
 }

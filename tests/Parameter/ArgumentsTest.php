@@ -71,16 +71,14 @@ final class ArgumentsTest extends TestCase
         new Arguments($parameters, []);
     }
 
-    public function testIgnoreExtraArguments(): void
+    public function testExtraArguments(): void
     {
         $parameters = new Parameters(test: new StringParameter());
-        $arguments = new Arguments($parameters, [
+        $this->expectException(ArgumentCountError::class);
+        new Arguments($parameters, [
             'test' => '123',
             'extra' => 'nono',
         ]);
-        $this->assertSame([
-            'test' => '123',
-        ], $arguments->toArray());
     }
 
     public function testInvalidArgumentType(): void
@@ -126,7 +124,6 @@ final class ArgumentsTest extends TestCase
                     ->withRegex(new Regex('/^[0-9]+$/'))
             ),
             [
-                'this' => 'should be ignored',
                 $name => $value,
             ]
         );

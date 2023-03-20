@@ -129,7 +129,7 @@ trait ParametersTrait
     /**
      * @param array<string|int, ParameterInterface> $parameters
      */
-    private function putAdded(string $property, array $parameters): void
+    private function addProperty(string $property, array $parameters): void
     {
         if (count($parameters) === 0) {
             return;
@@ -142,5 +142,16 @@ trait ParametersTrait
             $map[$name] = $parameter;
         }
         $this->map = $this->map->withPut(...$map);
+    }
+
+    private function removeProperty(string ...$name): void
+    {
+        $this->map = $this->map->withOut(...$name);
+        $this->required = array_values(
+            array_diff($this->required, $name)
+        );
+        $this->optional = array_values(
+            array_diff($this->optional, $name)
+        );
     }
 }

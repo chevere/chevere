@@ -36,6 +36,10 @@ final class GenericParameter implements GenericParameterInterface
     ) {
         $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();
+        $this->parameters = new Parameters(
+            K: $this->key,
+            V: $this->value
+        );
     }
 
     public function key(): ParameterInterface
@@ -56,6 +60,6 @@ final class GenericParameter implements GenericParameterInterface
 
     public function parameters(): ParametersInterface
     {
-        return $this->parameters ??= new Generics($this);
+        return $this->parameters;
     }
 }

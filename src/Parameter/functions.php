@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use Chevere\Message\Interfaces\MessageInterface;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
@@ -37,7 +38,7 @@ function arrayp(
 ): ArrayParameterInterface {
     $array = new ArrayParameter();
     if ($parameter) {
-        $array = $array->withAddedRequired(...$parameter);
+        $array = $array->withAdded(...$parameter);
     }
 
     return $array;
@@ -273,10 +274,14 @@ function assertArray(
     ArrayParameterInterface $parameter,
     array $argument,
 ): void {
-    foreach ($argument as $key => $value) {
-        $key = strval($key);
-        assertNamedArgument($key, $parameter->parameters()->get($key), $value);
-    }
+    $arguments = arguments($parameter->parameters(), $argument);
+    // try {
+    //     } catch(Throwable $e) {
+    //         throw new InvalidArgumentException(
+    //             getThrowableArrayErrorMessage($e->getMessage())
+    //         );
+    //     }
+    // }
 }
 
 /**
@@ -289,10 +294,29 @@ function assertGeneric(
     $generic = ' *generic';
     $genericKey = '_K' . $generic;
     $genericValue = '_V' . $generic;
-    foreach ($argument as $key => $value) {
-        assertNamedArgument($genericKey, $parameter->key(), $key);
-        assertNamedArgument($genericValue, $parameter->value(), $value);
+
+    try {
+        foreach ($argument as $key => $value) {
+            assertNamedArgument($genericKey, $parameter->key(), $key);
+            assertNamedArgument($genericValue, $parameter->value(), $value);
+        }
+    } catch(Throwable $e) {
+        throw new InvalidArgumentException(
+            getThrowableArrayErrorMessage($e->getMessage())
+        );
     }
+}
+
+function getThrowableArrayErrorMessage(string $message): MessageInterface
+{
+    $strstr = strstr($message, ':', false);
+    if (! is_string($strstr)) {
+        $strstr = ''; // @codeCoverageIgnore
+    }
+
+    return message(
+        substr($strstr, 2)
+    );
 }
 
 function assertUnion(

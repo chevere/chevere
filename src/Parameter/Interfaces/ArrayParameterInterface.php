@@ -29,12 +29,20 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
     public function withDefault(array $value): self;
 
     /**
-     * Return an instance with added required parameters.
+     * Return an instance with added parameters.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added required parameters.
+     * an instance that contains the specified added parameters.
      */
-    public function withAddedRequired(ParameterInterface ...$parameter): self;
+    public function withAdded(ParameterInterface ...$parameter): self;
+
+    /**
+     * Return an instance with removed parameters.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified added parameters.
+     */
+    public function withOut(string ...$name): self;
 
     public function assertCompatible(self $parameter): void;
 }

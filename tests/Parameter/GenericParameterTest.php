@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use function Chevere\Parameter\assertGeneric;
+use function Chevere\Parameter\genericp;
 use Chevere\Parameter\GenericParameter;
 use function Chevere\Parameter\integerp;
-use Chevere\Parameter\Interfaces\GenericsInterface;
 use function Chevere\Parameter\stringp;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -38,9 +39,8 @@ final class GenericParameterTest extends TestCase
         $this->assertSame($description, $parameter->description());
         $parameters = $parameter->parameters();
         $this->assertSame($parameters, $parameter->parameters());
-        $this->assertInstanceOf(GenericsInterface::class, $parameters);
-        $genericParameter = $parameters->get(GenericsInterface::GENERIC_NAME);
-        $this->assertEquals($genericParameter, $parameter);
+        $this->assertEquals($value, $parameters->get('V'));
+        $this->assertEquals($key, $parameters->get('K'));
     }
 
     public function testAssertCompatible(): void
@@ -75,5 +75,30 @@ final class GenericParameterTest extends TestCase
         $notCompatible = new GenericParameter($value, $keyAlt);
         $this->expectException(InvalidArgumentException::class);
         $parameter->assertCompatible($notCompatible);
+    }
+
+    public function testNestedGeneric(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $parameter = genericp(
+            V: stringp(),
+            K: stringp()
+        );
+        $argument = [
+            'a' => 'A',
+        ];
+        assertGeneric($parameter, $argument);
+        $parameter = genericp(
+            V: $parameter,
+        );
+        $argument = [
+            [
+                'b' => 'B',
+            ],
+            [
+                'c' => 'C',
+            ],
+        ];
+        assertGeneric($parameter, $argument);
     }
 }

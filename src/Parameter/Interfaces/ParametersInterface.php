@@ -62,6 +62,14 @@ interface ParametersInterface extends MappedInterface
     public function withModify(ParameterInterface ...$parameter): self;
 
     /**
+     * Return an instance with the specified parameter(s) removed.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified parameter(s) removed.
+     */
+    public function withOut(string ...$name): self;
+
+    /**
      * Asserts whether the instance has a parameter by name(s).
      */
     public function assertHas(string ...$name): void;

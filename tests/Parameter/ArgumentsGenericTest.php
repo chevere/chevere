@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
+use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\genericp;
-use Chevere\Parameter\Generics;
 use function Chevere\Parameter\integerp;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\stringp;
@@ -144,14 +144,12 @@ final class ArgumentsGenericTest extends TestCase
      */
     public function testGenericArguments(array $args): void
     {
-        $parameters = new Generics(
-            genericp(
-                V: stringp(),
-                K: stringp()
-            )
+        $parameter = genericp(
+            V: stringp(),
+            K: stringp()
         );
-        $arguments = new Arguments($parameters, $args);
-        $this->assertSame($args, $arguments->toArray());
+        $this->expectNotToPerformAssertions();
+        assertGeneric($parameter, $args);
     }
 
     /**
@@ -159,14 +157,12 @@ final class ArgumentsGenericTest extends TestCase
      */
     public function testGenericArgumentsConflict(array $args): void
     {
-        $parameters = new Generics(
-            genericp(
-                V: integerp(),
-                K: stringp()
-            )
+        $parameter = genericp(
+            V: integerp(),
+            K: stringp()
         );
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^\[Property _V \*generic\]\:.*/');
-        new Arguments($parameters, $args);
+        assertGeneric($parameter, $args);
     }
 }

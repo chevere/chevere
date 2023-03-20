@@ -27,6 +27,11 @@ interface MapInterface extends MappedInterface
      */
     public function withPut(mixed ...$value): self;
 
+    /**
+     * @return self<TValue>
+     */
+    public function withOut(string ...$key): self;
+
     public function has(string ...$key): bool;
 
     public function assertHas(string ...$key): void;

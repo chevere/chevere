@@ -38,11 +38,11 @@ use Chevere\Tests\Action\_resources\ActionTestRunParameterMissingType;
 use Chevere\Tests\Action\_resources\ActionTestRunParameters;
 use Chevere\Tests\Action\_resources\ActionTestRunReturnExtraArguments;
 use Chevere\Tests\Action\_resources\ActionTestSetupBeforeAndAfter;
+use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
-use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class ActionTest extends TestCase
@@ -181,7 +181,7 @@ final class ActionTest extends TestCase
     public function testRunReturnExtraArguments(): void
     {
         $action = new ActionTestRunReturnExtraArguments();
-        $this->expectException(OutOfBoundsException::class);
+        $this->expectException(ArgumentCountError::class);
         $action->getResponse();
     }
 

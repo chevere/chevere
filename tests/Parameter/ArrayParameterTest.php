@@ -37,12 +37,12 @@ final class ArrayParameterTest extends TestCase
         );
     }
 
-    public function testWithParameter(): void
+    public function testWithAdded(): void
     {
         $string = stringp();
         $integer = integerp();
         $parameter = new ArrayParameter();
-        $parameterWith = $parameter->withAddedRequired(
+        $parameterWith = $parameter->withAdded(
             one: $string,
             two: $integer
         );
@@ -50,20 +50,33 @@ final class ArrayParameterTest extends TestCase
         $this->assertCount(2, $parameterWith->parameters());
     }
 
+    public function testWithOut(): void
+    {
+        $string = stringp();
+        $integer = integerp();
+        $parameter = (new ArrayParameter())->withAdded(
+            one: $string,
+            two: $integer
+        );
+        $parameterWith = $parameter->withOut('one');
+        $this->assertNotSame($parameter, $parameterWith);
+        $this->assertCount(1, $parameterWith->parameters());
+    }
+
     public function testAssertCompatibleConflict(): void
     {
         $string = stringp();
         $integer = integerp();
-        $parameter = (new ArrayParameter())->withAddedRequired(
+        $parameter = (new ArrayParameter())->withAdded(
             one: $string,
         );
         $altString = stringp();
-        $compatible = (new ArrayParameter())->withAddedRequired(
+        $compatible = (new ArrayParameter())->withAdded(
             one: $altString,
         );
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
-        $notCompatible = (new ArrayParameter())->withAddedRequired(
+        $notCompatible = (new ArrayParameter())->withAdded(
             one: $integer,
         );
         $expectedType = $string::class;
@@ -80,10 +93,10 @@ final class ArrayParameterTest extends TestCase
     public function testAssertCompatibleMissingKey(): void
     {
         $string = stringp();
-        $parameter = (new ArrayParameter())->withAddedRequired(
+        $parameter = (new ArrayParameter())->withAdded(
             one: $string,
         );
-        $notCompatible = (new ArrayParameter())->withAddedRequired(
+        $notCompatible = (new ArrayParameter())->withAdded(
             two: $string,
         );
         $this->expectException(OutOfBoundsException::class);
