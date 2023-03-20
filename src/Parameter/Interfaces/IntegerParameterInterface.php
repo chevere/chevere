@@ -70,12 +70,12 @@ interface IntegerParameterInterface extends ParameterInterface
     /**
      * Provides access to the minimum value.
      */
-    public function minimum(): ?int;
+    public function minimum(): int;
 
     /**
      * Provides access to the maximum value.
      */
-    public function maximum(): ?int;
+    public function maximum(): int;
 
     /**
      * Provides access to the accepted value(s).

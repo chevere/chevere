@@ -13,29 +13,27 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Message\Interfaces\MessageInterface;
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Traits\NumericParameterTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\OverflowException;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeInteger;
 
 final class IntegerParameter implements IntegerParameterInterface
 {
     use ParameterTrait;
+    use NumericParameterTrait;
 
     private int $default = 0;
 
-    private ?int $minimum = PHP_INT_MIN;
+    private int $minimum = PHP_INT_MIN;
 
-    private ?int $maximum = PHP_INT_MAX;
+    private int $maximum = PHP_INT_MAX;
 
     /**
      * @var int[]
      */
-    private array $value = [];
+    private array $accept = [];
 
     public function withDefault(int $value): IntegerParameterInterface
     {
@@ -47,32 +45,16 @@ final class IntegerParameter implements IntegerParameterInterface
 
     public function withMinimum(int $value): IntegerParameterInterface
     {
-        $this->assertNoValueOverflow(
-            message('Cannot set minimum value when value is set')
-        );
-        if (isset($this->maximum) && $value >= $this->maximum) {
-            throw new InvalidArgumentException(
-                message('Minimum value cannot be greater or equal than maximum value')
-            );
-        }
         $new = clone $this;
-        $new->minimum = $value;
+        $new->setMinimum($value);
 
         return $new;
     }
 
     public function withMaximum(int $value): IntegerParameterInterface
     {
-        $this->assertNoValueOverflow(
-            message('Cannot set maximum value when value is set')
-        );
-        if (isset($this->minimum) && $value <= $this->minimum) {
-            throw new InvalidArgumentException(
-                message('Maximum value cannot be less or equal than minimum value')
-            );
-        }
         $new = clone $this;
-        $new->maximum = $value;
+        $new->setMaximum($value);
 
         return $new;
     }
@@ -80,9 +62,7 @@ final class IntegerParameter implements IntegerParameterInterface
     public function withAccept(int ...$value): IntegerParameterInterface
     {
         $new = clone $this;
-        $new->value = $value;
-        $new->minimum = null;
-        $new->maximum = null;
+        $new->setAccept(...$value);
 
         return $new;
     }
@@ -92,55 +72,28 @@ final class IntegerParameter implements IntegerParameterInterface
         return $this->default;
     }
 
-    public function minimum(): ?int
+    public function minimum(): int
     {
         return $this->minimum;
     }
 
-    public function maximum(): ?int
+    public function maximum(): int
     {
         return $this->maximum;
     }
 
     public function accept(): array
     {
-        return $this->value;
+        return $this->accept;
     }
 
     public function assertCompatible(IntegerParameterInterface $parameter): void
     {
-        if ($this->minimum() !== $parameter->minimum()) {
-            throw new InvalidArgumentException(
-                message('Expected minimum value %value%, provided %provided%')
-                    ->withCode('%value%', strval($this->minimum() ?? 'null'))
-                    ->withCode('%provided%', strval($parameter->minimum() ?? 'null'))
-            );
-        }
-        if ($this->maximum() !== $parameter->maximum()) {
-            throw new InvalidArgumentException(
-                message('Expected maximum value %value%, provided %provided%')
-                    ->withCode('%value%', strval($this->maximum() ?? 'null'))
-                    ->withCode('%provided%', strval($parameter->maximum() ?? 'null'))
-            );
-        }
-        if (array_diff($this->accept(), $parameter->accept()) !== []) {
-            throw new InvalidArgumentException(
-                message('Expecting accept %value%, provided %provided%')
-                    ->withCode('%value%', implode(', ', $this->accept()))
-                    ->withCode('%provided%', implode(', ', $parameter->accept()))
-            );
-        }
+        $this->assertNumericCompatible($parameter);
     }
 
     private function getType(): TypeInterface
     {
         return typeInteger();
-    }
-
-    private function assertNoValueOverflow(MessageInterface $message): void
-    {
-        if ($this->value !== []) {
-            throw new OverflowException($message);
-        }
     }
 }

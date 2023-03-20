@@ -70,9 +70,9 @@ final class IntegerParameterTest extends TestCase
         $parameterWithMinimum = $parameter->withMinimum(1);
         $this->assertNotSame($parameter, $parameterWithMinimum);
         $this->assertSame(1, $parameterWithMinimum->minimum());
-        $parameterWithValue = $parameter->withAccept(1);
-        $this->assertSame(null, $parameterWithValue->maximum());
-        $this->assertSame(null, $parameterWithValue->minimum());
+        $parameterWithValue = $parameter->withAccept(3, 2, 1);
+        $this->assertSame(3, $parameterWithValue->maximum());
+        $this->assertSame(1, $parameterWithValue->minimum());
         $this->expectException(OverflowException::class);
         $parameterWithValue->withMinimum(0);
     }
@@ -98,9 +98,9 @@ final class IntegerParameterTest extends TestCase
         $parameterWithMaximum = $parameter->withMaximum(1);
         $this->assertNotSame($parameter, $parameterWithMaximum);
         $this->assertSame(1, $parameterWithMaximum->maximum());
-        $parameterWithValue = $parameter->withAccept(1);
-        $this->assertSame(null, $parameterWithValue->maximum());
-        $this->assertSame(null, $parameterWithValue->minimum());
+        $parameterWithValue = $parameter->withAccept(1, 2, 3);
+        $this->assertSame(3, $parameterWithValue->maximum());
+        $this->assertSame(1, $parameterWithValue->minimum());
         $this->expectException(OverflowException::class);
         $parameterWithValue->withMaximum(0);
     }
