@@ -59,17 +59,34 @@ function nullp(
     return new NullParameter($description);
 }
 
+/**
+ * @param float[] $accept
+ */
 function floatp(
     string $description = '',
-    float $default = 0.0,
+    ?float $default = null,
+    ?float $minimum = null,
+    ?float $maximum = null,
+    array $accept = [],
 ): FloatParameterInterface {
     $parameter = new FloatParameter($description);
+    if ($default !== null) {
+        $parameter = $parameter->withDefault($default);
+    }
+    if ($minimum !== null) {
+        $parameter = $parameter->withMinimum($minimum);
+    }
+    if ($maximum !== null) {
+        $parameter = $parameter->withMaximum($maximum);
+    }
+    if ($accept !== []) {
+        $parameter = $parameter->withAccept(...$accept);
+    }
 
-    return $parameter->withDefault($default);
+    return $parameter;
 }
 
 /**
- * @codeCoverageIgnore
  * @param int[] $accept
  */
 function integerp(
