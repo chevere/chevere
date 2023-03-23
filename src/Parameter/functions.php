@@ -17,6 +17,7 @@ use Chevere\Message\Interfaces\MessageInterface;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
@@ -301,6 +302,18 @@ function assertArray(
     // }
 }
 
+function assertNotEmpty(ParameterInterface $expected, mixed $value): void
+{
+    if ($expected instanceof ArrayTypeParameterInterface
+        && empty($value)
+        && $expected->parameters()->required() !== []
+    ) {
+        throw new InvalidArgumentException(
+            message('Argument value provided is empty')
+        );
+    }
+}
+
 /**
  * @param iterable<mixed, mixed> $argument
  */
@@ -311,6 +324,8 @@ function assertGeneric(
     $generic = ' *generic';
     $genericKey = '_K' . $generic;
     $genericValue = '_V' . $generic;
+    $expected = $parameter->value();
+    assertNotEmpty($expected, $argument);
 
     try {
         foreach ($argument as $key => $value) {
@@ -328,12 +343,12 @@ function getThrowableArrayErrorMessage(string $message): MessageInterface
 {
     $strstr = strstr($message, ':', false);
     if (! is_string($strstr)) {
-        $strstr = ''; // @codeCoverageIgnore
+        $strstr = $message; // @codeCoverageIgnore
+    } else {
+        $strstr = substr($strstr, 2);
     }
 
-    return message(
-        substr($strstr, 2)
-    );
+    return message($strstr);
 }
 
 function assertUnion(
@@ -362,6 +377,7 @@ function assertNamedArgument(
     ParameterInterface $parameter,
     mixed $argument
 ): void {
+    // assertNotEmpty($parameter, $argument);
     $parameters = parameters(
         ...[
             $name => $parameter,

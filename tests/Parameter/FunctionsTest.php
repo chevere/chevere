@@ -161,7 +161,7 @@ final class FunctionsTest extends TestCase
                 two: integerp()
             )
         );
-        assertArgument($parameter, [
+        assertArray($parameter, [
             'wea' => [
                 'one' => 'foo',
                 'two' => 123,
