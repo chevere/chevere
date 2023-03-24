@@ -80,4 +80,24 @@ final class FunctionsUnionTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         assertGeneric($generic, [[]]);
     }
+
+    public function testUnionGeneric(): void
+    {
+        $generic = genericp(integerp());
+        $union = unionp(arrayp(), $generic);
+        assertUnion($union, []);
+        assertUnion($union, [1, 2, 3]);
+        $this->expectException(InvalidArgumentException::class);
+        assertUnion($union, [[]]);
+    }
+
+    public function testUnionGenericArray(): void
+    {
+        $generic = genericp(arrayp());
+        $union = unionp(arrayp(), $generic);
+        assertUnion($union, []);
+        assertUnion($union, [[]]);
+        $this->expectException(InvalidArgumentException::class);
+        assertUnion($union, [[[]]]);
+    }
 }
