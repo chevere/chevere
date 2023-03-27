@@ -44,6 +44,7 @@ use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class ActionTest extends TestCase
 {
@@ -73,7 +74,7 @@ final class ActionTest extends TestCase
             'boolDefault' => false,
             'floatDefault' => 0.0,
             'arrayDefault' => [],
-            'objectDefault' => null,
+            'objectDefault' => new stdClass(),
         ];
         $types = [
             'int' => IntegerParameterInterface::class,
@@ -91,7 +92,7 @@ final class ActionTest extends TestCase
         $this->assertSame($required, $action->parameters()->required());
         foreach ($defaults as $name => $value) {
             $parameter = $action->parameters()->get(strval($name));
-            $this->assertSame($value, $parameter->default());
+            $this->assertEquals($value, $parameter->default());
         }
         foreach ($types as $parameter => $class) {
             $parameter = strval($parameter);

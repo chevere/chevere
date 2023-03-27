@@ -29,6 +29,7 @@ use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class ArgumentsTest extends TestCase
 {
@@ -254,11 +255,11 @@ final class ArgumentsTest extends TestCase
                 $optionalName => $optionalNameValue,
             ]
         );
-        $this->assertSame(
+        $this->assertEquals(
             [
                 $required => $requiredValue,
                 $optionalName => $optionalNameValue,
-                $optionalObject => null,
+                $optionalObject => new stdClass(),
             ],
             $argumentsWithAllValues->toArray()
         );
