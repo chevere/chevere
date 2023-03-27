@@ -14,27 +14,27 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\assertArgument;
-use function Chevere\Parameter\assertFloat;
-use function Chevere\Parameter\floatp;
+use function Chevere\Parameter\assertInteger;
+use function Chevere\Parameter\integerp;
 use PHPUnit\Framework\TestCase;
 
-final class FunctionsFloatTest extends TestCase
+final class FunctionsIntegerTest extends TestCase
 {
-    public function testFloatp(): void
+    public function testIntegerp(): void
     {
-        $parameter = floatp();
+        $parameter = integerp();
         $this->assertSame('', $parameter->description());
-        $this->assertSame(0.0, $parameter->default());
-        $this->assertSame(-PHP_FLOAT_MIN, $parameter->minimum());
-        $this->assertSame(PHP_FLOAT_MAX, $parameter->maximum());
+        $this->assertSame(0, $parameter->default());
+        $this->assertSame(PHP_INT_MIN, $parameter->minimum());
+        $this->assertSame(PHP_INT_MAX, $parameter->maximum());
         $this->assertSame([], $parameter->accept());
     }
 
-    public function testFloatpOptions(): void
+    public function testIntegerpOptions(): void
     {
         $description = 'test';
-        $default = 5.0;
-        $parameter = floatp(
+        $default = 5;
+        $parameter = integerp(
             description: $description,
             default: $default,
             minimum: -100,
@@ -42,19 +42,17 @@ final class FunctionsFloatTest extends TestCase
         );
         $this->assertSame($description, $parameter->description());
         $this->assertSame($default, $parameter->default());
-        $this->assertSame(-100.0, $parameter->minimum());
-        $this->assertSame(100.0, $parameter->maximum());
-        $parameter = floatp(accept: [0, 1]);
-        $this->assertSame([0.0, 1.0], $parameter->accept());
+        $this->assertSame(-100, $parameter->minimum());
+        $this->assertSame(100, $parameter->maximum());
+        $parameter = integerp(accept: [0, 1]);
+        $this->assertSame([0, 1], $parameter->accept());
     }
 
-    public function testAssertFloat(): void
+    public function testAssertInteger(): void
     {
-        $parameter = floatp();
-        assertFloat($parameter, 0);
-        assertFloat($parameter, 0.0);
+        $parameter = integerp();
+        assertInteger($parameter, 0);
         assertArgument($parameter, 0);
-        assertArgument($parameter, 0.0);
         $this->expectNotToPerformAssertions();
     }
 }

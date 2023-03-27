@@ -256,10 +256,8 @@ function assertInteger(
 function assertFloat(
     FloatParameterInterface $parameter,
     float $argument
-): float {
+): void {
     assertNumeric($parameter, $argument);
-
-    return $argument;
 }
 
 function assertNull(NullParameterInterface $parameter, mixed $argument): void
@@ -294,14 +292,7 @@ function assertArray(
     ArrayParameterInterface $parameter,
     array $argument,
 ): void {
-    $arguments = arguments($parameter->parameters(), $argument);
-    // try {
-    //     } catch(Throwable $e) {
-    //         throw new InvalidArgumentException(
-    //             getThrowableArrayErrorMessage($e->getMessage())
-    //         );
-    //     }
-    // }
+    arguments($parameter->parameters(), $argument);
 }
 
 function assertNotEmpty(ParameterInterface $expected, mixed $value): void
@@ -334,7 +325,7 @@ function assertGeneric(
             assertNamedArgument($genericKey, $parameter->key(), $key);
             assertNamedArgument($genericValue, $parameter->value(), $value);
         }
-    } catch(Throwable $e) {
+    } catch (Throwable $e) {
         throw new InvalidArgumentException(
             getThrowableArrayErrorMessage($e->getMessage())
         );
@@ -418,8 +409,6 @@ function assertArgument(ParameterInterface $parameter, mixed $argument): void
         $parameter instanceof IntegerParameterInterface
         // @phpstan-ignore-next-line
         => assertInteger($parameter, $argument),
-        $parameter instanceof NullParameterInterface
-        => assertNull($parameter, $argument),
         $parameter instanceof ObjectParameterInterface
         // @phpstan-ignore-next-line
         => assertObject($parameter, $argument),
@@ -428,6 +417,8 @@ function assertArgument(ParameterInterface $parameter, mixed $argument): void
         => assertString($parameter, $argument),
         $parameter instanceof UnionParameterInterface
         => assertUnion($parameter, $argument),
+        $parameter instanceof NullParameterInterface
+        => assertNull($parameter, $argument),
         default => '',
     };
 }
