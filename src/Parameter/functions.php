@@ -256,8 +256,10 @@ function assertInteger(
 function assertFloat(
     FloatParameterInterface $parameter,
     float $argument
-): void {
+): float {
     assertNumeric($parameter, $argument);
+
+    return $argument;
 }
 
 function assertNull(NullParameterInterface $parameter, mixed $argument): void

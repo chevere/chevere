@@ -20,7 +20,6 @@ use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertNamedArgument;
 use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\booleanp;
-use function Chevere\Parameter\floatp;
 use function Chevere\Parameter\genericp;
 use function Chevere\Parameter\integerp;
 use function Chevere\Parameter\nullp;
@@ -91,22 +90,6 @@ final class FunctionsTest extends TestCase
         $this->assertSame(null, $parameter->default());
         $this->expectException(TypeError::class);
         assertArgument($parameter, 1);
-    }
-
-    public function testFloatParameter(): void
-    {
-        $parameter = floatp();
-        assertArgument($parameter, 1.1);
-        $this->assertSame('', $parameter->description());
-        $this->assertSame(0.0, $parameter->default());
-        $parameter = floatp(
-            description: 'name',
-            default: 5.5
-        );
-        $this->assertSame('name', $parameter->description());
-        $this->assertSame(5.5, $parameter->default());
-        $this->expectException(TypeError::class);
-        assertArgument($parameter, []);
     }
 
     public function testIntegerParameter(): void

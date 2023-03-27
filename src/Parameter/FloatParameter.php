@@ -26,7 +26,7 @@ final class FloatParameter implements FloatParameterInterface
 
     private float $default = 0.0;
 
-    private float $minimum = PHP_FLOAT_MIN;
+    private float $minimum = -PHP_FLOAT_MIN;
 
     private float $maximum = PHP_FLOAT_MAX;
 

@@ -25,7 +25,7 @@ final class FloatParameterTest extends TestCase
         $parameter = new FloatParameter('name');
         $this->assertEquals($parameter, floatp('name'));
         $this->assertSame(0.0, $parameter->default());
-        $this->assertSame(PHP_FLOAT_MIN, $parameter->minimum());
+        $this->assertSame(-PHP_FLOAT_MIN, $parameter->minimum());
         $this->assertSame(PHP_FLOAT_MAX, $parameter->maximum());
         $default = 12.34;
         $parameterWithDefault = $parameter->withDefault($default);
