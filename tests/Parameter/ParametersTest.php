@@ -170,7 +170,7 @@ final class ParametersTest extends TestCase
             $name => $stockParameter,
         ]);
         $parametersWith = $parameters
-            ->withModify(...[
+            ->withModified(...[
                 $name => $modifyParameter,
             ]);
         $this->assertNotSame($parameters, $parametersWith);
@@ -183,7 +183,7 @@ final class ParametersTest extends TestCase
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parametersWith->has($name));
         $this->expectException(OutOfBoundsException::class);
-        $parametersWith->withModify(notFound: new StringParameter());
+        $parametersWith->withModified(notFound: new StringParameter());
     }
 
     public function testGetArray(): void

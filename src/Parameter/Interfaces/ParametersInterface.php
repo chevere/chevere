@@ -59,7 +59,7 @@ interface ParametersInterface extends MappedInterface
      *
      * @throws OutOfBoundsException
      */
-    public function withModify(ParameterInterface ...$parameter): self;
+    public function withModified(ParameterInterface ...$parameter): self;
 
     /**
      * Return an instance with the specified parameter(s) removed.

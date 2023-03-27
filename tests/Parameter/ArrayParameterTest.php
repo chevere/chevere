@@ -15,6 +15,8 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\ArrayParameter;
 use function Chevere\Parameter\integerp;
+use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\StringParameterInterface;
 use function Chevere\Parameter\stringp;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
@@ -48,6 +50,24 @@ final class ArrayParameterTest extends TestCase
         );
         $this->assertNotSame($parameter, $parameterWith);
         $this->assertCount(2, $parameterWith->parameters());
+    }
+
+    public function testWithModified(): void
+    {
+        $string = stringp();
+        $integer = integerp();
+        $parameter = new ArrayParameter();
+        $parameter = $parameter->withAdded(test: $string);
+        $this->assertInstanceOf(
+            StringParameterInterface::class,
+            $parameter->parameters()->get('test')
+        );
+        $parameterWith = $parameter->withModified(test: $integer);
+        $this->assertNotSame($parameter, $parameterWith);
+        $this->assertInstanceOf(
+            IntegerParameterInterface::class,
+            $parameterWith->parameters()->get('test')
+        );
     }
 
     public function testWithOut(): void

@@ -62,6 +62,15 @@ final class ArrayParameter implements ArrayParameterInterface
         return $new;
     }
 
+    public function withModified(ParameterInterface ...$parameter): static
+    {
+        $new = clone $this;
+        $new->parameters = $new->parameters
+            ->withModified(...$parameter);
+
+        return $new;
+    }
+
     public function withOut(string ...$name): static
     {
         $new = clone $this;

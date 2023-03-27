@@ -86,7 +86,7 @@ trait ParametersTrait
         return $this->map->get($name);
     }
 
-    public function withModify(ParameterInterface ...$parameter): ParametersInterface
+    public function withModified(ParameterInterface ...$parameter): ParametersInterface
     {
         $new = clone $this;
         foreach ($parameter as $name => $param) {
