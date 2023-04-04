@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\HttpController;
 
+use Chevere\HttpController\Traits\ResponseHtmlTrait;
 use Chevere\HttpController\Traits\StatusAcceptedTrait;
 use Chevere\HttpController\Traits\StatusAlreadyReportedTrait;
 use Chevere\HttpController\Traits\StatusCreatedTrait;
@@ -117,5 +118,16 @@ final class HttpControllerTraitsTest extends TestCase
             use StatusResetContentTrait;
         };
         $this->assertSame(205, $class->statusSuccess());
+    }
+
+    public function testResponseHtmlTrait(): void
+    {
+        $class = new class() extends TestHttpController {
+            use ResponseHtmlTrait;
+        };
+        $this->assertSame(
+            'text/html; charset=utf-8',
+            $class->responseHeaders()['Content-Type']
+        );
     }
 }

@@ -287,12 +287,13 @@ function assertObject(
 
 /**
  * @param array<int|string, mixed> $argument
+ * @return array<int|string, mixed> $argument
  */
 function assertArray(
     ArrayParameterInterface $parameter,
     array $argument,
-): void {
-    arguments($parameter->parameters(), $argument);
+): array {
+    return arguments($parameter->parameters(), $argument)->toArray();
 }
 
 function assertNotEmpty(ParameterInterface $expected, mixed $value): void

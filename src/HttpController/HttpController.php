@@ -16,6 +16,7 @@ namespace Chevere\HttpController;
 use Chevere\Controller\Controller;
 use Chevere\Http\Interfaces\MiddlewaresInterface;
 use Chevere\Http\Middlewares;
+use Chevere\HttpController\Interfaces\FileDeliveryMapInterface;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\HttpController\Traits\StatusInternalServerErrorTrait;
 use Chevere\HttpController\Traits\StatusOkTrait;
@@ -62,6 +63,19 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return arrayp();
     }
 
+    public function responseHeaders(): array
+    {
+        return [
+            'Content-Disposition' => 'inline',
+            'Content-Type' => 'application/json',
+        ];
+    }
+
+    public function getFileDeliveryMap(): FileDeliveryMapInterface
+    {
+        return new FileDeliverMapping();
+    }
+
     final public function withQuery(array $query): static
     {
         $new = clone $this;
@@ -98,7 +112,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return $new;
     }
 
-    public function withMiddlewares(MiddlewaresInterface $middleware): static
+    final public function withMiddlewares(MiddlewaresInterface $middleware): static
     {
         $new = clone $this;
         $new->middlewares = $middleware;
@@ -106,27 +120,9 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         return $new;
     }
 
-    public function middlewares(): MiddlewaresInterface
+    final public function middlewares(): MiddlewaresInterface
     {
         return $this->middlewares ??= new Middlewares();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function middleware(): MiddlewaresInterface
-    {
-        return $this->middlewares();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function withMiddleware(MiddlewaresInterface $middleware): static
-    {
-        $new = clone $this;
-
-        return $new->withMiddlewares($middleware);
     }
 
     final public function query(): array

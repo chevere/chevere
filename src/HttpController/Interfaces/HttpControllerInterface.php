@@ -70,18 +70,6 @@ interface HttpControllerInterface extends ControllerInterface
     public function middlewares(): MiddlewaresInterface;
 
     /**
-     * @deprecated Use withMiddlewares() instead.
-     * This will be removed in 3.0.0
-     */
-    public function withMiddleware(MiddlewaresInterface $middleware): static;
-
-    /**
-     * @deprecated use middlewares() instead.
-     * This will be removed in 3.0.0
-     */
-    public function middleware(): MiddlewaresInterface;
-
-    /**
      * @return array<int|string, string>
      */
     public function query(): array;
@@ -95,4 +83,14 @@ interface HttpControllerInterface extends ControllerInterface
      * @return array<int|string, array<string, int|string>>
      */
     public function files(): array;
+
+    /**
+     * Determines the mapping from `run` response.
+     */
+    public function getFileDeliveryMap(): FileDeliveryMapInterface;
+
+    /**
+     * @return array<string, string>
+     */
+    public function responseHeaders(): array;
 }
