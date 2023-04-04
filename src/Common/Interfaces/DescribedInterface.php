@@ -16,12 +16,10 @@ namespace Chevere\Common\Interfaces;
 /**
  * Describes the component in charge of providing an interface for its description.
  */
-interface DescriptionInterface extends DescribedInterface
+interface DescribedInterface
 {
     /**
-     * Defines the description.
+     * Provides access to the description.
      */
-    public function getDescription(): string;
-
-    public function withDescription(string $description): static;
+    public function description(): string;
 }

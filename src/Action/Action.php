@@ -15,7 +15,6 @@ namespace Chevere\Action;
 
 use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Action\Traits\ActionTrait;
-use Chevere\Common\Traits\DescriptionTrait;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Throwable\Errors\TypeError;
@@ -26,10 +25,9 @@ use ReflectionNamedType;
 
 abstract class Action implements ActionInterface
 {
-    use DescriptionTrait;
     use ActionTrait;
 
-    protected string $description;
+    protected string $description = '';
 
     protected ParametersInterface $parameters;
 
@@ -38,6 +36,11 @@ abstract class Action implements ActionInterface
     public function __construct()
     {
         $this->onConstruct();
+    }
+
+    public function description(): string
+    {
+        return $this->description;
     }
 
     final protected function onConstruct(): void

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Interfaces;
 
-use Chevere\Common\Interfaces\DescriptionInterface;
+use Chevere\Common\Interfaces\DescribedInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Response\Interfaces\ResponseInterface;
@@ -25,7 +25,7 @@ use Psr\Container\ContainerInterface;
  * @method array<string, mixed> run() Defines the action run
  * logic.
  */
-interface ActionInterface extends DescriptionInterface
+interface ActionInterface extends DescribedInterface
 {
     /**
      * Determines if action is strict or not.

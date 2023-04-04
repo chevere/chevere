@@ -20,7 +20,7 @@ use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 
 final class ActionTestAction extends Action
 {
-    public function getDescription(): string
+    public function description(): string
     {
         return 'test';
     }
