@@ -18,14 +18,14 @@ use Chevere\HttpController\Interfaces\FileDeliveryMapInterface;
 final class FileDeliverMapping implements FileDeliveryMapInterface
 {
     public function __construct(
-        private string $filename = self::FILENAME,
+        private string $basename = self::BASENAME,
         private string $pathname = self::PATHNAME,
     ) {
     }
 
-    public function filename(): string
+    public function basename(): string
     {
-        return $this->filename;
+        return $this->basename;
     }
 
     public function pathname(): string

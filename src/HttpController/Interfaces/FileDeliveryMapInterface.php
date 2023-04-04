@@ -19,11 +19,11 @@ namespace Chevere\HttpController\Interfaces;
  */
 interface FileDeliveryMapInterface
 {
-    public const FILENAME = 'filename';
+    public const BASENAME = 'basename';
 
     public const PATHNAME = 'pathname';
 
-    public function filename(): string;
+    public function basename(): string;
 
     public function pathname(): string;
 }

@@ -22,7 +22,7 @@ final class FileDeliverMappingTest extends TestCase
     public function testDefault(): void
     {
         $mapping = new FileDeliverMapping();
-        $this->assertSame(FileDeliveryMapInterface::FILENAME, $mapping->filename());
+        $this->assertSame(FileDeliveryMapInterface::BASENAME, $mapping->basename());
         $this->assertSame(FileDeliveryMapInterface::PATHNAME, $mapping->pathname());
     }
 
@@ -31,7 +31,7 @@ final class FileDeliverMappingTest extends TestCase
         $filename = 'foo';
         $pathname = 'bar';
         $mapping = new FileDeliverMapping($filename, $pathname);
-        $this->assertSame($filename, $mapping->filename());
+        $this->assertSame($filename, $mapping->basename());
         $this->assertSame($pathname, $mapping->pathname());
     }
 }
