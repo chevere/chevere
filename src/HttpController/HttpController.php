@@ -16,7 +16,6 @@ namespace Chevere\HttpController;
 use Chevere\Controller\Controller;
 use Chevere\Http\Interfaces\MiddlewaresInterface;
 use Chevere\Http\Middlewares;
-use Chevere\HttpController\Interfaces\FileDeliveryMapInterface;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\HttpController\Traits\StatusInternalServerErrorTrait;
 use Chevere\HttpController\Traits\StatusOkTrait;
@@ -69,11 +68,6 @@ abstract class HttpController extends Controller implements HttpControllerInterf
             'Content-Disposition' => 'inline',
             'Content-Type' => 'application/json',
         ];
-    }
-
-    public function getFileDeliveryMap(): FileDeliveryMapInterface
-    {
-        return new FileDeliverMapping();
     }
 
     final public function withQuery(array $query): static

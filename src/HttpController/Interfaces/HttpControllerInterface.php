@@ -85,11 +85,6 @@ interface HttpControllerInterface extends ControllerInterface
     public function files(): array;
 
     /**
-     * Determines the mapping from `run` response.
-     */
-    public function getFileDeliveryMap(): FileDeliveryMapInterface;
-
-    /**
      * @return array<string, string>
      */
     public function responseHeaders(): array;

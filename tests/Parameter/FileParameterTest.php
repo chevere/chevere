@@ -25,6 +25,7 @@ final class FileParameterTest extends TestCase
         $name = stringp();
         $size = integerp();
         $type = stringp();
+        $tmp_name = stringp();
         $description = '';
         $default = [
             'error' => UPLOAD_ERR_NO_FILE,
@@ -35,8 +36,9 @@ final class FileParameterTest extends TestCase
         ];
         $parameter = new FileParameter(
             $name,
-            $size,
             $type,
+            $tmp_name,
+            $size,
             $description,
         );
         $this->assertSame(

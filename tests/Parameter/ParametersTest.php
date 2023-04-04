@@ -217,6 +217,7 @@ final class ParametersTest extends TestCase
             name: new StringParameter(),
             size: new IntegerParameter(),
             type: new StringParameter(),
+            tmp_name: new StringParameter(),
         );
         $parameters = new Parameters(...[
             $name => $parameter,

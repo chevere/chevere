@@ -142,13 +142,15 @@ function objectp(
 function filep(
     string $description = '',
     ?StringParameterInterface $name = null,
-    ?IntegerParameterInterface $size = null,
     ?StringParameterInterface $type = null,
+    ?StringParameterInterface $tmp_name = null,
+    ?IntegerParameterInterface $size = null,
 ): FileParameterInterface {
     return new FileParameter(
         name: $name ?? stringp(),
         size: $size ?? integerp(),
         type: $type ?? stringp(),
+        tmp_name: $tmp_name ?? stringp(),
         description: $description,
     );
 }

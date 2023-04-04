@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\HttpController;
 
 use Chevere\Http\Middlewares;
-use Chevere\HttpController\FileDeliverMapping;
 use Chevere\Tests\HttpController\_resources\TestHttpAcceptController;
 use Chevere\Tests\HttpController\_resources\TestHttpController;
 use Chevere\Throwable\Errors\ArgumentCountError;
@@ -32,10 +31,6 @@ final class HttpControllerTest extends TestCase
         $this->assertCount(0, $controller->acceptBody()->parameters());
         $this->assertCount(0, $controller->acceptFiles()->parameters());
         $this->assertCount(0, $controller->middlewares());
-        $this->assertEquals(
-            new FileDeliverMapping(),
-            $controller->getFileDeliveryMap()
-        );
         $this->assertSame(
             [
                 'Content-Disposition' => 'inline',
