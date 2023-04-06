@@ -28,7 +28,7 @@ final class StringParameter implements StringParameterInterface
 
     private RegexInterface $regex;
 
-    private string $default;
+    private ?string $default;
 
     public function setUp(): void
     {
