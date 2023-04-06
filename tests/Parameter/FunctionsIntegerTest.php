@@ -51,8 +51,7 @@ final class FunctionsIntegerTest extends TestCase
     public function testAssertInteger(): void
     {
         $parameter = integerp();
-        assertInteger($parameter, 0);
-        assertArgument($parameter, 0);
-        $this->expectNotToPerformAssertions();
+        $this->assertSame(0, assertInteger($parameter, 0));
+        $this->assertSame(0, assertArgument($parameter, 0));
     }
 }

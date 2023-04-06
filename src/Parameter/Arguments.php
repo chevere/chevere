@@ -15,7 +15,6 @@ namespace Chevere\Parameter;
 
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
-use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ArgumentsGetTypedTrait;
 use Chevere\Throwable\Errors\ArgumentCountError;
@@ -39,11 +38,6 @@ final class Arguments implements ArgumentsInterface
     private array $errors;
 
     /**
-     * @var array<int|string>
-     */
-    private array $argumentsKeys = [];
-
-    /**
      * @param array<int|string, mixed> $arguments
      */
     public function __construct(
@@ -51,14 +45,12 @@ final class Arguments implements ArgumentsInterface
         array $arguments
     ) {
         $this->arguments = [];
-        $this->argumentsKeys = array_keys($arguments);
         $this->processArguments($arguments);
-        $this->assertNoArgumentOverflow();
-        $this->assertRequired();
+        $this->assertNoArgumentsOverflow();
         $this->errors = [];
-        foreach ($this->parameters as $name => $parameter) {
-            $this->handleParameter($name, $parameter);
-        }
+        $this->handleDefaults();
+        $this->assertRequired();
+        $this->handleParameters();
         if ($this->errors !== []) {
             throw new InvalidArgumentException(
                 message(
@@ -102,7 +94,7 @@ final class Arguments implements ArgumentsInterface
 
     public function get(string $name): mixed
     {
-        if (array_key_exists($name, $this->arguments)) {
+        if ($this->has($name)) {
             return $this->arguments[$name];
         }
 
@@ -112,10 +104,10 @@ final class Arguments implements ArgumentsInterface
         );
     }
 
-    private function assertNoArgumentOverflow(): void
+    private function assertNoArgumentsOverflow(): void
     {
         $overflow = array_diff(
-            $this->argumentsKeys,
+            array_keys($this->arguments),
             $this->parameters()->keys()
         );
         if ($overflow !== []) {
@@ -126,11 +118,20 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
+    private function handleDefaults(): void
+    {
+        foreach ($this->parameters as $name => $parameter) {
+            if (! $this->has($name) && ($parameter->default() !== null)) {
+                $this->arguments[$name] = $parameter->default();
+            }
+        }
+    }
+
     private function assertRequired(): void
     {
         $missing = array_diff(
             $this->parameters->required(),
-            $this->argumentsKeys
+            array_keys($this->arguments),
         );
         if ($missing !== []) {
             throw new ArgumentCountError(
@@ -154,7 +155,7 @@ final class Arguments implements ArgumentsInterface
         }
 
         try {
-            assertArgument($parameter, $argument);
+            $this->arguments[$name] = assertArgument($parameter, $argument);
         } catch (Throwable $e) {
             throw new InvalidArgumentException(
                 message: message('[Property %name%]: %message%')
@@ -164,39 +165,38 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    private function handleParameter(string $name, ParameterInterface $parameter): void
+    private function handleParameters(): void
     {
-        $this->handleParameterDefault($name, $parameter);
-        if ($this->parameters->isOptional($name)) {
-            return;
-        }
+        foreach ($this->parameters->keys() as $name) {
+            if ($this->isSkipOptional($name)) {
+                continue;
+            }
 
-        try {
-            $this->assertType(
-                $name,
-                $this->get($name)
-            );
-        } catch (Throwable $e) {
-            $this->errors[] = $e->getMessage();
-        }
-    }
-
-    private function handleParameterDefault(string $name, ParameterInterface $parameter): void
-    {
-        if (! $this->has($name)) {
-            $this->arguments[$name] = $parameter->default();
+            try {
+                $this->assertType($name, $this->get($name));
+            } catch (Throwable $e) {
+                $this->errors[] = $e->getMessage();
+            }
         }
     }
 
     /**
-     * @param array<int|string, mixed> $argument
+     * @infection-ignore-all
      */
-    private function processArguments(array $argument): void
+    private function isSkipOptional(string $name): bool
     {
-        $keys = array_keys($argument);
+        return ! $this->has($name) && $this->parameters->isOptional($name);
+    }
+
+    /**
+     * @param array<int|string, mixed> $arguments
+     */
+    private function processArguments(array $arguments): void
+    {
+        $keys = array_keys($arguments);
         foreach ($keys as $name) {
             $name = strval($name);
-            $this->arguments[$name] = $argument[$name];
+            $this->arguments[$name] = $arguments[$name];
         }
     }
 }

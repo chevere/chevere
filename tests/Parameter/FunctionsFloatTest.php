@@ -51,10 +51,9 @@ final class FunctionsFloatTest extends TestCase
     public function testAssertFloat(): void
     {
         $parameter = floatp();
-        assertFloat($parameter, 0);
-        assertFloat($parameter, 0.0);
-        assertArgument($parameter, 0);
-        assertArgument($parameter, 0.0);
-        $this->expectNotToPerformAssertions();
+        $this->assertSame(0.0, assertFloat($parameter, 0));
+        $this->assertSame(0.0, assertFloat($parameter, 0.0));
+        $this->assertSame(0.0, assertArgument($parameter, 0));
+        $this->assertSame(0.0, assertArgument($parameter, 0.0));
     }
 }

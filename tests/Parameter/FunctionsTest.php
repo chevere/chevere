@@ -139,17 +139,52 @@ final class FunctionsTest extends TestCase
     public function testFunctionArrayParameter(): void
     {
         $parameter = arrayp(
+            one: stringp(),
+            two: integerp(default: 222)
+        );
+        $array = [
+            'one' => 'foo',
+        ];
+        $expected = array_merge($array, [
+            'two' => 222,
+        ]);
+        $assert = assertArray($parameter, $array);
+        $this->assertSame($assert, $expected);
+        $this->assertCount(2, $parameter->parameters());
+        $this->expectException(TypeError::class);
+        assertArgument($parameter, 1);
+    }
+
+    public function testFunctionArrayParameterNested(): void
+    {
+        $parameter = arrayp(
             wea: arrayp(
                 one: stringp(),
-                two: integerp()
+                two: integerp(default: 222),
+                nest: arrayp(
+                    one: integerp(default: 1),
+                    two: integerp(default: 2),
+                )
             )
         );
-        assertArray($parameter, [
+        $array = [
             'wea' => [
                 'one' => 'foo',
-                'two' => 123,
+                'nest' => [],
             ],
-        ]);
+        ];
+        $expected = [
+            'wea' => [
+                'one' => 'foo',
+                'nest' => [
+                    'one' => 1,
+                    'two' => 2,
+                ],
+                'two' => 222,
+            ],
+        ];
+        $assert = assertArray($parameter, $array);
+        $this->assertSame($assert, $expected);
         $this->assertCount(1, $parameter->parameters());
         $this->expectException(TypeError::class);
         assertArgument($parameter, 1);

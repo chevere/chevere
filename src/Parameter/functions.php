@@ -195,33 +195,37 @@ function arguments(
     return new Arguments($parameters, $arguments);
 }
 
-function assertBoolean(BooleanParameterInterface $parameter, bool $argument): void
-{
-    return;
+function assertBoolean(
+    BooleanParameterInterface $parameter,
+    bool $argument
+): bool {
+    return $argument;
 }
 
 function assertString(
     StringParameterInterface $parameter,
     string $argument,
-): void {
+): string {
     $regex = $parameter->regex();
-    if ($regex->match($argument) === []) {
-        throw new InvalidArgumentException(
-            message("Argument value provided %provided% doesn't match the regex %regex%")
-                ->withCode('%provided%', $argument)
-                ->withCode('%regex%', strval($regex))
-        );
+    if ($regex->match($argument) !== []) {
+        return $argument;
     }
+
+    throw new InvalidArgumentException(
+        message("Argument value provided %provided% doesn't match the regex %regex%")
+            ->withCode('%provided%', $argument)
+            ->withCode('%regex%', strval($regex))
+    );
 }
 
 function assertNumeric(
     IntegerParameterInterface|FloatParameterInterface $parameter,
     int|float $argument,
-): void {
+): int|float {
     $accept = $parameter->accept();
     if ($accept !== []) {
         if (in_array($argument, $accept, true)) {
-            return;
+            return $argument;
         }
 
         throw new InvalidArgumentException(
@@ -246,26 +250,32 @@ function assertNumeric(
                 ->withCode('%maximum%', strval($maximum))
         );
     }
+
+    return $argument;
 }
 
 function assertInteger(
     IntegerParameterInterface $parameter,
     int $argument,
-): void {
+): int {
     assertNumeric($parameter, $argument);
+
+    return $argument;
 }
 
 function assertFloat(
     FloatParameterInterface $parameter,
     float $argument
-): void {
+): float {
     assertNumeric($parameter, $argument);
+
+    return $argument;
 }
 
-function assertNull(NullParameterInterface $parameter, mixed $argument): void
+function assertNull(NullParameterInterface $parameter, mixed $argument): mixed
 {
     if ($argument === null) {
-        return;
+        return $argument;
     }
 
     throw new TypeError(
@@ -276,9 +286,9 @@ function assertNull(NullParameterInterface $parameter, mixed $argument): void
 function assertObject(
     ObjectParameterInterface $parameter,
     object $argument
-): void {
+): object {
     if ($parameter->type()->validate($argument)) {
-        return;
+        return $argument;
     }
 
     throw new InvalidArgumentException(
@@ -289,7 +299,7 @@ function assertObject(
 
 /**
  * @param array<int|string, mixed> $argument
- * @return array<int|string, mixed> $argument
+ * @return array<int|string, mixed> Asserted array, with fixed optional values.
  */
 function assertArray(
     ArrayParameterInterface $parameter,
@@ -312,11 +322,12 @@ function assertNotEmpty(ParameterInterface $expected, mixed $value): void
 
 /**
  * @param iterable<mixed, mixed> $argument
+ * @return iterable<mixed, mixed>
  */
 function assertGeneric(
     GenericParameterInterface $parameter,
     iterable $argument,
-): void {
+): iterable {
     $generic = ' *generic';
     $genericKey = '_K' . $generic;
     $genericValue = '_V' . $generic;
@@ -333,6 +344,8 @@ function assertGeneric(
             getThrowableArrayErrorMessage($e->getMessage())
         );
     }
+
+    return $argument;
 }
 
 function getThrowableArrayErrorMessage(string $message): MessageInterface
@@ -350,13 +363,13 @@ function getThrowableArrayErrorMessage(string $message): MessageInterface
 function assertUnion(
     UnionParameterInterface $parameter,
     mixed $argument,
-): void {
+): mixed {
     $types = [];
     foreach ($parameter->parameters() as $parameter) {
         try {
             assertNamedArgument('', $parameter, $argument);
 
-            return;
+            return $argument;
         } catch (Throwable $e) {
             $types[] = $parameter::class;
         }
@@ -394,9 +407,9 @@ function assertNamedArgument(
     }
 }
 
-function assertArgument(ParameterInterface $parameter, mixed $argument): void
+function assertArgument(ParameterInterface $parameter, mixed $argument): mixed
 {
-    match (true) {
+    return match (true) {
         $parameter instanceof ArrayParameterInterface
         // @phpstan-ignore-next-line
         => assertArray($parameter, $argument),
@@ -422,6 +435,6 @@ function assertArgument(ParameterInterface $parameter, mixed $argument): void
         => assertUnion($parameter, $argument),
         $parameter instanceof NullParameterInterface
         => assertNull($parameter, $argument),
-        default => '',
+        default => null,
     };
 }

@@ -20,9 +20,7 @@ use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\ObjectParameter;
 use function Chevere\Parameter\parameters;
-use Chevere\Parameter\Parameters;
 use function Chevere\Parameter\stringp;
-use Chevere\Parameter\StringParameter;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
@@ -35,7 +33,9 @@ final class ArgumentsTest extends TestCase
 {
     public function testInvalidArgument(): void
     {
-        $parameters = new Parameters(test: new StringParameter());
+        $parameters = parameters(test: stringp());
+        $this->assertTrue($parameters->isRequired('test'));
+        $this->assertFalse($parameters->isOptional('test'));
         $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, [
             'test' => 123,
@@ -48,9 +48,9 @@ final class ArgumentsTest extends TestCase
             'id' => 1,
             'name' => 'someValue',
         ];
-        $parameters = new Parameters(
+        $parameters = parameters(
             id: new IntegerParameter(),
-            name: new StringParameter()
+            name: stringp()
         );
         $arguments = new Arguments($parameters, $args);
         $this->assertSame($parameters, $arguments->parameters());
@@ -67,14 +67,14 @@ final class ArgumentsTest extends TestCase
 
     public function testMissingArgument(): void
     {
-        $parameters = new Parameters(test: new StringParameter());
+        $parameters = parameters(test: stringp());
         $this->expectException(ArgumentCountError::class);
         new Arguments($parameters, []);
     }
 
     public function testExtraArguments(): void
     {
-        $parameters = new Parameters(test: new StringParameter());
+        $parameters = parameters(test: stringp());
         $this->expectException(ArgumentCountError::class);
         new Arguments($parameters, [
             'test' => '123',
@@ -84,7 +84,7 @@ final class ArgumentsTest extends TestCase
 
     public function testInvalidArgumentType(): void
     {
-        $parameters = new Parameters(test: new StringParameter());
+        $parameters = parameters(test: stringp());
         $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, [
             'test' => 123,
@@ -93,8 +93,8 @@ final class ArgumentsTest extends TestCase
 
     public function testInvalidRegexArgument(): void
     {
-        $parameters = new Parameters(
-            id: (new StringParameter())
+        $parameters = parameters(
+            id: stringp()
                 ->withRegex(new Regex('/^[0-9]+$/')),
         );
         $this->expectException(InvalidArgumentException::class);
@@ -106,7 +106,7 @@ final class ArgumentsTest extends TestCase
     public function testWithMissingArgument(): void
     {
         $name = 'test';
-        $parameters = new Parameters(test: new StringParameter());
+        $parameters = parameters(test: stringp());
         $arguments = new Arguments($parameters, [
             $name => '123',
         ]);
@@ -120,8 +120,8 @@ final class ArgumentsTest extends TestCase
         $value = '123';
         $valueAlt = '321';
         $arguments = new Arguments(
-            new Parameters(
-                id: (new StringParameter())
+            parameters(
+                id: stringp()
                     ->withRegex(new Regex('/^[0-9]+$/'))
             ),
             [
@@ -147,8 +147,8 @@ final class ArgumentsTest extends TestCase
         $value = '123';
         $valueAlt = '321';
         $arguments = new Arguments(
-            new Parameters(
-                id: new StringParameter()
+            parameters(
+                id: stringp()
             ),
             [
                 $name => $value,
@@ -163,8 +163,8 @@ final class ArgumentsTest extends TestCase
     public function testWithArgumentWrongTypeValue(): void
     {
         $arguments = new Arguments(
-            new Parameters(
-                id: new StringParameter()
+            parameters(
+                id: stringp()
             ),
             [
                 'id' => '123',
@@ -176,8 +176,8 @@ final class ArgumentsTest extends TestCase
 
     public function testArgumentsRequiredException(): void
     {
-        $parameters = new Parameters(
-            id: (new StringParameter())
+        $parameters = parameters(
+            id: stringp()
                 ->withRegex(new Regex('/^[0-9]+$/'))
         );
         $this->expectException(ArgumentCountError::class);
@@ -186,18 +186,40 @@ final class ArgumentsTest extends TestCase
 
     public function testParameterOptional(): void
     {
-        $required = 'id';
-        $optional = 'name';
+        $parameters = parameters(id: stringp())
+            ->withAddedOptional(
+                opt: stringp(),
+                alt: stringp()
+            )
+            ->withAddedRequired(name: stringp());
         $arguments = new Arguments(
-            (new Parameters(id: new StringParameter()))
-                ->withAddedOptional(
-                    name: new StringParameter()
-                ),
+            $parameters,
             [
-                $required => '123',
+                'id' => '123',
+                'name' => 'ABC',
             ]
         );
-        $this->assertTrue($arguments->has($optional));
+        $this->assertTrue($arguments->has('id', 'name'));
+        $this->assertFalse($arguments->has('opt', 'alt'));
+        $arguments = new Arguments(
+            $parameters,
+            [
+                'id' => '123',
+                'opt' => 'someValue',
+                'name' => 'ABC',
+            ]
+        );
+        $this->assertTrue($arguments->has('id', 'opt', 'name'));
+        $this->assertFalse($arguments->has('alt'));
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('[Property name]');
+        $arguments = new Arguments(
+            $parameters,
+            [
+                'id' => '123',
+                'name' => new stdClass(),
+            ]
+        );
     }
 
     public function testParameterDefault(): void
@@ -206,10 +228,10 @@ final class ArgumentsTest extends TestCase
         $optional = 'name';
         $requiredValue = '123';
         $optionalDefault = 'a';
-        $parameters = (new Parameters(id: new StringParameter()))
+        $parameters = (parameters(id: stringp()))
             ->withAddedOptional(
                 ...[
-                    $optional => (new StringParameter())
+                    $optional => stringp()
                         ->withRegex(new Regex('/^a|b$/'))
                         ->withDefault($optionalDefault),
                 ]
@@ -239,10 +261,10 @@ final class ArgumentsTest extends TestCase
         $optionalDefault = 'a';
         $optionalNameValue = 'b';
         $optionalObject = 'object';
-        $parameters = (new Parameters(id: new StringParameter()))
+        $parameters = (parameters(id: stringp()))
             ->withAddedOptional(
                 ...[
-                    $optionalName => (new StringParameter())
+                    $optionalName => stringp()
                         ->withRegex(new Regex('/^a|b$/'))
                         ->withDefault($optionalDefault),
                     $optionalObject => new ObjectParameter(),
@@ -270,7 +292,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = true;
         $arguments = new Arguments(
-            new Parameters(test: new BooleanParameter()),
+            parameters(test: new BooleanParameter()),
             [
                 $name => $var,
             ]
@@ -285,7 +307,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = 'string';
         $arguments = new Arguments(
-            new Parameters(test: new StringParameter()),
+            parameters(test: stringp()),
             [
                 $name => $var,
             ]
@@ -300,7 +322,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = 1234;
         $arguments = new Arguments(
-            new Parameters(test: new IntegerParameter()),
+            parameters(test: new IntegerParameter()),
             [
                 $name => $var,
             ]
@@ -315,7 +337,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = 12.34;
         $arguments = new Arguments(
-            new Parameters(test: new FloatParameter($name)),
+            parameters(test: new FloatParameter($name)),
             [
                 $name => $var,
             ]
