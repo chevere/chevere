@@ -20,11 +20,6 @@ use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 
 final class ActionTestAction extends Action
 {
-    public function description(): string
-    {
-        return 'test';
-    }
-
     public function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayp(id: integerp());

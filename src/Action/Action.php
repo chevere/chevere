@@ -27,8 +27,6 @@ abstract class Action implements ActionInterface
 {
     use ActionTrait;
 
-    protected string $description = '';
-
     protected ParametersInterface $parameters;
 
     protected ParametersInterface $containerParameters;
@@ -40,7 +38,7 @@ abstract class Action implements ActionInterface
 
     public function description(): string
     {
-        return $this->description;
+        return '';
     }
 
     final protected function onConstruct(): void
