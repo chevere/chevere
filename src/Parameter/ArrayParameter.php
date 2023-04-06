@@ -44,29 +44,22 @@ final class ArrayParameter implements ArrayParameterInterface
         return $new;
     }
 
-    /**
-     * @deprecated Use withAddedRequiredParameter
-     * @codeCoverageIgnore
-     */
-    public function withParameter(ParameterInterface ...$parameter): static
-    {
-        return $this->withAdded(...$parameter);
-    }
-
-    public function withAdded(ParameterInterface ...$parameter): static
+    public function withRequired(ParameterInterface ...$parameter): static
     {
         $new = clone $this;
+        $new->removeConflictKeys(...$parameter);
         $new->parameters = $new->parameters
             ->withAddedRequired(...$parameter);
 
         return $new;
     }
 
-    public function withModified(ParameterInterface ...$parameter): static
+    public function withOptional(ParameterInterface ...$parameter): static
     {
         $new = clone $this;
+        $new->removeConflictKeys(...$parameter);
         $new->parameters = $new->parameters
-            ->withModified(...$parameter);
+            ->withAddedOptional(...$parameter);
 
         return $new;
     }
@@ -88,5 +81,13 @@ final class ArrayParameter implements ArrayParameterInterface
     public function assertCompatible(ArrayParameterInterface $parameter): void
     {
         $this->assertArrayType($parameter);
+    }
+
+    private function removeConflictKeys(ParameterInterface ...$parameter): void
+    {
+        $keys = array_keys($parameter);
+        /** @var string[] $diff */
+        $diff = array_intersect($keys, $this->parameters->keys());
+        $this->parameters = $this->parameters->withOut(...$diff);
     }
 }

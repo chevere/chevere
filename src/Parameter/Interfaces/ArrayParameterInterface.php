@@ -34,15 +34,15 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified added parameters.
      */
-    public function withAdded(ParameterInterface ...$parameter): self;
+    public function withRequired(ParameterInterface ...$parameter): self;
 
     /**
      * Return an instance with modified parameters.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified modified parameters.
+     * an instance that contains the specified optional parameters.
      */
-    public function withModified(ParameterInterface ...$parameter): self;
+    public function withOptional(ParameterInterface ...$parameter): self;
 
     /**
      * Return an instance with removed parameters.

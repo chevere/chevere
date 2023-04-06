@@ -23,19 +23,47 @@ final class FunctionsArrayTest extends TestCase
 {
     public function testArrayEmpty(): void
     {
-        $array = arrayp();
-        assertArray($array, []);
+        $parameter = arrayp();
+        $this->assertSame([], assertArray($parameter, []));
         $this->expectException(ArgumentCountError::class);
-        assertArray($array, [[]]);
+        assertArray($parameter, [[]]);
     }
 
     public function testArrayFixed(): void
     {
-        $array = arrayp(a: integerp());
-        assertArray($array, [
+        $parameter = arrayp(a: integerp());
+        $array = [
             'a' => 1,
-        ]);
+        ];
+        $this->assertSame($array, assertArray($parameter, $array));
         $this->expectException(ArgumentCountError::class);
-        assertArray($array, []);
+        assertArray($parameter, []);
+    }
+
+    public function testArrayOptionals(): void
+    {
+        $parameter = arrayp()->withOptional(a: integerp());
+        $array = [];
+        $this->assertSame($array, assertArray($parameter, $array));
+    }
+
+    public function testArrayDefaults(): void
+    {
+        $parameter = arrayp(a: integerp(default: 10));
+        $array = [];
+        $expected = [
+            'a' => 10,
+        ];
+        $this->assertSame($expected, assertArray($parameter, $array));
+    }
+
+    public function testArrayOptionalsDefaults(): void
+    {
+        $parameter = arrayp()->withOptional(a: integerp(default: 10));
+        $array = [];
+        $expected = [
+            'a' => 10,
+        ];
+        $this->assertSame($expected, assertArray($parameter, $array));
     }
 }

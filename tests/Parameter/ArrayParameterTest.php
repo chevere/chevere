@@ -39,34 +39,73 @@ final class ArrayParameterTest extends TestCase
         );
     }
 
-    public function testWithAdded(): void
+    public function testWithRequired(): void
     {
         $string = stringp();
         $integer = integerp();
         $parameter = new ArrayParameter();
-        $parameterWith = $parameter->withAdded(
+        $parameterWith = $parameter->withRequired(
             one: $string,
             two: $integer
         );
+        $this->assertTrue($parameterWith->parameters()->has('one', 'two'));
         $this->assertNotSame($parameter, $parameterWith);
         $this->assertCount(2, $parameterWith->parameters());
+        $this->assertInstanceOf(
+            StringParameterInterface::class,
+            $parameterWith->parameters()->get('one')
+        );
+        $this->assertInstanceOf(
+            IntegerParameterInterface::class,
+            $parameterWith->parameters()->get('two')
+        );
+        $parameterWith = $parameterWith->withRequired(
+            one: $integer,
+            three: $integer
+        );
+        $this->assertTrue($parameterWith->parameters()->has('one', 'two', 'three'));
+        $this->assertInstanceOf(
+            IntegerParameterInterface::class,
+            $parameterWith->parameters()->get('one')
+        );
+        $this->assertInstanceOf(
+            IntegerParameterInterface::class,
+            $parameterWith->parameters()->get('three')
+        );
     }
 
-    public function testWithModified(): void
+    public function testWithOptional(): void
     {
         $string = stringp();
         $integer = integerp();
         $parameter = new ArrayParameter();
-        $parameter = $parameter->withAdded(test: $string);
+        $parameterWith = $parameter->withOptional(
+            one: $string,
+            two: $integer
+        );
+        $this->assertTrue($parameterWith->parameters()->has('one', 'two'));
+        $this->assertNotSame($parameter, $parameterWith);
+        $this->assertCount(2, $parameterWith->parameters());
         $this->assertInstanceOf(
             StringParameterInterface::class,
-            $parameter->parameters()->get('test')
+            $parameterWith->parameters()->get('one')
         );
-        $parameterWith = $parameter->withModified(test: $integer);
-        $this->assertNotSame($parameter, $parameterWith);
         $this->assertInstanceOf(
             IntegerParameterInterface::class,
-            $parameterWith->parameters()->get('test')
+            $parameterWith->parameters()->get('two')
+        );
+        $parameterWith = $parameterWith->withOptional(
+            one: $integer,
+            three: $integer
+        );
+        $this->assertTrue($parameterWith->parameters()->has('one', 'two', 'three'));
+        $this->assertInstanceOf(
+            IntegerParameterInterface::class,
+            $parameterWith->parameters()->get('one')
+        );
+        $this->assertInstanceOf(
+            IntegerParameterInterface::class,
+            $parameterWith->parameters()->get('three')
         );
     }
 
@@ -74,7 +113,7 @@ final class ArrayParameterTest extends TestCase
     {
         $string = stringp();
         $integer = integerp();
-        $parameter = (new ArrayParameter())->withAdded(
+        $parameter = (new ArrayParameter())->withRequired(
             one: $string,
             two: $integer
         );
@@ -87,16 +126,16 @@ final class ArrayParameterTest extends TestCase
     {
         $string = stringp();
         $integer = integerp();
-        $parameter = (new ArrayParameter())->withAdded(
+        $parameter = (new ArrayParameter())->withRequired(
             one: $string,
         );
         $altString = stringp();
-        $compatible = (new ArrayParameter())->withAdded(
+        $compatible = (new ArrayParameter())->withRequired(
             one: $altString,
         );
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
-        $notCompatible = (new ArrayParameter())->withAdded(
+        $notCompatible = (new ArrayParameter())->withRequired(
             one: $integer,
         );
         $expectedType = $string::class;
@@ -113,10 +152,10 @@ final class ArrayParameterTest extends TestCase
     public function testAssertCompatibleMissingKey(): void
     {
         $string = stringp();
-        $parameter = (new ArrayParameter())->withAdded(
+        $parameter = (new ArrayParameter())->withRequired(
             one: $string,
         );
-        $notCompatible = (new ArrayParameter())->withAdded(
+        $notCompatible = (new ArrayParameter())->withRequired(
             two: $string,
         );
         $this->expectException(OutOfBoundsException::class);

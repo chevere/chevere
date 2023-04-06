@@ -39,7 +39,7 @@ function arrayp(
 ): ArrayParameterInterface {
     $array = new ArrayParameter();
     if ($parameter) {
-        $array = $array->withAdded(...$parameter);
+        $array = $array->withRequired(...$parameter);
     }
 
     return $array;
