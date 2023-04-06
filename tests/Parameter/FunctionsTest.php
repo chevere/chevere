@@ -62,7 +62,7 @@ final class FunctionsTest extends TestCase
     {
         $parameter = arrayp();
         $this->assertSame('', $parameter->description());
-        $this->assertSame([], $parameter->default());
+        $this->assertSame(null, $parameter->default());
         assertArgument($parameter, []);
     }
 
@@ -97,7 +97,7 @@ final class FunctionsTest extends TestCase
         $parameter = integerp();
         assertArgument($parameter, 1);
         $this->assertSame('', $parameter->description());
-        $this->assertSame(0, $parameter->default());
+        $this->assertSame(null, $parameter->default());
         $parameter = integerp(
             default: 10
         );

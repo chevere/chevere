@@ -28,13 +28,7 @@ final class FileParameter implements FileParameterInterface
     /**
      * @var array<string, mixed>
      */
-    private array $default = [
-        'error' => UPLOAD_ERR_NO_FILE,
-        'name' => '',
-        'size' => 0,
-        'tmp_name' => '',
-        'type' => '',
-    ];
+    private ?array $default = null;
 
     final public function __construct(
         StringParameterInterface $name,

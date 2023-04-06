@@ -28,7 +28,7 @@ final class StringParameter implements StringParameterInterface
 
     private RegexInterface $regex;
 
-    private string $default = '';
+    private string $default;
 
     public function setUp(): void
     {
@@ -63,9 +63,9 @@ final class StringParameter implements StringParameterInterface
         return $this->regex;
     }
 
-    public function default(): string
+    public function default(): ?string
     {
-        return $this->default;
+        return $this->default ?? null;
     }
 
     public function assertCompatible(StringParameterInterface $parameter): void

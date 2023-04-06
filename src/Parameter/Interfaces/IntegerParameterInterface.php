@@ -63,9 +63,9 @@ interface IntegerParameterInterface extends ParameterInterface
     public function withAccept(int ...$value): self;
 
     /**
-     * Provides access to the default value.
+     * Provides access to the default value (if any).
      */
-    public function default(): int;
+    public function default(): ?int;
 
     /**
      * Provides access to the minimum value.

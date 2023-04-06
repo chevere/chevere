@@ -24,9 +24,9 @@ trait ArrayParameterTrait
     /**
      * @return array<mixed, mixed>
      */
-    public function default(): array
+    public function default(): ?array
     {
-        return $this->default;
+        return $this->default ?? null;
     }
 
     private function getType(): TypeInterface

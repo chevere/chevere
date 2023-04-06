@@ -27,7 +27,7 @@ final class ObjectParameter implements ObjectParameterInterface
 
     private string $className;
 
-    private object $default;
+    private ?object $default;
 
     public function setUp(): void
     {
@@ -49,9 +49,9 @@ final class ObjectParameter implements ObjectParameterInterface
         return $new;
     }
 
-    public function default(): object
+    public function default(): ?object
     {
-        return $this->default;
+        return $this->default ?? null;
     }
 
     public function assertCompatible(ObjectParameterInterface $parameter): void

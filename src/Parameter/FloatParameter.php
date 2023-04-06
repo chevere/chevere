@@ -24,7 +24,7 @@ final class FloatParameter implements FloatParameterInterface
     use ParameterTrait;
     use NumericParameterTrait;
 
-    private float $default = 0.0;
+    private ?float $default;
 
     private float $minimum = -PHP_FLOAT_MIN;
 
@@ -67,9 +67,9 @@ final class FloatParameter implements FloatParameterInterface
         return $new;
     }
 
-    public function default(): float
+    public function default(): ?float
     {
-        return $this->default;
+        return $this->default ?? null;
     }
 
     public function minimum(): float

@@ -21,7 +21,7 @@ final class BooleanParameterTest extends TestCase
     public function testConstruct(): void
     {
         $parameter = new BooleanParameter();
-        $this->assertSame(false, $parameter->default());
+        $this->assertSame(null, $parameter->default());
         $default = true;
         $parameterWithDefault = $parameter->withDefault($default);
         (new ParameterHelper())->testWithParameterDefault(

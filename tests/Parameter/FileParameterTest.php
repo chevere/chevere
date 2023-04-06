@@ -42,7 +42,7 @@ final class FileParameterTest extends TestCase
             $description,
         );
         $this->assertSame(
-            $default,
+            null,
             $parameter->default()
         );
         $this->assertSame(

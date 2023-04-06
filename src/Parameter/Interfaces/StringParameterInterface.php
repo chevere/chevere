@@ -50,9 +50,9 @@ interface StringParameterInterface extends ParameterInterface
     public function withDefault(string $value): self;
 
     /**
-     * Provides access to the default value.
+     * Provides access to the default value (if any).
      */
-    public function default(): string;
+    public function default(): ?string;
 
     public function assertCompatible(self $parameter): void;
 }

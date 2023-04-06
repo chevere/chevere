@@ -26,7 +26,7 @@ final class StringParameterTest extends TestCase
     {
         $regex = StringParameterInterface::REGEX_DEFAULT;
         $parameter = new StringParameter();
-        $this->assertSame('', $parameter->default());
+        $this->assertSame(null, $parameter->default());
         $this->assertSame('', $parameter->description());
         $this->assertEquals($parameter, stringp());
         $this->assertSame($regex, $parameter->regex()->__toString());
@@ -51,9 +51,8 @@ final class StringParameterTest extends TestCase
 
     public function testWithDefault(): void
     {
-        $parameter = new StringParameter('test');
-        $this->assertSame('', $parameter->default());
         $default = 'some value';
+        $parameter = new StringParameter('test');
         $parameterWithDefault = $parameter->withDefault($default);
         (new ParameterHelper())->testWithParameterDefault(
             primitive: 'string',

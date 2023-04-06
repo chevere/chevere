@@ -24,7 +24,7 @@ final class FunctionsFloatTest extends TestCase
     {
         $parameter = floatp();
         $this->assertSame('', $parameter->description());
-        $this->assertSame(0.0, $parameter->default());
+        $this->assertSame(null, $parameter->default());
         $this->assertSame(-PHP_FLOAT_MIN, $parameter->minimum());
         $this->assertSame(PHP_FLOAT_MAX, $parameter->maximum());
         $this->assertSame([], $parameter->accept());

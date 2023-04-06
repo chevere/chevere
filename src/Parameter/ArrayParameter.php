@@ -29,7 +29,7 @@ final class ArrayParameter implements ArrayParameterInterface
     /**
      * @var array<mixed, mixed>
      */
-    private array $default = [];
+    private ?array $default;
 
     public function setUp(): void
     {

@@ -20,11 +20,11 @@ namespace Chevere\Parameter\Interfaces;
 interface ArrayTypeParameterInterface extends ParameterInterface
 {
     /**
-     * Provides access to the default value.
+     * Provides access to the default value (if any).
      *
      * @return array<mixed, mixed>
      */
-    public function default(): array;
+    public function default(): ?array;
 
     /**
      * Provides access to the parameters.

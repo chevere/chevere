@@ -63,9 +63,9 @@ interface FloatParameterInterface extends ParameterInterface
     public function withAccept(float ...$value): self;
 
     /**
-     * Provides access to the default value.
+     * Provides access to the default value (if any).
      */
-    public function default(): float;
+    public function default(): ?float;
 
     /**
      * Provides access to the minimum value.

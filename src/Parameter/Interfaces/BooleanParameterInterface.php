@@ -31,9 +31,9 @@ interface BooleanParameterInterface extends ParameterInterface
     public function withDefault(bool $value): self;
 
     /**
-     * Provides access to the default value.
+     * Provides access to the default value (if any).
      */
-    public function default(): bool;
+    public function default(): ?bool;
 
     public function assertCompatible(self $parameter): void;
 }

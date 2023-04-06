@@ -24,9 +24,11 @@ interface FileParameterInterface extends ArrayTypeParameterInterface
     public function parameters(): ParametersInterface;
 
     /**
+     * Provides access to the default value (if any).
+     *
      * @return array<string, mixed>
      */
-    public function default(): array;
+    public function default(): ?array;
 
     public function assertCompatible(self $parameter): void;
 }

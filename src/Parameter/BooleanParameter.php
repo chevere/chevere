@@ -22,7 +22,7 @@ final class BooleanParameter implements BooleanParameterInterface
 {
     use ParameterTrait;
 
-    private bool $default = false;
+    private ?bool $default;
 
     public function withDefault(bool $value): BooleanParameterInterface
     {
@@ -32,9 +32,9 @@ final class BooleanParameter implements BooleanParameterInterface
         return $new;
     }
 
-    public function default(): bool
+    public function default(): ?bool
     {
-        return $this->default;
+        return $this->default ?? null;
     }
 
     /**

@@ -27,7 +27,7 @@ final class ArrayParameterTest extends TestCase
     public function testConstruct(): void
     {
         $parameter = new ArrayParameter();
-        $this->assertSame([], $parameter->default());
+        $this->assertSame(null, $parameter->default());
         $this->assertCount(0, $parameter->parameters());
         $default = ['test', 1];
         $parameterWithDefault = $parameter->withDefault($default);
