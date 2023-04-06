@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Interfaces;
 
 use Chevere\DataStructure\Interfaces\MappedInterface;
-use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use Iterator;
@@ -97,48 +96,6 @@ interface ParametersInterface extends MappedInterface
      * @throws OutOfBoundsException
      */
     public function get(string $name): ParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getArray(string $name): ArrayParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getBoolean(string $name): BooleanParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getFile(string $name): FileParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getFloat(string $name): FloatParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getInteger(string $name): IntegerParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getObject(string $name): ObjectParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getString(string $name): StringParameterInterface;
 
     /**
      * @return array<string>
