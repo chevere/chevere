@@ -34,15 +34,30 @@ use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Throwable;
 
+/**
+ * @param ParameterInterface ...$parameter Required parameters
+ */
 function arrayp(
     ParameterInterface ...$parameter
 ): ArrayParameterInterface {
     $array = new ArrayParameter();
-    if ($parameter) {
-        $array = $array->withRequired(...$parameter);
-    }
 
-    return $array;
+    return $parameter
+        ? $array->withRequired(...$parameter)
+        : $array;
+}
+
+/**
+ * @param ParameterInterface ...$parameter Optional parameters
+ */
+function arrayop(
+    ParameterInterface ...$parameter
+): ArrayParameterInterface {
+    $array = new ArrayParameter();
+
+    return $parameter
+        ? $array->withOptional(...$parameter)
+        : $array;
 }
 
 function booleanp(

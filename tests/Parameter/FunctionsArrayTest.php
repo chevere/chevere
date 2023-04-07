@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use function Chevere\Parameter\arrayop;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\integerp;
@@ -65,5 +66,24 @@ final class FunctionsArrayTest extends TestCase
             'a' => 10,
         ];
         $this->assertSame($expected, assertArray($parameter, $array));
+    }
+
+    public function testArrayOptional(): void
+    {
+        $parameter = arrayop();
+        $this->assertEquals(arrayp(), $parameter);
+        $parameter = arrayop(a: integerp());
+        $empty = [];
+        $expected = [
+            'a' => 1,
+        ];
+        $this->assertSame($empty, assertArray($parameter, $empty));
+        $this->assertSame($expected, assertArray($parameter, $expected));
+        $parameter = arrayop(a: integerp(default: 123));
+        $expected = [
+            'a' => 123,
+        ];
+        $this->assertSame($expected, assertArray($parameter, $empty));
+        $this->assertSame($expected, assertArray($parameter, $expected));
     }
 }
