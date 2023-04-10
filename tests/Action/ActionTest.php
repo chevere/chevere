@@ -88,8 +88,8 @@ final class ActionTest extends TestCase
         $optional = array_keys($defaults);
         $required = array_keys($types);
         $action = new ActionTestRunParameters();
-        $this->assertSame($optional, $action->parameters()->optional());
-        $this->assertSame($required, $action->parameters()->required());
+        $this->assertSame($optional, $action->parameters()->optionalKeys());
+        $this->assertSame($required, $action->parameters()->requiredKeys());
         foreach ($defaults as $name => $value) {
             $parameter = $action->parameters()->get(strval($name));
             $this->assertEquals($value, $parameter->default());

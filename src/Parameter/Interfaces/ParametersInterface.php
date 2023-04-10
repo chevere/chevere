@@ -90,10 +90,10 @@ interface ParametersInterface extends MappedInterface
     /**
      * @return array<string>
      */
-    public function required(): array;
+    public function requiredKeys(): array;
 
     /**
      * @return array<string>
      */
-    public function optional(): array;
+    public function optionalKeys(): array;
 }

@@ -130,7 +130,7 @@ final class Arguments implements ArgumentsInterface
     private function assertRequired(): void
     {
         $missing = array_diff(
-            $this->parameters->required(),
+            $this->parameters->requiredKeys(),
             array_keys($this->arguments),
         );
         if ($missing !== []) {

@@ -371,7 +371,7 @@ function assertNotEmpty(ParameterInterface $expected, mixed $value): void
 {
     if ($expected instanceof ArrayTypeParameterInterface
         && empty($value)
-        && $expected->parameters()->required() !== []
+        && $expected->parameters()->requiredKeys() !== []
     ) {
         throw new InvalidArgumentException(
             message('Argument value provided is empty')

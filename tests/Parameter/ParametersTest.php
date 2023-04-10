@@ -28,8 +28,8 @@ final class ParametersTest extends TestCase
         $name = 'name';
         $parameters = new Parameters();
         $this->assertCount(0, $parameters);
-        $this->assertCount(0, $parameters->optional());
-        $this->assertCount(0, $parameters->required());
+        $this->assertCount(0, $parameters->optionalKeys());
+        $this->assertCount(0, $parameters->requiredKeys());
         $this->assertFalse($parameters->has($name));
         $this->expectException(OutOfBoundsException::class);
         $parameters->get($name);
@@ -51,8 +51,8 @@ final class ParametersTest extends TestCase
             $name => $parameter,
         ]);
         $this->assertCount(1, $parameters);
-        $this->assertCount(0, $parameters->optional());
-        $this->assertCount(1, $parameters->required());
+        $this->assertCount(0, $parameters->optionalKeys());
+        $this->assertCount(1, $parameters->requiredKeys());
         $parameters->assertHas($name);
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
@@ -83,8 +83,8 @@ final class ParametersTest extends TestCase
             ]
         );
         $this->assertCount(1, $parameters);
-        $this->assertCount(0, $parameters->optional());
-        $this->assertCount(1, $parameters->required());
+        $this->assertCount(0, $parameters->optionalKeys());
+        $this->assertCount(1, $parameters->requiredKeys());
         $parameters->assertHas($name);
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
@@ -113,8 +113,8 @@ final class ParametersTest extends TestCase
         $parametersWith = $parameters->withOut('a', 'y');
         $this->assertNotSame($parameters, $parametersWith);
         $this->assertCount(4, $parametersWith);
-        $this->assertSame(['b', 'c'], $parametersWith->required());
-        $this->assertSame(['x', 'z'], $parametersWith->optional());
+        $this->assertSame(['b', 'c'], $parametersWith->requiredKeys());
+        $this->assertSame(['x', 'z'], $parametersWith->optionalKeys());
     }
 
     public function testWithAddedOptional(): void
@@ -128,8 +128,8 @@ final class ParametersTest extends TestCase
             ]);
         $this->assertNotSame($parameters, $parametersWith);
         $this->assertCount(1, $parametersWith);
-        $this->assertCount(1, $parametersWith->optional());
-        $this->assertCount(0, $parametersWith->required());
+        $this->assertCount(1, $parametersWith->optionalKeys());
+        $this->assertCount(0, $parametersWith->requiredKeys());
         $this->assertTrue($parametersWith->has($name));
         $this->assertTrue($parametersWith->isOptional($name));
         $this->assertFalse($parametersWith->isRequired($name));

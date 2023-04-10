@@ -29,28 +29,28 @@ trait ParametersTrait
     /**
      * @var array<string>
      */
-    private array $required;
+    private array $requiredKeys;
 
     /**
      * @var array<string>
      */
-    private array $optional;
+    private array $optionalKeys;
 
-    public function required(): array
+    public function requiredKeys(): array
     {
-        return $this->required;
+        return $this->requiredKeys;
     }
 
-    public function optional(): array
+    public function optionalKeys(): array
     {
-        return $this->optional;
+        return $this->optionalKeys;
     }
 
     public function isRequired(string ...$name): bool
     {
         foreach ($name as $item) {
             $this->assertNoOutOfRange($item);
-            if (array_search($item, $this->required, true) === false) {
+            if (array_search($item, $this->requiredKeys, true) === false) {
                 return false;
             }
         }
@@ -62,7 +62,7 @@ trait ParametersTrait
     {
         foreach ($name as $item) {
             $this->assertNoOutOfRange($item);
-            if (array_search($item, $this->required, true) !== false) {
+            if (array_search($item, $this->requiredKeys, true) !== false) {
                 return false;
             }
         }
@@ -117,7 +117,7 @@ trait ParametersTrait
         foreach ($parameters as $name => $parameter) {
             $name = strval($name);
             $this->assertNoOverflow($name);
-            $this->{$property}[] = $name;
+            $this->{$property . 'Keys'}[] = $name;
             $map[$name] = $parameter;
         }
         $this->map = $this->map->withPut(...$map);
@@ -126,11 +126,11 @@ trait ParametersTrait
     private function removeProperty(string ...$name): void
     {
         $this->map = $this->map->withOut(...$name);
-        $this->required = array_values(
-            array_diff($this->required, $name)
+        $this->requiredKeys = array_values(
+            array_diff($this->requiredKeys, $name)
         );
-        $this->optional = array_values(
-            array_diff($this->optional, $name)
+        $this->optionalKeys = array_values(
+            array_diff($this->optionalKeys, $name)
         );
     }
 }

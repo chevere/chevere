@@ -34,8 +34,8 @@ final class Parameters implements ParametersInterface
     public function __construct(ParameterInterface ...$parameter)
     {
         $this->map = new Map();
-        $this->required = [];
-        $this->optional = [];
+        $this->requiredKeys = [];
+        $this->optionalKeys = [];
         $this->addProperty('required', $parameter);
     }
 
