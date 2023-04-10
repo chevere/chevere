@@ -153,6 +153,15 @@ function enump(string ...$string): StringParameterInterface
     return stringp($regex);
 }
 
+function datep(
+    string $description = '',
+    ?string $default = null
+): StringParameterInterface {
+    $regex = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/';
+
+    return stringp($regex, $description, $default);
+}
+
 function objectp(
     string $className,
     string $description = '',
