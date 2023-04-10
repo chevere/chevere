@@ -16,6 +16,7 @@ namespace Chevere\Tests\Parameter;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertString;
 use function Chevere\Parameter\datep;
+use function Chevere\Parameter\datetimep;
 use function Chevere\Parameter\enump;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use function Chevere\Parameter\stringp;
@@ -79,7 +80,7 @@ final class FunctionsStringTest extends TestCase
         $parameter = timep(default: '23:59:59');
         $this->assertSame('23:59:59', $parameter->default());
         $this->expectException(InvalidArgumentException::class);
-        timep(default: '23:99:99');
+        timep(default: '999:99:99');
     }
 
     public function testAssertTimep(): void
@@ -91,11 +92,28 @@ final class FunctionsStringTest extends TestCase
         assertString($parameter, '9999:99:99');
     }
 
+    public function testDatetimepDefault(): void
+    {
+        $parameter = datetimep(default: '1000-01-01 23:59:59');
+        $this->assertSame('1000-01-01 23:59:59', $parameter->default());
+        $this->expectException(InvalidArgumentException::class);
+        datetimep(default: '9999-99-99 999:99:99');
+    }
+
+    public function testAssertDatetimep(): void
+    {
+        $parameter = datetimep();
+        $this->assertSame('1000-01-01 23:59:59', assertString($parameter, '1000-01-01 23:59:59'));
+        $this->expectException(InvalidArgumentException::class);
+        assertString($parameter, '9999-99-99 999:99:99');
+    }
+
     public function defaultsProvider(): array
     {
         return [
             [timep()],
             [datep()],
+            [datetimep()],
         ];
     }
 
@@ -104,6 +122,7 @@ final class FunctionsStringTest extends TestCase
         return [
             [timep('Test'), 'Test'],
             [datep('Test'), 'Test'],
+            [datetimep('Test'), 'Test'],
         ];
     }
 

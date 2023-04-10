@@ -153,6 +153,9 @@ function enump(string ...$string): StringParameterInterface
     return stringp($regex);
 }
 
+/**
+ * Parameter for `YYYY-MM-DD` strings.
+ */
 function datep(
     string $description = '',
     ?string $default = null
@@ -162,11 +165,26 @@ function datep(
     return stringp($regex, $description, $default);
 }
 
+/**
+ * Parameter for `hh:mm:ss` strings.
+ */
 function timep(
     string $description = '',
     ?string $default = null
 ): StringParameterInterface {
     $regex = '/^\d{2,3}:[0-5][0-9]:[0-5][0-9]$/';
+
+    return stringp($regex, $description, $default);
+}
+
+/**
+ * Parameter for `YYYY-MM-DD hh:mm:ss` strings.
+ */
+function datetimep(
+    string $description = '',
+    ?string $default = null
+): StringParameterInterface {
+    $regex = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s{1}\d{2,3}:[0-5][0-9]:[0-5][0-9]$/';
 
     return stringp($regex, $description, $default);
 }
