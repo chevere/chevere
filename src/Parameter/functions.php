@@ -145,6 +145,14 @@ function stringp(
     return $parameter;
 }
 
+function enump(string ...$string): StringParameterInterface
+{
+    $cases = implode('|', $string);
+    $regex = "/^{$cases}\$/";
+
+    return stringp($regex);
+}
+
 function objectp(
     string $className,
     string $description = '',
