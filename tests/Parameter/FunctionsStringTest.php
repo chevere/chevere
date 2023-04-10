@@ -60,9 +60,20 @@ final class FunctionsStringTest extends TestCase
         $parameter = datep();
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
-        $parameter = datep('Test', '2023-04-10');
+    }
+
+    public function testDatepDescription(): void
+    {
+        $parameter = datep('Test');
         $this->assertSame('Test', $parameter->description());
+    }
+
+    public function testDatepDefault(): void
+    {
+        $parameter = datep(default: '2023-04-10');
         $this->assertSame('2023-04-10', $parameter->default());
+        $this->expectException(InvalidArgumentException::class);
+        datep(default: 'fail');
     }
 
     public function testAssertDatep(): void

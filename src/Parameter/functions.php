@@ -135,11 +135,11 @@ function stringp(
     ?string $default = null,
 ): StringParameterInterface {
     $parameter = new StringParameter($description);
-    if ($default) {
-        $parameter = $parameter->withDefault($default);
-    }
     if ($regex !== '') {
         $parameter = $parameter->withRegex(new Regex($regex));
+    }
+    if ($default) {
+        $parameter = $parameter->withDefault($default);
     }
 
     return $parameter;
