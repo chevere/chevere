@@ -17,7 +17,9 @@ use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertString;
 use function Chevere\Parameter\datep;
 use function Chevere\Parameter\enump;
+use Chevere\Parameter\Interfaces\ParameterInterface;
 use function Chevere\Parameter\stringp;
+use function Chevere\Parameter\timep;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -55,19 +57,6 @@ final class FunctionsStringTest extends TestCase
         assertString($parameter, 'barr');
     }
 
-    public function testDatep(): void
-    {
-        $parameter = datep();
-        $this->assertSame('', $parameter->description());
-        $this->assertSame(null, $parameter->default());
-    }
-
-    public function testDatepDescription(): void
-    {
-        $parameter = datep('Test');
-        $this->assertSame('Test', $parameter->description());
-    }
-
     public function testDatepDefault(): void
     {
         $parameter = datep(default: '2023-04-10');
@@ -81,5 +70,57 @@ final class FunctionsStringTest extends TestCase
         $parameter = datep();
         $this->assertSame('1000-01-01', assertString($parameter, '1000-01-01'));
         $this->assertSame('9999-12-31', assertString($parameter, '9999-12-31'));
+        $this->expectException(InvalidArgumentException::class);
+        assertString($parameter, '9999-99-99');
+    }
+
+    public function testTimepDefault(): void
+    {
+        $parameter = timep(default: '23:59:59');
+        $this->assertSame('23:59:59', $parameter->default());
+        $this->expectException(InvalidArgumentException::class);
+        timep(default: '23:99:99');
+    }
+
+    public function testAssertTimep(): void
+    {
+        $parameter = timep();
+        $this->assertSame('00:00:00', assertString($parameter, '00:00:00'));
+        $this->assertSame('999:59:59', assertString($parameter, '999:59:59'));
+        $this->expectException(InvalidArgumentException::class);
+        assertString($parameter, '9999:99:99');
+    }
+
+    public function defaultsProvider(): array
+    {
+        return [
+            [timep()],
+            [datep()],
+        ];
+    }
+
+    public function descriptionsProvider(): array
+    {
+        return [
+            [timep('Test'), 'Test'],
+            [datep('Test'), 'Test'],
+        ];
+    }
+
+    /**
+     * @dataProvider defaultsProvider
+     */
+    public function testFunctionDefaults(ParameterInterface $parameter): void
+    {
+        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->default());
+    }
+
+    /**
+     * @dataProvider descriptionsProvider
+     */
+    public function testFunctionDescription(ParameterInterface $parameter, string $description): void
+    {
+        $this->assertSame($description, $parameter->description());
     }
 }

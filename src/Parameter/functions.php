@@ -162,6 +162,15 @@ function datep(
     return stringp($regex, $description, $default);
 }
 
+function timep(
+    string $description = '',
+    ?string $default = null
+): StringParameterInterface {
+    $regex = '/^\d{2,3}:[0-5][0-9]:[0-5][0-9]$/';
+
+    return stringp($regex, $description, $default);
+}
+
 function objectp(
     string $className,
     string $description = '',
