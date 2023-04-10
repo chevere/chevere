@@ -16,7 +16,6 @@ namespace Chevere\Parameter\Traits;
 use Chevere\DataStructure\Map;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
 
@@ -84,26 +83,6 @@ trait ParametersTrait
     public function get(string $name): ParameterInterface
     {
         return $this->map->get($name);
-    }
-
-    public function withModified(ParameterInterface ...$parameter): ParametersInterface
-    {
-        $new = clone $this;
-        foreach ($parameter as $name => $param) {
-            $name = strval($name);
-            if (! $new->map->has($name)) {
-                throw new OutOfBoundsException(
-                    message("Parameter %name% doesn't exists")
-                        ->withCode('%name%', $name)
-                );
-            }
-            $new->map = $new->map
-                ->withPut(...[
-                    $name => $param,
-                ]);
-        }
-
-        return $new;
     }
 
     private function assertNoOutOfRange(string $parameter): void

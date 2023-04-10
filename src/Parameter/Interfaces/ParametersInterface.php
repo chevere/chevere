@@ -51,16 +51,6 @@ interface ParametersInterface extends MappedInterface
     public function withAddedOptional(ParameterInterface ...$parameter): self;
 
     /**
-     * Return an instance with the specified parameter(s) modified.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified parameter(s) modified.
-     *
-     * @throws OutOfBoundsException
-     */
-    public function withModified(ParameterInterface ...$parameter): self;
-
-    /**
      * Return an instance with the specified parameter(s) removed.
      *
      * This method MUST retain the state of the current instance, and return

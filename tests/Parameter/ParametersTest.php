@@ -153,30 +153,4 @@ final class ParametersTest extends TestCase
         $this->expectException(OutOfBoundsException::class);
         $parameters->isOptional('not-found');
     }
-
-    public function testWithModified(): void
-    {
-        $name = 'name';
-        $default = 'eee';
-        $stockParameter = new StringParameter();
-        $modifyParameter = (new StringParameter())->withDefault($default);
-        $parameters = new Parameters(...[
-            $name => $stockParameter,
-        ]);
-        $parametersWith = $parameters
-            ->withModified(...[
-                $name => $modifyParameter,
-            ]);
-        $this->assertNotSame($parameters, $parametersWith);
-        $this->assertSame($stockParameter, $parameters->get($name));
-        $this->assertSame($modifyParameter, $parametersWith->get($name));
-        $this->assertNotSame(
-            $parameters->get($name),
-            $parametersWith->get($name)
-        );
-        $this->assertTrue($parameters->has($name));
-        $this->assertTrue($parametersWith->has($name));
-        $this->expectException(OutOfBoundsException::class);
-        $parametersWith->withModified(notFound: new StringParameter());
-    }
 }
