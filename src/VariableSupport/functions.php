@@ -25,8 +25,7 @@ use DeepCopy\Exception\CloneException;
 function deepCopy(mixed $value, bool $useCloneMethod = false): mixed
 {
     try {
-        return (new DeepCopy($useCloneMethod))
-            ->copy($value);
+        return (new DeepCopy($useCloneMethod))->copy($value);
     } catch (CloneException $e) {
         if (is_object($value)) {
             $object = new ObjectVariable($value);

@@ -35,7 +35,7 @@ trait MapTrait
     public function __clone()
     {
         /** @var Map<TValue> $copy */
-        $copy = deepCopy($this->map);
+        $copy = deepCopy($this->map, true);
         $this->map = $copy;
     }
 
