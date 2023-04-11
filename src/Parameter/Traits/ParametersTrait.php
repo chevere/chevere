@@ -125,7 +125,7 @@ trait ParametersTrait
 
     private function removeProperty(string ...$name): void
     {
-        $this->map = $this->map->withOut(...$name);
+        $this->map = $this->map->without(...$name);
         $this->requiredKeys = array_values(
             array_diff($this->requiredKeys, $name)
         );

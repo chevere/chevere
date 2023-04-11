@@ -55,7 +55,7 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    public function withOut(string ...$name): ParametersInterface
+    public function without(string ...$name): ParametersInterface
     {
         $new = clone $this;
         $new->removeProperty(...$name);

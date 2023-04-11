@@ -30,7 +30,7 @@ interface MapInterface extends MappedInterface
     /**
      * @return self<TValue>
      */
-    public function withOut(string ...$key): self;
+    public function without(string ...$key): self;
 
     public function has(string ...$key): bool;
 

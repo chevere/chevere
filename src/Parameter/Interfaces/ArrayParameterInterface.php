@@ -50,7 +50,7 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified added parameters.
      */
-    public function withOut(string ...$name): self;
+    public function without(string ...$name): self;
 
     public function assertCompatible(self $parameter): void;
 }

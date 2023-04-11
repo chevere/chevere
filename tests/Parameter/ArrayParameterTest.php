@@ -117,7 +117,7 @@ final class ArrayParameterTest extends TestCase
             one: $string,
             two: $integer
         );
-        $parameterWith = $parameter->withOut('one');
+        $parameterWith = $parameter->without('one');
         $this->assertNotSame($parameter, $parameterWith);
         $this->assertCount(1, $parameterWith->parameters());
     }

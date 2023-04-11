@@ -76,7 +76,7 @@ final class Map implements MapInterface
     /**
      * @return self<TValue>
      */
-    public function withOut(string ...$key): self
+    public function without(string ...$key): self
     {
         $new = clone $this;
         $new->out(...$key);

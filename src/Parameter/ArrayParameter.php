@@ -64,11 +64,11 @@ final class ArrayParameter implements ArrayParameterInterface
         return $new;
     }
 
-    public function withOut(string ...$name): static
+    public function without(string ...$name): static
     {
         $new = clone $this;
         $new->parameters = $new->parameters
-            ->withOut(...$name);
+            ->without(...$name);
 
         return $new;
     }
@@ -88,6 +88,6 @@ final class ArrayParameter implements ArrayParameterInterface
         $keys = array_keys($parameter);
         /** @var string[] $diff */
         $diff = array_intersect($keys, $this->parameters->keys());
-        $this->parameters = $this->parameters->withOut(...$diff);
+        $this->parameters = $this->parameters->without(...$diff);
     }
 }

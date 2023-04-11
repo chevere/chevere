@@ -110,7 +110,7 @@ final class ParametersTest extends TestCase
                 y: stringp(),
                 z: stringp(),
             );
-        $parametersWith = $parameters->withOut('a', 'y');
+        $parametersWith = $parameters->without('a', 'y');
         $this->assertNotSame($parameters, $parametersWith);
         $this->assertCount(4, $parametersWith);
         $this->assertSame(['b', 'c'], $parametersWith->requiredKeys());

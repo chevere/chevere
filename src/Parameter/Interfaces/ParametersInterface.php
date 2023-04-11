@@ -56,7 +56,7 @@ interface ParametersInterface extends MappedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified parameter(s) removed.
      */
-    public function withOut(string ...$name): self;
+    public function without(string ...$name): self;
 
     /**
      * Asserts whether the instance has a parameter by name(s).
