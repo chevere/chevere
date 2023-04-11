@@ -17,5 +17,5 @@
     "mutators": {
         "@default": true
     },
-    "testFrameworkOptions": "--configuration=phpunit-report.xml"
+    "testFrameworkOptions": "--configuration=phpunit-coverage.xml"
 }

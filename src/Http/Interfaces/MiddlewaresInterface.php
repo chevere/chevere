@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Http\Interfaces;
 
+use Chevere\DataStructure\Interfaces\IntegerKeysInterface;
 use Countable;
 use Iterator;
 use Psr\Http\Server\MiddlewareInterface;
@@ -20,7 +21,7 @@ use Psr\Http\Server\MiddlewareInterface;
 /**
  * Describes the component in charge of collecting PSR HTTP server middleware.
  */
-interface MiddlewaresInterface extends Countable
+interface MiddlewaresInterface extends Countable, IntegerKeysInterface
 {
     /**
      * Return an instance with the specified appended `$middleware`.
