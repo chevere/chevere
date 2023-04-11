@@ -15,10 +15,18 @@ namespace Chevere\Tests\DataStructure\_resources;
 
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
+use function Chevere\VariableSupport\deepCopy;
 
 final class UsesMapTrait
 {
     use MapTrait;
+
+    public function __clone()
+    {
+        /** @var Map<TValue> $copy */
+        $copy = deepCopy($this->map, true);
+        $this->map = $copy;
+    }
 
     public function withPut(object ...$object): static
     {
