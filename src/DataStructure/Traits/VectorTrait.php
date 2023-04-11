@@ -15,7 +15,6 @@ namespace Chevere\DataStructure\Traits;
 
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Vector;
-use function Chevere\VariableSupport\deepCopy;
 use Iterator;
 
 trait VectorTrait
@@ -25,14 +24,6 @@ trait VectorTrait
     public function __construct()
     {
         $this->vector = new Vector();
-    }
-
-    public function __clone()
-    {
-        /** @var array<mixed> $copy */
-        $copy = deepCopy($this->vector);
-        /** @phpstan-ignore-next-line */
-        $this->vector = $copy;
     }
 
     /**
