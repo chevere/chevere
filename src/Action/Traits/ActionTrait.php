@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Action\Traits;
 
 use Chevere\Attribute\StringAttribute;
-use Chevere\Container\Container;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
@@ -61,7 +60,7 @@ trait ActionTrait
 
     protected ParametersInterface $parameters;
 
-    protected ArrayTypeParameterInterface $responseParameter;
+    protected ArrayTypeParameterInterface $acceptResponse;
 
     protected ParametersInterface $containerParameters;
 
@@ -95,7 +94,7 @@ trait ActionTrait
 
     final public function container(): ContainerInterface
     {
-        return $this->container ??= new Container();
+        return $this->container;
     }
 
     final public function getResponse(mixed ...$argument): ResponseInterface
@@ -104,34 +103,22 @@ trait ActionTrait
         $arguments = arguments($this->parameters(), $argument)->toArray();
         $data = $this->run(...$arguments);
         if ($this->isStrict()) {
-            assertArgument($this->responseParameter(), $data);
+            /** @var array<string, mixed> $data */
+            $data = assertArgument($this->acceptResponse, $data);
         }
 
         return new Response(...$data);
     }
 
-    // @infection-ignore-all
-    final public function containerParameters(): ParametersInterface
-    {
-        return $this->containerParameters ??= $this->acceptContainer();
-    }
-
-    // @infection-ignore-all
     final public function parameters(): ParametersInterface
     {
-        return $this->parameters ??= $this->getParameters();
-    }
-
-    // @infection-ignore-all
-    final public function responseParameter(): ArrayTypeParameterInterface
-    {
-        return $this->responseParameter ??= $this->acceptResponse();
+        return $this->parameters;
     }
 
     final protected function assertContainer(): void
     {
         $missing = [];
-        foreach ($this->containerParameters() as $name => $parameter) {
+        foreach ($this->containerParameters as $name => $parameter) {
             if (! $this->container()->has($name)) {
                 $className = $parameter::class;
                 $missing[] = <<<STRING

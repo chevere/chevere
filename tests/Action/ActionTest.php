@@ -53,10 +53,6 @@ final class ActionTest extends TestCase
         $action = new ActionTestAction();
         $this->assertSame('', $action->description());
         $this->assertCount(0, $action->parameters());
-        $this->assertInstanceOf(
-            ArrayParameterInterface::class,
-            $action->responseParameter()
-        );
         $action->run();
     }
 

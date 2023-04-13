@@ -41,11 +41,6 @@ interface ActionInterface extends DescribedInterface
     public function acceptContainer(): ParametersInterface;
 
     /**
-     * Provides access to the expected container parameters.
-     */
-    public function containerParameters(): ParametersInterface;
-
-    /**
      * Return an instance with the specified `$container`.
      *
      * This method MUST retain the state of the current instance, and return
@@ -67,11 +62,6 @@ interface ActionInterface extends DescribedInterface
      * Provides access to the parameters.
      */
     public function parameters(): ParametersInterface;
-
-    /**
-     * Provides access to the expected response parameter.
-     */
-    public function responseParameter(): ArrayTypeParameterInterface;
 
     /**
      * Retrieves a new response instance typed against the defined response data parameters.

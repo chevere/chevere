@@ -15,8 +15,8 @@ namespace Chevere\Action;
 
 use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Action\Traits\ActionTrait;
+use Chevere\Container\Container;
 use function Chevere\Message\message;
-use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\LogicException;
@@ -26,10 +26,6 @@ use ReflectionNamedType;
 abstract class Action implements ActionInterface
 {
     use ActionTrait;
-
-    protected ParametersInterface $parameters;
-
-    protected ParametersInterface $containerParameters;
 
     public function __construct()
     {
@@ -45,9 +41,11 @@ abstract class Action implements ActionInterface
     {
         $this->setUpBefore();
         $this->assertRunMethod();
+        $this->parameters = $this->getParameters();
         $this->assertRunParameters();
-        $this->parameters = $this->parameters();
-        $this->containerParameters = $this->containerParameters();
+        $this->container = new Container();
+        $this->containerParameters = $this->acceptContainer();
+        $this->acceptResponse = $this->acceptResponse();
         $this->setUpAfter();
     }
 
