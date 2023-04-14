@@ -241,7 +241,7 @@ function unionp(
 function parameters(
     ParameterInterface ...$required,
 ): ParametersInterface {
-    return (new Parameters())->withAddedRequired(...$required);
+    return new Parameters(...$required);
 }
 
 /**
@@ -445,7 +445,6 @@ function assertNamedArgument(
     ParameterInterface $parameter,
     mixed $argument
 ): void {
-    // assertNotEmpty($parameter, $argument);
     $parameters = parameters(
         ...[
             $name => $parameter,
