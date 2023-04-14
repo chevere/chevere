@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\arrayRequired;
 use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\generic;
@@ -26,8 +26,8 @@ final class FunctionsUnionTest extends TestCase
 {
     public function testUnionArrayFixed(): void
     {
-        $array = arrayp(a: integer());
-        $union = union(arrayp(), $array);
+        $array = arrayRequired(a: integer());
+        $union = union(arrayRequired(), $array);
         $argument = [
             'a' => 1,
         ];
@@ -41,9 +41,9 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionArrayGeneric(): void
     {
-        $array = arrayp(a: integer());
+        $array = arrayRequired(a: integer());
         $generic = generic($array);
-        $union = union(arrayp(), $generic);
+        $union = union(arrayRequired(), $generic);
         $argument = [
             [
                 'a' => 1,
@@ -62,8 +62,8 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionGenericEmptyArray(): void
     {
-        $array = arrayp(a: integer());
-        $union = union(arrayp(), $array);
+        $array = arrayRequired(a: integer());
+        $union = union(arrayRequired(), $array);
         $generic = generic($union);
         $argument = [
             [
@@ -84,7 +84,7 @@ final class FunctionsUnionTest extends TestCase
     public function testUnionGeneric(): void
     {
         $generic = generic(integer());
-        $union = union(arrayp(), $generic);
+        $union = union(arrayRequired(), $generic);
         assertUnion($union, []);
         assertUnion($union, [1, 2, 3]);
         $this->expectException(InvalidArgumentException::class);
@@ -93,8 +93,8 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionGenericArray(): void
     {
-        $generic = generic(arrayp());
-        $union = union(arrayp(), $generic);
+        $generic = generic(arrayRequired());
+        $union = union(arrayRequired(), $generic);
         assertUnion($union, []);
         assertUnion($union, [[]]);
         $this->expectException(InvalidArgumentException::class);

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use function Chevere\Parameter\arraypoString;
-use function Chevere\Parameter\arraypString;
+use function Chevere\Parameter\arrayOptionalStrings;
+use function Chevere\Parameter\arrayRequiredStrings;
 use function Chevere\Parameter\string;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +23,7 @@ final class FunctionsArrayStringTest extends TestCase
     public function testArraypString(): void
     {
         $string = string();
-        $parameter = arraypString(a: $string);
+        $parameter = arrayRequiredStrings(a: $string);
         $this->assertCount(1, $parameter->parameters());
         $this->assertSame($string, $parameter->parameters()->get('a'));
         $this->assertTrue($parameter->parameters()->isRequired('a'));
@@ -32,7 +32,7 @@ final class FunctionsArrayStringTest extends TestCase
     public function testArraypoString(): void
     {
         $string = string();
-        $parameter = arraypoString(a: $string);
+        $parameter = arrayOptionalStrings(a: $string);
         $this->assertCount(1, $parameter->parameters());
         $this->assertSame($string, $parameter->parameters()->get('a'));
         $this->assertTrue($parameter->parameters()->isOptional('a'));

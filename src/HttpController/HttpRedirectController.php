@@ -15,7 +15,7 @@ namespace Chevere\HttpController;
 
 use Chevere\HttpController\Interfaces\HttpRedirectControllerInterface;
 use function Chevere\Message\message;
-use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\arrayRequired;
 use function Chevere\Parameter\integer;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\object;
@@ -31,7 +31,7 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
 
     public function acceptResponse(): ArrayTypeParameterInterface
     {
-        return arrayp(
+        return arrayRequired(
             uri: object(UriInterface::class),
             status: integer()
                 ->withAccept(...static::STATUSES),

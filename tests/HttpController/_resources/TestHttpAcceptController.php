@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\HttpController\_resources;
 
 use Chevere\HttpController\HttpController;
-use function Chevere\Parameter\arrayp;
-use function Chevere\Parameter\arraypString;
+use function Chevere\Parameter\arrayRequired;
+use function Chevere\Parameter\arrayRequiredStrings;
 use function Chevere\Parameter\file;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
@@ -25,7 +25,7 @@ final class TestHttpAcceptController extends HttpController
 {
     public function acceptQuery(): ArrayStringParameterInterface
     {
-        return arraypString(
+        return arrayRequiredStrings(
             ...[
                 'foo-foo' => string('/^[a-z]+$/'),
             ]
@@ -34,7 +34,7 @@ final class TestHttpAcceptController extends HttpController
 
     public function acceptBody(): ArrayTypeParameterInterface
     {
-        return arrayp(
+        return arrayRequired(
             ...[
                 'bar.bar' => string('/^[1-9]+$/'),
             ]
@@ -43,7 +43,7 @@ final class TestHttpAcceptController extends HttpController
 
     public function acceptFiles(): ArrayTypeParameterInterface
     {
-        return arrayp(
+        return arrayRequired(
             ...[
                 'MyFile!' => file(
                     type: string('/^text\/plain$/')

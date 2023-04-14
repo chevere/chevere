@@ -20,8 +20,8 @@ use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\HttpController\Traits\StatusInternalServerErrorTrait;
 use Chevere\HttpController\Traits\StatusOkTrait;
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\arrayp;
-use function Chevere\Parameter\arraypString;
+use function Chevere\Parameter\arrayRequired;
+use function Chevere\Parameter\arrayRequiredStrings;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertArrayString;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
@@ -52,17 +52,17 @@ abstract class HttpController extends Controller implements HttpControllerInterf
 
     public function acceptQuery(): ArrayStringParameterInterface
     {
-        return arraypString();
+        return arrayRequiredStrings();
     }
 
     public function acceptBody(): ArrayTypeParameterInterface
     {
-        return arrayp();
+        return arrayRequired();
     }
 
     public function acceptFiles(): ArrayTypeParameterInterface
     {
-        return arrayp();
+        return arrayRequired();
     }
 
     public function responseHeaders(): array
