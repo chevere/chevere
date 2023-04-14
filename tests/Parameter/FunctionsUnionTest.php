@@ -16,9 +16,9 @@ namespace Chevere\Tests\Parameter;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\assertUnion;
-use function Chevere\Parameter\genericp;
-use function Chevere\Parameter\integerp;
-use function Chevere\Parameter\unionp;
+use function Chevere\Parameter\generic;
+use function Chevere\Parameter\integer;
+use function Chevere\Parameter\union;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -26,14 +26,14 @@ final class FunctionsUnionTest extends TestCase
 {
     public function testUnionArrayFixed(): void
     {
-        $array = arrayp(a: integerp());
-        $union = unionp(arrayp(), $array);
+        $array = arrayp(a: integer());
+        $union = union(arrayp(), $array);
         $argument = [
             'a' => 1,
         ];
         assertUnion($union, []);
         assertUnion($union, $argument);
-        $union = unionp($array);
+        $union = union($array);
         assertUnion($union, $argument);
         $this->expectException(InvalidArgumentException::class);
         assertUnion($union, []);
@@ -41,9 +41,9 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionArrayGeneric(): void
     {
-        $array = arrayp(a: integerp());
-        $generic = genericp($array);
-        $union = unionp(arrayp(), $generic);
+        $array = arrayp(a: integer());
+        $generic = generic($array);
+        $union = union(arrayp(), $generic);
         $argument = [
             [
                 'a' => 1,
@@ -54,7 +54,7 @@ final class FunctionsUnionTest extends TestCase
         ];
         assertUnion($union, []);
         assertUnion($union, $argument);
-        $union = unionp($generic);
+        $union = union($generic);
         assertUnion($union, $argument);
         $this->expectException(InvalidArgumentException::class);
         assertUnion($union, []);
@@ -62,9 +62,9 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionGenericEmptyArray(): void
     {
-        $array = arrayp(a: integerp());
-        $union = unionp(arrayp(), $array);
-        $generic = genericp($union);
+        $array = arrayp(a: integer());
+        $union = union(arrayp(), $array);
+        $generic = generic($union);
         $argument = [
             [
                 'a' => 1,
@@ -75,7 +75,7 @@ final class FunctionsUnionTest extends TestCase
         ];
         assertGeneric($generic, $argument);
         assertGeneric($generic, [[]]);
-        $generic = genericp(unionp($array));
+        $generic = generic(union($array));
         assertGeneric($generic, $argument);
         $this->expectException(InvalidArgumentException::class);
         assertGeneric($generic, [[]]);
@@ -83,8 +83,8 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionGeneric(): void
     {
-        $generic = genericp(integerp());
-        $union = unionp(arrayp(), $generic);
+        $generic = generic(integer());
+        $union = union(arrayp(), $generic);
         assertUnion($union, []);
         assertUnion($union, [1, 2, 3]);
         $this->expectException(InvalidArgumentException::class);
@@ -93,8 +93,8 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionGenericArray(): void
     {
-        $generic = genericp(arrayp());
-        $union = unionp(arrayp(), $generic);
+        $generic = generic(arrayp());
+        $union = union(arrayp(), $generic);
         assertUnion($union, []);
         assertUnion($union, [[]]);
         $this->expectException(InvalidArgumentException::class);

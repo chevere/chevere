@@ -21,13 +21,8 @@ use TypeError;
 /**
  * Describes the component in charge of defining a set of parameters with arguments.
  */
-interface ArgumentsInterface extends ToArrayInterface
+interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
 {
-    /**
-     * Provides access to the parameters instance.
-     */
-    public function parameters(): ParametersInterface;
-
     /**
      * Provides access to the arguments as array.
      *

@@ -15,15 +15,16 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
+use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 
 final class FileParameter implements FileParameterInterface
 {
     use ParameterTrait;
     use ArrayParameterTrait;
+    use ParametersAccessTrait;
 
     /**
      * @var array<string, mixed>
@@ -39,17 +40,12 @@ final class FileParameter implements FileParameterInterface
     ) {
         $this->type = $this->type();
         $this->parameters = parameters(
-            error: integerp()->withAccept(UPLOAD_ERR_OK),
+            error: integer()->withAccept(UPLOAD_ERR_OK),
             name: $name,
             size: $size,
             tmp_name: $tmp_name,
             type: $type,
         );
-    }
-
-    public function parameters(): ParametersInterface
-    {
-        return $this->parameters;
     }
 
     /**

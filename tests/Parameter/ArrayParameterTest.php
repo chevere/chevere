@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\ArrayParameter;
-use function Chevere\Parameter\integerp;
+use function Chevere\Parameter\integer;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
-use function Chevere\Parameter\stringp;
+use function Chevere\Parameter\string;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
@@ -41,8 +41,8 @@ final class ArrayParameterTest extends TestCase
 
     public function testWithRequired(): void
     {
-        $string = stringp();
-        $integer = integerp();
+        $string = string();
+        $integer = integer();
         $parameter = new ArrayParameter();
         $parameterWith = $parameter->withRequired(
             one: $string,
@@ -76,8 +76,8 @@ final class ArrayParameterTest extends TestCase
 
     public function testWithOptional(): void
     {
-        $string = stringp();
-        $integer = integerp();
+        $string = string();
+        $integer = integer();
         $parameter = new ArrayParameter();
         $parameterWith = $parameter->withOptional(
             one: $string,
@@ -111,8 +111,8 @@ final class ArrayParameterTest extends TestCase
 
     public function testWithOut(): void
     {
-        $string = stringp();
-        $integer = integerp();
+        $string = string();
+        $integer = integer();
         $parameter = (new ArrayParameter())->withRequired(
             one: $string,
             two: $integer
@@ -122,14 +122,14 @@ final class ArrayParameterTest extends TestCase
         $this->assertCount(1, $parameterWith->parameters());
     }
 
-    public function testAssertCompatibleConflict(): void
+    public function testAssertCompatible(): void
     {
-        $string = stringp();
-        $integer = integerp();
+        $string = string();
+        $integer = integer();
         $parameter = (new ArrayParameter())->withRequired(
             one: $string,
         );
-        $altString = stringp();
+        $altString = string();
         $compatible = (new ArrayParameter())->withRequired(
             one: $altString,
         );
@@ -151,7 +151,7 @@ final class ArrayParameterTest extends TestCase
 
     public function testAssertCompatibleMissingKey(): void
     {
-        $string = stringp();
+        $string = string();
         $parameter = (new ArrayParameter())->withRequired(
             one: $string,
         );

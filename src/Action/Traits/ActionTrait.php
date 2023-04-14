@@ -100,7 +100,7 @@ trait ActionTrait
     final public function getResponse(mixed ...$argument): ResponseInterface
     {
         $this->assertContainer();
-        $arguments = arguments($this->parameters(), $argument)->toArray();
+        $arguments = arguments($this->parameters, $argument)->toArray();
         $data = $this->run(...$arguments);
         if ($this->isStrict()) {
             /** @var array<string, mixed> $data */

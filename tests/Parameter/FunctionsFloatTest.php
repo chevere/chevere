@@ -15,14 +15,14 @@ namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertFloat;
-use function Chevere\Parameter\floatp;
+use function Chevere\Parameter\float;
 use PHPUnit\Framework\TestCase;
 
 final class FunctionsFloatTest extends TestCase
 {
     public function testFloatp(): void
     {
-        $parameter = floatp();
+        $parameter = float();
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
         $this->assertSame(-PHP_FLOAT_MIN, $parameter->minimum());
@@ -34,7 +34,7 @@ final class FunctionsFloatTest extends TestCase
     {
         $description = 'test';
         $default = 5.0;
-        $parameter = floatp(
+        $parameter = float(
             description: $description,
             default: $default,
             minimum: -100,
@@ -44,13 +44,13 @@ final class FunctionsFloatTest extends TestCase
         $this->assertSame($default, $parameter->default());
         $this->assertSame(-100.0, $parameter->minimum());
         $this->assertSame(100.0, $parameter->maximum());
-        $parameter = floatp(accept: [0, 1]);
+        $parameter = float(accept: [0, 1]);
         $this->assertSame([0.0, 1.0], $parameter->accept());
     }
 
     public function testAssertFloat(): void
     {
-        $parameter = floatp();
+        $parameter = float();
         $this->assertSame(0.0, assertFloat($parameter, 0));
         $this->assertSame(0.0, assertFloat($parameter, 0.0));
         $this->assertSame(0.0, assertArgument($parameter, 0));

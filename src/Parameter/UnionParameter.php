@@ -18,6 +18,7 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParameterAssertArrayTypeTrait;
+use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeUnion;
@@ -27,6 +28,7 @@ final class UnionParameter implements UnionParameterInterface
     use ParameterTrait;
     use ArrayParameterTrait;
     use ParameterAssertArrayTypeTrait;
+    use ParametersAccessTrait;
 
     /**
      * @var array<mixed, mixed>
@@ -54,11 +56,6 @@ final class UnionParameter implements UnionParameterInterface
             ->withAddedRequired(...$parameter);
 
         return $new;
-    }
-
-    public function parameters(): ParametersInterface
-    {
-        return $this->parameters;
     }
 
     public function assertCompatible(UnionParameterInterface $parameter): void

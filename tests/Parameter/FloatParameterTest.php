@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use function Chevere\Parameter\floatp;
+use function Chevere\Parameter\float;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -23,7 +23,7 @@ final class FloatParameterTest extends TestCase
     public function testConstruct(): void
     {
         $parameter = new FloatParameter('name');
-        $this->assertEquals($parameter, floatp('name'));
+        $this->assertEquals($parameter, float('name'));
         $this->assertSame(null, $parameter->default());
         $this->assertSame(-PHP_FLOAT_MIN, $parameter->minimum());
         $this->assertSame(PHP_FLOAT_MAX, $parameter->maximum());

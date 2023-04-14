@@ -15,14 +15,15 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
+use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 
 final class GenericParameter implements GenericParameterInterface
 {
     use ParameterTrait;
     use ArrayParameterTrait;
+    use ParametersAccessTrait;
 
     /**
      * @var array<mixed, mixed>
@@ -56,10 +57,5 @@ final class GenericParameter implements GenericParameterInterface
     {
         $this->key->assertCompatible($parameter->key());
         $this->value->assertCompatible($parameter->value());
-    }
-
-    public function parameters(): ParametersInterface
-    {
-        return $this->parameters;
     }
 }

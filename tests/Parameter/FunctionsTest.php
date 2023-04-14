@@ -19,14 +19,14 @@ use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertNamedArgument;
 use function Chevere\Parameter\assertUnion;
-use function Chevere\Parameter\booleanp;
-use function Chevere\Parameter\genericp;
-use function Chevere\Parameter\integerp;
-use function Chevere\Parameter\nullp;
-use function Chevere\Parameter\objectp;
+use function Chevere\Parameter\boolean;
+use function Chevere\Parameter\generic;
+use function Chevere\Parameter\integer;
+use function Chevere\Parameter\null;
+use function Chevere\Parameter\object;
 use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\stringp;
-use function Chevere\Parameter\unionp;
+use function Chevere\Parameter\string;
+use function Chevere\Parameter\union;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +40,7 @@ final class FunctionsTest extends TestCase
         $parameters = parameters();
         $this->assertCount(0, $parameters);
         $parameters = parameters(
-            foo: stringp()
+            foo: string()
         );
         $this->assertCount(1, $parameters);
         $this->assertTrue($parameters->isRequired('foo'));
@@ -49,7 +49,7 @@ final class FunctionsTest extends TestCase
     public function testArguments(): void
     {
         $parameters = parameters(
-            foo: stringp()
+            foo: string()
         );
         $args = [
             'foo' => 'bar',
@@ -68,11 +68,11 @@ final class FunctionsTest extends TestCase
 
     public function testBooleanParameter(): void
     {
-        $parameter = booleanp();
+        $parameter = boolean();
         assertArgument($parameter, true);
         $this->assertSame('', $parameter->description());
         $this->assertSame(false, $parameter->default());
-        $parameter = booleanp(
+        $parameter = boolean(
             description: 'name',
             default: true
         );
@@ -84,7 +84,7 @@ final class FunctionsTest extends TestCase
 
     public function testNullParameter(): void
     {
-        $parameter = nullp();
+        $parameter = null();
         assertArgument($parameter, null);
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
@@ -94,11 +94,11 @@ final class FunctionsTest extends TestCase
 
     public function testIntegerParameter(): void
     {
-        $parameter = integerp();
+        $parameter = integer();
         assertArgument($parameter, 1);
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
-        $parameter = integerp(
+        $parameter = integer(
             default: 10
         );
         $this->assertSame(10, $parameter->default());
@@ -108,11 +108,11 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionObjectParameter(): void
     {
-        $parameter = objectp(stdClass::class);
+        $parameter = object(stdClass::class);
         assertArgument($parameter, new stdClass());
         $this->assertSame('', $parameter->description());
         $this->assertSame(stdClass::class, $parameter->className());
-        $parameter = objectp(stdClass::class, 'foo');
+        $parameter = object(stdClass::class, 'foo');
         $this->assertSame('foo', $parameter->description());
         $this->expectException(InvalidArgumentException::class);
         assertArgument($parameter, parameters());
@@ -123,7 +123,7 @@ final class FunctionsTest extends TestCase
         $description = 'some description';
         $default = 'abcd';
         $regex = '/^[a-z]+$/';
-        $parameter = stringp(
+        $parameter = string(
             description: $description,
             default: $default,
             regex: $regex,
@@ -139,8 +139,8 @@ final class FunctionsTest extends TestCase
     public function testFunctionArrayParameter(): void
     {
         $parameter = arrayp(
-            one: stringp(),
-            two: integerp(default: 222)
+            one: string(),
+            two: integer(default: 222)
         );
         $array = [
             'one' => 'foo',
@@ -159,11 +159,11 @@ final class FunctionsTest extends TestCase
     {
         $parameter = arrayp(
             wea: arrayp(
-                one: stringp(),
-                two: integerp(default: 222),
+                one: string(),
+                two: integer(default: 222),
                 nest: arrayp(
-                    one: integerp(default: 1),
-                    two: integerp(default: 2),
+                    one: integer(default: 1),
+                    two: integer(default: 2),
                 )
             )
         );
@@ -192,20 +192,20 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionAssertArgument(): void
     {
-        assertNamedArgument('test', integerp(), 123);
+        assertNamedArgument('test', integer(), 123);
         $this->expectException(InvalidArgumentException::class);
-        assertNamedArgument('fail', stringp(), 13.13);
+        assertNamedArgument('fail', string(), 13.13);
     }
 
     public function testFunctionGenericParameter(): void
     {
-        $parameter = genericp(
-            V: stringp()
+        $parameter = generic(
+            V: string()
         );
         $this->assertSame('', $parameter->description());
-        $parameter = genericp(
-            K: stringp(),
-            V: stringp(),
+        $parameter = generic(
+            K: string(),
+            V: string(),
             description: 'foo'
         );
         $this->assertSame('foo', $parameter->description());
@@ -213,9 +213,9 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionUnionParameter(): void
     {
-        $parameter = unionp(
-            integerp(),
-            stringp(),
+        $parameter = union(
+            integer(),
+            string(),
         );
         assertUnion($parameter, 'foo');
         assertUnion($parameter, 123);
@@ -226,7 +226,7 @@ final class FunctionsTest extends TestCase
     public function testAssertArrayExtraArguments(): void
     {
         $parameter = arrayp(
-            OK: stringp(),
+            OK: string(),
         );
         $this->expectException(ArgumentCountError::class);
         assertArray($parameter, [
@@ -238,7 +238,7 @@ final class FunctionsTest extends TestCase
     public function testAssertArrayConflictType(): void
     {
         $parameter = arrayp(
-            OK: stringp(),
+            OK: string(),
         );
         $this->expectException(InvalidArgumentException::class);
         assertArray($parameter, [
@@ -249,7 +249,7 @@ final class FunctionsTest extends TestCase
     public function testAssertArrayConflictNull(): void
     {
         $parameter = arrayp(
-            OK: stringp(),
+            OK: string(),
         );
         $this->expectException(InvalidArgumentException::class);
         assertArray($parameter, [

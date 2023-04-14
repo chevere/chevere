@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Interfaces;
 
 /**
- * Describes the component in charge of defining a parameter of type array.
+ * Describes the component in charge of defining a parameter of type array with string members.
  */
-interface ArrayParameterInterface extends ArrayTypeParameterInterface
+interface ArrayStringParameterInterface extends ArrayTypeParameterInterface
 {
     /**
      * Return an instance with the specified default value.
@@ -24,7 +24,7 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified default value.
      *
-     * @param array<mixed, mixed> $value
+     * @param array<mixed, string> $value
      */
     public function withDefault(array $value): self;
 
@@ -34,7 +34,7 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified required parameters.
      */
-    public function withRequired(ParameterInterface ...$parameter): self;
+    public function withRequired(StringParameterInterface ...$parameter): self;
 
     /**
      * Return an instance with optional parameters.
@@ -42,7 +42,7 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified optional parameters.
      */
-    public function withOptional(ParameterInterface ...$parameter): self;
+    public function withOptional(StringParameterInterface ...$parameter): self;
 
     /**
      * Return an instance with removed parameters.

@@ -17,6 +17,7 @@ use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ArgumentsGetTypedTrait;
+use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -26,6 +27,7 @@ use Throwable;
 final class Arguments implements ArgumentsInterface
 {
     use ArgumentsGetTypedTrait;
+    use ParametersAccessTrait;
 
     /**
      * @var array<int|string, mixed>
@@ -58,11 +60,6 @@ final class Arguments implements ArgumentsInterface
                 )
             );
         }
-    }
-
-    public function parameters(): ParametersInterface
-    {
-        return $this->parameters;
     }
 
     public function toArray(): array

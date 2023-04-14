@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use function Chevere\Parameter\integerp;
+use function Chevere\Parameter\integer;
 use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\stringp;
+use function Chevere\Parameter\string;
 use Chevere\Parameter\UnionParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
@@ -40,8 +40,8 @@ final class UnionParameterTest extends TestCase
         $parameter = new UnionParameter(
             parameters()
         );
-        $one = stringp();
-        $two = integerp();
+        $one = string();
+        $two = integer();
         $parameterWith = $parameter->withAdded(
             $one,
             $two
@@ -55,10 +55,10 @@ final class UnionParameterTest extends TestCase
     public function testAssertCompatible(): void
     {
         $parameters = parameters(
-            stringp(),
+            string(),
         );
         $parametersAlt = parameters(
-            stringp(description: 'one'),
+            string(description: 'one'),
         );
         $parameter = new UnionParameter($parameters);
         $compatible = new UnionParameter($parametersAlt);
@@ -69,10 +69,10 @@ final class UnionParameterTest extends TestCase
     public function testAssertNotCompatible(): void
     {
         $parameters = parameters(
-            stringp(),
+            string(),
         );
         $parametersAlt = parameters(
-            integerp(),
+            integer(),
         );
         $parameter = new UnionParameter($parameters);
         $compatible = new UnionParameter($parametersAlt);

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use function Chevere\Parameter\arrayop;
 use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\arraypo;
 use function Chevere\Parameter\assertArray;
-use function Chevere\Parameter\integerp;
+use function Chevere\Parameter\integer;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use PHPUnit\Framework\TestCase;
 
@@ -32,7 +32,7 @@ final class FunctionsArrayTest extends TestCase
 
     public function testArrayFixed(): void
     {
-        $parameter = arrayp(a: integerp());
+        $parameter = arrayp(a: integer());
         $array = [
             'a' => 1,
         ];
@@ -43,14 +43,14 @@ final class FunctionsArrayTest extends TestCase
 
     public function testArrayOptionals(): void
     {
-        $parameter = arrayp()->withOptional(a: integerp());
+        $parameter = arrayp()->withOptional(a: integer());
         $array = [];
         $this->assertSame($array, assertArray($parameter, $array));
     }
 
     public function testArrayDefaults(): void
     {
-        $parameter = arrayp(a: integerp(default: 10));
+        $parameter = arrayp(a: integer(default: 10));
         $array = [];
         $expected = [
             'a' => 10,
@@ -60,7 +60,7 @@ final class FunctionsArrayTest extends TestCase
 
     public function testArrayOptionalsDefaults(): void
     {
-        $parameter = arrayp()->withOptional(a: integerp(default: 10));
+        $parameter = arrayp()->withOptional(a: integer(default: 10));
         $array = [];
         $expected = [
             'a' => 10,
@@ -70,16 +70,16 @@ final class FunctionsArrayTest extends TestCase
 
     public function testArrayOptional(): void
     {
-        $parameter = arrayop();
+        $parameter = arraypo();
         $this->assertEquals(arrayp(), $parameter);
-        $parameter = arrayop(a: integerp());
+        $parameter = arraypo(a: integer());
         $empty = [];
         $expected = [
             'a' => 1,
         ];
         $this->assertSame($empty, assertArray($parameter, $empty));
         $this->assertSame($expected, assertArray($parameter, $expected));
-        $parameter = arrayop(a: integerp(default: 123));
+        $parameter = arraypo(a: integer(default: 123));
         $expected = [
             'a' => 123,
         ];

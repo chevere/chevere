@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Message\Interfaces\MessageInterface;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
-use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
@@ -29,38 +28,11 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
-use Chevere\Regex\Regex;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Throwable;
 
-/**
- * @param ParameterInterface ...$parameter Required parameters
- */
-function arrayp(
-    ParameterInterface ...$parameter
-): ArrayParameterInterface {
-    $array = new ArrayParameter();
-
-    return $parameter
-        ? $array->withRequired(...$parameter)
-        : $array;
-}
-
-/**
- * @param ParameterInterface ...$parameter Optional parameters
- */
-function arrayop(
-    ParameterInterface ...$parameter
-): ArrayParameterInterface {
-    $array = new ArrayParameter();
-
-    return $parameter
-        ? $array->withOptional(...$parameter)
-        : $array;
-}
-
-function booleanp(
+function boolean(
     string $description = '',
     bool $default = false,
 ): BooleanParameterInterface {
@@ -69,127 +41,13 @@ function booleanp(
     return $parameter->withDefault($default);
 }
 
-function nullp(
+function null(
     string $description = '',
 ): NullParameterInterface {
     return new NullParameter($description);
 }
 
-/**
- * @param float[] $accept
- */
-function floatp(
-    string $description = '',
-    ?float $default = null,
-    ?float $minimum = null,
-    ?float $maximum = null,
-    array $accept = [],
-): FloatParameterInterface {
-    $parameter = new FloatParameter($description);
-    if ($default !== null) {
-        $parameter = $parameter->withDefault($default);
-    }
-    if ($minimum !== null) {
-        $parameter = $parameter->withMinimum($minimum);
-    }
-    if ($maximum !== null) {
-        $parameter = $parameter->withMaximum($maximum);
-    }
-    if ($accept !== []) {
-        $parameter = $parameter->withAccept(...$accept);
-    }
-
-    return $parameter;
-}
-
-/**
- * @param int[] $accept
- */
-function integerp(
-    string $description = '',
-    ?int $default = null,
-    ?int $minimum = null,
-    ?int $maximum = null,
-    array $accept = [],
-): IntegerParameterInterface {
-    $parameter = new IntegerParameter($description);
-    if ($default !== null) {
-        $parameter = $parameter->withDefault($default);
-    }
-    if ($minimum !== null) {
-        $parameter = $parameter->withMinimum($minimum);
-    }
-    if ($maximum !== null) {
-        $parameter = $parameter->withMaximum($maximum);
-    }
-    if ($accept !== []) {
-        $parameter = $parameter->withAccept(...$accept);
-    }
-
-    return $parameter;
-}
-
-function stringp(
-    string $regex = '',
-    string $description = '',
-    ?string $default = null,
-): StringParameterInterface {
-    $parameter = new StringParameter($description);
-    if ($regex !== '') {
-        $parameter = $parameter->withRegex(new Regex($regex));
-    }
-    if ($default) {
-        $parameter = $parameter->withDefault($default);
-    }
-
-    return $parameter;
-}
-
-function enump(string ...$string): StringParameterInterface
-{
-    $cases = implode('|', $string);
-    $regex = "/^{$cases}\$/";
-
-    return stringp($regex);
-}
-
-/**
- * Parameter for `YYYY-MM-DD` strings.
- */
-function datep(
-    string $description = '',
-    ?string $default = null
-): StringParameterInterface {
-    $regex = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/';
-
-    return stringp($regex, $description, $default);
-}
-
-/**
- * Parameter for `hh:mm:ss` strings.
- */
-function timep(
-    string $description = '',
-    ?string $default = null
-): StringParameterInterface {
-    $regex = '/^\d{2,3}:[0-5][0-9]:[0-5][0-9]$/';
-
-    return stringp($regex, $description, $default);
-}
-
-/**
- * Parameter for `YYYY-MM-DD hh:mm:ss` strings.
- */
-function datetimep(
-    string $description = '',
-    ?string $default = null
-): StringParameterInterface {
-    $regex = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s{1}\d{2,3}:[0-5][0-9]:[0-5][0-9]$/';
-
-    return stringp($regex, $description, $default);
-}
-
-function objectp(
+function object(
     string $className,
     string $description = '',
 ): ObjectParameterInterface {
@@ -198,39 +56,7 @@ function objectp(
     return $parameter->withClassName($className);
 }
 
-function filep(
-    string $description = '',
-    ?StringParameterInterface $name = null,
-    ?StringParameterInterface $type = null,
-    ?StringParameterInterface $tmp_name = null,
-    ?IntegerParameterInterface $size = null,
-): FileParameterInterface {
-    return new FileParameter(
-        name: $name ?? stringp(),
-        size: $size ?? integerp(),
-        type: $type ?? stringp(),
-        tmp_name: $tmp_name ?? stringp(),
-        description: $description,
-    );
-}
-
-/**
- * @param ParameterInterface $V Generic value parameter
- * @param ParameterInterface|null $K Generic key parameter
- */
-function genericp(
-    ParameterInterface $V,
-    ?ParameterInterface $K = null,
-    string $description = '',
-): GenericParameterInterface {
-    if ($K === null) {
-        $K = integerp();
-    }
-
-    return new GenericParameter($V, $K, $description);
-}
-
-function unionp(
+function union(
     ParameterInterface ...$parameter
 ): UnionParameterInterface {
     $parameters = parameters(...$parameter);
@@ -261,76 +87,6 @@ function assertBoolean(
     return $argument;
 }
 
-function assertString(
-    StringParameterInterface $parameter,
-    string $argument,
-): string {
-    $regex = $parameter->regex();
-    if ($regex->match($argument) !== []) {
-        return $argument;
-    }
-
-    throw new InvalidArgumentException(
-        message("Argument value provided %provided% doesn't match the regex %regex%")
-            ->withCode('%provided%', $argument)
-            ->withCode('%regex%', strval($regex))
-    );
-}
-
-function assertNumeric(
-    IntegerParameterInterface|FloatParameterInterface $parameter,
-    int|float $argument,
-): int|float {
-    $accept = $parameter->accept();
-    if ($accept !== []) {
-        if (in_array($argument, $accept, true)) {
-            return $argument;
-        }
-
-        throw new InvalidArgumentException(
-            message('Argument value provided %provided% is not an accepted value %value%')
-                ->withCode('%provided%', strval($argument))
-                ->withCode('%value%', implode(',', $accept))
-        );
-    }
-    $minimum = $parameter->minimum();
-    if ($argument < $minimum) {
-        throw new InvalidArgumentException(
-            message('Argument value provided %provided% is less than %minimum%')
-                ->withCode('%provided%', strval($argument))
-                ->withCode('%minimum%', strval($minimum))
-        );
-    }
-    $maximum = $parameter->maximum();
-    if ($argument > $maximum) {
-        throw new InvalidArgumentException(
-            message('Argument value provided %provided% is greater than %maximum%')
-                ->withCode('%provided%', strval($argument))
-                ->withCode('%maximum%', strval($maximum))
-        );
-    }
-
-    return $argument;
-}
-
-function assertInteger(
-    IntegerParameterInterface $parameter,
-    int $argument,
-): int {
-    assertNumeric($parameter, $argument);
-
-    return $argument;
-}
-
-function assertFloat(
-    FloatParameterInterface $parameter,
-    float $argument
-): float {
-    assertNumeric($parameter, $argument);
-
-    return $argument;
-}
-
 function assertNull(NullParameterInterface $parameter, mixed $argument): mixed
 {
     if ($argument === null) {
@@ -354,81 +110,6 @@ function assertObject(
         message('Argument value provided is not of type %type%')
             ->withCode('%type%', $parameter->className())
     );
-}
-
-/**
- * @param array<int|string, mixed> $argument
- * @return array<int|string, mixed> Asserted array, with fixed optional values.
- */
-function assertArray(
-    ArrayParameterInterface $parameter,
-    array $argument,
-): array {
-    return arguments($parameter->parameters(), $argument)->toArray();
-}
-
-/**
- * @param array<int|string, mixed> $argument
- * @return array<string, mixed> Asserted file.
- */
-function assertFile(
-    FileParameterInterface $parameter,
-    array $argument,
-): array {
-    /** @var array<string, mixed> */
-    return arguments($parameter->parameters(), $argument)->toArray();
-}
-
-function assertNotEmpty(ParameterInterface $expected, mixed $value): void
-{
-    if ($expected instanceof ArrayTypeParameterInterface
-        && empty($value)
-        && $expected->parameters()->requiredKeys() !== []
-    ) {
-        throw new InvalidArgumentException(
-            message('Argument value provided is empty')
-        );
-    }
-}
-
-/**
- * @param iterable<mixed, mixed> $argument
- * @return iterable<mixed, mixed>
- */
-function assertGeneric(
-    GenericParameterInterface $parameter,
-    iterable $argument,
-): iterable {
-    $generic = ' *generic';
-    $genericKey = '_K' . $generic;
-    $genericValue = '_V' . $generic;
-    $expected = $parameter->value();
-    assertNotEmpty($expected, $argument);
-
-    try {
-        foreach ($argument as $key => $value) {
-            assertNamedArgument($genericKey, $parameter->key(), $key);
-            assertNamedArgument($genericValue, $parameter->value(), $value);
-        }
-    } catch (Throwable $e) {
-        throw new InvalidArgumentException(
-            getThrowableArrayErrorMessage($e->getMessage())
-        );
-    }
-
-    return $argument;
-}
-
-function getThrowableArrayErrorMessage(string $message): MessageInterface
-{
-    $strstr = strstr($message, ':', false);
-    if (! is_string($strstr)) {
-        $strstr = $message; // @codeCoverageIgnore
-    } else {
-        $strstr = substr($strstr, 2);
-    }
-
-    return message($strstr);
 }
 
 function assertUnion(
@@ -480,7 +161,9 @@ function assertNamedArgument(
 function assertArgument(ParameterInterface $parameter, mixed $argument): mixed
 {
     return match (true) {
-        $parameter instanceof ArrayParameterInterface
+        $parameter instanceof ArrayParameterInterface,
+        $parameter instanceof ArrayStringParameterInterface,
+        $parameter instanceof FileParameterInterface
         // @phpstan-ignore-next-line
         => assertArray($parameter, $argument),
         $parameter instanceof BooleanParameterInterface

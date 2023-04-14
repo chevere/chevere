@@ -15,6 +15,7 @@ namespace Chevere\Action\Interfaces;
 
 use Chevere\Common\Interfaces\DescribedInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use Chevere\Parameter\Interfaces\ParametersAccessInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Psr\Container\ContainerInterface;
@@ -25,7 +26,7 @@ use Psr\Container\ContainerInterface;
  * @method array<string, mixed> run() Defines the action run
  * logic.
  */
-interface ActionInterface extends DescribedInterface
+interface ActionInterface extends ParametersAccessInterface, DescribedInterface
 {
     /**
      * Determines if action is strict or not.
@@ -57,11 +58,6 @@ interface ActionInterface extends DescribedInterface
      * Defines expected response data parameters when executing `run` method.
      */
     public function acceptResponse(): ArrayTypeParameterInterface;
-
-    /**
-     * Provides access to the parameters.
-     */
-    public function parameters(): ParametersInterface;
 
     /**
      * Retrieves a new response instance typed against the defined response data parameters.

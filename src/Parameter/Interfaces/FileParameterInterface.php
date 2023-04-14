@@ -19,11 +19,6 @@ namespace Chevere\Parameter\Interfaces;
 interface FileParameterInterface extends ArrayTypeParameterInterface
 {
     /**
-     * Provides access to the parameters.
-     */
-    public function parameters(): ParametersInterface;
-
-    /**
      * Provides access to the default value (if any).
      *
      * @return array<string, mixed>

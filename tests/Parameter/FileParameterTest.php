@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\FileParameter;
-use function Chevere\Parameter\integerp;
-use function Chevere\Parameter\stringp;
+use function Chevere\Parameter\integer;
+use function Chevere\Parameter\string;
 use PHPUnit\Framework\TestCase;
 
 final class FileParameterTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $name = stringp();
-        $size = integerp();
-        $type = stringp();
-        $tmp_name = stringp();
+        $name = string();
+        $size = integer();
+        $type = string();
+        $tmp_name = string();
         $description = '';
         $default = [
             'error' => UPLOAD_ERR_NO_FILE,

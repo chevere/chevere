@@ -15,14 +15,14 @@ namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertInteger;
-use function Chevere\Parameter\integerp;
+use function Chevere\Parameter\integer;
 use PHPUnit\Framework\TestCase;
 
 final class FunctionsIntegerTest extends TestCase
 {
     public function testIntegerp(): void
     {
-        $parameter = integerp();
+        $parameter = integer();
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
         $this->assertSame(PHP_INT_MIN, $parameter->minimum());
@@ -34,7 +34,7 @@ final class FunctionsIntegerTest extends TestCase
     {
         $description = 'test';
         $default = 5;
-        $parameter = integerp(
+        $parameter = integer(
             description: $description,
             default: $default,
             minimum: -100,
@@ -44,13 +44,13 @@ final class FunctionsIntegerTest extends TestCase
         $this->assertSame($default, $parameter->default());
         $this->assertSame(-100, $parameter->minimum());
         $this->assertSame(100, $parameter->maximum());
-        $parameter = integerp(accept: [0, 1]);
+        $parameter = integer(accept: [0, 1]);
         $this->assertSame([0, 1], $parameter->accept());
     }
 
     public function testAssertInteger(): void
     {
-        $parameter = integerp();
+        $parameter = integer();
         $this->assertSame(0, assertInteger($parameter, 0));
         $this->assertSame(0, assertArgument($parameter, 0));
     }

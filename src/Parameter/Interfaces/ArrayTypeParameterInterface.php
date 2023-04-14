@@ -17,7 +17,7 @@ namespace Chevere\Parameter\Interfaces;
  * Describes the component in charge of defining an array type parameter to be
  * used as a base for other array-like parameters.
  */
-interface ArrayTypeParameterInterface extends ParameterInterface
+interface ArrayTypeParameterInterface extends ParameterInterface, ParametersAccessInterface
 {
     /**
      * Provides access to the default value (if any).
@@ -25,9 +25,4 @@ interface ArrayTypeParameterInterface extends ParameterInterface
      * @return array<mixed, mixed>
      */
     public function default(): ?array;
-
-    /**
-     * Provides access to the parameters.
-     */
-    public function parameters(): ParametersInterface;
 }

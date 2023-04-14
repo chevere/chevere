@@ -15,6 +15,7 @@ namespace Chevere\HttpController\Interfaces;
 
 use Chevere\Controller\Interfaces\ControllerInterface;
 use Chevere\Http\Interfaces\MiddlewaresInterface;
+use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 
 /**
@@ -29,7 +30,7 @@ interface HttpControllerInterface extends ControllerInterface
     /**
      * Defines the query accepted.
      */
-    public function acceptQuery(): ArrayTypeParameterInterface;
+    public function acceptQuery(): ArrayStringParameterInterface;
 
     /**
      * Defines the body accepted.
@@ -47,7 +48,7 @@ interface HttpControllerInterface extends ControllerInterface
     public function withQuery(array $query): static;
 
     /**
-     * @param array<int|string, string> $body
+     * @param array<int|string, mixed> $body
      */
     public function withBody(array $body): static;
 
@@ -75,7 +76,7 @@ interface HttpControllerInterface extends ControllerInterface
     public function query(): array;
 
     /**
-     * @return array<int|string, string>
+     * @return array<int|string, mixed>
      */
     public function body(): array;
 

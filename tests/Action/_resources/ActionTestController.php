@@ -17,13 +17,13 @@ use Chevere\Attribute\StringAttribute;
 use Chevere\Controller\Controller;
 use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
-use function Chevere\Parameter\stringp;
+use function Chevere\Parameter\string;
 
 final class ActionTestController extends Controller
 {
     public function acceptResponse(): ArrayTypeParameterInterface
     {
-        return arrayp(user: stringp());
+        return arrayp(user: string());
     }
 
     public function run(

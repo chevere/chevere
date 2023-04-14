@@ -15,10 +15,10 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\assertGeneric;
-use function Chevere\Parameter\genericp;
-use function Chevere\Parameter\integerp;
+use function Chevere\Parameter\generic;
+use function Chevere\Parameter\integer;
 use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\stringp;
+use function Chevere\Parameter\string;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -76,9 +76,9 @@ final class ArgumentsGenericTest extends TestCase
     public function testGeneric(array $args): void
     {
         $parameters = parameters(
-            top: genericp(
-                K: integerp(),
-                V: stringp()
+            top: generic(
+                K: integer(),
+                V: string()
             )
         );
         $this->expectNotToPerformAssertions();
@@ -91,9 +91,9 @@ final class ArgumentsGenericTest extends TestCase
     public function testGenericConflict(array $args): void
     {
         $parameters = parameters(
-            top: genericp(
-                K: integerp(),
-                V: stringp('/^one$/')
+            top: generic(
+                K: integer(),
+                V: string('/^one$/')
             )
         );
         $this->expectException(InvalidArgumentException::class);
@@ -108,11 +108,11 @@ final class ArgumentsGenericTest extends TestCase
     public function testNestedGeneric(array $args): void
     {
         $parameters = parameters(
-            nested: genericp(
-                K: integerp(),
-                V: genericp(
-                    K: stringp(),
-                    V: integerp()
+            nested: generic(
+                K: integer(),
+                V: generic(
+                    K: string(),
+                    V: integer()
                 )
             )
         );
@@ -126,11 +126,11 @@ final class ArgumentsGenericTest extends TestCase
     public function testNestedGenericConflict(array $args): void
     {
         $parameters = parameters(
-            nested: genericp(
-                K: integerp(),
-                V: genericp(
-                    K: stringp(),
-                    V: stringp()
+            nested: generic(
+                K: integer(),
+                V: generic(
+                    K: string(),
+                    V: string()
                 )
             )
         );
@@ -144,9 +144,9 @@ final class ArgumentsGenericTest extends TestCase
      */
     public function testGenericArguments(array $args): void
     {
-        $parameter = genericp(
-            V: stringp(),
-            K: stringp()
+        $parameter = generic(
+            V: string(),
+            K: string()
         );
         $this->expectNotToPerformAssertions();
         assertGeneric($parameter, $args);
@@ -157,9 +157,9 @@ final class ArgumentsGenericTest extends TestCase
      */
     public function testGenericArgumentsConflict(array $args): void
     {
-        $parameter = genericp(
-            V: integerp(),
-            K: stringp()
+        $parameter = generic(
+            V: integer(),
+            K: string()
         );
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessageMatches('/^\[Property _V \*generic\]\:.*/');

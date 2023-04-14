@@ -20,7 +20,7 @@ use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\ObjectParameter;
 use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\stringp;
+use function Chevere\Parameter\string;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
@@ -33,7 +33,7 @@ final class ArgumentsTest extends TestCase
 {
     public function testInvalidArgument(): void
     {
-        $parameters = parameters(test: stringp());
+        $parameters = parameters(test: string());
         $this->assertTrue($parameters->isRequired('test'));
         $this->assertFalse($parameters->isOptional('test'));
         $this->expectException(InvalidArgumentException::class);
@@ -50,7 +50,7 @@ final class ArgumentsTest extends TestCase
         ];
         $parameters = parameters(
             id: new IntegerParameter(),
-            name: stringp()
+            name: string()
         );
         $arguments = new Arguments($parameters, $args);
         $this->assertSame($parameters, $arguments->parameters());
@@ -67,14 +67,14 @@ final class ArgumentsTest extends TestCase
 
     public function testMissingArgument(): void
     {
-        $parameters = parameters(test: stringp());
+        $parameters = parameters(test: string());
         $this->expectException(ArgumentCountError::class);
         new Arguments($parameters, []);
     }
 
     public function testExtraArguments(): void
     {
-        $parameters = parameters(test: stringp());
+        $parameters = parameters(test: string());
         $this->expectException(ArgumentCountError::class);
         new Arguments($parameters, [
             'test' => '123',
@@ -84,7 +84,7 @@ final class ArgumentsTest extends TestCase
 
     public function testInvalidArgumentType(): void
     {
-        $parameters = parameters(test: stringp());
+        $parameters = parameters(test: string());
         $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, [
             'test' => 123,
@@ -94,7 +94,7 @@ final class ArgumentsTest extends TestCase
     public function testInvalidRegexArgument(): void
     {
         $parameters = parameters(
-            id: stringp()
+            id: string()
                 ->withRegex(new Regex('/^[0-9]+$/')),
         );
         $this->expectException(InvalidArgumentException::class);
@@ -106,7 +106,7 @@ final class ArgumentsTest extends TestCase
     public function testWithMissingArgument(): void
     {
         $name = 'test';
-        $parameters = parameters(test: stringp());
+        $parameters = parameters(test: string());
         $arguments = new Arguments($parameters, [
             $name => '123',
         ]);
@@ -121,7 +121,7 @@ final class ArgumentsTest extends TestCase
         $valueAlt = '321';
         $arguments = new Arguments(
             parameters(
-                id: stringp()
+                id: string()
                     ->withRegex(new Regex('/^[0-9]+$/'))
             ),
             [
@@ -148,7 +148,7 @@ final class ArgumentsTest extends TestCase
         $valueAlt = '321';
         $arguments = new Arguments(
             parameters(
-                id: stringp()
+                id: string()
             ),
             [
                 $name => $value,
@@ -164,7 +164,7 @@ final class ArgumentsTest extends TestCase
     {
         $arguments = new Arguments(
             parameters(
-                id: stringp()
+                id: string()
             ),
             [
                 'id' => '123',
@@ -177,7 +177,7 @@ final class ArgumentsTest extends TestCase
     public function testArgumentsRequiredException(): void
     {
         $parameters = parameters(
-            id: stringp()
+            id: string()
                 ->withRegex(new Regex('/^[0-9]+$/'))
         );
         $this->expectException(ArgumentCountError::class);
@@ -186,12 +186,12 @@ final class ArgumentsTest extends TestCase
 
     public function testParameterOptional(): void
     {
-        $parameters = parameters(id: stringp())
+        $parameters = parameters(id: string())
             ->withAddedOptional(
-                opt: stringp(),
-                alt: stringp()
+                opt: string(),
+                alt: string()
             )
-            ->withAddedRequired(name: stringp());
+            ->withAddedRequired(name: string());
         $arguments = new Arguments(
             $parameters,
             [
@@ -228,10 +228,10 @@ final class ArgumentsTest extends TestCase
         $optional = 'name';
         $requiredValue = '123';
         $optionalDefault = 'a';
-        $parameters = (parameters(id: stringp()))
+        $parameters = (parameters(id: string()))
             ->withAddedOptional(
                 ...[
-                    $optional => stringp()
+                    $optional => string()
                         ->withRegex(new Regex('/^a|b$/'))
                         ->withDefault($optionalDefault),
                 ]
@@ -261,10 +261,10 @@ final class ArgumentsTest extends TestCase
         $optionalDefault = 'a';
         $optionalNameValue = 'b';
         $optionalObject = 'object';
-        $parameters = (parameters(id: stringp()))
+        $parameters = (parameters(id: string()))
             ->withAddedOptional(
                 ...[
-                    $optionalName => stringp()
+                    $optionalName => string()
                         ->withRegex(new Regex('/^a|b$/'))
                         ->withDefault($optionalDefault),
                     $optionalObject => new ObjectParameter(),
@@ -307,7 +307,7 @@ final class ArgumentsTest extends TestCase
         $name = 'test';
         $var = 'string';
         $arguments = new Arguments(
-            parameters(test: stringp()),
+            parameters(test: string()),
             [
                 $name => $var,
             ]
@@ -357,9 +357,9 @@ final class ArgumentsTest extends TestCase
         ];
         $parameters = parameters(
             test: arrayp(
-                a: stringp('/^A$/'),
-                b: stringp('/^B$/'),
-                c: stringp('/^C$/'),
+                a: string('/^A$/'),
+                b: string('/^B$/'),
+                c: string('/^C$/'),
             )
         );
         $arguments = new Arguments(

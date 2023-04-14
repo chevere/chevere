@@ -17,11 +17,11 @@ use Chevere\Parameter\ArrayParameter;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FileParameter;
 use Chevere\Parameter\FloatParameter;
-use function Chevere\Parameter\integerp;
+use function Chevere\Parameter\integer;
 use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
-use function Chevere\Parameter\stringp;
+use function Chevere\Parameter\string;
 use Chevere\Parameter\StringParameter;
 use Chevere\Throwable\Exceptions\OverflowException;
 use OutOfBoundsException;
@@ -72,9 +72,9 @@ final class ParametersTest extends TestCase
     public function testConstructPositional(): void
     {
         $parameters = new Parameters(
-            stringp(),
-            integerp(),
-            integerp(),
+            string(),
+            integer(),
+            integer(),
         );
         $this->assertCount(3, $parameters);
     }
@@ -107,14 +107,14 @@ final class ParametersTest extends TestCase
     {
         $parameters = (new Parameters())
             ->withAddedRequired(
-                a: stringp(),
-                b: stringp(),
-                c: stringp(),
+                a: string(),
+                b: string(),
+                c: string(),
             )
             ->withAddedOptional(
-                x: stringp(),
-                y: stringp(),
-                z: stringp(),
+                x: string(),
+                y: string(),
+                z: string(),
             );
         $parametersWith = $parameters->without('a', 'y');
         $this->assertNotSame($parameters, $parametersWith);

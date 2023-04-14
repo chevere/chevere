@@ -21,7 +21,10 @@ use Chevere\HttpController\Traits\StatusInternalServerErrorTrait;
 use Chevere\HttpController\Traits\StatusOkTrait;
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\arrayp;
-use function Chevere\Parameter\assertArgument;
+use function Chevere\Parameter\arraypString;
+use function Chevere\Parameter\assertArray;
+use function Chevere\Parameter\assertArrayString;
+use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 
@@ -36,7 +39,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
     protected array $query = [];
 
     /**
-     * @var array<int|string, string>
+     * @var array<int|string, mixed>
      */
     protected array $body = [];
 
@@ -47,9 +50,9 @@ abstract class HttpController extends Controller implements HttpControllerInterf
 
     protected MiddlewaresInterface $middlewares;
 
-    public function acceptQuery(): ArrayTypeParameterInterface
+    public function acceptQuery(): ArrayStringParameterInterface
     {
-        return arrayp();
+        return arraypString();
     }
 
     public function acceptBody(): ArrayTypeParameterInterface
@@ -73,8 +76,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
     final public function withQuery(array $query): static
     {
         $new = clone $this;
-        assertArgument($new->acceptQuery(), $query);
-        $new->query = $query;
+        $new->query = assertArrayString($new->acceptQuery(), $query);
 
         return $new;
     }
@@ -82,8 +84,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
     final public function withBody(array $body): static
     {
         $new = clone $this;
-        assertArgument($new->acceptBody(), $body);
-        $new->body = $body;
+        $new->body = assertArray($new->acceptBody(), $body);
 
         return $new;
     }

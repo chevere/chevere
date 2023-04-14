@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\assertFile;
-use function Chevere\Parameter\filep;
+use function Chevere\Parameter\file;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +22,7 @@ final class FunctionsFileTest extends TestCase
 {
     public function testArrayEmpty(): void
     {
-        $parameter = filep();
+        $parameter = file();
         $array = [
             'error' => 0,
             'name' => 'test.txt',

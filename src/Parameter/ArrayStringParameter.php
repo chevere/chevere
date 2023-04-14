@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Parameter\Interfaces\ArrayParameterInterface;
-use Chevere\Parameter\Interfaces\ParameterInterface;
+use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
+use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ArrayTypeParameterTrait;
 use Chevere\Parameter\Traits\ParameterAssertArrayTypeTrait;
 use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 
-final class ArrayParameter implements ArrayParameterInterface
+final class ArrayStringParameter implements ArrayStringParameterInterface
 {
     use ArrayParameterTrait;
     use ArrayTypeParameterTrait;
@@ -30,7 +30,7 @@ final class ArrayParameter implements ArrayParameterInterface
     use ParameterTrait;
 
     /**
-     * @var array<mixed, mixed>
+     * @var array<mixed, string>
      */
     private ?array $default;
 
@@ -39,7 +39,7 @@ final class ArrayParameter implements ArrayParameterInterface
         $this->parameters = new Parameters();
     }
 
-    public function withRequired(ParameterInterface ...$parameter): static
+    public function withRequired(StringParameterInterface ...$parameter): static
     {
         $new = clone $this;
         $new->put('withAddedRequired', ...$parameter);
@@ -47,7 +47,7 @@ final class ArrayParameter implements ArrayParameterInterface
         return $new;
     }
 
-    public function withOptional(ParameterInterface ...$parameter): static
+    public function withOptional(StringParameterInterface ...$parameter): static
     {
         $new = clone $this;
         $new->put('withAddedOptional', ...$parameter);
@@ -55,7 +55,7 @@ final class ArrayParameter implements ArrayParameterInterface
         return $new;
     }
 
-    public function assertCompatible(ArrayParameterInterface $parameter): void
+    public function assertCompatible(ArrayStringParameterInterface $parameter): void
     {
         $this->assertArrayType($parameter);
     }
