@@ -367,6 +367,18 @@ function assertArray(
     return arguments($parameter->parameters(), $argument)->toArray();
 }
 
+/**
+ * @param array<int|string, mixed> $argument
+ * @return array<string, mixed> Asserted file.
+ */
+function assertFile(
+    FileParameterInterface $parameter,
+    array $argument,
+): array {
+    /** @var array<string, mixed> */
+    return arguments($parameter->parameters(), $argument)->toArray();
+}
+
 function assertNotEmpty(ParameterInterface $expected, mixed $value): void
 {
     if ($expected instanceof ArrayTypeParameterInterface
