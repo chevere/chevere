@@ -17,6 +17,7 @@ use Chevere\DataStructure\Interfaces\MappedInterface;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use Iterator;
+use TypeError;
 
 /**
  * Describes the component in charge of collecting objects implementing `ParameterInterface`.
@@ -83,11 +84,6 @@ interface ParametersInterface extends MappedInterface
     public function isOptional(string ...$name): bool;
 
     /**
-     * @throws OutOfBoundsException
-     */
-    public function get(string $name): ParameterInterface;
-
-    /**
      * @return array<string>
      */
     public function requiredKeys(): array;
@@ -96,4 +92,51 @@ interface ParametersInterface extends MappedInterface
      * @return array<string>
      */
     public function optionalKeys(): array;
+
+    /**
+     * @throws OutOfBoundsException
+     */
+    public function get(string $name): ParameterInterface;
+
+    /**
+     * @throws OutOfBoundsException
+     * @throws TypeError
+     */
+    public function getArray(string $name): ArrayParameterInterface;
+
+    /**
+     * @throws OutOfBoundsException
+     * @throws TypeError
+     */
+    public function getBoolean(string $name): BooleanParameterInterface;
+
+    /**
+     * @throws OutOfBoundsException
+     * @throws TypeError
+     */
+    public function getFile(string $name): FileParameterInterface;
+
+    /**
+     * @throws OutOfBoundsException
+     * @throws TypeError
+     */
+    public function getFloat(string $name): FloatParameterInterface;
+
+    /**
+     * @throws OutOfBoundsException
+     * @throws TypeError
+     */
+    public function getInteger(string $name): IntegerParameterInterface;
+
+    /**
+     * @throws OutOfBoundsException
+     * @throws TypeError
+     */
+    public function getObject(string $name): ObjectParameterInterface;
+
+    /**
+     * @throws OutOfBoundsException
+     * @throws TypeError
+     */
+    public function getString(string $name): StringParameterInterface;
 }

@@ -17,6 +17,7 @@ use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Traits\ParametersGetTypedTrait;
 use Chevere\Parameter\Traits\ParametersTrait;
 
 final class Parameters implements ParametersInterface
@@ -27,6 +28,7 @@ final class Parameters implements ParametersInterface
     use MapTrait;
 
     use ParametersTrait;
+    use ParametersGetTypedTrait;
 
     /**
      * @param ParameterInterface $parameter Required parameters

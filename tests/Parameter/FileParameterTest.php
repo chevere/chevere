@@ -47,19 +47,19 @@ final class FileParameterTest extends TestCase
         );
         $this->assertSame(
             [0],
-            $parameter->parameters()->get('error')->accept()
+            $parameter->parameters()->getInteger('error')->accept()
         );
         $this->assertSame(
             $name,
-            $parameter->parameters()->get('name')
+            $parameter->parameters()->getString('name')
         );
         $this->assertSame(
             $size,
-            $parameter->parameters()->get('size')
+            $parameter->parameters()->getInteger('size')
         );
         $this->assertSame(
             $type,
-            $parameter->parameters()->get('type')
+            $parameter->parameters()->getString('type')
         );
     }
 }
