@@ -47,7 +47,7 @@ function arrayString(
 }
 
 function file(
-    string $description = '',
+    ?string $description = null,
     ?StringParameterInterface $name = null,
     ?StringParameterInterface $type = null,
     ?StringParameterInterface $tmp_name = null,
@@ -69,7 +69,7 @@ function file(
 function generic(
     ParameterInterface $V,
     ?ParameterInterface $K = null,
-    string $description = '',
+    ?string $description = null,
 ): GenericParameterInterface {
     if ($K === null) {
         $K = integer();

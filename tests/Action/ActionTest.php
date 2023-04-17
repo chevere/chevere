@@ -44,7 +44,6 @@ use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 final class ActionTest extends TestCase
 {
@@ -70,7 +69,7 @@ final class ActionTest extends TestCase
             'boolDefault' => false,
             'floatDefault' => 0.0,
             'arrayDefault' => [],
-            'objectDefault' => new stdClass(),
+            'objectDefault' => null,
         ];
         $types = [
             'int' => IntegerParameterInterface::class,

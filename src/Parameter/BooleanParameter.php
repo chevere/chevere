@@ -15,12 +15,14 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
+use Chevere\Parameter\Traits\SchemaTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeBoolean;
 
 final class BooleanParameter implements BooleanParameterInterface
 {
     use ParameterTrait;
+    use SchemaTrait;
 
     private ?bool $default;
 

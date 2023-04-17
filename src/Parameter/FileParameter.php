@@ -36,16 +36,25 @@ final class FileParameter implements FileParameterInterface
         StringParameterInterface $type,
         StringParameterInterface $tmp_name,
         IntegerParameterInterface $size,
-        private string $description = '',
+        private ?string $description = null,
     ) {
         $this->type = $this->type();
         $this->parameters = parameters(
-            error: integer()->withAccept(UPLOAD_ERR_OK),
+            error: integer(accept: [UPLOAD_ERR_OK]),
             name: $name,
             size: $size,
             tmp_name: $tmp_name,
             type: $type,
         );
+    }
+
+    public function schema(): array
+    {
+        return [
+            'type' => $this->type->primitive(),
+            'description' => $this->description,
+            'default' => $this->default,
+        ];
     }
 
     /**

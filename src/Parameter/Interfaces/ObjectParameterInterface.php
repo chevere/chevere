@@ -22,5 +22,7 @@ interface ObjectParameterInterface extends ParameterInterface
 
     public function withClassName(string $className): self;
 
+    public function withDefault(object $default): self;
+
     public function assertCompatible(self $parameter): void;
 }

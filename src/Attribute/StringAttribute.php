@@ -28,7 +28,7 @@ class StringAttribute
 
     public function __construct(
         string $regex = StringParameterInterface::REGEX_DEFAULT,
-        private string $description = '',
+        private ?string $description = null,
     ) {
         $this->regex = new Regex($regex);
     }

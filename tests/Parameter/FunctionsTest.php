@@ -61,7 +61,7 @@ final class FunctionsTest extends TestCase
     public function testArrayParameter(): void
     {
         $parameter = arrayp();
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(null, $parameter->default());
         assertArgument($parameter, []);
     }
@@ -70,7 +70,7 @@ final class FunctionsTest extends TestCase
     {
         $parameter = boolean();
         assertArgument($parameter, true);
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(false, $parameter->default());
         $parameter = boolean(
             description: 'name',
@@ -86,7 +86,7 @@ final class FunctionsTest extends TestCase
     {
         $parameter = null();
         assertArgument($parameter, null);
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(null, $parameter->default());
         $this->expectException(TypeError::class);
         assertArgument($parameter, 1);
@@ -96,7 +96,7 @@ final class FunctionsTest extends TestCase
     {
         $parameter = integer();
         assertArgument($parameter, 1);
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(null, $parameter->default());
         $parameter = integer(
             default: 10
@@ -110,7 +110,7 @@ final class FunctionsTest extends TestCase
     {
         $parameter = object(stdClass::class);
         assertArgument($parameter, new stdClass());
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(stdClass::class, $parameter->className());
         $parameter = object(stdClass::class, 'foo');
         $this->assertSame('foo', $parameter->description());
@@ -202,7 +202,7 @@ final class FunctionsTest extends TestCase
         $parameter = generic(
             V: string()
         );
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $parameter = generic(
             K: string(),
             V: string(),

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Common\Interfaces;
 
 /**
- * Describes the component in charge of providing an interface for its description.
+ * Describes the component in charge of providing an interface for access to description.
  */
 interface DescribedInterface
 {
     /**
      * Provides access to the description.
      */
-    public function description(): string;
+    public function description(): ?string;
 }

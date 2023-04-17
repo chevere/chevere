@@ -87,6 +87,22 @@ final class FloatParameter implements FloatParameterInterface
         return $this->accept;
     }
 
+    public function schema(): array
+    {
+        return [
+            'type' => $this->type->primitive(),
+            'description' => $this->description(),
+            'default' => $this->default(),
+            'minimum' => $this->minimum() === -PHP_FLOAT_MIN
+                ? null
+                : $this->minimum(),
+            'maximum' => $this->maximum() === PHP_FLOAT_MAX
+                ? null
+                : $this->maximum(),
+            'accept' => $this->accept(),
+        ];
+    }
+
     public function assertCompatible(FloatParameterInterface $parameter): void
     {
         $this->assertNumericCompatible($parameter);

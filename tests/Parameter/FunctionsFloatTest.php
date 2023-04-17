@@ -20,17 +20,17 @@ use PHPUnit\Framework\TestCase;
 
 final class FunctionsFloatTest extends TestCase
 {
-    public function testFloatp(): void
+    public function testFloat(): void
     {
         $parameter = float();
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(null, $parameter->default());
         $this->assertSame(-PHP_FLOAT_MIN, $parameter->minimum());
         $this->assertSame(PHP_FLOAT_MAX, $parameter->maximum());
         $this->assertSame([], $parameter->accept());
     }
 
-    public function testFloatpOptions(): void
+    public function testFloatOptions(): void
     {
         $description = 'test';
         $default = 5.0;

@@ -30,5 +30,10 @@ final class BooleanParameterTest extends TestCase
             default: $default,
             parameterWithDefault: $parameterWithDefault
         );
+        $this->assertSame([
+            'type' => 'boolean',
+            'description' => null,
+            'default' => $default,
+        ], $parameterWithDefault->schema());
     }
 }

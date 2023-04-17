@@ -23,7 +23,7 @@ final class FunctionsIntegerTest extends TestCase
     public function testIntegerp(): void
     {
         $parameter = integer();
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(null, $parameter->default());
         $this->assertSame(PHP_INT_MIN, $parameter->minimum());
         $this->assertSame(PHP_INT_MAX, $parameter->maximum());

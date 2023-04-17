@@ -33,7 +33,7 @@ final class GenericParameter implements GenericParameterInterface
     final public function __construct(
         private ParameterInterface $value,
         private ParameterInterface $key,
-        private string $description = ''
+        private ?string $description = null
     ) {
         $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();
@@ -51,6 +51,15 @@ final class GenericParameter implements GenericParameterInterface
     public function value(): ParameterInterface
     {
         return $this->value;
+    }
+
+    public function schema(): array
+    {
+        return [
+            'type' => $this->type->primitive(),
+            'description' => $this->description,
+            'default' => $this->default,
+        ];
     }
 
     public function assertCompatible(GenericParameterInterface $parameter): void

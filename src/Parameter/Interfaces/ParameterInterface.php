@@ -36,4 +36,9 @@ interface ParameterInterface extends DescribedInterface
      * Provides access to the default value.
      */
     public function default(): mixed;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function schema(): array;
 }

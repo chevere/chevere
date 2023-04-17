@@ -87,6 +87,22 @@ final class IntegerParameter implements IntegerParameterInterface
         return $this->accept;
     }
 
+    public function schema(): array
+    {
+        return [
+            'type' => $this->type()->primitive(),
+            'description' => $this->description(),
+            'default' => $this->default(),
+            'minimum' => $this->minimum() === PHP_INT_MIN
+                ? null
+                : $this->minimum(),
+            'maximum' => $this->maximum() === PHP_INT_MAX
+                ? null
+                : $this->maximum(),
+            'accept' => $this->accept(),
+        ];
+    }
+
     public function assertCompatible(IntegerParameterInterface $parameter): void
     {
         $this->assertNumericCompatible($parameter);

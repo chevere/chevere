@@ -55,6 +55,22 @@ final class ArrayStringParameter implements ArrayStringParameterInterface
         return $new;
     }
 
+    public function schema(): array
+    {
+        $items = [];
+        foreach ($this->parameters as $name => $parameter) {
+            $items[$name] = $parameter->schema();
+            $items[$name]['isRequired'] = $this->parameters->isRequired($name);
+        }
+
+        return [
+            'type' => $this->type->primitive(),
+            'description' => $this->description,
+            'default' => $this->default,
+            'items' => $items,
+        ];
+    }
+
     public function assertCompatible(ArrayStringParameterInterface $parameter): void
     {
         $this->assertArrayType($parameter);

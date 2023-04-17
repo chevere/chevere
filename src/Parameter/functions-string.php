@@ -20,7 +20,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 
 function string(
     string $regex = '',
-    string $description = '',
+    ?string $description = null,
     ?string $default = null,
 ): StringParameterInterface {
     $parameter = new StringParameter($description);
@@ -46,7 +46,7 @@ function enum(string ...$string): StringParameterInterface
  * Parameter for `YYYY-MM-DD` strings.
  */
 function date(
-    string $description = '',
+    ?string $description = null,
     ?string $default = null
 ): StringParameterInterface {
     $regex = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/';
@@ -58,7 +58,7 @@ function date(
  * Parameter for `hh:mm:ss` strings.
  */
 function time(
-    string $description = '',
+    ?string $description = null,
     ?string $default = null
 ): StringParameterInterface {
     $regex = '/^\d{2,3}:[0-5][0-9]:[0-5][0-9]$/';
@@ -70,7 +70,7 @@ function time(
  * Parameter for `YYYY-MM-DD hh:mm:ss` strings.
  */
 function datetime(
-    string $description = '',
+    ?string $description = null,
     ?string $default = null
 ): StringParameterInterface {
     $regex = '/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\s{1}\d{2,3}:[0-5][0-9]:[0-5][0-9]$/';

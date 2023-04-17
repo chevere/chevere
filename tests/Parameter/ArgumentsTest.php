@@ -281,7 +281,6 @@ final class ArgumentsTest extends TestCase
             [
                 $required => $requiredValue,
                 $optionalName => $optionalNameValue,
-                $optionalObject => new stdClass(),
             ],
             $argumentsWithAllValues->toArray()
         );

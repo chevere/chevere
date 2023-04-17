@@ -29,7 +29,7 @@ final class FunctionsStringTest extends TestCase
     public function testStringp(): void
     {
         $parameter = string();
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(null, $parameter->default());
         $this->assertSame('', assertString($parameter, ''));
     }
@@ -44,7 +44,7 @@ final class FunctionsStringTest extends TestCase
     public function testEnump(): void
     {
         $parameter = enum();
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(null, $parameter->default());
         $this->assertSame('', assertString($parameter, ''));
     }
@@ -131,7 +131,7 @@ final class FunctionsStringTest extends TestCase
      */
     public function testFunctionDefaults(ParameterInterface $parameter): void
     {
-        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->description());
         $this->assertSame(null, $parameter->default());
     }
 

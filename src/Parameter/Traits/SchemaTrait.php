@@ -11,12 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Common\Traits;
+namespace Chevere\Parameter\Traits;
 
-trait DescribedTrait
+trait SchemaTrait
 {
-    public function description(): ?string
+    public function schema(): array
     {
-        return $this->description;
+        return [
+            'type' => $this->type->primitive(),
+            'description' => $this->description(),
+            'default' => $this->default(),
+        ];
     }
 }

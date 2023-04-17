@@ -37,6 +37,14 @@ final class IntegerParameterTest extends TestCase
             default: $default,
             parameterWithDefault: $parameterWithDefault
         );
+        $this->assertSame([
+            'type' => 'integer',
+            'description' => null,
+            'default' => $default,
+            'minimum' => null,
+            'maximum' => null,
+            'accept' => [],
+        ], $parameterWithDefault->schema());
     }
 
     public function testWithAccept(): void

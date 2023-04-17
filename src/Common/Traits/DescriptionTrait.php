@@ -13,19 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Common\Traits;
 
-/**
- * @codeCoverageIgnore
- */
 trait DescriptionTrait
 {
-    public function getDescription(): string
+    public function description(): ?string
     {
-        return '';
-    }
-
-    public function description(): string
-    {
-        return $this->description ??= $this->getDescription();
+        return $this->description;
     }
 
     public function withDescription(string $description): static

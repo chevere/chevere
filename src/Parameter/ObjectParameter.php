@@ -16,6 +16,7 @@ namespace Chevere\Parameter;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
+use Chevere\Parameter\Traits\SchemaTrait;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeObject;
@@ -24,15 +25,15 @@ use stdClass;
 final class ObjectParameter implements ObjectParameterInterface
 {
     use ParameterTrait;
+    use SchemaTrait;
 
     private string $className;
 
-    private ?object $default;
+    private ?object $default = null;
 
     public function setUp(): void
     {
         $this->className = stdClass::class;
-        $this->default = new stdClass();
     }
 
     public function className(): string
@@ -49,9 +50,35 @@ final class ObjectParameter implements ObjectParameterInterface
         return $new;
     }
 
+    public function withDefault(object $value): ObjectParameterInterface
+    {
+        if (! $this->type->validate($value)) {
+            throw new InvalidArgumentException(
+                message('Default value must be of type %type%')
+                    ->withCode('%type%', $this->className)
+            );
+        }
+        $new = clone $this;
+        $new->default = $value;
+
+        return $new;
+    }
+
     public function default(): ?object
     {
-        return $this->default ?? null;
+        return $this->default;
+    }
+
+    public function schema(): array
+    {
+        return [
+            'type' => $this->type->primitive(),
+            'className' => $this->className(),
+            'description' => $this->description(),
+            'default' => $this->default() !== null
+                ? $this->default()::class
+                : null,
+        ];
     }
 
     public function assertCompatible(ObjectParameterInterface $parameter): void

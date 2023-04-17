@@ -37,7 +37,7 @@ final class UnionParameter implements UnionParameterInterface
 
     final public function __construct(
         private ParametersInterface $parameters,
-        private string $description = '',
+        private ?string $description = null,
     ) {
         $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();
@@ -56,6 +56,15 @@ final class UnionParameter implements UnionParameterInterface
             ->withAddedRequired(...$parameter);
 
         return $new;
+    }
+
+    public function schema(): array
+    {
+        return [
+            'type' => $this->type->primitive(),
+            'description' => $this->description,
+            'default' => $this->default,
+        ];
     }
 
     public function assertCompatible(UnionParameterInterface $parameter): void
