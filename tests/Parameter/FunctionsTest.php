@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\arguments;
-use function Chevere\Parameter\arrayRequired;
+use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertNamedArgument;
@@ -60,7 +60,7 @@ final class FunctionsTest extends TestCase
 
     public function testArrayParameter(): void
     {
-        $parameter = arrayRequired();
+        $parameter = arrayp();
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
         assertArgument($parameter, []);
@@ -138,7 +138,7 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionArrayParameter(): void
     {
-        $parameter = arrayRequired(
+        $parameter = arrayp(
             one: string(),
             two: integer(default: 222)
         );
@@ -157,11 +157,11 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionArrayParameterNested(): void
     {
-        $parameter = arrayRequired(
-            wea: arrayRequired(
+        $parameter = arrayp(
+            wea: arrayp(
                 one: string(),
                 two: integer(default: 222),
-                nest: arrayRequired(
+                nest: arrayp(
                     one: integer(default: 1),
                     two: integer(default: 2),
                 )
@@ -225,7 +225,7 @@ final class FunctionsTest extends TestCase
 
     public function testAssertArrayExtraArguments(): void
     {
-        $parameter = arrayRequired(
+        $parameter = arrayp(
             OK: string(),
         );
         $this->expectException(ArgumentCountError::class);
@@ -237,7 +237,7 @@ final class FunctionsTest extends TestCase
 
     public function testAssertArrayConflictType(): void
     {
-        $parameter = arrayRequired(
+        $parameter = arrayp(
             OK: string(),
         );
         $this->expectException(InvalidArgumentException::class);
@@ -248,7 +248,7 @@ final class FunctionsTest extends TestCase
 
     public function testAssertArrayConflictNull(): void
     {
-        $parameter = arrayRequired(
+        $parameter = arrayp(
             OK: string(),
         );
         $this->expectException(InvalidArgumentException::class);

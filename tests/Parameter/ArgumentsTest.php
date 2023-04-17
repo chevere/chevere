@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\arrayRequired;
+use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
@@ -356,7 +356,7 @@ final class ArgumentsTest extends TestCase
             'c' => 'C',
         ];
         $parameters = parameters(
-            test: arrayRequired(
+            test: arrayp(
                 a: string('/^A$/'),
                 b: string('/^B$/'),
                 c: string('/^C$/'),

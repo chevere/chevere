@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\arrayRequired;
+use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\integer;
 use function Chevere\Parameter\parameters;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -42,7 +42,7 @@ final class ArgumentsIterableTest extends TestCase
     public function testIterableArguments(array $args): void
     {
         $parameters = parameters(
-            test: arrayRequired(
+            test: arrayp(
                 one: integer(),
                 two: integer(),
             )
@@ -57,7 +57,7 @@ final class ArgumentsIterableTest extends TestCase
     public function testIterableArgumentsConflict(array $args): void
     {
         $parameters = parameters(
-            test: arrayRequired(
+            test: arrayp(
                 one: integer(maximum: 1),
                 two: integer(),
             )

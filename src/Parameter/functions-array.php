@@ -22,75 +22,27 @@ use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Throwable;
 
 function arrayp(
-    ParametersInterface $required = null,
-    ParametersInterface $optional = null,
-): ArrayParameterInterface {
-    $array = new ArrayParameter();
-    if ($required !== null) {
-        $array = $array->withRequired(...iterator_to_array($required));
-    }
-    if ($optional !== null) {
-        $array = $array->withOptional(...iterator_to_array($optional));
-    }
-
-    return $array;
-}
-
-/**
- * @param ParameterInterface ...$parameter Required parameters
- */
-function arrayRequired(
-    ParameterInterface ...$parameter
+    ParameterInterface ...$required
 ): ArrayParameterInterface {
     $array = new ArrayParameter();
 
-    return $parameter
-        ? $array->withRequired(...$parameter)
+    return $required
+        ? $array->withRequired(...$required)
         : $array;
 }
 
-/**
- * @param ParameterInterface ...$parameter Optional parameters
- */
-function arrayOptional(
-    ParameterInterface ...$parameter
-): ArrayParameterInterface {
-    $array = new ArrayParameter();
-
-    return $parameter
-        ? $array->withOptional(...$parameter)
-        : $array;
-}
-
-/**
- * @param StringParameterInterface ...$parameter Required parameters
- */
-function arrayRequiredStrings(
-    StringParameterInterface ...$parameter
+function arrayString(
+    StringParameterInterface ...$required
 ): ArrayStringParameterInterface {
     $array = new ArrayStringParameter();
 
-    return $parameter
-        ? $array->withRequired(...$parameter)
-        : $array;
-}
-
-/**
- * @param StringParameterInterface ...$parameter Optional parameters
- */
-function arrayOptionalStrings(
-    StringParameterInterface ...$parameter
-): ArrayStringParameterInterface {
-    $array = new ArrayStringParameter();
-
-    return $parameter
-        ? $array->withOptional(...$parameter)
+    return $required
+        ? $array->withRequired(...$required)
         : $array;
 }
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
-use function Chevere\Parameter\arrayRequired;
+use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\string;
 
@@ -22,7 +22,7 @@ final class ActionTestRunReturnExtraArguments extends Action
 {
     public function acceptResponse(): ArrayTypeParameterInterface
     {
-        return arrayRequired(
+        return arrayp(
             name: string()
         );
     }

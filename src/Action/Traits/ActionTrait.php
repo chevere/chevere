@@ -16,8 +16,8 @@ namespace Chevere\Action\Traits;
 use Chevere\Attribute\StringAttribute;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
+use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\ArrayParameter;
-use function Chevere\Parameter\arrayRequired;
 use function Chevere\Parameter\assertArgument;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FloatParameter;
@@ -80,7 +80,7 @@ trait ActionTrait
 
     public function acceptResponse(): ArrayTypeParameterInterface
     {
-        return arrayRequired();
+        return arrayp();
     }
 
     final public function withContainer(ContainerInterface $container): static

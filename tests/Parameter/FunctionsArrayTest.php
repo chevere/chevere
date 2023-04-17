@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use function Chevere\Parameter\arrayOptional;
 use function Chevere\Parameter\arrayp;
-use function Chevere\Parameter\arrayRequired;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\integer;
-use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use PHPUnit\Framework\TestCase;
@@ -31,10 +28,7 @@ final class FunctionsArrayTest extends TestCase
         $this->assertCount(0, $parameter->parameters());
         $integer = integer();
         $string = string();
-        $parameter = arrayp(
-            required: parameters(a: $integer),
-            optional: parameters(b: $string),
-        );
+        $parameter = arrayp(a: $integer)->withOptional(b: $string);
         $this->assertCount(2, $parameter->parameters());
         $this->assertSame($integer, $parameter->parameters()->get('a'));
         $this->assertSame($string, $parameter->parameters()->get('b'));
@@ -44,7 +38,7 @@ final class FunctionsArrayTest extends TestCase
 
     public function testArrayRequiredEmpty(): void
     {
-        $parameter = arrayRequired();
+        $parameter = arrayp();
         $this->assertSame([], assertArray($parameter, []));
         $this->expectException(ArgumentCountError::class);
         assertArray($parameter, [[]]);
@@ -52,7 +46,7 @@ final class FunctionsArrayTest extends TestCase
 
     public function testArrayRequired(): void
     {
-        $parameter = arrayRequired(a: integer());
+        $parameter = arrayp(a: integer());
         $array = [
             'a' => 1,
         ];
@@ -63,14 +57,14 @@ final class FunctionsArrayTest extends TestCase
 
     public function testArrayRequiredOptional(): void
     {
-        $parameter = arrayRequired()->withOptional(a: integer());
+        $parameter = arrayp()->withOptional(a: integer());
         $array = [];
         $this->assertSame($array, assertArray($parameter, $array));
     }
 
     public function testArrayDefaults(): void
     {
-        $parameter = arrayRequired(a: integer(default: 10));
+        $parameter = arrayp(a: integer(default: 10));
         $array = [];
         $expected = [
             'a' => 10,
@@ -80,7 +74,7 @@ final class FunctionsArrayTest extends TestCase
 
     public function testArrayOptionalDefaults(): void
     {
-        $parameter = arrayRequired()->withOptional(a: integer(default: 10));
+        $parameter = arrayp()->withOptional(a: integer(default: 10));
         $array = [];
         $expected = [
             'a' => 10,
@@ -90,16 +84,16 @@ final class FunctionsArrayTest extends TestCase
 
     public function testArrayOptional(): void
     {
-        $parameter = arrayOptional();
-        $this->assertEquals(arrayRequired(), $parameter);
-        $parameter = arrayOptional(a: integer());
+        $parameter = arrayp();
+        $this->assertEquals(arrayp(), $parameter);
+        $parameter = arrayp()->withOptional(a: integer());
         $empty = [];
         $expected = [
             'a' => 1,
         ];
         $this->assertSame($empty, assertArray($parameter, $empty));
         $this->assertSame($expected, assertArray($parameter, $expected));
-        $parameter = arrayOptional(a: integer(default: 123));
+        $parameter = arrayp()->withOptional(a: integer(default: 123));
         $expected = [
             'a' => 123,
         ];
