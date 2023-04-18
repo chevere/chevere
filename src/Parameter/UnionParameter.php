@@ -37,7 +37,7 @@ final class UnionParameter implements UnionParameterInterface
 
     final public function __construct(
         private ParametersInterface $parameters,
-        private ?string $description = null,
+        private string $description = '',
     ) {
         $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();

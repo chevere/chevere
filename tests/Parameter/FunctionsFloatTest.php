@@ -23,7 +23,7 @@ final class FunctionsFloatTest extends TestCase
     public function testFloat(): void
     {
         $parameter = float();
-        $this->assertSame(null, $parameter->description());
+        $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
         $this->assertSame(null, $parameter->minimum());
         $this->assertSame(null, $parameter->maximum());

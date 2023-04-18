@@ -22,7 +22,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
  * @param float[] $accept
  */
 function float(
-    ?string $description = null,
+    string $description = '',
     ?float $default = null,
     ?float $minimum = null,
     ?float $maximum = null,
@@ -49,7 +49,7 @@ function float(
  * @param int[] $accept
  */
 function integer(
-    ?string $description = null,
+    string $description = '',
     ?int $default = null,
     ?int $minimum = null,
     ?int $maximum = null,

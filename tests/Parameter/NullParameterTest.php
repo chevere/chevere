@@ -26,7 +26,7 @@ final class NullParameterTest extends TestCase
         $parameter->assertCompatible($compatible);
         $this->assertSame([
             'type' => 'null',
-            'description' => null,
+            'description' => '',
             'default' => null,
         ], $parameter->schema());
     }

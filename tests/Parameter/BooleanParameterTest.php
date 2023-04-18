@@ -32,7 +32,7 @@ final class BooleanParameterTest extends TestCase
         );
         $this->assertSame([
             'type' => 'boolean',
-            'description' => null,
+            'description' => '',
             'default' => $default,
         ], $parameterWithDefault->schema());
     }

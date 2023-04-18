@@ -38,7 +38,7 @@ final class ObjectParameterTest extends TestCase
         $this->assertSame([
             'type' => 'className',
             'className' => stdClass::class,
-            'description' => null,
+            'description' => '',
             'default' => null,
         ], $parameter->schema());
     }
@@ -52,7 +52,7 @@ final class ObjectParameterTest extends TestCase
         $this->assertSame([
             'type' => 'className',
             'className' => __CLASS__,
-            'description' => null,
+            'description' => '',
             'default' => null,
         ], $withClassName->schema());
     }
@@ -66,7 +66,7 @@ final class ObjectParameterTest extends TestCase
         $this->assertSame([
             'type' => 'className',
             'className' => File::class,
-            'description' => null,
+            'description' => '',
             'default' => File::class,
         ], $withDefault->schema());
         $this->expectException(TypeError::class);

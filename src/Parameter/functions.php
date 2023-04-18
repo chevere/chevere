@@ -33,7 +33,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Throwable;
 
 function boolean(
-    ?string $description = null,
+    string $description = '',
     bool $default = false,
 ): BooleanParameterInterface {
     $parameter = new BooleanParameter($description);
@@ -42,14 +42,14 @@ function boolean(
 }
 
 function null(
-    ?string $description = null,
+    string $description = '',
 ): NullParameterInterface {
     return new NullParameter($description);
 }
 
 function object(
     string $className,
-    ?string $description = null,
+    string $description = '',
 ): ObjectParameterInterface {
     $parameter = new ObjectParameter($description);
 

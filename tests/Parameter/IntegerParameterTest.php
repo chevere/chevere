@@ -39,7 +39,7 @@ final class IntegerParameterTest extends TestCase
         );
         $this->assertSame([
             'type' => 'integer',
-            'description' => null,
+            'description' => '',
             'default' => $default,
             'minimum' => null,
             'maximum' => null,

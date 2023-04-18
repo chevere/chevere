@@ -35,7 +35,7 @@ final class GenericParameter implements GenericParameterInterface
     final public function __construct(
         private ParameterInterface $value,
         private ParameterInterface $key,
-        private ?string $description = null
+        private string $description = ''
     ) {
         $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();

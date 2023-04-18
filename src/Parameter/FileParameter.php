@@ -38,7 +38,7 @@ final class FileParameter implements FileParameterInterface
         StringParameterInterface $type,
         StringParameterInterface $tmp_name,
         IntegerParameterInterface $size,
-        private ?string $description = null,
+        private string $description = '',
     ) {
         $this->type = $this->type();
         $this->parameters = parameters(

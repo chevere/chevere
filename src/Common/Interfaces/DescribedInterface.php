@@ -21,5 +21,5 @@ interface DescribedInterface
     /**
      * Provides access to the description.
      */
-    public function description(): ?string;
+    public function description(): string;
 }

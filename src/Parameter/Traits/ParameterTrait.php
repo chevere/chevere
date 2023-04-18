@@ -23,7 +23,7 @@ trait ParameterTrait
     private TypeInterface $type;
 
     final public function __construct(
-        private ?string $description = null
+        private string $description = ''
     ) {
         $this->setUp();
         $this->type = $this->type();
@@ -42,7 +42,7 @@ trait ParameterTrait
         return $this->type ??= $this->getType();
     }
 
-    final public function description(): ?string
+    final public function description(): string
     {
         return $this->description;
     }

@@ -31,7 +31,7 @@ final class ArrayParameterTest extends TestCase
         $this->assertCount(0, $parameter->parameters());
         $this->assertSame([
             'type' => 'array',
-            'description' => null,
+            'description' => '',
             'default' => null,
             'parameters' => [],
         ], $parameter->schema());
@@ -45,7 +45,7 @@ final class ArrayParameterTest extends TestCase
         );
         $this->assertSame([
             'type' => 'array',
-            'description' => null,
+            'description' => '',
             'default' => $default,
             'parameters' => [],
         ], $withDefault->schema());
@@ -73,7 +73,7 @@ final class ArrayParameterTest extends TestCase
         );
         $this->assertSame([
             'type' => 'array',
-            'description' => null,
+            'description' => '',
             'default' => null,
             'parameters' => [
                 'one' => $string->schema() + [

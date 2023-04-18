@@ -37,7 +37,7 @@ final class FloatParameterTest extends TestCase
         );
         $this->assertSame([
             'type' => 'float',
-            'description' => null,
+            'description' => '',
             'default' => $default,
             'minimum' => null,
             'maximum' => null,
