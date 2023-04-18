@@ -26,8 +26,8 @@ final class IntegerParameterTest extends TestCase
     {
         $parameter = new IntegerParameter();
         $this->assertSame(null, $parameter->default());
-        $this->assertSame(PHP_INT_MIN, $parameter->minimum());
-        $this->assertSame(PHP_INT_MAX, $parameter->maximum());
+        $this->assertSame(null, $parameter->minimum());
+        $this->assertSame(null, $parameter->maximum());
         $this->assertSame([], $parameter->accept());
         $default = 1234;
         $parameterWithDefault = $parameter->withDefault($default);

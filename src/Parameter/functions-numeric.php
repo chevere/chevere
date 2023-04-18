@@ -89,7 +89,7 @@ function assertNumeric(
         );
     }
     $minimum = $parameter->minimum();
-    if ($argument < $minimum) {
+    if ($minimum !== null && $argument < $minimum) {
         throw new InvalidArgumentException(
             message('Argument value provided %provided% is less than %minimum%')
                 ->withCode('%provided%', strval($argument))
@@ -97,7 +97,7 @@ function assertNumeric(
         );
     }
     $maximum = $parameter->maximum();
-    if ($argument > $maximum) {
+    if ($maximum !== null && $argument > $maximum) {
         throw new InvalidArgumentException(
             message('Argument value provided %provided% is greater than %maximum%')
                 ->withCode('%provided%', strval($argument))

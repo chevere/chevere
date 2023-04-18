@@ -19,6 +19,8 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
+use Chevere\Type\Interfaces\TypeInterface;
+use function Chevere\Type\typeFile;
 
 final class FileParameter implements FileParameterInterface
 {
@@ -48,19 +50,15 @@ final class FileParameter implements FileParameterInterface
         );
     }
 
-    public function schema(): array
-    {
-        return [
-            'type' => $this->type->primitive(),
-            'description' => $this->description,
-            'default' => $this->default,
-        ];
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
     public function assertCompatible(FileParameterInterface $parameter): void
     {
+        foreach ($this->parameters as $name => $item) {
+            $item->assertCompatible($parameter->parameters()->get($name));
+        }
+    }
+
+    public function getType(): TypeInterface
+    {
+        return typeFile();
     }
 }

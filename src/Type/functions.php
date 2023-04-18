@@ -89,6 +89,16 @@ function typeUnion(): TypeInterface
     return new Type(Type::UNION);
 }
 
+function typeGeneric(): TypeInterface
+{
+    return new Type(Type::GENERIC);
+}
+
+function typeFile(): TypeInterface
+{
+    return new Type(Type::FILE);
+}
+
 /**
  * @throws InvalidArgumentException
  */

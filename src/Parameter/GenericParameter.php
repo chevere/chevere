@@ -18,6 +18,8 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
+use Chevere\Type\Interfaces\TypeInterface;
+use function Chevere\Type\typeGeneric;
 
 final class GenericParameter implements GenericParameterInterface
 {
@@ -28,7 +30,7 @@ final class GenericParameter implements GenericParameterInterface
     /**
      * @var array<mixed, mixed>
      */
-    private array $default = [];
+    private ?array $default = null;
 
     final public function __construct(
         private ParameterInterface $value,
@@ -53,18 +55,14 @@ final class GenericParameter implements GenericParameterInterface
         return $this->value;
     }
 
-    public function schema(): array
-    {
-        return [
-            'type' => $this->type->primitive(),
-            'description' => $this->description,
-            'default' => $this->default,
-        ];
-    }
-
     public function assertCompatible(GenericParameterInterface $parameter): void
     {
         $this->key->assertCompatible($parameter->key());
         $this->value->assertCompatible($parameter->value());
+    }
+
+    public function getType(): TypeInterface
+    {
+        return typeGeneric();
     }
 }

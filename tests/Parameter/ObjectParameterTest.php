@@ -17,6 +17,7 @@ use Chevere\Filesystem\File;
 use function Chevere\Filesystem\fileForPath;
 use function Chevere\Parameter\object;
 use Chevere\Parameter\ObjectParameter;
+use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -68,6 +69,8 @@ final class ObjectParameterTest extends TestCase
             'description' => null,
             'default' => File::class,
         ], $parameter->schema());
+        $this->expectException(TypeError::class);
+        $parameter->withDefault(new stdClass());
     }
 
     public function testAssertCompatible(): void

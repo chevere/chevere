@@ -23,7 +23,23 @@ trait ArrayParameterTrait
      */
     public function default(): ?array
     {
-        return $this->default ?? null;
+        return $this->default;
+    }
+
+    public function schema(): array
+    {
+        $items = [];
+        foreach ($this->parameters as $name => $parameter) {
+            $items[$name] = $parameter->schema();
+            $items[$name]['isRequired'] = $this->parameters->isRequired($name);
+        }
+
+        return [
+            'type' => $this->type->primitive(),
+            'description' => $this->description(),
+            'default' => $this->default(),
+            'parameters' => $items,
+        ];
     }
 
     private function getType(): TypeInterface

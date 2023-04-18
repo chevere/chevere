@@ -24,11 +24,11 @@ final class FloatParameter implements FloatParameterInterface
     use ParameterTrait;
     use NumericParameterTrait;
 
-    private ?float $default;
+    private ?float $default = null;
 
-    private float $minimum = -PHP_FLOAT_MIN;
+    private ?float $minimum = null;
 
-    private float $maximum = PHP_FLOAT_MAX;
+    private ?float $maximum = null;
 
     /**
      * @var float[]
@@ -46,7 +46,7 @@ final class FloatParameter implements FloatParameterInterface
     public function withMinimum(float $value): FloatParameterInterface
     {
         $new = clone $this;
-        $new->setMinimum($value);
+        $new->setMinimum($value, self::MAXIMUM);
 
         return $new;
     }
@@ -54,7 +54,7 @@ final class FloatParameter implements FloatParameterInterface
     public function withMaximum(float $value): FloatParameterInterface
     {
         $new = clone $this;
-        $new->setMaximum($value);
+        $new->setMaximum($value, self::MINIMUM);
 
         return $new;
     }
@@ -69,15 +69,15 @@ final class FloatParameter implements FloatParameterInterface
 
     public function default(): ?float
     {
-        return $this->default ?? null;
+        return $this->default;
     }
 
-    public function minimum(): float
+    public function minimum(): ?float
     {
         return $this->minimum;
     }
 
-    public function maximum(): float
+    public function maximum(): ?float
     {
         return $this->maximum;
     }
@@ -93,12 +93,8 @@ final class FloatParameter implements FloatParameterInterface
             'type' => $this->type->primitive(),
             'description' => $this->description(),
             'default' => $this->default(),
-            'minimum' => $this->minimum() === -PHP_FLOAT_MIN
-                ? null
-                : $this->minimum(),
-            'maximum' => $this->maximum() === PHP_FLOAT_MAX
-                ? null
-                : $this->maximum(),
+            'minimum' => $this->minimum(),
+            'maximum' => $this->maximum(),
             'accept' => $this->accept(),
         ];
     }

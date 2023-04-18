@@ -17,6 +17,7 @@ use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Parameter\Traits\SchemaTrait;
+use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeObject;
@@ -53,7 +54,7 @@ final class ObjectParameter implements ObjectParameterInterface
     public function withDefault(object $value): ObjectParameterInterface
     {
         if (! $this->type->validate($value)) {
-            throw new InvalidArgumentException(
+            throw new TypeError(
                 message('Default value must be of type %type%')
                     ->withCode('%type%', $this->className)
             );

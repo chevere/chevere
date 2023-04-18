@@ -58,15 +58,6 @@ final class UnionParameter implements UnionParameterInterface
         return $new;
     }
 
-    public function schema(): array
-    {
-        return [
-            'type' => $this->type->primitive(),
-            'description' => $this->description,
-            'default' => $this->default,
-        ];
-    }
-
     public function assertCompatible(UnionParameterInterface $parameter): void
     {
         $this->assertArrayType($parameter);

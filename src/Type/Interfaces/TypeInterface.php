@@ -38,7 +38,11 @@ interface TypeInterface
 
     public const NULL = 'null';
 
-    public const UNION = '|';
+    public const UNION = 'union';
+
+    public const GENERIC = 'generic';
+
+    public const FILE = 'file';
 
     public const PRIMITIVE_CLASS_NAME = 'className';
 
@@ -62,6 +66,8 @@ interface TypeInterface
         self::PRIMITIVE_CLASS_NAME => 'is_object',
         self::PRIMITIVE_INTERFACE_NAME => 'is_object',
         self::UNION => 'is_array',
+        self::GENERIC => 'is_array',
+        self::FILE => 'is_array',
     ];
 
     /**
@@ -79,6 +85,8 @@ interface TypeInterface
         self::RESOURCE,
         self::STRING,
         self::UNION,
+        self::GENERIC,
+        self::FILE,
     ];
 
     /**

@@ -46,12 +46,12 @@ trait NumericParameterTrait
         }
     }
 
-    private function setMinimum(int|float $value): void
+    private function setMinimum(int|float $value, int|float $maximum): void
     {
         $this->assertAcceptEmpty(
             $this->errorAcceptOverflow('minimum')
         );
-        if ($value >= $this->maximum) {
+        if ($value >= ($this->maximum ?? $maximum)) {
             throw new InvalidArgumentException(
                 $this->errorInvalidArgument('minimum', 'maximum')
             );
@@ -60,12 +60,12 @@ trait NumericParameterTrait
         $this->minimum = $value;
     }
 
-    private function setMaximum(int|float $value): void
+    private function setMaximum(int|float $value, int|float $minimum): void
     {
         $this->assertAcceptEmpty(
             $this->errorAcceptOverflow('maximum')
         );
-        if ($value <= $this->minimum) {
+        if ($value <= ($this->minimum ?? $minimum)) {
             throw new InvalidArgumentException(
                 $this->errorInvalidArgument('maximum', 'minimum')
             );

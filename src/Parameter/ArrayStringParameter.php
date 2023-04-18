@@ -32,7 +32,7 @@ final class ArrayStringParameter implements ArrayStringParameterInterface
     /**
      * @var array<mixed, string>
      */
-    private ?array $default;
+    private ?array $default = null;
 
     public function setUp(): void
     {
@@ -53,22 +53,6 @@ final class ArrayStringParameter implements ArrayStringParameterInterface
         $new->put('withAddedOptional', ...$parameter);
 
         return $new;
-    }
-
-    public function schema(): array
-    {
-        $items = [];
-        foreach ($this->parameters as $name => $parameter) {
-            $items[$name] = $parameter->schema();
-            $items[$name]['isRequired'] = $this->parameters->isRequired($name);
-        }
-
-        return [
-            'type' => $this->type->primitive(),
-            'description' => $this->description,
-            'default' => $this->default,
-            'items' => $items,
-        ];
     }
 
     public function assertCompatible(ArrayStringParameterInterface $parameter): void

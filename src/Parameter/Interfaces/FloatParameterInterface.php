@@ -20,6 +20,10 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
  */
 interface FloatParameterInterface extends ParameterInterface
 {
+    public const MINIMUM = -PHP_FLOAT_MIN;
+
+    public const MAXIMUM = PHP_FLOAT_MAX;
+
     /**
      * Return an instance with the specified `$default` value.
      *
@@ -70,12 +74,12 @@ interface FloatParameterInterface extends ParameterInterface
     /**
      * Provides access to the minimum value.
      */
-    public function minimum(): float;
+    public function minimum(): ?float;
 
     /**
      * Provides access to the maximum value.
      */
-    public function maximum(): float;
+    public function maximum(): ?float;
 
     /**
      * Provides access to the accepted value(s).

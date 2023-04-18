@@ -20,6 +20,10 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
  */
 interface IntegerParameterInterface extends ParameterInterface
 {
+    public const MINIMUM = PHP_INT_MIN;
+
+    public const MAXIMUM = PHP_INT_MAX;
+
     /**
      * Return an instance with the specified default value.
      *
@@ -70,12 +74,12 @@ interface IntegerParameterInterface extends ParameterInterface
     /**
      * Provides access to the minimum value.
      */
-    public function minimum(): int;
+    public function minimum(): ?int;
 
     /**
      * Provides access to the maximum value.
      */
-    public function maximum(): int;
+    public function maximum(): ?int;
 
     /**
      * Provides access to the accepted value(s).

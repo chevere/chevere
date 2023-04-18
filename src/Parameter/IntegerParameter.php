@@ -24,11 +24,11 @@ final class IntegerParameter implements IntegerParameterInterface
     use ParameterTrait;
     use NumericParameterTrait;
 
-    private ?int $default;
+    private ?int $default = null;
 
-    private int $minimum = PHP_INT_MIN;
+    private ?int $minimum = null;
 
-    private int $maximum = PHP_INT_MAX;
+    private ?int $maximum = null;
 
     /**
      * @var int[]
@@ -46,7 +46,7 @@ final class IntegerParameter implements IntegerParameterInterface
     public function withMinimum(int $value): IntegerParameterInterface
     {
         $new = clone $this;
-        $new->setMinimum($value);
+        $new->setMinimum($value, self::MAXIMUM);
 
         return $new;
     }
@@ -54,7 +54,7 @@ final class IntegerParameter implements IntegerParameterInterface
     public function withMaximum(int $value): IntegerParameterInterface
     {
         $new = clone $this;
-        $new->setMaximum($value);
+        $new->setMaximum($value, self::MINIMUM);
 
         return $new;
     }
@@ -69,15 +69,15 @@ final class IntegerParameter implements IntegerParameterInterface
 
     public function default(): ?int
     {
-        return $this->default ?? null;
+        return $this->default;
     }
 
-    public function minimum(): int
+    public function minimum(): ?int
     {
         return $this->minimum;
     }
 
-    public function maximum(): int
+    public function maximum(): ?int
     {
         return $this->maximum;
     }
@@ -93,12 +93,8 @@ final class IntegerParameter implements IntegerParameterInterface
             'type' => $this->type()->primitive(),
             'description' => $this->description(),
             'default' => $this->default(),
-            'minimum' => $this->minimum() === PHP_INT_MIN
-                ? null
-                : $this->minimum(),
-            'maximum' => $this->maximum() === PHP_INT_MAX
-                ? null
-                : $this->maximum(),
+            'minimum' => $this->minimum(),
+            'maximum' => $this->maximum(),
             'accept' => $this->accept(),
         ];
     }
