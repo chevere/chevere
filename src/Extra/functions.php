@@ -24,17 +24,17 @@ function array_filter_recursive(array $array, ?callable $callback = null, int $m
     foreach ($array as $key => &$value) {
         if (is_array($value)) {
             $value = call_user_func(__FUNCTION__, $value, $callback, $mode);
-        } elseif ($callback !== null) {
-            $arguments = match ($mode) {
-                ARRAY_FILTER_USE_KEY => [$key],
-                ARRAY_FILTER_USE_BOTH => [$value, $key],
-                default => [$value],
-            };
-            if (! $callback(...$arguments)) {
-                $value = null;
-            }
         }
-        if (empty($value)) {
+        $arguments = match ($mode) {
+            ARRAY_FILTER_USE_KEY => [$key],
+            ARRAY_FILTER_USE_BOTH => [$value, $key],
+            default => [$value],
+        };
+        $response = match (true) {
+            $callback === null => ! empty($value),
+            default => $callback(...$arguments),
+        };
+        if (! $response) {
             unset($array[$key]);
         }
     }
