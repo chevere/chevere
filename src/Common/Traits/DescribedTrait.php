@@ -15,7 +15,7 @@ namespace Chevere\Common\Traits;
 
 trait DescribedTrait
 {
-    public function description(): ?string
+    public function description(): string
     {
         return $this->description;
     }
