@@ -30,7 +30,7 @@ final class UnionParameterTest extends TestCase
         );
         $this->assertSame(
             TypeInterface::UNION,
-            $parameter->getType()->primitive()
+            $parameter->type()->primitive()
         );
         $this->assertCount(0, $parameter->parameters());
     }

@@ -63,7 +63,7 @@ final class UnionParameter implements UnionParameterInterface
         $this->assertArrayType($parameter);
     }
 
-    public function getType(): TypeInterface
+    private function getType(): TypeInterface
     {
         return typeUnion();
     }

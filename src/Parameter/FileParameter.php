@@ -57,7 +57,7 @@ final class FileParameter implements FileParameterInterface
         }
     }
 
-    public function getType(): TypeInterface
+    private function getType(): TypeInterface
     {
         return typeFile();
     }
