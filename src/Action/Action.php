@@ -32,11 +32,6 @@ abstract class Action implements ActionInterface
         $this->onConstruct();
     }
 
-    public function description(): string
-    {
-        return '';
-    }
-
     final protected function onConstruct(): void
     {
         $this->setUpBefore();

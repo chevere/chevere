@@ -68,6 +68,11 @@ trait ActionTrait
 
     protected ReflectionMethod $reflection;
 
+    public function description(): ?string
+    {
+        return null;
+    }
+
     public function isStrict(): bool
     {
         return true;

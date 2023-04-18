@@ -50,7 +50,7 @@ final class ActionTest extends TestCase
     public function testConstruct(): void
     {
         $action = new ActionTestAction();
-        $this->assertSame('', $action->description());
+        $this->assertSame(null, $action->description());
         $this->assertCount(0, $action->parameters());
         $action->run();
     }
