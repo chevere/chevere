@@ -33,15 +33,15 @@
     },
     "autoload": {
         "files": [
-            "src/Extra/functions.php",
             "src/DataStructure/functions.php",
             "src/Filesystem/functions.php",
             "src/Iterator/functions.php",
             "src/Message/functions.php",
-            "src/Parameter/functions.php",
             "src/Parameter/functions-array.php",
             "src/Parameter/functions-numeric.php",
             "src/Parameter/functions-string.php",
+            "src/Parameter/functions.php",
+            "src/Standard/functions.php",
             "src/String/functions.php",
             "src/Type/functions.php",
             "src/VariableSupport/functions.php",

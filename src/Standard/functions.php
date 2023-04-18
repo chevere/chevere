@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Extra;
+namespace Chevere\Standard;
 
 /**
  * Same as `array_filter` but filters recursively.
@@ -19,8 +19,10 @@ namespace Chevere\Extra;
  * @param array<mixed> $array
  * @return array<mixed>
  */
-function array_filter_recursive(array $array, ?callable $callback = null, int $mode = 0): array
+function arrayFilterRecursive(array $array, ?callable $callback = null, int $mode = 0): array
 {
+    /** @var callable $callback */
+    $callback ??= __NAMESPACE__ . '\notEmpty';
     foreach ($array as $key => &$value) {
         if (is_array($value)) {
             $value = call_user_func(__FUNCTION__, $value, $callback, $mode);
@@ -31,7 +33,7 @@ function array_filter_recursive(array $array, ?callable $callback = null, int $m
             default => [$value],
         };
         $response = match (true) {
-            $callback === null => ! empty($value),
+            is_array($value) && notEmpty($value) => true,
             default => $callback(...$arguments),
         };
         if (! $response) {
@@ -40,4 +42,9 @@ function array_filter_recursive(array $array, ?callable $callback = null, int $m
     }
 
     return $array;
+}
+
+function notEmpty(mixed $value): bool
+{
+    return ! empty($value);
 }
