@@ -25,21 +25,24 @@ final class FunctionsTest extends TestCase
         $array = [
             'a' => 1,
             'b' => null,
-            'c' => [
+            'c' => 0,
+            'd' => [
                 'a' => 1,
-                'b' => null,
+                'b' => false,
+                'c' => [],
             ],
+            'e' => [],
         ];
         $filtered = [
             'a' => 1,
-            'c' => [
+            'd' => [
                 'a' => 1,
             ],
         ];
         $this->assertSame($filtered, array_filter_recursive($array));
         $this->assertSame($filtered, array_filter_recursive($array, 'is_int'));
         $this->assertSame([], array_filter_recursive($array, 'is_string'));
-        $modes = [
+        $array = [
             'a' => 1,
             'b' => 2,
             'c' => 3,
@@ -52,12 +55,12 @@ final class FunctionsTest extends TestCase
             return $k === 'b' || $v === 4;
         };
         $this->assertSame(
-            array_filter($modes, $callableA, ARRAY_FILTER_USE_KEY),
-            array_filter_recursive($modes, $callableA, ARRAY_FILTER_USE_KEY)
+            array_filter($array, $callableA, ARRAY_FILTER_USE_KEY),
+            array_filter_recursive($array, $callableA, ARRAY_FILTER_USE_KEY)
         );
         $this->assertSame(
-            array_filter($modes, $callableB, ARRAY_FILTER_USE_BOTH),
-            array_filter_recursive($modes, $callableB, ARRAY_FILTER_USE_BOTH)
+            array_filter($array, $callableB, ARRAY_FILTER_USE_BOTH),
+            array_filter_recursive($array, $callableB, ARRAY_FILTER_USE_BOTH)
         );
     }
 }

@@ -31,10 +31,10 @@ function array_filter_recursive(array $array, ?callable $callback = null, int $m
                 default => [$value],
             };
             if (! $callback(...$arguments)) {
-                $value = false;
+                $value = null;
             }
         }
-        if (! $value) {
+        if (empty($value)) {
             unset($array[$key]);
         }
     }
