@@ -59,16 +59,16 @@ final class ObjectParameterTest extends TestCase
 
     public function testWithDefault(): void
     {
-        $parameter = (new ObjectParameter())
-            ->withClassName(File::class)
-            ->withDefault(fileForPath(__FILE__));
-        $this->assertSame(File::class, $parameter->className());
+        $parameter = (new ObjectParameter())->withClassName(File::class);
+        $withDefault = $parameter->withDefault(fileForPath(__FILE__));
+        $this->assertNotSame($parameter, $withDefault);
+        $this->assertSame(File::class, $withDefault->className());
         $this->assertSame([
             'type' => 'className',
             'className' => File::class,
             'description' => null,
             'default' => File::class,
-        ], $parameter->schema());
+        ], $withDefault->schema());
         $this->expectException(TypeError::class);
         $parameter->withDefault(new stdClass());
     }
