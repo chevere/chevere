@@ -21,7 +21,6 @@ namespace Chevere\Standard;
  */
 function arrayFilterRecursive(array $array, ?callable $callback = null, int $mode = 0): array
 {
-    /** @var callable $callback */
     $callback ??= __NAMESPACE__ . '\notEmpty';
     foreach ($array as $key => &$value) {
         if (is_array($value)) {
