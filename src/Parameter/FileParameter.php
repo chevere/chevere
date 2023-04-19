@@ -52,8 +52,8 @@ final class FileParameter implements FileParameterInterface
 
     public function assertCompatible(FileParameterInterface $parameter): void
     {
-        foreach ($this->parameters as $name => $item) {
-            $item->assertCompatible($parameter->parameters()->get($name));
+        foreach ($this->parameters as $name => $stock) {
+            $stock->assertCompatible($parameter->parameters()->get($name));
         }
     }
 
