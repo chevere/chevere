@@ -30,12 +30,10 @@ trait ArrayParameterTrait
     {
         $items = [];
         foreach ($this->parameters as $name => $parameter) {
-            $items[$name] = array_merge(
-                [
-                    'required' => $this->parameters->isRequired($name),
-                ],
-                $parameter->schema()
-            );
+            $items[$name] = [
+                'required' => $this->parameters->isRequired($name),
+                'schema' => $parameter->schema(),
+            ];
         }
 
         return [

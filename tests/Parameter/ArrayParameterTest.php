@@ -78,10 +78,12 @@ final class ArrayParameterTest extends TestCase
             'parameters' => [
                 'one' => [
                     'required' => true,
-                ] + $string->schema(),
+                    'schema' => $string->schema(),
+                ],
                 'two' => [
                     'required' => true,
-                ] + $integer->schema(),
+                    'schema' => $integer->schema(),
+                ],
             ],
         ], $withRequired->schema());
         $withRequired = $withRequired->withRequired(
