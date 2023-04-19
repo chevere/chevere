@@ -49,11 +49,20 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithAccept(): void
     {
-        $accept = [1, 2, 3];
+        $accept = [3, 2, 1];
+        $sorted = [1, 2, 3];
         $parameter = new IntegerParameter();
-        $withValue = $parameter->withAccept(...$accept);
-        $this->assertNotSame($parameter, $withValue);
-        $this->assertSame($accept, $withValue->accept());
+        $withAccept = $parameter->withAccept(...$accept);
+        $this->assertNotSame($parameter, $withAccept);
+        $this->assertSame($sorted, $withAccept->accept());
+        $this->assertSame([
+            'type' => 'integer',
+            'description' => '',
+            'default' => null,
+            'minimum' => null,
+            'maximum' => null,
+            'accept' => $sorted,
+        ], $withAccept->schema());
     }
 
     public function testWithAcceptOnArguments(): void
@@ -79,8 +88,8 @@ final class IntegerParameterTest extends TestCase
         $this->assertNotSame($parameter, $parameterWithMinimum);
         $this->assertSame(1, $parameterWithMinimum->minimum());
         $parameterWithValue = $parameter->withAccept(3, 2, 1);
-        $this->assertSame(3, $parameterWithValue->maximum());
-        $this->assertSame(1, $parameterWithValue->minimum());
+        $this->assertSame(null, $parameterWithValue->maximum());
+        $this->assertSame(null, $parameterWithValue->minimum());
         $this->expectException(OverflowException::class);
         $parameterWithValue->withMinimum(0);
     }
@@ -103,14 +112,14 @@ final class IntegerParameterTest extends TestCase
     public function testWithMaximum(): void
     {
         $parameter = new IntegerParameter();
-        $parameterWithMaximum = $parameter->withMaximum(1);
-        $this->assertNotSame($parameter, $parameterWithMaximum);
-        $this->assertSame(1, $parameterWithMaximum->maximum());
-        $parameterWithValue = $parameter->withAccept(1, 2, 3);
-        $this->assertSame(3, $parameterWithValue->maximum());
-        $this->assertSame(1, $parameterWithValue->minimum());
+        $withMaximum = $parameter->withMaximum(1);
+        $this->assertNotSame($parameter, $withMaximum);
+        $this->assertSame(1, $withMaximum->maximum());
+        $withValue = $parameter->withAccept(1, 2, 3);
+        $this->assertSame(null, $withValue->maximum());
+        $this->assertSame(null, $withValue->minimum());
         $this->expectException(OverflowException::class);
-        $parameterWithValue->withMaximum(0);
+        $withValue->withMaximum(0);
     }
 
     public function testWithMaximumOnArguments(): void
@@ -131,21 +140,21 @@ final class IntegerParameterTest extends TestCase
     public function testWithMinimumMaximum(): void
     {
         $parameter = new IntegerParameter();
-        $parameterWith = $parameter
+        $with = $parameter
             ->withMinimum(1)
             ->withMaximum(2);
         $this->expectException(InvalidArgumentException::class);
-        $parameterWith->withMinimum(2);
+        $with->withMinimum(2);
     }
 
     public function testWithMaximumMinimum(): void
     {
         $parameter = new IntegerParameter();
-        $parameterWith = $parameter
+        $with = $parameter
             ->withMinimum(1)
             ->withMaximum(2);
         $this->expectException(InvalidArgumentException::class);
-        $parameterWith->withMaximum(1);
+        $with->withMaximum(1);
     }
 
     public function testAssertCompatibleMinimum(): void
@@ -187,11 +196,11 @@ final class IntegerParameterTest extends TestCase
 
     public function testAssertCompatibleAccept(): void
     {
-        $parameter = (new IntegerParameter())->withAccept(1, 2, 3);
-        $compatible = (new IntegerParameter())->withAccept(3, 2, 1);
+        $parameter = (new IntegerParameter())->withAccept(0, 1);
+        $compatible = (new IntegerParameter())->withAccept(1, 0);
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
-        $notCompatible = (new IntegerParameter())->withAccept(0);
+        $notCompatible = (new IntegerParameter())->withAccept(2, 3);
         $this->expectException(InvalidArgumentException::class);
         $this->getExpectedExceptionMessage('[' . implode(', ', $parameter->accept()) . ']');
         $parameter->assertCompatible($notCompatible);

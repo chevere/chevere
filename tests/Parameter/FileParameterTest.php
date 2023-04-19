@@ -64,10 +64,10 @@ final class FileParameterTest extends TestCase
     public function testAssertCompatible(): void
     {
         $parameter = new FileParameter(
-            string(),
-            string(),
-            string(),
-            integer(),
+            name: string(),
+            type: string(),
+            tmp_name: string(),
+            size: integer(),
         );
         $compatible = new FileParameter(
             string(),
@@ -77,10 +77,10 @@ final class FileParameterTest extends TestCase
         );
         $parameter->assertCompatible($compatible);
         $notCompatible = new FileParameter(
-            string(),
-            string(),
-            string(),
-            integer(accept: [1]),
+            name: string(),
+            type: string(),
+            tmp_name: string(),
+            size: integer(accept: [1, 2, 3]),
         );
         $this->expectException(InvalidArgumentException::class);
         $parameter->assertCompatible($notCompatible);

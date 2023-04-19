@@ -80,16 +80,24 @@ trait NumericParameterTrait
         $lastKey = array_key_last($value);
         // @phpstan-ignore-next-line
         $this->accept = $value;
-        // @phpstan-ignore-next-line
-        $this->minimum = $value[0];
-        // @phpstan-ignore-next-line
-        $this->maximum = $value[$lastKey];
+        $this->minimum = null;
+        $this->maximum = null;
     }
 
     private function assertNumericCompatible(
         IntegerParameterInterface|FloatParameterInterface $parameter
     ): void {
-        if (array_diff($this->accept, $parameter->accept()) !== []) {
+        $this->assertNumericAccept($parameter);
+        $this->assertNumericMinimum($parameter);
+        $this->assertNumericMaximum($parameter);
+    }
+
+    private function assertNumericAccept(
+        IntegerParameterInterface|FloatParameterInterface $parameter
+    ): void {
+        $diffA = array_diff($this->accept, $parameter->accept());
+        $diffB = array_diff($parameter->accept(), $this->accept);
+        if ($diffA !== [] || $diffB !== []) {
             $value = implode(', ', $this->accept());
             $provided = implode(', ', $parameter->accept());
 
@@ -99,9 +107,14 @@ trait NumericParameterTrait
                     ->withCode('%provided%', $provided)
             );
         }
+    }
+
+    private function assertNumericMinimum(
+        IntegerParameterInterface|FloatParameterInterface $parameter
+    ): void {
         if ($this->minimum !== $parameter->minimum()) {
-            $value = strval($this->minimum());
-            $provided = strval($parameter->minimum());
+            $value = strval($this->minimum() ?? 'null');
+            $provided = strval($parameter->minimum() ?? 'null');
 
             throw new InvalidArgumentException(
                 message('Expected minimum value %value%, provided %provided%')
@@ -109,9 +122,14 @@ trait NumericParameterTrait
                     ->withCode('%provided%', $provided)
             );
         }
+    }
+
+    private function assertNumericMaximum(
+        IntegerParameterInterface|FloatParameterInterface $parameter
+    ): void {
         if ($this->maximum !== $parameter->maximum()) {
-            $value = strval($this->maximum());
-            $provided = strval($parameter->maximum());
+            $value = strval($this->maximum() ?? 'null');
+            $provided = strval($parameter->maximum() ?? 'null');
 
             throw new InvalidArgumentException(
                 message('Expected maximum value %value%, provided %provided%')
