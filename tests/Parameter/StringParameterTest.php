@@ -34,7 +34,7 @@ final class StringParameterTest extends TestCase
             'type' => 'string',
             'description' => '',
             'default' => null,
-            'regex' => null,
+            'regex' => $parameter->regex()->noDelimiters(),
         ], $parameter->schema());
         $description = 'ola k ase';
         $parameter = new StringParameter($description);
