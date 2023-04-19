@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Standard;
 
+function notEmpty(mixed $value): bool
+{
+    return ! empty($value);
+}
+
 /**
  * Same as `array_filter` but filters recursively.
  *
@@ -41,9 +46,4 @@ function arrayFilterRecursive(array $array, ?callable $callback = null, int $mod
     }
 
     return $array;
-}
-
-function notEmpty(mixed $value): bool
-{
-    return ! empty($value);
 }
