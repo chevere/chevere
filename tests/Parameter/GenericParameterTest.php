@@ -42,12 +42,12 @@ final class GenericParameterTest extends TestCase
             'description' => $description,
             'default' => null,
             'parameters' => [
-                'K' => $key->schema() + [
-                    'isRequired' => true,
-                ],
-                'V' => $value->schema() + [
-                    'isRequired' => true,
-                ],
+                'K' => [
+                    'required' => true,
+                ] + $key->schema(),
+                'V' => [
+                    'required' => true,
+                ] + $value->schema(),
             ],
         ], $parameter->schema());
         $parameters = $parameter->parameters();
