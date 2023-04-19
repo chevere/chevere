@@ -70,11 +70,16 @@ final class StringParameter implements StringParameterInterface
 
     public function schema(): array
     {
+        $regex = match (true) {
+            $this->regex()->__toString() === self::REGEX_DEFAULT => null,
+            default => $this->regex()->noDelimiters(),
+        };
+
         return [
             'type' => $this->type()->primitive(),
             'description' => $this->description(),
             'default' => $this->default(),
-            'regex' => $this->regex()->__toString(),
+            'regex' => $regex,
         ];
     }
 

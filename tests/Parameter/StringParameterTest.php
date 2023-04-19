@@ -34,7 +34,7 @@ final class StringParameterTest extends TestCase
             'type' => 'string',
             'description' => '',
             'default' => null,
-            'regex' => $regex,
+            'regex' => null,
         ], $parameter->schema());
         $description = 'ola k ase';
         $parameter = new StringParameter($description);
@@ -46,6 +46,12 @@ final class StringParameterTest extends TestCase
         $regex = new Regex('/^[0-9+]$/');
         $parameter = (new StringParameter())->withRegex($regex);
         $this->assertSame($regex->__toString(), $parameter->regex()->__toString());
+        $this->assertSame([
+            'type' => 'string',
+            'description' => '',
+            'default' => null,
+            'regex' => $regex->noDelimiters(),
+        ], $parameter->schema());
     }
 
     public function testWithDescription(): void
