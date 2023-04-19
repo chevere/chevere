@@ -111,9 +111,9 @@ final class FunctionsStringTest extends TestCase
     public function defaultsProvider(): array
     {
         return [
-            [time()],
-            [date()],
-            [datetime()],
+            [time(), 'hh:mm:ss'],
+            [date(), 'YYYY-MM-DD'],
+            [datetime(), 'YYYY-MM-DD hh:mm:ss'],
         ];
     }
 
@@ -129,9 +129,9 @@ final class FunctionsStringTest extends TestCase
     /**
      * @dataProvider defaultsProvider
      */
-    public function testFunctionDefaults(ParameterInterface $parameter): void
+    public function testFunctionDefaults(ParameterInterface $parameter, string $description): void
     {
-        $this->assertSame('', $parameter->description());
+        $this->assertSame($description, $parameter->description());
         $this->assertSame(null, $parameter->default());
     }
 
