@@ -24,9 +24,12 @@ use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertArrayString;
+use function Chevere\Parameter\integer;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
+use function Chevere\Parameter\string;
+use function Chevere\Parameter\union;
 
 abstract class HttpController extends Controller implements HttpControllerInterface
 {
@@ -71,6 +74,14 @@ abstract class HttpController extends Controller implements HttpControllerInterf
             'Content-Disposition' => 'inline',
             'Content-Type' => 'application/json',
         ];
+    }
+
+    final public function expectError(): ArrayTypeParameterInterface
+    {
+        return arrayp(
+            code: union(integer(), string()),
+            message: string(),
+        );
     }
 
     final public function withQuery(array $query): static

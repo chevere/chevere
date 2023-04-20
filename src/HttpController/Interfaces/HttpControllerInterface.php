@@ -43,6 +43,11 @@ interface HttpControllerInterface extends ControllerInterface
     public function acceptFiles(): ArrayTypeParameterInterface;
 
     /**
+     * Defines the expected error parameter for failed requests.
+     */
+    public function expectError(): ArrayTypeParameterInterface;
+
+    /**
      * @param array<int|string, string> $query
      */
     public function withQuery(array $query): static;

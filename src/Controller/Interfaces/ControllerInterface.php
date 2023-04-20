@@ -16,7 +16,8 @@ namespace Chevere\Controller\Interfaces;
 use Chevere\Action\Interfaces\ActionInterface;
 
 /**
- * Describes the component in charge of defining a controller, which is an action that only accepts string parameters.
+ * A Controller is an action that only accepts
+ * string parameters on run method.
  */
 interface ControllerInterface extends ActionInterface
 {
