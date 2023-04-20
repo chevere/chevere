@@ -13,23 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Standard;
 
-use function Chevere\Standard\arrayFilterRecursive;
+use function Chevere\Standard\arrayFilterBoth;
+use function Chevere\Standard\arrayFilterKey;
+use function Chevere\Standard\arrayFilterValue;
 use PHPUnit\Framework\TestCase;
 
 final class ArrayFilterRecursiveFunctionsTest extends TestCase
 {
-    public function testArrayFilterRecursiveEmpty(): void
+    public function testArrayFilterValue(): void
     {
         $array = [1, [1, null], [[[null, 1]]]];
+        $result = arrayFilterValue($array);
         $this->assertSame(
             [1, [1], [[[
                 1 => 1,
             ]]]],
-            arrayFilterRecursive($array)
+            $result
         );
     }
 
-    public function testArrayFilterRecursiveTypes(): void
+    public function testArrayFilterValueTypes(): void
     {
         $array = [
             'a' => 1,
@@ -46,7 +49,7 @@ final class ArrayFilterRecursiveFunctionsTest extends TestCase
         ];
         $this->assertSame(
             [],
-            arrayFilterRecursive($array, 'is_string')
+            arrayFilterValue($array, 'is_string')
         );
         $filter = function ($v) {
             return $v === false || $v === null;
@@ -62,11 +65,11 @@ final class ArrayFilterRecursiveFunctionsTest extends TestCase
         ];
         $this->assertSame(
             $expected,
-            arrayFilterRecursive($array, $filter)
+            arrayFilterValue($array, $filter)
         );
     }
 
-    public function testArrayFilterRecursiveNested(): void
+    public function testArrayFilterKey(): void
     {
         $array = [
             'a' => 1,
@@ -83,13 +86,35 @@ final class ArrayFilterRecursiveFunctionsTest extends TestCase
         ];
         $this->assertSame(
             $filterC,
-            arrayFilterRecursive($array, function ($k) {
+            arrayFilterKey($array, function ($k) {
                 return $k !== 'c';
-            }, ARRAY_FILTER_USE_KEY)
+            })
         );
     }
 
-    public function testArrayFilterRecursiveCore(): void
+    public function testArrayFilterBoth(): void
+    {
+        $array = [
+            'a' => 1,
+            'b' => [
+                'c' => [2, 3, 4],
+            ],
+            'c' => [
+                'c' => [],
+            ],
+        ];
+        $filterC1 = [
+            'b' => [],
+        ];
+        $this->assertSame(
+            $filterC1,
+            arrayFilterBoth($array, function ($v, $k) {
+                return $k !== 'c' && $v !== 1;
+            })
+        );
+    }
+
+    public function testArrayFilterCore(): void
     {
         $array = [
             'a' => 1,
@@ -104,12 +129,16 @@ final class ArrayFilterRecursiveFunctionsTest extends TestCase
             return $k === 'b' || $v === 4;
         };
         $this->assertSame(
+            array_filter($array, $callableA),
+            arrayFilterValue($array, $callableA)
+        );
+        $this->assertSame(
             array_filter($array, $callableA, ARRAY_FILTER_USE_KEY),
-            arrayFilterRecursive($array, $callableA, ARRAY_FILTER_USE_KEY)
+            arrayFilterKey($array, $callableA)
         );
         $this->assertSame(
             array_filter($array, $callableB, ARRAY_FILTER_USE_BOTH),
-            arrayFilterRecursive($array, $callableB, ARRAY_FILTER_USE_BOTH)
+            arrayFilterBoth($array, $callableB)
         );
     }
 }

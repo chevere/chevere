@@ -19,28 +19,57 @@ function notEmpty(mixed $value): bool
 }
 
 /**
- * Same as `array_filter` but filters recursively.
- *
  * @param array<mixed> $array
  * @return array<mixed>
  */
-function arrayFilterRecursive(array $array, ?callable $callback = null, int $mode = 0): array
+function arrayFilterBoth(array $array, ?callable $callback = null): array
 {
     $callable = $callback ?? __NAMESPACE__ . '\notEmpty';
     foreach ($array as $key => &$value) {
         if (is_array($value)) {
-            $value = call_user_func(__FUNCTION__, $value, $callable, $mode);
+            $value = call_user_func(__FUNCTION__, $value, $callable);
         }
-        $arguments = match ($mode) {
-            ARRAY_FILTER_USE_KEY => [$key],
-            ARRAY_FILTER_USE_BOTH => [$value, $key],
-            default => [$value],
-        };
-        $response = $callable(...$arguments);
-        if (! $response && is_array($value) && $mode === 0) {
-            $response = $value !== [];
+        if (! $callable($value, $key)) {
+            unset($array[$key]);
         }
+    }
+
+    return $array;
+}
+
+/**
+ * @param array<mixed> $array
+ * @return array<mixed>
+ */
+function arrayFilterValue(array $array, ?callable $callback = null): array
+{
+    $callable = $callback ?? __NAMESPACE__ . '\notEmpty';
+    foreach ($array as $key => &$value) {
+        if (is_array($value)) {
+            $value = call_user_func(__FUNCTION__, $value, $callable);
+        }
+        $notEmptyArray = is_array($value) && $value !== [];
+        $response = $callable($value) ?: $notEmptyArray;
         if (! $response) {
+            unset($array[$key]);
+        }
+    }
+
+    return $array;
+}
+
+/**
+ * @param array<mixed> $array
+ * @return array<mixed>
+ */
+function arrayFilterKey(array $array, ?callable $callback = null): array
+{
+    $callable = $callback ?? __NAMESPACE__ . '\notEmpty';
+    foreach ($array as $key => &$value) {
+        if (is_array($value)) {
+            $value = call_user_func(__FUNCTION__, $value, $callable);
+        }
+        if (! $callable($key)) {
             unset($array[$key]);
         }
     }
