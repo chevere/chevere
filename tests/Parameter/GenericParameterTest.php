@@ -50,8 +50,8 @@ final class GenericParameterTest extends TestCase
                 ] + $value->schema(),
             ],
         ], $parameter->schema());
-        $parameters = $parameter->parameters();
-        $this->assertSame($parameters, $parameter->parameters());
+        $parameters = $parameter->items();
+        $this->assertSame($parameters, $parameter->items());
         $this->assertEquals($value, $parameters->get('V'));
         $this->assertEquals($key, $parameters->get('K'));
     }

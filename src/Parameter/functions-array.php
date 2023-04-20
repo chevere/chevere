@@ -86,7 +86,7 @@ function assertArray(
     ArrayTypeParameterInterface $parameter,
     array $argument,
 ): array {
-    return arguments($parameter->parameters(), $argument)->toArray();
+    return arguments($parameter->items(), $argument)->toArray();
 }
 
 /**
@@ -117,7 +117,7 @@ function assertNotEmpty(ParameterInterface $expected, mixed $value): void
 {
     if ($expected instanceof ArrayTypeParameterInterface
         && empty($value)
-        && $expected->parameters()->requiredKeys() !== []
+        && $expected->items()->requiredKeys() !== []
     ) {
         throw new InvalidArgumentException(
             message('Argument value provided is empty')

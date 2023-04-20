@@ -25,15 +25,15 @@ final class FunctionsArrayTest extends TestCase
     public function testArrayp(): void
     {
         $parameter = arrayp();
-        $this->assertCount(0, $parameter->parameters());
+        $this->assertCount(0, $parameter->items());
         $integer = integer();
         $string = string();
         $parameter = arrayp(a: $integer)->withOptional(b: $string);
-        $this->assertCount(2, $parameter->parameters());
-        $this->assertSame($integer, $parameter->parameters()->get('a'));
-        $this->assertSame($string, $parameter->parameters()->get('b'));
-        $this->assertSame(['a'], $parameter->parameters()->requiredKeys());
-        $this->assertSame(['b'], $parameter->parameters()->optionalKeys());
+        $this->assertCount(2, $parameter->items());
+        $this->assertSame($integer, $parameter->items()->get('a'));
+        $this->assertSame($string, $parameter->items()->get('b'));
+        $this->assertSame(['a'], $parameter->items()->requiredKeys());
+        $this->assertSame(['b'], $parameter->items()->optionalKeys());
     }
 
     public function testArrayRequiredEmpty(): void

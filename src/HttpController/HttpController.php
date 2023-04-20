@@ -105,9 +105,9 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         $new = clone $this;
         $array = [];
         /** @var FileParameterInterface $parameter */
-        foreach ($new->acceptFiles()->parameters() as $key => $parameter) {
+        foreach ($new->acceptFiles()->items() as $key => $parameter) {
             $arguments = new Arguments(
-                $parameter->parameters(),
+                $parameter->items(),
                 $files[$key]
             );
             /** @var array<int|string, array<string, int|string>> $array */

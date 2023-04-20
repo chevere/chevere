@@ -18,7 +18,6 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParameterAssertArrayTypeTrait;
-use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeUnion;
@@ -28,7 +27,6 @@ final class UnionParameter implements UnionParameterInterface
     use ParameterTrait;
     use ArrayParameterTrait;
     use ParameterAssertArrayTypeTrait;
-    use ParametersAccessTrait;
 
     /**
      * @var array<mixed, mixed>
@@ -36,23 +34,23 @@ final class UnionParameter implements UnionParameterInterface
     private array $default = [];
 
     final public function __construct(
-        private ParametersInterface $parameters,
+        private ParametersInterface $items,
         private string $description = '',
     ) {
         $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();
-        $this->parameters = $parameters;
+        $this->items = $items;
     }
 
     public function setUp(): void
     {
-        $this->parameters = new Parameters();
+        $this->items = new Parameters();
     }
 
     public function withAdded(ParameterInterface ...$parameter): static
     {
         $new = clone $this;
-        $new->parameters = $new->parameters
+        $new->items = $new->items
             ->withAddedRequired(...$parameter);
 
         return $new;

@@ -18,7 +18,6 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ArrayTypeParameterTrait;
 use Chevere\Parameter\Traits\ParameterAssertArrayTypeTrait;
-use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 
 final class ArrayStringParameter implements ArrayStringParameterInterface
@@ -26,7 +25,6 @@ final class ArrayStringParameter implements ArrayStringParameterInterface
     use ArrayParameterTrait;
     use ArrayTypeParameterTrait;
     use ParameterAssertArrayTypeTrait;
-    use ParametersAccessTrait;
     use ParameterTrait;
 
     /**
@@ -36,7 +34,7 @@ final class ArrayStringParameter implements ArrayStringParameterInterface
 
     public function setUp(): void
     {
-        $this->parameters = new Parameters();
+        $this->items = new Parameters();
     }
 
     public function withRequired(StringParameterInterface ...$parameter): static

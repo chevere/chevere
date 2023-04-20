@@ -16,7 +16,6 @@ namespace Chevere\Parameter;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
-use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeGeneric;
@@ -25,7 +24,6 @@ final class GenericParameter implements GenericParameterInterface
 {
     use ParameterTrait;
     use ArrayParameterTrait;
-    use ParametersAccessTrait;
 
     /**
      * @var array<mixed, mixed>
@@ -39,7 +37,7 @@ final class GenericParameter implements GenericParameterInterface
     ) {
         $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();
-        $this->parameters = new Parameters(
+        $this->items = new Parameters(
             K: $this->key,
             V: $this->value
         );

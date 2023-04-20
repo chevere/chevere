@@ -17,7 +17,6 @@ use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
-use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeFile;
@@ -26,7 +25,6 @@ final class FileParameter implements FileParameterInterface
 {
     use ParameterTrait;
     use ArrayParameterTrait;
-    use ParametersAccessTrait;
 
     /**
      * @var array<string, mixed>
@@ -41,7 +39,7 @@ final class FileParameter implements FileParameterInterface
         private string $description = '',
     ) {
         $this->type = $this->type();
-        $this->parameters = parameters(
+        $this->items = new Parameters(
             error: integer(accept: [UPLOAD_ERR_OK]),
             name: $name,
             size: $size,
@@ -52,8 +50,8 @@ final class FileParameter implements FileParameterInterface
 
     public function assertCompatible(FileParameterInterface $parameter): void
     {
-        foreach ($this->parameters as $name => $stock) {
-            $stock->assertCompatible($parameter->parameters()->get($name));
+        foreach ($this->items as $name => $stock) {
+            $stock->assertCompatible($parameter->items()->get($name));
         }
     }
 

@@ -13,11 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
+use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeArray;
 
 trait ArrayParameterTrait
 {
+    private ParametersInterface $items;
+
+    private TypeInterface $type;
+
     /**
      * @return array<mixed, mixed>
      */
@@ -29,9 +34,9 @@ trait ArrayParameterTrait
     public function schema(): array
     {
         $items = [];
-        foreach ($this->parameters as $name => $parameter) {
+        foreach ($this->items as $name => $parameter) {
             $items[$name] = [
-                'required' => $this->parameters->isRequired($name),
+                'required' => $this->items->isRequired($name),
             ] + $parameter->schema();
         }
 
@@ -42,6 +47,13 @@ trait ArrayParameterTrait
             'parameters' => $items,
         ];
     }
+
+    public function items(): ParametersInterface
+    {
+        return $this->items;
+    }
+
+    abstract public function description(): string;
 
     private function getType(): TypeInterface
     {

@@ -150,7 +150,7 @@ final class FunctionsTest extends TestCase
         ]);
         $assert = assertArray($parameter, $array);
         $this->assertSame($assert, $expected);
-        $this->assertCount(2, $parameter->parameters());
+        $this->assertCount(2, $parameter->items());
         $this->expectException(TypeError::class);
         assertArgument($parameter, 1);
     }
@@ -185,7 +185,7 @@ final class FunctionsTest extends TestCase
         ];
         $assert = assertArray($parameter, $array);
         $this->assertSame($assert, $expected);
-        $this->assertCount(1, $parameter->parameters());
+        $this->assertCount(1, $parameter->items());
         $this->expectException(TypeError::class);
         assertArgument($parameter, 1);
     }
