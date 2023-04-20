@@ -33,7 +33,7 @@ final class ArrayParameterTest extends TestCase
             'type' => 'array',
             'description' => '',
             'default' => null,
-            'parameters' => [],
+            'items' => [],
         ], $parameter->schema());
         $default = ['test', 1];
         $withDefault = $parameter->withDefault($default);
@@ -47,7 +47,7 @@ final class ArrayParameterTest extends TestCase
             'type' => 'array',
             'description' => '',
             'default' => $default,
-            'parameters' => [],
+            'items' => [],
         ], $withDefault->schema());
     }
 
@@ -75,7 +75,7 @@ final class ArrayParameterTest extends TestCase
             'type' => 'array',
             'description' => '',
             'default' => null,
-            'parameters' => [
+            'items' => [
                 'one' => [
                     'required' => true,
                 ] + $string->schema(),

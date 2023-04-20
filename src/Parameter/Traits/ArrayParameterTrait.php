@@ -44,7 +44,7 @@ trait ArrayParameterTrait
             'type' => $this->type->primitive(),
             'description' => $this->description(),
             'default' => $this->default(),
-            'parameters' => $items,
+            'items' => $items,
         ];
     }
 
