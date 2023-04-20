@@ -16,62 +16,76 @@ namespace Chevere\Tests\Standard;
 use function Chevere\Standard\arrayFilterRecursive;
 use PHPUnit\Framework\TestCase;
 
-final class FunctionsTest extends TestCase
+final class ArrayFilterRecursiveFunctionsTest extends TestCase
 {
-    public function testArrayFilterRecursive(): void
+    public function testArrayFilterRecursiveEmpty(): void
     {
-        $array = [1, [1, null]];
+        $array = [1, [1, null], [[[null, 1]]]];
         $this->assertSame(
-            [1, [1]],
+            [1, [1], [[[
+                1 => 1,
+            ]]]],
             arrayFilterRecursive($array)
         );
+    }
+
+    public function testArrayFilterRecursiveTypes(): void
+    {
         $array = [
             'a' => 1,
             'b' => null,
-            'c' => 0,
+            'c' => [],
             'd' => [
                 'x' => 1,
                 'y' => false,
                 'z' => [],
+                '' => [
+                    '' => null,
+                ],
             ],
-            'e' => [],
         ];
         $this->assertSame(
             [],
             arrayFilterRecursive($array, 'is_string')
         );
-        $filterEmpty = [
-            'a' => 1,
-            'd' => [
-                'x' => 1,
-            ],
-        ];
-        $this->assertSame(
-            $filterEmpty,
-            arrayFilterRecursive($array)
-        );
-        $filterInt = [
-            'a' => 1,
-            'c' => 0,
-            'd' => [
-                'x' => 1,
-            ],
-        ];
-        $this->assertSame(
-            $filterInt,
-            arrayFilterRecursive($array, 'is_int')
-        );
-        $filterFalseNull = [
+        $filter = function ($v) {
+            return $v === false || $v === null;
+        };
+        $expected = [
             'b' => null,
             'd' => [
                 'y' => false,
+                '' => [
+                    '' => null,
+                ],
             ],
         ];
         $this->assertSame(
-            $filterFalseNull,
-            arrayFilterRecursive($array, function ($v) {
-                return $v === false || $v === null;
-            })
+            $expected,
+            arrayFilterRecursive($array, $filter)
+        );
+    }
+
+    public function testArrayFilterRecursiveNested(): void
+    {
+        $array = [
+            'a' => 1,
+            'b' => [
+                'c' => [2, 3, 4],
+            ],
+            'c' => [
+                'c' => [],
+            ],
+        ];
+        $filterC = [
+            'a' => 1,
+            'b' => [],
+        ];
+        $this->assertSame(
+            $filterC,
+            arrayFilterRecursive($array, function ($k) {
+                return $k !== 'c';
+            }, ARRAY_FILTER_USE_KEY)
         );
     }
 

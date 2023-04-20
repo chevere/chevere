@@ -26,20 +26,20 @@ function notEmpty(mixed $value): bool
  */
 function arrayFilterRecursive(array $array, ?callable $callback = null, int $mode = 0): array
 {
-    $callback ??= __NAMESPACE__ . '\notEmpty';
+    $callable = $callback ?? __NAMESPACE__ . '\notEmpty';
     foreach ($array as $key => &$value) {
         if (is_array($value)) {
-            $value = call_user_func(__FUNCTION__, $value, $callback, $mode);
+            $value = call_user_func(__FUNCTION__, $value, $callable, $mode);
         }
         $arguments = match ($mode) {
             ARRAY_FILTER_USE_KEY => [$key],
             ARRAY_FILTER_USE_BOTH => [$value, $key],
             default => [$value],
         };
-        $response = match (true) {
-            is_array($value) && notEmpty($value) => true,
-            default => $callback(...$arguments),
-        };
+        $response = $callable(...$arguments);
+        if (! $response && is_array($value) && $mode === 0) {
+            $response = $value !== [];
+        }
         if (! $response) {
             unset($array[$key]);
         }
