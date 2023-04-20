@@ -32,8 +32,7 @@ trait ArrayParameterTrait
         foreach ($this->parameters as $name => $parameter) {
             $items[$name] = [
                 'required' => $this->parameters->isRequired($name),
-                'schema' => $parameter->schema(),
-            ];
+            ] + $parameter->schema();
         }
 
         return [
