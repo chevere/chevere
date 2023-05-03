@@ -45,7 +45,7 @@ interface HttpControllerInterface extends ControllerInterface
     /**
      * Defines the expected error parameter for failed requests.
      */
-    public function expectError(): ArrayTypeParameterInterface;
+    public function acceptError(): ArrayTypeParameterInterface;
 
     /**
      * @param array<int|string, string> $query

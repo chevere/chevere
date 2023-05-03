@@ -76,7 +76,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         ];
     }
 
-    final public function expectError(): ArrayTypeParameterInterface
+    final public function acceptError(): ArrayTypeParameterInterface
     {
         return arrayp(
             code: union(integer(), string()),
