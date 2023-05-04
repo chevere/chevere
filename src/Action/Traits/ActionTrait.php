@@ -55,6 +55,8 @@ trait ActionTrait
         'object' => ObjectParameter::class,
     ];
 
+    protected static ParametersInterface $parameters;
+
     protected ArrayTypeParameterInterface $acceptResponse;
 
     protected ReflectionMethod $reflection;
@@ -84,6 +86,12 @@ trait ActionTrait
         }
 
         return new Response(...$data);
+    }
+
+    final public static function parameters(): ParametersInterface
+    {
+        // @infection-ignore-all
+        return self::$parameters ?? self::getParameters();
     }
 
     final protected static function getParameters(): ParametersInterface
