@@ -20,4 +20,5 @@ use Stringable;
  */
 interface ControllerNameInterface extends Stringable
 {
+    public function assertInterface(string $class): void;
 }

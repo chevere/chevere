@@ -24,7 +24,8 @@ final class ControllerName implements ControllerNameInterface
     public function __construct(
         private string $name
     ) {
-        $this->assertController();
+        $this->assertExists();
+        $this->assertInterface(ControllerInterface::class);
     }
 
     public function __toString(): string
@@ -32,20 +33,28 @@ final class ControllerName implements ControllerNameInterface
         return $this->name;
     }
 
-    private function assertController(): void
+    public function assertInterface(string $class): void
     {
-        if (!class_exists($this->name)) {
-            throw new ControllerNameNotExistsException(
-                message("Controller %controllerName% doesn't exists")
-                    ->withCode('%controllerName%', $this->name)
-            );
+        if (is_subclass_of($this->name, $class)) {
+            return;
         }
-        if (!is_subclass_of($this->name, ControllerInterface::class)) {
-            throw new ControllerNameInterfaceException(
-                message('Controller %controllerName% must implement the %interface% interface')
-                    ->withCode('%controllerName%', $this->name)
-                    ->withCode('%interface%', ControllerInterface::class)
-            );
+
+        throw new ControllerNameInterfaceException(
+            message('Class %controllerName% must implement %interface% interface')
+                ->withCode('%controllerName%', $this->name)
+                ->withCode('%interface%', $class)
+        );
+    }
+
+    private function assertExists(): void
+    {
+        if (class_exists($this->name)) {
+            return;
         }
+
+        throw new ControllerNameNotExistsException(
+            message("Controller %controllerName% doesn't exists")
+                ->withCode('%controllerName%', $this->name)
+        );
     }
 }
