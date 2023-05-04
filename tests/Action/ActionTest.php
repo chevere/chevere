@@ -13,18 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
-use Chevere\Container\Container;
 use Chevere\Filesystem\Interfaces\FileInterface;
-use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
-use Chevere\Parameter\StringParameter;
 use Chevere\Tests\Action\_resources\ActionTestAction;
-use Chevere\Tests\Action\_resources\ActionTestContainer;
 use Chevere\Tests\Action\_resources\ActionTestController;
 use Chevere\Tests\Action\_resources\ActionTestGenericResponse;
 use Chevere\Tests\Action\_resources\ActionTestGenericResponseError;
@@ -107,32 +103,6 @@ final class ActionTest extends TestCase
         $parameter = $action->parameters()->get('name');
         $this->assertSame('The name', $parameter->description());
         $this->assertSame('/^[a-z]$/', $parameter->regex()->__toString());
-    }
-
-    public function testContainer(): void
-    {
-        $container = new Container();
-        $containerWith = $container->withPut(id: 123, name: 'wea');
-        $this->assertNotSame($container, $containerWith);
-        $action = new ActionTestContainer();
-        $withContainer = $action->withContainer($containerWith);
-        $this->assertNotSame($action, $withContainer);
-        $response = $withContainer->getResponse();
-        $this->assertSame(0, $response->code());
-        $this->expectException(InvalidArgumentException::class);
-        $action->withContainer($container);
-    }
-
-    public function testContainerMissingParameterException(): void
-    {
-        $action = new ActionTestContainer();
-        $classInteger = IntegerParameter::class;
-        $classString = StringParameter::class;
-        $this->expectExceptionMessage(<<<STRING
-        {$classInteger} id, {$classString} name
-        STRING);
-        $this->expectException(InvalidArgumentException::class);
-        $action->getResponse();
     }
 
     public function testRunWithArguments(): void

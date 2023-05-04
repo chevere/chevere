@@ -62,10 +62,6 @@ trait ActionTrait
 
     protected ArrayTypeParameterInterface $acceptResponse;
 
-    protected ParametersInterface $containerParameters;
-
-    protected ContainerInterface $container;
-
     protected ReflectionMethod $reflection;
 
     public function description(): string
@@ -78,33 +74,13 @@ trait ActionTrait
         return true;
     }
 
-    public function acceptContainer(): ParametersInterface
-    {
-        return parameters();
-    }
-
     public function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayp();
     }
 
-    final public function withContainer(ContainerInterface $container): static
-    {
-        $new = clone $this;
-        $new->container = $container;
-        $new->assertContainer();
-
-        return $new;
-    }
-
-    final public function container(): ContainerInterface
-    {
-        return $this->container;
-    }
-
     final public function getResponse(mixed ...$argument): ResponseInterface
     {
-        $this->assertContainer();
         $arguments = arguments($this->parameters, $argument)->toArray();
         $data = $this->run(...$arguments);
         if ($this->isStrict()) {
@@ -118,26 +94,6 @@ trait ActionTrait
     final public function parameters(): ParametersInterface
     {
         return $this->parameters;
-    }
-
-    final protected function assertContainer(): void
-    {
-        $missing = [];
-        foreach ($this->containerParameters as $name => $parameter) {
-            if (! $this->container()->has($name)) {
-                $className = $parameter::class;
-                $missing[] = <<<STRING
-                {$className} {$name}
-                STRING;
-            }
-        }
-        if ($missing !== []) {
-            throw new InvalidArgumentException(
-                message('Container for %action% does not provide parameter(s): %missing%')
-                    ->withTranslate('%action%', $this::class)
-                    ->withTranslate('%missing%', implode(', ', $missing))
-            );
-        }
     }
 
     final protected function getParameters(): ParametersInterface

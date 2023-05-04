@@ -38,8 +38,6 @@ abstract class Action implements ActionInterface
         $this->assertRunMethod();
         $this->parameters = $this->getParameters();
         $this->assertRunParameters();
-        $this->container = new Container();
-        $this->containerParameters = $this->acceptContainer();
         $this->acceptResponse = $this->acceptResponse();
         $this->setUpAfter();
     }

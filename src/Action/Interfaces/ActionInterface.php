@@ -16,9 +16,7 @@ namespace Chevere\Action\Interfaces;
 use Chevere\Common\Interfaces\DescribedInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersAccessInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Response\Interfaces\ResponseInterface;
-use Psr\Container\ContainerInterface;
 
 /**
  * Describes the component in charge of defining a single action.
@@ -35,24 +33,6 @@ interface ActionInterface extends ParametersAccessInterface, DescribedInterface
      * against the defined response parameters at `acceptResponseParameter`.
      */
     public function isStrict(): bool;
-
-    /**
-     * Defines expected container parameters when executing `run` method.
-     */
-    public function acceptContainer(): ParametersInterface;
-
-    /**
-     * Return an instance with the specified `$container`.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$container`.
-     */
-    public function withContainer(ContainerInterface $container): static;
-
-    /**
-     * Provides access to the container.
-     */
-    public function container(): ContainerInterface;
 
     /**
      * Defines expected response data parameters when executing `run` method.
