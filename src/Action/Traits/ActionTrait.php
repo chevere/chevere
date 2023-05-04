@@ -55,8 +55,6 @@ trait ActionTrait
         'object' => ObjectParameter::class,
     ];
 
-    protected static ParametersInterface $parameters;
-
     protected ArrayTypeParameterInterface $acceptResponse;
 
     protected ReflectionMethod $reflection;
