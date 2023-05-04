@@ -18,7 +18,7 @@ namespace Chevere\HttpController\Traits;
  */
 trait StatusMultiStatusTrait
 {
-    public function statusSuccess(): int
+    public static function statusSuccess(): int
     {
         return 207;
     }

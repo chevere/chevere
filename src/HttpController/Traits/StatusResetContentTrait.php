@@ -18,7 +18,7 @@ namespace Chevere\HttpController\Traits;
  */
 trait StatusResetContentTrait
 {
-    public function statusSuccess(): int
+    public static function statusSuccess(): int
     {
         return 205;
     }

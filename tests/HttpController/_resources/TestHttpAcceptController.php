@@ -23,7 +23,7 @@ use function Chevere\Parameter\string;
 
 final class TestHttpAcceptController extends HttpController
 {
-    public function acceptQuery(): ArrayStringParameterInterface
+    public static function acceptQuery(): ArrayStringParameterInterface
     {
         return arrayString(
             ...[
@@ -32,7 +32,7 @@ final class TestHttpAcceptController extends HttpController
         );
     }
 
-    public function acceptBody(): ArrayTypeParameterInterface
+    public static function acceptBody(): ArrayTypeParameterInterface
     {
         return arrayp(
             ...[
@@ -41,7 +41,7 @@ final class TestHttpAcceptController extends HttpController
         );
     }
 
-    public function acceptFiles(): ArrayTypeParameterInterface
+    public static function acceptFiles(): ArrayTypeParameterInterface
     {
         return arrayp(
             ...[

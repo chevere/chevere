@@ -22,29 +22,34 @@ use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
  */
 interface HttpControllerInterface extends ControllerInterface
 {
-    public function statusSuccess(): int;
+    public static function statusSuccess(): int;
 
-    public function statusError(): int;
+    public static function statusError(): int;
 
     /**
      * Defines the query accepted.
      */
-    public function acceptQuery(): ArrayStringParameterInterface;
+    public static function acceptQuery(): ArrayStringParameterInterface;
 
     /**
      * Defines the body accepted.
      */
-    public function acceptBody(): ArrayTypeParameterInterface;
+    public static function acceptBody(): ArrayTypeParameterInterface;
 
     /**
      * Defines the FILES accepted.
      */
-    public function acceptFiles(): ArrayTypeParameterInterface;
+    public static function acceptFiles(): ArrayTypeParameterInterface;
 
     /**
      * Defines the expected error parameter for failed requests.
      */
-    public function acceptError(): ArrayTypeParameterInterface;
+    public static function acceptError(): ArrayTypeParameterInterface;
+
+    /**
+     * @return array<string, string>
+     */
+    public static function responseHeaders(): array;
 
     /**
      * @param array<int|string, string> $query
@@ -75,9 +80,4 @@ interface HttpControllerInterface extends ControllerInterface
      * @return array<int|string, array<string, int|string>>
      */
     public function files(): array;
-
-    /**
-     * @return array<string, string>
-     */
-    public function responseHeaders(): array;
 }

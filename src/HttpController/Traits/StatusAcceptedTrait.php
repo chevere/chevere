@@ -18,7 +18,7 @@ namespace Chevere\HttpController\Traits;
  */
 trait StatusAcceptedTrait
 {
-    public function statusSuccess(): int
+    public static function statusSuccess(): int
     {
         return 202;
     }

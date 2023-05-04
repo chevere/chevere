@@ -15,7 +15,7 @@ namespace Chevere\HttpController\Traits;
 
 trait ResponseHtmlTrait
 {
-    public function responseHeaders(): array
+    public static function responseHeaders(): array
     {
         $headers = parent::responseHeaders();
         $headers['Content-Type'] = 'text/html; charset=utf-8';

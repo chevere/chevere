@@ -49,22 +49,22 @@ abstract class HttpController extends Controller implements HttpControllerInterf
      */
     protected array $files = [];
 
-    public function acceptQuery(): ArrayStringParameterInterface
+    public static function acceptQuery(): ArrayStringParameterInterface
     {
         return arrayString();
     }
 
-    public function acceptBody(): ArrayTypeParameterInterface
+    public static function acceptBody(): ArrayTypeParameterInterface
     {
         return arrayp();
     }
 
-    public function acceptFiles(): ArrayTypeParameterInterface
+    public static function acceptFiles(): ArrayTypeParameterInterface
     {
         return arrayp();
     }
 
-    public function responseHeaders(): array
+    public static function responseHeaders(): array
     {
         return [
             'Content-Disposition' => 'inline',
@@ -72,7 +72,7 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         ];
     }
 
-    final public function acceptError(): ArrayTypeParameterInterface
+    final public static function acceptError(): ArrayTypeParameterInterface
     {
         return arrayp(
             code: union(integer(), string()),

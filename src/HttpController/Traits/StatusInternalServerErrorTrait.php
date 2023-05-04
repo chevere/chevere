@@ -18,7 +18,7 @@ namespace Chevere\HttpController\Traits;
  */
 trait StatusInternalServerErrorTrait
 {
-    public function statusError(): int
+    public static function statusError(): int
     {
         return 500;
     }
