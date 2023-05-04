@@ -16,6 +16,7 @@ namespace Chevere\Action;
 use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Action\Traits\ActionTrait;
 use function Chevere\Message\message;
+use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\LogicException;
@@ -26,23 +27,31 @@ abstract class Action implements ActionInterface
 {
     use ActionTrait;
 
+    protected static ?ParametersInterface $parameters;
+
     public function __construct()
     {
         $this->onConstruct();
     }
 
-    final protected function onConstruct(): void
+    final public static function parameters(): ParametersInterface
     {
-        $this->assertRunMethod();
-        $this->parameters = $this->getParameters();
-        $this->assertRunParameters();
-        $this->acceptResponse = $this->acceptResponse();
+        return self::$parameters ??= self::getParameters();
     }
 
     // @infection-ignore-all
     protected function assertRunParameters(): void
     {
         // enables override
+    }
+
+    final protected function onConstruct(): void
+    {
+        self::$parameters = null;
+        $this->assertRunMethod();
+        self::$parameters = self::getParameters();
+        $this->assertRunParameters();
+        $this->acceptResponse = $this->acceptResponse();
     }
 
     final protected function assertRunMethod(): void

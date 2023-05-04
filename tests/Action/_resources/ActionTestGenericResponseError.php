@@ -21,7 +21,7 @@ use function Chevere\Parameter\string;
 
 final class ActionTestGenericResponseError extends Action
 {
-    public function acceptResponse(): ArrayTypeParameterInterface
+    public static function acceptResponse(): ArrayTypeParameterInterface
     {
         return generic(
             V: integer(),

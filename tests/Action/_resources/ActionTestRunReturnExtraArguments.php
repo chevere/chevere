@@ -20,7 +20,7 @@ use function Chevere\Parameter\string;
 
 final class ActionTestRunReturnExtraArguments extends Action
 {
-    public function acceptResponse(): ArrayTypeParameterInterface
+    public static function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayp(
             name: string()

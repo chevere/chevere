@@ -21,7 +21,7 @@ use function Chevere\Parameter\string;
 
 final class ActionTestController extends Controller
 {
-    public function acceptResponse(): ArrayTypeParameterInterface
+    public static function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayp(user: string());
     }

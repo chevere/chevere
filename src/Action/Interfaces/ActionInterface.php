@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Interfaces;
 
-use Chevere\Common\Interfaces\DescribedInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersAccessInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 /**
@@ -24,7 +23,7 @@ use Chevere\Response\Interfaces\ResponseInterface;
  * @method array<string, mixed> run() Defines the action run
  * logic.
  */
-interface ActionInterface extends ParametersAccessInterface, DescribedInterface
+interface ActionInterface
 {
     /**
      * Determines if action is strict or not.
@@ -37,7 +36,7 @@ interface ActionInterface extends ParametersAccessInterface, DescribedInterface
     /**
      * Defines expected response data parameters when executing `run` method.
      */
-    public function acceptResponse(): ArrayTypeParameterInterface;
+    public static function acceptResponse(): ArrayTypeParameterInterface;
 
     /**
      * Retrieves a new response instance typed against the defined response data parameters.
@@ -46,4 +45,8 @@ interface ActionInterface extends ParametersAccessInterface, DescribedInterface
      * executing the `run` method against `$namedArguments`.
      */
     public function getResponse(mixed ...$argument): ResponseInterface;
+
+    public static function description(): string;
+
+    public static function parameters(): ParametersInterface;
 }

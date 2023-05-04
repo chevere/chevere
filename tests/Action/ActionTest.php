@@ -78,15 +78,15 @@ final class ActionTest extends TestCase
         $optional = array_keys($defaults);
         $required = array_keys($types);
         $action = new ActionTestRunParameters();
-        $this->assertSame($optional, $action->parameters()->optionalKeys());
-        $this->assertSame($required, $action->parameters()->requiredKeys());
+        $this->assertSame($optional, ActionTestRunParameters::parameters()->optionalKeys());
+        $this->assertSame($required, ActionTestRunParameters::parameters()->requiredKeys());
         foreach ($defaults as $name => $value) {
-            $parameter = $action->parameters()->get(strval($name));
+            $parameter = ActionTestRunParameters::parameters()->get(strval($name));
             $this->assertEquals($value, $parameter->default());
         }
         foreach ($types as $parameter => $class) {
             $parameter = strval($parameter);
-            $this->assertInstanceOf($class, $action->parameters()->get($parameter));
+            $this->assertInstanceOf($class, ActionTestRunParameters::parameters()->get($parameter));
         }
         $this->assertSame(
             FileInterface::class,

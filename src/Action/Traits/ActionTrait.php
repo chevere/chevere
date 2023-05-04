@@ -28,14 +28,11 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\ObjectParameter;
-use function Chevere\Parameter\parameters;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
 use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Psr\Container\ContainerInterface;
 use ReflectionAttribute;
 use ReflectionMethod;
 use ReflectionNamedType;
@@ -47,9 +44,9 @@ use ReflectionParameter;
 trait ActionTrait
 {
     /**
-     * @var array<string, class-string<ParameterInterface>>
+     * @var array<string, string>
      */
-    protected array $typeToParameter = [
+    public const TYPE_TO_PARAMETER = [
         'array' => ArrayParameter::class,
         'bool' => BooleanParameter::class,
         'float' => FloatParameter::class,
@@ -58,13 +55,11 @@ trait ActionTrait
         'object' => ObjectParameter::class,
     ];
 
-    protected ParametersInterface $parameters;
-
     protected ArrayTypeParameterInterface $acceptResponse;
 
     protected ReflectionMethod $reflection;
 
-    public function description(): string
+    public static function description(): string
     {
         return '';
     }
@@ -74,14 +69,14 @@ trait ActionTrait
         return true;
     }
 
-    public function acceptResponse(): ArrayTypeParameterInterface
+    public static function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayp();
     }
 
     final public function getResponse(mixed ...$argument): ResponseInterface
     {
-        $arguments = arguments($this->parameters, $argument)->toArray();
+        $arguments = arguments(self::parameters(), $argument)->toArray();
         $data = $this->run(...$arguments);
         if ($this->isStrict()) {
             /** @var array<string, mixed> $data */
@@ -91,21 +86,16 @@ trait ActionTrait
         return new Response(...$data);
     }
 
-    final public function parameters(): ParametersInterface
-    {
-        return $this->parameters;
-    }
-
-    final protected function getParameters(): ParametersInterface
+    final protected static function getParameters(): ParametersInterface
     {
         $collection = [
             0 => [],
             1 => [],
         ];
-        $reflection = new ReflectionMethod($this, 'run');
+        $reflection = new ReflectionMethod(static::class, 'run');
         foreach ($reflection->getParameters() as $reflectionParameter) {
-            $attribute = $this->getAttribute($reflectionParameter);
-            $default = $this->getDefaultValue($reflectionParameter);
+            $attribute = static::getAttribute($reflectionParameter);
+            $default = static::getDefaultValue($reflectionParameter);
             $namedType = $reflectionParameter->getType();
             if ($namedType === null) {
                 throw new TypeError(
@@ -115,7 +105,7 @@ trait ActionTrait
             }
             /** @var ReflectionNamedType $namedType */
             $typeName = $namedType->getName();
-            $type = $this->getTypeToParameter($reflectionParameter);
+            $type = static::getTypeToParameter($reflectionParameter);
             $parameter = new $type($attribute->description());
             if ($parameter instanceof ObjectParameterInterface) {
                 $parameter = $parameter->withClassName($typeName);
@@ -123,7 +113,7 @@ trait ActionTrait
             if ($default !== null && method_exists($parameter, 'withDefault')) {
                 $parameter = $parameter->withDefault($default);
             }
-            $parameter = $this->getParameterWithSome($parameter, $attribute);
+            $parameter = static::getParameterWithSome($parameter, $attribute);
             $pos = intval(! $reflectionParameter->isOptional());
             $collection[$pos][$reflectionParameter->getName()] = $parameter;
         }
@@ -133,7 +123,7 @@ trait ActionTrait
             ->withAddedOptional(...$collection[0]);
     }
 
-    final protected function getAttribute(ReflectionParameter $parameter): StringAttribute
+    final protected static function getAttribute(ReflectionParameter $parameter): StringAttribute
     {
         $reflectionAttributes = $parameter->getAttributes(StringAttribute::class);
         /**
@@ -149,14 +139,14 @@ trait ActionTrait
         return new StringAttribute();
     }
 
-    final protected function getDefaultValue(ReflectionParameter $reflection): mixed
+    final protected static function getDefaultValue(ReflectionParameter $reflection): mixed
     {
         return $reflection->isDefaultValueAvailable()
             ? $reflection->getDefaultValue()
             : null;
     }
 
-    final protected function getParameterWithSome(
+    final protected static function getParameterWithSome(
         ParameterInterface $parameter,
         StringAttribute $attribute
     ): ParameterInterface {
@@ -167,13 +157,13 @@ trait ActionTrait
         return $parameter->withRegex($attribute->regex());
     }
 
-    final protected function getTypeToParameter(ReflectionParameter $reflection): string
+    final protected static function getTypeToParameter(ReflectionParameter $reflection): string
     {
         /** @var ReflectionNamedType $namedType */
         $namedType = $reflection->getType();
-        $type = $this->typeToParameter[$namedType->getName()] ?? null;
+        $type = self::TYPE_TO_PARAMETER[$namedType->getName()] ?? null;
         if ($type === null) {
-            $type = $this->typeToParameter['object'];
+            $type = self::TYPE_TO_PARAMETER['object'];
         }
 
         return $type;
