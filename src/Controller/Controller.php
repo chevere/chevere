@@ -24,7 +24,7 @@ abstract class Controller extends Action implements ControllerInterface
     final protected function assertRunParameters(): void
     {
         $invalid = [];
-        foreach (self::parameters() as $name => $parameter) {
+        foreach (self::getParameters() as $name => $parameter) {
             if (! ($parameter instanceof StringParameterInterface)) {
                 $invalid[] = $name;
             }

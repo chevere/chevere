@@ -40,7 +40,7 @@ abstract class Action implements ActionInterface
     final protected function onConstruct(): void
     {
         $this->assertRunMethod();
-        self::$parameters = self::getParameters();
+        self::getParameters();
         $this->assertRunParameters();
         $this->acceptResponse = $this->acceptResponse();
     }

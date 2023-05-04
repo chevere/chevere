@@ -46,7 +46,7 @@ final class ActionTest extends TestCase
     {
         $action = new ActionTestAction();
         $this->assertSame('', $action->description());
-        $this->assertCount(0, $action->parameters());
+        $this->assertCount(0, $action->getParameters());
         $action->run();
     }
 
@@ -78,28 +78,28 @@ final class ActionTest extends TestCase
         $optional = array_keys($defaults);
         $required = array_keys($types);
         $action = new ActionTestRunParameters();
-        $this->assertSame($optional, ActionTestRunParameters::parameters()->optionalKeys());
-        $this->assertSame($required, ActionTestRunParameters::parameters()->requiredKeys());
+        $this->assertSame($optional, ActionTestRunParameters::getParameters()->optionalKeys());
+        $this->assertSame($required, ActionTestRunParameters::getParameters()->requiredKeys());
         foreach ($defaults as $name => $value) {
-            $parameter = ActionTestRunParameters::parameters()->get(strval($name));
+            $parameter = ActionTestRunParameters::getParameters()->get(strval($name));
             $this->assertEquals($value, $parameter->default());
         }
         foreach ($types as $parameter => $class) {
             $parameter = strval($parameter);
-            $this->assertInstanceOf($class, ActionTestRunParameters::parameters()->get($parameter));
+            $this->assertInstanceOf($class, ActionTestRunParameters::getParameters()->get($parameter));
         }
         $this->assertSame(
             FileInterface::class,
-            $action->parameters()->get('file')->type()->typeHinting()
+            $action->getParameters()->get('file')->type()->typeHinting()
         );
     }
 
     public function testParamsAttributes(): void
     {
         $action = new ActionTestParameterAttributes();
-        $this->assertSame('An int', $action->parameters()->get('int')->description());
+        $this->assertSame('An int', $action->getParameters()->get('int')->description());
         /** @var StringParameterInterface $parameter */
-        $parameter = $action->parameters()->get('name');
+        $parameter = $action->getParameters()->get('name');
         $this->assertSame('The name', $parameter->description());
         $this->assertSame('/^[a-z]$/', $parameter->regex()->__toString());
     }

@@ -78,7 +78,7 @@ trait ActionTrait
 
     final public function getResponse(mixed ...$argument): ResponseInterface
     {
-        $arguments = arguments(self::parameters(), $argument)->toArray();
+        $arguments = arguments(self::getParameters(), $argument)->toArray();
         $data = $this->run(...$arguments);
         if ($this->isStrict()) {
             /** @var array<string, mixed> $data */
@@ -88,13 +88,7 @@ trait ActionTrait
         return new Response(...$data);
     }
 
-    final public static function parameters(): ParametersInterface
-    {
-        // @infection-ignore-all
-        return self::$parameters ?? self::getParameters();
-    }
-
-    final protected static function getParameters(): ParametersInterface
+    final public static function getParameters(): ParametersInterface
     {
         $collection = [
             0 => [],

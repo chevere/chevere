@@ -48,5 +48,5 @@ interface ActionInterface
 
     public static function description(): string;
 
-    public static function parameters(): ParametersInterface;
+    public static function getParameters(): ParametersInterface;
 }
