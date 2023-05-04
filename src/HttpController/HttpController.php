@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\HttpController;
 
 use Chevere\Controller\Controller;
-use Chevere\Http\Interfaces\MiddlewaresInterface;
-use Chevere\Http\Middlewares;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\HttpController\Traits\StatusInternalServerErrorTrait;
 use Chevere\HttpController\Traits\StatusOkTrait;
@@ -50,8 +48,6 @@ abstract class HttpController extends Controller implements HttpControllerInterf
      * @var array<int|string, array<string, int|string>>
      */
     protected array $files = [];
-
-    protected MiddlewaresInterface $middlewares;
 
     public function acceptQuery(): ArrayStringParameterInterface
     {
@@ -116,19 +112,6 @@ abstract class HttpController extends Controller implements HttpControllerInterf
         $new->files = $array;
 
         return $new;
-    }
-
-    final public function withMiddlewares(MiddlewaresInterface $middleware): static
-    {
-        $new = clone $this;
-        $new->middlewares = $middleware;
-
-        return $new;
-    }
-
-    final public function middlewares(): MiddlewaresInterface
-    {
-        return $this->middlewares ??= new Middlewares();
     }
 
     final public function query(): array

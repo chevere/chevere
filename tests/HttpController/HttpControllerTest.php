@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\HttpController;
 
-use Chevere\Http\Middlewares;
 use Chevere\Tests\HttpController\_resources\TestHttpAcceptController;
 use Chevere\Tests\HttpController\_resources\TestHttpController;
 use Chevere\Throwable\Errors\ArgumentCountError;
@@ -30,7 +29,6 @@ final class HttpControllerTest extends TestCase
         $this->assertCount(0, $controller->acceptQuery()->items());
         $this->assertCount(0, $controller->acceptBody()->items());
         $this->assertCount(0, $controller->acceptFiles()->items());
-        $this->assertCount(0, $controller->middlewares());
         $this->assertSame(
             [
                 'Content-Disposition' => 'inline',
@@ -38,16 +36,6 @@ final class HttpControllerTest extends TestCase
             ],
             $controller->responseHeaders()
         );
-    }
-
-    public function testMiddleware(): void
-    {
-        $controller = new TestHttpController();
-        $middlewares = new Middlewares();
-        $controllerWith = $controller->withMiddlewares($middlewares);
-        $this->assertNotSame($controller, $controllerWith);
-        $this->assertNotEquals($controller, $controllerWith);
-        $this->assertSame($middlewares, $controllerWith->middlewares());
     }
 
     public function testAcceptGetParameters(): void

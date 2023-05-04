@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\HttpController\Interfaces;
 
 use Chevere\Controller\Interfaces\ControllerInterface;
-use Chevere\Http\Interfaces\MiddlewaresInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 
@@ -61,19 +60,6 @@ interface HttpControllerInterface extends ControllerInterface
      * @param array<int|string, array<string, int|string>> $files
      */
     public function withFiles(array $files): static;
-
-    /**
-     * Return an instance with the specified middlewares.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified middleware.
-     */
-    public function withMiddlewares(MiddlewaresInterface $middleware): static;
-
-    /**
-     * Provides access to the controller middlewares.
-     */
-    public function middlewares(): MiddlewaresInterface;
 
     /**
      * @return array<int|string, string>
