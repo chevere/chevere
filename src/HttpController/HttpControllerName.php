@@ -11,8 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Controller;
+namespace Chevere\HttpController;
 
+use Chevere\Controller\ControllerName;
 use Chevere\Controller\Interfaces\ControllerNameInterface;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\HttpController\Interfaces\HttpControllerNameInterface;
