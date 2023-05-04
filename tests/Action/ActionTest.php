@@ -33,7 +33,6 @@ use Chevere\Tests\Action\_resources\ActionTestParameterAttributes;
 use Chevere\Tests\Action\_resources\ActionTestRunParameterMissingType;
 use Chevere\Tests\Action\_resources\ActionTestRunParameters;
 use Chevere\Tests\Action\_resources\ActionTestRunReturnExtraArguments;
-use Chevere\Tests\Action\_resources\ActionTestSetupBeforeAndAfter;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\ErrorException;
@@ -135,13 +134,6 @@ final class ActionTest extends TestCase
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('$mixed');
         new ActionTestRunParameterMissingType();
-    }
-
-    public function testSetupBeforeAndAfter(): void
-    {
-        $action = new ActionTestSetupBeforeAndAfter();
-        $this->assertSame(1, $action->before());
-        $this->assertSame(2, $action->after());
     }
 
     public function testRunReturnExtraArguments(): void

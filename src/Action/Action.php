@@ -15,7 +15,6 @@ namespace Chevere\Action;
 
 use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Action\Traits\ActionTrait;
-use Chevere\Container\Container;
 use function Chevere\Message\message;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\ErrorException;
@@ -34,28 +33,10 @@ abstract class Action implements ActionInterface
 
     final protected function onConstruct(): void
     {
-        $this->setUpBefore();
         $this->assertRunMethod();
         $this->parameters = $this->getParameters();
         $this->assertRunParameters();
         $this->acceptResponse = $this->acceptResponse();
-        $this->setUpAfter();
-    }
-
-    /**
-     * This method runs on class instantiation (before __construct).
-     */
-    protected function setUpBefore(): void
-    {
-        // enables override
-    }
-
-    /**
-     * This method runs on class instantiation (after __construct).
-     */
-    protected function setUpAfter(): void
-    {
-        // enables override
     }
 
     // @infection-ignore-all
