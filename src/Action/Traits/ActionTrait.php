@@ -13,23 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Traits;
 
+use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Attribute\StringAttribute;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
-use Chevere\Parameter\ArrayParameter;
 use function Chevere\Parameter\assertArgument;
-use Chevere\Parameter\BooleanParameter;
-use Chevere\Parameter\FloatParameter;
-use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
-use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
-use Chevere\Parameter\StringParameter;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
 use Chevere\Throwable\Errors\TypeError;
@@ -43,18 +38,6 @@ use ReflectionParameter;
  */
 trait ActionTrait
 {
-    /**
-     * @var array<string, string>
-     */
-    public const TYPE_TO_PARAMETER = [
-        'array' => ArrayParameter::class,
-        'bool' => BooleanParameter::class,
-        'float' => FloatParameter::class,
-        'int' => IntegerParameter::class,
-        'string' => StringParameter::class,
-        'object' => ObjectParameter::class,
-    ];
-
     protected ArrayTypeParameterInterface $acceptResponse;
 
     protected ReflectionMethod $reflection;
@@ -161,9 +144,9 @@ trait ActionTrait
     {
         /** @var ReflectionNamedType $namedType */
         $namedType = $reflection->getType();
-        $type = self::TYPE_TO_PARAMETER[$namedType->getName()] ?? null;
+        $type = ActionInterface::TYPE_TO_PARAMETER[$namedType->getName()] ?? null;
         if ($type === null) {
-            $type = self::TYPE_TO_PARAMETER['object'];
+            $type = ActionInterface::TYPE_TO_PARAMETER['object'];
         }
 
         return $type;
