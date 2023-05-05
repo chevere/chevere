@@ -38,16 +38,12 @@ use ReflectionParameter;
  */
 trait ActionTrait
 {
-    protected ArrayTypeParameterInterface $acceptResponse;
-
-    protected ReflectionMethod $reflection;
-
     public static function description(): string
     {
         return '';
     }
 
-    public function isStrict(): bool
+    public static function isStrict(): bool
     {
         return true;
     }
@@ -59,11 +55,11 @@ trait ActionTrait
 
     final public function getResponse(mixed ...$argument): ResponseInterface
     {
-        $arguments = arguments(self::getParameters(), $argument)->toArray();
+        $arguments = arguments(static::getParameters(), $argument)->toArray();
         $data = $this->run(...$arguments);
-        if ($this->isStrict()) {
+        if (static::isStrict()) {
             /** @var array<string, mixed> $data */
-            $data = assertArgument($this->acceptResponse, $data);
+            $data = assertArgument(static::acceptResponse(), $data);
         }
 
         return new Response(...$data);

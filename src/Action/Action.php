@@ -42,7 +42,6 @@ abstract class Action implements ActionInterface
         $this->assertRunMethod();
         self::getParameters();
         $this->assertRunParameters();
-        $this->acceptResponse = $this->acceptResponse();
     }
 
     final protected function assertRunMethod(): void

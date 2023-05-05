@@ -15,7 +15,7 @@ namespace Chevere\Action\Traits;
 
 trait NoStrictActionTrait
 {
-    public function isStrict(): bool
+    public static function isStrict(): bool
     {
         return false;
     }
