@@ -20,4 +20,8 @@ use Stringable;
  */
 interface HttpControllerNameInterface extends Stringable
 {
+    /**
+     * @return class-string HttpControllerInterface
+     */
+    public function __toString(): string;
 }

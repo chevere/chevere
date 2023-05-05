@@ -30,6 +30,9 @@ final class HttpControllerName implements HttpControllerNameInterface
 
     public function __toString(): string
     {
+        /**
+         * @var class-string HttpControllerInterface
+         */
         return $this->controllerName->__toString();
     }
 }
