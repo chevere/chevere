@@ -41,9 +41,12 @@ trait ArrayParameterTrait
                 'required' => $this->items->isRequired($name),
             ] + $parameter->schema();
         }
+        $type = $this->type->primitive()
+            . '#'
+            . ($this->isList() ? 'list' : 'map');
 
         return [
-            'type' => $this->type->primitive(),
+            'type' => $type,
             'description' => $this->description(),
             'default' => $this->default(),
             'items' => $items,

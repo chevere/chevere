@@ -30,7 +30,7 @@ final class ArrayParameterTest extends TestCase
         $this->assertSame(null, $parameter->default());
         $this->assertCount(0, $parameter->items());
         $this->assertSame([
-            'type' => 'array',
+            'type' => 'array#map',
             'description' => '',
             'default' => null,
             'items' => [],
@@ -44,7 +44,7 @@ final class ArrayParameterTest extends TestCase
             parameterWithDefault: $withDefault
         );
         $this->assertSame([
-            'type' => 'array',
+            'type' => 'array#map',
             'description' => '',
             'default' => $default,
             'items' => [],
@@ -72,7 +72,7 @@ final class ArrayParameterTest extends TestCase
             $withRequired->items()->get('two')
         );
         $this->assertSame([
-            'type' => 'array',
+            'type' => 'array#map',
             'description' => '',
             'default' => null,
             'items' => [
@@ -197,8 +197,10 @@ final class ArrayParameterTest extends TestCase
         );
         $this->assertFalse($parameter->isList());
         $this->assertTrue($parameter->isMap());
+        $this->assertSame('array#map', $parameter->schema()['type']);
         $parameter = (new ArrayParameter())->withRequired($string, $integer);
         $this->assertTrue($parameter->isList());
         $this->assertFalse($parameter->isMap());
+        $this->assertSame('array#list', $parameter->schema()['type']);
     }
 }
