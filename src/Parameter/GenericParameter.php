@@ -59,6 +59,11 @@ final class GenericParameter implements GenericParameterInterface
         $this->value->assertCompatible($parameter->value());
     }
 
+    public function typeSchema(): string
+    {
+        return $this->type->primitive();
+    }
+
     private function getType(): TypeInterface
     {
         return typeGeneric();

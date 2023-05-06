@@ -38,7 +38,7 @@ final class GenericParameterTest extends TestCase
         $this->assertSame(null, $parameter->default());
         $this->assertSame($description, $parameter->description());
         $this->assertSame([
-            'type' => 'generic#map',
+            'type' => 'generic',
             'description' => $description,
             'default' => null,
             'items' => [
