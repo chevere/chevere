@@ -16,7 +16,6 @@ namespace Chevere\Http\Interfaces;
 use Chevere\DataStructure\Interfaces\IntegerKeysInterface;
 use Countable;
 use Iterator;
-use Psr\Http\Server\MiddlewareInterface;
 
 /**
  * Describes the component in charge of collecting PSR HTTP server middleware.

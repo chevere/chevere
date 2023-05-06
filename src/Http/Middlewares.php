@@ -16,8 +16,8 @@ namespace Chevere\Http;
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Traits\VectorTrait;
 use Chevere\DataStructure\Vector;
+use Chevere\Http\Interfaces\MiddlewareInterface;
 use Chevere\Http\Interfaces\MiddlewaresInterface;
-use Psr\Http\Server\MiddlewareInterface;
 
 final class Middlewares implements MiddlewaresInterface
 {

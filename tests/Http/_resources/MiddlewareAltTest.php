@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Http\_resources;
 
+use Chevere\Http\Interfaces\MiddlewareInterface;
+use Chevere\HttpController\Traits\StatusBadRequestTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class MiddlewareAltTest implements MiddlewareInterface
 {
+    use StatusBadRequestTrait;
+
     public function process(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
