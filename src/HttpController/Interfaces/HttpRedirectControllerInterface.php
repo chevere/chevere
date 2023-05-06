@@ -36,5 +36,8 @@ interface HttpRedirectControllerInterface extends HttpControllerInterface
 
     public function uri(): UriInterface;
 
+    /**
+     * @return int<300, 399>
+     */
     public function status(): int;
 }

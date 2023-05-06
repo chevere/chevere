@@ -27,6 +27,9 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
 {
     private ?UriInterface $uri;
 
+    /**
+     * @var int<300, 399>
+     */
     private int $status = 302;
 
     public static function acceptResponse(): ArrayTypeParameterInterface
@@ -46,6 +49,9 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
         return $new;
     }
 
+    /**
+     * @param int<300, 399> $status
+     */
     final public function withStatus(int $status): static
     {
         $new = clone $this;
@@ -60,6 +66,9 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
             ?? throw new LogicException(message('No uri set'));
     }
 
+    /**
+     * @return int<300, 399>
+     */
     final public function status(): int
     {
         return $this->status;
@@ -76,25 +85,25 @@ abstract class HttpRedirectController extends HttpController implements HttpRedi
         ];
     }
 
-    final protected function assertStatus(): void
-    {
-        if (! in_array($this->status, static::STATUSES, true)) {
-            throw new InvalidArgumentException(
-                message('Invalid status code %status% provided, must be one of %statuses%')
-                    ->withCode('%status%', strval($this->status))
-                    ->withCode('%statuses%', implode(', ', static::STATUSES))
-            );
-        }
-    }
-
     final protected function setUri(UriInterface $uri): void
     {
         $this->uri = $uri;
     }
 
+    /**
+     * @param int<300, 399> $status
+     */
     final protected function setStatus(int $status): void
     {
         $this->status = $status;
-        $this->assertStatus();
+        if (in_array($this->status, static::STATUSES, true)) {
+            return;
+        }
+
+        throw new InvalidArgumentException(
+            message('Invalid status code %status% provided, must be one of %statuses%')
+                ->withCode('%status%', strval($this->status))
+                ->withCode('%statuses%', implode(', ', static::STATUSES))
+        );
     }
 }

@@ -22,8 +22,14 @@ use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
  */
 interface HttpControllerInterface extends ControllerInterface
 {
+    /**
+     * @return int<200, 399>
+     */
     public static function statusSuccess(): int;
 
+    /**
+     * @return int<400, 599>
+     */
     public static function statusError(): int;
 
     /**
