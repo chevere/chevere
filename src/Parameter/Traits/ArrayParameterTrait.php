@@ -23,6 +23,8 @@ trait ArrayParameterTrait
 
     private TypeInterface $type;
 
+    private bool $isList = false;
+
     /**
      * @return array<mixed, mixed>
      */
@@ -51,6 +53,16 @@ trait ArrayParameterTrait
     public function items(): ParametersInterface
     {
         return $this->items;
+    }
+
+    public function isList(): bool
+    {
+        return $this->isList;
+    }
+
+    public function isMap(): bool
+    {
+        return ! $this->isList();
     }
 
     abstract public function description(): string;

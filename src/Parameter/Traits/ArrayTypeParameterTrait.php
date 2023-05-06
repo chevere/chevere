@@ -20,6 +20,8 @@ trait ArrayTypeParameterTrait
 {
     private ParametersInterface $items;
 
+    private bool $isList = false;
+
     public function withDefault(array $value): static
     {
         $new = clone $this;
@@ -41,6 +43,9 @@ trait ArrayTypeParameterTrait
     {
         $this->removeConflictKeys(...$parameter);
         $this->items = $this->items->{$method}(...$parameter);
+        $keys = $this->items->keys();
+        $fillKeys = array_fill_keys($keys, null);
+        $this->isList = array_is_list($fillKeys);
     }
 
     private function removeConflictKeys(ParameterInterface ...$parameter): void

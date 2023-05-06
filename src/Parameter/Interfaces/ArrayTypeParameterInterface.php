@@ -30,4 +30,8 @@ interface ArrayTypeParameterInterface extends ParameterInterface
      * Provides access to the parameters.
      */
     public function items(): ParametersInterface;
+
+    public function isList(): bool;
+
+    public function isMap(): bool;
 }

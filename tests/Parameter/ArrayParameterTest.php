@@ -186,4 +186,19 @@ final class ArrayParameterTest extends TestCase
         $this->expectException(OutOfBoundsException::class);
         $parameter->assertCompatible($notCompatible);
     }
+
+    public function testIsList(): void
+    {
+        $string = string();
+        $integer = integer();
+        $parameter = (new ArrayParameter())->withRequired(
+            a: $string,
+            b: $integer,
+        );
+        $this->assertFalse($parameter->isList());
+        $this->assertTrue($parameter->isMap());
+        $parameter = (new ArrayParameter())->withRequired($string, $integer);
+        $this->assertTrue($parameter->isList());
+        $this->assertFalse($parameter->isMap());
+    }
 }
