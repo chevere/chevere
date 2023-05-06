@@ -15,7 +15,7 @@ namespace Chevere\HttpController;
 
 use Chevere\Controller\Controller;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
-use Chevere\HttpController\Traits\StatusInternalServerErrorTrait;
+use Chevere\HttpController\Traits\StatusNotFoundTrait;
 use Chevere\HttpController\Traits\StatusOkTrait;
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\arrayp;
@@ -32,7 +32,7 @@ use function Chevere\Parameter\union;
 abstract class HttpController extends Controller implements HttpControllerInterface
 {
     use StatusOkTrait;
-    use StatusInternalServerErrorTrait;
+    use StatusNotFoundTrait;
 
     /**
      * @var array<int|string, string>

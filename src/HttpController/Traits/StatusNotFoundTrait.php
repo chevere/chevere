@@ -11,13 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Exceptions;
-
-use Chevere\Throwable\Exception;
+namespace Chevere\HttpController\Traits;
 
 /**
- * @deprecated Use MethodNotAllowedException instead
+ * 404
  */
-final class HttpMethodNotAllowedException extends Exception
+trait StatusNotFoundTrait
 {
+    public static function statusError(): int
+    {
+        return 404;
+    }
 }
