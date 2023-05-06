@@ -61,6 +61,11 @@ final class UnionParameter implements UnionParameterInterface
         $this->assertArrayType($parameter);
     }
 
+    public function typeSchema(): string
+    {
+        return $this->type->primitive();
+    }
+
     private function getType(): TypeInterface
     {
         return typeUnion();

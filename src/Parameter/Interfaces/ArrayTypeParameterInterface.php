@@ -31,6 +31,8 @@ interface ArrayTypeParameterInterface extends ParameterInterface
      */
     public function items(): ParametersInterface;
 
+    public function typeSchema(): string;
+
     public function isList(): bool;
 
     public function isMap(): bool;

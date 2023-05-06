@@ -36,6 +36,10 @@ final class HttpControllerTest extends TestCase
             ],
             $controller->responseHeaders()
         );
+        $this->assertSame(
+            ['code', 'message'],
+            $controller->acceptError()->items()->keys()
+        );
     }
 
     public function testAcceptGetParameters(): void

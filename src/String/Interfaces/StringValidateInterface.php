@@ -16,7 +16,7 @@ namespace Chevere\String\Interfaces;
 /**
  * Describes the component in charge of string validations.
  */
-interface ValidateStringInterface
+interface StringValidateInterface
 {
     /**
      * Indicates whether the string is empty.

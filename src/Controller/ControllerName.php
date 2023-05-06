@@ -18,12 +18,14 @@ use Chevere\Controller\Exceptions\ControllerNameNotExistsException;
 use Chevere\Controller\Interfaces\ControllerInterface;
 use Chevere\Controller\Interfaces\ControllerNameInterface;
 use function Chevere\Message\message;
+use Chevere\String\StringAssert;
 
 final class ControllerName implements ControllerNameInterface
 {
     public function __construct(
         private string $name
     ) {
+        (new StringAssert($this->name))->notEmpty()->notCtypeSpace();
         $this->assertExists();
         $this->assertInterface(ControllerInterface::class);
     }
@@ -53,7 +55,7 @@ final class ControllerName implements ControllerNameInterface
         }
 
         throw new ControllerNameNotExistsException(
-            message("Controller %controllerName% doesn't exists")
+            message("Class %controllerName% doesn't exists")
                 ->withCode('%controllerName%', $this->name)
         );
     }

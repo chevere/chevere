@@ -33,6 +33,15 @@ trait ArrayParameterTrait
         return $this->default;
     }
 
+    public function typeSchema(): string
+    {
+        $type = $this->type->primitive();
+        $subType = $this->isList() ? 'list' : 'map';
+        $type .= "#{$subType}";
+
+        return $type;
+    }
+
     public function schema(): array
     {
         $items = [];
@@ -41,12 +50,9 @@ trait ArrayParameterTrait
                 'required' => $this->items->isRequired($name),
             ] + $parameter->schema();
         }
-        $type = $this->type->primitive()
-            . '#'
-            . ($this->isList() ? 'list' : 'map');
 
         return [
-            'type' => $type,
+            'type' => $this->typeSchema(),
             'description' => $this->description(),
             'default' => $this->default(),
             'items' => $items,

@@ -197,10 +197,10 @@ final class ArrayParameterTest extends TestCase
         );
         $this->assertFalse($parameter->isList());
         $this->assertTrue($parameter->isMap());
-        $this->assertSame('array#map', $parameter->schema()['type']);
+        $this->assertSame('array#map', $parameter->typeSchema());
         $parameter = (new ArrayParameter())->withRequired($string, $integer);
         $this->assertTrue($parameter->isList());
         $this->assertFalse($parameter->isMap());
-        $this->assertSame('array#list', $parameter->schema()['type']);
+        $this->assertSame('array#list', $parameter->typeSchema());
     }
 }

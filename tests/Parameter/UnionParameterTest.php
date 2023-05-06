@@ -33,6 +33,7 @@ final class UnionParameterTest extends TestCase
             $parameter->type()->primitive()
         );
         $this->assertCount(0, $parameter->items());
+        $this->assertSame(TypeInterface::UNION, $parameter->typeSchema());
     }
 
     public function testWithAdded(): void

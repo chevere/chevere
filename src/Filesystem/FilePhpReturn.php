@@ -20,7 +20,7 @@ use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
 use function Chevere\Message\message;
-use Chevere\String\AssertString;
+use Chevere\String\StringAssert;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 use Chevere\VariableSupport\StorableVariable;
 use Throwable;
@@ -101,7 +101,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         $contents = $this->filePhp->file()->getContents();
 
         try {
-            (new AssertString($contents))->notEmpty()->notCtypeSpace();
+            (new StringAssert($contents))->notEmpty()->notCtypeSpace();
         } catch (Throwable) {
             throw new FileWithoutContentsException(
                 message("The file at %path% doesn't have any contents")

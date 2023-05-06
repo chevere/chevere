@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\String;
 
-use Chevere\String\AssertString;
 use Chevere\String\Exceptions\ContainsException;
 use Chevere\String\Exceptions\CtypeDigitException;
 use Chevere\String\Exceptions\CtypeSpaceException;
@@ -30,120 +29,121 @@ use Chevere\String\Exceptions\NotStartsWithException;
 use Chevere\String\Exceptions\SameException;
 use Chevere\String\Exceptions\StartsWithCtypeDigitException;
 use Chevere\String\Exceptions\StartsWithException;
+use Chevere\String\StringAssert;
 use PHPUnit\Framework\TestCase;
 
 final class AssertStringTest extends TestCase
 {
     public function testEmpty(): void
     {
-        (new AssertString(''))->empty();
+        (new StringAssert(''))->empty();
         $this->expectException(NotEmptyException::class);
-        (new AssertString(' '))->empty();
+        (new StringAssert(' '))->empty();
     }
 
     public function testNotEmpty(): void
     {
-        (new AssertString(' '))->notEmpty();
-        (new AssertString('0'))->notEmpty();
+        (new StringAssert(' '))->notEmpty();
+        (new StringAssert('0'))->notEmpty();
         $this->expectException(EmptyException::class);
-        (new AssertString(''))->notEmpty();
+        (new StringAssert(''))->notEmpty();
     }
 
     public function testCtypeSpace(): void
     {
-        (new AssertString(" \n\t\r"))->ctypeSpace();
+        (new StringAssert(" \n\t\r"))->ctypeSpace();
         $this->expectException(NotCtypeSpaceException::class);
-        (new AssertString('string'))->ctypeSpace();
+        (new StringAssert('string'))->ctypeSpace();
     }
 
     public function testNotCtypeSpace(): void
     {
-        (new AssertString("\n valid"))->notCtypeSpace();
+        (new StringAssert("\n valid"))->notCtypeSpace();
         $this->expectException(CtypeSpaceException::class);
-        (new AssertString(" \n\t\r"))->notCtypeSpace();
+        (new StringAssert(" \n\t\r"))->notCtypeSpace();
     }
 
     public function testCtypeDigit(): void
     {
-        (new AssertString(" \n\t\r"))->ctypeDigit();
+        (new StringAssert(" \n\t\r"))->ctypeDigit();
         $this->expectException(NotCtypeDigitException::class);
-        (new AssertString('string'))->ctypeDigit();
+        (new StringAssert('string'))->ctypeDigit();
     }
 
     public function testNotCtypeDigit(): void
     {
-        (new AssertString('string'))->notCtypeDigit();
+        (new StringAssert('string'))->notCtypeDigit();
         $this->expectException(CtypeDigitException::class);
-        (new AssertString('101'))->notCtypeDigit();
+        (new StringAssert('101'))->notCtypeDigit();
     }
 
     public function testStartsWithCtypeDigit(): void
     {
-        (new AssertString('0string'))->startsWithCtypeDigit();
+        (new StringAssert('0string'))->startsWithCtypeDigit();
         $this->expectException(NotStartsWithCtypeDigitException::class);
-        (new AssertString('string'))->startsWithCtypeDigit();
+        (new StringAssert('string'))->startsWithCtypeDigit();
     }
 
     public function testNotStartsWithCtypeDigit(): void
     {
-        (new AssertString('string'))->notStartsWithCtypeDigit();
+        (new StringAssert('string'))->notStartsWithCtypeDigit();
         $this->expectException(StartsWithCtypeDigitException::class);
-        (new AssertString('0string'))->notStartsWithCtypeDigit();
+        (new StringAssert('0string'))->notStartsWithCtypeDigit();
     }
 
     public function testStartsWith(): void
     {
-        (new AssertString('á string'))->startsWith('á');
+        (new StringAssert('á string'))->startsWith('á');
         $this->expectException(NotStartsWithException::class);
-        (new AssertString('string'))->startsWith('some');
+        (new StringAssert('string'))->startsWith('some');
     }
 
     public function testNotStartsWith(): void
     {
-        (new AssertString('string'))->notStartsWith('other');
+        (new StringAssert('string'))->notStartsWith('other');
         $this->expectException(StartsWithException::class);
-        (new AssertString('string'))->notStartsWith('st');
+        (new StringAssert('string'))->notStartsWith('st');
     }
 
     public function testEndsWith(): void
     {
-        (new AssertString('string'))->endsWith('ing');
+        (new StringAssert('string'))->endsWith('ing');
         $this->expectException(NotEndsWithException::class);
-        (new AssertString('string'))->endsWith('another');
+        (new StringAssert('string'))->endsWith('another');
     }
 
     public function testNotEndsWith(): void
     {
-        (new AssertString('string'))->notEndsWith('other');
+        (new StringAssert('string'))->notEndsWith('other');
         $this->expectException(EndsWithException::class);
-        (new AssertString('string'))->notEndsWith('ing');
+        (new StringAssert('string'))->notEndsWith('ing');
     }
 
     public function testSame(): void
     {
-        (new AssertString('string'))->same('string');
+        (new StringAssert('string'))->same('string');
         $this->expectException(NotSameException::class);
-        (new AssertString('string'))->same('strin');
+        (new StringAssert('string'))->same('strin');
     }
 
     public function testNotSame(): void
     {
-        (new AssertString('string'))->notSame('algo');
+        (new StringAssert('string'))->notSame('algo');
         $this->expectException(SameException::class);
-        (new AssertString('string'))->notSame('string');
+        (new StringAssert('string'))->notSame('string');
     }
 
     public function testContains(): void
     {
-        (new AssertString('string'))->contains('trin');
+        (new StringAssert('string'))->contains('trin');
         $this->expectException(NotContainsException::class);
-        (new AssertString('string'))->contains('foo');
+        (new StringAssert('string'))->contains('foo');
     }
 
     public function testNotContains(): void
     {
-        (new AssertString('string'))->notContains('algo');
+        (new StringAssert('string'))->notContains('algo');
         $this->expectException(ContainsException::class);
-        (new AssertString('string'))->notContains('trin');
+        (new StringAssert('string'))->notContains('trin');
     }
 }

@@ -33,7 +33,7 @@ use Chevere\String\Exceptions\StartsWithException;
 /**
  * Describes the component in charge of string assertions.
  */
-interface AssertStringInterface
+interface StringAssertInterface
 {
     /**
      * Asserts that the string is empty.

@@ -15,7 +15,7 @@ namespace Chevere\Filesystem;
 
 use Chevere\Filesystem\Interfaces\FilenameInterface;
 use function Chevere\Message\message;
-use Chevere\String\AssertString;
+use Chevere\String\StringAssert;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LengthException;
 use Throwable;
@@ -52,7 +52,7 @@ final class Filename implements FilenameInterface
     private function assertBasename(): void
     {
         try {
-            (new AssertString($this->filename))
+            (new StringAssert($this->filename))
                 ->notEmpty()
                 ->notCtypeSpace();
         } catch (Throwable $e) {

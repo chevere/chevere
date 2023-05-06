@@ -16,6 +16,8 @@ namespace Chevere\Tests\Controller;
 use Chevere\Controller\ControllerName;
 use Chevere\Controller\Exceptions\ControllerNameInterfaceException;
 use Chevere\Controller\Exceptions\ControllerNameNotExistsException;
+use Chevere\String\Exceptions\CtypeSpaceException;
+use Chevere\String\Exceptions\EmptyException;
 use Chevere\Tests\Controller\_resources\ControllerNameTestController;
 use PHPUnit\Framework\TestCase;
 
@@ -23,20 +25,14 @@ final class ControllerNameTest extends TestCase
 {
     public function testEmpty(): void
     {
-        $this->expectException(ControllerNameNotExistsException::class);
+        $this->expectException(EmptyException::class);
         new ControllerName('');
     }
 
     public function testCtypeSpace(): void
     {
-        $this->expectException(ControllerNameNotExistsException::class);
+        $this->expectException(CtypeSpaceException::class);
         new ControllerName(' ');
-    }
-
-    public function testContainSpaces(): void
-    {
-        $this->expectException(ControllerNameNotExistsException::class);
-        new ControllerName('a name');
     }
 
     public function testNotExists(): void

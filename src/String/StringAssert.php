@@ -30,18 +30,18 @@ use Chevere\String\Exceptions\NotStartsWithException;
 use Chevere\String\Exceptions\SameException;
 use Chevere\String\Exceptions\StartsWithCtypeDigitException;
 use Chevere\String\Exceptions\StartsWithException;
-use Chevere\String\Interfaces\AssertStringInterface;
+use Chevere\String\Interfaces\StringAssertInterface;
 
-final class AssertString implements AssertStringInterface
+final class StringAssert implements StringAssertInterface
 {
     public function __construct(
         private string $string
     ) {
     }
 
-    public function empty(): AssertStringInterface
+    public function empty(): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isEmpty()) {
+        if ((new StringValidate($this->string))->isEmpty()) {
             return $this;
         }
 
@@ -51,9 +51,9 @@ final class AssertString implements AssertStringInterface
         );
     }
 
-    public function notEmpty(): AssertStringInterface
+    public function notEmpty(): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isEmpty()) {
+        if ((new StringValidate($this->string))->isEmpty()) {
             throw new EmptyException(
                 message('String is empty')
             );
@@ -62,9 +62,9 @@ final class AssertString implements AssertStringInterface
         return $this;
     }
 
-    public function ctypeSpace(): AssertStringInterface
+    public function ctypeSpace(): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isCtypeSpace()) {
+        if ((new StringValidate($this->string))->isCtypeSpace()) {
             return $this;
         }
 
@@ -75,9 +75,9 @@ final class AssertString implements AssertStringInterface
         );
     }
 
-    public function notCtypeSpace(): AssertStringInterface
+    public function notCtypeSpace(): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isCtypeSpace()) {
+        if ((new StringValidate($this->string))->isCtypeSpace()) {
             throw new CtypeSpaceException(
                 message('String %algo% provided')
                     ->withStrong('%algo%', 'ctype space')
@@ -87,9 +87,9 @@ final class AssertString implements AssertStringInterface
         return $this;
     }
 
-    public function ctypeDigit(): AssertStringInterface
+    public function ctypeDigit(): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isCtypeSpace()) {
+        if ((new StringValidate($this->string))->isCtypeSpace()) {
             return $this;
         }
 
@@ -100,9 +100,9 @@ final class AssertString implements AssertStringInterface
         );
     }
 
-    public function notCtypeDigit(): AssertStringInterface
+    public function notCtypeDigit(): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isCtypeDigit()) {
+        if ((new StringValidate($this->string))->isCtypeDigit()) {
             throw new CtypeDigitException(
                 message('String %algo% provided')
                     ->withStrong('%algo%', 'ctype digit')
@@ -112,9 +112,9 @@ final class AssertString implements AssertStringInterface
         return $this;
     }
 
-    public function startsWithCtypeDigit(): AssertStringInterface
+    public function startsWithCtypeDigit(): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isStartingWithCtypeDigit()) {
+        if ((new StringValidate($this->string))->isStartingWithCtypeDigit()) {
             return $this;
         }
 
@@ -125,9 +125,9 @@ final class AssertString implements AssertStringInterface
         );
     }
 
-    public function notStartsWithCtypeDigit(): AssertStringInterface
+    public function notStartsWithCtypeDigit(): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isStartingWithCtypeDigit()) {
+        if ((new StringValidate($this->string))->isStartingWithCtypeDigit()) {
             throw new StartsWithCtypeDigitException(
                 message('String %string% starts with a %algo% character')
                     ->withCode('%string%', $this->string)
@@ -138,9 +138,9 @@ final class AssertString implements AssertStringInterface
         return $this;
     }
 
-    public function startsWith(string $needle): AssertStringInterface
+    public function startsWith(string $needle): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isStartingWith($needle)) {
+        if ((new StringValidate($this->string))->isStartingWith($needle)) {
             return $this;
         }
 
@@ -151,9 +151,9 @@ final class AssertString implements AssertStringInterface
         );
     }
 
-    public function notStartsWith(string $needle): AssertStringInterface
+    public function notStartsWith(string $needle): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isStartingWith($needle)) {
+        if ((new StringValidate($this->string))->isStartingWith($needle)) {
             throw new StartsWithException(
                 message('String %string% starts with %needle%')
                     ->withCode('%string%', $this->string)
@@ -164,9 +164,9 @@ final class AssertString implements AssertStringInterface
         return $this;
     }
 
-    public function endsWith(string $needle): AssertStringInterface
+    public function endsWith(string $needle): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isEndingWith($needle)) {
+        if ((new StringValidate($this->string))->isEndingWith($needle)) {
             return $this;
         }
 
@@ -177,9 +177,9 @@ final class AssertString implements AssertStringInterface
         );
     }
 
-    public function notEndsWith(string $needle): AssertStringInterface
+    public function notEndsWith(string $needle): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isEndingWith($needle)) {
+        if ((new StringValidate($this->string))->isEndingWith($needle)) {
             throw new EndsWithException(
                 message('String %string% ends with %needle%')
                     ->withCode('%string%', $this->string)
@@ -190,9 +190,9 @@ final class AssertString implements AssertStringInterface
         return $this;
     }
 
-    public function same(string $string): AssertStringInterface
+    public function same(string $string): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isSame($string)) {
+        if ((new StringValidate($this->string))->isSame($string)) {
             return $this;
         }
 
@@ -203,9 +203,9 @@ final class AssertString implements AssertStringInterface
         );
     }
 
-    public function notSame(string $string): AssertStringInterface
+    public function notSame(string $string): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->isSame($string)) {
+        if ((new StringValidate($this->string))->isSame($string)) {
             throw new SameException(
                 message('Provided string %provided% is the same as %string%')
                     ->withCode('%provided%', $string)
@@ -216,9 +216,9 @@ final class AssertString implements AssertStringInterface
         return $this;
     }
 
-    public function contains(string $string): AssertStringInterface
+    public function contains(string $string): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->contains($string)) {
+        if ((new StringValidate($this->string))->contains($string)) {
             return $this;
         }
 
@@ -229,9 +229,9 @@ final class AssertString implements AssertStringInterface
         );
     }
 
-    public function notContains(string $string): AssertStringInterface
+    public function notContains(string $string): StringAssertInterface
     {
-        if ((new ValidateString($this->string))->contains($string)) {
+        if ((new StringValidate($this->string))->contains($string)) {
             throw new ContainsException(
                 message('String %string% contains %provided%')
                     ->withCode('%provided%', $string)

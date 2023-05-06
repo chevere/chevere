@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\String;
 
-use Chevere\String\Interfaces\ValidateStringInterface;
+use Chevere\String\Interfaces\StringValidateInterface;
 
-final class ValidateString implements ValidateStringInterface
+final class StringValidate implements StringValidateInterface
 {
     public function __construct(
         private string $string

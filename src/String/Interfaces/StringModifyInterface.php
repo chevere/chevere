@@ -18,7 +18,7 @@ use Stringable;
 /**
  * Describes the component in charge of string manipulation.
  */
-interface ModifyStringInterface extends Stringable
+interface StringModifyInterface extends Stringable
 {
     public function __construct(string $string);
 
