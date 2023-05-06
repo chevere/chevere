@@ -41,6 +41,7 @@
             "src/Parameter/functions-numeric.php",
             "src/Parameter/functions-string.php",
             "src/Parameter/functions.php",
+            "src/Polyfill/functions.php",
             "src/Standard/functions.php",
             "src/String/functions.php",
             "src/Type/functions.php",
