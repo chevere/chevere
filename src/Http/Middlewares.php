@@ -16,7 +16,7 @@ namespace Chevere\Http;
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Traits\VectorTrait;
 use Chevere\DataStructure\Vector;
-use Chevere\Http\Interfaces\MiddlewareInterface;
+use Chevere\Http\Interfaces\MiddlewareNameInterface;
 use Chevere\Http\Interfaces\MiddlewaresInterface;
 
 final class Middlewares implements MiddlewaresInterface
@@ -24,16 +24,16 @@ final class Middlewares implements MiddlewaresInterface
     use VectorTrait;
 
     /**
-     * @var VectorInterface<MiddlewareInterface>
+     * @var VectorInterface<MiddlewareNameInterface>
      */
     private VectorInterface $vector;
 
-    public function __construct(MiddlewareInterface ...$middleware)
+    public function __construct(MiddlewareNameInterface ...$middleware)
     {
         $this->vector = new Vector(...$middleware);
     }
 
-    public function withAppend(MiddlewareInterface ...$middleware): self
+    public function withAppend(MiddlewareNameInterface ...$middleware): self
     {
         $new = clone $this;
         $new->vector = $new->vector->withPush(...$middleware);
@@ -41,7 +41,7 @@ final class Middlewares implements MiddlewaresInterface
         return $new;
     }
 
-    public function withPrepend(MiddlewareInterface ...$middleware): self
+    public function withPrepend(MiddlewareNameInterface ...$middleware): self
     {
         $new = clone $this;
         $new->vector = $new->vector->withUnshift(...$middleware);

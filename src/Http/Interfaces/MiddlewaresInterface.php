@@ -18,7 +18,7 @@ use Countable;
 use Iterator;
 
 /**
- * Describes the component in charge of collecting PSR HTTP server middleware.
+ * Describes the component in charge of collecting HTTP server middleware.
  */
 interface MiddlewaresInterface extends Countable, IntegerKeysInterface
 {
@@ -30,7 +30,7 @@ interface MiddlewaresInterface extends Countable, IntegerKeysInterface
      *
      * This middleware will be added to the end of the middleware stack.
      */
-    public function withAppend(MiddlewareInterface ...$middleware): self;
+    public function withAppend(MiddlewareNameInterface ...$middleware): self;
 
     /**
      * Return an instance with the specified prepend `$middleware`.
@@ -40,10 +40,10 @@ interface MiddlewaresInterface extends Countable, IntegerKeysInterface
      *
      * This middleware will be added to the beginning of the stack.
      */
-    public function withPrepend(MiddlewareInterface ...$middleware): self;
+    public function withPrepend(MiddlewareNameInterface ...$middleware): self;
 
     /**
-     * @return Iterator<int, MiddlewareInterface>
+     * @return Iterator<int, MiddlewareNameInterface>
      */
     public function getIterator(): Iterator;
 }
