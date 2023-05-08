@@ -16,11 +16,13 @@ namespace Chevere\Http\Interfaces;
 use Chevere\DataStructure\Interfaces\IntegerKeysInterface;
 use Countable;
 use Iterator;
+use IteratorAggregate;
 
 /**
  * Describes the component in charge of collecting HTTP server middleware.
+ * @extends IteratorAggregate<int, MiddlewareNameInterface>
  */
-interface MiddlewaresInterface extends Countable, IntegerKeysInterface
+interface MiddlewaresInterface extends Countable, IntegerKeysInterface, IteratorAggregate
 {
     /**
      * Return an instance with the specified appended `$middleware`.
