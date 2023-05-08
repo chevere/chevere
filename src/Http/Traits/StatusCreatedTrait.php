@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\HttpController\Traits;
+namespace Chevere\Http\Traits;
 
 /**
- * 226
+ * 201
  */
-trait StatusIMUsedTrait
+trait StatusCreatedTrait
 {
     public static function statusSuccess(): int
     {
-        return 226;
+        return 201;
     }
 }

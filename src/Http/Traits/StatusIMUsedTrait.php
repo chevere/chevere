@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\HttpController\Traits;
+namespace Chevere\Http\Traits;
 
 /**
- * 500
+ * 226
  */
-trait StatusInternalServerErrorTrait
+trait StatusIMUsedTrait
 {
-    public static function statusError(): int
+    public static function statusSuccess(): int
     {
-        return 500;
+        return 226;
     }
 }

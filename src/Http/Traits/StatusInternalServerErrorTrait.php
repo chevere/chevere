@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\HttpController\Traits;
+namespace Chevere\Http\Traits;
 
 /**
- * 203
+ * 500
  */
-trait StatusNonAuthoritativeInformationTrait
+trait StatusInternalServerErrorTrait
 {
-    public static function statusSuccess(): int
+    public static function statusError(): int
     {
-        return 203;
+        return 500;
     }
 }

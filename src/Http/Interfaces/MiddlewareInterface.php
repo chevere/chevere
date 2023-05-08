@@ -16,7 +16,7 @@ namespace Chevere\Http\Interfaces;
 use Psr\Http\Server\MiddlewareInterface as ServerMiddlewareInterface;
 
 /**
- * Describes the component in charge of defining a middleware.
+ * Describes the component in charge of defining middleware.
  */
 interface MiddlewareInterface extends ServerMiddlewareInterface
 {

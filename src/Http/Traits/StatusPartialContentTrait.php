@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\HttpController\Traits;
+namespace Chevere\Http\Traits;
 
 /**
- * 404
+ * 206
  */
-trait StatusNotFoundTrait
+trait StatusPartialContentTrait
 {
-    public static function statusError(): int
+    public static function statusSuccess(): int
     {
-        return 404;
+        return 206;
     }
 }

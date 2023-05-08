@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\HttpController\Traits;
+namespace Chevere\Http\Traits;
 
 /**
- * 205
+ * 202
  */
-trait StatusResetContentTrait
+trait StatusAcceptedTrait
 {
     public static function statusSuccess(): int
     {
-        return 205;
+        return 202;
     }
 }
