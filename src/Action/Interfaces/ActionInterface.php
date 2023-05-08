@@ -67,4 +67,6 @@ interface ActionInterface
     public static function description(): string;
 
     public static function getParameters(): ParametersInterface;
+
+    public function assert(): void;
 }

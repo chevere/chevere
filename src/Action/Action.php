@@ -26,18 +26,7 @@ abstract class Action implements ActionInterface
 {
     use ActionTrait;
 
-    public function __construct()
-    {
-        $this->onConstruct();
-    }
-
-    // @infection-ignore-all
-    protected function assertRunParameters(): void
-    {
-        // enables override
-    }
-
-    final protected function onConstruct(): void
+    final public function assert(): void
     {
         $this->assertRunMethod();
         self::getParameters();
@@ -76,5 +65,11 @@ abstract class Action implements ActionInterface
                     ->withTranslate(...$translate)
             );
         }
+    }
+
+    // @infection-ignore-all
+    protected function assertRunParameters(): void
+    {
+        // enables override
     }
 }

@@ -54,7 +54,7 @@ final class ActionTest extends TestCase
     public function testMissingRunMethod(): void
     {
         $this->expectException(LogicException::class);
-        new ActionTestMissingRun();
+        (new ActionTestMissingRun())->assert();
     }
 
     public function testRunParams(): void
@@ -127,14 +127,14 @@ final class ActionTest extends TestCase
     {
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage(ActionTestInvalidRunReturn::class . '::run');
-        new ActionTestInvalidRunReturn();
+        ( new ActionTestInvalidRunReturn())->assert();
     }
 
     public function testInvalidRunParameter(): void
     {
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('$mixed');
-        new ActionTestRunParameterMissingType();
+        (new ActionTestRunParameterMissingType())->assert();
     }
 
     public function testRunReturnExtraArguments(): void
@@ -169,12 +169,12 @@ final class ActionTest extends TestCase
         public function testActionInvalidScope(): void
         {
             $this->expectException(ErrorException::class);
-            new ActionTestInvalidScope();
+            (new ActionTestInvalidScope())->assert();
         }
 
         public function testActionNoReturnType(): void
         {
             $this->expectException(ErrorException::class);
-            new ActionTestNoReturnType();
+            (new ActionTestNoReturnType())->assert();
         }
 }

@@ -13,15 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
+use Chevere\Tests\Controller\_resources\ControllerTestController;
 use Chevere\Tests\Controller\_resources\ControllerTestInvalidController;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerTest extends TestCase
 {
-    public function testParameters(): void
+    public function testInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new ControllerTestInvalidController();
+        (new ControllerTestInvalidController())->assert();
+    }
+
+    public function testConstruct(): void
+    {
+        $this->expectNotToPerformAssertions();
+        (new ControllerTestController())->assert();
     }
 }
