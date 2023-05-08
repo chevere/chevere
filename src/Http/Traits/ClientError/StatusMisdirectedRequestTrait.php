@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\ClientError;
 
 /**
- * 206
+ * @codeCoverageIgnore
  */
-trait StatusPartialContentTrait
+trait StatusMisdirectedRequestTrait
 {
-    public static function statusSuccess(): int
+    public static function statusError(): int
     {
-        return 206;
+        return 421;
     }
 }

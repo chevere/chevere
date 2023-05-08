@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\ClientError;
 
 /**
- * 204
+ * @codeCoverageIgnore
  */
-trait StatusNoContentTrait
+trait StatusRequestHeaderFieldsTooLargeTrait
 {
-    public static function statusSuccess(): int
+    public static function statusError(): int
     {
-        return 204;
+        return 431;
     }
 }

@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\ClientError;
 
 /**
- * 500
+ * @codeCoverageIgnore
  */
-trait StatusInternalServerErrorTrait
+trait StatusUnsupportedMediaTypeTrait
 {
     public static function statusError(): int
     {
-        return 500;
+        return 415;
     }
 }

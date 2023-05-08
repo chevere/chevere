@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\ClientError;
 
 /**
- * 208
+ * @codeCoverageIgnore
  */
-trait StatusAlreadyReportedTrait
+trait StatusLengthRequiredTrait
 {
-    public static function statusSuccess(): int
+    public static function statusError(): int
     {
-        return 208;
+        return 411;
     }
 }

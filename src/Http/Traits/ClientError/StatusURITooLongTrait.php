@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\ClientError;
 
 /**
- * 203
+ * @codeCoverageIgnore
  */
-trait StatusNonAuthoritativeInformationTrait
+trait StatusURITooLongTrait
 {
-    public static function statusSuccess(): int
+    public static function statusError(): int
     {
-        return 203;
+        return 414;
     }
 }

@@ -11,15 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\ServerError;
 
-/**
- * 404
- */
-trait StatusNotFoundTrait
+trait StatusNotExtendedTrait
 {
     public static function statusError(): int
     {
-        return 404;
+        return 510;
     }
 }

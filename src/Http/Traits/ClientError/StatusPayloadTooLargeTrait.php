@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\ClientError;
 
 /**
- * 400
+ * @codeCoverageIgnore
  */
-trait StatusBadRequestTrait
+trait StatusPayloadTooLargeTrait
 {
     public static function statusError(): int
     {
-        return 400;
+        return 413;
     }
 }

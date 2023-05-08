@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Http;
 
 use Chevere\Http\Interfaces\MiddlewareInterface;
-use Chevere\Http\Traits\StatusBadRequestTrait;
+use Chevere\Http\Traits\ClientError\StatusBadRequestTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;

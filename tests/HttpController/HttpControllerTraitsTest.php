@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\HttpController;
 
-use Chevere\Http\Traits\StatusAcceptedTrait;
-use Chevere\Http\Traits\StatusAlreadyReportedTrait;
-use Chevere\Http\Traits\StatusCreatedTrait;
-use Chevere\Http\Traits\StatusIMUsedTrait;
-use Chevere\Http\Traits\StatusInternalServerErrorTrait;
-use Chevere\Http\Traits\StatusMultiStatusTrait;
-use Chevere\Http\Traits\StatusNoContentTrait;
-use Chevere\Http\Traits\StatusNonAuthoritativeInformationTrait;
-use Chevere\Http\Traits\StatusOkTrait;
-use Chevere\Http\Traits\StatusPartialContentTrait;
-use Chevere\Http\Traits\StatusResetContentTrait;
+use Chevere\Http\Traits\ServerError\StatusInternalServerErrorTrait;
+use Chevere\Http\Traits\Successful\StatusAcceptedTrait;
+use Chevere\Http\Traits\Successful\StatusAlreadyReportedTrait;
+use Chevere\Http\Traits\Successful\StatusCreatedTrait;
+use Chevere\Http\Traits\Successful\StatusIMUsedTrait;
+use Chevere\Http\Traits\Successful\StatusMultiStatusTrait;
+use Chevere\Http\Traits\Successful\StatusNoContentTrait;
+use Chevere\Http\Traits\Successful\StatusNonAuthoritativeInformationTrait;
+use Chevere\Http\Traits\Successful\StatusOkTrait;
+use Chevere\Http\Traits\Successful\StatusPartialContentTrait;
+use Chevere\Http\Traits\Successful\StatusResetContentTrait;
 use Chevere\HttpController\Traits\ResponseHtmlTrait;
 use Chevere\Tests\HttpController\_resources\TestHttpController;
 use PHPUnit\Framework\TestCase;

@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\ServerError;
 
 /**
- * 200
+ * @codeCoverageIgnore
  */
-trait StatusOkTrait
+trait StatusNotImplementedTrait
 {
-    public static function statusSuccess(): int
+    public static function statusError(): int
     {
-        return 200;
+        return 501;
     }
 }

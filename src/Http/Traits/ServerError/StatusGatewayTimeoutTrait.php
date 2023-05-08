@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\ServerError;
 
 /**
- * 202
+ * @codeCoverageIgnore
  */
-trait StatusAcceptedTrait
+trait StatusGatewayTimeoutTrait
 {
-    public static function statusSuccess(): int
+    public static function statusError(): int
     {
-        return 202;
+        return 504;
     }
 }

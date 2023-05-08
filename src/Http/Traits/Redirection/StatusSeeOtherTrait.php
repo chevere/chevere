@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http\Traits;
+namespace Chevere\Http\Traits\Redirection;
 
 /**
- * 207
+ * @codeCoverageIgnore
  */
-trait StatusMultiStatusTrait
+trait StatusSeeOtherTrait
 {
     public static function statusSuccess(): int
     {
-        return 207;
+        return 303;
     }
 }

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\HttpController;
 
 use Chevere\Controller\Controller;
-use Chevere\Http\Traits\StatusNotFoundTrait;
-use Chevere\Http\Traits\StatusOkTrait;
+use Chevere\Http\Traits\ClientError\StatusNotFoundTrait;
+use Chevere\Http\Traits\Successful\StatusOkTrait;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\Parameter\Arguments;
 use function Chevere\Parameter\arrayp;
