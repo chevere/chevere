@@ -19,9 +19,6 @@ use Chevere\HttpController\Interfaces\HttpControllerNameInterface;
 
 final class HttpControllerName implements HttpControllerNameInterface
 {
-    /**
-     * @param class-string<HttpControllerInterface> $name
-     */
     public function __construct(
         private string $name
     ) {
@@ -30,6 +27,9 @@ final class HttpControllerName implements HttpControllerNameInterface
 
     public function __toString(): string
     {
+        /**
+         * @var class-string HttpControllerInterface
+         */
         return $this->name;
     }
 }
