@@ -81,8 +81,8 @@ final class Message implements MessageInterface
             $tag = $html ?? $tag;
             $replace = $replacement[1];
             $tr[$search] = match ($tag) {
-                '' => $replace,
-                $tr[$search] = '<'.${tag}.'>'.${replace}.'</'.${tag}.'>';
+                ''      => $replace,
+                default => '<'.$tag.'>'.$replace.'</'.$tag.'>',
             };
         }
 
