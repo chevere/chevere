@@ -33,6 +33,7 @@
     },
     "autoload": {
         "files": [
+            "src/Common/functions.php",
             "src/DataStructure/functions.php",
             "src/Filesystem/functions.php",
             "src/Iterator/functions.php",

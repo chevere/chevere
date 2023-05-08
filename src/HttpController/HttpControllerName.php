@@ -13,26 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\HttpController;
 
-use Chevere\Controller\ControllerName;
-use Chevere\Controller\Interfaces\ControllerNameInterface;
+use function Chevere\Common\assertClassName;
 use Chevere\HttpController\Interfaces\HttpControllerInterface;
 use Chevere\HttpController\Interfaces\HttpControllerNameInterface;
 
 final class HttpControllerName implements HttpControllerNameInterface
 {
-    private ControllerNameInterface $controllerName;
-
-    public function __construct(string $name)
-    {
-        $this->controllerName = new ControllerName($name);
-        $this->controllerName->assertInterface(HttpControllerInterface::class);
+    /**
+     * @param class-string<HttpControllerInterface> $name
+     */
+    public function __construct(
+        private string $name
+    ) {
+        assertClassName(HttpControllerInterface::class, $name);
     }
 
     public function __toString(): string
     {
-        /**
-         * @var class-string HttpControllerInterface
-         */
-        return $this->controllerName->__toString();
+        return $this->name;
     }
 }

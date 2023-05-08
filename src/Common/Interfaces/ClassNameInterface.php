@@ -11,13 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Controller\Interfaces;
+namespace Chevere\Common\Interfaces;
 
 use Stringable;
 
 /**
- * Describes the component in charge of handling the controller name.
+ * Describes the component in charge of handling class name.
  */
-interface ControllerNameInterface extends Stringable
+interface ClassNameInterface extends Stringable
 {
+    public function assertInterface(string $class): void;
 }

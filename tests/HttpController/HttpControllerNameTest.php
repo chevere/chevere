@@ -13,43 +13,31 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\HttpController;
 
-use Chevere\Controller\Exceptions\ControllerNameInterfaceException;
-use Chevere\Controller\Exceptions\ControllerNameNotExistsException;
 use Chevere\HttpController\HttpControllerName;
-use Chevere\String\Exceptions\EmptyException;
 use Chevere\Tests\Controller\_resources\ControllerTestController;
 use Chevere\Tests\HttpController\_resources\TestHttpController;
+use Chevere\Throwable\Errors\TypeError;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 final class HttpControllerNameTest extends TestCase
 {
-    public function testEmpty(): void
+    public function testInvalid(): void
     {
-        $this->expectException(EmptyException::class);
+        $this->expectException(Throwable::class);
         new HttpControllerName('');
-    }
-
-    public function testNotFound(): void
-    {
-        $this->expectException(ControllerNameNotExistsException::class);
-        new HttpControllerName('notFound');
-    }
-
-    public function testInterface(): void
-    {
-        $this->expectException(ControllerNameInterfaceException::class);
-        new HttpControllerName(__CLASS__);
     }
 
     public function testControllerNotHttp(): void
     {
-        $this->expectException(ControllerNameInterfaceException::class);
+        $this->expectException(TypeError::class);
         new HttpControllerName(ControllerTestController::class);
     }
 
     public function testConstruct(): void
     {
-        $controller = new HttpControllerName(TestHttpController::class);
-        $this->assertSame(TestHttpController::class, $controller->__toString());
+        $name = TestHttpController::class;
+        $controllerName = new HttpControllerName($name);
+        $this->assertSame($name, $controllerName->__toString());
     }
 }

@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Controller;
 
 use Chevere\Controller\ControllerName;
-use Chevere\Controller\Exceptions\ControllerNameInterfaceException;
-use Chevere\Controller\Exceptions\ControllerNameNotExistsException;
 use Chevere\String\Exceptions\CtypeSpaceException;
 use Chevere\String\Exceptions\EmptyException;
 use Chevere\Tests\Controller\_resources\ControllerNameTestController;
+use Chevere\Throwable\Errors\TypeError;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerNameTest extends TestCase
@@ -37,13 +37,13 @@ final class ControllerNameTest extends TestCase
 
     public function testNotExists(): void
     {
-        $this->expectException(ControllerNameNotExistsException::class);
+        $this->expectException(InvalidArgumentException::class);
         new ControllerName('not-found');
     }
 
     public function testWrongInterface(): void
     {
-        $this->expectException(ControllerNameInterfaceException::class);
+        $this->expectException(TypeError::class);
         new ControllerName(self::class);
     }
 
