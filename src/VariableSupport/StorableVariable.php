@@ -16,15 +16,17 @@ namespace Chevere\VariableSupport;
 use Chevere\Iterator\Breadcrumb;
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
 use function Chevere\Message\message;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\VariableSupport\Exceptions\UnableToStoreException;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
+use Chevere\VariableSupport\Traits\BreadcrumbIterableTrait;
 use ReflectionNamedType;
 use ReflectionObject;
 use Symfony\Component\VarExporter\VarExporter;
 
 final class StorableVariable implements StorableVariableInterface
 {
+    use BreadcrumbIterableTrait;
+
     private BreadcrumbInterface $breadcrumb;
 
     public function __construct(
@@ -40,25 +42,25 @@ final class StorableVariable implements StorableVariableInterface
 
     public function toExport(): string
     {
-        $this->assertStorable($this->variable, __FUNCTION__);
+        $this->assert($this->variable, __FUNCTION__);
 
         return VarExporter::export($this->variable);
     }
 
     public function toSerialize(): string
     {
-        $this->assertStorable($this->variable, __FUNCTION__);
+        $this->assert($this->variable, __FUNCTION__);
 
         return serialize($this->variable);
     }
 
-    private function assertStorable(mixed $variable, string $callable): void
+    private function assert(mixed $variable, string ...$callable): void
     {
         $this->assertIsNotResource($variable);
         if (is_object($variable)) {
-            $this->breadcrumbObject($variable, $callable);
+            $this->breadcrumbObject($variable, ...$callable);
         } elseif (is_iterable($variable)) {
-            $this->breadcrumbIterable($variable, $callable);
+            $this->breadcrumbIterable($variable, ...$callable);
         }
     }
 
@@ -76,28 +78,6 @@ final class StorableVariable implements StorableVariableInterface
             : message('Argument is of type resource.');
 
         throw new UnableToStoreException($message);
-    }
-
-    /**
-     * @param iterable<mixed, mixed> $variable
-     * @throws UnableToStoreException
-     * @throws OutOfBoundsException
-     */
-    private function breadcrumbIterable(iterable $variable, string $callable): void
-    {
-        $this->breadcrumb = $this->breadcrumb->withAdded('(iterable)');
-        $iterableKey = $this->breadcrumb->pos();
-        foreach ($variable as $key => $val) {
-            $key = strval($key);
-            $this->breadcrumb = $this->breadcrumb
-                ->withAdded('key: ' . $key);
-            $memberKey = $this->breadcrumb->pos();
-            $this->assertStorable($val, $callable);
-            $this->breadcrumb = $this->breadcrumb
-                ->withRemoved($memberKey);
-        }
-        $this->breadcrumb = $this->breadcrumb
-            ->withRemoved($iterableKey);
     }
 
     private function breadcrumbObject(object $variable, string $callable): void
@@ -122,7 +102,7 @@ final class StorableVariable implements StorableVariableInterface
             // @infection-ignore-all
             $property->setAccessible(true);
             if ($property->isInitialized($variable)) {
-                $this->assertStorable($property->getValue($variable), $callable);
+                $this->assert($property->getValue($variable), $callable);
             }
             $this->breadcrumb = $this->breadcrumb->withRemoved($propertyKey);
         }
