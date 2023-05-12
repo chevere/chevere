@@ -76,3 +76,20 @@ function arrayFilterKey(array $array, ?callable $callback = null): array
 
     return $array;
 }
+
+/**
+ * @return array<int> Bits (powers of two)
+ */
+function getBits(int $value): array
+{
+    $return = [];
+    $bit = 1;
+    while ($bit <= $value) {
+        if ($bit & $value) {
+            $return[] = $bit;
+        }
+        $bit <<= 1;
+    }
+
+    return $return;
+}
