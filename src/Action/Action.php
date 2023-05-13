@@ -67,7 +67,9 @@ abstract class Action implements ActionInterface
         }
     }
 
-    // @infection-ignore-all
+    /**
+     * @codeCoverageIgnore
+     */
     protected function assertRunParameters(): void
     {
         // enables override

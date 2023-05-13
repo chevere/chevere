@@ -13,14 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Interfaces;
 
-use Chevere\Parameter\ArrayParameter;
-use Chevere\Parameter\BooleanParameter;
-use Chevere\Parameter\FloatParameter;
-use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Parameter\ObjectParameter;
-use Chevere\Parameter\StringParameter;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 /**
@@ -31,18 +25,6 @@ use Chevere\Response\Interfaces\ResponseInterface;
  */
 interface ActionInterface
 {
-    /**
-     * @var array<string, string>
-     */
-    public const TYPE_TO_PARAMETER = [
-        'array' => ArrayParameter::class,
-        'bool' => BooleanParameter::class,
-        'float' => FloatParameter::class,
-        'int' => IntegerParameter::class,
-        'string' => StringParameter::class,
-        'object' => ObjectParameter::class,
-    ];
-
     /**
      * Determines if action is strict or not.
      *

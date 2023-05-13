@@ -30,6 +30,7 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use ReflectionMethod;
 use Throwable;
 
 function boolean(
@@ -190,4 +191,22 @@ function assertArgument(ParameterInterface $parameter, mixed $argument): mixed
         => assertNull($parameter, $argument),
         default => null,
     };
+}
+
+function methodParameters(string $class, string $method): ParametersInterface
+{
+    $parameters = [
+        0 => [],
+        1 => [],
+    ];
+    $reflectionMethod = new ReflectionMethod($class, $method);
+    foreach ($reflectionMethod->getParameters() as $reflection) {
+        $typedReflection = new ReflectionParameterTyped($reflection);
+        $pos = intval(! $reflection->isOptional());
+        $parameters[$pos][$reflection->getName()] = $typedReflection->parameter();
+    }
+
+    return parameters()
+        ->withAddedRequired(...$parameters[1])
+        ->withAddedOptional(...$parameters[0]);
 }

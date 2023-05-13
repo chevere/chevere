@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Http\Traits\ServerError;
 
+/**
+ * @codeCoverageIgnore
+ */
 trait StatusNotExtendedTrait
 {
     public static function statusError(): int
