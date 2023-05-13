@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
-use Chevere\Controller\ControllerName;
-use Chevere\Tests\Controller\_resources\ControllerNameTestController;
+use Chevere\Action\ActionName;
+use Chevere\Tests\Action\_resources\ActionTestAction;
 use Chevere\Throwable\Errors\TypeError;
 use PHPUnit\Framework\TestCase;
 
-final class ControllerNameTest extends TestCase
+final class ActionNameTest extends TestCase
 {
     public function testWrongInterface(): void
     {
         $this->expectException(TypeError::class);
-        new ControllerName(self::class);
+        new ActionName(self::class);
     }
 
     public function testConstruct(): void
     {
-        $className = ControllerNameTestController::class;
-        $controllerName = new ControllerName($className);
-        $this->assertSame($className, $controllerName->__toString());
+        $className = ActionTestAction::class;
+        $actionName = new ActionName($className);
+        $this->assertSame($className, $actionName->__toString());
     }
 }
