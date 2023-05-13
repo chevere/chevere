@@ -15,6 +15,7 @@ namespace Chevere\Parameter;
 
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
+use Chevere\DataStructure\Vector;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ParametersGetTypedTrait;
@@ -36,8 +37,8 @@ final class Parameters implements ParametersInterface
     public function __construct(ParameterInterface ...$parameter)
     {
         $this->map = new Map();
-        $this->requiredKeys = [];
-        $this->optionalKeys = [];
+        $this->required = new Vector();
+        $this->optional = new Vector();
         $this->addProperty('required', $parameter);
     }
 
@@ -60,7 +61,11 @@ final class Parameters implements ParametersInterface
     public function without(string ...$name): ParametersInterface
     {
         $new = clone $this;
-        $new->removeProperty(...$name);
+        $new->map = $new->map->without(...$name);
+        $requiredDiff = array_diff($new->required->toArray(), $name);
+        $optionalDiff = array_diff($new->optional->toArray(), $name);
+        $new->required = new Vector(...$requiredDiff);
+        $new->optional = new Vector(...$optionalDiff);
 
         return $new;
     }

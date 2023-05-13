@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Interfaces;
 
 use Chevere\DataStructure\Interfaces\MappedInterface;
+use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use Iterator;
@@ -83,15 +84,9 @@ interface ParametersInterface extends MappedInterface
      */
     public function isOptional(string ...$name): bool;
 
-    /**
-     * @return array<string>
-     */
-    public function requiredKeys(): array;
+    public function required(): VectorInterface;
 
-    /**
-     * @return array<string>
-     */
-    public function optionalKeys(): array;
+    public function optional(): VectorInterface;
 
     /**
      * @throws OutOfBoundsException

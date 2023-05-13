@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\DataStructure\Interfaces;
 
+use Chevere\Common\Interfaces\ToArrayInterface;
+
 /**
  * Describes the component in charge of providing a Map interface.
  *
  * @template TValue
  * @extends MappedInterface<TValue>
  */
-interface MapInterface extends MappedInterface
+interface MapInterface extends MappedInterface, ToArrayInterface
 {
     /**
      * @param TValue ...$value

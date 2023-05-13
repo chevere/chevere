@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\DataStructure;
 
 use Chevere\DataStructure\Vector;
-use function Chevere\DataStructure\vectorToArray;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -55,8 +54,7 @@ final class VectorTest extends TestCase
             $this->assertSame($pos, $vector->find($value));
         }
         $this->assertTrue($vector->contains(...$arguments));
-        $array = vectorToArray($vector);
-        $this->assertSame($arguments, $array);
+        $this->assertSame($arguments, $vector->toArray());
     }
 
     public function testWithPush(): void
@@ -66,8 +64,7 @@ final class VectorTest extends TestCase
         $immutable = $vector->withPush(...$values);
         $this->assertCount(count($values), $immutable);
         $this->assertNotSame($vector, $immutable);
-        $array = vectorToArray($immutable);
-        $this->assertSame($values, $array);
+        $this->assertSame($values, $immutable->toArray());
     }
 
     public function testWithSet(): void
@@ -93,9 +90,8 @@ final class VectorTest extends TestCase
         $immutable = $vector->withUnshift(...$unshift);
         $this->assertNotSame($vector, $immutable);
         $this->assertCount(count($values) + count($unshift), $immutable);
-        $array = vectorToArray($immutable);
         $expected = array_merge($unshift, $values);
-        $this->assertSame($expected, $array);
+        $this->assertSame($expected, $immutable->toArray());
     }
 
     public function testWithRemove(): void
@@ -108,8 +104,7 @@ final class VectorTest extends TestCase
         unset($values[1]);
         $values = array_values($values);
         $this->assertSame(array_keys($values), $immutable->keys());
-        $array = vectorToArray($immutable);
-        $this->assertSame($values, $array);
+        $this->assertSame($values, $immutable->toArray());
         $this->expectException(OutOfBoundsException::class);
         $immutable->withRemove(count($values) + 1);
     }
@@ -124,8 +119,7 @@ final class VectorTest extends TestCase
         array_splice($values, 1, 0, 11);
         $values = array_values($values);
         $this->assertSame(array_keys($values), $immutable->keys());
-        $array = vectorToArray($immutable);
-        $this->assertSame($values, $array);
+        $this->assertSame($values, $immutable->toArray());
         $this->expectException(OutOfBoundsException::class);
         $immutable->withInsert(count($values) + 1, 'fail');
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
+use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Map;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ParameterInterface;
@@ -26,31 +27,25 @@ trait ParametersTrait
      */
     private Map $map;
 
-    /**
-     * @var array<string>
-     */
-    private array $requiredKeys;
+    private VectorInterface $required;
 
-    /**
-     * @var array<string>
-     */
-    private array $optionalKeys;
+    private VectorInterface $optional;
 
-    public function requiredKeys(): array
+    public function required(): VectorInterface
     {
-        return $this->requiredKeys;
+        return $this->required;
     }
 
-    public function optionalKeys(): array
+    public function optional(): VectorInterface
     {
-        return $this->optionalKeys;
+        return $this->optional;
     }
 
     public function isRequired(string ...$name): bool
     {
         foreach ($name as $item) {
             $this->assertNoOutOfRange($item);
-            if (array_search($item, $this->requiredKeys, true) === false) {
+            if (! $this->required->contains($item)) {
                 return false;
             }
         }
@@ -62,7 +57,7 @@ trait ParametersTrait
     {
         foreach ($name as $item) {
             $this->assertNoOutOfRange($item);
-            if (array_search($item, $this->requiredKeys, true) !== false) {
+            if ($this->required->contains($item)) {
                 return false;
             }
         }
@@ -117,20 +112,9 @@ trait ParametersTrait
         foreach ($parameters as $name => $parameter) {
             $name = strval($name);
             $this->assertNoOverflow($name);
-            $this->{$property . 'Keys'}[] = $name;
+            $this->{$property} = $this->{$property}->withPush($name);
             $map[$name] = $parameter;
         }
         $this->map = $this->map->withPut(...$map);
-    }
-
-    private function removeProperty(string ...$name): void
-    {
-        $this->map = $this->map->without(...$name);
-        $this->requiredKeys = array_values(
-            array_diff($this->requiredKeys, $name)
-        );
-        $this->optionalKeys = array_values(
-            array_diff($this->optionalKeys, $name)
-        );
     }
 }

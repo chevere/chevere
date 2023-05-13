@@ -32,8 +32,8 @@ final class FunctionsArrayTest extends TestCase
         $this->assertCount(2, $parameter->items());
         $this->assertSame($integer, $parameter->items()->get('a'));
         $this->assertSame($string, $parameter->items()->get('b'));
-        $this->assertSame(['a'], $parameter->items()->requiredKeys());
-        $this->assertSame(['b'], $parameter->items()->optionalKeys());
+        $this->assertSame(['a'], $parameter->items()->required()->toArray());
+        $this->assertSame(['b'], $parameter->items()->optional()->toArray());
     }
 
     public function testArrayRequiredEmpty(): void

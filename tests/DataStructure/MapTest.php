@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\DataStructure;
 
 use Chevere\DataStructure\Map;
-use function Chevere\DataStructure\mapToArray;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +22,7 @@ final class MapTest extends TestCase
     public function testAssertEmpty(): void
     {
         $map = new Map();
-        $this->assertSame([], mapToArray($map));
+        $this->assertSame([], $map->toArray());
         $this->expectException(OutOfBoundsException::class);
         $map->assertHas('not-found');
     }
@@ -45,7 +44,7 @@ final class MapTest extends TestCase
         foreach ($arguments as $name => $value) {
             $this->assertSame($value, $map->get($name));
         }
-        $this->assertSame($arguments, mapToArray($map));
+        $this->assertSame($arguments, $map->toArray());
     }
 
     public function testWithPut(): void
@@ -61,7 +60,7 @@ final class MapTest extends TestCase
         $this->assertNotSame($map->keys(), $mapWith->keys());
         $this->assertSame($value, $mapWith->get($key));
         $mapWith->assertHas($key);
-        $this->assertSame($arguments, mapToArray($mapWith));
+        $this->assertSame($arguments, $mapWith->toArray());
     }
 
     public function testWithPutConsecutiveNamed(): void

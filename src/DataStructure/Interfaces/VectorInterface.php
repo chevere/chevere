@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\DataStructure\Interfaces;
 
+use Chevere\Common\Interfaces\ToArrayInterface;
 use Countable;
 
 /**
  * Describes the component in charge of defining a vector interface.
  */
 // @phpstan-ignore-next-line
-interface VectorInterface extends Countable, IntegerKeysInterface, GetIteratorInterface
+interface VectorInterface extends Countable, IntegerKeysInterface, GetIteratorInterface, ToArrayInterface
 {
     public function withPush(mixed ...$value): self;
 

@@ -41,6 +41,11 @@ final class Map implements MapInterface
         $this->put(...$value);
     }
 
+    public function toArray(): array
+    {
+        return array_combine($this->keys, $this->values);
+    }
+
     public function keys(): array
     {
         return $this->keys;
