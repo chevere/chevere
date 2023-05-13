@@ -33,7 +33,8 @@ final class Depends
     {
     }
 
-    public function useIntersection(FileInterface&DirectoryInterface $intersection)
-    {
-    }
+    // PHP 8.1
+    // public function useIntersection(FileInterface&DirectoryInterface $intersection)
+    // {
+    // }
 }
