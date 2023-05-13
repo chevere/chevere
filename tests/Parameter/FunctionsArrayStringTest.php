@@ -23,8 +23,8 @@ final class FunctionsArrayStringTest extends TestCase
     {
         $string = string();
         $parameter = arrayp(a: $string);
-        $this->assertCount(1, $parameter->items());
-        $this->assertSame($string, $parameter->items()->get('a'));
-        $this->assertTrue($parameter->items()->isRequired('a'));
+        $this->assertCount(1, $parameter->parameters());
+        $this->assertSame($string, $parameter->parameters()->get('a'));
+        $this->assertTrue($parameter->parameters()->isRequired('a'));
     }
 }

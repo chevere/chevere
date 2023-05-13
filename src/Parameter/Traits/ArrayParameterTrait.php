@@ -19,7 +19,7 @@ use function Chevere\Type\typeArray;
 
 trait ArrayParameterTrait
 {
-    private ParametersInterface $items;
+    private ParametersInterface $parameters;
 
     private TypeInterface $type;
 
@@ -45,9 +45,9 @@ trait ArrayParameterTrait
     public function schema(): array
     {
         $items = [];
-        foreach ($this->items as $name => $parameter) {
+        foreach ($this->parameters as $name => $parameter) {
             $items[$name] = [
-                'required' => $this->items->isRequired($name),
+                'required' => $this->parameters->isRequired($name),
             ] + $parameter->schema();
         }
 
@@ -55,13 +55,13 @@ trait ArrayParameterTrait
             'type' => $this->typeSchema(),
             'description' => $this->description(),
             'default' => $this->default(),
-            'items' => $items,
+            'parameters' => $items,
         ];
     }
 
-    public function items(): ParametersInterface
+    public function parameters(): ParametersInterface
     {
-        return $this->items;
+        return $this->parameters;
     }
 
     public function isList(): bool

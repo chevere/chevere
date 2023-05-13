@@ -26,9 +26,9 @@ final class HttpControllerTest extends TestCase
         $controller = new TestHttpController();
         $this->assertSame(200, $controller->statusSuccess());
         $this->assertSame(404, $controller->statusError());
-        $this->assertCount(0, $controller->acceptQuery()->items());
-        $this->assertCount(0, $controller->acceptBody()->items());
-        $this->assertCount(0, $controller->acceptFiles()->items());
+        $this->assertCount(0, $controller->acceptQuery()->parameters());
+        $this->assertCount(0, $controller->acceptBody()->parameters());
+        $this->assertCount(0, $controller->acceptFiles()->parameters());
         $this->assertSame(
             [
                 'Content-Disposition' => 'inline',
@@ -38,7 +38,7 @@ final class HttpControllerTest extends TestCase
         );
         $this->assertSame(
             ['code', 'message'],
-            $controller->acceptError()->items()->keys()
+            $controller->acceptError()->parameters()->keys()
         );
     }
 

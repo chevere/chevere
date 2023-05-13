@@ -37,7 +37,7 @@ final class GenericParameter implements GenericParameterInterface
     ) {
         $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();
-        $this->items = new Parameters(
+        $this->parameters = new Parameters(
             K: $this->key,
             V: $this->value
         );

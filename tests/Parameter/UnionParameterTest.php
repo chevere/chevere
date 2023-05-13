@@ -32,7 +32,7 @@ final class UnionParameterTest extends TestCase
             TypeInterface::UNION,
             $parameter->type()->primitive()
         );
-        $this->assertCount(0, $parameter->items());
+        $this->assertCount(0, $parameter->parameters());
         $this->assertSame(TypeInterface::UNION, $parameter->typeSchema());
     }
 
@@ -48,9 +48,9 @@ final class UnionParameterTest extends TestCase
             $two
         );
         $this->assertNotSame($parameter, $parameterWith);
-        $this->assertCount(2, $parameterWith->items());
-        $this->assertSame($one, $parameterWith->items()->get('0'));
-        $this->assertSame($two, $parameterWith->items()->get('1'));
+        $this->assertCount(2, $parameterWith->parameters());
+        $this->assertSame($one, $parameterWith->parameters()->get('0'));
+        $this->assertSame($two, $parameterWith->parameters()->get('1'));
     }
 
     public function testAssertCompatible(): void

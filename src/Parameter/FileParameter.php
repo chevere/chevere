@@ -39,7 +39,7 @@ final class FileParameter implements FileParameterInterface
         private string $description = '',
     ) {
         $this->type = $this->type();
-        $this->items = new Parameters(
+        $this->parameters = new Parameters(
             error: integer(accept: [UPLOAD_ERR_OK]),
             name: $name,
             size: $size,
@@ -50,8 +50,8 @@ final class FileParameter implements FileParameterInterface
 
     public function assertCompatible(FileParameterInterface $parameter): void
     {
-        foreach ($this->items as $name => $stock) {
-            $stock->assertCompatible($parameter->items()->get($name));
+        foreach ($this->parameters as $name => $stock) {
+            $stock->assertCompatible($parameter->parameters()->get($name));
         }
     }
 

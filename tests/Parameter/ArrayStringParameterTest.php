@@ -23,7 +23,7 @@ final class ArrayStringParameterTest extends TestCase
     public function testConstruct(): void
     {
         $parameter = new ArrayStringParameter();
-        $this->assertCount(0, $parameter->items());
+        $this->assertCount(0, $parameter->parameters());
     }
 
     public function testWithRequired(): void
@@ -34,9 +34,9 @@ final class ArrayStringParameterTest extends TestCase
             foo: $foo
         );
         $this->assertNotSame($parameter, $parameterWith);
-        $this->assertCount(1, $parameterWith->items());
-        $this->assertSame($foo, $parameterWith->items()->get('foo'));
-        $this->assertTrue($parameterWith->items()->isRequired('foo'));
+        $this->assertCount(1, $parameterWith->parameters());
+        $this->assertSame($foo, $parameterWith->parameters()->get('foo'));
+        $this->assertTrue($parameterWith->parameters()->isRequired('foo'));
     }
 
     public function testWithOptional(): void
@@ -47,9 +47,9 @@ final class ArrayStringParameterTest extends TestCase
             foo: $foo
         );
         $this->assertNotSame($parameter, $parameterWith);
-        $this->assertCount(1, $parameterWith->items());
-        $this->assertSame($foo, $parameterWith->items()->get('foo'));
-        $this->assertTrue($parameterWith->items()->isOptional('foo'));
+        $this->assertCount(1, $parameterWith->parameters());
+        $this->assertSame($foo, $parameterWith->parameters()->get('foo'));
+        $this->assertTrue($parameterWith->parameters()->isOptional('foo'));
     }
 
     public function testAssertCompatible(): void

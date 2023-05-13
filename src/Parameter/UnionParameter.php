@@ -34,23 +34,23 @@ final class UnionParameter implements UnionParameterInterface
     private array $default = [];
 
     final public function __construct(
-        private ParametersInterface $items,
+        private ParametersInterface $parameters,
         private string $description = '',
     ) {
         $this->setUp(); // @codeCoverageIgnore
         $this->type = $this->type();
-        $this->items = $items;
+        $this->parameters = $parameters;
     }
 
     public function setUp(): void
     {
-        $this->items = new Parameters();
+        $this->parameters = new Parameters();
     }
 
     public function withAdded(ParameterInterface ...$parameter): static
     {
         $new = clone $this;
-        $new->items = $new->items
+        $new->parameters = $new->parameters
             ->withAddedRequired(...$parameter);
 
         return $new;

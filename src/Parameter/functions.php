@@ -118,7 +118,7 @@ function assertUnion(
     mixed $argument,
 ): mixed {
     $types = [];
-    foreach ($parameter->items() as $parameter) {
+    foreach ($parameter->parameters() as $parameter) {
         try {
             assertNamedArgument('', $parameter, $argument);
 

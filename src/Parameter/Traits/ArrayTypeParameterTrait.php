@@ -18,7 +18,7 @@ use Chevere\Parameter\Interfaces\ParametersInterface;
 
 trait ArrayTypeParameterTrait
 {
-    private ParametersInterface $items;
+    private ParametersInterface $parameters;
 
     private bool $isList = false;
 
@@ -33,7 +33,7 @@ trait ArrayTypeParameterTrait
     public function without(string ...$name): static
     {
         $new = clone $this;
-        $new->items = $new->items
+        $new->parameters = $new->parameters
             ->without(...$name);
 
         return $new;
@@ -42,8 +42,8 @@ trait ArrayTypeParameterTrait
     private function put(string $method, ParameterInterface ...$parameter): void
     {
         $this->removeConflictKeys(...$parameter);
-        $this->items = $this->items->{$method}(...$parameter);
-        $keys = $this->items->keys();
+        $this->parameters = $this->parameters->{$method}(...$parameter);
+        $keys = $this->parameters->keys();
         $fillKeys = array_fill_keys($keys, null);
         $this->isList = array_is_list($fillKeys);
     }
@@ -52,7 +52,7 @@ trait ArrayTypeParameterTrait
     {
         $keys = array_keys($parameter);
         /** @var string[] $diff */
-        $diff = array_intersect($keys, $this->items->keys());
-        $this->items = $this->items->without(...$diff);
+        $diff = array_intersect($keys, $this->parameters->keys());
+        $this->parameters = $this->parameters->without(...$diff);
     }
 }

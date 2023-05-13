@@ -34,7 +34,7 @@ final class ArrayStringParameter implements ArrayStringParameterInterface
 
     public function setUp(): void
     {
-        $this->items = new Parameters();
+        $this->parameters = new Parameters();
     }
 
     public function withRequired(StringParameterInterface ...$parameter): static

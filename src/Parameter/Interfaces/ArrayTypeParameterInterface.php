@@ -26,10 +26,7 @@ interface ArrayTypeParameterInterface extends ParameterInterface
      */
     public function default(): ?array;
 
-    /**
-     * Provides access to the parameters.
-     */
-    public function items(): ParametersInterface;
+    public function parameters(): ParametersInterface;
 
     public function typeSchema(): string;
 

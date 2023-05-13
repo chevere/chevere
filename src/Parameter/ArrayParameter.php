@@ -34,7 +34,7 @@ final class ArrayParameter implements ArrayParameterInterface
 
     public function setUp(): void
     {
-        $this->items = new Parameters();
+        $this->parameters = new Parameters();
     }
 
     public function withRequired(ParameterInterface ...$parameter): static

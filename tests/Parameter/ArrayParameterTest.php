@@ -28,12 +28,12 @@ final class ArrayParameterTest extends TestCase
     {
         $parameter = new ArrayParameter();
         $this->assertSame(null, $parameter->default());
-        $this->assertCount(0, $parameter->items());
+        $this->assertCount(0, $parameter->parameters());
         $this->assertSame([
             'type' => 'array#map',
             'description' => '',
             'default' => null,
-            'items' => [],
+            'parameters' => [],
         ], $parameter->schema());
         $default = ['test', 1];
         $withDefault = $parameter->withDefault($default);
@@ -47,7 +47,7 @@ final class ArrayParameterTest extends TestCase
             'type' => 'array#map',
             'description' => '',
             'default' => $default,
-            'items' => [],
+            'parameters' => [],
         ], $withDefault->schema());
     }
 
@@ -60,22 +60,22 @@ final class ArrayParameterTest extends TestCase
             one: $string,
             two: $integer
         );
-        $this->assertTrue($withRequired->items()->has('one', 'two'));
+        $this->assertTrue($withRequired->parameters()->has('one', 'two'));
         $this->assertNotSame($parameter, $withRequired);
-        $this->assertCount(2, $withRequired->items());
+        $this->assertCount(2, $withRequired->parameters());
         $this->assertInstanceOf(
             StringParameterInterface::class,
-            $withRequired->items()->get('one')
+            $withRequired->parameters()->get('one')
         );
         $this->assertInstanceOf(
             IntegerParameterInterface::class,
-            $withRequired->items()->get('two')
+            $withRequired->parameters()->get('two')
         );
         $this->assertSame([
             'type' => 'array#map',
             'description' => '',
             'default' => null,
-            'items' => [
+            'parameters' => [
                 'one' => [
                     'required' => true,
                 ] + $string->schema(),
@@ -88,14 +88,14 @@ final class ArrayParameterTest extends TestCase
             one: $integer,
             three: $integer
         );
-        $this->assertTrue($withRequired->items()->has('one', 'two', 'three'));
+        $this->assertTrue($withRequired->parameters()->has('one', 'two', 'three'));
         $this->assertInstanceOf(
             IntegerParameterInterface::class,
-            $withRequired->items()->get('one')
+            $withRequired->parameters()->get('one')
         );
         $this->assertInstanceOf(
             IntegerParameterInterface::class,
-            $withRequired->items()->get('three')
+            $withRequired->parameters()->get('three')
         );
     }
 
@@ -108,29 +108,29 @@ final class ArrayParameterTest extends TestCase
             one: $string,
             two: $integer
         );
-        $this->assertTrue($with->items()->has('one', 'two'));
+        $this->assertTrue($with->parameters()->has('one', 'two'));
         $this->assertNotSame($parameter, $with);
-        $this->assertCount(2, $with->items());
+        $this->assertCount(2, $with->parameters());
         $this->assertInstanceOf(
             StringParameterInterface::class,
-            $with->items()->get('one')
+            $with->parameters()->get('one')
         );
         $this->assertInstanceOf(
             IntegerParameterInterface::class,
-            $with->items()->get('two')
+            $with->parameters()->get('two')
         );
         $with = $with->withOptional(
             one: $integer,
             three: $integer
         );
-        $this->assertTrue($with->items()->has('one', 'two', 'three'));
+        $this->assertTrue($with->parameters()->has('one', 'two', 'three'));
         $this->assertInstanceOf(
             IntegerParameterInterface::class,
-            $with->items()->get('one')
+            $with->parameters()->get('one')
         );
         $this->assertInstanceOf(
             IntegerParameterInterface::class,
-            $with->items()->get('three')
+            $with->parameters()->get('three')
         );
     }
 
@@ -144,7 +144,7 @@ final class ArrayParameterTest extends TestCase
         );
         $with = $parameter->without('one');
         $this->assertNotSame($parameter, $with);
-        $this->assertCount(1, $with->items());
+        $this->assertCount(1, $with->parameters());
     }
 
     public function testAssertCompatible(): void

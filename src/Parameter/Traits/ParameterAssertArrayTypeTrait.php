@@ -21,21 +21,21 @@ use Chevere\Throwable\Exceptions\OutOfBoundsException;
 
 trait ParameterAssertArrayTypeTrait
 {
-    private ParametersInterface $items;
+    private ParametersInterface $parameters;
 
     private function assertArrayType(ArrayTypeParameterInterface $parameter): void
     {
-        $parametersCount = $this->items->count();
-        $providedCount = $parameter->items()->count();
+        $parametersCount = $this->parameters->count();
+        $providedCount = $parameter->parameters()->count();
         if ($parametersCount === 0 && $providedCount !== 0) {
             throw new InvalidArgumentException(
                 message('Expecting no parameters, %provided% provided')
                     ->withCode('%provided%', strval($providedCount))
             );
         }
-        foreach ($this->items as $name => $item) {
+        foreach ($this->parameters as $name => $item) {
             try {
-                $tryParameter = $parameter->items()->get($name);
+                $tryParameter = $parameter->parameters()->get($name);
             } catch (OutOfBoundsException) {
                 throw new OutOfBoundsException(
                     message('Parameter %name% not found')

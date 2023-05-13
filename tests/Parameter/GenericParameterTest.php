@@ -41,7 +41,7 @@ final class GenericParameterTest extends TestCase
             'type' => 'generic',
             'description' => $description,
             'default' => null,
-            'items' => [
+            'parameters' => [
                 'K' => [
                     'required' => true,
                 ] + $key->schema(),
@@ -50,8 +50,8 @@ final class GenericParameterTest extends TestCase
                 ] + $value->schema(),
             ],
         ], $parameter->schema());
-        $parameters = $parameter->items();
-        $this->assertSame($parameters, $parameter->items());
+        $parameters = $parameter->parameters();
+        $this->assertSame($parameters, $parameter->parameters());
         $this->assertEquals($value, $parameters->get('V'));
         $this->assertEquals($key, $parameters->get('K'));
     }
