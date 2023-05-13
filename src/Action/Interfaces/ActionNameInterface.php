@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Interfaces;
 
+use Stringable;
+
 /**
  * Describes the component in charge of handling Action name.
  */
-interface ActionNameInterface
+interface ActionNameInterface extends Stringable
 {
 }
