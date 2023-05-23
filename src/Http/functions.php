@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Http;
 
-function middlewares(string ...$middleware): Middlewares
+use Chevere\Http\Interfaces\MiddlewaresInterface;
+
+function middlewares(string ...$middleware): MiddlewaresInterface
 {
     $middlewares = [];
     foreach ($middleware as $name) {
