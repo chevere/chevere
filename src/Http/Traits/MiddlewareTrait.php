@@ -11,18 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Http;
+namespace Chevere\Http\Traits;
 
-use Chevere\Http\Interfaces\MiddlewareInterface;
-use Chevere\Http\Traits\ClientError\StatusBadRequestTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-abstract class Middleware implements MiddlewareInterface
+trait MiddlewareTrait
 {
-    use StatusBadRequestTrait;
-
     public function process(
         ServerRequestInterface $request,
         RequestHandlerInterface $handler
