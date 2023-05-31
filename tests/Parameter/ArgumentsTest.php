@@ -111,7 +111,7 @@ final class ArgumentsTest extends TestCase
             $name => '123',
         ]);
         $this->expectException(OutOfBoundsException::class);
-        $arguments->withPut(notFound: '1234');
+        $arguments->withPut('notFound', '1234');
     }
 
     public function testWithArgument(): void
@@ -130,15 +130,11 @@ final class ArgumentsTest extends TestCase
         );
         $this->assertTrue($arguments->has($name));
         $this->assertSame($value, $arguments->get($name));
-        $argumentsWith = $arguments->withPut(...[
-            $name => $valueAlt,
-        ]);
+        $argumentsWith = $arguments->withPut($name, $valueAlt);
         $this->assertNotSame($arguments, $argumentsWith);
         $this->assertSame($valueAlt, $argumentsWith->get($name));
         $this->expectException(InvalidArgumentException::class);
-        $argumentsWith->withPut(...[
-            $name => 'invalid',
-        ]);
+        $argumentsWith->withPut($name, 'invalid');
     }
 
     public function testWithArgumentTypeError(): void
@@ -155,9 +151,7 @@ final class ArgumentsTest extends TestCase
             ]
         );
         $this->expectException(TypeError::class);
-        $arguments->withPut(...[
-            $name => 123,
-        ]);
+        $arguments->withPut($name, 123);
     }
 
     public function testWithArgumentWrongTypeValue(): void
@@ -171,7 +165,7 @@ final class ArgumentsTest extends TestCase
             ]
         );
         $this->expectException(TypeError::class);
-        $arguments->withPut(id: 123);
+        $arguments->withPut('id', 123);
     }
 
     public function testArgumentsRequiredException(): void

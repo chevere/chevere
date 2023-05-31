@@ -24,10 +24,10 @@ use Psr\Container\ContainerInterface as PsrContainerInterface;
 interface ContainerInterface extends MappedInterface, PsrContainerInterface
 {
     /**
-     * Return an instance with the specified service.
+     * Return an instance with the specified value.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified service.
+     * an instance that contains the specified value.
      */
-    public function withPut(mixed ...$arguments): self;
+    public function withPut(string $key, mixed $value): self;
 }

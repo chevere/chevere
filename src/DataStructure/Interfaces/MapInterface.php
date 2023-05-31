@@ -27,7 +27,7 @@ interface MapInterface extends MappedInterface, ToArrayInterface
      * @param TValue ...$value
      * @return self<TValue>
      */
-    public function withPut(mixed ...$value): self;
+    public function withPut(string $key, mixed $value): self;
 
     /**
      * @return self<TValue>

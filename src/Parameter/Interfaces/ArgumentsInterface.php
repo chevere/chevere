@@ -39,7 +39,7 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException If `$name` is not a known parameter.
      */
-    public function withPut(mixed ...$value): self;
+    public function withPut(string $name, mixed $value): self;
 
     /**
      * Indicates whether the instance has an argument for the parameter `$name`.

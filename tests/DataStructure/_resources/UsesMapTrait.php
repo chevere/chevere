@@ -28,10 +28,10 @@ final class UsesMapTrait
         $this->map = $copy;
     }
 
-    public function withPut(object ...$object): static
+    public function withPut(string $key, object $object): static
     {
         $new = clone $this;
-        $new->map = $new->map->withPut(...$object);
+        $new->map = $new->map->withPut($key, $object);
 
         return $new;
     }

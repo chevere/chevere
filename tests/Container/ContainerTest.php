@@ -30,7 +30,7 @@ final class ContainerTest extends TestCase
     public function testWithPut(): void
     {
         $container = new Container();
-        $withPut = $container->withPut(foo: 'bar');
+        $withPut = $container->withPut('foo', 'bar');
         $this->assertNotSame($container, $withPut);
         $this->assertTrue($withPut->has('foo'));
         $this->assertSame('bar', $withPut->get('foo'));

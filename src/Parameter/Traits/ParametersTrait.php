@@ -108,13 +108,11 @@ trait ParametersTrait
         if (count($parameters) === 0) {
             return;
         }
-        $map = [];
         foreach ($parameters as $name => $parameter) {
             $name = strval($name);
             $this->assertNoOverflow($name);
             $this->{$property} = $this->{$property}->withPush($name);
-            $map[$name] = $parameter;
+            $this->map = $this->map->withPut($name, $parameter);
         }
-        $this->map = $this->map->withPut(...$map);
     }
 }

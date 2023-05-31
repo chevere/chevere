@@ -38,7 +38,10 @@ final class Map implements MapInterface
 
     public function __construct(mixed ...$value)
     {
-        $this->put(...$value);
+        foreach ($value as $key => $item) {
+            $key = (string) $key;
+            $this->put($key, $item);
+        }
     }
 
     public function toArray(): array
@@ -70,10 +73,10 @@ final class Map implements MapInterface
      * @param TValue ...$value
      * @return self<TValue>
      */
-    public function withPut(mixed ...$value): self
+    public function withPut(string $key, mixed $value): self
     {
         $new = clone $this;
-        $new->put(...$value);
+        $new->put($key, $value);
 
         return $new;
     }
@@ -144,20 +147,18 @@ final class Map implements MapInterface
         return $lookup === false ? null : strval($lookup);
     }
 
-    private function put(mixed ...$values): void
+    private function put(string $key, mixed $value): void
     {
-        foreach ($values as $key => $value) {
-            $key = strval($key);
-            $lookUp = $this->lookupKey($key);
-            if ($lookUp === null) {
-                $this->keys[] = $key;
-                $this->values[] = $value;
-                $this->count++;
+        $key = strval($key);
+        $lookUp = $this->lookupKey($key);
+        if ($lookUp === null) {
+            $this->keys[] = $key;
+            $this->values[] = $value;
+            $this->count++;
 
-                continue;
-            }
-            $this->values[$lookUp] = $value;
+            return;
         }
+        $this->values[$lookUp] = $value;
     }
 
     private function out(string ...$key): void

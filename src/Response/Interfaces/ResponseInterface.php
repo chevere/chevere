@@ -20,8 +20,6 @@ interface ResponseInterface
 {
     public const TOKEN_LENGTH = 256;
 
-    public function __construct(mixed ...$value);
-
     /**
      * Return an instance with the specified code.
      *

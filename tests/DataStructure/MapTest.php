@@ -55,7 +55,7 @@ final class MapTest extends TestCase
         $arguments = [
             $key => $value,
         ];
-        $mapWith = $map->withPut(...$arguments);
+        $mapWith = $map->withPut($key, $value);
         $this->assertNotSame($map, $mapWith);
         $this->assertNotSame($map->keys(), $mapWith->keys());
         $this->assertSame($value, $mapWith->get($key));
@@ -67,23 +67,25 @@ final class MapTest extends TestCase
     {
         $map = new Map();
         $mapWith = $map
-            ->withPut(a: 'a')
-            ->withPut(b: 'b');
+            ->withPut('a', 'a')
+            ->withPut('b', 'b');
         $this->assertCount(2, $mapWith);
     }
 
-    public function testWithPutConsecutivePositional(): void
+    public function testWithPutNumericVariadic(): void
     {
         $map = new Map();
-        $mapWith = $map
-            ->withPut(...['a'])
-            ->withPut(...['b']);
-        $this->assertCount(1, $mapWith);
+        foreach ([128, 256] as $item) {
+            $map = $map->withPut(strval($item), $item);
+        }
+        $this->assertCount(2, $map);
     }
 
     public function testWithOut(): void
     {
-        $map = (new Map())->withPut(a: 'foo', b: 'bar');
+        $map = (new Map())
+            ->withPut('a', 'foo')
+            ->withPut('b', 'bar');
         $mapWith = $map->without('a');
         $this->assertNotSame($map, $mapWith);
         $this->assertFalse($mapWith->has('a'));

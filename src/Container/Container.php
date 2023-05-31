@@ -16,7 +16,6 @@ namespace Chevere\Container;
 use Chevere\Container\Exceptions\ContainerException;
 use Chevere\Container\Exceptions\ContainerNotFoundException;
 use Chevere\Container\Interfaces\ContainerInterface;
-use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
 use Throwable;
 
@@ -27,16 +26,10 @@ final class Container implements ContainerInterface
      */
     use MapTrait;
 
-    public function __construct(mixed ...$arguments)
-    {
-        $this->map = (new Map())->withPut(...$arguments);
-    }
-
-    public function withPut(mixed ...$arguments): ContainerInterface
+    public function withPut(string $key, mixed $value): ContainerInterface
     {
         $new = clone $this;
-        $new->map = $new->map
-            ->withPut(...$arguments);
+        $new->map = $new->map->withPut($key, $value);
 
         return $new;
     }
