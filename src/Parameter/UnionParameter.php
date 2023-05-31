@@ -50,8 +50,11 @@ final class UnionParameter implements UnionParameterInterface
     public function withAdded(ParameterInterface ...$parameter): static
     {
         $new = clone $this;
-        $new->parameters = $new->parameters
-            ->withAddedRequired(...$parameter);
+        foreach ($parameter as $name => $item) {
+            $name = strval($name);
+            $new->parameters = $new->parameters
+                ->withAddedRequired($name, $item);
+        }
 
         return $new;
     }

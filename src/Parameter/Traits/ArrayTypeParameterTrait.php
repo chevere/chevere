@@ -42,8 +42,12 @@ trait ArrayTypeParameterTrait
     private function put(string $method, ParameterInterface ...$parameter): void
     {
         $this->removeConflictKeys(...$parameter);
-        $this->parameters = $this->parameters->{$method}(...$parameter);
+        foreach ($parameter as $name => $item) {
+            $name = strval($name);
+            $this->parameters = $this->parameters->{$method}($name, $item);
+        }
         $keys = $this->parameters->keys();
+        /** @var array<string> $fillKeys */
         $fillKeys = array_fill_keys($keys, null);
         $this->isList = array_is_list($fillKeys);
     }

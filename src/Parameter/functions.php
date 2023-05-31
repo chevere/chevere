@@ -195,18 +195,19 @@ function assertArgument(ParameterInterface $parameter, mixed $argument): mixed
 
 function methodParameters(string $class, string $method): ParametersInterface
 {
-    $parameters = [
-        0 => [],
-        1 => [],
-    ];
+    $parameters = parameters();
     $reflectionMethod = new ReflectionMethod($class, $method);
     foreach ($reflectionMethod->getParameters() as $reflection) {
         $typedReflection = new ReflectionParameterTyped($reflection);
-        $pos = intval(! $reflection->isOptional());
-        $parameters[$pos][$reflection->getName()] = $typedReflection->parameter();
+        $callable = match ($reflection->isOptional()) {
+            true => 'withAddedOptional',
+            default => 'withAddedRequired',
+        };
+        $parameters = $parameters->{$callable}(
+            $reflection->getName(),
+            $typedReflection->parameter()
+        );
     }
 
-    return parameters()
-        ->withAddedRequired(...$parameters[1])
-        ->withAddedOptional(...$parameters[0]);
+    return $parameters;
 }

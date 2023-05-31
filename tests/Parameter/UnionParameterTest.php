@@ -43,14 +43,11 @@ final class UnionParameterTest extends TestCase
         );
         $one = string();
         $two = integer();
-        $parameterWith = $parameter->withAdded(
-            $one,
-            $two
-        );
-        $this->assertNotSame($parameter, $parameterWith);
-        $this->assertCount(2, $parameterWith->parameters());
-        $this->assertSame($one, $parameterWith->parameters()->get('0'));
-        $this->assertSame($two, $parameterWith->parameters()->get('1'));
+        $with = $parameter->withAdded($one, $two);
+        $this->assertNotSame($parameter, $with);
+        $this->assertCount(2, $with->parameters());
+        $this->assertSame($one, $with->parameters()->get('0'));
+        $this->assertSame($two, $with->parameters()->get('1'));
     }
 
     public function testAssertCompatible(): void

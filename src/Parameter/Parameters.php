@@ -39,21 +39,24 @@ final class Parameters implements ParametersInterface
         $this->map = new Map();
         $this->required = new Vector();
         $this->optional = new Vector();
-        $this->addProperty('required', $parameter);
+        foreach ($parameter as $name => $item) {
+            $name = strval($name);
+            $this->addProperty('required', $name, $item);
+        }
     }
 
-    public function withAddedRequired(ParameterInterface ...$parameter): ParametersInterface
+    public function withAddedRequired(string $name, ParameterInterface $parameter): ParametersInterface
     {
         $new = clone $this;
-        $new->addProperty('required', $parameter);
+        $new->addProperty('required', $name, $parameter);
 
         return $new;
     }
 
-    public function withAddedOptional(ParameterInterface ...$parameter): ParametersInterface
+    public function withAddedOptional(string $name, ParameterInterface $parameter): ParametersInterface
     {
         $new = clone $this;
-        $new->addProperty('optional', $parameter);
+        $new->addProperty('optional', $name, $parameter);
 
         return $new;
     }

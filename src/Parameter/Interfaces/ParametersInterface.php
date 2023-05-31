@@ -33,14 +33,14 @@ interface ParametersInterface extends MappedInterface
     public function getIterator(): Iterator;
 
     /**
-     * Return an instance with the specified required parameter(s) added.
+     * Return an instance with the specified required parameter added.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified required parameter(s) added.
+     * an instance that contains the specified required parameter added.
      *
      * @throws OverflowException
      */
-    public function withAddedRequired(ParameterInterface ...$parameter): self;
+    public function withAddedRequired(string $name, ParameterInterface $parameter): self;
 
     /**
      * Return an instance with the specified optional parameter(s) added.
@@ -50,7 +50,7 @@ interface ParametersInterface extends MappedInterface
      *
      * @throws OverflowException
      */
-    public function withAddedOptional(ParameterInterface ...$parameter): self;
+    public function withAddedOptional(string $name, ParameterInterface $parameter): self;
 
     /**
      * Return an instance with the specified parameter(s) removed.

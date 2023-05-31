@@ -100,19 +100,10 @@ trait ParametersTrait
         }
     }
 
-    /**
-     * @param array<string|int, ParameterInterface> $parameters
-     */
-    private function addProperty(string $property, array $parameters): void
+    private function addProperty(string $property, string $name, ParameterInterface $parameter): void
     {
-        if (count($parameters) === 0) {
-            return;
-        }
-        foreach ($parameters as $name => $parameter) {
-            $name = strval($name);
-            $this->assertNoOverflow($name);
-            $this->{$property} = $this->{$property}->withPush($name);
-            $this->map = $this->map->withPut($name, $parameter);
-        }
+        $this->assertNoOverflow($name);
+        $this->{$property} = $this->{$property}->withPush($name);
+        $this->map = $this->map->withPut($name, $parameter);
     }
 }

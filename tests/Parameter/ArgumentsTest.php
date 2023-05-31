@@ -181,11 +181,9 @@ final class ArgumentsTest extends TestCase
     public function testParameterOptional(): void
     {
         $parameters = parameters(id: string())
-            ->withAddedOptional(
-                opt: string(),
-                alt: string()
-            )
-            ->withAddedRequired(name: string());
+            ->withAddedOptional('opt', string())
+            ->withAddedOptional('alt', string())
+            ->withAddedRequired('name', string());
         $arguments = new Arguments(
             $parameters,
             [
@@ -224,11 +222,10 @@ final class ArgumentsTest extends TestCase
         $optionalDefault = 'a';
         $parameters = (parameters(id: string()))
             ->withAddedOptional(
-                ...[
-                    $optional => string()
-                        ->withRegex(new Regex('/^a|b$/'))
-                        ->withDefault($optionalDefault),
-                ]
+                $optional,
+                string()
+                    ->withRegex(new Regex('/^a|b$/'))
+                    ->withDefault($optionalDefault),
             );
         $arguments = new Arguments(
             $parameters,
@@ -257,12 +254,14 @@ final class ArgumentsTest extends TestCase
         $optionalObject = 'object';
         $parameters = (parameters(id: string()))
             ->withAddedOptional(
-                ...[
-                    $optionalName => string()
-                        ->withRegex(new Regex('/^a|b$/'))
-                        ->withDefault($optionalDefault),
-                    $optionalObject => new ObjectParameter(),
-                ]
+                $optionalName,
+                string()
+                    ->withRegex(new Regex('/^a|b$/'))
+                    ->withDefault($optionalDefault),
+            )
+            ->withAddedOptional(
+                $optionalObject,
+                new ObjectParameter()
             );
         $argumentsWithAllValues = new Arguments(
             $parameters,
