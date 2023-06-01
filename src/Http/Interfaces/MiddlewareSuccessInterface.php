@@ -16,12 +16,9 @@ namespace Chevere\Http\Interfaces;
 use Psr\Http\Server\MiddlewareInterface as ServerMiddlewareInterface;
 
 /**
- * Describes the component in charge of defining middleware.
+ * Describes the component in charge of defining middleware with success status code.
  */
-interface MiddlewareInterface extends ServerMiddlewareInterface
+interface MiddlewareSuccessInterface extends ServerMiddlewareInterface
 {
-    /**
-     * @return int<400, 599>
-     */
-    public static function statusError(): int;
+    public static function statusSuccess(): int;
 }
