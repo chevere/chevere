@@ -36,7 +36,6 @@
             "src/Common/functions.php",
             "src/DataStructure/functions.php",
             "src/Filesystem/functions.php",
-            "src/Http/functions.php",
             "src/Iterator/functions.php",
             "src/Message/functions.php",
             "src/Parameter/functions-array.php",

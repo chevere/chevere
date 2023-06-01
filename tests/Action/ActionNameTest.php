@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Controller;
+namespace Chevere\Tests\Action;
 
 use Chevere\Action\ActionName;
 use Chevere\Tests\Action\_resources\ActionTestAction;
