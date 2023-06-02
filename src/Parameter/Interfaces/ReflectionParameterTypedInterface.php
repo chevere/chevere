@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Interfaces;
 
-use Chevere\Attribute\StringAttribute;
+use Chevere\Attribute\StringRegex;
 
 /**
  * Describes the component in charge of provide a typed reflection parameter.
  */
 interface ReflectionParameterTypedInterface
 {
-    public function attribute(): StringAttribute;
+    public function attribute(): StringRegex;
 
     public function default(): mixed;
 

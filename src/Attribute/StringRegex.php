@@ -20,7 +20,7 @@ use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 
 #[Attribute]
-class StringAttribute
+class StringRegex
 {
     use DescribedTrait;
 

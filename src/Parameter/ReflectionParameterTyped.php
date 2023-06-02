@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Attribute\StringAttribute;
+use Chevere\Attribute\StringRegex;
 use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
@@ -43,7 +43,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
 
     private ReflectionNamedType $type;
 
-    private StringAttribute $attribute;
+    private StringRegex $attribute;
 
     private mixed $default;
 
@@ -67,7 +67,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         $this->parameter = $this->getParameterWithAttribute($parameter, $this->attribute);
     }
 
-    public function attribute(): StringAttribute
+    public function attribute(): StringRegex
     {
         return $this->attribute;
     }
@@ -116,20 +116,20 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         };
     }
 
-    private function getAttribute(): StringAttribute
+    private function getAttribute(): StringRegex
     {
-        $attributes = $this->reflection->getAttributes(StringAttribute::class);
+        $attributes = $this->reflection->getAttributes(StringRegex::class);
         /**
          * @phpstan-ignore-next-line
          * @var ?ReflectionAttribute $attribute
          */
         $attribute = $attributes[0] ?? null;
         if ($attribute !== null) {
-            /** @var StringAttribute */
+            /** @var StringRegex */
             return $attribute->newInstance();
         }
 
-        return new StringAttribute();
+        return new StringRegex();
     }
 
     private function getDefaultValue(): mixed
@@ -151,7 +151,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
 
     private function getParameterWithAttribute(
         ParameterInterface $parameter,
-        StringAttribute $attribute
+        StringRegex $attribute
     ): ParameterInterface {
         if (! ($parameter instanceof StringParameterInterface)) {
             return $parameter;

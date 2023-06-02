@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter\_resources;
 
-use Chevere\Attribute\StringAttribute;
+use Chevere\Attribute\StringRegex;
 use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 
@@ -24,7 +24,7 @@ final class Depends
     }
 
     public function useString(
-        #[StringAttribute(regex: '/^[a-z]$/', description: 'A string')]
+        #[StringRegex(regex: '/^[a-z]$/', description: 'A string')]
         string $string = 'default'
     ) {
     }
