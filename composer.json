@@ -1,6 +1,6 @@
 {
     "name": "chevere/chevere",
-    "description": "High quality library for modern PHP",
+    "description": "High quality library for building modern PHP",
     "homepage": "https://chevere.org",
     "type": "library",
     "license": "Apache-2.0",
