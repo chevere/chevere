@@ -77,7 +77,6 @@ trait NumericParameterTrait
     private function setAccept(int|float ...$value): void
     {
         sort($value);
-        $lastKey = array_key_last($value);
         // @phpstan-ignore-next-line
         $this->accept = $value;
         $this->minimum = null;
