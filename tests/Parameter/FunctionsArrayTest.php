@@ -14,7 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\arrayString;
+use Chevere\Parameter\ArrayStringParameter;
 use function Chevere\Parameter\assertArray;
+use function Chevere\Parameter\assertArrayString;
 use function Chevere\Parameter\integer;
 use function Chevere\Parameter\string;
 use Chevere\Throwable\Errors\ArgumentCountError;
@@ -99,5 +102,18 @@ final class FunctionsArrayTest extends TestCase
         ];
         $this->assertSame($expected, assertArray($parameter, $empty));
         $this->assertSame($expected, assertArray($parameter, $expected));
+    }
+
+    public function testArrayString(): void
+    {
+        $string = string();
+        $arrayString = arrayString(foo: $string);
+        $expected = [
+            'foo' => 'bar',
+        ];
+        $this->assertSame($expected, assertArrayString($arrayString, $expected));
+        $new = new ArrayStringParameter();
+        $new = $new->withRequired(foo: $string);
+        $this->assertEquals($new, $arrayString);
     }
 }

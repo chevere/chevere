@@ -24,9 +24,13 @@ trait ExceptionTrait
 {
     private MessageInterface $chevereMessage;
 
-    public function __construct(?MessageInterface $message = null, int $code = 0, Throwable $previous = null)
+    public function __construct(null|string|MessageInterface $message = null, int $code = 0, Throwable $previous = null)
     {
-        $this->chevereMessage = $message ?? message('');
+        $this->chevereMessage = match (true) {
+            $message === null => message(''),
+            is_string($message) => message($message),
+            $message instanceof MessageInterface => $message,
+        };
 
         parent::__construct($this->chevereMessage->__toString(), $code, $previous);
     }
