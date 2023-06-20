@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Common;
 
 use Chevere\Common\Interfaces\ClassNameInterface;
-use function Chevere\Message\message;
 use Chevere\String\StringAssert;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use function Chevere\Message\message;
 
 final class ClassName implements ClassNameInterface
 {

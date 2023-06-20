@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
+use PHPUnit\Framework\TestCase;
 use function Chevere\Filesystem\directoryForPath;
 use function Chevere\Filesystem\tailDirectoryPath;
-use PHPUnit\Framework\TestCase;
 
 final class FunctionsTest extends TestCase
 {

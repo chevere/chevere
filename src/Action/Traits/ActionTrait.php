@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Traits;
 
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Response\Interfaces\ResponseInterface;
+use Chevere\Response\Response;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArgument;
-use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
 use function Chevere\Parameter\methodParameters;
-use Chevere\Response\Interfaces\ResponseInterface;
-use Chevere\Response\Response;
 
 /**
  * @method array<string, mixed> run()

@@ -15,12 +15,12 @@ namespace Chevere\VariableSupport;
 
 use Chevere\Iterator\Breadcrumb;
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
-use function Chevere\Message\message;
 use Chevere\VariableSupport\Exceptions\ObjectNotClonableException;
 use Chevere\VariableSupport\Interfaces\ObjectVariableInterface;
 use Chevere\VariableSupport\Traits\BreadcrumbIterableTrait;
 use ReflectionNamedType;
 use ReflectionObject;
+use function Chevere\Message\message;
 
 final class ObjectVariable implements ObjectVariableInterface
 {

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\string;
-use PHPUnit\Framework\TestCase;
 
 final class FunctionsArrayStringTest extends TestCase
 {

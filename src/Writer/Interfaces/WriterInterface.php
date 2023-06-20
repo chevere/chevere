@@ -22,14 +22,14 @@ use Stringable;
 interface WriterInterface extends Stringable
 {
     /**
+     * Returns the contents written. Must not alter the file cursor.
+     */
+    public function __toString(): string;
+
+    /**
      * Writes the given string.
      *
      * @throws RuntimeException
      */
     public function write(string $string): void;
-
-    /**
-     * Returns the contents written. Must not alter the file cursor.
-     */
-    public function __toString(): string;
 }

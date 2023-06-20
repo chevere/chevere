@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
-use function Chevere\Filesystem\directoryForPath;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\Type\Type;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use function Chevere\Filesystem\directoryForPath;
 
 final class TypeTest extends TestCase
 {
@@ -31,7 +31,7 @@ final class TypeTest extends TestCase
     public function testTypes(): void
     {
         $resource = fopen(__FILE__, 'r');
-        if (!is_resource($resource)) {
+        if (! is_resource($resource)) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         $scalars = ['boolean', 'integer', 'float', 'string'];

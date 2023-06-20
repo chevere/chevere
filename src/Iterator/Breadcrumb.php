@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Iterator;
 
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
-use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use function Chevere\Message\message;
 
 final class Breadcrumb implements BreadcrumbInterface
 {

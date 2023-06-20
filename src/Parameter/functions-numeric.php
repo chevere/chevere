@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use function Chevere\Message\message;
 
 /**
  * @param float[] $accept

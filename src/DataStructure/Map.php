@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\DataStructure;
 
 use Chevere\DataStructure\Interfaces\MapInterface;
-use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Iterator;
+use function Chevere\Message\message;
 
 /**
  * @template TValue

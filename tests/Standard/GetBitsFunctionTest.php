@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Standard;
 
-use function Chevere\Standard\getBits;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Standard\getBits;
 
 final class GetBitsFunctionTest extends TestCase
 {

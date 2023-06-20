@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use Chevere\Parameter\Interfaces\ParameterInterface;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertString;
 use function Chevere\Parameter\date;
 use function Chevere\Parameter\datetime;
 use function Chevere\Parameter\enum;
-use Chevere\Parameter\Interfaces\ParameterInterface;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
-use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 
 final class FunctionsStringTest extends TestCase
 {

@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Regex;
 
-use function Chevere\Message\message;
 use Chevere\Regex\Exceptions\NoMatchException;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\RuntimeException;
 use Safe\Exceptions\PcreException;
+use Throwable;
+use function Chevere\Message\message;
 use function Safe\preg_match;
 use function Safe\preg_match_all;
-use Throwable;
 
 final class Regex implements RegexInterface
 {

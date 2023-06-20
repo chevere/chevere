@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\generic;
 use function Chevere\Parameter\integer;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 
 final class ArgumentsGenericTest extends TestCase
 {

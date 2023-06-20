@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Controller;
 
-use function Chevere\Common\assertClassName;
 use Chevere\Controller\Interfaces\ControllerInterface;
 use Chevere\Controller\Interfaces\ControllerNameInterface;
+use function Chevere\Common\assertClassName;
 
 final class ControllerName implements ControllerNameInterface
 {

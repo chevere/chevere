@@ -14,13 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
-use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\ObjectParameter;
-use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\string;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
@@ -28,6 +25,9 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\parameters;
+use function Chevere\Parameter\string;
 
 final class ArgumentsTest extends TestCase
 {

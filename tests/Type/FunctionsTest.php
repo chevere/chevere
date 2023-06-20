@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
-use function Chevere\Type\getType;
 use Chevere\Type\Interfaces\TypeInterface;
+use PHPUnit\Framework\TestCase;
+use function Chevere\Type\getType;
 use function Chevere\Type\returnTypeExceptionMessage;
 use function Chevere\Type\typeUnion;
-use PHPUnit\Framework\TestCase;
 
 final class FunctionsTest extends TestCase
 {

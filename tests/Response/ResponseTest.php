@@ -31,7 +31,9 @@ final class ResponseTest extends TestCase
         );
         $this->assertSame(ResponseInterface::TOKEN_LENGTH, strlen($response->token()));
         $this->assertIsString($response->token());
-        $data = ['key' => 'value'];
+        $data = [
+            'key' => 'value',
+        ];
         $response = new Response(...$data);
         $this->assertSame($data, $response->data());
     }
@@ -40,7 +42,9 @@ final class ResponseTest extends TestCase
     {
         $response = new Response();
         $this->assertSame([], $response->data());
-        $data = ['key' => 'value'];
+        $data = [
+            'key' => 'value',
+        ];
         $withData = $response->withData(...$data);
         $this->assertNotSame($response, $withData);
         $this->assertSame($data, $withData->data());

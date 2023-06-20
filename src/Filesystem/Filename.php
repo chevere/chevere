@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Filesystem;
 
 use Chevere\Filesystem\Interfaces\FilenameInterface;
-use function Chevere\Message\message;
 use Chevere\String\StringAssert;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LengthException;
 use Throwable;
+use function Chevere\Message\message;
 
 final class Filename implements FilenameInterface
 {

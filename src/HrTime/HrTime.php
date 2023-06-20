@@ -17,7 +17,6 @@ use Chevere\HrTime\Interfaces\HrTimeInterface;
 
 /**
  * @infection-ignore-all
- *
  */
 final class HrTime implements HrTimeInterface
 {

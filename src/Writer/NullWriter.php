@@ -22,13 +22,13 @@ final class NullWriter implements WriterInterface
         // null
     }
 
-    public function write(string $string): void
-    {
-        // null
-    }
-
     public function __toString(): string
     {
         return '';
+    }
+
+    public function write(string $string): void
+    {
+        // null
     }
 }

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Standard;
 
+use PHPUnit\Framework\TestCase;
 use function Chevere\Standard\arrayFilterBoth;
 use function Chevere\Standard\arrayFilterKey;
 use function Chevere\Standard\arrayFilterValue;
-use PHPUnit\Framework\TestCase;
 
 final class ArrayFilterRecursiveFunctionsTest extends TestCase
 {

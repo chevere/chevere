@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Message\Interfaces\MessageInterface;
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
@@ -25,6 +24,7 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Throwable;
+use function Chevere\Message\message;
 
 function arrayp(
     ParameterInterface ...$required

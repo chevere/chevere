@@ -17,15 +17,15 @@ use Chevere\Parameter\ArrayParameter;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FileParameter;
 use Chevere\Parameter\FloatParameter;
-use function Chevere\Parameter\integer;
 use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
-use function Chevere\Parameter\string;
 use Chevere\Parameter\StringParameter;
 use Chevere\Throwable\Exceptions\OverflowException;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\integer;
+use function Chevere\Parameter\string;
 
 final class ParametersTest extends TestCase
 {

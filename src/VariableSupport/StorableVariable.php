@@ -15,13 +15,13 @@ namespace Chevere\VariableSupport;
 
 use Chevere\Iterator\Breadcrumb;
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
-use function Chevere\Message\message;
 use Chevere\VariableSupport\Exceptions\UnableToStoreException;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 use Chevere\VariableSupport\Traits\BreadcrumbIterableTrait;
 use ReflectionNamedType;
 use ReflectionObject;
 use Symfony\Component\VarExporter\VarExporter;
+use function Chevere\Message\message;
 
 final class StorableVariable implements StorableVariableInterface
 {

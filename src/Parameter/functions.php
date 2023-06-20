@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
@@ -32,6 +31,7 @@ use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use ReflectionMethod;
 use Throwable;
+use function Chevere\Message\message;
 
 function boolean(
     string $description = '',
@@ -185,10 +185,8 @@ function assertArgument(ParameterInterface $parameter, mixed $argument): mixed
         $parameter instanceof StringParameterInterface
         // @phpstan-ignore-next-line
         => assertString($parameter, $argument),
-        $parameter instanceof UnionParameterInterface
-        => assertUnion($parameter, $argument),
-        $parameter instanceof NullParameterInterface
-        => assertNull($parameter, $argument),
+        $parameter instanceof UnionParameterInterface => assertUnion($parameter, $argument),
+        $parameter instanceof NullParameterInterface => assertNull($parameter, $argument),
         default => null,
     };
 }

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Writer;
 
-use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Writer\Interfaces\WritersInterface;
 use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
-use function Safe\fopen;
 use Throwable;
+use function Chevere\Message\message;
+use function Safe\fopen;
 
 /**
  * @codeCoverageIgnore

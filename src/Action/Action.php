@@ -15,12 +15,12 @@ namespace Chevere\Action;
 
 use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Action\Traits\ActionTrait;
-use function Chevere\Message\message;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\LogicException;
 use ReflectionMethod;
 use ReflectionNamedType;
+use function Chevere\Message\message;
 
 abstract class Action implements ActionInterface
 {

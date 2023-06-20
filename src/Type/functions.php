@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Type;
 
 use Chevere\Message\Interfaces\MessageInterface;
-use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
+use function Chevere\Message\message;
 
 /**
  * Same as `gettype` but more "standard" towards `get_debug_type`.

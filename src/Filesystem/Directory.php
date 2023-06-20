@@ -22,14 +22,14 @@ use Chevere\Filesystem\Exceptions\PathIsNotDirectoryException;
 use Chevere\Filesystem\Exceptions\PathTailException;
 use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
-use function Chevere\Iterator\recursiveDirectoryIteratorFor;
-use function Chevere\Message\message;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use function Safe\mkdir;
-use function Safe\rmdir;
 use SplFileInfo;
 use Throwable;
+use function Chevere\Iterator\recursiveDirectoryIteratorFor;
+use function Chevere\Message\message;
+use function Safe\mkdir;
+use function Safe\rmdir;
 
 final class Directory implements DirectoryInterface
 {

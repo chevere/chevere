@@ -17,12 +17,12 @@ use Chevere\Filesystem\Exceptions\FilesystemException;
 use Chevere\Filesystem\Exceptions\PathNotExistsException;
 use Chevere\Filesystem\Exceptions\PathUnableToChmodException;
 use Chevere\Filesystem\Interfaces\PathInterface;
+use Throwable;
 use function Chevere\Message\message;
 use function Safe\fclose;
 use function Safe\fopen;
 use function Safe\fwrite;
 use function Safe\unlink;
-use Throwable;
 
 final class Path implements PathInterface
 {
@@ -49,7 +49,7 @@ final class Path implements PathInterface
 
     public function assertExists(): void
     {
-        if (!$this->exists()) {
+        if (! $this->exists()) {
             throw new PathNotExistsException(
                 message("Path %path% doesn't exists")
                     ->withCode('%path%', $this->absolute)
@@ -80,7 +80,7 @@ final class Path implements PathInterface
     public function chmod(int $mode): void
     {
         $this->assertExists();
-        if (!chmod($this->absolute, $mode)) {
+        if (! chmod($this->absolute, $mode)) {
             throw new PathUnableToChmodException(
                 message('Unable to chmod %mode% %path%')
                     ->withStrong('%mode%', (string) $mode)
@@ -101,7 +101,7 @@ final class Path implements PathInterface
         // @infection-ignore-all
         try {
             $handle = fopen($testFile, 'w');
-            if (!is_resource($handle) || fwrite($handle, 't') === 0) {
+            if (! is_resource($handle) || fwrite($handle, 't') === 0) {
                 return false;
             }
             fclose($handle);

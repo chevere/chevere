@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use Chevere\Parameter\ArrayStringParameter;
+use Chevere\Throwable\Errors\ArgumentCountError;
+use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;
-use Chevere\Parameter\ArrayStringParameter;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertArrayString;
 use function Chevere\Parameter\integer;
 use function Chevere\Parameter\string;
-use Chevere\Throwable\Errors\ArgumentCountError;
-use PHPUnit\Framework\TestCase;
 
 final class FunctionsArrayTest extends TestCase
 {

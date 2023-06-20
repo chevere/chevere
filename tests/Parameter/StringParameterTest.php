@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Interfaces\StringParameterInterface;
-use function Chevere\Parameter\string;
 use Chevere\Parameter\StringParameter;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\string;
 
 final class StringParameterTest extends TestCase
 {

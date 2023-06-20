@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Writer;
 
-use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\LogicException;
 use Chevere\Writer\Interfaces\WritersInterface;
+use function Chevere\Message\message;
 
 final class WritersInstance
 {
@@ -28,7 +28,7 @@ final class WritersInstance
 
     public static function get(): WritersInterface
     {
-        if (!isset(self::$instance)) {
+        if (! isset(self::$instance)) {
             throw new LogicException(
                 message('No writers instance present')
             );

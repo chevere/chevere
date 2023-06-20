@@ -15,9 +15,9 @@ namespace Chevere\Controller;
 
 use Chevere\Action\Action;
 use Chevere\Controller\Interfaces\ControllerInterface;
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use function Chevere\Message\message;
 
 abstract class Controller extends Action implements ControllerInterface
 {

@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\ArrayParameter;
-use function Chevere\Parameter\integer;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
-use function Chevere\Parameter\string;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\integer;
+use function Chevere\Parameter\string;
 
 final class ArrayParameterTest extends TestCase
 {

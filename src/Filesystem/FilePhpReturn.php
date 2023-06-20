@@ -19,11 +19,11 @@ use Chevere\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
-use function Chevere\Message\message;
 use Chevere\String\StringAssert;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 use Chevere\VariableSupport\StorableVariable;
 use Throwable;
+use function Chevere\Message\message;
 
 final class FilePhpReturn implements FilePhpReturnInterface
 {

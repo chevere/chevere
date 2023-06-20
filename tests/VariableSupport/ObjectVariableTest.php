@@ -50,8 +50,8 @@ final class ObjectVariableTest extends TestCase
         $resource = [
             [0, 1, 2],
             [
-                new finfo(FILEINFO_MIME)
-            ]
+                new finfo(FILEINFO_MIME),
+            ],
         ];
         $childObject = new ClassWithResource($resource);
         $object->array = [1, 2, 3, $childObject];

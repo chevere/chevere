@@ -24,6 +24,15 @@ use Stringable;
 interface BreadcrumbInterface extends ToArrayInterface, Stringable, Countable
 {
     /**
+     * Returns an string representation of the object.
+     *
+     * ```php
+     * return '[item0][item1][itemN]...[itemN+1]';
+     * ```
+     */
+    public function __toString(): string;
+
+    /**
      * Indicates whether the instance has the given position.
      */
     public function has(int $pos): bool;
@@ -59,13 +68,4 @@ interface BreadcrumbInterface extends ToArrayInterface, Stringable, Countable
      * ```
      */
     public function toArray(): array;
-
-    /**
-     * Returns an string representation of the object.
-     *
-     * ```php
-     * return '[item0][item1][itemN]...[itemN+1]';
-     * ```
-     */
-    public function __toString(): string;
 }

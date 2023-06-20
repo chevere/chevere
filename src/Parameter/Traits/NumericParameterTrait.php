@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Traits;
 
 use Chevere\Message\Interfaces\MessageInterface;
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OverflowException;
+use function Chevere\Message\message;
 
 trait NumericParameterTrait
 {

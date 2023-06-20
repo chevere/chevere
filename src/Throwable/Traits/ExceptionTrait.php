@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Throwable\Traits;
 
 use Chevere\Message\Interfaces\MessageInterface;
-use function Chevere\Message\message;
 use Throwable;
+use function Chevere\Message\message;
 
 /**
  * @codeCoverageIgnore

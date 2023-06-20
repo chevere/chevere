@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\DataStructure;
 
-use function Chevere\DataStructure\data;
 use PHPUnit\Framework\TestCase;
+use function Chevere\DataStructure\data;
 
 final class FunctionsTest extends TestCase
 {

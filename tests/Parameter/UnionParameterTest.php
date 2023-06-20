@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use function Chevere\Parameter\integer;
-use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\string;
 use Chevere\Parameter\UnionParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\integer;
+use function Chevere\Parameter\parameters;
+use function Chevere\Parameter\string;
 
 final class UnionParameterTest extends TestCase
 {

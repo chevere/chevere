@@ -22,13 +22,13 @@ use Chevere\Filesystem\Exceptions\PathExistsException;
 use Chevere\Filesystem\Exceptions\PathIsDirectoryException;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\PathInterface;
-use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\RuntimeException;
+use Throwable;
+use function Chevere\Message\message;
 use function Safe\file_get_contents;
 use function Safe\file_put_contents;
 use function Safe\filesize;
 use function Safe\unlink;
-use Throwable;
 
 final class File implements FileInterface
 {
@@ -58,7 +58,7 @@ final class File implements FileInterface
 
     public function assertExists(): void
     {
-        if (!$this->exists()) {
+        if (! $this->exists()) {
             throw new FileNotExistsException(
                 message("File %path% doesn't exists")
                     ->withCode('%path%', $this->path->__toString())
@@ -119,7 +119,7 @@ final class File implements FileInterface
 
     public function removeIfExists(): void
     {
-        if (!$this->exists()) {
+        if (! $this->exists()) {
             return;
         }
         $this->assertUnlink();
@@ -176,7 +176,7 @@ final class File implements FileInterface
     {
         $dirname = dirname($this->path->__toString());
         $path = new Path($dirname . '/');
-        if (!$path->exists()) {
+        if (! $path->exists()) {
             (new Directory($path))->create();
         }
     }

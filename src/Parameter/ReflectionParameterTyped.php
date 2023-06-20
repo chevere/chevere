@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Attribute\StringRegex;
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ReflectionParameterTypedInterface;
@@ -26,6 +25,7 @@ use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
+use function Chevere\Message\message;
 
 final class ReflectionParameterTyped implements ReflectionParameterTypedInterface
 {

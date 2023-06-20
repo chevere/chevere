@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\VariableSupport;
 
-use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\LogicException;
 use DeepCopy\DeepCopy;
 use DeepCopy\Exception\CloneException;
+use function Chevere\Message\message;
 
 /**
  * Deep copies the given value. Same as `DeepCopy\deep_copy`

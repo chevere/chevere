@@ -15,8 +15,8 @@ namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Attribute\StringRegex;
 use Chevere\Controller\Controller;
-use function Chevere\Parameter\arrayp;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\string;
 
 final class ActionTestController extends Controller

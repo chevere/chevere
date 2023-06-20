@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VariableSupport\_resources;
 
-use function Chevere\Filesystem\fileForPath;
 use Chevere\Filesystem\Interfaces\FileInterface;
+use function Chevere\Filesystem\fileForPath;
 
 final class ClassWithResource
 {

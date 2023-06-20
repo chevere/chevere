@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use function Chevere\Filesystem\directoryForPath;
 use Chevere\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Filesystem\Exceptions\PathExistsException;
 use Chevere\Filesystem\Exceptions\PathIsDirectoryException;
@@ -22,6 +21,7 @@ use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Filesystem\directoryForPath;
 
 final class FileTest extends TestCase
 {

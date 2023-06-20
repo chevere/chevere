@@ -16,9 +16,9 @@ namespace Chevere\Filesystem;
 use Chevere\Filesystem\Exceptions\FileNotPhpException;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\FilePhpInterface;
-use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\RangeException;
 use Chevere\Throwable\Exceptions\RuntimeException;
+use function Chevere\Message\message;
 
 final class FilePhp implements FilePhpInterface
 {

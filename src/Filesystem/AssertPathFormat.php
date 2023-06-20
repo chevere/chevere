@@ -51,8 +51,8 @@ final class AssertPathFormat implements AssertPathFormatInterface
     private function getDriveLetter(): string
     {
         return (strlen($this->path) >= 3
-            && ':' === $this->path[1]
-            && '/' === $this->path[2]
+            && $this->path[1] === ':'
+            && $this->path[2] === '/'
             && ctype_alpha($this->path[0])
         )
             ? strtoupper($this->path[0])
@@ -61,7 +61,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
 
     private function assertAbsolutePath(): void
     {
-        if ($this->driveLetter === '' && !str_starts_with($this->path, '/')) {
+        if ($this->driveLetter === '' && ! str_starts_with($this->path, '/')) {
             throw new PathNotAbsoluteException(
                 message('Path %path% must start with %char%')
                     ->withCode('%path%', $this->path)

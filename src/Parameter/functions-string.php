@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use function Chevere\Message\message;
 
 function string(
     string $regex = '',

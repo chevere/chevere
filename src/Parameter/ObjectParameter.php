@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Parameter\Traits\SchemaTrait;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeObject;
 use stdClass;
+use function Chevere\Message\message;
+use function Chevere\Type\typeObject;
 
 final class ObjectParameter implements ObjectParameterInterface
 {

@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use function Chevere\Filesystem\directoryForPath;
 use Chevere\Filesystem\Exceptions\FileInvalidContentsException;
 use Chevere\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Filesystem\File;
 use Chevere\Filesystem\FilePhp;
 use Chevere\Filesystem\FilePhpReturn;
-use function Chevere\Filesystem\filePhpReturnForPath;
 use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
@@ -28,6 +26,8 @@ use Chevere\Type\Interfaces\TypeInterface;
 use Chevere\Type\Type;
 use Chevere\VariableSupport\StorableVariable;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Filesystem\directoryForPath;
+use function Chevere\Filesystem\filePhpReturnForPath;
 
 final class FilePhpReturnTest extends TestCase
 {

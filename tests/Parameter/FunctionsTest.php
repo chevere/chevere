@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use Chevere\Throwable\Errors\ArgumentCountError;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
+use stdClass;
+use TypeError;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArgument;
@@ -27,11 +32,6 @@ use function Chevere\Parameter\object;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\union;
-use Chevere\Throwable\Errors\ArgumentCountError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
-use stdClass;
-use TypeError;
 
 final class FunctionsTest extends TestCase
 {

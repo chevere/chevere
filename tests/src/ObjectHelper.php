@@ -19,8 +19,9 @@ final class ObjectHelper
 {
     private ReflectionObject $reflection;
 
-    public function __construct(private object $object)
-    {
+    public function __construct(
+        private object $object
+    ) {
         $this->reflection = new ReflectionObject($this->object);
     }
 

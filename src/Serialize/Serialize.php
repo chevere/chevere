@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Serialize;
 
-use function Chevere\Message\message;
 use Chevere\Serialize\Interfaces\SerializeInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use Throwable;
+use function Chevere\Message\message;
 
 final class Serialize implements SerializeInterface
 {

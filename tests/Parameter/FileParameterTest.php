@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\FileParameter;
-use function Chevere\Parameter\integer;
-use function Chevere\Parameter\string;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\integer;
+use function Chevere\Parameter\string;
 
 final class FileParameterTest extends TestCase
 {

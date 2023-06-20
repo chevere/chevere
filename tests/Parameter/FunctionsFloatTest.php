@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertFloat;
 use function Chevere\Parameter\float;
-use PHPUnit\Framework\TestCase;
 
 final class FunctionsFloatTest extends TestCase
 {

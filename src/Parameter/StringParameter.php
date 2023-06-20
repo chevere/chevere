@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use function Chevere\Message\message;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
+use function Chevere\Message\message;
 use function Chevere\Type\typeString;
 
 final class StringParameter implements StringParameterInterface

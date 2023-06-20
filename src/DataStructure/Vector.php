@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\DataStructure;
 
 use Chevere\DataStructure\Interfaces\VectorInterface;
-use function Chevere\Message\message;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Iterator;
+use function Chevere\Message\message;
 
 final class Vector implements VectorInterface
 {

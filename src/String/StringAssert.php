@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\String;
 
-use function Chevere\Message\message;
 use Chevere\String\Exceptions\ContainsException;
 use Chevere\String\Exceptions\CtypeDigitException;
 use Chevere\String\Exceptions\CtypeSpaceException;
@@ -31,6 +30,7 @@ use Chevere\String\Exceptions\SameException;
 use Chevere\String\Exceptions\StartsWithCtypeDigitException;
 use Chevere\String\Exceptions\StartsWithException;
 use Chevere\String\Interfaces\StringAssertInterface;
+use function Chevere\Message\message;
 
 final class StringAssert implements StringAssertInterface
 {
