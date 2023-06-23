@@ -204,7 +204,7 @@ final class ArgumentsTest extends TestCase
         $this->assertTrue($arguments->has('id', 'opt', 'name'));
         $this->assertFalse($arguments->has('alt'));
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('[Property name]');
+        $this->expectExceptionMessage('[name]');
         $arguments = new Arguments(
             $parameters,
             [

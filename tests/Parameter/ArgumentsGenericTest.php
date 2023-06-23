@@ -135,7 +135,7 @@ final class ArgumentsGenericTest extends TestCase
             )
         );
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expecting value of type string, int provided');
+        $this->expectExceptionMessage('must be of type string, int given');
         new Arguments($parameters, $args);
     }
 
@@ -162,7 +162,7 @@ final class ArgumentsGenericTest extends TestCase
             K: string()
         );
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/^\[Property _V \*generic\]\:.*/');
+        $this->expectExceptionMessageMatches('/^\[_V \*generic\]\:.*/');
         assertGeneric($parameter, $args);
     }
 }

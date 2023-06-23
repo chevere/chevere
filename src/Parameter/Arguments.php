@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ArgumentsGetTypedTrait;
@@ -75,7 +76,7 @@ final class Arguments implements ArgumentsInterface
     public function withPut(string $name, mixed $value): ArgumentsInterface
     {
         $new = clone $this;
-        $new->assertType($name, $value);
+        $new->assertArgument($name, $value);
         $new->arguments[$name] = $value;
 
         return $new;
@@ -135,28 +136,28 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    private function assertType(string $name, mixed $argument): void
+    private function assertArgument(string $name, mixed $argument): void
     {
         $parameter = $this->parameters->get($name);
-        $type = $parameter->type();
-        if (! $type->validate($argument)) {
-            throw new TypeError(
-                message: message('[Property %name%]: Expecting value of type %expected%, %provided% provided')
-                    ->withTranslate('%name%', $name)
-                    ->withStrong('%expected%', $type->typeHinting())
-                    ->withCode('%provided%', get_debug_type($argument))
-            );
-        }
 
         try {
             $this->arguments[$name] = assertArgument($parameter, $argument);
+        } catch (\TypeError $e) {
+            throw new TypeError(
+                $this->getArgumentExceptionMessage($name, $e)
+            );
         } catch (Throwable $e) {
             throw new InvalidArgumentException(
-                message: message('[Property %name%]: %message%')
-                    ->withTranslate('%name%', $name)
-                    ->withTranslate('%message%', $e->getMessage())
+                $this->getArgumentExceptionMessage($name, $e)
             );
         }
+    }
+
+    private function getArgumentExceptionMessage(string $property, Throwable $e): MessageInterface
+    {
+        return message('[%property%]: %message%')
+            ->withTranslate('%property%', $property)
+            ->withTranslate('%message%', $e->getMessage());
     }
 
     private function handleParameters(): void
@@ -167,7 +168,7 @@ final class Arguments implements ArgumentsInterface
             }
 
             try {
-                $this->assertType($name, $this->get($name));
+                $this->assertArgument($name, $this->get($name));
             } catch (Throwable $e) {
                 $this->errors[] = $e->getMessage();
             }
