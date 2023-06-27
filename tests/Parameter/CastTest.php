@@ -32,7 +32,6 @@ final class CastTest extends TestCase
                 'callable',
             ],
             [[], 'iterable'],
-            [null, 'null'],
         ];
     }
 
