@@ -17,7 +17,6 @@ use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Parameter\Traits\ArgumentsGetTypedTrait;
 use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
@@ -28,7 +27,6 @@ use function Chevere\Message\message;
 
 final class Arguments implements ArgumentsInterface
 {
-    use ArgumentsGetTypedTrait;
     use ParametersAccessTrait;
 
     /**

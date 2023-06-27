@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
-use Chevere\Parameter\BooleanParameter;
-use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Regex\Regex;
@@ -25,7 +23,6 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\boolean;
 use function Chevere\Parameter\integer;
 use function Chevere\Parameter\parameters;
@@ -279,92 +276,6 @@ final class ArgumentsTest extends TestCase
             ],
             $argumentsWithAllValues->toArray()
         );
-    }
-
-    public function testGetBoolean(): void
-    {
-        $name = 'test';
-        $var = true;
-        $arguments = new Arguments(
-            parameters(test: new BooleanParameter()),
-            [
-                $name => $var,
-            ]
-        );
-        $this->assertSame($var, $arguments->getBoolean($name));
-        $this->expectException(\TypeError::class);
-        $arguments->getString($name);
-    }
-
-    public function testGetString(): void
-    {
-        $name = 'test';
-        $var = 'string';
-        $arguments = new Arguments(
-            parameters(test: string()),
-            [
-                $name => $var,
-            ]
-        );
-        $this->assertSame($var, $arguments->getString($name));
-        $this->expectException(\TypeError::class);
-        $arguments->getBoolean($name);
-    }
-
-    public function testGetInteger(): void
-    {
-        $name = 'test';
-        $var = 1234;
-        $arguments = new Arguments(
-            parameters(test: new IntegerParameter()),
-            [
-                $name => $var,
-            ]
-        );
-        $this->assertSame($var, $arguments->getInteger($name));
-        $this->expectException(\TypeError::class);
-        $arguments->getArray($name);
-    }
-
-    public function testGetFloat(): void
-    {
-        $name = 'test';
-        $var = 12.34;
-        $arguments = new Arguments(
-            parameters(test: new FloatParameter($name)),
-            [
-                $name => $var,
-            ]
-        );
-        $this->assertSame($var, $arguments->getFloat($name));
-        $this->expectException(\TypeError::class);
-        $arguments->getArray($name);
-    }
-
-    public function testGetArray(): void
-    {
-        $name = 'test';
-        $var = [
-            'a' => 'A',
-            'b' => 'B',
-            'c' => 'C',
-        ];
-        $parameters = parameters(
-            test: arrayp(
-                a: string('/^A$/'),
-                b: string('/^B$/'),
-                c: string('/^C$/'),
-            )
-        );
-        $arguments = new Arguments(
-            $parameters,
-            [
-                $name => $var,
-            ]
-        );
-        $this->assertSame($var, $arguments->getArray($name));
-        $this->expectException(\TypeError::class);
-        $arguments->getInteger($name);
     }
 
     public function testCast(): void
