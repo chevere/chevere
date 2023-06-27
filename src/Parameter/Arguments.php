@@ -15,6 +15,7 @@ namespace Chevere\Parameter;
 
 use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
+use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ArgumentsGetTypedTrait;
 use Chevere\Parameter\Traits\ParametersAccessTrait;
@@ -89,14 +90,19 @@ final class Arguments implements ArgumentsInterface
 
     public function get(string $name): mixed
     {
-        if ($this->has($name)) {
-            return $this->arguments[$name];
+        $this->parameters->assertHas($name);
+
+        return $this->arguments[$name] ?? null;
+    }
+
+    public function cast(string $name): ?CastInterface
+    {
+        $this->parameters->assertHas($name);
+        if (! $this->has($name)) {
+            return null;
         }
 
-        throw new OutOfBoundsException(
-            message('Argument %name% not found')
-                ->withCode('%name%', $name),
-        );
+        return new Cast($this->arguments[$name]);
     }
 
     private function assertNoArgumentsOverflow(): void

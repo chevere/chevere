@@ -26,6 +26,8 @@ use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\boolean;
+use function Chevere\Parameter\integer;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
 
@@ -363,5 +365,24 @@ final class ArgumentsTest extends TestCase
         $this->assertSame($var, $arguments->getArray($name));
         $this->expectException(\TypeError::class);
         $arguments->getInteger($name);
+    }
+
+    public function testCast(): void
+    {
+        $foo = 'foo';
+        $bar = 'bar';
+        $var = true;
+        $arguments = new Arguments(
+            parameters(
+                foo: boolean(),
+            )->withAddedOptional($bar, integer()),
+            [
+                $foo => $var,
+            ]
+        );
+        $this->assertSame($var, $arguments->cast($foo)->boolean());
+        $this->assertSame(null, $arguments->cast($bar)?->integer());
+        $this->expectException(OutOfBoundsException::class);
+        $arguments->cast('404');
     }
 }

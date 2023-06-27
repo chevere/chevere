@@ -48,13 +48,22 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
 
     /**
      * Provides access to the argument value for the parameter `$name`.
-     *
+     * @return mixed Value OR null (when `$name` is an optional parameter with no value)
+
      * @throws OutOfBoundsException
      */
     public function get(string $name): mixed;
 
     /**
-     * Provides access to the argument value for the parameter `$boolean` type-hinted as boolean.
+     * Provides casting access to the argument value for the parameter `$name`.
+     *
+     * @return CastInterface|null Returns the casted value OR null (when `$name` is an optional parameter with no value)
+     * @throws OutOfBoundsException
+     */
+    public function cast(string $name): ?CastInterface;
+
+    /**
+     * Provides access to the argument value for the parameter `$name` type-hinted as boolean.
      *
      * @throws OutOfBoundsException
      * @throws TypeError
@@ -62,7 +71,7 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
     public function getBoolean(string $name): bool;
 
     /**
-     * Provides access to the argument value for the parameter `$string` type-hinted as string.
+     * Provides access to the argument value for the parameter `$name` type-hinted as string.
      *
      * @throws OutOfBoundsException
      * @throws TypeError
@@ -70,7 +79,7 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
     public function getString(string $name): string;
 
     /**
-     * Provides access to the argument value for the parameter `$integer` type-hinted as integer.
+     * Provides access to the argument value for the parameter `$name` type-hinted as integer.
      *
      * @throws OutOfBoundsException
      * @throws TypeError
@@ -78,7 +87,7 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
     public function getInteger(string $name): int;
 
     /**
-     * Provides access to the argument value for the parameter `$float` type-hinted as float.
+     * Provides access to the argument value for the parameter `$name` type-hinted as float.
      *
      * @throws OutOfBoundsException
      * @throws TypeError
@@ -86,7 +95,7 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
     public function getFloat(string $name): float;
 
     /**
-     * Provides access to the argument value for the parameter `$array` type-hinted as array.
+     * Provides access to the argument value for the parameter `$name` type-hinted as array.
      *
      * @return array<mixed, mixed>
      *
