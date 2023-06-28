@@ -32,12 +32,17 @@ final class Arguments implements ArgumentsInterface
     /**
      * @var array<int|string, mixed>
      */
-    private array $arguments;
+    private array $arguments = [];
+
+    /**
+     * @var array<string>
+     */
+    private array $null = [];
 
     /**
      * @var string[]
      */
-    private array $errors;
+    private array $errors = [];
 
     /**
      * @param array<int|string, mixed> $arguments
@@ -46,10 +51,8 @@ final class Arguments implements ArgumentsInterface
         private ParametersInterface $parameters,
         array $arguments
     ) {
-        $this->arguments = [];
-        $this->processArguments($arguments);
+        $this->setArguments($arguments);
         $this->assertNoArgumentsOverflow();
-        $this->errors = [];
         $this->handleDefaults();
         $this->assertRequired();
         $this->handleParameters();
@@ -64,7 +67,9 @@ final class Arguments implements ArgumentsInterface
 
     public function toArray(): array
     {
-        return $this->arguments;
+        $filler = array_fill_keys($this->null, null);
+
+        return array_merge($filler, $this->arguments);
     }
 
     /**
@@ -81,9 +86,15 @@ final class Arguments implements ArgumentsInterface
         return $new;
     }
 
-    public function has(string $name): bool
+    public function has(string ...$name): bool
     {
-        return array_key_exists($name, $this->arguments);
+        foreach ($name as $key) {
+            if (! array_key_exists($key, $this->arguments)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public function get(string $name): mixed
@@ -93,14 +104,33 @@ final class Arguments implements ArgumentsInterface
         return $this->arguments[$name] ?? null;
     }
 
-    public function cast(string $name): ?CastInterface
+    public function cast(string $name): CastInterface
     {
-        $this->parameters->assertHas($name);
-        if (! $this->has($name)) {
-            return null;
+        if ($this->parameters->isOptional($name)) {
+            throw new InvalidArgumentException(
+                message('Argument %name% is optional, use %method% instead')
+                    ->withCode('%name%', $name)
+                    ->withCode('%method%', 'castOptional')
+            );
         }
 
         return new Cast($this->arguments[$name]);
+    }
+
+    public function castOptional(string $name): ?CastInterface
+    {
+        if (! $this->parameters->isOptional($name)) {
+            throw new InvalidArgumentException(
+                message('Argument %name% is required, use %method% instead')
+                    ->withCode('%name%', $name)
+                    ->withCode('%method%', 'cast')
+            );
+        }
+        if ($this->has($name)) {
+            return new Cast($this->arguments[$name]);
+        }
+
+        return null;
     }
 
     private function assertNoArgumentsOverflow(): void
@@ -120,17 +150,24 @@ final class Arguments implements ArgumentsInterface
     private function handleDefaults(): void
     {
         foreach ($this->parameters as $name => $parameter) {
-            if (! $this->has($name) && ($parameter->default() !== null)) {
-                $this->arguments[$name] = $parameter->default();
+            if ($this->has($name)) {
+                continue;
             }
+            if ($parameter->default() === null) {
+                $this->null[] = $name;
+
+                continue;
+            }
+            $this->arguments[$name] = $parameter->default();
         }
     }
 
     private function assertRequired(): void
     {
+        $values = array_keys($this->arguments);
         $missing = array_diff(
             $this->parameters->required()->toArray(),
-            array_keys($this->arguments),
+            $values,
         );
         if ($missing !== []) {
             throw new ArgumentCountError(
@@ -140,6 +177,9 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
+    /**
+     * @infection-ignore-all
+     */
     private function assertArgument(string $name, mixed $argument): void
     {
         $parameter = $this->parameters->get($name);
@@ -148,17 +188,19 @@ final class Arguments implements ArgumentsInterface
             $this->arguments[$name] = assertArgument($parameter, $argument);
         } catch (\TypeError $e) {
             throw new TypeError(
-                $this->getArgumentExceptionMessage($name, $e)
+                $this->getExceptionMessage($name, $e)
             );
         } catch (Throwable $e) {
             throw new InvalidArgumentException(
-                $this->getArgumentExceptionMessage($name, $e)
+                $this->getExceptionMessage($name, $e)
             );
         }
     }
 
-    private function getArgumentExceptionMessage(string $property, Throwable $e): MessageInterface
-    {
+    private function getExceptionMessage(
+        string $property,
+        Throwable $e
+    ): MessageInterface {
         return message('[%property%]: %message%')
             ->withTranslate('%property%', $property)
             ->withTranslate('%message%', $e->getMessage());
@@ -179,18 +221,16 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    /**
-     * @infection-ignore-all
-     */
     private function isSkipOptional(string $name): bool
     {
-        return ! $this->has($name) && $this->parameters->isOptional($name);
+        return $this->parameters->isOptional($name)
+            && $this->get($name) === null;
     }
 
     /**
      * @param array<int|string, mixed> $arguments
      */
-    private function processArguments(array $arguments): void
+    private function setArguments(array $arguments): void
     {
         $keys = array_keys($arguments);
         foreach ($keys as $name) {

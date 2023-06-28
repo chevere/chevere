@@ -15,7 +15,6 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\IntegerParameter;
-use Chevere\Parameter\ObjectParameter;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
@@ -24,7 +23,6 @@ use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use function Chevere\Parameter\boolean;
-use function Chevere\Parameter\integer;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
 
@@ -180,9 +178,9 @@ final class ArgumentsTest extends TestCase
     public function testParameterOptional(): void
     {
         $parameters = parameters(id: string())
-            ->withAddedOptional('opt', string())
-            ->withAddedOptional('alt', string())
-            ->withAddedRequired('name', string());
+            ->withOptional('opt', string())
+            ->withOptional('alt', string())
+            ->withRequired('name', string());
         $arguments = new Arguments(
             $parameters,
             [
@@ -200,7 +198,7 @@ final class ArgumentsTest extends TestCase
                 'name' => 'ABC',
             ]
         );
-        $this->assertTrue($arguments->has('id', 'opt', 'name'));
+        $this->assertTrue($arguments->has('id', 'name', 'opt'));
         $this->assertFalse($arguments->has('alt'));
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('[name]');
@@ -215,29 +213,24 @@ final class ArgumentsTest extends TestCase
 
     public function testParameterDefault(): void
     {
-        $required = 'id';
         $optional = 'name';
-        $requiredValue = '123';
-        $optionalDefault = 'a';
-        $parameters = (parameters(id: string()))
-            ->withAddedOptional(
+        $default = 'a';
+        $parameters = parameters()
+            ->withOptional(
                 $optional,
                 string()
                     ->withRegex(new Regex('/^a|b$/'))
-                    ->withDefault($optionalDefault),
+                    ->withDefault($default),
             );
         $arguments = new Arguments(
             $parameters,
-            [
-                $required => $requiredValue,
-            ]
+            []
         );
         $this->assertTrue($arguments->has($optional));
-        $this->assertSame($optionalDefault, $arguments->get($optional));
+        $this->assertSame($default, $arguments->get($optional));
         $this->assertSame(
             [
-                $required => $requiredValue,
-                $optional => $optionalDefault,
+                $optional => $default,
             ],
             $arguments->toArray()
         );
@@ -245,55 +238,96 @@ final class ArgumentsTest extends TestCase
 
     public function testArgumentDefaultOverride(): void
     {
-        $required = 'id';
-        $optionalName = 'name';
-        $requiredValue = '123';
-        $optionalDefault = 'a';
-        $optionalNameValue = 'b';
-        $optionalObject = 'object';
-        $parameters = (parameters(id: string()))
-            ->withAddedOptional(
-                $optionalName,
+        $optionalString = 'string';
+        $optionalStringDefault = 'a';
+        $optionalStringValue = 'b';
+        $optionalInteger = 'integer';
+        $parameters = parameters()
+            ->withOptional(
+                $optionalString,
                 string()
                     ->withRegex(new Regex('/^a|b$/'))
-                    ->withDefault($optionalDefault),
-            )
-            ->withAddedOptional(
-                $optionalObject,
-                new ObjectParameter()
+                    ->withDefault($optionalStringDefault),
             );
-        $argumentsWithAllValues = new Arguments(
+        $arguments = new Arguments(
             $parameters,
             [
-                $required => $requiredValue,
-                $optionalName => $optionalNameValue,
+                $optionalString => $optionalStringValue,
             ]
         );
+        $this->assertFalse($arguments->has($optionalInteger));
+        $this->assertTrue($arguments->has($optionalString));
         $this->assertEquals(
             [
-                $required => $requiredValue,
-                $optionalName => $optionalNameValue,
+                $optionalString => $optionalStringValue,
             ],
-            $argumentsWithAllValues->toArray()
+            $arguments->toArray()
         );
+    }
+
+    public function testNullFiller(): void
+    {
+        $parameters = parameters()
+            ->withOptional('name', string())
+            ->withOptional('id', string());
+        $arguments = new Arguments($parameters, []);
+        $this->assertFalse($arguments->has('name', 'id'));
+        $this->assertEquals(
+            [
+                'name' => null,
+                'id' => null,
+            ],
+            $arguments->toArray()
+        );
+    }
+
+    public function testSkipOptional(): void
+    {
+        $parameters = parameters()
+            ->withOptional('name', string())
+            ->withOptional('id', string());
+        $expected = [
+            'name' => 'foo',
+            'id' => 'bar',
+        ];
+        $arguments = new Arguments($parameters, $expected);
+        // $this->assertFalse($arguments->isSkipOptional('name'));
+        $this->assertSame($expected, $arguments->toArray());
     }
 
     public function testCast(): void
     {
         $foo = 'foo';
-        $bar = 'bar';
         $var = true;
+        $parameters = parameters(
+            foo: boolean(),
+        );
         $arguments = new Arguments(
-            parameters(
-                foo: boolean(),
-            )->withAddedOptional($bar, integer()),
+            $parameters,
             [
                 $foo => $var,
             ]
         );
         $this->assertSame($var, $arguments->cast($foo)->boolean());
-        $this->assertSame(null, $arguments->cast($bar)?->integer());
-        $this->expectException(OutOfBoundsException::class);
-        $arguments->cast('404');
+        $this->expectException(InvalidArgumentException::class);
+        $arguments->castOptional($foo);
+    }
+
+    public function testCastOptional(): void
+    {
+        $foo = 'foo';
+        $var = true;
+        $parameters = parameters()->withOptional($foo, boolean());
+        $arguments = new Arguments(
+            $parameters,
+            [
+                $foo => $var,
+            ]
+        );
+        $this->assertSame($var, $arguments->castOptional($foo)?->boolean());
+        $arguments = new Arguments($parameters, []);
+        $this->assertNull($arguments->castOptional($foo));
+        $this->expectException(InvalidArgumentException::class);
+        $arguments->cast($foo);
     }
 }

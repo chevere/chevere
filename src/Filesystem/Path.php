@@ -92,10 +92,10 @@ final class Path implements PathInterface
     public function isWritable(): bool
     {
         $this->assertExists();
+        // @codeCoverageIgnoreStart
         if (is_writable($this->absolute)) {
             return true;
         }
-        // @codeCoverageIgnoreStart
         $testFile = sprintf('%s/%s.tmp', $this->absolute, uniqid('data_write_test_'));
 
         // @infection-ignore-all

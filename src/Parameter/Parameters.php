@@ -45,7 +45,7 @@ final class Parameters implements ParametersInterface
         }
     }
 
-    public function withAddedRequired(string $name, ParameterInterface $parameter): ParametersInterface
+    public function withRequired(string $name, ParameterInterface $parameter): ParametersInterface
     {
         $new = clone $this;
         $new->addProperty('required', $name, $parameter);
@@ -53,7 +53,7 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    public function withAddedOptional(string $name, ParameterInterface $parameter): ParametersInterface
+    public function withOptional(string $name, ParameterInterface $parameter): ParametersInterface
     {
         $new = clone $this;
         $new->addProperty('optional', $name, $parameter);

@@ -40,7 +40,7 @@ interface ParametersInterface extends MappedInterface
      *
      * @throws OverflowException
      */
-    public function withAddedRequired(string $name, ParameterInterface $parameter): self;
+    public function withRequired(string $name, ParameterInterface $parameter): self;
 
     /**
      * Return an instance with the specified optional parameter(s) added.
@@ -50,7 +50,7 @@ interface ParametersInterface extends MappedInterface
      *
      * @throws OverflowException
      */
-    public function withAddedOptional(string $name, ParameterInterface $parameter): self;
+    public function withOptional(string $name, ParameterInterface $parameter): self;
 
     /**
      * Return an instance with the specified parameter(s) removed.

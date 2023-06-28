@@ -35,11 +35,14 @@ use function Chevere\Message\message;
 
 function boolean(
     string $description = '',
-    bool $default = false,
+    ?bool $default = null,
 ): BooleanParameterInterface {
     $parameter = new BooleanParameter($description);
+    if ($default !== null) {
+        $parameter = $parameter->withDefault($default);
+    }
 
-    return $parameter->withDefault($default);
+    return $parameter;
 }
 
 function null(
@@ -198,8 +201,8 @@ function methodParameters(string $class, string $method): ParametersInterface
     foreach ($reflectionMethod->getParameters() as $reflection) {
         $typedReflection = new ReflectionParameterTyped($reflection);
         $callable = match ($reflection->isOptional()) {
-            true => 'withAddedOptional',
-            default => 'withAddedRequired',
+            true => 'withOptional',
+            default => 'withRequired',
         };
         $parameters = $parameters->{$callable}(
             $reflection->getName(),

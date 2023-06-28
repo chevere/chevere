@@ -71,7 +71,7 @@ final class FunctionsTest extends TestCase
         $parameter = boolean();
         assertArgument($parameter, true);
         $this->assertSame('', $parameter->description());
-        $this->assertSame(false, $parameter->default());
+        $this->assertSame(null, $parameter->default());
         $parameter = boolean(
             description: 'name',
             default: true

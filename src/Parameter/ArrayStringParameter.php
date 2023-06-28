@@ -40,7 +40,7 @@ final class ArrayStringParameter implements ArrayStringParameterInterface
     public function withRequired(StringParameterInterface ...$parameter): static
     {
         $new = clone $this;
-        $new->put('withAddedRequired', ...$parameter);
+        $new->put('withRequired', ...$parameter);
 
         return $new;
     }
@@ -48,7 +48,7 @@ final class ArrayStringParameter implements ArrayStringParameterInterface
     public function withOptional(StringParameterInterface ...$parameter): static
     {
         $new = clone $this;
-        $new->put('withAddedOptional', ...$parameter);
+        $new->put('withOptional', ...$parameter);
 
         return $new;
     }

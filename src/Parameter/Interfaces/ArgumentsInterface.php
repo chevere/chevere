@@ -43,12 +43,11 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
     /**
      * Indicates whether the instance has an argument for the parameter `$name`.
      */
-    public function has(string $name): bool;
+    public function has(string ...$name): bool;
 
     /**
      * Provides access to the argument value for the parameter `$name`.
      * @return mixed Value OR null (when `$name` is an optional parameter with no value)
-
      * @throws OutOfBoundsException
      */
     public function get(string $name): mixed;
@@ -56,8 +55,14 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
     /**
      * Provides casting access to the argument value for the parameter `$name`.
      *
-     * @return CastInterface|null Returns the casted value OR null (when `$name` is an optional parameter with no value)
      * @throws OutOfBoundsException
      */
-    public function cast(string $name): ?CastInterface;
+    public function cast(string $name): CastInterface;
+
+    /**
+     * Provides casting access to the optional argument value for the parameter `$name`.
+     *
+     * @throws OutOfBoundsException
+     */
+    public function castOptional(string $name): ?CastInterface;
 }

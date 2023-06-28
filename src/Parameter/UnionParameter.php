@@ -53,7 +53,7 @@ final class UnionParameter implements UnionParameterInterface
         foreach ($parameter as $name => $item) {
             $name = strval($name);
             $new->parameters = $new->parameters
-                ->withAddedRequired($name, $item);
+                ->withRequired($name, $item);
         }
 
         return $new;
