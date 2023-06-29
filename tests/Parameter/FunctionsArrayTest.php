@@ -111,13 +111,13 @@ final class FunctionsArrayTest extends TestCase
     public function testArrayString(): void
     {
         $string = string();
-        $arrayString = arrayString(foo: $string);
+        $parameter = arrayString(foo: $string);
         $expected = [
             'foo' => 'bar',
         ];
-        $this->assertSame($expected, assertArrayString($arrayString, $expected));
+        $this->assertSame($expected, assertArrayString($parameter, $expected));
         $new = new ArrayStringParameter();
         $new = $new->withRequired(foo: $string);
-        $this->assertEquals($new, $arrayString);
+        $this->assertEquals($new, $parameter);
     }
 }

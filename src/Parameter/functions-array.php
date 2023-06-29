@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use ArrayAccess;
 use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
@@ -79,12 +80,12 @@ function generic(
 }
 
 /**
- * @param array<int|string, mixed> $argument
+ * @param array<int|string, mixed>|ArrayAccess<int|string, mixed> $argument
  * @return array<int|string, mixed> Asserted array, with fixed optional values.
  */
 function assertArray(
     ArrayTypeParameterInterface $parameter,
-    array $argument,
+    array|ArrayAccess $argument,
 ): array {
     return arguments($parameter->parameters(), $argument)->toArray();
 }

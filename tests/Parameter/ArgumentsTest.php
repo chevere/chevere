@@ -15,14 +15,20 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\IntegerParameter;
+use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Regex\Regex;
+use Chevere\Tests\Parameter\_resources\ArrayAccessDynamic;
+use Chevere\Tests\Parameter\_resources\ArrayAccessMixed;
+use Chevere\Tests\Parameter\_resources\ArrayAccessScoped;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\boolean;
+use function Chevere\Parameter\integer;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
 
@@ -329,5 +335,58 @@ final class ArgumentsTest extends TestCase
         $this->assertNull($arguments->castOptional($foo));
         $this->expectException(InvalidArgumentException::class);
         $arguments->cast($foo);
+    }
+
+    /**
+     * @dataProvider arrayAccessDataProvider
+     */
+    public function testArrayAccess(
+        ArrayParameterInterface $parameter,
+        \ArrayAccess $arrayAccess,
+        array $array
+    ): void {
+        $arguments = new Arguments($parameter->parameters(), $arrayAccess);
+        $this->assertSame($array, $arguments->toArray());
+    }
+
+    private function arrayAccessDataProvider(): array
+    {
+        $named = [
+            'string' => 'test',
+            'int' => 1,
+            'bool' => false,
+        ];
+        $parameter = arrayp(
+            string: string(),
+            int: integer(),
+            bool: boolean()
+        );
+
+        return [
+            // [
+            //     arrayp(),
+            //     new ArrayAccessDynamic([]),
+            //     [],
+            // ],
+            // [
+            //     $parameter,
+            //     new ArrayAccessScoped(...$named),
+            //     $named,
+            // ],
+            // [
+            //     $parameter,
+            //     new ArrayAccessDynamic($named),
+            //     $named,
+            // ],
+            [
+                $parameter->withRequired(
+                    dynamic: string()
+                ),
+                new ArrayAccessMixed(...$named),
+                $named + [
+                    'dynamic' => '123abc',
+                ],
+            ],
+        ];
     }
 }

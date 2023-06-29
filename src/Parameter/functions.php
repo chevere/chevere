@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use ArrayAccess;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
@@ -75,11 +76,11 @@ function parameters(
 }
 
 /**
- * @param array<int|string, mixed> $arguments
+ * @param array<int|string, mixed>|ArrayAccess<int|string, mixed> $arguments
  */
 function arguments(
     ParametersInterface $parameters,
-    array $arguments
+    array|ArrayAccess $arguments
 ): ArgumentsInterface {
     return new Arguments($parameters, $arguments);
 }
@@ -133,7 +134,7 @@ function assertUnion(
 
     throw new InvalidArgumentException(
         message("Argument provided doesn't match the union type %type%")
-            ->withCode('%type%', implode(',', $types))
+            ->withCode('%type%', implode('|', $types))
     );
 }
 
