@@ -280,7 +280,7 @@ final class Arguments implements ArgumentsInterface
     {
         foreach ($cast as $key => $value) {
             $key = strval($key);
-            if (str_contains($key, "\x00") !== false
+            if (str_contains($key, "\x00")
                 || in_array($key, $this->reflected, true)) {
                 continue;
             }
