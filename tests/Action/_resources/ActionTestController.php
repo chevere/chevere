@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action\_resources;
 
-use Chevere\Attribute\StringRegex;
+use Chevere\Attributes\StringRegex;
 use Chevere\Controller\Controller;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use function Chevere\Parameter\arrayp;

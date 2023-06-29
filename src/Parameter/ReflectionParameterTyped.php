@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Attribute\StringRegex;
+use Chevere\Attributes\StringRegex;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ReflectionParameterTypedInterface;

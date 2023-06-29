@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Interfaces;
 
-use Chevere\Attribute\StringRegex;
+use Chevere\Attributes\StringRegex;
 
 /**
  * Describes the component in charge of provide a typed reflection parameter.

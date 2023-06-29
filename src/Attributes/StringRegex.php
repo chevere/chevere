@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Attribute;
+namespace Chevere\Attributes;
 
 use Attribute;
 use Chevere\Common\Traits\DescribedTrait;
@@ -19,7 +19,7 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 
-#[Attribute]
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::TARGET_CLASS_CONSTANT)]
 class StringRegex
 {
     use DescribedTrait;
