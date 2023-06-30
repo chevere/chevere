@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Attributes\StringRegex;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\ReflectionParameterTyped;
@@ -31,7 +30,6 @@ final class ReflectionParameterTypedTest extends TestCase
         $reflection = new ReflectionParameterTyped($parameter);
         $this->assertInstanceOf(ObjectParameterInterface::class, $reflection->parameter());
         $this->assertSame(null, $reflection->default());
-        $this->assertEquals(new StringRegex(), $reflection->attribute());
     }
 
     public function testParameterDefault(): void

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Attributes;
 
 use Attribute;
-use Chevere\Common\Traits\DescribedTrait;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
@@ -22,13 +21,10 @@ use Chevere\Regex\Regex;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::TARGET_CLASS_CONSTANT)]
 class StringRegex
 {
-    use DescribedTrait;
-
     private RegexInterface $regex;
 
     public function __construct(
         string $regex = StringParameterInterface::REGEX_DEFAULT,
-        private string $description = '',
     ) {
         $this->regex = new Regex($regex);
     }

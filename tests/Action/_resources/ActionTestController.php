@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action\_resources;
 
+use Chevere\Attributes\Description;
 use Chevere\Attributes\StringRegex;
 use Chevere\Controller\Controller;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
@@ -27,7 +28,8 @@ final class ActionTestController extends Controller
     }
 
     public function run(
-        #[StringRegex(description: 'The username.', regex: '/^[a-zA-Z]+$/')]
+        #[Description('The username.')]
+        #[StringRegex('/^[a-zA-Z]+$/')]
         string $name
     ): array {
         return [

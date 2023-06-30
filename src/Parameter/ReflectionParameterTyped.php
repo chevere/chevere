@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use Chevere\Attributes\Description;
 use Chevere\Attributes\StringRegex;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
@@ -20,11 +21,11 @@ use Chevere\Parameter\Interfaces\ReflectionParameterTypedInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use ReflectionAttribute;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
+use function Chevere\Attribute\getAttribute;
 use function Chevere\Message\message;
 
 final class ReflectionParameterTyped implements ReflectionParameterTypedInterface
@@ -43,8 +44,6 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
 
     private ReflectionNamedType $type;
 
-    private StringRegex $attribute;
-
     private mixed $default;
 
     private ParameterInterface $parameter;
@@ -53,10 +52,13 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         private ReflectionParameter $reflection
     ) {
         $this->type = $this->getType();
-        $this->attribute = $this->getAttribute();
+        /** @var StringRegex $stringRegex */
+        $stringRegex = getAttribute($this->reflection, StringRegex::class);
+        /** @var Description $description */
+        $description = getAttribute($this->reflection, Description::class);
         $this->default = $this->getDefaultValue();
         $type = $this->getParameterType();
-        $parameter = new $type($this->attribute->description());
+        $parameter = new $type($description->__toString());
         if ($parameter instanceof ObjectParameterInterface) {
             $typeName = $this->type->getName();
             $parameter = $parameter->withClassName($typeName);
@@ -64,12 +66,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         if ($this->default !== null && method_exists($parameter, 'withDefault')) {
             $parameter = $parameter->withDefault($this->default);
         }
-        $this->parameter = $this->getParameterWithAttribute($parameter, $this->attribute);
-    }
-
-    public function attribute(): StringRegex
-    {
-        return $this->attribute;
+        $this->parameter = $this->getParameterWithRegex($parameter, $stringRegex);
     }
 
     public function default(): mixed
@@ -116,22 +113,6 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         };
     }
 
-    private function getAttribute(): StringRegex
-    {
-        $attributes = $this->reflection->getAttributes(StringRegex::class);
-        /**
-         * @phpstan-ignore-next-line
-         * @var ?ReflectionAttribute $attribute
-         */
-        $attribute = $attributes[0] ?? null;
-        if ($attribute !== null) {
-            /** @var StringRegex */
-            return $attribute->newInstance();
-        }
-
-        return new StringRegex();
-    }
-
     private function getDefaultValue(): mixed
     {
         return $this->reflection->isDefaultValueAvailable()
@@ -149,7 +130,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         return $type;
     }
 
-    private function getParameterWithAttribute(
+    private function getParameterWithRegex(
         ParameterInterface $parameter,
         StringRegex $attribute
     ): ParameterInterface {
