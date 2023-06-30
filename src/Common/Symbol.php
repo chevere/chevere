@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Common;
 
-enum Symbol: string
+final class Symbol
 {
     /**
      * Fully qualified name of a class or function
