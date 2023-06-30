@@ -349,7 +349,7 @@ final class ArgumentsTest extends TestCase
         $this->assertSame($array, $arguments->toArray());
     }
 
-    private function arrayAccessDataProvider(): array
+    public function arrayAccessDataProvider(): array
     {
         $named = [
             'string' => 'test',
@@ -363,21 +363,21 @@ final class ArgumentsTest extends TestCase
         );
 
         return [
-            // [
-            //     arrayp(),
-            //     new ArrayAccessDynamic([]),
-            //     [],
-            // ],
-            // [
-            //     $parameter,
-            //     new ArrayAccessScoped(...$named),
-            //     $named,
-            // ],
-            // [
-            //     $parameter,
-            //     new ArrayAccessDynamic($named),
-            //     $named,
-            // ],
+            [
+                arrayp(),
+                new ArrayAccessDynamic([]),
+                [],
+            ],
+            [
+                $parameter,
+                new ArrayAccessScoped(...$named),
+                $named,
+            ],
+            [
+                $parameter,
+                new ArrayAccessDynamic($named),
+                $named,
+            ],
             [
                 $parameter->withRequired(
                     dynamic: string()
