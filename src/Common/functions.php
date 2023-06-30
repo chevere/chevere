@@ -27,6 +27,7 @@ function assertClassName(string $interface, string $className): void
 
 /**
  * @see Symbol
+ * @phpstan-ignore-next-line
  */
 function getSymbolReflection(string $symbol): ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant
 {
@@ -52,6 +53,6 @@ function getSymbolReflection(string $symbol): ReflectionClass|ReflectionFunction
         $reflector = 'ReflectionClassConstant';
     }
     $arguments = [$matches[1], $matches[2]];
-
+    /** @phpstan-ignore-next-line */
     return new $reflector(...$arguments);
 }

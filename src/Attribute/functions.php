@@ -25,6 +25,9 @@ use ReflectionProperty;
 use function Chevere\Common\getSymbolReflection;
 use function Chevere\Message\message;
 
+/**
+ * @phpstan-ignore-next-line
+ */
 function getAttribute(
     ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
     string $attribute
@@ -48,6 +51,6 @@ function getDescription(string $symbol): Description
     // )
 
     $reflection = getSymbolReflection($symbol);
-
+    /** @phpstan-ignore-next-line */
     return getAttribute($reflection, Description::class);
 }
