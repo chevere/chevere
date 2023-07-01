@@ -14,16 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Attribute;
 
 use Chevere\Attributes\Description;
-use Chevere\Common\Symbol;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
-use function Chevere\Common\getSymbolReflection;
-use function Chevere\Message\message;
 
 /**
  * @phpstan-ignore-next-line
@@ -41,16 +37,11 @@ function getAttribute(
 }
 
 /**
- * @see Symbol
+ * @phpstan-ignore-next-line
  */
-function getDescription(string $symbol): Description
-{
-    // throw new InvalidArgumentException(
-    //     message('Invalid symbol %symbol%')
-    //         ->withCode('%symbol%', $symbol)
-    // )
-
-    $reflection = getSymbolReflection($symbol);
-    /** @phpstan-ignore-next-line */
+function getDescription(
+    ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
+): Description {
+    // @phpstan-ignore-next-line
     return getAttribute($reflection, Description::class);
 }

@@ -15,37 +15,74 @@ namespace Chevere\Tests\Attribute;
 
 use Chevere\Tests\Attribute\_resources\ClassUsesDescription;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionClassConstant;
+use ReflectionFunction;
+use ReflectionMethod;
+use ReflectionParameter;
+use ReflectionProperty;
 use function Chevere\Attribute\getDescription;
 
 final class FunctionsTest extends TestCase
 {
-    public function testClassDescription(): void
+    public function classDataProvider(): array
     {
-        $symbol = ClassUsesDescription::class;
-        $description = getDescription($symbol);
-        $this->assertSame('Class', $description->__toString());
-        $symbol = ClassUsesDescription::class . '::run()';
-        $description = getDescription($symbol);
-        $this->assertSame('Method', $description->__toString());
-        $symbol = ClassUsesDescription::class . '::$property';
-        $description = getDescription($symbol);
-        $this->assertSame('Property', $description->__toString());
-        $symbol = ClassUsesDescription::class . '::run($parameter)';
-        $description = getDescription($symbol);
-        $this->assertSame('Parameter', $description->__toString());
-        $symbol = ClassUsesDescription::class . '::CONSTANT';
-        $description = getDescription($symbol);
-        $this->assertSame('Constant', $description->__toString());
+        return [
+            [
+                new ReflectionClass(ClassUsesDescription::class),
+                'Class',
+            ],
+            [
+                new ReflectionMethod(ClassUsesDescription::class, 'run'),
+                'Method',
+            ],
+            [
+                new ReflectionProperty(ClassUsesDescription::class, 'property'),
+                'Property',
+            ],
+            [
+                new ReflectionParameter([ClassUsesDescription::class, 'run'], 'parameter'),
+                'Parameter',
+            ],
+            [
+                new ReflectionClassConstant(ClassUsesDescription::class, 'CONSTANT'),
+                'Constant',
+            ],
+        ];
     }
 
-    public function testFunctionDescription(): void
+    /**
+     * @dataProvider classDataProvider
+     */
+    public function testClass($reflection, string $meta): void
+    {
+        $description = getDescription($reflection);
+        $this->assertSame($meta, $description->__toString());
+    }
+
+    public function functionDataProvider(): array
+    {
+        $fqn = 'Chevere\Tests\Attribute\_resources\functionUsesDescription';
+
+        return [
+            [
+                new ReflectionFunction($fqn),
+                'Function',
+            ],
+            [
+                new ReflectionParameter($fqn, 'parameter'),
+                'Parameter',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider functionDataProvider
+     */
+    public function testFunction($reflection, string $meta): void
     {
         new ClassUsesDescription();
-        $symbol = 'Chevere\Tests\Attribute\_resources\functionUsesDescription';
-        $description = getDescription($symbol);
-        $this->assertSame('Function', $description->__toString());
-        $symbol = 'Chevere\Tests\Attribute\_resources\functionUsesDescription($parameter)';
-        $description = getDescription($symbol);
-        $this->assertSame('Parameter', $description->__toString());
+        $description = getDescription($reflection);
+        $this->assertSame($meta, $description->__toString());
     }
 }
