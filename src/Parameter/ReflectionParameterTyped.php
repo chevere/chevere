@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Attributes\Description;
-use Chevere\Attributes\StringRegex;
+use Chevere\Attributes\Regex;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ReflectionParameterTypedInterface;
@@ -52,8 +52,8 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         private ReflectionParameter $reflection
     ) {
         $this->type = $this->getType();
-        /** @var StringRegex $stringRegex */
-        $stringRegex = getAttribute($this->reflection, StringRegex::class);
+        /** @var Regex $stringRegex */
+        $stringRegex = getAttribute($this->reflection, Regex::class);
         /** @var Description $description */
         $description = getAttribute($this->reflection, Description::class);
         $this->default = $this->getDefaultValue();
@@ -132,7 +132,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
 
     private function getParameterWithRegex(
         ParameterInterface $parameter,
-        StringRegex $attribute
+        Regex $attribute
     ): ParameterInterface {
         if (! ($parameter instanceof StringParameterInterface)) {
             return $parameter;

@@ -15,7 +15,7 @@ namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
 use Chevere\Attributes\Description;
-use Chevere\Attributes\StringRegex;
+use Chevere\Attributes\Regex;
 
 final class ActionTestParameterAttributes extends Action
 {
@@ -23,7 +23,7 @@ final class ActionTestParameterAttributes extends Action
         #[Description('An int')]
         int $int,
         #[Description('The name')]
-        #[StringRegex('/^[a-z]$/')]
+        #[Regex('/^[a-z]$/')]
         string $name,
     ): array {
         return [];

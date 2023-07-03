@@ -16,17 +16,17 @@ namespace Chevere\Attributes;
 use Attribute;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Interfaces\RegexInterface;
-use Chevere\Regex\Regex;
+use Chevere\Regex\Regex as RegexClass;
 
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::TARGET_CLASS_CONSTANT)]
-class StringRegex
+class Regex
 {
     private RegexInterface $regex;
 
     public function __construct(
         string $regex = StringParameterInterface::REGEX_DEFAULT,
     ) {
-        $this->regex = new Regex($regex);
+        $this->regex = new RegexClass($regex);
     }
 
     public function regex(): RegexInterface
