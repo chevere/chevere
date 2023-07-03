@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
-use Chevere\Common\Traits\DescriptionTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 
 trait ParameterTrait
 {
-    use DescriptionTrait;
-
     private TypeInterface $type;
 
     final public function __construct(
@@ -45,6 +42,14 @@ trait ParameterTrait
     final public function description(): string
     {
         return $this->description;
+    }
+
+    public function withDescription(string $description): static
+    {
+        $new = clone $this;
+        $new->description = $description;
+
+        return $new;
     }
 
     abstract private function getType(): TypeInterface;
