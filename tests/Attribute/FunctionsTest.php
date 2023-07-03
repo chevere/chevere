@@ -27,26 +27,37 @@ final class FunctionsTest extends TestCase
 {
     public function classDataProvider(): array
     {
+        $class = ClassUsesDescription::class;
+        $function = 'Chevere\Tests\Attribute\_resources\functionUsesDescription';
+
         return [
             [
-                new ReflectionClass(ClassUsesDescription::class),
+                new ReflectionClass($class),
                 'Class',
             ],
             [
-                new ReflectionMethod(ClassUsesDescription::class, 'run'),
+                new ReflectionMethod($class, 'run'),
                 'Method',
             ],
             [
-                new ReflectionProperty(ClassUsesDescription::class, 'property'),
+                new ReflectionProperty($class, 'property'),
                 'Property',
             ],
             [
-                new ReflectionParameter([ClassUsesDescription::class, 'run'], 'parameter'),
+                new ReflectionParameter([$class, 'run'], 'parameter'),
                 'Parameter',
             ],
             [
-                new ReflectionClassConstant(ClassUsesDescription::class, 'CONSTANT'),
+                new ReflectionClassConstant($class, 'CONSTANT'),
                 'Constant',
+            ],
+            [
+                new ReflectionFunction($function),
+                'Function',
+            ],
+            [
+                new ReflectionParameter($function, 'parameter'),
+                'Parameter',
             ],
         ];
     }
@@ -54,34 +65,8 @@ final class FunctionsTest extends TestCase
     /**
      * @dataProvider classDataProvider
      */
-    public function testClass($reflection, string $meta): void
+    public function testGetDescription($reflection, string $meta): void
     {
-        $description = getDescription($reflection);
-        $this->assertSame($meta, $description->__toString());
-    }
-
-    public function functionDataProvider(): array
-    {
-        $fqn = 'Chevere\Tests\Attribute\_resources\functionUsesDescription';
-
-        return [
-            [
-                new ReflectionFunction($fqn),
-                'Function',
-            ],
-            [
-                new ReflectionParameter($fqn, 'parameter'),
-                'Parameter',
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider functionDataProvider
-     */
-    public function testFunction($reflection, string $meta): void
-    {
-        new ClassUsesDescription();
         $description = getDescription($reflection);
         $this->assertSame($meta, $description->__toString());
     }
