@@ -26,14 +26,6 @@ use Chevere\Response\Interfaces\ResponseInterface;
 interface ActionInterface
 {
     /**
-     * Determines if action is strict or not.
-     *
-     * When the action is strict the `run` method return value will be matched
-     * against the defined response parameters at `acceptResponseParameter`.
-     */
-    public static function isStrict(): bool;
-
-    /**
      * Defines expected response data parameters when executing `run` method.
      */
     public static function acceptResponse(): ArrayTypeParameterInterface;

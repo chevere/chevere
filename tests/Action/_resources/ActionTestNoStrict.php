@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
-use Chevere\Action\Traits\NoStrictActionTrait;
+use Chevere\Action\Attributes\Strict;
 
+#[Strict(false)]
 final class ActionTestNoStrict extends Action
 {
-    use NoStrictActionTrait;
-
     public function run(): array
     {
         return [

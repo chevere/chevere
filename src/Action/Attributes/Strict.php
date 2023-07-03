@@ -11,12 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Action\Traits;
+namespace Chevere\Action\Attributes;
 
-trait NoStrictActionTrait
+use Attribute;
+
+#[Attribute]
+final class Strict
 {
-    public static function isStrict(): bool
-    {
-        return false;
+    public function __construct(
+        public readonly bool $value = true
+    ) {
     }
 }
