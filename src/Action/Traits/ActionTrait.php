@@ -27,11 +27,6 @@ use function Chevere\Parameter\methodParameters;
  */
 trait ActionTrait
 {
-    public static function description(): string
-    {
-        return '';
-    }
-
     public static function isStrict(): bool
     {
         return true;

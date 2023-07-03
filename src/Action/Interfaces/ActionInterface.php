@@ -46,8 +46,6 @@ interface ActionInterface
      */
     public function getResponse(mixed ...$argument): ResponseInterface;
 
-    public static function description(): string;
-
     public static function getParameters(): ParametersInterface;
 
     public function assert(): void;

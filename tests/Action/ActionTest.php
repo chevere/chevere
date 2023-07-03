@@ -45,7 +45,6 @@ final class ActionTest extends TestCase
     public function testConstruct(): void
     {
         $action = new ActionTestAction();
-        $this->assertSame('', $action->description());
         $this->assertCount(0, $action->getParameters());
         $this->assertCount(0, $action->acceptResponse()->parameters());
         $action->run();
@@ -166,15 +165,15 @@ final class ActionTest extends TestCase
         $action->getResponse();
     }
 
-        public function testActionInvalidScope(): void
-        {
-            $this->expectException(ErrorException::class);
-            (new ActionTestInvalidScope())->assert();
-        }
+    public function testActionInvalidScope(): void
+    {
+        $this->expectException(ErrorException::class);
+        (new ActionTestInvalidScope())->assert();
+    }
 
-        public function testActionNoReturnType(): void
-        {
-            $this->expectException(ErrorException::class);
-            (new ActionTestNoReturnType())->assert();
-        }
+    public function testActionNoReturnType(): void
+    {
+        $this->expectException(ErrorException::class);
+        (new ActionTestNoReturnType())->assert();
+    }
 }
