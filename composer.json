@@ -74,7 +74,7 @@
             "composer test-coverage",
             "composer infection"
         ],
-        "infection": "infection --only-covered -j10",
+        "infection": "infection --only-covered -jmax",
         "phpstan": "vendor/bin/phpstan analyze src/ --memory-limit 512M --level 9",
         "test": "vendor/bin/phpunit -c phpunit.xml",
         "test-coverage": "vendor/bin/phpunit -c phpunit-coverage.xml",
