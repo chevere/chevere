@@ -13,13 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
-use Chevere\Filesystem\Interfaces\FileInterface;
-use Chevere\Parameter\Interfaces\ArrayParameterInterface;
-use Chevere\Parameter\Interfaces\BooleanParameterInterface;
-use Chevere\Parameter\Interfaces\FloatParameterInterface;
-use Chevere\Parameter\Interfaces\IntegerParameterInterface;
-use Chevere\Parameter\Interfaces\ObjectParameterInterface;
-use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Tests\Action\_resources\ActionTestAction;
 use Chevere\Tests\Action\_resources\ActionTestController;
 use Chevere\Tests\Action\_resources\ActionTestGenericResponse;
@@ -29,9 +22,7 @@ use Chevere\Tests\Action\_resources\ActionTestInvalidScope;
 use Chevere\Tests\Action\_resources\ActionTestMissingRun;
 use Chevere\Tests\Action\_resources\ActionTestNoReturnType;
 use Chevere\Tests\Action\_resources\ActionTestNoStrict;
-use Chevere\Tests\Action\_resources\ActionTestParameterAttributes;
 use Chevere\Tests\Action\_resources\ActionTestRunParameterMissingType;
-use Chevere\Tests\Action\_resources\ActionTestRunParameters;
 use Chevere\Tests\Action\_resources\ActionTestRunReturnExtraArguments;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
@@ -45,7 +36,6 @@ final class ActionTest extends TestCase
     public function testConstruct(): void
     {
         $action = new ActionTestAction();
-        $this->assertCount(0, $action->getParameters());
         $this->assertCount(0, $action->acceptResponse()->parameters());
         $action->run();
     }
@@ -54,54 +44,6 @@ final class ActionTest extends TestCase
     {
         $this->expectException(LogicException::class);
         (new ActionTestMissingRun())->assert();
-    }
-
-    public function testRunParams(): void
-    {
-        $defaults = [
-            'intDefault' => 1,
-            'stringDefault' => 'default',
-            'boolDefault' => false,
-            'floatDefault' => 0.0,
-            'arrayDefault' => [],
-            'objectDefault' => null,
-        ];
-        $types = [
-            'int' => IntegerParameterInterface::class,
-            'string' => StringParameterInterface::class,
-            'bool' => BooleanParameterInterface::class,
-            'float' => FloatParameterInterface::class,
-            'array' => ArrayParameterInterface::class,
-            'object' => ObjectParameterInterface::class,
-            'file' => ObjectParameterInterface::class,
-        ];
-        $optional = array_keys($defaults);
-        $required = array_keys($types);
-        $action = new ActionTestRunParameters();
-        $this->assertSame($optional, ActionTestRunParameters::getParameters()->optional()->toArray());
-        $this->assertSame($required, ActionTestRunParameters::getParameters()->required()->toArray());
-        foreach ($defaults as $name => $value) {
-            $parameter = ActionTestRunParameters::getParameters()->get(strval($name));
-            $this->assertEquals($value, $parameter->default());
-        }
-        foreach ($types as $parameter => $class) {
-            $parameter = strval($parameter);
-            $this->assertInstanceOf($class, ActionTestRunParameters::getParameters()->get($parameter));
-        }
-        $this->assertSame(
-            FileInterface::class,
-            $action->getParameters()->get('file')->type()->typeHinting()
-        );
-    }
-
-    public function testParamsAttributes(): void
-    {
-        $action = new ActionTestParameterAttributes();
-        $this->assertSame('An int', $action->getParameters()->get('int')->description());
-        /** @var StringParameterInterface $parameter */
-        $parameter = $action->getParameters()->get('name');
-        $this->assertSame('The name', $parameter->description());
-        $this->assertSame('/^[a-z]$/', $parameter->regex()->__toString());
     }
 
     public function testRunWithArguments(): void

@@ -44,8 +44,6 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
 
     private ReflectionNamedType $type;
 
-    private mixed $default;
-
     private ParameterInterface $parameter;
 
     public function __construct(
@@ -56,22 +54,17 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         $stringRegex = getAttribute($this->reflection, Regex::class);
         /** @var Description $description */
         $description = getAttribute($this->reflection, Description::class);
-        $this->default = $this->getDefaultValue();
+        $default = $this->getDefaultValue();
         $type = $this->getParameterType();
         $parameter = new $type($description->__toString());
         if ($parameter instanceof ObjectParameterInterface) {
             $typeName = $this->type->getName();
             $parameter = $parameter->withClassName($typeName);
         }
-        if ($this->default !== null && method_exists($parameter, 'withDefault')) {
-            $parameter = $parameter->withDefault($this->default);
+        if ($default !== null && method_exists($parameter, 'withDefault')) {
+            $parameter = $parameter->withDefault($default);
         }
         $this->parameter = $this->getParameterWithRegex($parameter, $stringRegex);
-    }
-
-    public function default(): mixed
-    {
-        return $this->default;
     }
 
     public function parameter(): ParameterInterface

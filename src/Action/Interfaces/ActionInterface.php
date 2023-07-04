@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Action\Interfaces;
 
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 /**
@@ -37,8 +36,6 @@ interface ActionInterface
      * executing the `run` method against `$namedArguments`.
      */
     public function getResponse(mixed ...$argument): ResponseInterface;
-
-    public static function getParameters(): ParametersInterface;
 
     public function assert(): void;
 }

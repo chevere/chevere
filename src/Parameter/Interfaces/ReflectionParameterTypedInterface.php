@@ -18,7 +18,5 @@ namespace Chevere\Parameter\Interfaces;
  */
 interface ReflectionParameterTypedInterface
 {
-    public function default(): mixed;
-
     public function parameter(): ParameterInterface;
 }

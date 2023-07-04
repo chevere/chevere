@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\ReflectionParameterTyped;
@@ -28,16 +29,22 @@ final class ReflectionParameterTypedTest extends TestCase
     {
         $parameter = $this->getReflection('useObject');
         $reflection = new ReflectionParameterTyped($parameter);
-        $this->assertInstanceOf(ObjectParameterInterface::class, $reflection->parameter());
-        $this->assertSame(null, $reflection->default());
+        /** @var ObjectParameterInterface $reflected */
+        $reflected = $reflection->parameter();
+        $this->assertInstanceOf(ObjectParameterInterface::class, $reflected);
+        $this->assertSame(null, $reflected->default());
+        $this->assertSame(FileInterface::class, $reflected->className());
     }
 
     public function testParameterDefault(): void
     {
         $parameter = $this->getReflection('useString');
         $reflection = new ReflectionParameterTyped($parameter);
-        $this->assertInstanceOf(StringParameterInterface::class, $reflection->parameter());
-        $this->assertSame('default', $reflection->default());
+        /** @var StringParameterInterface $reflected */
+        $reflected = $reflection->parameter();
+        $this->assertInstanceOf(StringParameterInterface::class, $reflected);
+        $this->assertSame('/^[a-z]$/', $reflected->regex()->__toString());
+        $this->assertSame('default', $reflected->default());
     }
 
     public function testUnion(): void
@@ -45,6 +52,14 @@ final class ReflectionParameterTypedTest extends TestCase
         $parameter = $this->getReflection('useUnion');
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('$union of type union is not supported');
+        new ReflectionParameterTyped($parameter);
+    }
+
+    public function testIntersection(): void
+    {
+        $parameter = $this->getReflection('useIntersection');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('$intersection of type intersection is not supported');
         new ReflectionParameterTyped($parameter);
     }
 

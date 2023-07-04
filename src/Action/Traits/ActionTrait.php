@@ -30,6 +30,8 @@ use function Chevere\Parameter\methodParameters;
  */
 trait ActionTrait
 {
+    protected ?ParametersInterface $parameters;
+
     public static function acceptResponse(): ArrayTypeParameterInterface
     {
         return arrayp();
@@ -37,7 +39,7 @@ trait ActionTrait
 
     final public function getResponse(mixed ...$argument): ResponseInterface
     {
-        $arguments = arguments(static::getParameters(), $argument)->toArray();
+        $arguments = arguments($this->getParameters(), $argument)->toArray();
         $data = $this->run(...$arguments);
         $reflection = new ReflectionClass(static::class);
         /** @var Strict $strict */
@@ -50,8 +52,8 @@ trait ActionTrait
         return new Response(...$data);
     }
 
-    final public static function getParameters(): ParametersInterface
+    protected function getParameters(): ParametersInterface
     {
-        return methodParameters(static::class, 'run');
+        return $this->parameters ??= methodParameters(static::class, 'run');
     }
 }
