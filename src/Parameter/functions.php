@@ -122,13 +122,13 @@ function assertUnion(
     mixed $argument,
 ): mixed {
     $types = [];
-    foreach ($parameter->parameters() as $parameter) {
+    foreach ($parameter->parameters() as $item) {
         try {
-            assertNamedArgument('', $parameter, $argument);
+            assertNamedArgument('', $item, $argument);
 
             return $argument;
         } catch (Throwable $e) {
-            $types[] = $parameter::class;
+            $types[] = $item::class;
         }
     }
 

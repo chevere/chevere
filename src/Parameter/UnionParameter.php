@@ -29,9 +29,9 @@ final class UnionParameter implements UnionParameterInterface
     use ParameterAssertArrayTypeTrait;
 
     /**
-     * @var array<mixed, mixed>
+     * @var array<mixed, mixed>|null
      */
-    private array $default = [];
+    private ?array $default = null;
 
     final public function __construct(
         private ParametersInterface $parameters,

@@ -16,11 +16,15 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Parameter\ArrayParameter;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\integer;
+use function Chevere\Parameter\null;
 use function Chevere\Parameter\string;
+use function Chevere\Parameter\union;
 
 final class ArrayParameterTest extends TestCase
 {
@@ -102,12 +106,19 @@ final class ArrayParameterTest extends TestCase
     public function testWithOptional(): void
     {
         $string = string();
-        $integer = integer();
+        $union = union(null(), integer());
         $parameter = new ArrayParameter();
         $with = $parameter->withOptional(
             one: $string,
-            two: $integer
+            two: $union
         );
+        assertArray($with, []);
+        assertArray($with, [
+            'two' => null,
+        ]);
+        assertArray($with, [
+            'two' => 123,
+        ]);
         $this->assertTrue($with->parameters()->has('one', 'two'));
         $this->assertNotSame($parameter, $with);
         $this->assertCount(2, $with->parameters());
@@ -116,20 +127,20 @@ final class ArrayParameterTest extends TestCase
             $with->parameters()->get('one')
         );
         $this->assertInstanceOf(
-            IntegerParameterInterface::class,
+            UnionParameterInterface::class,
             $with->parameters()->get('two')
         );
         $with = $with->withOptional(
-            one: $integer,
-            three: $integer
+            one: $union,
+            three: $union
         );
         $this->assertTrue($with->parameters()->has('one', 'two', 'three'));
         $this->assertInstanceOf(
-            IntegerParameterInterface::class,
+            UnionParameterInterface::class,
             $with->parameters()->get('one')
         );
         $this->assertInstanceOf(
-            IntegerParameterInterface::class,
+            UnionParameterInterface::class,
             $with->parameters()->get('three')
         );
     }
