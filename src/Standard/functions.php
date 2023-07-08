@@ -93,3 +93,22 @@ function getBits(int $value): array
 
     return $return;
 }
+
+/**
+ * @param array<mixed> $array
+ * @param string|int $key The key(s) to change (name: change,)
+ * @return array<mixed>
+ */
+function arrayChangeKey(array $array, string|int ...$key): array
+{
+    foreach ($key as $name => $change) {
+        $name = strval($name);
+        if (! array_key_exists($name, $array)) {
+            continue;
+        }
+        $array[$change] = $array[$name];
+        unset($array[$name]);
+    }
+
+    return $array;
+}
