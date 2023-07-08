@@ -25,7 +25,7 @@ final class ArrayPrefixKeysFunctionTest extends TestCase
         $this->assertSame($array, $prefixed);
     }
 
-    public function testPrefixGlue(): void
+    public function testPrefix(): void
     {
         $array = [
             'key' => null,
@@ -33,7 +33,7 @@ final class ArrayPrefixKeysFunctionTest extends TestCase
         $expected = [
             'prefix.key' => null,
         ];
-        $prefixed = arrayPrefixKeys($array, 'prefix', '.');
+        $prefixed = arrayPrefixKeys($array, 'prefix.');
         $this->assertSame($expected, $prefixed);
     }
 
