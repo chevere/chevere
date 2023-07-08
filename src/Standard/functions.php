@@ -112,3 +112,21 @@ function arrayChangeKey(array $array, string|int ...$key): array
 
     return $array;
 }
+
+/**
+ * @param array<mixed> $array
+ * @return array<mixed>
+ */
+function arrayPrefixKeys(array $array, string|int $prefix, string|int $glue = ''): array
+{
+    if ($prefix === '') {
+        return $array;
+    }
+    $return = [];
+    foreach ($array as $key => $value) {
+        $return[$prefix . $glue . $key] = $value;
+        unset($array[$key]);
+    }
+
+    return $return;
+}
