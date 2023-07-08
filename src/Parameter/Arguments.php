@@ -77,7 +77,12 @@ final class Arguments implements ArgumentsInterface
 
     public function toArray(): array
     {
-        $filler = array_fill_keys($this->null, null);
+        return $this->arguments;
+    }
+
+    public function toArrayFill(mixed $fill): array
+    {
+        $filler = array_fill_keys($this->null, $fill);
 
         return array_merge($filler, $this->arguments);
     }

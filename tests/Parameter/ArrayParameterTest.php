@@ -112,13 +112,18 @@ final class ArrayParameterTest extends TestCase
             one: $string,
             two: $union
         );
-        assertArray($with, []);
-        assertArray($with, [
+        $assert = assertArray($with, []);
+        $this->assertSame([], $assert);
+        $expected = [
             'two' => null,
-        ]);
-        assertArray($with, [
+        ];
+        $assert = assertArray($with, $expected);
+        $this->assertSame($expected, $assert);
+        $expected = [
             'two' => 123,
-        ]);
+        ];
+        $assert = assertArray($with, $expected);
+        $this->assertSame($expected, $assert);
         $this->assertTrue($with->parameters()->has('one', 'two'));
         $this->assertNotSame($parameter, $with);
         $this->assertCount(2, $with->parameters());

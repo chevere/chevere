@@ -278,12 +278,13 @@ final class ArgumentsTest extends TestCase
             ->withOptional('id', string());
         $arguments = new Arguments($parameters, []);
         $this->assertFalse($arguments->has('name', 'id'));
+        $this->assertEquals([], $arguments->toArray());
         $this->assertEquals(
             [
                 'name' => null,
                 'id' => null,
             ],
-            $arguments->toArray()
+            $arguments->toArrayFill(null)
         );
     }
 

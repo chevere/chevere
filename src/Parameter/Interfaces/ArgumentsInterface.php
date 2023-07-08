@@ -30,6 +30,13 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
     public function toArray(): array;
 
     /**
+     * Provides access to the arguments as array, filling non-provided optional arguments.
+     *
+     * @return array<int|string, mixed>
+     */
+    public function toArrayFill(mixed $fill): array;
+
+    /**
      * Return an instance with the specified argument.
      *
      * This method MUST retain the state of the current instance, and return
