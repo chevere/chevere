@@ -32,6 +32,7 @@
     },
     "autoload": {
         "files": [
+            "src/Action/functions.php",
             "src/Attribute/functions.php",
             "src/Common/functions.php",
             "src/DataStructure/functions.php",

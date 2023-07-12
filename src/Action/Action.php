@@ -30,7 +30,6 @@ use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArgument;
-use function Chevere\Parameter\methodParameters;
 
 /**
  * @method array<string, mixed> run()
@@ -111,7 +110,7 @@ abstract class Action implements ActionInterface
     final protected function parameters(): ParametersInterface
     {
         if ($this->parameters === null) {
-            $this->parameters = methodParameters(static::class, 'run');
+            $this->parameters = getParameters(static::class);
         }
 
         return $this->parameters;
