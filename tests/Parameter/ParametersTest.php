@@ -21,6 +21,8 @@ use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
+use Chevere\Throwable\Exceptions\BadMethodCallException;
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
@@ -228,5 +230,54 @@ final class ParametersTest extends TestCase
         $this->assertSame($parameter, $parameters->getString($name));
         $this->expectException(\TypeError::class);
         $parameters->getInteger($name);
+    }
+
+    public function testWithMinimumOptional(): void
+    {
+        $parameters = (new Parameters())->withOptional('a', string());
+        $parametersWith = $parameters->withMinimumOptional(1);
+        $this->assertNotSame($parameters, $parametersWith);
+        $this->assertSame(1, $parametersWith->minimumOptional());
+    }
+
+    public function testWithMinimumOptionalBadMethodCall(): void
+    {
+        $parameters = new Parameters();
+        $this->expectException(BadMethodCallException::class);
+        $parameters->withMinimumOptional(1);
+    }
+
+    public function testWithMinimumOptionalInvalidArgument(): void
+    {
+        $parameters = (new Parameters())->withOptional('foo', string());
+        $this->expectException(InvalidArgumentException::class);
+        $parameters->withMinimumOptional(2);
+    }
+
+    public function testWithMinimumOptionalInvalidArgumentNumber(): void
+    {
+        $parameters = (new Parameters())->withOptional('foo', string());
+        $this->expectException(InvalidArgumentException::class);
+        $parameters->withMinimumOptional(-1);
+    }
+
+    public function testWithMinimumOptionalWithout(): void
+    {
+        $parameters = (new Parameters())
+            ->withOptional('foo', string())
+            ->withOptional('bar', string());
+        $parametersWith = $parameters->withMinimumOptional(1);
+        $parametersWith = $parametersWith->without('foo');
+        $parametersWith = $parametersWith->withMinimumOptional(0);
+        $this->expectNotToPerformAssertions();
+        $parametersWith->without('bar');
+    }
+
+    public function testWithMinimumOptionalWithoutInvalidArgument(): void
+    {
+        $parameters = (new Parameters())->withOptional('foo', string());
+        $parametersWith = $parameters->withMinimumOptional(1);
+        $this->expectException(InvalidArgumentException::class);
+        $parametersWith->without('foo');
     }
 }

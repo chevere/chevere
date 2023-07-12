@@ -61,6 +61,14 @@ interface ParametersInterface extends MappedInterface
     public function without(string ...$name): self;
 
     /**
+     * Return an instance requiring at least `$count` of optional arguments.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified optional parameters.
+     */
+    public function withMinimumOptional(int $count): self;
+
+    /**
      * Asserts whether the instance has a parameter by name(s).
      */
     public function assertHas(string ...$name): void;
@@ -87,6 +95,8 @@ interface ParametersInterface extends MappedInterface
     public function required(): VectorInterface;
 
     public function optional(): VectorInterface;
+
+    public function minimumOptional(): int;
 
     /**
      * @throws OutOfBoundsException

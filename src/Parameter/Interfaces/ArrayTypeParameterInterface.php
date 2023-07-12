@@ -33,4 +33,12 @@ interface ArrayTypeParameterInterface extends ParameterInterface
     public function isList(): bool;
 
     public function isMap(): bool;
+
+    // /**
+    //  * Return an instance requiring at least `$count` of optional arguments.
+    //  *
+    //  * This method MUST retain the state of the current instance, and return
+    //  * an instance that contains the specified optional parameters.
+    //  */
+    // public function withAtLeast(int $count): self;
 }
