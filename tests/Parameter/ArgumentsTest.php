@@ -404,7 +404,7 @@ final class ArgumentsTest extends TestCase
         new Arguments($parameters, [
             'foo' => '',
         ]);
-        $parameters = $parameters->withMinimumOptional(1);
+        $parameters = $parameters->withOptionalMinimum(1);
         new Arguments($parameters, [
             'foo' => '',
             'bar' => '',

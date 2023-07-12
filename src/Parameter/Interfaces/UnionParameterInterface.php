@@ -16,7 +16,7 @@ namespace Chevere\Parameter\Interfaces;
 /**
  * Describes the component in charge of defining a parameter of type union.
  */
-interface UnionParameterInterface extends ArrayTypeParameterInterface
+interface UnionParameterInterface extends ArrayShapeParameterInterface
 {
     /**
      * Return an instance with added optional parameters.

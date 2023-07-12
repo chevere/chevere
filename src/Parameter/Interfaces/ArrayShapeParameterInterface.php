@@ -15,9 +15,9 @@ namespace Chevere\Parameter\Interfaces;
 
 /**
  * Describes the component in charge of defining an array type parameter to be
- * used as a base for other array-like parameters.
+ * used as a base for array-shaped parameters.
  */
-interface ArrayTypeParameterInterface extends ParameterInterface
+interface ArrayShapeParameterInterface extends ParameterInterface
 {
     /**
      * Provides access to the default value (if any).
@@ -33,12 +33,4 @@ interface ArrayTypeParameterInterface extends ParameterInterface
     public function isList(): bool;
 
     public function isMap(): bool;
-
-    // /**
-    //  * Return an instance requiring at least `$count` of optional arguments.
-    //  *
-    //  * This method MUST retain the state of the current instance, and return
-    //  * an instance that contains the specified optional parameters.
-    //  */
-    // public function withAtLeast(int $count): self;
 }

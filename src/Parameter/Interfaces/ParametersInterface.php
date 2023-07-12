@@ -66,7 +66,7 @@ interface ParametersInterface extends MappedInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified optional parameters.
      */
-    public function withMinimumOptional(int $count): self;
+    public function withOptionalMinimum(int $count): self;
 
     /**
      * Asserts whether the instance has a parameter by name(s).
@@ -96,7 +96,7 @@ interface ParametersInterface extends MappedInterface
 
     public function optional(): VectorInterface;
 
-    public function minimumOptional(): int;
+    public function optionalMinimum(): int;
 
     /**
      * @throws OutOfBoundsException

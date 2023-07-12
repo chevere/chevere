@@ -203,10 +203,10 @@ final class Arguments implements ArgumentsInterface
             array_keys($this->arguments)
         );
         $countProvided = count($providedOptionals);
-        if ($countProvided < $this->parameters()->minimumOptional()) {
+        if ($countProvided < $this->parameters()->optionalMinimum()) {
             throw new ArgumentCountError(
                 message('Requires minimum %minimum% optional argument(s), %provided% provided')
-                    ->withCode('%minimum%', strval($this->parameters()->minimumOptional()))
+                    ->withCode('%minimum%', strval($this->parameters()->optionalMinimum()))
                     ->withCode('%provided%', strval($countProvided))
             );
         }

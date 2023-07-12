@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Interfaces;
 
-use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use Chevere\Parameter\Interfaces\ArrayShapeParameterInterface;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 /**
@@ -27,7 +27,7 @@ interface ActionInterface
     /**
      * Defines expected response data parameters when executing `run` method.
      */
-    public static function acceptResponse(): ArrayTypeParameterInterface;
+    public static function acceptResponse(): ArrayShapeParameterInterface;
 
     /**
      * Retrieves a new response instance typed against the defined response data parameters.

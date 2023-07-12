@@ -89,7 +89,7 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    public function withMinimumOptional(int $count): ParametersInterface
+    public function withOptionalMinimum(int $count): ParametersInterface
     {
         match (true) {
             $count < 0 => throw new InvalidArgumentException(
@@ -117,7 +117,7 @@ final class Parameters implements ParametersInterface
         return $this->optional;
     }
 
-    public function minimumOptional(): int
+    public function optionalMinimum(): int
     {
         return $this->minimumOptional;
     }

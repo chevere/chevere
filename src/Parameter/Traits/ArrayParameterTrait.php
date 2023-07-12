@@ -76,6 +76,14 @@ trait ArrayParameterTrait
 
     abstract public function description(): string;
 
+    public function withOptionalMinimum(int $count): static
+    {
+        $new = clone $this;
+        $new->parameters = $new->parameters->withOptionalMinimum($count);
+
+        return $new;
+    }
+
     private function getType(): TypeInterface
     {
         return typeArray();

@@ -219,4 +219,16 @@ final class ArrayParameterTest extends TestCase
         $this->assertFalse($parameter->isMap());
         $this->assertSame('array#list', $parameter->typeSchema());
     }
+
+    public function testWithOptionalMinimum(): void
+    {
+        $array = (new ArrayParameter())
+            ->withOptional(
+                foo: string(),
+                bar: string(),
+            );
+        $arrayWith = $array->withOptionalMinimum(1);
+        $this->assertNotSame($array, $arrayWith);
+        $this->assertSame(1, $arrayWith->parameters()->optionalMinimum());
+    }
 }

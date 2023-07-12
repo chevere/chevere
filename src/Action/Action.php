@@ -15,7 +15,7 @@ namespace Chevere\Action;
 
 use Chevere\Action\Attributes\Strict;
 use Chevere\Action\Interfaces\ActionInterface;
-use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use Chevere\Parameter\Interfaces\ArrayShapeParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Response\Interfaces\ResponseInterface;
 use Chevere\Response\Response;
@@ -46,7 +46,7 @@ abstract class Action implements ActionInterface
         $this->assertRunParameters();
     }
 
-    public static function acceptResponse(): ArrayTypeParameterInterface
+    public static function acceptResponse(): ArrayShapeParameterInterface
     {
         return arrayp();
     }
