@@ -271,18 +271,23 @@ final class ArgumentsTest extends TestCase
         );
     }
 
-    public function testNullFiller(): void
+    public function testToArrayFill(): void
     {
-        $parameters = parameters()
+        $parameters = parameters(
+            foo: string(default: 'bar')
+        )
             ->withOptional('name', string())
             ->withOptional('id', string());
         $arguments = new Arguments($parameters, []);
         $this->assertFalse($arguments->has('name', 'id'));
-        $this->assertEquals([], $arguments->toArray());
-        $this->assertEquals(
+        $this->assertEquals([
+            'foo' => 'bar',
+        ], $arguments->toArray());
+        $this->assertSame(
             [
                 'name' => null,
                 'id' => null,
+                'foo' => 'bar',
             ],
             $arguments->toArrayFill(null)
         );
@@ -389,5 +394,24 @@ final class ArgumentsTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    public function testMinimumOptional(): void
+    {
+        $parameters = parameters(
+            foo: string(),
+        )->withOptional('bar', string());
+        new Arguments($parameters, [
+            'foo' => '',
+        ]);
+        $parameters = $parameters->withMinimumOptional(1);
+        new Arguments($parameters, [
+            'foo' => '',
+            'bar' => '',
+        ]);
+        $this->expectException(ArgumentCountError::class);
+        new Arguments($parameters, [
+            'foo' => '',
+        ]);
     }
 }

@@ -29,7 +29,7 @@ abstract class Action implements ActionInterface
     final public function assert(): void
     {
         $this->assertRunMethod();
-        self::getParameters();
+        $this->getParameters();
         $this->assertRunParameters();
     }
 

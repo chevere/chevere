@@ -65,6 +65,7 @@ final class Arguments implements ArgumentsInterface
         $this->assertNoArgumentsOverflow();
         $this->handleDefaults();
         $this->assertRequired();
+        $this->assertMinimumOptional();
         $this->handleParameters();
         if ($this->errors !== []) {
             throw new InvalidArgumentException(
@@ -83,7 +84,9 @@ final class Arguments implements ArgumentsInterface
     public function toArrayFill(mixed $fill): array
     {
         $filler = array_fill_keys($this->null, $fill);
-
+        /**
+         * @infection-ignore-all (false positive)
+         */
         return array_merge($filler, $this->arguments);
     }
 
@@ -188,6 +191,23 @@ final class Arguments implements ArgumentsInterface
             throw new ArgumentCountError(
                 message('Missing required argument(s): %missing%')
                     ->withCode('%missing%', implode(', ', $missing))
+            );
+        }
+    }
+
+    private function assertMinimumOptional(): void
+    {
+        $optional = $this->parameters->optional()->toArray();
+        $providedOptionals = array_intersect(
+            $optional,
+            array_keys($this->arguments)
+        );
+        $countProvided = count($providedOptionals);
+        if ($countProvided < $this->parameters()->minimumOptional()) {
+            throw new ArgumentCountError(
+                message('Requires minimum %minimum% optional argument(s), %provided% provided')
+                    ->withCode('%minimum%', strval($this->parameters()->minimumOptional()))
+                    ->withCode('%provided%', strval($countProvided))
             );
         }
     }
