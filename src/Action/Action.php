@@ -78,9 +78,9 @@ abstract class Action implements ActionInterface
         $translate = [
             '%method%', $this::class . '::run',
         ];
-        if (! $reflection->isPublic()) {
-            throw new ErrorException(
-                message('Method %method% must be public')
+        if (! $reflection->isProtected()) {
+            throw new LogicException(
+                message('Method %method% must be protected')
                     ->withTranslate(...$translate)
             );
         }

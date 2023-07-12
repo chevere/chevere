@@ -27,7 +27,7 @@ final class ActionTestRunReturnExtraArguments extends Action
         );
     }
 
-    public function run(): array
+    protected function run(): array
     {
         return [
             'id' => 1,

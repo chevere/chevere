@@ -29,7 +29,7 @@ final class ActionTestGenericResponse extends Action
         );
     }
 
-    public function run(): array
+    protected function run(): array
     {
         return [
             'id' => 123,

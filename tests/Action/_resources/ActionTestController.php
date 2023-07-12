@@ -27,7 +27,7 @@ final class ActionTestController extends Controller
         return arrayp(user: string());
     }
 
-    public function run(
+    protected function run(
         #[Description('The username.')]
         #[Regex('/^[a-zA-Z]+$/')]
         string $name

@@ -18,7 +18,7 @@ use Chevere\Filesystem\Interfaces\FileInterface;
 
 final class ActionTestRunParameters extends Action
 {
-    public function run(
+    protected function run(
         int $int,
         string $string,
         bool $bool,

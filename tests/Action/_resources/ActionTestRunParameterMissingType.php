@@ -17,7 +17,7 @@ use Chevere\Action\Action;
 
 final class ActionTestRunParameterMissingType extends Action
 {
-    public function run($mixed): array
+    protected function run($mixed): array
     {
         return [];
     }

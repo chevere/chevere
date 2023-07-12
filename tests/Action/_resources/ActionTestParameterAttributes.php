@@ -19,7 +19,7 @@ use Chevere\Attributes\Regex;
 
 final class ActionTestParameterAttributes extends Action
 {
-    public function run(
+    protected function run(
         #[Description('An int')]
         int $int,
         #[Description('The name')]

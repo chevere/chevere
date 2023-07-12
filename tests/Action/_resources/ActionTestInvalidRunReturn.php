@@ -17,7 +17,7 @@ use Chevere\Action\Action;
 
 final class ActionTestInvalidRunReturn extends Action
 {
-    public function run(): bool
+    protected function run(): bool
     {
         return true;
     }

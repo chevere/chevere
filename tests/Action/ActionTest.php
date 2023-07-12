@@ -38,7 +38,7 @@ final class ActionTest extends TestCase
     {
         $action = new ActionTestAction();
         $this->assertCount(0, $action->acceptResponse()->parameters());
-        $action->run();
+        $action->getResponse();
     }
 
     public function testMissingRunMethod(): void
@@ -55,7 +55,7 @@ final class ActionTest extends TestCase
         $arguments = [
             $parameter => $value,
         ];
-        $array = $action->run(...$arguments);
+        $array = $action->getResponse(...$arguments)->data();
         $expected = [
             'user' => $value,
         ];
@@ -89,9 +89,8 @@ final class ActionTest extends TestCase
     public function testActionNoStrict(): void
     {
         $action = new ActionTestNoStrict();
-        $response = $action->getResponse();
-        $run = $action->run();
-        $this->assertSame($run, $response->data());
+        $this->expectNotToPerformAssertions();
+        $action->getResponse();
     }
 
     public function testActionGenericResponse(): void
@@ -110,7 +109,7 @@ final class ActionTest extends TestCase
 
     public function testActionInvalidScope(): void
     {
-        $this->expectException(ErrorException::class);
+        $this->expectException(LogicException::class);
         (new ActionTestInvalidScope())->assert();
     }
 

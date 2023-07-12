@@ -17,7 +17,7 @@ use Chevere\Action\Action;
 
 final class ActionTestNoReturnType extends Action
 {
-    public function run()
+    protected function run()
     {
         return [];
     }

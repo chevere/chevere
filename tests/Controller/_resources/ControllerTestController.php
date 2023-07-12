@@ -17,7 +17,7 @@ use Chevere\Controller\Controller;
 
 final class ControllerTestController extends Controller
 {
-    public function run(string $string): array
+    protected function run(string $string): array
     {
         return [];
     }

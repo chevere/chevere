@@ -25,7 +25,7 @@ final class ClassUsesDescription
     private string $property;
 
     #[Description('Method')]
-    public function run(
+    protected function run(
         #[Description('Parameter')]
         string $parameter
     ): void {
