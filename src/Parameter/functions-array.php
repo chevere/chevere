@@ -16,8 +16,8 @@ namespace Chevere\Parameter;
 use ArrayAccess;
 use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
-use Chevere\Parameter\Interfaces\ArrayShapeParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
+use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
@@ -84,7 +84,7 @@ function generic(
  * @return array<int|string, mixed> Asserted array, with fixed optional values.
  */
 function assertArray(
-    ArrayShapeParameterInterface $parameter,
+    ArrayTypeParameterInterface $parameter,
     array|ArrayAccess $argument,
 ): array {
     return arguments($parameter->parameters(), $argument)->toArray();
@@ -116,7 +116,7 @@ function assertFile(
 
 function assertNotEmpty(ParameterInterface $expected, mixed $value): void
 {
-    if ($expected instanceof ArrayShapeParameterInterface
+    if ($expected instanceof ArrayTypeParameterInterface
         && empty($value)
         && count($expected->parameters()->required()) > 0
     ) {

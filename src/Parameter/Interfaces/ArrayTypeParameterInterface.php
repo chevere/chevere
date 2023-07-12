@@ -15,9 +15,9 @@ namespace Chevere\Parameter\Interfaces;
 
 /**
  * Describes the component in charge of defining an array type parameter to be
- * used as a base for array-shaped parameters.
+ * used as a base for array-shape parameters.
  */
-interface ArrayShapeParameterInterface extends ParameterInterface
+interface ArrayTypeParameterInterface extends ParameterInterface
 {
     /**
      * Provides access to the default value (if any).
