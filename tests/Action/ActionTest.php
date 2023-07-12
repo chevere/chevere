@@ -30,6 +30,7 @@ use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 
 final class ActionTest extends TestCase
 {
@@ -117,5 +118,16 @@ final class ActionTest extends TestCase
     {
         $this->expectException(ErrorException::class);
         (new ActionTestNoReturnType())->assert();
+    }
+
+    public function testParametersNullAssign(): void
+    {
+        $action = new ActionTestAction();
+        $reflection = new ReflectionProperty($action, 'parameters');
+        $this->assertTrue($reflection->isInitialized($action));
+        $this->assertNull($reflection->getValue($action));
+        $action->getResponse();
+        $object = $reflection->getValue($action);
+        // vdd($object, $reflection->getValue($action));
     }
 }
