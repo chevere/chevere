@@ -28,7 +28,6 @@ final class ObjectHelper
     public function getPropertyValue(string $name): mixed
     {
         $property = $this->reflection->getProperty($name);
-        $property->setAccessible(true);
 
         return $property->getValue($this->object);
     }

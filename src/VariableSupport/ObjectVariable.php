@@ -83,7 +83,6 @@ final class ObjectVariable implements ObjectVariableInterface
                 );
             $propertyKey = $this->breadcrumb->pos();
             // @infection-ignore-all
-            $property->setAccessible(true);
             if ($property->isInitialized($variable)) {
                 $this->assert($property->getValue($variable));
             }

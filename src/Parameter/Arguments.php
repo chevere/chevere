@@ -285,9 +285,6 @@ final class Arguments implements ArgumentsInterface
         $reflector = new ReflectionClass($arguments);
         $properties = $reflector->getProperties();
         foreach ($properties as $property) {
-            // @codeCoverageIgnoreStart
-            $property->setAccessible(true);
-            // @codeCoverageIgnoreEnd
             $name = $property->getName();
             $array[$name] = $property->getValue($arguments);
             $this->reflected[] = $name;
