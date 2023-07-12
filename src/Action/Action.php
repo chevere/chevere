@@ -66,15 +66,6 @@ abstract class Action implements ActionInterface
         return new Response(...$data);
     }
 
-    final public function parameters(): ParametersInterface
-    {
-        if ($this->parameters === null) {
-            $this->parameters = methodParameters(static::class, 'run');
-        }
-
-        return $this->parameters;
-    }
-
     final protected function assertRunMethod(): void
     {
         if (! method_exists($this, 'run')) {
@@ -115,5 +106,14 @@ abstract class Action implements ActionInterface
     protected function assertRunParameters(): void
     {
         // enables override
+    }
+
+    final protected function parameters(): ParametersInterface
+    {
+        if ($this->parameters === null) {
+            $this->parameters = methodParameters(static::class, 'run');
+        }
+
+        return $this->parameters;
     }
 }

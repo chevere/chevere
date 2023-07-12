@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Action\Interfaces;
 
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
-use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Response\Interfaces\ResponseInterface;
 
 /**
@@ -39,6 +38,4 @@ interface ActionInterface
     public function getResponse(mixed ...$argument): ResponseInterface;
 
     public function assert(): void;
-
-    public function parameters(): ParametersInterface;
 }
