@@ -66,6 +66,7 @@ interface BreadcrumbInterface extends ToArrayInterface, Stringable, Countable
      * ```php
      * return [0 => 'item',];
      * ```
+     * @return array<int, string>
      */
     public function toArray(): array;
 }

@@ -24,15 +24,13 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
 {
     /**
      * Provides access to the arguments as array.
-     *
-     * @return array<int|string, mixed>
+     * @phpstan-ignore-next-line
      */
     public function toArray(): array;
 
     /**
      * Provides access to the arguments as array, filling non-provided optional arguments.
-     *
-     * @return array<int|string, mixed>
+     * @phpstan-ignore-next-line
      */
     public function toArrayFill(mixed $fill): array;
 

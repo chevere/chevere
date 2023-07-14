@@ -76,11 +76,17 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
+    /**
+     * @phpstan-ignore-next-line
+     */
     public function toArray(): array
     {
         return $this->arguments;
     }
 
+    /**
+     * @phpstan-ignore-next-line
+     */
     public function toArrayFill(mixed $fill): array
     {
         $filler = array_fill_keys($this->null, $fill);

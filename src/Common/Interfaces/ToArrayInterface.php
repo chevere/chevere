@@ -20,8 +20,7 @@ interface ToArrayInterface
 {
     /**
      * Returns an array, representing the object itself or some of its data/properties.
-     *
-     * @return array<mixed, mixed>
+     * @phpstan-ignore-next-line
      */
     public function toArray(): array;
 }

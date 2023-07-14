@@ -32,6 +32,9 @@ final class Vector implements VectorInterface
         $this->put(...$value);
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function toArray(): array
     {
         return $this->values;

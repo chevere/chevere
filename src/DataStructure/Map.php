@@ -44,6 +44,9 @@ final class Map implements MapInterface
         }
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return array_combine($this->keys, $this->values);
