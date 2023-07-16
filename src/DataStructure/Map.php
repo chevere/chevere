@@ -45,7 +45,7 @@ final class Map implements MapInterface
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, TValue>
      */
     public function toArray(): array
     {
