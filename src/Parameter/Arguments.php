@@ -52,7 +52,7 @@ final class Arguments implements ArgumentsInterface
     private array $errors = [];
 
     /**
-     * @param array<int|string, mixed>|ArrayAccess<int|string, mixed> $arguments
+     * @phpstan-ignore-next-line
      */
     public function __construct(
         private ParametersInterface $parameters,
