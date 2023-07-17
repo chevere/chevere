@@ -23,6 +23,8 @@ use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Parameter\Interfaces\UnionParameterInterface;
+use Chevere\Throwable\Exceptions\BadMethodCallException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Throwable;
 use function Chevere\Message\message;
@@ -87,6 +89,10 @@ function assertArray(
     ArrayTypeParameterInterface $parameter,
     array|ArrayAccess $argument,
 ): array {
+    if ($parameter instanceof UnionParameterInterface) {
+        throw new BadMethodCallException();
+    }
+
     return arguments($parameter->parameters(), $argument)->toArray();
 }
 

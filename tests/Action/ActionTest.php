@@ -37,7 +37,7 @@ final class ActionTest extends TestCase
     public function testConstruct(): void
     {
         $action = new ActionTestAction();
-        $this->assertCount(0, $action->acceptResponse()->parameters());
+        $this->expectNotToPerformAssertions();
         $action->getResponse();
     }
 

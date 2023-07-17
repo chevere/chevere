@@ -15,13 +15,13 @@ namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
 use Chevere\Action\Attributes\Strict;
-use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use Chevere\Parameter\Interfaces\ParameterInterface;
 use function Chevere\Parameter\arrayp;
 
 #[Strict(false)]
 final class ActionTestNoStrict extends Action
 {
-    public static function acceptResponse(): ArrayTypeParameterInterface
+    public static function acceptResponse(): ParameterInterface
     {
         return arrayp();
     }

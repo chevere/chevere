@@ -16,13 +16,13 @@ namespace Chevere\Tests\Action\_resources;
 use Chevere\Attributes\Description;
 use Chevere\Attributes\Regex;
 use Chevere\Controller\Controller;
-use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use Chevere\Parameter\Interfaces\ParameterInterface;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\string;
 
 final class ActionTestController extends Controller
 {
-    public static function acceptResponse(): ArrayTypeParameterInterface
+    public static function acceptResponse(): ParameterInterface
     {
         return arrayp(user: string());
     }
