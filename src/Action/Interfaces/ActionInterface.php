@@ -14,28 +14,22 @@ declare(strict_types=1);
 namespace Chevere\Action\Interfaces;
 
 use Chevere\Parameter\Interfaces\ParameterInterface;
-use Chevere\Response\Interfaces\ResponseInterface;
 
 /**
- * Describes the component in charge of defining a single action.
- *
- * @method array<string, mixed> run() Defines the action run
- * logic.
+ * Describes the component in charge of defining a single logic action.
+ * @method mixed run() Defines the action run logic.
  */
 interface ActionInterface
 {
     /**
-     * Defines expected response data parameters when executing `run` method.
+     * Defines expected response parameter when executing `run` method.
      */
     public static function acceptResponse(): ParameterInterface;
 
     /**
-     * Retrieves a new response instance typed against the defined response data parameters.
-     *
-     * This method will provide a response instance with data provided by
-     * executing the `run` method against `$namedArguments`.
+     * Retrieves `run` response checked against `acceptResponse`.
      */
-    public function getResponse(mixed ...$argument): ResponseInterface;
+    public function getResponse(mixed ...$argument): mixed;
 
     public function assert(): void;
 }

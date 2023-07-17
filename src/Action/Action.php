@@ -13,26 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Action;
 
-use Chevere\Action\Attributes\Strict;
 use Chevere\Action\Interfaces\ActionInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Response\Interfaces\ResponseInterface;
-use Chevere\Response\Response;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\LogicException;
-use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
-use function Chevere\Attribute\getAttribute;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArgument;
 
 /**
- * @method array<string, mixed> run()
+ * @method mixed run()
  */
 abstract class Action implements ActionInterface
 {
@@ -50,19 +45,12 @@ abstract class Action implements ActionInterface
         return arrayp();
     }
 
-    final public function getResponse(mixed ...$argument): ResponseInterface
+    final public function getResponse(mixed ...$argument): mixed
     {
         $arguments = arguments($this->parameters(), $argument)->toArray();
-        $data = $this->run(...$arguments);
-        $reflection = new ReflectionClass(static::class);
-        /** @var Strict $strict */
-        $strict = getAttribute($reflection, Strict::class);
-        if ($strict->value) {
-            /** @var array<string, mixed> $data */
-            $data = assertArgument(static::acceptResponse(), $data);
-        }
+        $run = $this->run(...$arguments);
 
-        return new Response(...$data);
+        return assertArgument(static::acceptResponse(), $run);
     }
 
     final protected function assertRunMethod(): void

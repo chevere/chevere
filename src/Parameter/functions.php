@@ -142,7 +142,7 @@ function assertNamedArgument(
     string $name,
     ParameterInterface $parameter,
     mixed $argument
-): void {
+): ArgumentsInterface {
     $parameters = parameters(
         ...[
             $name => $parameter,
@@ -153,7 +153,7 @@ function assertNamedArgument(
     ];
 
     try {
-        arguments($parameters, $arguments);
+        return arguments($parameters, $arguments);
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             message('Argument [%name%]: %message%')

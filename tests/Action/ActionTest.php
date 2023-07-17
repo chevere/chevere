@@ -21,7 +21,6 @@ use Chevere\Tests\Action\_resources\ActionTestInvalidRunReturn;
 use Chevere\Tests\Action\_resources\ActionTestInvalidScope;
 use Chevere\Tests\Action\_resources\ActionTestMissingRun;
 use Chevere\Tests\Action\_resources\ActionTestNoReturnType;
-use Chevere\Tests\Action\_resources\ActionTestNoStrict;
 use Chevere\Tests\Action\_resources\ActionTestRunParameterMissingType;
 use Chevere\Tests\Action\_resources\ActionTestRunReturnExtraArguments;
 use Chevere\Throwable\Errors\ArgumentCountError;
@@ -55,14 +54,11 @@ final class ActionTest extends TestCase
         $arguments = [
             $parameter => $value,
         ];
-        $array = $action->getResponse(...$arguments)->data();
+        $array = $action->getResponse(...$arguments);
         $expected = [
             'user' => $value,
         ];
         $this->assertSame($expected, $array);
-        $response = $action->getResponse(...$arguments);
-        $this->assertSame(0, $response->code());
-        $this->assertSame($expected, $response->data());
     }
 
     public function testInvalidRunReturn(): void
@@ -83,13 +79,6 @@ final class ActionTest extends TestCase
     {
         $action = new ActionTestRunReturnExtraArguments();
         $this->expectException(ArgumentCountError::class);
-        $action->getResponse();
-    }
-
-    public function testActionNoStrict(): void
-    {
-        $action = new ActionTestNoStrict();
-        $this->expectNotToPerformAssertions();
         $action->getResponse();
     }
 
