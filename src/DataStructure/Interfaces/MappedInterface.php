@@ -16,6 +16,7 @@ namespace Chevere\DataStructure\Interfaces;
 use Countable;
 use Iterator;
 use IteratorAggregate;
+use Traversable;
 
 /**
  * Describes the component in charge of defining a mapped interface.
@@ -25,5 +26,9 @@ use IteratorAggregate;
  */
 interface MappedInterface extends Countable, StringKeysInterface, IteratorAggregate
 {
+    /**
+     * @return Traversable<string, TValue>
+     * @phpstan-return Iterator<string, TValue>
+     */
     public function getIterator(): Iterator;
 }
