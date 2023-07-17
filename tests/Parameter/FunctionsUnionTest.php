@@ -16,7 +16,6 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\arrayp;
-use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\generic;
@@ -32,7 +31,6 @@ final class FunctionsUnionTest extends TestCase
         $argument = [
             'a' => 1,
         ];
-        // assertArray($union, []);
         assertUnion($union, []);
         assertUnion($union, $argument);
         $union = union($array);
