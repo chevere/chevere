@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
-use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
+use Chevere\Parameter\Interfaces\ParametersAccessInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
@@ -23,7 +23,7 @@ trait ParameterAssertArrayTypeTrait
 {
     private ParametersInterface $parameters;
 
-    private function assertArrayType(ArrayTypeParameterInterface $parameter): void
+    private function assertArrayType(ParametersAccessInterface $parameter): void
     {
         $parametersCount = $this->parameters->count();
         $providedCount = $parameter->parameters()->count();
