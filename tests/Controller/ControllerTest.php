@@ -23,12 +23,12 @@ final class ControllerTest extends TestCase
     public function testInvalid(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        (new ControllerTestInvalidController())->assert();
+        (new ControllerTestInvalidController())->getResponse();
     }
 
     public function testConstruct(): void
     {
         $this->expectNotToPerformAssertions();
-        (new ControllerTestController())->assert();
+        (new ControllerTestController())->getResponse(string: '');
     }
 }

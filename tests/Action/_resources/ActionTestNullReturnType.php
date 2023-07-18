@@ -14,11 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
+use Chevere\Parameter\Interfaces\ParameterInterface;
+use function Chevere\Parameter\null;
 
-final class ActionTestNoReturnType extends Action
+final class ActionTestNullReturnType extends Action
 {
-    protected function run()
+    public static function acceptResponse(): ParameterInterface
     {
-        return [];
+        return null();
+    }
+
+    protected function run(): void
+    {
     }
 }

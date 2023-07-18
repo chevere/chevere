@@ -51,9 +51,7 @@ final class Arguments implements ArgumentsInterface
      */
     private array $errors = [];
 
-    /**
-     * @phpstan-ignore-next-line
-     */
+    // @phpstan-ignore-next-line
     public function __construct(
         private ParametersInterface $parameters,
         array|ArrayAccess $arguments
@@ -76,17 +74,13 @@ final class Arguments implements ArgumentsInterface
         }
     }
 
-    /**
-     * @phpstan-ignore-next-line
-     */
+    // @phpstan-ignore-next-line
     public function toArray(): array
     {
         return $this->arguments;
     }
 
-    /**
-     * @phpstan-ignore-next-line
-     */
+    // @phpstan-ignore-next-line
     public function toArrayFill(mixed $fill): array
     {
         $filler = array_fill_keys($this->null, $fill);

@@ -17,17 +17,16 @@ use Chevere\Tests\Action\_resources\ActionTestAction;
 use Chevere\Tests\Action\_resources\ActionTestController;
 use Chevere\Tests\Action\_resources\ActionTestGenericResponse;
 use Chevere\Tests\Action\_resources\ActionTestGenericResponseError;
-use Chevere\Tests\Action\_resources\ActionTestInvalidRunReturn;
-use Chevere\Tests\Action\_resources\ActionTestInvalidScope;
 use Chevere\Tests\Action\_resources\ActionTestMissingRun;
-use Chevere\Tests\Action\_resources\ActionTestNoReturnType;
+use Chevere\Tests\Action\_resources\ActionTestNullReturnType;
+use Chevere\Tests\Action\_resources\ActionTestPrivateScope;
 use Chevere\Tests\Action\_resources\ActionTestRunParameterMissingType;
 use Chevere\Tests\Action\_resources\ActionTestRunReturnExtraArguments;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\LogicException;
+use Error;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 
@@ -43,10 +42,10 @@ final class ActionTest extends TestCase
     public function testMissingRunMethod(): void
     {
         $this->expectException(LogicException::class);
-        (new ActionTestMissingRun())->assert();
+        (new ActionTestMissingRun())->getResponse();
     }
 
-    public function testRunWithArguments(): void
+    public function testWithArguments(): void
     {
         $parameter = 'name';
         $value = 'PeoplesHernandez';
@@ -54,35 +53,28 @@ final class ActionTest extends TestCase
         $arguments = [
             $parameter => $value,
         ];
-        $array = $action->getResponse(...$arguments);
+        $array = $action->getResponse(...$arguments)->array();
         $expected = [
             'user' => $value,
         ];
         $this->assertSame($expected, $array);
     }
 
-    public function testInvalidRunReturn(): void
-    {
-        $this->expectException(TypeError::class);
-        $this->expectExceptionMessage(ActionTestInvalidRunReturn::class . '::run');
-        ( new ActionTestInvalidRunReturn())->assert();
-    }
-
     public function testInvalidRunParameter(): void
     {
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('$mixed');
-        (new ActionTestRunParameterMissingType())->assert();
+        (new ActionTestRunParameterMissingType())->getResponse();
     }
 
-    public function testRunReturnExtraArguments(): void
+    public function testReturnExtraArguments(): void
     {
         $action = new ActionTestRunReturnExtraArguments();
         $this->expectException(ArgumentCountError::class);
         $action->getResponse();
     }
 
-    public function testActionGenericResponse(): void
+    public function testGenericResponse(): void
     {
         $action = new ActionTestGenericResponse();
         $this->expectNotToPerformAssertions();
@@ -96,16 +88,16 @@ final class ActionTest extends TestCase
         $action->getResponse();
     }
 
-    public function testActionInvalidScope(): void
+    public function testPrivateScope(): void
     {
-        $this->expectException(LogicException::class);
-        (new ActionTestInvalidScope())->assert();
+        $this->expectException(Error::class);
+        (new ActionTestPrivateScope())->getResponse();
     }
 
-    public function testActionNoReturnType(): void
+    public function testNullReturnType(): void
     {
-        $this->expectException(ErrorException::class);
-        (new ActionTestNoReturnType())->assert();
+        $this->expectNotToPerformAssertions();
+        (new ActionTestNullReturnType())->getResponse();
     }
 
     public function testParametersNullAssign(): void
@@ -115,7 +107,6 @@ final class ActionTest extends TestCase
         $this->assertTrue($reflection->isInitialized($action));
         $this->assertNull($reflection->getValue($action));
         $action->getResponse();
-        $object = $reflection->getValue($action);
-        // vdd($object, $reflection->getValue($action));
+        $reflection->getValue($action);
     }
 }

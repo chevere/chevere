@@ -21,9 +21,7 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 
-/**
- * @phpstan-ignore-next-line
- */
+// @phpstan-ignore-next-line
 function getAttribute(
     ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
     string $attribute
@@ -36,9 +34,7 @@ function getAttribute(
     return $attributes[0]->newInstance();
 }
 
-/**
- * @phpstan-ignore-next-line
- */
+// @phpstan-ignore-next-line
 function getDescription(
     ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
 ): Description {

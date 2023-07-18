@@ -18,8 +18,8 @@ use Countable;
 
 /**
  * Describes the component in charge of defining a vector interface.
+ * @phpstan-ignore-next-line
  */
-// @phpstan-ignore-next-line
 interface VectorInterface extends Countable, IntegerKeysInterface, GetIteratorInterface, ToArrayInterface
 {
     public function withPush(mixed ...$value): self;

@@ -14,13 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Action;
 
 use Chevere\Action\Interfaces\ActionInterface;
+use Chevere\Parameter\Cast;
+use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\ErrorException;
 use Chevere\Throwable\Exceptions\LogicException;
-use ReflectionMethod;
-use ReflectionNamedType;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
@@ -33,24 +31,20 @@ abstract class Action implements ActionInterface
 {
     protected ?ParametersInterface $parameters = null;
 
-    final public function assert(): void
-    {
-        $this->assertRunMethod();
-        $this->parameters();
-        $this->assertRunParameters();
-    }
-
     public static function acceptResponse(): ParameterInterface
     {
         return arrayp();
     }
 
-    final public function getResponse(mixed ...$argument): mixed
+    final public function getResponse(mixed ...$argument): CastInterface
     {
+        $this->assertRunMethod();
+        $this->assertRunParameters();
         $arguments = arguments($this->parameters(), $argument)->toArray();
         $run = $this->run(...$arguments);
+        assertArgument(static::acceptResponse(), $run);
 
-        return assertArgument(static::acceptResponse(), $run);
+        return new Cast($run);
     }
 
     final protected function assertRunMethod(): void
@@ -59,30 +53,6 @@ abstract class Action implements ActionInterface
             throw new LogicException(
                 message('Action %action% does not define a run method')
                     ->withCode('%action%', $this::class)
-            );
-        }
-        $reflection = new ReflectionMethod($this, 'run');
-        $translate = [
-            '%method%', $this::class . '::run',
-        ];
-        if (! $reflection->isProtected()) {
-            throw new LogicException(
-                message('Method %method% must be protected')
-                    ->withTranslate(...$translate)
-            );
-        }
-        if (! $reflection->hasReturnType()) {
-            throw new ErrorException(
-                message('Method %method% must declare array return type')
-                    ->withTranslate(...$translate)
-            );
-        }
-        /** @var ReflectionNamedType $reflectionType */
-        $reflectionType = $reflection->getReturnType();
-        if ($reflectionType->getName() !== 'array') {
-            throw new TypeError(
-                message('Method %method% must return an array')
-                    ->withTranslate(...$translate)
             );
         }
     }

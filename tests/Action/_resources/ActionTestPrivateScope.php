@@ -15,10 +15,10 @@ namespace Chevere\Tests\Action\_resources;
 
 use Chevere\Action\Action;
 
-final class ActionTestInvalidRunReturn extends Action
+final class ActionTestPrivateScope extends Action
 {
-    protected function run(): bool
+    private function run(): array
     {
-        return true;
+        return [];
     }
 }

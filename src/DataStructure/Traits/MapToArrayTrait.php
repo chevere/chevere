@@ -21,7 +21,7 @@ trait MapToArrayTrait
 
     public function toArray(): array
     {
-        /** @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         return iterator_to_array($this->map->getIterator(), true);
     }
 }
