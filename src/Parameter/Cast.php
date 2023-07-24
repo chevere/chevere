@@ -65,7 +65,7 @@ final class Cast implements CastInterface
         return $this->argument;
     }
 
-    public function null(): null
+    public function mixed(): mixed
     {
         return $this->argument;
     }
