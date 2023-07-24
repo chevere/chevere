@@ -21,6 +21,7 @@ final class CastTest extends TestCase
     public function castDataProvider(): array
     {
         return [
+            [null, 'null'],
             [1, 'integer'],
             [1.1, 'float'],
             [true, 'boolean'],

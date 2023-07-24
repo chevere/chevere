@@ -35,4 +35,6 @@ interface CastInterface
 
     // @phpstan-ignore-next-line
     public function iterable(): iterable;
+
+    public function null(): null;
 }

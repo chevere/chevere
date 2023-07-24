@@ -64,4 +64,9 @@ final class Cast implements CastInterface
     {
         return $this->argument;
     }
+
+    public function null(): null
+    {
+        return $this->argument;
+    }
 }
