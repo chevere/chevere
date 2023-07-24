@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Attribute;
 
-use Chevere\Tests\Attribute\_resources\ClassUsesDescription;
+use Chevere\Attributes\Description;
+use Chevere\Attributes\Regex;
+use Chevere\Tests\Attribute\src\ClassUsesDescription;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionClassConstant;
@@ -22,13 +24,14 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 use function Chevere\Attribute\getDescription;
+use function Chevere\Attribute\hasAttribute;
 
 final class FunctionsTest extends TestCase
 {
-    public function classDataProvider(): array
+    public function descriptionDataProvider(): array
     {
         $class = ClassUsesDescription::class;
-        $function = 'Chevere\Tests\Attribute\_resources\functionUsesDescription';
+        $function = 'Chevere\Tests\Attribute\src\functionUsesDescription';
 
         return [
             [
@@ -63,11 +66,20 @@ final class FunctionsTest extends TestCase
     }
 
     /**
-     * @dataProvider classDataProvider
+     * @dataProvider descriptionDataProvider
      */
     public function testGetDescription($reflection, string $meta): void
     {
         $description = getDescription($reflection);
         $this->assertSame($meta, $description->__toString());
+    }
+
+    /**
+     * @dataProvider descriptionDataProvider
+     */
+    public function testHasAttribute($reflection): void
+    {
+        $this->assertTrue(hasAttribute($reflection, Description::class));
+        $this->assertFalse(hasAttribute($reflection, Regex::class));
     }
 }
