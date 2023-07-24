@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Attribute;
 
-use Attribute;
 use Chevere\Attributes\Description;
 use Chevere\Attributes\Regex;
 use ReflectionClass;
@@ -23,10 +22,7 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
 
-/**
- * @param class-string<Attribute> $attribute
- * @phpstan-ignore-next-line
- */
+// @phpstan-ignore-next-line
 function hasAttribute(
     ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
     string $attribute
@@ -36,10 +32,7 @@ function hasAttribute(
     return $attributes !== [];
 }
 
-/**
- * @param class-string<Attribute> $attribute
- * @phpstan-ignore-next-line
- */
+// @phpstan-ignore-next-line
 function getAttribute(
     ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
     string $attribute
