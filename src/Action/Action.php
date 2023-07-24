@@ -18,7 +18,10 @@ use Chevere\Parameter\Cast;
 use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\LogicException;
+use ReflectionMethod;
+use ReflectionNamedType;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
@@ -38,8 +41,7 @@ abstract class Action implements ActionInterface
 
     final public function getResponse(mixed ...$argument): CastInterface
     {
-        $this->assertRunMethod();
-        $this->assertRunParameters();
+        $this::assert();
         $arguments = arguments($this->parameters(), $argument)->toArray();
         $run = $this->run(...$arguments);
         assertArgument(static::acceptResponse(), $run);
@@ -47,20 +49,46 @@ abstract class Action implements ActionInterface
         return new Cast($run);
     }
 
-    final protected function assertRunMethod(): void
+    final public static function assert(): void
     {
-        if (! method_exists($this, 'run')) {
+        if (! method_exists(static::class, 'run')) {
             throw new LogicException(
                 message('Action %action% does not define a run method')
-                    ->withCode('%action%', $this::class)
+                    ->withCode('%action%', static::class)
             );
         }
+        $response = static::acceptResponse();
+        $reflection = new ReflectionMethod(static::class, 'run');
+        if (! $reflection->hasReturnType()
+            && $response->type()->typeHinting() === 'null') {
+            return;
+        }
+        /** @var ReflectionNamedType $reflectionType */
+        $reflectionType = $reflection->getReturnType();
+        $returnName = $reflectionType->getName();
+        $expectName = $response->type()->typeHinting();
+        $return = match ($returnName) {
+            'void' => 'null',
+            default => $returnName,
+        };
+        $expect = match ($expectName) {
+            'generic' => 'array',
+            default => $expectName,
+        };
+        if ($return !== $expect) {
+            throw new TypeError(
+                message('Method %method% must declare %type% return type')
+                    ->withCode('%method%', static::class . '::run')
+                    ->withCode('%type%', $response->type()->typeHinting())
+            );
+        }
+        static::assertRunParameters();
     }
 
     /**
      * @codeCoverageIgnore
      */
-    protected function assertRunParameters(): void
+    protected static function assertRunParameters(): void
     {
         // enables override
     }

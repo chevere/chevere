@@ -17,14 +17,15 @@ use Chevere\Action\Action;
 use Chevere\Controller\Interfaces\ControllerInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use function Chevere\Action\getParameters;
 use function Chevere\Message\message;
 
 abstract class Controller extends Action implements ControllerInterface
 {
-    final protected function assertRunParameters(): void
+    final protected static function assertRunParameters(): void
     {
         $invalid = [];
-        foreach ($this->parameters() as $name => $parameter) {
+        foreach (getParameters(static::class) as $name => $parameter) {
             if (! ($parameter instanceof StringParameterInterface)) {
                 $invalid[] = $name;
             }
