@@ -69,6 +69,7 @@ abstract class Action implements ActionInterface
         $expectName = $response->type()->typeHinting();
         $return = match ($returnName) {
             'void' => 'null',
+            'ArrayAccess' => 'array',
             default => $returnName,
         };
         $expect = match ($expectName) {
