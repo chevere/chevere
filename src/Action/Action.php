@@ -18,6 +18,7 @@ use Chevere\Parameter\Cast;
 use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\LogicException;
 use ReflectionMethod;
@@ -72,11 +73,18 @@ abstract class Action implements ActionInterface
             'ArrayAccess' => 'array',
             default => $returnName,
         };
-        $expect = match ($expectName) {
-            'generic' => 'array',
-            default => $expectName,
-        };
-        if ($return !== $expect) {
+        $expect = [];
+        if ($response instanceof UnionParameterInterface) {
+            foreach ($response->parameters() as $parameter) {
+                $expect[] = $parameter->type()->typeHinting();
+            }
+        } else {
+            $expect[] = match ($expectName) {
+                'generic' => 'array',
+                default => $expectName,
+            };
+        }
+        if (! in_array($return, $expect, true)) {
             throw new TypeError(
                 message('Method %method% must declare %type% return type')
                     ->withCode('%method%', static::class . '::run')
