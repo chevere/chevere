@@ -130,3 +130,19 @@ function arrayPrefixKeys(array $array, string|int $prefix): array
 
     return $return;
 }
+
+/**
+ * @param array<mixed> $array
+ * @param string|int $key Key(s) to unset.
+ * @return array<mixed>
+ */
+function arrayUnsetKey(array $array, string|int ...$key): array
+{
+    foreach ($key as $unset) {
+        if (array_key_exists($unset, $array)) {
+            unset($array[$unset]);
+        }
+    }
+
+    return $array;
+}
