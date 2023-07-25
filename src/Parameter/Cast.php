@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use ArrayAccess;
 use Chevere\Parameter\Interfaces\CastInterface;
 
 final class Cast implements CastInterface
@@ -46,7 +47,9 @@ final class Cast implements CastInterface
     // @phpstan-ignore-next-line
     public function array(): array
     {
-        return $this->argument;
+        return $this->argument instanceof ArrayAccess
+            ? (array) $this->argument
+            : $this->argument;
     }
 
     public function object(): object

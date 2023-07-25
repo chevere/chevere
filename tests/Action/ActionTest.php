@@ -47,17 +47,10 @@ final class ActionTest extends TestCase
 
     public function testWithArguments(): void
     {
-        $parameter = 'name';
-        $value = 'PeoplesHernandez';
+        $expected = 'PeoplesHernandez';
         $action = new ActionTestController();
-        $arguments = [
-            $parameter => $value,
-        ];
-        $array = $action->getResponse(...$arguments)->array();
-        $expected = [
-            'user' => $value,
-        ];
-        $this->assertSame($expected, $array);
+        $string = $action->getResponse(name: $expected)->string();
+        $this->assertSame($expected, $string);
     }
 
     public function testInvalidRunParameter(): void

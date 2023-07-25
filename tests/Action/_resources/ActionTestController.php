@@ -17,23 +17,20 @@ use Chevere\Attributes\Description;
 use Chevere\Attributes\Regex;
 use Chevere\Controller\Controller;
 use Chevere\Parameter\Interfaces\ParameterInterface;
-use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\string;
 
 final class ActionTestController extends Controller
 {
     public static function acceptResponse(): ParameterInterface
     {
-        return arrayp(user: string());
+        return string();
     }
 
     protected function run(
         #[Description('The username.')]
         #[Regex('/^[a-zA-Z]+$/')]
         string $name
-    ): array {
-        return [
-            'user' => 'PeoplesHernandez',
-        ];
+    ): string {
+        return $name;
     }
 }
