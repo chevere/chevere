@@ -146,3 +146,20 @@ function arrayUnsetKey(array $array, string|int ...$key): array
 
     return $array;
 }
+
+/**
+ * @param array<mixed> $array
+ * @param string|int $key Key(s) to grab.
+ * @return array<mixed>
+ */
+function arrayFromKey(array $array, string|int ...$key): array
+{
+    $keys = array_keys($array);
+    foreach ($keys as $aKey) {
+        if (! in_array($aKey, $key, false)) {
+            unset($array[$aKey]);
+        }
+    }
+
+    return $array;
+}
