@@ -62,9 +62,11 @@ function object(
 }
 
 function union(
-    ParameterInterface ...$parameter
+    ParameterInterface $one,
+    ParameterInterface $two,
+    ParameterInterface ...$more
 ): UnionParameterInterface {
-    $parameters = parameters(...$parameter);
+    $parameters = parameters($one, $two, ...$more);
 
     return new UnionParameter($parameters);
 }

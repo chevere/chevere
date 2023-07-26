@@ -22,7 +22,7 @@ use function Chevere\Message\message;
 
 abstract class Controller extends Action implements ControllerInterface
 {
-    final protected static function assertRunParameters(): void
+    final protected static function assertParameters(): void
     {
         $invalid = [];
         foreach (getParameters(static::class) as $name => $parameter) {

@@ -20,6 +20,7 @@ use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\generic;
 use function Chevere\Parameter\integer;
+use function Chevere\Parameter\null;
 use function Chevere\Parameter\union;
 
 final class FunctionsUnionTest extends TestCase
@@ -33,7 +34,7 @@ final class FunctionsUnionTest extends TestCase
         ];
         assertUnion($union, []);
         assertUnion($union, $argument);
-        $union = union($array);
+        $union = union($array, null());
         assertUnion($union, $argument);
         $this->expectException(InvalidArgumentException::class);
         assertUnion($union, []);
@@ -54,7 +55,7 @@ final class FunctionsUnionTest extends TestCase
         ];
         assertUnion($union, []);
         assertUnion($union, $argument);
-        $union = union($generic);
+        $union = union($generic, null());
         assertUnion($union, $argument);
         $this->expectException(InvalidArgumentException::class);
         assertUnion($union, []);
@@ -75,7 +76,7 @@ final class FunctionsUnionTest extends TestCase
         ];
         assertGeneric($generic, $argument);
         assertGeneric($generic, [[]]);
-        $generic = generic(union($array));
+        $generic = generic(union($array, null()));
         assertGeneric($generic, $argument);
         $this->expectException(InvalidArgumentException::class);
         assertGeneric($generic, [[]]);

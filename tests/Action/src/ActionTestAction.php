@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources;
+namespace Chevere\Tests\Action\src;
 
 use Chevere\Action\Action;
 
-final class ActionTestRunParameterMissingType extends Action
+final class ActionTestAction extends Action
 {
-    protected function run($mixed): array
+    protected function run(): array
     {
         return [];
     }

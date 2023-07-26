@@ -13,15 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
-use Chevere\Tests\Action\_resources\ActionTestAction;
-use Chevere\Tests\Action\_resources\ActionTestController;
-use Chevere\Tests\Action\_resources\ActionTestGenericResponse;
-use Chevere\Tests\Action\_resources\ActionTestGenericResponseError;
-use Chevere\Tests\Action\_resources\ActionTestMissingRun;
-use Chevere\Tests\Action\_resources\ActionTestNullReturnType;
-use Chevere\Tests\Action\_resources\ActionTestPrivateScope;
-use Chevere\Tests\Action\_resources\ActionTestRunParameterMissingType;
-use Chevere\Tests\Action\_resources\ActionTestRunReturnExtraArguments;
+use Chevere\Tests\Action\src\ActionTestAction;
+use Chevere\Tests\Action\src\ActionTestArrayAccessReturnType;
+use Chevere\Tests\Action\src\ActionTestController;
+use Chevere\Tests\Action\src\ActionTestGenericResponse;
+use Chevere\Tests\Action\src\ActionTestGenericResponseError;
+use Chevere\Tests\Action\src\ActionTestMethodParameterMissingType;
+use Chevere\Tests\Action\src\ActionTestMissingRun;
+use Chevere\Tests\Action\src\ActionTestNoReturnType;
+use Chevere\Tests\Action\src\ActionTestNullReturnType;
+use Chevere\Tests\Action\src\ActionTestPrivateScope;
+use Chevere\Tests\Action\src\ActionTestReturnExtraArguments;
+use Chevere\Tests\Action\src\ActionTestUnionReturnMissingType;
+use Chevere\Tests\Action\src\ActionTestUnionReturnType;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -41,8 +45,9 @@ final class ActionTest extends TestCase
 
     public function testMissingRunMethod(): void
     {
+        $action = new ActionTestMissingRun();
         $this->expectException(LogicException::class);
-        (new ActionTestMissingRun())->getResponse();
+        $action->getResponse();
     }
 
     public function testWithArguments(): void
@@ -55,14 +60,15 @@ final class ActionTest extends TestCase
 
     public function testInvalidRunParameter(): void
     {
+        $action = new ActionTestMethodParameterMissingType();
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage('$mixed');
-        (new ActionTestRunParameterMissingType())->getResponse();
+        $action->getResponse();
     }
 
     public function testReturnExtraArguments(): void
     {
-        $action = new ActionTestRunReturnExtraArguments();
+        $action = new ActionTestReturnExtraArguments();
         $this->expectException(ArgumentCountError::class);
         $action->getResponse();
     }
@@ -74,23 +80,63 @@ final class ActionTest extends TestCase
         $action->getResponse();
     }
 
-    public function testActionGenericResponseError(): void
+    public function testGenericResponseError(): void
     {
         $action = new ActionTestGenericResponseError();
         $this->expectException(InvalidArgumentException::class);
         $action->getResponse();
     }
 
+    public function testUnionResponse(): void
+    {
+        $action = new ActionTestUnionReturnType();
+        $this->expectNotToPerformAssertions();
+        $action->getResponse();
+    }
+
+    public function testUnionResponseError(): void
+    {
+        $action = new ActionTestUnionReturnMissingType();
+        $this->expectException(TypeError::class);
+        $this->expectExceptionMessage(
+            'Method '
+            . ActionTestUnionReturnMissingType::class
+            . '::run must declare string|integer return type'
+        );
+        $action->getResponse();
+    }
+
+    public function testArrayAccessResponse(): void
+    {
+        $action = new ActionTestArrayAccessReturnType();
+        $this->expectNotToPerformAssertions();
+        $action->getResponse();
+    }
+
     public function testPrivateScope(): void
     {
+        $action = new ActionTestPrivateScope();
         $this->expectException(Error::class);
-        (new ActionTestPrivateScope())->getResponse();
+        $action->getResponse();
     }
 
     public function testNullReturnType(): void
     {
+        $action = new ActionTestNullReturnType();
         $this->expectNotToPerformAssertions();
-        (new ActionTestNullReturnType())->getResponse();
+        $action->getResponse();
+    }
+
+    public function testNoReturnTypeError(): void
+    {
+        $action = new ActionTestNoReturnType();
+        $this->expectException(TypeError::class);
+        $this->expectExceptionMessage(
+            'Method '
+            . ActionTestNoReturnType::class
+            . '::run must declare array return type'
+        );
+        $action->getResponse();
     }
 
     public function testParametersNullAssign(): void

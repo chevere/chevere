@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources;
+namespace Chevere\Tests\Action\src;
 
 use Chevere\Action\Action;
 use Chevere\Attributes\Description;

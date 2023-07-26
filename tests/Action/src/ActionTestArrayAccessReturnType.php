@@ -11,20 +11,23 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources;
+namespace Chevere\Tests\Action\src;
 
+use ArrayAccess;
+use ArrayObject;
 use Chevere\Action\Action;
 use Chevere\Parameter\Interfaces\ParameterInterface;
-use function Chevere\Parameter\null;
+use function Chevere\Parameter\arrayp;
 
-final class ActionTestNullReturnType extends Action
+final class ActionTestArrayAccessReturnType extends Action
 {
     public static function acceptResponse(): ParameterInterface
     {
-        return null();
+        return arrayp();
     }
 
-    protected function run(): void
+    protected function run(): ArrayAccess
     {
+        return new ArrayObject([]);
     }
 }

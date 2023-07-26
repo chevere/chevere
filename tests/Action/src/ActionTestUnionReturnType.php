@@ -11,31 +11,26 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources;
+namespace Chevere\Tests\Action\src;
 
 use Chevere\Action\Action;
 use Chevere\Parameter\Interfaces\ParameterInterface;
-use function Chevere\Parameter\generic;
 use function Chevere\Parameter\integer;
 use function Chevere\Parameter\string;
+use function Chevere\Parameter\union;
 
-final class ActionTestGenericResponseError extends Action
+final class ActionTestUnionReturnType extends Action
 {
     public static function acceptResponse(): ParameterInterface
     {
-        return generic(
-            V: integer(),
-            K: string()
+        return union(
+            string(),
+            integer(),
         );
     }
 
-    protected function run(): array
+    protected function run(): string
     {
-        return [
-            'a' => 123,
-            'b' => '124',
-            'c' => 125,
-            // ...
-        ];
+        return '';
     }
 }

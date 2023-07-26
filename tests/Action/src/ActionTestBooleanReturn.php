@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources;
+namespace Chevere\Tests\Action\src;
 
 use Chevere\Action\Action;
 
-final class ActionTestEmpty extends Action
+final class ActionTestBooleanReturn extends Action
 {
-    protected function run(): array
+    protected function run(): bool
     {
-        return [];
+        return true;
     }
 }

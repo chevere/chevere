@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources;
+namespace Chevere\Tests\Action\src;
 
 use Chevere\Action\Action;
 
-final class ActionTestAction extends Action
+final class ActionTestEmpty extends Action
 {
     protected function run(): array
     {

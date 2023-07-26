@@ -52,21 +52,31 @@ abstract class Action implements ActionInterface
 
     final public static function assert(): void
     {
-        if (! method_exists(static::class, 'run')) {
-            throw new LogicException(
-                message('Action %action% does not define a run method')
-                    ->withCode('%action%', static::class)
+        static::assertMethod();
+        $response = static::acceptResponse();
+        $method = new ReflectionMethod(static::class, 'run');
+        if (! $method->hasReturnType()) {
+            if ($response->type()->typeHinting() === 'null') {
+                return;
+            }
+
+            throw new TypeError(
+                message('Method %method% must declare %type% return type')
+                    ->withCode('%method%', static::class . '::run')
+                    ->withCode('%type%', $response->type()->typeHinting())
             );
         }
-        $response = static::acceptResponse();
-        $reflection = new ReflectionMethod(static::class, 'run');
-        if (! $reflection->hasReturnType()
-            && $response->type()->typeHinting() === 'null') {
-            return;
-        }
-        /** @var ReflectionNamedType $reflectionType */
-        $reflectionType = $reflection->getReturnType();
-        $returnName = $reflectionType->getName();
+        /** @var ReflectionNamedType $returnType */
+        $returnType = $method->getReturnType();
+        static::assertTypes($returnType, $response);
+        static::assertParameters();
+    }
+
+    public static function assertTypes(
+        ReflectionNamedType $reflection,
+        ParameterInterface $response
+    ): void {
+        $returnName = $reflection->getName();
         $expectName = $response->type()->typeHinting();
         $return = match ($returnName) {
             'void' => 'null',
@@ -88,16 +98,25 @@ abstract class Action implements ActionInterface
             throw new TypeError(
                 message('Method %method% must declare %type% return type')
                     ->withCode('%method%', static::class . '::run')
-                    ->withCode('%type%', $response->type()->typeHinting())
+                    ->withCode('%type%', implode('|', $expect))
             );
         }
-        static::assertRunParameters();
+    }
+
+    public static function assertMethod(): void
+    {
+        if (! method_exists(static::class, 'run')) {
+            throw new LogicException(
+                message('Action %action% does not define run method')
+                    ->withCode('%action%', static::class)
+            );
+        }
     }
 
     /**
      * @codeCoverageIgnore
      */
-    protected static function assertRunParameters(): void
+    protected static function assertParameters(): void
     {
         // enables override
     }

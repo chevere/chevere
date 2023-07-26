@@ -138,9 +138,9 @@ function arrayPrefixKeys(array $array, string|int $prefix): array
  */
 function arrayUnsetKey(array $array, string|int ...$key): array
 {
-    foreach ($key as $unset) {
-        if (array_key_exists($unset, $array)) {
-            unset($array[$unset]);
+    foreach ($key as $name) {
+        if (array_key_exists($name, $array)) {
+            unset($array[$name]);
         }
     }
 
@@ -149,17 +149,17 @@ function arrayUnsetKey(array $array, string|int ...$key): array
 
 /**
  * @param array<mixed> $array
- * @param string|int $key Key(s) to grab.
+ * @param string|int $key Key(s) to take.
  * @return array<mixed>
  */
 function arrayFromKey(array $array, string|int ...$key): array
 {
-    $keys = array_keys($array);
-    foreach ($keys as $aKey) {
-        if (! in_array($aKey, $key, false)) {
-            unset($array[$aKey]);
+    $return = [];
+    foreach ($key as $name) {
+        if (array_key_exists($name, $array)) {
+            $return[$name] = $array[$name];
         }
     }
 
-    return $array;
+    return $return;
 }

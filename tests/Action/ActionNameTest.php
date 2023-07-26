@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Action;
 
 use Chevere\Action\ActionName;
-use Chevere\Tests\Action\_resources\ActionTestAction;
+use Chevere\Tests\Action\src\ActionTestAction;
 use Chevere\Throwable\Errors\TypeError;
 use PHPUnit\Framework\TestCase;
 

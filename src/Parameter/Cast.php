@@ -44,7 +44,10 @@ final class Cast implements CastInterface
         return $this->argument;
     }
 
-    // @phpstan-ignore-next-line
+    /**
+     * @infection-ignore-all
+     * @phpstan-ignore-next-line
+     */
     public function array(): array
     {
         return $this->argument instanceof ArrayAccess

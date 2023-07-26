@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources;
+namespace Chevere\Tests\Action\src;
 
 use Chevere\Action\Action;
 
-final class ActionTestBooleanReturn extends Action
+final class ActionTestMethodParameterMissingType extends Action
 {
-    protected function run(): bool
+    protected function run($mixed): array
     {
-        return true;
+        return [];
     }
 }

@@ -11,28 +11,26 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Action\_resources;
+namespace Chevere\Tests\Action\src;
 
 use Chevere\Action\Action;
 use Chevere\Parameter\Interfaces\ParameterInterface;
-use function Chevere\Parameter\arrayp;
+use function Chevere\Parameter\integer;
 use function Chevere\Parameter\string;
+use function Chevere\Parameter\union;
 
-final class ActionTestRunReturnExtraArguments extends Action
+final class ActionTestUnionReturnMissingType extends Action
 {
     public static function acceptResponse(): ParameterInterface
     {
-        return arrayp(
-            name: string()
+        return union(
+            string(),
+            integer(),
         );
     }
 
-    protected function run(): array
+    protected function run(): float
     {
-        return [
-            'id' => 1,
-            'name' => 'name',
-            'extra' => 'extra',
-        ];
+        return 3.1;
     }
 }
