@@ -15,34 +15,25 @@ namespace Chevere\Tests\String;
 
 use Chevere\String\StringAssert;
 use Chevere\String\StringModify;
-use Chevere\String\StringObject;
 use Chevere\String\StringValidate;
 use PHPUnit\Framework\TestCase;
-use function Chevere\String\stringObject;
 
-final class StringObjectTest extends TestCase
+final class FunctionsTest extends TestCase
 {
-    public function testConstruct(): void
-    {
-        $string = 'string';
-        $object = new StringObject($string);
-        $this->assertSame($string, (string) $object);
-    }
-
     public function dataProvider(): array
     {
         return [
             [
+                'Chevere\\String\\stringAssert',
                 StringAssert::class,
-                'assert',
             ],
             [
+                'Chevere\\String\\stringModify',
                 StringModify::class,
-                'modify',
             ],
             [
+                'Chevere\\String\\stringValidate',
                 StringValidate::class,
-                'validate',
             ],
         ];
     }
@@ -50,20 +41,11 @@ final class StringObjectTest extends TestCase
     /**
      * @dataProvider dataProvider
      */
-    public function testEquivalent(string $class, string $method): void
+    public function testEquivalent(string $function, string $class): void
     {
         $string = 'string';
-        $object = new StringObject($string);
         $expected = new $class($string);
-        $result = $object->{$method}();
-        $this->assertEquals($expected, $result);
-        $this->assertSame($result, $object->{$method}());
-    }
-
-    public function testFunction(): void
-    {
-        $string = 'string';
-        $object = new StringObject($string);
-        $this->assertEquals($object, stringObject($string));
+        $function = $function($string);
+        $this->assertEquals($expected, $function);
     }
 }

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\String;
 
-use Chevere\String\Interfaces\StringObjectInterface;
+use Chevere\String\Interfaces\StringAssertInterface;
+use Chevere\String\Interfaces\StringModifyInterface;
+use Chevere\String\Interfaces\StringValidateInterface;
 
 /**
  * @param int<1, max> $length
@@ -25,7 +27,17 @@ function randomString(int $length): string
     return substr(bin2hex($randomBytes), 0, $length);
 }
 
-function stringObject(string $string): StringObjectInterface
+function stringAssert(string $string): StringAssertInterface
 {
-    return new StringObject($string);
+    return new StringAssert($string);
+}
+
+function stringModify(string $string): StringModifyInterface
+{
+    return new StringModify($string);
+}
+
+function stringValidate(string $string): StringValidateInterface
+{
+    return new StringValidate($string);
 }
