@@ -20,9 +20,11 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Throwable\Errors\TypeError;
+use Chevere\Throwable\Exception;
 use Chevere\Throwable\Exceptions\LogicException;
 use ReflectionMethod;
 use ReflectionNamedType;
+use Throwable;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
@@ -45,7 +47,20 @@ abstract class Action implements ActionInterface
         $this::assert();
         $arguments = arguments($this->parameters(), $argument)->toArray();
         $run = $this->run(...$arguments);
-        assertArgument(static::acceptResponse(), $run);
+
+        try {
+            assertArgument(static::acceptResponse(), $run);
+        } catch (Throwable $e) {
+            $message = message('%method% → %message%')
+                ->withCode('%method%', static::class . '::run')
+                ->withCode('%exception%', $e::class)
+                ->withTranslate('%message%', $e->getMessage());
+            if (! ($e instanceof Exception)) {
+                $message = $message->__toString();
+            }
+
+            throw new ($e::class)($message);
+        }
 
         return new Cast($run);
     }
