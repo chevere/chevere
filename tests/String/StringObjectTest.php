@@ -18,6 +18,7 @@ use Chevere\String\StringModify;
 use Chevere\String\StringObject;
 use Chevere\String\StringValidate;
 use PHPUnit\Framework\TestCase;
+use function Chevere\String\stringObject;
 
 final class StringObjectTest extends TestCase
 {
@@ -57,5 +58,12 @@ final class StringObjectTest extends TestCase
         $result = $object->{$method}();
         $this->assertEquals($expected, $result);
         $this->assertSame($result, $object->{$method}());
+    }
+
+    public function testFunction(): void
+    {
+        $string = 'string';
+        $object = new StringObject($string);
+        $this->assertEquals($object, stringObject($string));
     }
 }

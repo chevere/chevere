@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\String;
 
+use Chevere\String\Interfaces\StringObjectInterface;
+
 /**
  * @param int<1, max> $length
  */
@@ -21,4 +23,9 @@ function randomString(int $length): string
     $randomBytes = random_bytes($length);
 
     return substr(bin2hex($randomBytes), 0, $length);
+}
+
+function stringObject(string $string): StringObjectInterface
+{
+    return new StringObject($string);
 }
