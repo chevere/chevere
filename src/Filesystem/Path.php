@@ -44,7 +44,7 @@ final class Path implements PathInterface
         // @infection-ignore-all
         $this->clearStatCache();
 
-        return stream_resolve_include_path($this->absolute) !== false;
+        return file_exists($this->absolute) !== false;
     }
 
     public function assertExists(): void
