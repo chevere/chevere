@@ -18,6 +18,7 @@ use Chevere\Filesystem\Exceptions\PathDoubleDotsDashException;
 use Chevere\Filesystem\Exceptions\PathExtraSlashesException;
 use Chevere\Filesystem\Exceptions\PathNotAbsoluteException;
 use Chevere\Filesystem\Interfaces\AssertPathFormatInterface;
+use Chevere\Regex\Regex;
 use function Chevere\Message\message;
 
 final class AssertPathFormat implements AssertPathFormatInterface
@@ -49,8 +50,10 @@ final class AssertPathFormat implements AssertPathFormatInterface
 
     private function getDrive(): string
     {
-        return parse_url($this->path, PHP_URL_SCHEME)
-            ?? '';
+        $regex = new Regex('/([\w]+)\:\/{1,2}[^\s]*/');
+        $matches = $regex->match($this->path);
+
+        return $matches[1] ?? '';
     }
 
     private function assertAbsolutePath(): void

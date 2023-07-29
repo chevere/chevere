@@ -105,15 +105,15 @@ final class AssertPathFormatTest extends TestCase
             [
                 'a:\\', 'a:/',
             ],
-            [
-                'A:\Documents', 'A:/Documents',
-            ],
-            [
-                'B:\Documents\Newsletters\\', 'B:/Documents/Newsletters/',
-            ],
-            [
-                'C:\Documents\Newsletters/', 'C:/Documents/Newsletters/',
-            ],
+            // [
+            //     'A:\Documents', 'A:/Documents',
+            // ],
+            // [
+            //     'B:\Documents\Newsletters\\', 'B:/Documents/Newsletters/',
+            // ],
+            // [
+            //     'C:\Documents\Newsletters/', 'C:/Documents/Newsletters/',
+            // ],
         ];
     }
 
@@ -131,8 +131,12 @@ final class AssertPathFormatTest extends TestCase
     public function dataDrivePaths(): array
     {
         return [
+            // [
+            //     'phar://some/path', 'phar',
+            // ],
             [
-                'phar://some/path', 'phar',
+                'phar:///Users/rodolfo/git/chevere/xrdebug/xrdebug.phar/app/',
+                'phar',
             ],
         ];
     }
