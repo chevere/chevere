@@ -20,5 +20,5 @@ interface AssertPathFormatInterface
 {
     public function path(): string;
 
-    public function driveLetter(): string;
+    public function drive(): string;
 }

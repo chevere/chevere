@@ -44,9 +44,9 @@ final class FunctionsTest extends TestCase
             'C:\string' => 'C:/string/',
             'C:\string/' => 'C:/string/',
             'C:\string\\' => 'C:/string/',
-            'c:\string' => 'C:/string/',
-            'c:\string/' => 'C:/string/',
-            'c:\string\\' => 'C:/string/',
+            'c:\string' => 'c:/string/',
+            'c:\string/' => 'c:/string/',
+            'c:\string\\' => 'c:/string/',
         ];
         foreach (($unix + $windows) as $value => $expected) {
             $directory = directoryForPath($value);

@@ -46,48 +46,104 @@ final class AssertPathFormatTest extends TestCase
         new AssertPathFormat('/some/../dir');
     }
 
-    public function testUnix(): void
+    public function dataUnix(): array
     {
-        $paths = [
-            '/' => '/',
-            '/A' => '/A',
-            '/A/B/C/' => '/A/B/C/',
+        return [
+            [
+                '/', '/',
+            ],
+            [
+                '/A', '/A',
+            ],
+            [
+                '/A/B/C/', '/A/B/C/',
+            ],
         ];
-        foreach ($paths as $path => $expected) {
-            $assert = new AssertPathFormat($path);
-            $this->assertSame($expected, $assert->path());
-            $this->assertSame('', $assert->driveLetter());
-        }
     }
 
-    public function testWindows(): void
+    /**
+     * @dataProvider dataUnix
+     */
+    public function testUnix(string $path, string $expected): void
     {
-        $paths = [
-            '\\' => '/',
-            '\A' => '/A',
-            '\Program Files\Custom Utilities\\' => '/Program Files/Custom Utilities/',
-            '\Program Files' => '/Program Files',
-        ];
-        foreach ($paths as $path => $expected) {
-            $assert = new AssertPathFormat($path);
-            $this->assertSame($expected, $assert->path());
-            $this->assertSame('', $assert->driveLetter());
-        }
+        $assert = new AssertPathFormat($path);
+        $this->assertSame($expected, $assert->path());
+        $this->assertSame('', $assert->drive());
     }
 
-    public function testWindowsDriveLetters(): void
+    public function dataWindows(): array
     {
-        $paths = [
-            'a:\\' => 'A:/',
-            'A:\Documents' => 'A:/Documents',
-            'B:\Documents\Newsletters\\' => 'B:/Documents/Newsletters/',
-            'C:\Documents\Newsletters/' => 'C:/Documents/Newsletters/',
+        return [
+            [
+                '\\', '/',
+            ],
+            [
+                '\A', '/A',
+            ],
+            [
+                '\Program Files\Custom Utilities\\', '/Program Files/Custom Utilities/',
+            ],
+            [
+                '\Program Files', '/Program Files',
+            ],
         ];
-        foreach ($paths as $path => $expected) {
-            $assert = new AssertPathFormat($path);
-            $letter = $expected[0];
-            $this->assertSame($expected, $assert->path());
-            $this->assertSame($letter, $assert->driveLetter());
-        }
+    }
+
+    /**
+     * @dataProvider dataWindows
+     */
+    public function testWindows(string $path, string $expected): void
+    {
+        $assert = new AssertPathFormat($path);
+        $this->assertSame($expected, $assert->path());
+        $this->assertSame('', $assert->drive());
+    }
+
+    public function dataWindowsDriveLetters(): array
+    {
+        return [
+            [
+                'a:\\', 'a:/',
+            ],
+            [
+                'A:\Documents', 'A:/Documents',
+            ],
+            [
+                'B:\Documents\Newsletters\\', 'B:/Documents/Newsletters/',
+            ],
+            [
+                'C:\Documents\Newsletters/', 'C:/Documents/Newsletters/',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataWindowsDriveLetters
+     */
+    public function testWindowsDriveLetters(string $path, string $expected): void
+    {
+        $assert = new AssertPathFormat($path);
+        $letter = $expected[0];
+        $this->assertSame($expected, $assert->path());
+        $this->assertSame($letter, $assert->drive());
+    }
+
+    public function dataDrivePaths(): array
+    {
+        return [
+            [
+                'phar://some/path', 'phar',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataDrivePaths
+     */
+    public function testDrivePaths(string $path, string $drive): void
+    {
+        $assert = new AssertPathFormat($path);
+        $this->assertSame($path, $assert->path());
+        $this->assertSame($drive, $assert->drive());
     }
 }
