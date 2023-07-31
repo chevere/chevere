@@ -52,7 +52,7 @@ abstract class Action implements ActionInterface
             assertArgument(static::acceptResponse(), $run);
         } catch (Throwable $e) {
             $message = message('%method% → %message%')
-                ->withCode('%method%', static::class . '::run')
+                ->withCode('%method%', static::runFQN())
                 ->withCode('%exception%', $e::class)
                 ->withTranslate('%message%', $e->getMessage());
             if (! ($e instanceof Exception)) {
@@ -77,7 +77,7 @@ abstract class Action implements ActionInterface
 
             throw new TypeError(
                 message('Method %method% must declare %type% return type')
-                    ->withCode('%method%', static::class . '::run')
+                    ->withCode('%method%', static::runFQN())
                     ->withCode('%type%', $response->type()->typeHinting())
             );
         }
@@ -112,7 +112,7 @@ abstract class Action implements ActionInterface
         if (! in_array($return, $expect, true)) {
             throw new TypeError(
                 message('Method %method% must declare %type% return type')
-                    ->withCode('%method%', static::class . '::run')
+                    ->withCode('%method%', static::runFQN())
                     ->withCode('%type%', implode('|', $expect))
             );
         }
@@ -143,5 +143,10 @@ abstract class Action implements ActionInterface
         }
 
         return $this->parameters;
+    }
+
+    final protected static function runFQN(): string
+    {
+        return static::class . '::run';
     }
 }

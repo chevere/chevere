@@ -17,7 +17,7 @@ use Chevere\Action\Action;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use function Chevere\Parameter\arrayp;
 
-final class ActionTestNoReturnType extends Action
+final class ActionTestNoReturnTypeError extends Action
 {
     public static function acceptResponse(): ParameterInterface
     {

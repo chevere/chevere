@@ -20,7 +20,8 @@ use Chevere\Tests\Action\src\ActionTestGenericResponse;
 use Chevere\Tests\Action\src\ActionTestGenericResponseError;
 use Chevere\Tests\Action\src\ActionTestMethodParameterMissingType;
 use Chevere\Tests\Action\src\ActionTestMissingRun;
-use Chevere\Tests\Action\src\ActionTestNoReturnType;
+use Chevere\Tests\Action\src\ActionTestNoReturnTypeError;
+use Chevere\Tests\Action\src\ActionTestNullParameterNoReturn;
 use Chevere\Tests\Action\src\ActionTestNullReturnType;
 use Chevere\Tests\Action\src\ActionTestPrivateScope;
 use Chevere\Tests\Action\src\ActionTestReturnExtraArguments;
@@ -129,13 +130,20 @@ final class ActionTest extends TestCase
 
     public function testNoReturnTypeError(): void
     {
-        $action = new ActionTestNoReturnType();
+        $action = new ActionTestNoReturnTypeError();
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage(
             'Method '
-            . ActionTestNoReturnType::class
+            . ActionTestNoReturnTypeError::class
             . '::run must declare array return type'
         );
+        $action->getResponse();
+    }
+
+    public function testNullParameterNoReturn(): void
+    {
+        $action = new ActionTestNullParameterNoReturn();
+        $this->expectNotToPerformAssertions();
         $action->getResponse();
     }
 
