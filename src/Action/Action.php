@@ -44,7 +44,9 @@ abstract class Action implements ActionInterface
 
     final public function getResponse(mixed ...$argument): CastInterface
     {
-        $this::assert();
+        static::assertMethod();
+        static::assertStatic();
+        $this->assertRuntime();
         $arguments = arguments($this->parameters(), $argument)->toArray();
         $run = $this->run(...$arguments);
 
@@ -63,28 +65,6 @@ abstract class Action implements ActionInterface
         }
 
         return new Cast($run);
-    }
-
-    final public static function assert(): void
-    {
-        static::assertMethod();
-        $response = static::acceptResponse();
-        $method = new ReflectionMethod(static::class, 'run');
-        if (! $method->hasReturnType()) {
-            if ($response->type()->typeHinting() === 'null') {
-                return;
-            }
-
-            throw new TypeError(
-                message('Method %method% must declare %type% return type')
-                    ->withCode('%method%', static::runFQN())
-                    ->withCode('%type%', $response->type()->typeHinting())
-            );
-        }
-        /** @var ReflectionNamedType $returnType */
-        $returnType = $method->getReturnType();
-        static::assertTypes($returnType, $response);
-        static::assertParameters();
     }
 
     public static function assertTypes(
@@ -126,15 +106,40 @@ abstract class Action implements ActionInterface
                     ->withCode('%action%', static::class)
             );
         }
+        $response = static::acceptResponse();
+        $method = new ReflectionMethod(static::class, 'run');
+        if (! $method->hasReturnType()) {
+            if ($response->type()->typeHinting() === 'null') {
+                return;
+            }
+
+            throw new TypeError(
+                message('Method %method% must declare %type% return type')
+                    ->withCode('%method%', static::runFQN())
+                    ->withCode('%type%', $response->type()->typeHinting())
+            );
+        }
+        /** @var ReflectionNamedType $returnType */
+        $returnType = $method->getReturnType();
+        static::assertTypes($returnType, $response);
     }
 
     /**
      * Enables to define extra parameter assertion before the run method is called.
      * @codeCoverageIgnore
      */
-    protected static function assertParameters(): void
+    protected static function assertStatic(): void
     {
-        // enables extra parameter assertion
+        // enables extra static assertion
+    }
+
+    /**
+     * Enables to define extra parameter assertion before the run method is called.
+     * @codeCoverageIgnore
+     */
+    protected function assertRuntime(): void
+    {
+        // enables extra runtime assertion
     }
 
     final protected function parameters(): ParametersInterface
