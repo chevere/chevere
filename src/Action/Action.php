@@ -129,11 +129,12 @@ abstract class Action implements ActionInterface
     }
 
     /**
+     * Enables to define extra parameter assertion before the run method is called.
      * @codeCoverageIgnore
      */
     protected static function assertParameters(): void
     {
-        // enables override
+        // enables extra parameter assertion
     }
 
     final protected function parameters(): ParametersInterface

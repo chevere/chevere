@@ -22,21 +22,24 @@ use function Chevere\Message\message;
 
 abstract class Controller extends Action implements ControllerInterface
 {
-    final protected static function assertParameters(): void
+    protected static function assertParameters(): void
     {
+        parent::assertParameters();
         $invalid = [];
         foreach (getParameters(static::class) as $name => $parameter) {
             if (! ($parameter instanceof StringParameterInterface)) {
                 $invalid[] = $name;
             }
         }
-        if ($invalid !== []) {
-            throw new InvalidArgumentException(
-                message('Parameter %parameters% must be of type %type% for controller %className%.')
-                    ->withCode('%parameters%', implode(', ', $invalid))
-                    ->withStrong('%type%', 'string')
-                    ->withStrong('%className%', static::class)
-            );
+        if ($invalid === []) {
+            return;
         }
+
+        throw new InvalidArgumentException(
+            message('Parameter %parameters% must be of type %type% for controller %className%.')
+                ->withCode('%parameters%', implode(', ', $invalid))
+                ->withStrong('%type%', 'string')
+                ->withStrong('%className%', static::class)
+        );
     }
 }
