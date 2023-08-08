@@ -13,18 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Attributes\Interfaces\RegexAttributeInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ReflectionParameterTypedInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
+use Throwable;
 use function Chevere\Attribute\getDescription;
+use function Chevere\Attribute\getEnum;
 use function Chevere\Attribute\getRegex;
 use function Chevere\Message\message;
 
@@ -50,7 +52,6 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         private ReflectionParameter $reflection
     ) {
         $this->type = $this->getType();
-        $stringRegex = getRegex($this->reflection);
         $description = getDescription($this->reflection);
         $default = $this->getDefaultValue();
         $type = $this->getParameterType();
@@ -62,12 +63,26 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         if ($default !== null && method_exists($parameter, 'withDefault')) {
             $parameter = $parameter->withDefault($default);
         }
-        $this->parameter = $this->getParameterWithRegex($parameter, $stringRegex);
+        $this->parameter = $this->getParameterWithRegex(
+            $parameter,
+            $this->getRegex()
+        );
     }
 
     public function parameter(): ParameterInterface
     {
         return $this->parameter;
+    }
+
+    private function getRegex(): RegexInterface
+    {
+        try {
+            $attribute = getEnum($this->reflection);
+        } catch (Throwable) {
+            $attribute = getRegex($this->reflection);
+        }
+
+        return $attribute->regex();
     }
 
     private function getType(): ReflectionNamedType
@@ -124,14 +139,12 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
 
     private function getParameterWithRegex(
         ParameterInterface $parameter,
-        RegexAttributeInterface $regexAttribute
+        RegexInterface $regex
     ): ParameterInterface {
         if (! ($parameter instanceof StringParameterInterface)) {
             return $parameter;
         }
 
-        return $parameter->withRegex(
-            $regexAttribute->regex()
-        );
+        return $parameter->withRegex($regex);
     }
 }
