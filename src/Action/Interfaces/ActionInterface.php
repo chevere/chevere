@@ -31,4 +31,9 @@ interface ActionInterface
      * Retrieves `run` response checked against `acceptResponse`.
      */
     public function getResponse(mixed ...$argument): CastInterface;
+
+    /**
+     * Assert for static context.
+     */
+    public static function assert(): void;
 }

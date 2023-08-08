@@ -41,12 +41,12 @@ final class FunctionsStringTest extends TestCase
         $this->assertSame('0', assertArgument($parameter, '0'));
     }
 
-    public function testEnump(): void
+    public function testEnum(): void
     {
-        $parameter = enum();
+        $parameter = enum('test');
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
-        $this->assertSame('', assertString($parameter, ''));
+        $this->assertSame('test', assertString($parameter, 'test'));
     }
 
     public function testAssertEnum(): void

@@ -42,10 +42,15 @@ abstract class Action implements ActionInterface
         return arrayp();
     }
 
-    final public function getResponse(mixed ...$argument): CastInterface
+    final public static function assert(): void
     {
         static::assertMethod();
         static::assertStatic();
+    }
+
+    final public function getResponse(mixed ...$argument): CastInterface
+    {
+        static::assert();
         $this->assertRuntime();
         $arguments = arguments($this->parameters(), $argument)->toArray();
         $run = $this->run(...$arguments);
@@ -98,7 +103,7 @@ abstract class Action implements ActionInterface
         }
     }
 
-    public static function assertMethod(): void
+    protected static function assertMethod(): void
     {
         if (! method_exists(static::class, 'run')) {
             throw new LogicException(
