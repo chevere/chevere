@@ -15,19 +15,17 @@ namespace Chevere\Attributes;
 
 use Attribute;
 use Chevere\Attributes\Interfaces\RegexAttributeInterface;
-use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Interfaces\RegexInterface;
-use Chevere\Regex\Regex as RegexClass;
+use function Chevere\Parameter\enum;
 
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::TARGET_CLASS_CONSTANT)]
-class Regex implements RegexAttributeInterface
+class Enum implements RegexAttributeInterface
 {
     private RegexInterface $regex;
 
-    public function __construct(
-        string $regex = StringParameterInterface::REGEX_DEFAULT,
-    ) {
-        $this->regex = new RegexClass($regex);
+    public function __construct(string ...$string)
+    {
+        $this->regex = enum(...$string)->regex();
     }
 
     public function regex(): RegexInterface

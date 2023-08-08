@@ -25,6 +25,7 @@
         "thecodingmachine/safe": "^2.4"
     },
     "require-dev": {
+        "chevere/var-dump": "^0.8.1",
         "phpstan/phpstan": "^1.9",
         "phpunit/phpunit": "^9.5",
         "symplify/easy-coding-standard": "^11.4"

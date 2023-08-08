@@ -36,6 +36,11 @@ function string(
 
 function enum(string ...$string): StringParameterInterface
 {
+    if ($string === []) {
+        throw new InvalidArgumentException(
+            message('At least one string must be provided')
+        );
+    }
     $cases = implode('|', $string);
     $regex = "/^{$cases}\$/";
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Attributes\Regex;
+use Chevere\Attributes\Interfaces\RegexAttributeInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ReflectionParameterTypedInterface;
@@ -113,7 +113,8 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
 
     private function getParameterType(): string
     {
-        $type = self::TYPE_TO_PARAMETER[$this->type->getName()] ?? null;
+        $type = self::TYPE_TO_PARAMETER[$this->type->getName()]
+            ?? null;
         if ($type === null) {
             return self::TYPE_TO_PARAMETER['object'];
         }
@@ -123,12 +124,14 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
 
     private function getParameterWithRegex(
         ParameterInterface $parameter,
-        Regex $attribute
+        RegexAttributeInterface $regexAttribute
     ): ParameterInterface {
         if (! ($parameter instanceof StringParameterInterface)) {
             return $parameter;
         }
 
-        return $parameter->withRegex($attribute->regex());
+        return $parameter->withRegex(
+            $regexAttribute->regex()
+        );
     }
 }

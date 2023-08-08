@@ -15,6 +15,7 @@ namespace Chevere\Attribute;
 
 use Attribute;
 use Chevere\Attributes\Description;
+use Chevere\Attributes\Enum;
 use Chevere\Attributes\Regex;
 use ReflectionAttribute;
 use ReflectionClass;
@@ -84,4 +85,12 @@ function getRegex(
 ): Regex {
     // @phpstan-ignore-next-line
     return getAttribute($reflection, Regex::class);
+}
+
+// @phpstan-ignore-next-line
+function getEnum(
+    ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
+): Enum {
+    // @phpstan-ignore-next-line
+    return getAttribute($reflection, Enum::class);
 }
