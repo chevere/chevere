@@ -72,7 +72,7 @@ function getAttributes(
 }
 
 // @phpstan-ignore-next-line
-function getDescription(
+function attributeDescription(
     ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
 ): Description {
     // @phpstan-ignore-next-line
@@ -80,7 +80,7 @@ function getDescription(
 }
 
 // @phpstan-ignore-next-line
-function getRegex(
+function attributeRegex(
     ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
 ): Regex {
     // @phpstan-ignore-next-line
@@ -88,7 +88,7 @@ function getRegex(
 }
 
 // @phpstan-ignore-next-line
-function getEnum(
+function attributeEnum(
     ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
 ): Enum {
     // @phpstan-ignore-next-line
