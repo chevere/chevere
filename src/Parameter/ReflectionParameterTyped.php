@@ -25,9 +25,9 @@ use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
 use Throwable;
-use function Chevere\Attribute\attributeDescription;
-use function Chevere\Attribute\attributeEnum;
-use function Chevere\Attribute\attributeRegex;
+use function Chevere\Attribute\descriptionAttribute;
+use function Chevere\Attribute\enumAttribute;
+use function Chevere\Attribute\regexAttribute;
 use function Chevere\Message\message;
 
 final class ReflectionParameterTyped implements ReflectionParameterTypedInterface
@@ -52,7 +52,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         private ReflectionParameter $reflection
     ) {
         $this->type = $this->getType();
-        $description = attributeDescription($this->reflection);
+        $description = descriptionAttribute($this->reflection);
         $default = $this->getDefaultValue();
         $type = $this->getParameterType();
         $parameter = new $type($description->__toString());
@@ -77,9 +77,9 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
     private function getRegex(): RegexInterface
     {
         try {
-            $attribute = attributeEnum($this->reflection);
+            $attribute = enumAttribute($this->reflection);
         } catch (Throwable) {
-            $attribute = attributeRegex($this->reflection);
+            $attribute = regexAttribute($this->reflection);
         }
 
         return $attribute->regex();

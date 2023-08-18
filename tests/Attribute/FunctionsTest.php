@@ -23,7 +23,7 @@ use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionProperty;
-use function Chevere\Attribute\attributeDescription;
+use function Chevere\Attribute\descriptionAttribute;
 use function Chevere\Attribute\hasAttribute;
 
 final class FunctionsTest extends TestCase
@@ -70,7 +70,7 @@ final class FunctionsTest extends TestCase
      */
     public function testGetDescription($reflection, string $meta): void
     {
-        $description = attributeDescription($reflection);
+        $description = descriptionAttribute($reflection);
         $this->assertSame($meta, $description->__toString());
     }
 
