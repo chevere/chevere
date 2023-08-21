@@ -34,18 +34,6 @@ use ReflectionMethod;
 use Throwable;
 use function Chevere\Message\message;
 
-function boolean(
-    string $description = '',
-    ?bool $default = null,
-): BooleanParameterInterface {
-    $parameter = new BooleanParameter($description);
-    if ($default !== null) {
-        $parameter = $parameter->withDefault($default);
-    }
-
-    return $parameter;
-}
-
 function null(
     string $description = '',
 ): NullParameterInterface {
