@@ -135,7 +135,7 @@ final class ArgumentsGenericTest extends TestCase
             )
         );
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('must be of type string, int given');
+        $this->expectExceptionMessage('must be of type Stringable|string, int given');
         new Arguments($parameters, $args);
     }
 

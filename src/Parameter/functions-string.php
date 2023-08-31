@@ -16,6 +16,7 @@ namespace Chevere\Parameter;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Stringable;
 use function Chevere\Message\message;
 
 function string(
@@ -85,9 +86,10 @@ function datetime(
 
 function assertString(
     StringParameterInterface $parameter,
-    string $argument,
+    Stringable|string $argument,
 ): string {
     $regex = $parameter->regex();
+    $argument = strval($argument);
     if ($regex->match($argument) !== []) {
         return $argument;
     }
