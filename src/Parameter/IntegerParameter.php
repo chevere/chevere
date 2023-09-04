@@ -38,7 +38,7 @@ final class IntegerParameter implements IntegerParameterInterface
     public function withDefault(int $value): IntegerParameterInterface
     {
         $new = clone $this;
-        $new->default = $value;
+        $new->setDefault($value);
 
         return $new;
     }

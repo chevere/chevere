@@ -28,7 +28,7 @@ function string(
     if ($regex !== '') {
         $parameter = $parameter->withRegex(new Regex($regex));
     }
-    if ($default) {
+    if ($default !== null) {
         $parameter = $parameter->withDefault($default);
     }
 

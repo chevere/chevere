@@ -56,6 +56,9 @@ function integer(
     array $accept = [],
 ): IntegerParameterInterface {
     $parameter = new IntegerParameter($description);
+    if ($accept !== []) {
+        $parameter = $parameter->withAccept(...$accept);
+    }
     if ($default !== null) {
         $parameter = $parameter->withDefault($default);
     }
@@ -64,9 +67,6 @@ function integer(
     }
     if ($maximum !== null) {
         $parameter = $parameter->withMaximum($maximum);
-    }
-    if ($accept !== []) {
-        $parameter = $parameter->withAccept(...$accept);
     }
 
     return $parameter;

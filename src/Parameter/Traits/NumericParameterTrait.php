@@ -46,6 +46,37 @@ trait NumericParameterTrait
         }
     }
 
+    private function setDefault(int|float $value): void
+    {
+        if (isset($this->minimum)) {
+            if ($value < $this->minimum) {
+                throw new InvalidArgumentException(
+                    message('Default value %value% cannot be less than minimum value %minimum%')
+                        ->withCode('%value%', strval($value))
+                        ->withCode('%minimum%', strval($this->minimum))
+                );
+            }
+        }
+        if (isset($this->maximum)) {
+            if ($value > $this->maximum) {
+                throw new InvalidArgumentException(
+                    message('Default value %value% cannot be greater than maximum value %maximum%')
+                        ->withCode('%value%', strval($value))
+                        ->withCode('%maximum%', strval($this->maximum))
+                );
+            }
+        }
+        if ($this->accept !== [] && ! in_array($value, $this->accept, true)) {
+            throw new InvalidArgumentException(
+                message('Default value %value% must be in accept range %accept%')
+                    ->withCode('%value%', strval($value))
+                    ->withCode('%accept%', implode(', ', $this->accept))
+            );
+        }
+        // @phpstan-ignore-next-line
+        $this->default = $value;
+    }
+
     private function setMinimum(int|float $value, int|float $maximum): void
     {
         $this->assertAcceptEmpty(
