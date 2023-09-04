@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Attribute;
 
-use Attribute;
 use Chevere\Attributes\Description;
 use Chevere\Attributes\Enum;
 use Chevere\Attributes\Regex;
-use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionFunction;
@@ -46,29 +44,6 @@ function getAttribute(
     }
 
     return $attributes[0]->newInstance();
-}
-
-/**
- * @return array<int, object>
- * @phpstan-ignore-next-line
- */
-function getAttributes(
-    ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
-    string $attribute
-): array {
-    $attributes = $reflection->getAttributes($attribute);
-    $return = [];
-    if ($attributes === []) {
-        return $return;
-    }
-    /**
-     * @var ReflectionAttribute<Attribute> $attribute
-     */
-    foreach ($attributes as $attribute) {
-        $return[] = $attribute->newInstance();
-    }
-
-    return $return;
 }
 
 // @phpstan-ignore-next-line

@@ -24,7 +24,6 @@ abstract class Controller extends Action implements ControllerInterface
 {
     protected static function assertStatic(): void
     {
-        parent::assertStatic();
         $invalid = [];
         foreach (getParameters(static::class) as $name => $parameter) {
             if (! ($parameter instanceof StringParameterInterface)) {

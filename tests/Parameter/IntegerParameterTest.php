@@ -217,7 +217,9 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithDefaultConflictMinimum(): void
     {
-        $parameter = (new IntegerParameter())->withMinimum(1);
+        $parameter = (new IntegerParameter())
+            ->withMinimum(1)
+            ->withDefault(1);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             <<<STRING
@@ -229,7 +231,9 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithDefaultConflictMaximum(): void
     {
-        $parameter = (new IntegerParameter())->withMaximum(1);
+        $parameter = (new IntegerParameter())
+            ->withMaximum(1)
+            ->withDefault(1);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             <<<STRING
