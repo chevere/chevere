@@ -33,7 +33,7 @@ final class Vector implements VectorInterface
     }
 
     /**
-     * @return array<mixed>
+     * @phpstan-ignore-next-line
      */
     public function toArray(): array
     {

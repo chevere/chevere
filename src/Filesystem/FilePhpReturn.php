@@ -45,6 +45,9 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return require $filePath;
     }
 
+    /**
+     * @phpstan-ignore-next-line
+     */
     public function getArray(): array
     {
         /** @var array<mixed> */

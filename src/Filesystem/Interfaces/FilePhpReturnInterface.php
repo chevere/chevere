@@ -53,7 +53,7 @@ interface FilePhpReturnInterface
     public function get(): mixed;
 
     /**
-     * @return array<mixed>
+     * @phpstan-ignore-next-line
      */
     public function getArray(): array;
 

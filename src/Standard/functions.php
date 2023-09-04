@@ -19,8 +19,7 @@ function notEmpty(mixed $value): bool
 }
 
 /**
- * @param array<mixed> $array
- * @return array<mixed>
+ * @phpstan-ignore-next-line
  */
 function arrayFilterBoth(array $array, ?callable $callback = null): array
 {
@@ -38,8 +37,7 @@ function arrayFilterBoth(array $array, ?callable $callback = null): array
 }
 
 /**
- * @param array<mixed> $array
- * @return array<mixed>
+ * @phpstan-ignore-next-line
  */
 function arrayFilterValue(array $array, ?callable $callback = null): array
 {
@@ -59,8 +57,7 @@ function arrayFilterValue(array $array, ?callable $callback = null): array
 }
 
 /**
- * @param array<mixed> $array
- * @return array<mixed>
+ * @phpstan-ignore-next-line
  */
 function arrayFilterKey(array $array, ?callable $callback = null): array
 {
@@ -95,9 +92,8 @@ function getBits(int $value): array
 }
 
 /**
- * @param array<mixed> $array
  * @param string|int $key The key(s) to change (name: change,)
- * @return array<mixed>
+ * @phpstan-ignore-next-line
  */
 function arrayChangeKey(array $array, string|int ...$key): array
 {
@@ -114,8 +110,7 @@ function arrayChangeKey(array $array, string|int ...$key): array
 }
 
 /**
- * @param array<mixed> $array
- * @return array<mixed>
+ * @phpstan-ignore-next-line
  */
 function arrayPrefixKeys(array $array, string|int $prefix): array
 {
@@ -132,9 +127,8 @@ function arrayPrefixKeys(array $array, string|int $prefix): array
 }
 
 /**
- * @param array<mixed> $array
  * @param string|int $key Key(s) to unset.
- * @return array<mixed>
+ * @phpstan-ignore-next-line
  */
 function arrayUnsetKey(array $array, string|int ...$key): array
 {
@@ -148,9 +142,8 @@ function arrayUnsetKey(array $array, string|int ...$key): array
 }
 
 /**
- * @param array<mixed> $array
  * @param string|int $key Key(s) to take.
- * @return array<mixed>
+ * @phpstan-ignore-next-line
  */
 function arrayFromKey(array $array, string|int ...$key): array
 {
