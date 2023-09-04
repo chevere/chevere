@@ -67,10 +67,12 @@ trait NumericParameterTrait
             }
         }
         if ($this->accept !== [] && ! in_array($value, $this->accept, true)) {
+            $list = implode(', ', $this->accept);
+
             throw new InvalidArgumentException(
-                message('Default value %value% must be in accept range %accept%')
+                message('Default value %value% must be in accept list %accept%')
                     ->withCode('%value%', strval($value))
-                    ->withCode('%accept%', implode(', ', $this->accept))
+                    ->withCode('%accept%', "[{$list}]")
             );
         }
         // @phpstan-ignore-next-line

@@ -20,7 +20,7 @@ use function Chevere\Parameter\integer;
 
 final class FunctionsIntegerTest extends TestCase
 {
-    public function testIntegerp(): void
+    public function testInteger(): void
     {
         $parameter = integer();
         $this->assertSame('', $parameter->description());
@@ -30,7 +30,7 @@ final class FunctionsIntegerTest extends TestCase
         $this->assertSame([], $parameter->accept());
     }
 
-    public function testIntegerpOptions(): void
+    public function testIntegerOptions(): void
     {
         $description = 'test';
         $default = 5;

@@ -214,4 +214,40 @@ final class IntegerParameterTest extends TestCase
         $this->getExpectedExceptionMessage('value null');
         $parameter->assertCompatible($notCompatible);
     }
+
+    public function testWithDefaultConflictMinimum(): void
+    {
+        $parameter = (new IntegerParameter())->withMinimum(1);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            <<<STRING
+            Default value 0 cannot be less than minimum value 1
+            STRING
+        );
+        $parameter->withDefault(0);
+    }
+
+    public function testWithDefaultConflictMaximum(): void
+    {
+        $parameter = (new IntegerParameter())->withMaximum(1);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            <<<STRING
+            Default value 2 cannot be greater than maximum value 1
+            STRING
+        );
+        $parameter->withDefault(2);
+    }
+
+    public function testWithDefaultConflictAccept(): void
+    {
+        $parameter = (new IntegerParameter())->withAccept(1, 2, 3);
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            <<<STRING
+            Default value 5 must be in accept list [1, 2, 3]
+            STRING
+        );
+        $parameter->withDefault(5);
+    }
 }
