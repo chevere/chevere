@@ -15,6 +15,7 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use function Chevere\Message\message;
 
@@ -70,6 +71,17 @@ function integer(
     }
 
     return $parameter;
+}
+
+function integerString(
+    string $description = '',
+    ?string $default = null,
+): StringParameterInterface {
+    return string(
+        regex: '/^\d+$/',
+        description: $description,
+        default: $default
+    );
 }
 
 function assertNumeric(
