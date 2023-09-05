@@ -48,23 +48,19 @@ trait NumericParameterTrait
 
     private function setDefault(int|float $value): void
     {
-        if (isset($this->minimum)) {
-            if ($value < $this->minimum) {
-                throw new InvalidArgumentException(
-                    message('Default value %value% cannot be less than minimum value %minimum%')
-                        ->withCode('%value%', strval($value))
-                        ->withCode('%minimum%', strval($this->minimum))
-                );
-            }
+        if (isset($this->minimum) && $value < $this->minimum) {
+            throw new InvalidArgumentException(
+                message('Default value %value% cannot be less than minimum value %minimum%')
+                    ->withCode('%value%', strval($value))
+                    ->withCode('%minimum%', strval($this->minimum))
+            );
         }
-        if (isset($this->maximum)) {
-            if ($value > $this->maximum) {
-                throw new InvalidArgumentException(
-                    message('Default value %value% cannot be greater than maximum value %maximum%')
-                        ->withCode('%value%', strval($value))
-                        ->withCode('%maximum%', strval($this->maximum))
-                );
-            }
+        if (isset($this->maximum) && $value > $this->maximum) {
+            throw new InvalidArgumentException(
+                message('Default value %value% cannot be greater than maximum value %maximum%')
+                    ->withCode('%value%', strval($value))
+                    ->withCode('%maximum%', strval($this->maximum))
+            );
         }
         if ($this->accept !== [] && ! in_array($value, $this->accept, true)) {
             $list = implode(', ', $this->accept);
