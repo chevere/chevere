@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertInteger;
+use function Chevere\Parameter\booleanInteger;
 use function Chevere\Parameter\integer;
 
 final class FunctionsIntegerTest extends TestCase
@@ -53,5 +55,32 @@ final class FunctionsIntegerTest extends TestCase
         $parameter = integer();
         $this->assertSame(0, assertInteger($parameter, 0));
         $this->assertSame(0, assertArgument($parameter, 0));
+    }
+
+    public function testBooleanInteger(): void
+    {
+        $integer = booleanInteger();
+        $this->assertSame('', $integer->description());
+        $this->assertNull($integer->default());
+        $this->expectException(InvalidArgumentException::class);
+        booleanInteger(default: 2);
+    }
+
+    public static function booleanIntegerArgumentsProvider(): array
+    {
+        return [
+            ['foo', 1],
+            ['bar', 0],
+        ];
+    }
+
+    /**
+     * @dataProvider booleanIntegerArgumentsProvider
+     */
+    public function testBooleanIntegerArguments(string $description, int $default): void
+    {
+        $integer = booleanInteger($description, $default);
+        $this->assertSame($description, $integer->description());
+        $this->assertSame($default, $integer->default());
     }
 }

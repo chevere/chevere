@@ -35,6 +35,28 @@ function string(
     return $parameter;
 }
 
+function integerString(
+    string $description = '',
+    ?string $default = null,
+): StringParameterInterface {
+    return string(
+        regex: '/^\d+$/',
+        description: $description,
+        default: $default
+    );
+}
+
+function booleanString(
+    string $description = '',
+    ?string $default = null,
+): StringParameterInterface {
+    return string(
+        regex: '/^[01]$/',
+        description: $description,
+        default: $default
+    );
+}
+
 function enum(string ...$string): StringParameterInterface
 {
     if ($string === []) {

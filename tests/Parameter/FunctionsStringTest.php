@@ -18,9 +18,11 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertString;
+use function Chevere\Parameter\booleanString;
 use function Chevere\Parameter\date;
 use function Chevere\Parameter\datetime;
 use function Chevere\Parameter\enum;
+use function Chevere\Parameter\integerString;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
 
@@ -108,6 +110,33 @@ final class FunctionsStringTest extends TestCase
         assertString($parameter, '9999-99-99 999:99:99');
     }
 
+    public function testBooleanString(): void
+    {
+        $string = booleanString();
+        $this->assertSame('', $string->description());
+        $this->assertNull($string->default());
+        $this->expectException(InvalidArgumentException::class);
+        booleanString(default: '2');
+    }
+
+    public static function booleanStringArgumentsProvider(): array
+    {
+        return [
+            ['foo', '1'],
+            ['bar', '0'],
+        ];
+    }
+
+    /**
+     * @dataProvider booleanStringArgumentsProvider
+     */
+    public function testBooleanStringArguments(string $description, string $default): void
+    {
+        $string = booleanString($description, $default);
+        $this->assertSame($description, $string->description());
+        $this->assertSame($default, $string->default());
+    }
+
     public function defaultsProvider(): array
     {
         return [
@@ -141,5 +170,16 @@ final class FunctionsStringTest extends TestCase
     public function testFunctionDescription(ParameterInterface $parameter, string $description): void
     {
         $this->assertSame($description, $parameter->description());
+    }
+
+    public function testIntegerString(): void
+    {
+        $parameter = integerString();
+        $this->assertSame('', $parameter->description());
+        $this->assertSame(null, $parameter->default());
+        assertString($parameter, '0');
+        assertString($parameter, '1');
+        $this->expectException(InvalidArgumentException::class);
+        assertString($parameter, '1abc');
     }
 }

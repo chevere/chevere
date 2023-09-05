@@ -15,7 +15,6 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntegerParameterInterface;
-use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use function Chevere\Message\message;
 
@@ -73,14 +72,14 @@ function integer(
     return $parameter;
 }
 
-function integerString(
+function booleanInteger(
     string $description = '',
-    ?string $default = null,
-): StringParameterInterface {
-    return string(
-        regex: '/^\d+$/',
+    ?int $default = null,
+): IntegerParameterInterface {
+    return integer(
         description: $description,
-        default: $default
+        default: $default,
+        accept: [0, 1]
     );
 }
 
