@@ -16,7 +16,6 @@ namespace Chevere\Parameter\Interfaces;
 use Chevere\DataStructure\Interfaces\MappedInterface;
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
-use Chevere\Throwable\Exceptions\OverflowException;
 use Iterator;
 use TypeError;
 
@@ -37,8 +36,6 @@ interface ParametersInterface extends MappedInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified required parameter added.
-     *
-     * @throws OverflowException
      */
     public function withRequired(string $name, ParameterInterface $parameter): self;
 
@@ -47,10 +44,24 @@ interface ParametersInterface extends MappedInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified optional parameter(s) added.
-     *
-     * @throws OverflowException
      */
     public function withOptional(string $name, ParameterInterface $parameter): self;
+
+    /**
+     * Return an instance with the specified now optional parameter(s).
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified now optional parameter(s).
+     */
+    public function withMakeOptional(string ...$name): self;
+
+    /**
+     * Return an instance with the specified now optional parameter(s).
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified now optional parameter(s).
+     */
+    public function withMakeRequired(string ...$name): self;
 
     /**
      * Return an instance with the specified parameter(s) removed.

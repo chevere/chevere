@@ -76,15 +76,46 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
+    public function withMakeOptional(string ...$name): ParametersInterface
+    {
+        $new = clone $this;
+        foreach ($name as $key) {
+            if (! $new->isRequired($key)) {
+                throw new InvalidArgumentException(
+                    message('Parameter %name% is not required')
+                        ->withCode('%name%', $key)
+                );
+            }
+            $parameter = $new->get($key);
+            $new->remove($key);
+            $new->addProperty('optional', $key, $parameter);
+        }
+
+        return $new;
+    }
+
+    public function withMakeRequired(string ...$name): ParametersInterface
+    {
+        $new = clone $this;
+        foreach ($name as $key) {
+            if (! $new->isOptional($key)) {
+                throw new InvalidArgumentException(
+                    message('Parameter %name% is not optional')
+                        ->withCode('%name%', $key)
+                );
+            }
+            $parameter = $new->get($key);
+            $new->remove($key);
+            $new->addProperty('required', $key, $parameter);
+        }
+
+        return $new;
+    }
+
     public function without(string ...$name): ParametersInterface
     {
         $new = clone $this;
-        $new->map = $new->map->without(...$name);
-        $requiredDiff = array_diff($new->required->toArray(), $name);
-        $optionalDiff = array_diff($new->optional->toArray(), $name);
-        $new->required = new Vector(...$requiredDiff);
-        $new->optional = new Vector(...$optionalDiff);
-        $new->assertMinimumOptional();
+        $new->remove(...$name);
 
         return $new;
     }
@@ -159,6 +190,16 @@ final class Parameters implements ParametersInterface
     public function get(string $name): ParameterInterface
     {
         return $this->map->get($name);
+    }
+
+    private function remove(string ...$name): void
+    {
+        $this->map = $this->map->without(...$name);
+        $requiredDiff = array_diff($this->required->toArray(), $name);
+        $optionalDiff = array_diff($this->optional->toArray(), $name);
+        $this->required = new Vector(...$requiredDiff);
+        $this->optional = new Vector(...$optionalDiff);
+        $this->assertMinimumOptional();
     }
 
     private function assertMinimumOptional(): void

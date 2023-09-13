@@ -280,4 +280,37 @@ final class ParametersTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $parametersWith->without('foo');
     }
+
+    public function testWithMakeOptional(): void
+    {
+        $parameters = new Parameters(
+            foo: string(),
+            bar: integer()
+        );
+        $parametersWith = $parameters->withMakeOptional('foo');
+        $this->assertNotSame($parameters, $parametersWith);
+        $this->assertCount(2, $parametersWith);
+        $this->assertCount(1, $parametersWith->optional());
+        $this->assertCount(1, $parametersWith->required());
+        $this->assertTrue($parametersWith->isOptional('foo'));
+        $this->assertTrue($parametersWith->isRequired('bar'));
+        $this->expectException(InvalidArgumentException::class);
+        $parametersWith->withMakeOptional('foo');
+    }
+
+    public function testWithMakeRequired(): void
+    {
+        $parameters = (new Parameters())
+            ->withOptional('foo', string())
+            ->withOptional('bar', integer());
+        $parametersWith = $parameters->withMakeRequired('bar');
+        $this->assertNotSame($parameters, $parametersWith);
+        $this->assertCount(2, $parametersWith);
+        $this->assertCount(1, $parametersWith->optional());
+        $this->assertCount(1, $parametersWith->required());
+        $this->assertTrue($parametersWith->isOptional('foo'));
+        $this->assertTrue($parametersWith->isRequired('bar'));
+        $this->expectException(InvalidArgumentException::class);
+        $parametersWith->withMakeRequired('bar');
+    }
 }
