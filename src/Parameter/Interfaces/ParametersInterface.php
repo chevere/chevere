@@ -56,10 +56,10 @@ interface ParametersInterface extends MappedInterface
     public function withMakeOptional(string ...$name): self;
 
     /**
-     * Return an instance with the specified now optional parameter(s).
+     * Return an instance with the specified now required parameter(s).
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified now optional parameter(s).
+     * an instance that contains the specified now required parameter(s).
      */
     public function withMakeRequired(string ...$name): self;
 

@@ -231,4 +231,30 @@ final class ArrayParameterTest extends TestCase
         $this->assertNotSame($array, $arrayWith);
         $this->assertSame(1, $arrayWith->parameters()->optionalMinimum());
     }
+
+    public function testWithMakeOptional(): void
+    {
+        $array = (new ArrayParameter())
+            ->withRequired(
+                foo: string(),
+                bar: string(),
+            );
+        $arrayWith = $array->withMakeOptional('foo');
+        $this->assertNotSame($array, $arrayWith);
+        $this->assertTrue($arrayWith->parameters()->isOptional('foo'));
+        $this->assertTrue($arrayWith->parameters()->isRequired('bar'));
+    }
+
+    public function testWithMakeRequired(): void
+    {
+        $array = (new ArrayParameter())
+            ->withOptional(
+                foo: string(),
+                bar: string(),
+            );
+        $arrayWith = $array->withMakeRequired('bar');
+        $this->assertNotSame($array, $arrayWith);
+        $this->assertTrue($arrayWith->parameters()->isOptional('foo'));
+        $this->assertTrue($arrayWith->parameters()->isRequired('bar'));
+    }
 }

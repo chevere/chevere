@@ -39,6 +39,24 @@ trait ArrayTypeParameterTrait
         return $new;
     }
 
+    public function withMakeOptional(string ...$name): static
+    {
+        $new = clone $this;
+        $new->parameters = $new->parameters
+            ->withMakeOptional(...$name);
+
+        return $new;
+    }
+
+    public function withMakeRequired(string ...$name): static
+    {
+        $new = clone $this;
+        $new->parameters = $new->parameters
+            ->withMakeRequired(...$name);
+
+        return $new;
+    }
+
     private function put(string $method, ParameterInterface ...$parameter): void
     {
         $this->removeConflictKeys(...$parameter);
