@@ -71,6 +71,48 @@ final class Cast implements CastInterface
         return $this->argument;
     }
 
+    public function nullInteger(): ?int
+    {
+        return $this->argument ?? null;
+    }
+
+    public function nullFloat(): ?float
+    {
+        return $this->argument ?? null;
+    }
+
+    public function nullBoolean(): ?bool
+    {
+        return $this->argument ?? null;
+    }
+
+    public function nullString(): ?string
+    {
+        return $this->argument ?? null;
+    }
+
+    // @phpstan-ignore-next-line
+    public function nullArray(): ?array
+    {
+        return $this->argument ?? null;
+    }
+
+    public function nullObject(): ?object
+    {
+        return $this->argument ?? null;
+    }
+
+    public function nullCallable(): ?callable
+    {
+        return $this->argument ?? null;
+    }
+
+    // @phpstan-ignore-next-line
+    public function nullIterable(): ?iterable
+    {
+        return $this->argument ?? null;
+    }
+
     public function mixed(): mixed
     {
         return $this->argument;

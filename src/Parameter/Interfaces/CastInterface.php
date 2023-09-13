@@ -36,5 +36,23 @@ interface CastInterface
     // @phpstan-ignore-next-line
     public function iterable(): iterable;
 
+    public function nullInteger(): ?int;
+
+    public function nullFloat(): ?float;
+
+    public function nullBoolean(): ?bool;
+
+    public function nullString(): ?string;
+
+    // @phpstan-ignore-next-line
+    public function nullArray(): ?array;
+
+    public function nullObject(): ?object;
+
+    public function nullCallable(): ?callable;
+
+    // @phpstan-ignore-next-line
+    public function nullIterable(): ?iterable;
+
     public function mixed(): mixed;
 }

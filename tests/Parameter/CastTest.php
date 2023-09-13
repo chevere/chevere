@@ -34,6 +34,28 @@ final class CastTest extends TestCase
                 'callable',
             ],
             [[], 'iterable'],
+            [1, 'nullInteger'],
+            [null, 'nullInteger'],
+            [1.1, 'nullFloat'],
+            [null, 'nullFloat'],
+            [true, 'nullBoolean'],
+            [null, 'nullBoolean'],
+            ['string', 'nullString'],
+            [null, 'nullString'],
+            [[], 'nullArray'],
+            [null, 'nullArray'],
+            [new Cast(''), 'nullObject'],
+            [null, 'nullObject'],
+            [
+                fn () => null,
+                'nullCallable',
+            ],
+            [
+                null,
+                'nullCallable',
+            ],
+            [[], 'nullIterable'],
+            [null, 'nullIterable'],
         ];
     }
 
