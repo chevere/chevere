@@ -313,4 +313,50 @@ final class ParametersTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $parametersWith->withMakeRequired('bar');
     }
+
+    public function testTake(): void
+    {
+        $foo = string(default: 'foo');
+        $bar = integer(default: 1);
+        $parameters = (new Parameters())
+            ->withRequired('foo', $foo)
+            ->withOptional('bar', $bar);
+        $take = $parameters->take('foo', 'bar');
+        $takeArray = iterator_to_array($take);
+        $this->assertSame(
+            iterator_to_array($parameters),
+            $takeArray
+        );
+        $this->assertSame(
+            [
+                'foo' => $foo,
+                'bar' => $bar,
+            ],
+            $takeArray
+        );
+        $take = $parameters->take('foo');
+        $this->assertSame(
+            [
+                'foo' => $foo,
+            ],
+            iterator_to_array($take)
+        );
+        $take = $parameters->take('bar');
+        $this->assertSame(
+            [
+                'bar' => $bar,
+            ],
+            iterator_to_array($take)
+        );
+        $take = $parameters->take('bar', 'foo');
+        $this->assertSame(
+            [
+                'bar' => $bar,
+                'foo' => $foo,
+            ],
+            iterator_to_array($take)
+        );
+        $this->expectException(OutOfBoundsException::class);
+        iterator_to_array($parameters->take('404'));
+    }
 }
