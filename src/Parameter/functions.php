@@ -25,6 +25,7 @@ use Chevere\Parameter\Interfaces\IntegerParameterInterface;
 use Chevere\Parameter\Interfaces\NullParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
+use Chevere\Parameter\Interfaces\ParametersAccessInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
@@ -202,4 +203,33 @@ function methodParameters(string $class, string $method): ParametersInterface
     }
 
     return $parameters;
+}
+
+function requiredFrom(
+    ParametersAccessInterface|ParametersInterface $parameter,
+    string ...$name
+): ParametersInterface {
+    $parameters = $parameter instanceof ParametersAccessInterface
+        ? $parameter->parameters()
+        : $parameter;
+
+    return new Parameters(
+        ...$parameters->take(...$name)
+    );
+}
+
+function optionalFrom(
+    ParametersAccessInterface|ParametersInterface $parameter,
+    string ...$name
+): ParametersInterface {
+    $parameters = $parameter instanceof ParametersAccessInterface
+        ? $parameter->parameters()
+        : $parameter;
+    $new = new Parameters();
+    $iterator = $parameters->take(...$name);
+    foreach ($iterator as $key => $parameter) {
+        $new = $new->withOptional($key, $parameter);
+    }
+
+    return $new;
 }

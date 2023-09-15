@@ -29,7 +29,9 @@ use function Chevere\Parameter\generic;
 use function Chevere\Parameter\integer;
 use function Chevere\Parameter\null;
 use function Chevere\Parameter\object;
+use function Chevere\Parameter\optionalFrom;
 use function Chevere\Parameter\parameters;
+use function Chevere\Parameter\requiredFrom;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\union;
 
@@ -255,5 +257,53 @@ final class FunctionsTest extends TestCase
         assertArray($parameter, [
             'OK' => null,
         ]);
+    }
+
+    public function testWithRequiredTake(): void
+    {
+        $foo = string(default: 'foo');
+        $bar = integer(default: 1);
+        $parameters = parameters()
+            ->withRequired('foo', $foo)
+            ->withOptional('bar', $bar);
+        $from = requiredFrom($parameters, 'foo', 'bar');
+        $array = arrayp()
+            ->withRequired(foo: $foo)
+            ->withOptional(bar: $bar);
+        $fromArray = requiredFrom($array, 'foo', 'bar');
+        $this->assertEquals($from, $fromArray);
+        $this->assertNotEquals($parameters, $from);
+        $this->assertTrue($from->has('foo', 'bar'));
+        $this->assertTrue($from->isRequired('foo', 'bar'));
+        $this->assertFalse($from->isOptional('foo', 'bar'));
+        $from = requiredFrom($parameters, 'bar');
+        $this->assertNotEquals($parameters, $from);
+        $this->assertTrue($from->has('bar'));
+        $this->assertFalse($from->has('foo'));
+        $this->assertTrue($from->isRequired('bar'));
+    }
+
+    public function testWithOptionalTake(): void
+    {
+        $foo = string(default: 'foo');
+        $bar = integer(default: 1);
+        $parameters = parameters()
+            ->withRequired('foo', $foo)
+            ->withOptional('bar', $bar);
+        $from = optionalFrom($parameters, 'foo', 'bar');
+        $array = arrayp()
+            ->withRequired(foo: $foo)
+            ->withOptional(bar: $bar);
+        $fromArray = optionalFrom($array, 'foo', 'bar');
+        $this->assertEquals($from, $fromArray);
+        $this->assertNotEquals($parameters, $from);
+        $this->assertTrue($from->has('foo', 'bar'));
+        $this->assertTrue($from->isOptional('foo', 'bar'));
+        $this->assertFalse($from->isRequired('foo', 'bar'));
+        $from = optionalFrom($parameters, 'foo');
+        $this->assertNotEquals($parameters, $from);
+        $this->assertTrue($from->has('foo'));
+        $this->assertFalse($from->has('bar'));
+        $this->assertTrue($from->isOptional('foo'));
     }
 }
