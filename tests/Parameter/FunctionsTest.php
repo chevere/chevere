@@ -15,6 +15,7 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use TypeError;
@@ -33,6 +34,7 @@ use function Chevere\Parameter\optionalFrom;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\requiredFrom;
 use function Chevere\Parameter\string;
+use function Chevere\Parameter\takeFrom;
 use function Chevere\Parameter\union;
 
 final class FunctionsTest extends TestCase
@@ -305,5 +307,51 @@ final class FunctionsTest extends TestCase
         $this->assertTrue($from->has('foo'));
         $this->assertFalse($from->has('bar'));
         $this->assertTrue($from->isOptional('foo'));
+    }
+
+    public function testTake(): void
+    {
+        $foo = string(default: 'foo');
+        $bar = integer(default: 1);
+        $parameters = parameters()
+            ->withRequired('foo', $foo)
+            ->withOptional('bar', $bar);
+        $take = takeFrom($parameters, 'foo', 'bar');
+        $takeArray = iterator_to_array($take);
+        $this->assertSame(
+            iterator_to_array($parameters),
+            $takeArray
+        );
+        $this->assertSame(
+            [
+                'foo' => $foo,
+                'bar' => $bar,
+            ],
+            $takeArray
+        );
+        $take = takeFrom($parameters, 'foo');
+        $this->assertSame(
+            [
+                'foo' => $foo,
+            ],
+            iterator_to_array($take)
+        );
+        $take = takeFrom($parameters, 'bar');
+        $this->assertSame(
+            [
+                'bar' => $bar,
+            ],
+            iterator_to_array($take)
+        );
+        $take = takeFrom($parameters, 'bar', 'foo');
+        $this->assertSame(
+            [
+                'bar' => $bar,
+                'foo' => $foo,
+            ],
+            iterator_to_array($take)
+        );
+        $this->expectException(OutOfBoundsException::class);
+        iterator_to_array(takeFrom($parameters, '404'));
     }
 }

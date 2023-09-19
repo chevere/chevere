@@ -31,6 +31,7 @@ use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use Iterator;
 use ReflectionMethod;
 use Throwable;
 use function Chevere\Message\message;
@@ -205,16 +206,27 @@ function methodParameters(string $class, string $method): ParametersInterface
     return $parameters;
 }
 
+/**
+ * @return Iterator<string, ParameterInterface>
+ */
+function takeFrom(
+    ParametersAccessInterface|ParametersInterface $parameter,
+    string ...$name
+): Iterator {
+    $parameters = getParameters($parameter);
+    foreach ($name as $item) {
+        yield $item => $parameters->get($item);
+    }
+}
+
 function requiredFrom(
     ParametersAccessInterface|ParametersInterface $parameter,
     string ...$name
 ): ParametersInterface {
-    $parameters = $parameter instanceof ParametersAccessInterface
-        ? $parameter->parameters()
-        : $parameter;
+    $parameters = getParameters($parameter);
 
-    return new Parameters(
-        ...$parameters->take(...$name)
+    return parameters(
+        ...takeFrom($parameters, ...$name)
     );
 }
 
@@ -222,14 +234,20 @@ function optionalFrom(
     ParametersAccessInterface|ParametersInterface $parameter,
     string ...$name
 ): ParametersInterface {
-    $parameters = $parameter instanceof ParametersAccessInterface
-        ? $parameter->parameters()
-        : $parameter;
+    $parameters = getParameters($parameter);
     $new = new Parameters();
-    $iterator = $parameters->take(...$name);
+    $iterator = takeFrom($parameters, ...$name);
     foreach ($iterator as $key => $parameter) {
         $new = $new->withOptional($key, $parameter);
     }
 
     return $new;
+}
+
+function getParameters(
+    ParametersAccessInterface|ParametersInterface $parameter
+): ParametersInterface {
+    return $parameter instanceof ParametersAccessInterface
+        ? $parameter->parameters()
+        : $parameter;
 }

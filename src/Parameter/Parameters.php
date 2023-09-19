@@ -24,7 +24,6 @@ use Chevere\Throwable\Exceptions\BadMethodCallException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
-use Iterator;
 use function Chevere\Message\message;
 
 final class Parameters implements ParametersInterface
@@ -111,13 +110,6 @@ final class Parameters implements ParametersInterface
         }
 
         return $new;
-    }
-
-    public function take(string ...$name): Iterator
-    {
-        foreach ($name as $item) {
-            yield $item => $this->get($item);
-        }
     }
 
     public function without(string ...$name): ParametersInterface

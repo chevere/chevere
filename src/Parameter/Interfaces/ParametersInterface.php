@@ -32,11 +32,6 @@ interface ParametersInterface extends MappedInterface
     public function getIterator(): Iterator;
 
     /**
-     * @return Iterator<string, ParameterInterface>
-     */
-    public function take(string ...$name): Iterator;
-
-    /**
      * Return an instance with the specified required parameter added.
      *
      * This method MUST retain the state of the current instance, and return
