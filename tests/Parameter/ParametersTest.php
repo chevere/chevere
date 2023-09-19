@@ -162,9 +162,9 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->getArray($name));
+        $this->assertSame($parameter, $parameters->cast($name)->array());
         $this->expectException(\TypeError::class);
-        $parameters->getInteger($name);
+        $parameters->cast($name)->integer();
     }
 
     public function testGetBoolean(): void
@@ -174,9 +174,9 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->getBoolean($name));
+        $this->assertSame($parameter, $parameters->cast($name)->boolean());
         $this->expectException(\TypeError::class);
-        $parameters->getInteger($name);
+        $parameters->cast($name)->integer();
     }
 
     public function testGetFile(): void
@@ -191,9 +191,9 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->getFile($name));
+        $this->assertSame($parameter, $parameters->cast($name)->file());
         $this->expectException(\TypeError::class);
-        $parameters->getInteger($name);
+        $parameters->cast($name)->integer();
     }
 
     public function testGetFloat(): void
@@ -203,9 +203,9 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->getFloat($name));
+        $this->assertSame($parameter, $parameters->cast($name)->float());
         $this->expectException(\TypeError::class);
-        $parameters->getInteger($name);
+        $parameters->cast($name)->integer();
     }
 
     public function testGetObject(): void
@@ -215,9 +215,9 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->getObject($name));
+        $this->assertSame($parameter, $parameters->cast($name)->object());
         $this->expectException(\TypeError::class);
-        $parameters->getInteger($name);
+        $parameters->cast($name)->integer();
     }
 
     public function testGetString(): void
@@ -227,9 +227,9 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->getString($name));
+        $this->assertSame($parameter, $parameters->cast($name)->string());
         $this->expectException(\TypeError::class);
-        $parameters->getInteger($name);
+        $parameters->cast($name)->integer();
     }
 
     public function testWithOptionalMinimum(): void

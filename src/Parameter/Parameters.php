@@ -17,9 +17,9 @@ use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
 use Chevere\DataStructure\Vector;
+use Chevere\Parameter\Interfaces\CastParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Parameter\Traits\ParametersGetTypedTrait;
 use Chevere\Throwable\Exceptions\BadMethodCallException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
@@ -32,8 +32,6 @@ final class Parameters implements ParametersInterface
      * @template-use MapTrait<ParameterInterface>
      */
     use MapTrait;
-
-    use ParametersGetTypedTrait;
 
     /**
      * @var Map<ParameterInterface>
@@ -190,6 +188,36 @@ final class Parameters implements ParametersInterface
     public function get(string $name): ParameterInterface
     {
         return $this->map->get($name);
+    }
+
+    public function cast(string $name): CastParameterInterface
+    {
+        if ($this->isOptional($name)) {
+            throw new InvalidArgumentException(
+                message('Parameter %name% is optional, use %method% instead')
+                    ->withCode('%name%', $name)
+                    ->withCode('%method%', 'castOptional')
+            );
+        }
+
+        return new CastParameter(
+            $this->get($name)
+        );
+    }
+
+    public function castOptional(string $name): CastParameterInterface
+    {
+        if (! $this->isOptional($name)) {
+            throw new InvalidArgumentException(
+                message('Argument %name% is required, use %method% instead')
+                    ->withCode('%name%', $name)
+                    ->withCode('%method%', 'cast')
+            );
+        }
+
+        return new CastParameter(
+            $this->get($name)
+        );
     }
 
     private function remove(string ...$name): void

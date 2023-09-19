@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use ArrayAccess;
-use Chevere\Parameter\Interfaces\CastInterface;
+use Chevere\Parameter\Interfaces\CastArgumentInterface;
 
-final class Cast implements CastInterface
+final class CastArgument implements CastArgumentInterface
 {
     // @phpstan-ignore-next-line
     public function __construct(

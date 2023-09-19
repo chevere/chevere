@@ -62,12 +62,12 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
      *
      * @throws OutOfBoundsException
      */
-    public function cast(string $name): CastInterface;
+    public function cast(string $name): CastArgumentInterface;
 
     /**
      * Provides casting access to the optional argument value for the parameter `$name`.
      *
      * @throws OutOfBoundsException
      */
-    public function castOptional(string $name): ?CastInterface;
+    public function castOptional(string $name): ?CastArgumentInterface;
 }

@@ -15,9 +15,7 @@ namespace Chevere\Parameter\Interfaces;
 
 use Chevere\DataStructure\Interfaces\MappedInterface;
 use Chevere\DataStructure\Interfaces\VectorInterface;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Iterator;
-use TypeError;
 
 /**
  * Describes the component in charge of collecting objects implementing `ParameterInterface`.
@@ -91,15 +89,11 @@ interface ParametersInterface extends MappedInterface
 
     /**
      * Indicates whether the parameter(s) identified by its name is required.
-     *
-     * @throws OutOfBoundsException
      */
     public function isRequired(string ...$name): bool;
 
     /**
      * Indicates whether the parameter(s) identified by its name is optional.
-     *
-     * @throws OutOfBoundsException
      */
     public function isOptional(string ...$name): bool;
 
@@ -109,50 +103,7 @@ interface ParametersInterface extends MappedInterface
 
     public function optionalMinimum(): int;
 
-    /**
-     * @throws OutOfBoundsException
-     */
     public function get(string $name): ParameterInterface;
 
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getArray(string $name): ArrayParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getBoolean(string $name): BooleanParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getFile(string $name): FileParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getFloat(string $name): FloatParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getInteger(string $name): IntegerParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getObject(string $name): ObjectParameterInterface;
-
-    /**
-     * @throws OutOfBoundsException
-     * @throws TypeError
-     */
-    public function getString(string $name): StringParameterInterface;
+    public function cast(string $name): CastParameterInterface;
 }

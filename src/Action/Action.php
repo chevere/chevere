@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Action;
 
 use Chevere\Action\Interfaces\ActionInterface;
-use Chevere\Parameter\Cast;
-use Chevere\Parameter\Interfaces\CastInterface;
+use Chevere\Parameter\CastArgument;
+use Chevere\Parameter\Interfaces\CastArgumentInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
@@ -50,7 +50,7 @@ abstract class Action implements ActionInterface
         static::assertStatic();
     }
 
-    final public function getResponse(mixed ...$argument): CastInterface
+    final public function getResponse(mixed ...$argument): CastArgumentInterface
     {
         static::assert();
         $this->assertRuntime();
@@ -71,7 +71,7 @@ abstract class Action implements ActionInterface
             throw new ($e::class)($message);
         }
 
-        return new Cast($run);
+        return new CastArgument($run);
     }
 
     public static function assertTypes(

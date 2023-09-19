@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Action\Interfaces;
 
-use Chevere\Parameter\Interfaces\CastInterface;
+use Chevere\Parameter\Interfaces\CastArgumentInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 
 /**
@@ -30,7 +30,7 @@ interface ActionInterface
     /**
      * Retrieves `run` response checked against `acceptResponse`.
      */
-    public function getResponse(mixed ...$argument): CastInterface;
+    public function getResponse(mixed ...$argument): CastArgumentInterface;
 
     /**
      * Assert for static context.
