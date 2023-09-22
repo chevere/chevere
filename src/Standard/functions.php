@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Standard;
 
+use Chevere\Throwable\Exceptions\InvalidArgumentException;
+
 function notEmpty(mixed $value): bool
 {
     return ! empty($value);
@@ -155,4 +157,16 @@ function arrayFromKey(array $array, string|int ...$key): array
     }
 
     return $return;
+}
+
+/**
+ * @phpstan-ignore-next-line
+ */
+function listPrefixValues(array $array, string|int|float $prefix): array
+{
+    if (! array_is_list($array)) {
+        throw new InvalidArgumentException('Array is not a list');
+    }
+
+    return array_map(fn ($value) => $prefix . $value, $array);
 }
