@@ -44,5 +44,13 @@ trait ParameterTrait
         return $this->description;
     }
 
+    final public function withDescription(string $description): static
+    {
+        $new = clone $this;
+        $new->description = $description;
+
+        return $new;
+    }
+
     abstract private function getType(): TypeInterface;
 }

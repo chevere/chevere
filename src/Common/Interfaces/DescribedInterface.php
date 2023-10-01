@@ -22,4 +22,12 @@ interface DescribedInterface
      * Provides access to the description.
      */
     public function description(): string;
+
+    /**
+     * Return an instance with the specified description.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified description.
+     */
+    public function withDescription(string $description): self;
 }

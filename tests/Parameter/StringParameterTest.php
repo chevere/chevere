@@ -56,9 +56,12 @@ final class StringParameterTest extends TestCase
 
     public function testWithDescription(): void
     {
-        $description = 'ola k ase';
-        $parameter = new StringParameter('test');
-        $this->assertSame('test', $parameter->description());
+        $parameter = new StringParameter();
+        $try = 'description';
+        $this->assertSame('', $parameter->description());
+        $parameterWith = $parameter->withDescription($try);
+        $this->assertNotSame($parameter, $parameterWith);
+        $this->assertSame($try, $parameterWith->description());
     }
 
     public function testWithDefault(): void
