@@ -17,10 +17,14 @@ use Chevere\Parameter\ArrayParameter;
 use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FileParameter;
 use Chevere\Parameter\FloatParameter;
+use Chevere\Parameter\GenericParameter;
 use Chevere\Parameter\IntegerParameter;
+use Chevere\Parameter\Interfaces\ParameterInterface;
+use Chevere\Parameter\NullParameter;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
+use Chevere\Parameter\UnionParameter;
 use Chevere\Throwable\Exceptions\BadMethodCallException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OverflowException;
@@ -36,8 +40,8 @@ final class ParametersTest extends TestCase
         $name = 'name';
         $parameters = new Parameters();
         $this->assertCount(0, $parameters);
-        $this->assertCount(0, $parameters->optional());
-        $this->assertCount(0, $parameters->required());
+        $this->assertCount(0, $parameters->optionalKeys());
+        $this->assertCount(0, $parameters->requiredKeys());
         $this->assertFalse($parameters->has($name));
         $this->expectException(OutOfBoundsException::class);
         $parameters->get($name);
@@ -59,8 +63,8 @@ final class ParametersTest extends TestCase
             $name => $parameter,
         ]);
         $this->assertCount(1, $parameters);
-        $this->assertCount(0, $parameters->optional());
-        $this->assertCount(1, $parameters->required());
+        $this->assertCount(0, $parameters->optionalKeys());
+        $this->assertCount(1, $parameters->requiredKeys());
         $parameters->assertHas($name);
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
@@ -74,15 +78,36 @@ final class ParametersTest extends TestCase
 
     public function testConstructPositional(): void
     {
-        $parameters = new Parameters(
-            string(),
-            integer(),
-            integer(),
-        );
-        $this->assertCount(3, $parameters);
+        $foo = string();
+        $bar = integer();
+        $parameters = new Parameters($foo, $bar);
+        $this->assertCount(2, $parameters);
+        $this->assertSame($foo, $parameters->get('0'));
+        $this->assertSame($bar, $parameters->get('1'));
     }
 
-    public function testWithAddedOverflow(): void
+    public function testRequiredCasting(): void
+    {
+        $parameter = string();
+        $parameters = new Parameters(foo: $parameter);
+        $this->assertSame($parameter, $parameters->required('foo')->string());
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Parameter foo is required');
+        $parameters->optional('foo');
+    }
+
+    public function testOptionalCasting(): void
+    {
+        $parameter = string();
+        $parameters = (new Parameters())
+            ->withOptional('foo', $parameter);
+        $this->assertSame($parameter, $parameters->optional('foo')->string());
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Parameter foo is optional');
+        $parameters->required('foo');
+    }
+
+    public function testWithRequiredOverflow(): void
     {
         $name = 'name';
         $parameter = new StringParameter();
@@ -92,8 +117,8 @@ final class ParametersTest extends TestCase
             ]
         );
         $this->assertCount(1, $parameters);
-        $this->assertCount(0, $parameters->optional());
-        $this->assertCount(1, $parameters->required());
+        $this->assertCount(0, $parameters->optionalKeys());
+        $this->assertCount(1, $parameters->requiredKeys());
         $parameters->assertHas($name);
         $this->assertTrue($parameters->has($name));
         $this->assertTrue($parameters->isRequired($name));
@@ -119,11 +144,11 @@ final class ParametersTest extends TestCase
         $parametersWith = $parameters->without('a', 'y');
         $this->assertNotSame($parameters, $parametersWith);
         $this->assertCount(4, $parametersWith);
-        $this->assertSame(['b', 'c'], $parametersWith->required()->toArray());
-        $this->assertSame(['x', 'z'], $parametersWith->optional()->toArray());
+        $this->assertSame(['b', 'c'], $parametersWith->requiredKeys()->toArray());
+        $this->assertSame(['x', 'z'], $parametersWith->optionalKeys()->toArray());
     }
 
-    public function testWithAddedOptional(): void
+    public function testWithRequiredOptional(): void
     {
         $name = 'name';
         $parameter = new StringParameter();
@@ -131,8 +156,8 @@ final class ParametersTest extends TestCase
         $parametersWith = $parameters->withOptional($name, $parameter);
         $this->assertNotSame($parameters, $parametersWith);
         $this->assertCount(1, $parametersWith);
-        $this->assertCount(1, $parametersWith->optional());
-        $this->assertCount(0, $parametersWith->required());
+        $this->assertCount(1, $parametersWith->optionalKeys());
+        $this->assertCount(0, $parametersWith->requiredKeys());
         $this->assertTrue($parametersWith->has($name));
         $this->assertTrue($parametersWith->isOptional($name));
         $this->assertFalse($parametersWith->isRequired($name));
@@ -155,28 +180,37 @@ final class ParametersTest extends TestCase
         $parameters->isOptional('not-found');
     }
 
-    public function testGetArray(): void
+    public function dataProviderCast(): array
     {
-        $name = 'test';
-        $parameter = new ArrayParameter();
-        $parameters = new Parameters(...[
-            $name => $parameter,
-        ]);
-        $this->assertSame($parameter, $parameters->cast($name)->array());
-        $this->expectException(\TypeError::class);
-        $parameters->cast($name)->integer();
+        return [
+            [new StringParameter(), 'string'],
+            [new IntegerParameter(), 'integer'],
+            [new FloatParameter(), 'float'],
+            [new BooleanParameter(), 'boolean'],
+            [new ArrayParameter(), 'array'],
+            [new ObjectParameter(), 'object'],
+            [new NullParameter(), 'null', 'integer'],
+        ];
     }
 
-    public function testGetBoolean(): void
-    {
+    /**
+     * @dataProvider dataProviderCast
+     */
+    public function testGetCast(
+        ParameterInterface $parameter,
+        string $type,
+        string $error = 'null'
+    ): void {
         $name = 'test';
-        $parameter = new BooleanParameter();
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->cast($name)->boolean());
+        $this->assertSame(
+            $parameter,
+            $parameters->required($name)->{$type}()
+        );
         $this->expectException(\TypeError::class);
-        $parameters->cast($name)->integer();
+        $parameters->required($name)->{$error}();
     }
 
     public function testGetFile(): void
@@ -191,45 +225,45 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->cast($name)->file());
+        $this->assertSame($parameter, $parameters->required($name)->file());
         $this->expectException(\TypeError::class);
-        $parameters->cast($name)->integer();
+        $parameters->required($name)->integer();
     }
 
-    public function testGetFloat(): void
+    public function testGetUnion(): void
     {
         $name = 'test';
-        $parameter = new FloatParameter();
+        $type1 = new StringParameter();
+        $type2 = new IntegerParameter();
+        $parameters = new Parameters($type1, $type2);
+        $parameter = new UnionParameter($parameters);
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->cast($name)->float());
+        $this->assertSame(
+            $parameter,
+            $parameters->required($name)->union()
+        );
         $this->expectException(\TypeError::class);
-        $parameters->cast($name)->integer();
+        $parameters->required($name)->null();
     }
 
-    public function testGetObject(): void
+    public function testGetGeneric(): void
     {
         $name = 'test';
-        $parameter = new ObjectParameter();
+        $parameter = new GenericParameter(
+            value: string(),
+            key: integer(),
+        );
         $parameters = new Parameters(...[
             $name => $parameter,
         ]);
-        $this->assertSame($parameter, $parameters->cast($name)->object());
+        $this->assertSame(
+            $parameter,
+            $parameters->required($name)->generic()
+        );
         $this->expectException(\TypeError::class);
-        $parameters->cast($name)->integer();
-    }
-
-    public function testGetString(): void
-    {
-        $name = 'test';
-        $parameter = new StringParameter();
-        $parameters = new Parameters(...[
-            $name => $parameter,
-        ]);
-        $this->assertSame($parameter, $parameters->cast($name)->string());
-        $this->expectException(\TypeError::class);
-        $parameters->cast($name)->integer();
+        $parameters->required($name)->null();
     }
 
     public function testWithOptionalMinimum(): void
@@ -290,8 +324,8 @@ final class ParametersTest extends TestCase
         $parametersWith = $parameters->withMakeOptional('foo');
         $this->assertNotSame($parameters, $parametersWith);
         $this->assertCount(2, $parametersWith);
-        $this->assertCount(1, $parametersWith->optional());
-        $this->assertCount(1, $parametersWith->required());
+        $this->assertCount(1, $parametersWith->optionalKeys());
+        $this->assertCount(1, $parametersWith->requiredKeys());
         $this->assertTrue($parametersWith->isOptional('foo'));
         $this->assertTrue($parametersWith->isRequired('bar'));
         $this->expectException(InvalidArgumentException::class);
@@ -306,8 +340,8 @@ final class ParametersTest extends TestCase
         $parametersWith = $parameters->withMakeRequired('bar');
         $this->assertNotSame($parameters, $parametersWith);
         $this->assertCount(2, $parametersWith);
-        $this->assertCount(1, $parametersWith->optional());
-        $this->assertCount(1, $parametersWith->required());
+        $this->assertCount(1, $parametersWith->optionalKeys());
+        $this->assertCount(1, $parametersWith->requiredKeys());
         $this->assertTrue($parametersWith->isOptional('foo'));
         $this->assertTrue($parametersWith->isRequired('bar'));
         $this->expectException(InvalidArgumentException::class);

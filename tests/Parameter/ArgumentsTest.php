@@ -320,9 +320,9 @@ final class ArgumentsTest extends TestCase
                 $foo => $var,
             ]
         );
-        $this->assertSame($var, $arguments->cast($foo)->boolean());
+        $this->assertSame($var, $arguments->required($foo)->boolean());
         $this->expectException(InvalidArgumentException::class);
-        $arguments->castOptional($foo);
+        $arguments->optional($foo);
     }
 
     public function testCastOptional(): void
@@ -336,11 +336,11 @@ final class ArgumentsTest extends TestCase
                 $foo => $var,
             ]
         );
-        $this->assertSame($var, $arguments->castOptional($foo)?->boolean());
+        $this->assertSame($var, $arguments->optional($foo)?->boolean());
         $arguments = new Arguments($parameters, []);
-        $this->assertNull($arguments->castOptional($foo));
+        $this->assertNull($arguments->optional($foo));
         $this->expectException(InvalidArgumentException::class);
-        $arguments->cast($foo);
+        $arguments->required($foo);
     }
 
     /**

@@ -58,16 +58,16 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
     public function get(string $name): mixed;
 
     /**
-     * Provides casting access to the argument value for the parameter `$name`.
+     * Provides access to the required argument for the parameter `$name`.
      *
      * @throws OutOfBoundsException
      */
-    public function cast(string $name): CastArgumentInterface;
+    public function required(string $name): CastArgumentInterface;
 
     /**
-     * Provides casting access to the optional argument value for the parameter `$name`.
+     * Provides access to the optional argument for the parameter `$name`.
      *
      * @throws OutOfBoundsException
      */
-    public function castOptional(string $name): ?CastArgumentInterface;
+    public function optional(string $name): ?CastArgumentInterface;
 }

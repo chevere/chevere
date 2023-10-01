@@ -97,13 +97,15 @@ interface ParametersInterface extends MappedInterface
      */
     public function isOptional(string ...$name): bool;
 
-    public function required(): VectorInterface;
+    public function requiredKeys(): VectorInterface;
 
-    public function optional(): VectorInterface;
+    public function optionalKeys(): VectorInterface;
 
     public function optionalMinimum(): int;
 
-    public function get(string $name): ParameterInterface;
+    public function get(string $key): ParameterInterface;
 
-    public function cast(string $name): CastParameterInterface;
+    public function required(string $key): CastParameterInterface;
+
+    public function optional(string $key): CastParameterInterface;
 }

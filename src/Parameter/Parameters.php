@@ -124,7 +124,7 @@ final class Parameters implements ParametersInterface
             $count < 0 => throw new InvalidArgumentException(
                 message('Count must be greater or equal to 0')
             ),
-            $this->optional()->count() === 0 => throw new BadMethodCallException(
+            $this->optionalKeys()->count() === 0 => throw new BadMethodCallException(
                 message('No optional parameters found')
             ),
             default => null,
@@ -136,12 +136,12 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    public function required(): VectorInterface
+    public function requiredKeys(): VectorInterface
     {
         return $this->required;
     }
 
-    public function optional(): VectorInterface
+    public function optionalKeys(): VectorInterface
     {
         return $this->optional;
     }
@@ -185,38 +185,36 @@ final class Parameters implements ParametersInterface
         return $this->map->has(...$name);
     }
 
-    public function get(string $name): ParameterInterface
+    public function get(string $key): ParameterInterface
     {
-        return $this->map->get($name);
+        return $this->map->get($key);
     }
 
-    public function cast(string $name): CastParameterInterface
+    public function required(string $key): CastParameterInterface
     {
-        if ($this->isOptional($name)) {
+        if ($this->isOptional($key)) {
             throw new InvalidArgumentException(
-                message('Parameter %name% is optional, use %method% instead')
-                    ->withCode('%name%', $name)
-                    ->withCode('%method%', 'castOptional')
+                message('Parameter %name% is optional')
+                    ->withCode('%name%', $key)
             );
         }
 
         return new CastParameter(
-            $this->get($name)
+            $this->get($key)
         );
     }
 
-    public function castOptional(string $name): CastParameterInterface
+    public function optional(string $key): CastParameterInterface
     {
-        if (! $this->isOptional($name)) {
+        if (! $this->isOptional($key)) {
             throw new InvalidArgumentException(
-                message('Argument %name% is required, use %method% instead')
-                    ->withCode('%name%', $name)
-                    ->withCode('%method%', 'cast')
+                message('Parameter %name% is required')
+                    ->withCode('%name%', $key)
             );
         }
 
         return new CastParameter(
-            $this->get($name)
+            $this->get($key)
         );
     }
 
@@ -232,7 +230,7 @@ final class Parameters implements ParametersInterface
 
     private function assertMinimumOptional(): void
     {
-        if ($this->minimumOptional > $this->optional()->count()) {
+        if ($this->minimumOptional > $this->optionalKeys()->count()) {
             throw new InvalidArgumentException(
                 message('Count must be less or equal to %optional%')
                     ->withCode('%optional%', strval($this->minimumOptional))

@@ -122,26 +122,24 @@ final class Arguments implements ArgumentsInterface
         return $this->arguments[$name] ?? null;
     }
 
-    public function cast(string $name): CastArgumentInterface
+    public function required(string $name): CastArgumentInterface
     {
         if ($this->parameters->isOptional($name)) {
             throw new InvalidArgumentException(
-                message('Argument %name% is optional, use %method% instead')
+                message('Argument %name% is optional')
                     ->withCode('%name%', $name)
-                    ->withCode('%method%', 'castOptional')
             );
         }
 
         return new CastArgument($this->arguments[$name]);
     }
 
-    public function castOptional(string $name): ?CastArgumentInterface
+    public function optional(string $name): ?CastArgumentInterface
     {
         if (! $this->parameters->isOptional($name)) {
             throw new InvalidArgumentException(
-                message('Argument %name% is required, use %method% instead')
+                message('Argument %name% is required')
                     ->withCode('%name%', $name)
-                    ->withCode('%method%', 'cast')
             );
         }
 
@@ -185,7 +183,7 @@ final class Arguments implements ArgumentsInterface
     {
         $values = array_keys($this->arguments);
         $missing = array_diff(
-            $this->parameters->required()->toArray(),
+            $this->parameters->requiredKeys()->toArray(),
             $values,
         );
         if ($missing !== []) {
@@ -198,7 +196,7 @@ final class Arguments implements ArgumentsInterface
 
     private function assertMinimumOptional(): void
     {
-        $optional = $this->parameters->optional()->toArray();
+        $optional = $this->parameters->optionalKeys()->toArray();
         $providedOptionals = array_intersect(
             $optional,
             array_keys($this->arguments)
