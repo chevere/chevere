@@ -207,6 +207,15 @@ function methodParameters(string $class, string $method): ParametersInterface
 }
 
 /**
+ * @return array<string>
+ */
+function takeKeys(
+    ParametersAccessInterface|ParametersInterface $parameter,
+): array {
+    return getParameters($parameter)->keys();
+}
+
+/**
  * @return Iterator<string, ParameterInterface>
  */
 function takeFrom(

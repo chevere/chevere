@@ -35,6 +35,7 @@ use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\requiredFrom;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\takeFrom;
+use function Chevere\Parameter\takeKeys;
 use function Chevere\Parameter\union;
 
 final class FunctionsTest extends TestCase
@@ -309,7 +310,14 @@ final class FunctionsTest extends TestCase
         $this->assertTrue($from->isOptional('foo'));
     }
 
-    public function testTake(): void
+    public function testTakeKeys(): void
+    {
+        $parameters = parameters(foo: string())
+            ->withOptional('bar', integer());
+        $this->assertSame(['foo', 'bar'], takeKeys($parameters));
+    }
+
+    public function testTakeFrom(): void
     {
         $foo = string(default: 'foo');
         $bar = integer(default: 1);
