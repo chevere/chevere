@@ -16,6 +16,7 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
+use Chevere\Parameter\Parameters;
 use Chevere\Regex\Regex;
 use Chevere\Tests\Parameter\_resources\ArrayAccessDynamic;
 use Chevere\Tests\Parameter\_resources\ArrayAccessMixed;
@@ -398,9 +399,8 @@ final class ArgumentsTest extends TestCase
 
     public function testMinimumOptional(): void
     {
-        $parameters = parameters(
-            foo: string(),
-        )->withOptional('bar', string());
+        $parameters = (new Parameters(foo: string()))
+            ->withOptional('bar', string());
         new Arguments($parameters, [
             'foo' => '',
         ]);
@@ -413,5 +413,19 @@ final class ArgumentsTest extends TestCase
         new Arguments($parameters, [
             'foo' => '',
         ]);
+    }
+
+    public function testOptionalNullPass(): void
+    {
+        $parameters = (new Parameters())->withOptional('foo', string());
+        $arguments = [
+            'foo' => 'string',
+        ];
+        new Arguments($parameters, $arguments);
+        $arguments = [
+            'foo' => null,
+        ];
+        $this->expectException(InvalidArgumentException::class);
+        new Arguments($parameters, $arguments);
     }
 }

@@ -62,7 +62,7 @@ final class FunctionsArrayTest extends TestCase
     {
         $parameter = arrayp()->withOptional(a: integer());
         $array = [
-            'a' => null,
+            'a' => 123,
         ];
         $this->assertSame($array, assertArray($parameter, $array));
     }
@@ -92,19 +92,14 @@ final class FunctionsArrayTest extends TestCase
         $parameter = arrayp();
         $this->assertEquals(arrayp(), $parameter);
         $parameter = arrayp()->withOptional(a: integer());
-        $try = [
-            'a' => null,
-        ];
         $expected = [
             'a' => 1,
         ];
-        $this->assertSame($try, assertArray($parameter, $try));
         $this->assertSame($expected, assertArray($parameter, $expected));
         $parameter = arrayp()->withOptional(a: integer(default: 123));
         $expected = [
             'a' => 123,
         ];
-        $this->assertSame($try, assertArray($parameter, $try));
         $this->assertSame($expected, assertArray($parameter, $expected));
     }
 

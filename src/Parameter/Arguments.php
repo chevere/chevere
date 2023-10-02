@@ -258,7 +258,7 @@ final class Arguments implements ArgumentsInterface
     private function isSkipOptional(string $name): bool
     {
         return $this->parameters->isOptional($name)
-            && $this->get($name) === null;
+            && ! $this->has($name);
     }
 
     /**
