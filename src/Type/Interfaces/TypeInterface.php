@@ -90,6 +90,22 @@ interface TypeInterface
     ];
 
     /**
+     * Type standard
+     */
+    public const TYPE_STANDARD = [
+        'array' => self::ARRAY,
+        'bool' => self::BOOLEAN,
+        'callable' => self::CALLABLE,
+        'float' => self::FLOAT,
+        'int' => self::INTEGER,
+        'iterable' => self::ITERABLE,
+        'null' => self::NULL,
+        'object' => self::OBJECT,
+        'resource' => self::RESOURCE,
+        'string' => self::STRING,
+    ];
+
+    /**
      * Returns the type primitive (array, bool, object, ..., className, interfaceName).
      */
     public function primitive(): string;

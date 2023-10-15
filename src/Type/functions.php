@@ -32,6 +32,12 @@ function getType(mixed $variable): string
     };
 }
 
+function toStandardType(string $type): string
+{
+    return TypeInterface::TYPE_STANDARD[$type]
+        ?? $type;
+}
+
 function returnTypeExceptionMessage(string $expected, mixed $provided): MessageInterface
 {
     return message('Expecting return type %expected%, type %provided% provided')
