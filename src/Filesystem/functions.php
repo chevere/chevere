@@ -78,3 +78,23 @@ function filePhpReturnForPath(string $path): FilePhpReturnInterface
 {
     return new FilePhpReturn(filePhpForPath($path));
 }
+
+function resolvePath(string $path): string
+{
+    $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+    $parts = explode(DIRECTORY_SEPARATOR, $path);
+    $out = [];
+    foreach ($parts as $part) {
+        if ($part === '.') {
+            continue;
+        }
+        if ($part === '..') {
+            array_pop($out);
+
+            continue;
+        }
+        $out[] = $part;
+    }
+
+    return implode(DIRECTORY_SEPARATOR, $out);
+}

@@ -30,6 +30,7 @@ final class Path implements PathInterface
 
     public function __construct(string $absolute)
     {
+        $absolute = resolvePath($absolute);
         $assert = new AssertPathFormat($absolute);
         $this->absolute = $assert->path();
     }
