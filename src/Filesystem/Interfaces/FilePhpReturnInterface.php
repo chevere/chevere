@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Filesystem\Interfaces;
 
+use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 
 /**
@@ -38,20 +39,7 @@ interface FilePhpReturnInterface
      */
     public function get(): mixed;
 
-    /**
-     * @phpstan-ignore-next-line
-     */
-    public function getArray(): array;
-
-    public function getBool(): bool;
-
-    public function getFloat(): float;
-
-    public function getInt(): int;
-
-    public function getObject(): object;
-
-    public function getString(): string;
+    public function cast(): CastInterface;
 
     /**
      * Put `$storableVariable` into the file using var_export return and strict format.

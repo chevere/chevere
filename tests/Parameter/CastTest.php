@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use ArrayObject;
-use Chevere\Parameter\CastArgument;
+use Chevere\Parameter\Cast;
 use PHPUnit\Framework\TestCase;
 
 final class CastTest extends TestCase
@@ -28,7 +28,7 @@ final class CastTest extends TestCase
             [true, 'bool'],
             ['string', 'string'],
             [[], 'array'],
-            [new CastArgument(''), 'object'],
+            [new Cast(''), 'object'],
             [
                 fn () => null,
                 'callable',
@@ -44,7 +44,7 @@ final class CastTest extends TestCase
             [null, 'nullString'],
             [[], 'nullArray'],
             [null, 'nullArray'],
-            [new CastArgument(''), 'nullObject'],
+            [new Cast(''), 'nullObject'],
             [null, 'nullObject'],
             [
                 fn () => null,
@@ -64,7 +64,7 @@ final class CastTest extends TestCase
      */
     public function testCast($expected, string $method): void
     {
-        $cast = new CastArgument($expected);
+        $cast = new Cast($expected);
         $this->assertSame($expected, $cast->{$method}());
     }
 
@@ -72,7 +72,7 @@ final class CastTest extends TestCase
     {
         $input = ['foo'];
         $value = new ArrayObject($input);
-        $cast = new CastArgument($value);
+        $cast = new Cast($value);
         $this->assertSame($input, $cast->array());
     }
 }

@@ -15,17 +15,17 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BoolParameterInterface;
-use Chevere\Parameter\Interfaces\CastParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Interfaces\NullParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
+use Chevere\Parameter\Interfaces\ParameterCastInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 
-final class CastParameter implements CastParameterInterface
+final class ParameterCast implements ParameterCastInterface
 {
     // @phpstan-ignore-next-line
     public function __construct(

@@ -54,10 +54,10 @@ interface ArgumentsInterface extends ParametersAccessInterface, ToArrayInterface
     /**
      * Provides access to the required argument for the parameter `$name`.
      */
-    public function required(string $name): CastArgumentInterface;
+    public function required(string $name): CastInterface;
 
     /**
      * Provides access to the optional argument for the parameter `$name`.
      */
-    public function optional(string $name): ?CastArgumentInterface;
+    public function optional(string $name): ?CastInterface;
 }

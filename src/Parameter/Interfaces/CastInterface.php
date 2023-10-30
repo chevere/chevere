@@ -16,7 +16,7 @@ namespace Chevere\Parameter\Interfaces;
 /**
  * Describes the component in charge of casting an argument.
  */
-interface CastArgumentInterface
+interface CastInterface
 {
     public function int(): int;
 

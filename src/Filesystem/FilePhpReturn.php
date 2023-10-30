@@ -19,11 +19,13 @@ use Chevere\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
+use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\String\StringAssert;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 use Chevere\VariableSupport\StorableVariable;
 use Throwable;
 use function Chevere\Message\message;
+use function Chevere\Parameter\cast;
 
 final class FilePhpReturn implements FilePhpReturnInterface
 {
@@ -45,43 +47,11 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return require $filePath;
     }
 
-    /**
-     * @phpstan-ignore-next-line
-     */
-    public function getArray(): array
+    public function cast(): CastInterface
     {
-        /** @var array<mixed> */
-        return $this->get();
-    }
-
-    public function getBool(): bool
-    {
-        /** @var bool */
-        return $this->get();
-    }
-
-    public function getFloat(): float
-    {
-        /** @var float */
-        return $this->get();
-    }
-
-    public function getInt(): int
-    {
-        /** @var int */
-        return $this->get();
-    }
-
-    public function getObject(): object
-    {
-        /** @var object */
-        return $this->get();
-    }
-
-    public function getString(): string
-    {
-        /** @var string */
-        return $this->get();
+        return cast(
+            $this->get()
+        );
     }
 
     public function put(StorableVariableInterface $storable): void

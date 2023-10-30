@@ -16,7 +16,7 @@ namespace Chevere\Parameter\Interfaces;
 /**
  * Describes the component in charge of casting a parameter.
  */
-interface CastParameterInterface
+interface ParameterCastInterface
 {
     public function array(): ArrayParameterInterface;
 

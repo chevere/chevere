@@ -105,7 +105,7 @@ interface ParametersInterface extends MappedInterface
 
     public function get(string $key): ParameterInterface;
 
-    public function required(string $key): CastParameterInterface;
+    public function required(string $key): ParameterCastInterface;
 
-    public function optional(string $key): CastParameterInterface;
+    public function optional(string $key): ParameterCastInterface;
 }

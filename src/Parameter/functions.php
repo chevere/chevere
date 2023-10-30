@@ -18,6 +18,7 @@ use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\BoolParameterInterface;
+use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
@@ -35,6 +36,11 @@ use Iterator;
 use ReflectionMethod;
 use Throwable;
 use function Chevere\Message\message;
+
+function cast(mixed $argument): CastInterface
+{
+    return new Cast($argument);
+}
 
 function null(
     string $description = '',

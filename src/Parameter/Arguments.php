@@ -16,7 +16,7 @@ namespace Chevere\Parameter;
 use ArrayAccess;
 use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
-use Chevere\Parameter\Interfaces\CastArgumentInterface;
+use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Throwable\Errors\ArgumentCountError;
@@ -122,7 +122,7 @@ final class Arguments implements ArgumentsInterface
         return $this->arguments[$name] ?? null;
     }
 
-    public function required(string $name): CastArgumentInterface
+    public function required(string $name): CastInterface
     {
         if ($this->parameters->isOptional($name)) {
             throw new InvalidArgumentException(
@@ -131,10 +131,10 @@ final class Arguments implements ArgumentsInterface
             );
         }
 
-        return new CastArgument($this->arguments[$name]);
+        return new Cast($this->arguments[$name]);
     }
 
-    public function optional(string $name): ?CastArgumentInterface
+    public function optional(string $name): ?CastInterface
     {
         if (! $this->parameters->isOptional($name)) {
             throw new InvalidArgumentException(
@@ -144,7 +144,7 @@ final class Arguments implements ArgumentsInterface
         }
 
         if ($this->has($name)) {
-            return new CastArgument($this->arguments[$name]);
+            return new Cast($this->arguments[$name]);
         }
 
         return null;

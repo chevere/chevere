@@ -17,7 +17,7 @@ use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
 use Chevere\DataStructure\Vector;
-use Chevere\Parameter\Interfaces\CastParameterInterface;
+use Chevere\Parameter\Interfaces\ParameterCastInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Throwable\Exceptions\BadMethodCallException;
@@ -190,7 +190,7 @@ final class Parameters implements ParametersInterface
         return $this->map->get($key);
     }
 
-    public function required(string $key): CastParameterInterface
+    public function required(string $key): ParameterCastInterface
     {
         if ($this->isOptional($key)) {
             throw new InvalidArgumentException(
@@ -199,12 +199,12 @@ final class Parameters implements ParametersInterface
             );
         }
 
-        return new CastParameter(
+        return new ParameterCast(
             $this->get($key)
         );
     }
 
-    public function optional(string $key): CastParameterInterface
+    public function optional(string $key): ParameterCastInterface
     {
         if (! $this->isOptional($key)) {
             throw new InvalidArgumentException(
@@ -213,7 +213,7 @@ final class Parameters implements ParametersInterface
             );
         }
 
-        return new CastParameter(
+        return new ParameterCast(
             $this->get($key)
         );
     }
