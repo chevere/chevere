@@ -13,16 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\VariableSupport\Interfaces;
 
-use Chevere\VariableSupport\Exceptions\UnableToStoreException;
-
 /**
  * Describes the component in charge of handling storable variable.
  */
 interface StorableVariableInterface
 {
-    /**
-     * @throws UnableToStoreException if `$variable` is or contains a resource.
-     */
     public function __construct(mixed $variable);
 
     /**

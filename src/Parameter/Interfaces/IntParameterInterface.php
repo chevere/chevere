@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Interfaces;
 
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-
 /**
  * Describes the component in charge of defining a parameter of type int.
  */
@@ -29,8 +27,6 @@ interface IntParameterInterface extends ParameterInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified default value.
-     *
-     * @throws InvalidArgumentException
      */
     public function withDefault(int $value): self;
 
@@ -39,8 +35,6 @@ interface IntParameterInterface extends ParameterInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified minimum value.
-     *
-     * @throws InvalidArgumentException
      */
     public function withMinimum(int $value): self;
 
@@ -49,8 +43,6 @@ interface IntParameterInterface extends ParameterInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified maximum value.
-     *
-     * @throws InvalidArgumentException
      */
     public function withMaximum(int $value): self;
 
@@ -61,8 +53,6 @@ interface IntParameterInterface extends ParameterInterface
      * an instance that contains the specified accepted value(s).
      *
      * When using this method it will nullify the minimum and maximum values.
-     *
-     * @throws InvalidArgumentException
      */
     public function withAccept(int ...$value): self;
 

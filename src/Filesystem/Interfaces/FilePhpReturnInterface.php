@@ -13,13 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Filesystem\Interfaces;
 
-use Chevere\Filesystem\Exceptions\FileHandleException;
-use Chevere\Filesystem\Exceptions\FileInvalidContentsException;
-use Chevere\Filesystem\Exceptions\FileNotExistsException;
-use Chevere\Filesystem\Exceptions\FileUnableToGetException;
-use Chevere\Filesystem\Exceptions\FileUnableToPutException;
-use Chevere\Filesystem\Exceptions\FileWithoutContentsException;
-use Chevere\Throwable\Exceptions\RuntimeException;
 use Chevere\VariableSupport\Interfaces\StorableVariableInterface;
 
 /**
@@ -42,13 +35,6 @@ interface FilePhpReturnInterface
 
     /**
      * Retrieves the file return (as-is).
-     *
-     * @throws FileNotExistsException
-     * @throws FileHandleException
-     * @throws FileWithoutContentsException
-     * @throws FileInvalidContentsException
-     * @throws FileUnableToGetException
-     * @throws RuntimeException
      */
     public function get(): mixed;
 
@@ -69,9 +55,6 @@ interface FilePhpReturnInterface
 
     /**
      * Put `$storableVariable` into the file using var_export return and strict format.
-     *
-     * @throws FileNotExistsException
-     * @throws FileUnableToPutException
      */
     public function put(StorableVariableInterface $storable): void;
 }

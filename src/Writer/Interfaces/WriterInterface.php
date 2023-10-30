@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Writer\Interfaces;
 
-use Chevere\Throwable\Exceptions\RuntimeException;
 use Stringable;
 
 /**
@@ -28,8 +27,6 @@ interface WriterInterface extends Stringable
 
     /**
      * Writes the given string.
-     *
-     * @throws RuntimeException
      */
     public function write(string $string): void;
 }

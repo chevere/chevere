@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\VariableSupport\Interfaces;
 
-use Chevere\VariableSupport\Exceptions\ObjectNotClonableException;
-
 /**
  * Describes the component in charge of defining an object variable.
  */
@@ -22,8 +20,5 @@ interface ObjectVariableInterface
 {
     public function variable(): object;
 
-    /**
-     * @throws ObjectNotClonableException
-     */
     public function assertClonable(): void;
 }

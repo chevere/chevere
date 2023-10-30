@@ -13,12 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Filesystem\Interfaces;
 
-use Chevere\Filesystem\Exceptions\DirectoryNotExistsException;
-use Chevere\Filesystem\Exceptions\DirectoryUnableToCreateException;
-use Chevere\Filesystem\Exceptions\DirectoryUnableToRemoveException;
-use Chevere\Filesystem\Exceptions\FileUnableToRemoveException;
-use Chevere\Filesystem\Exceptions\PathInvalidException;
-
 /**
  * Describes the component in charge of interacting with filesystem directory.
  */
@@ -33,8 +27,6 @@ interface DirectoryInterface
      * Creates the directory.
      *
      * @param int $mode Octal mask
-     *
-     * @throws DirectoryUnableToCreateException
      */
     public function create(int $mode = 0755): void;
 
@@ -42,8 +34,6 @@ interface DirectoryInterface
      * Creates the directory if it doesn't exists.
      *
      * @param int $mode Octal mask
-     *
-     * @throws DirectoryUnableToCreateException
      */
     public function createIfNotExists(int $mode = 0755): void;
 
@@ -52,18 +42,12 @@ interface DirectoryInterface
      */
     public function exists(): bool;
 
-    /**
-     * @throws DirectoryNotExistsException
-     */
     public function assertExists(): void;
 
     /**
      * Removes the contents from a path without deleting the path.
      *
      * @return string[] dir contents removed
-     *
-     * @throws DirectoryUnableToRemoveException if unable to remove the directory
-     * @throws FileUnableToRemoveException if unable to remove a file in the directory
      */
     public function removeContents(): array;
 
@@ -71,8 +55,6 @@ interface DirectoryInterface
      * Removes the directory and its contents.
      *
      * @return string[] elements removed
-     *
-     * @throws DirectoryUnableToRemoveException if unable to remove the directory
      */
     public function remove(): array;
 
@@ -80,15 +62,11 @@ interface DirectoryInterface
      * Same as remove, but only if the directory exists.
      *
      * @return string[] elements removed
-     *
-     * @throws DirectoryUnableToRemoveException if unable to remove the directory
      */
     public function removeIfExists(): array;
 
     /**
      * Gets a child `DirInterface` for the added path.
-     *
-     * @throws PathInvalidException
      */
     public function getChild(string $path): self;
 }

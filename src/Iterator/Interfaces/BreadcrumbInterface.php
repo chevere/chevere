@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Iterator\Interfaces;
 
 use Chevere\Common\Interfaces\ToArrayInterface;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Countable;
 use Stringable;
 
@@ -55,8 +54,6 @@ interface BreadcrumbInterface extends ToArrayInterface, Stringable, Countable
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified pos removed.
-     *
-     * @throws OutOfBoundsException
      */
     public function withRemoved(int $pos): self;
 

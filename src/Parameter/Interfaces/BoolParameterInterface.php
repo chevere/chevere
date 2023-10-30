@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Interfaces;
 
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-
 /**
  * Describes the component in charge of defining a parameter of type bool.
  */
@@ -25,8 +23,6 @@ interface BoolParameterInterface extends ParameterInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$default` value.
-     *
-     * @throws InvalidArgumentException
      */
     public function withDefault(bool $value): self;
 

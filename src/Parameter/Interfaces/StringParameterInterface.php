@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Interfaces;
 
 use Chevere\Regex\Interfaces\RegexInterface;
-use Chevere\Throwable\Exceptions\BadFunctionCallException;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 
 /**
  * Describes the component in charge of defining a parameter of type string.
@@ -34,8 +32,6 @@ interface StringParameterInterface extends ParameterInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$regex`.
-     *
-     * @throws BadFunctionCallException
      */
     public function withRegex(RegexInterface $regex): self;
 
@@ -44,8 +40,6 @@ interface StringParameterInterface extends ParameterInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$default` value.
-     *
-     * @throws InvalidArgumentException
      */
     public function withDefault(string $value): self;
 

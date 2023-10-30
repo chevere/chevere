@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Regex\Interfaces;
 
-use Chevere\Regex\Exceptions\NoMatchException;
-use Chevere\Throwable\Exceptions\RuntimeException;
 use Stringable;
 
 /**
@@ -44,25 +42,15 @@ interface RegexInterface extends Stringable
 
     /**
      * @return array<int, string>
-     * @throws RuntimeException
      */
     public function match(string $string): array;
 
     /**
      * @return array<array<int, string>>
-     * @throws RuntimeException
      */
     public function matchAll(string $string): array;
 
-    /**
-     * @throws NoMatchException
-     * @throws RuntimeException
-     */
     public function assertMatch(string $string): void;
 
-    /**
-     * @throws NoMatchException
-     * @throws RuntimeException
-     */
     public function assertMatchAll(string $string): void;
 }
