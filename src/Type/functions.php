@@ -19,13 +19,15 @@ use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Message\message;
 
 /**
- * Same as `gettype` but more "standard" towards `get_debug_type`.
+ * Get variable type.
  */
 function getType(mixed $variable): string
 {
     $type = \gettype($variable);
 
     return match ($type) {
+        'integer' => 'int',
+        'boolean' => 'bool',
         'double' => 'float',
         'NULL' => 'null',
         default => $type,
