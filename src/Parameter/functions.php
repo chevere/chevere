@@ -21,7 +21,7 @@ use Chevere\Parameter\Interfaces\BooleanParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
-use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Interfaces\NullParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
@@ -172,9 +172,9 @@ function assertArgument(ParameterInterface $parameter, mixed $argument): mixed
         $parameter instanceof GenericParameterInterface
         // @phpstan-ignore-next-line
         => assertGeneric($parameter, $argument),
-        $parameter instanceof IntegerParameterInterface
+        $parameter instanceof IntParameterInterface
         // @phpstan-ignore-next-line
-        => assertInteger($parameter, $argument),
+        => assertInt($parameter, $argument),
         $parameter instanceof ObjectParameterInterface
         // @phpstan-ignore-next-line
         => assertObject($parameter, $argument),

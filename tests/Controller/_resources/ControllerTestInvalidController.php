@@ -17,7 +17,7 @@ use Chevere\Controller\Controller;
 
 final class ControllerTestInvalidController extends Controller
 {
-    protected function run(int $integer): array
+    protected function run(int $int): array
     {
         return [];
     }

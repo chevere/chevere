@@ -102,7 +102,7 @@ final class ActionTest extends TestCase
         $this->expectExceptionMessage(
             'Method '
             . ActionTestUnionReturnMissingType::class
-            . '::run must declare string|integer return type'
+            . '::run must declare string|int return type'
         );
         $action->getResponse();
     }

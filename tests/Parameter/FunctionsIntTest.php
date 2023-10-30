@@ -16,13 +16,13 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArgument;
-use function Chevere\Parameter\assertInteger;
-use function Chevere\Parameter\booleanInteger;
+use function Chevere\Parameter\assertInt;
+use function Chevere\Parameter\booleanInt;
 use function Chevere\Parameter\int;
 
-final class FunctionsIntegerTest extends TestCase
+final class FunctionsIntTest extends TestCase
 {
-    public function testInteger(): void
+    public function testInt(): void
     {
         $parameter = int();
         $this->assertSame('', $parameter->description());
@@ -32,7 +32,7 @@ final class FunctionsIntegerTest extends TestCase
         $this->assertSame([], $parameter->accept());
     }
 
-    public function testIntegerOptions(): void
+    public function testIntOptions(): void
     {
         $description = 'test';
         $default = 5;
@@ -50,23 +50,23 @@ final class FunctionsIntegerTest extends TestCase
         $this->assertSame([0, 1], $parameter->accept());
     }
 
-    public function testAssertInteger(): void
+    public function testAssertInt(): void
     {
         $parameter = int();
-        $this->assertSame(0, assertInteger($parameter, 0));
+        $this->assertSame(0, assertInt($parameter, 0));
         $this->assertSame(0, assertArgument($parameter, 0));
     }
 
-    public function testBooleanInteger(): void
+    public function testBooleanInt(): void
     {
-        $integer = booleanInteger();
-        $this->assertSame('', $integer->description());
-        $this->assertNull($integer->default());
+        $int = booleanInt();
+        $this->assertSame('', $int->description());
+        $this->assertNull($int->default());
         $this->expectException(InvalidArgumentException::class);
-        booleanInteger(default: 2);
+        booleanInt(default: 2);
     }
 
-    public static function booleanIntegerArgumentsProvider(): array
+    public static function booleanIntArgumentsProvider(): array
     {
         return [
             ['foo', 1],
@@ -75,12 +75,12 @@ final class FunctionsIntegerTest extends TestCase
     }
 
     /**
-     * @dataProvider booleanIntegerArgumentsProvider
+     * @dataProvider booleanIntArgumentsProvider
      */
-    public function testBooleanIntegerArguments(string $description, int $default): void
+    public function testBooleanIntArguments(string $description, int $default): void
     {
-        $integer = booleanInteger($description, $default);
-        $this->assertSame($description, $integer->description());
-        $this->assertSame($default, $integer->default());
+        $int = booleanInt($description, $default);
+        $this->assertSame($description, $int->description());
+        $this->assertSame($default, $int->default());
     }
 }

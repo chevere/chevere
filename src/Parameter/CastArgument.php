@@ -24,7 +24,7 @@ final class CastArgument implements CastArgumentInterface
     ) {
     }
 
-    public function integer(): int
+    public function int(): int
     {
         return $this->argument;
     }
@@ -71,7 +71,7 @@ final class CastArgument implements CastArgumentInterface
         return $this->argument;
     }
 
-    public function nullInteger(): ?int
+    public function nullInt(): ?int
     {
         return $this->argument ?? null;
     }

@@ -248,7 +248,7 @@ final class ArgumentsTest extends TestCase
         $optionalString = 'string';
         $optionalStringDefault = 'a';
         $optionalStringValue = 'b';
-        $optionalInteger = 'integer';
+        $optionalInt = 'int';
         $parameters = parameters()
             ->withOptional(
                 $optionalString,
@@ -262,7 +262,7 @@ final class ArgumentsTest extends TestCase
                 $optionalString => $optionalStringValue,
             ]
         );
-        $this->assertFalse($arguments->has($optionalInteger));
+        $this->assertFalse($arguments->has($optionalInt));
         $this->assertTrue($arguments->has($optionalString));
         $this->assertEquals(
             [

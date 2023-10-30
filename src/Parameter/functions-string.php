@@ -35,7 +35,7 @@ function string(
     return $parameter;
 }
 
-function integerString(
+function intString(
     string $description = '',
     ?string $default = null,
 ): StringParameterInterface {

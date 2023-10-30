@@ -29,11 +29,11 @@ final class FunctionsArrayTest extends TestCase
     {
         $parameter = arrayp();
         $this->assertCount(0, $parameter->parameters());
-        $integer = int();
+        $int = int();
         $string = string();
-        $parameter = arrayp(a: $integer)->withOptional(b: $string);
+        $parameter = arrayp(a: $int)->withOptional(b: $string);
         $this->assertCount(2, $parameter->parameters());
-        $this->assertSame($integer, $parameter->parameters()->get('a'));
+        $this->assertSame($int, $parameter->parameters()->get('a'));
         $this->assertSame($string, $parameter->parameters()->get('b'));
         $this->assertSame(['a'], $parameter->parameters()->requiredKeys()->toArray());
         $this->assertSame(['b'], $parameter->parameters()->optionalKeys()->toArray());

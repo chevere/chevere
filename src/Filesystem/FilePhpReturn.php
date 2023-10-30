@@ -66,7 +66,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return $this->get();
     }
 
-    public function getInteger(): int
+    public function getInt(): int
     {
         /** @var int */
         return $this->get();

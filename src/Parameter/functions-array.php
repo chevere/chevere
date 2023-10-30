@@ -20,7 +20,7 @@ use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
-use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -52,7 +52,7 @@ function file(
     ?StringParameterInterface $name = null,
     ?StringParameterInterface $type = null,
     ?StringParameterInterface $tmp_name = null,
-    ?IntegerParameterInterface $size = null,
+    ?IntParameterInterface $size = null,
 ): FileParameterInterface {
     return new FileParameter(
         name: $name ?? string(),

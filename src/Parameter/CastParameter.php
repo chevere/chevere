@@ -19,7 +19,7 @@ use Chevere\Parameter\Interfaces\CastParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
-use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Interfaces\NullParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
@@ -57,9 +57,9 @@ final class CastParameter implements CastParameterInterface
         return $this->argument;
     }
 
-    public function integer(): IntegerParameterInterface
+    public function int(): IntParameterInterface
     {
-        /** @var IntegerParameterInterface */
+        /** @var IntParameterInterface */
         return $this->argument;
     }
 

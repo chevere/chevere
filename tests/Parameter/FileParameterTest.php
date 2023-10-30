@@ -45,7 +45,7 @@ final class FileParameterTest extends TestCase
         $this->assertSame(null, $parameter->default());
         $this->assertSame(
             [0],
-            $parameter->parameters()->required('error')->integer()->accept()
+            $parameter->parameters()->required('error')->int()->accept()
         );
         $this->assertSame(
             $name,
@@ -53,7 +53,7 @@ final class FileParameterTest extends TestCase
         );
         $this->assertSame(
             $size,
-            $parameter->parameters()->required('size')->integer()
+            $parameter->parameters()->required('size')->int()
         );
         $this->assertSame(
             $type,

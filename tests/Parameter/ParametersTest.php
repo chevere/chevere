@@ -184,12 +184,12 @@ final class ParametersTest extends TestCase
     {
         return [
             [new StringParameter(), 'string'],
-            [new IntParameter(), 'integer'],
+            [new IntParameter(), 'int'],
             [new FloatParameter(), 'float'],
             [new BooleanParameter(), 'boolean'],
             [new ArrayParameter(), 'array'],
             [new ObjectParameter(), 'object'],
-            [new NullParameter(), 'null', 'integer'],
+            [new NullParameter(), 'null', 'int'],
         ];
     }
 
@@ -227,7 +227,7 @@ final class ParametersTest extends TestCase
         ]);
         $this->assertSame($parameter, $parameters->required($name)->file());
         $this->expectException(\TypeError::class);
-        $parameters->required($name)->integer();
+        $parameters->required($name)->int();
     }
 
     public function testGetUnion(): void

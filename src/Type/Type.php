@@ -69,7 +69,7 @@ final class Type implements TypeInterface
 
     public function isScalar(): bool
     {
-        return in_array($this->primitive, ['boolean', 'integer', 'float', 'string'], true);
+        return in_array($this->primitive, ['boolean', 'int', 'float', 'string'], true);
     }
 
     private function isAbleToValidateObjects(): bool

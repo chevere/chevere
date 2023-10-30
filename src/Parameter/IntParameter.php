@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Traits\NumericParameterTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeInteger;
+use function Chevere\Type\typeInt;
 
-final class IntParameter implements IntegerParameterInterface
+final class IntParameter implements IntParameterInterface
 {
     use ParameterTrait;
     use NumericParameterTrait;
@@ -35,7 +35,7 @@ final class IntParameter implements IntegerParameterInterface
      */
     private array $accept = [];
 
-    public function withDefault(int $value): IntegerParameterInterface
+    public function withDefault(int $value): IntParameterInterface
     {
         $new = clone $this;
         $new->setDefault($value);
@@ -43,7 +43,7 @@ final class IntParameter implements IntegerParameterInterface
         return $new;
     }
 
-    public function withMinimum(int $value): IntegerParameterInterface
+    public function withMinimum(int $value): IntParameterInterface
     {
         $new = clone $this;
         $new->setMinimum($value, self::MAXIMUM);
@@ -51,7 +51,7 @@ final class IntParameter implements IntegerParameterInterface
         return $new;
     }
 
-    public function withMaximum(int $value): IntegerParameterInterface
+    public function withMaximum(int $value): IntParameterInterface
     {
         $new = clone $this;
         $new->setMaximum($value, self::MINIMUM);
@@ -59,7 +59,7 @@ final class IntParameter implements IntegerParameterInterface
         return $new;
     }
 
-    public function withAccept(int ...$value): IntegerParameterInterface
+    public function withAccept(int ...$value): IntParameterInterface
     {
         $new = clone $this;
         $new->setAccept(...$value);
@@ -99,13 +99,13 @@ final class IntParameter implements IntegerParameterInterface
         ];
     }
 
-    public function assertCompatible(IntegerParameterInterface $parameter): void
+    public function assertCompatible(IntParameterInterface $parameter): void
     {
         $this->assertNumericCompatible($parameter);
     }
 
     private function getType(): TypeInterface
     {
-        return typeInteger();
+        return typeInt();
     }
 }

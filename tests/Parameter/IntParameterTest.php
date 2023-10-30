@@ -32,13 +32,13 @@ final class IntParameterTest extends TestCase
         $default = 1234;
         $parameterWithDefault = $parameter->withDefault($default);
         (new ParameterHelper())->testWithParameterDefault(
-            primitive: 'integer',
+            primitive: 'int',
             parameter: $parameter,
             default: $default,
             parameterWithDefault: $parameterWithDefault
         );
         $this->assertSame([
-            'type' => 'integer',
+            'type' => 'int',
             'description' => '',
             'default' => $default,
             'minimum' => null,
@@ -56,7 +56,7 @@ final class IntParameterTest extends TestCase
         $this->assertNotSame($parameter, $withAccept);
         $this->assertSame($sorted, $withAccept->accept());
         $this->assertSame([
-            'type' => 'integer',
+            'type' => 'int',
             'description' => '',
             'default' => null,
             'minimum' => null,

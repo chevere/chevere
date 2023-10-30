@@ -18,7 +18,7 @@ namespace Chevere\Parameter\Interfaces;
  */
 interface CastArgumentInterface
 {
-    public function integer(): int;
+    public function int(): int;
 
     public function float(): float;
 
@@ -36,7 +36,7 @@ interface CastArgumentInterface
     // @phpstan-ignore-next-line
     public function iterable(): iterable;
 
-    public function nullInteger(): ?int;
+    public function nullInt(): ?int;
 
     public function nullFloat(): ?float;
 

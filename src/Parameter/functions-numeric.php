@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
-use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use function Chevere\Message\message;
 
@@ -54,7 +54,7 @@ function int(
     ?int $minimum = null,
     ?int $maximum = null,
     array $accept = [],
-): IntegerParameterInterface {
+): IntParameterInterface {
     $parameter = new IntParameter($description);
     if ($accept !== []) {
         $parameter = $parameter->withAccept(...$accept);
@@ -72,10 +72,10 @@ function int(
     return $parameter;
 }
 
-function booleanInteger(
+function booleanInt(
     string $description = '',
     ?int $default = null,
-): IntegerParameterInterface {
+): IntParameterInterface {
     return int(
         description: $description,
         default: $default,
@@ -84,7 +84,7 @@ function booleanInteger(
 }
 
 function assertNumeric(
-    IntegerParameterInterface|FloatParameterInterface $parameter,
+    IntParameterInterface|FloatParameterInterface $parameter,
     int|float $argument,
 ): int|float {
     $accept = $parameter->accept();
@@ -119,8 +119,8 @@ function assertNumeric(
     return $argument;
 }
 
-function assertInteger(
-    IntegerParameterInterface $parameter,
+function assertInt(
+    IntParameterInterface $parameter,
     int $argument,
 ): int {
     assertNumeric($parameter, $argument);

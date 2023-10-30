@@ -22,7 +22,7 @@ use function Chevere\Parameter\booleanString;
 use function Chevere\Parameter\date;
 use function Chevere\Parameter\datetime;
 use function Chevere\Parameter\enum;
-use function Chevere\Parameter\integerString;
+use function Chevere\Parameter\intString;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\time;
 
@@ -172,9 +172,9 @@ final class FunctionsStringTest extends TestCase
         $this->assertSame($description, $parameter->description());
     }
 
-    public function testIntegerString(): void
+    public function testIntString(): void
     {
-        $parameter = integerString();
+        $parameter = intString();
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
         assertString($parameter, '0');

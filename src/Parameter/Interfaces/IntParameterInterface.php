@@ -16,9 +16,9 @@ namespace Chevere\Parameter\Interfaces;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 
 /**
- * Describes the component in charge of defining a parameter of type integer.
+ * Describes the component in charge of defining a parameter of type int.
  */
-interface IntegerParameterInterface extends ParameterInterface
+interface IntParameterInterface extends ParameterInterface
 {
     public const MINIMUM = PHP_INT_MIN;
 

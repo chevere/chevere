@@ -37,7 +37,7 @@ final class ArrayPrefixKeysFunctionTest extends TestCase
         $this->assertSame($expected, $prefixed);
     }
 
-    public function testPrefixedIntegerString(): void
+    public function testPrefixedIntString(): void
     {
         $array = [
             23 => null,
@@ -54,7 +54,7 @@ final class ArrayPrefixKeysFunctionTest extends TestCase
         $this->assertSame($expected, $prefixed);
     }
 
-    public function testPrefixedInteger(): void
+    public function testPrefixedInt(): void
     {
         $array = [
             23 => null,

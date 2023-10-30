@@ -15,7 +15,7 @@ namespace Chevere\Parameter\Traits;
 
 use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
-use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use function Chevere\Message\message;
@@ -113,7 +113,7 @@ trait NumericParameterTrait
     }
 
     private function assertNumericCompatible(
-        IntegerParameterInterface|FloatParameterInterface $parameter
+        IntParameterInterface|FloatParameterInterface $parameter
     ): void {
         $this->assertNumericAccept($parameter);
         $this->assertNumericMinimum($parameter);
@@ -121,7 +121,7 @@ trait NumericParameterTrait
     }
 
     private function assertNumericAccept(
-        IntegerParameterInterface|FloatParameterInterface $parameter
+        IntParameterInterface|FloatParameterInterface $parameter
     ): void {
         $diffA = array_diff($this->accept, $parameter->accept());
         $diffB = array_diff($parameter->accept(), $this->accept);
@@ -138,7 +138,7 @@ trait NumericParameterTrait
     }
 
     private function assertNumericMinimum(
-        IntegerParameterInterface|FloatParameterInterface $parameter
+        IntParameterInterface|FloatParameterInterface $parameter
     ): void {
         if ($this->minimum !== $parameter->minimum()) {
             $value = strval($this->minimum() ?? 'null');
@@ -153,7 +153,7 @@ trait NumericParameterTrait
     }
 
     private function assertNumericMaximum(
-        IntegerParameterInterface|FloatParameterInterface $parameter
+        IntParameterInterface|FloatParameterInterface $parameter
     ): void {
         if ($this->maximum !== $parameter->maximum()) {
             $value = strval($this->maximum() ?? 'null');

@@ -26,7 +26,7 @@ interface CastParameterInterface
 
     public function float(): FloatParameterInterface;
 
-    public function integer(): IntegerParameterInterface;
+    public function int(): IntParameterInterface;
 
     public function object(): ObjectParameterInterface;
 

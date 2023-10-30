@@ -50,9 +50,9 @@ function typeBoolean(): TypeInterface
     return new Type(Type::BOOLEAN);
 }
 
-function typeInteger(): TypeInterface
+function typeInt(): TypeInterface
 {
-    return new Type(Type::INTEGER);
+    return new Type(Type::INT);
 }
 
 function typeFloat(): TypeInterface

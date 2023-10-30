@@ -23,7 +23,7 @@ final class CastTest extends TestCase
     {
         return [
             [null, 'mixed'],
-            [1, 'integer'],
+            [1, 'int'],
             [1.1, 'float'],
             [true, 'boolean'],
             ['string', 'string'],
@@ -34,8 +34,8 @@ final class CastTest extends TestCase
                 'callable',
             ],
             [[], 'iterable'],
-            [1, 'nullInteger'],
-            [null, 'nullInteger'],
+            [1, 'nullInt'],
+            [null, 'nullInt'],
             [1.1, 'nullFloat'],
             [null, 'nullFloat'],
             [true, 'nullBoolean'],

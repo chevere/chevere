@@ -97,7 +97,7 @@ final class FunctionsTest extends TestCase
         assertArgument($parameter, 1);
     }
 
-    public function testIntegerParameter(): void
+    public function testIntParameter(): void
     {
         $parameter = int();
         assertArgument($parameter, 1);

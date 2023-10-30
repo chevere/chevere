@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\ArrayParameter;
-use Chevere\Parameter\Interfaces\IntegerParameterInterface;
+use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -58,11 +58,11 @@ final class ArrayParameterTest extends TestCase
     public function testWithRequired(): void
     {
         $string = string();
-        $integer = int();
+        $int = int();
         $parameter = new ArrayParameter();
         $withRequired = $parameter->withRequired(
             one: $string,
-            two: $integer
+            two: $int
         );
         $this->assertTrue($withRequired->parameters()->has('one', 'two'));
         $this->assertNotSame($parameter, $withRequired);
@@ -72,7 +72,7 @@ final class ArrayParameterTest extends TestCase
             $withRequired->parameters()->get('one')
         );
         $this->assertInstanceOf(
-            IntegerParameterInterface::class,
+            IntParameterInterface::class,
             $withRequired->parameters()->get('two')
         );
         $this->assertSame([
@@ -85,20 +85,20 @@ final class ArrayParameterTest extends TestCase
                 ] + $string->schema(),
                 'two' => [
                     'required' => true,
-                ] + $integer->schema(),
+                ] + $int->schema(),
             ],
         ], $withRequired->schema());
         $withRequired = $withRequired->withRequired(
-            one: $integer,
-            three: $integer
+            one: $int,
+            three: $int
         );
         $this->assertTrue($withRequired->parameters()->has('one', 'two', 'three'));
         $this->assertInstanceOf(
-            IntegerParameterInterface::class,
+            IntParameterInterface::class,
             $withRequired->parameters()->get('one')
         );
         $this->assertInstanceOf(
-            IntegerParameterInterface::class,
+            IntParameterInterface::class,
             $withRequired->parameters()->get('three')
         );
     }
@@ -153,10 +153,10 @@ final class ArrayParameterTest extends TestCase
     public function testWithOut(): void
     {
         $string = string();
-        $integer = int();
+        $int = int();
         $parameter = (new ArrayParameter())->withRequired(
             one: $string,
-            two: $integer
+            two: $int
         );
         $with = $parameter->without('one');
         $this->assertNotSame($parameter, $with);
@@ -166,7 +166,7 @@ final class ArrayParameterTest extends TestCase
     public function testAssertCompatible(): void
     {
         $string = string();
-        $integer = int();
+        $int = int();
         $parameter = (new ArrayParameter())->withRequired(
             one: $string,
         );
@@ -177,10 +177,10 @@ final class ArrayParameterTest extends TestCase
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
         $notCompatible = (new ArrayParameter())->withRequired(
-            one: $integer,
+            one: $int,
         );
         $expectedType = $string::class;
-        $failType = $integer::class;
+        $failType = $int::class;
         $this->expectExceptionMessage(
             <<<STRING
             Parameter one of type {$expectedType} is not compatible with type {$failType}
@@ -206,15 +206,15 @@ final class ArrayParameterTest extends TestCase
     public function testIsList(): void
     {
         $string = string();
-        $integer = int();
+        $int = int();
         $parameter = (new ArrayParameter())->withRequired(
             a: $string,
-            b: $integer,
+            b: $int,
         );
         $this->assertFalse($parameter->isList());
         $this->assertTrue($parameter->isMap());
         $this->assertSame('array#map', $parameter->typeSchema());
-        $parameter = (new ArrayParameter())->withRequired($string, $integer);
+        $parameter = (new ArrayParameter())->withRequired($string, $int);
         $this->assertTrue($parameter->isList());
         $this->assertFalse($parameter->isMap());
         $this->assertSame('array#list', $parameter->typeSchema());

@@ -61,7 +61,7 @@ interface FilePhpReturnInterface
 
     public function getFloat(): float;
 
-    public function getInteger(): int;
+    public function getInt(): int;
 
     public function getObject(): object;
 

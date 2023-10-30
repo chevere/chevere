@@ -43,7 +43,7 @@ final class ArrayChangeKeyFunctionTest extends TestCase
         $this->assertSame($expected, $change);
     }
 
-    public function testChangeFromInteger(): void
+    public function testChangeFromInt(): void
     {
         $changeKey = 'key1';
         $array = [
@@ -59,7 +59,7 @@ final class ArrayChangeKeyFunctionTest extends TestCase
         $this->assertSame($expected, $change);
     }
 
-    public function testChangeToInteger(): void
+    public function testChangeToInt(): void
     {
         $changeKey = 0;
         $array = [

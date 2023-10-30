@@ -137,7 +137,7 @@ final class FilePhpReturnTest extends TestCase
     public function testPut(): void
     {
         foreach ([
-            TypeInterface::INTEGER => 1,
+            TypeInterface::INT => 1,
             TypeInterface::FLOAT => 1.1,
             TypeInterface::BOOLEAN => true,
             TypeInterface::STRING => 'test',

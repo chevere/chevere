@@ -34,10 +34,10 @@ final class TypeTest extends TestCase
         if (! is_resource($resource)) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
-        $scalars = ['boolean', 'integer', 'float', 'string'];
+        $scalars = ['boolean', 'int', 'float', 'string'];
         foreach ([
             Type::BOOLEAN => true,
-            Type::INTEGER => 1,
+            Type::INT => 1,
             Type::FLOAT => 13.13,
             Type::STRING => 'test',
             Type::ARRAY => ['test'],

@@ -20,7 +20,7 @@ interface TypeInterface
 {
     public const BOOLEAN = 'boolean';
 
-    public const INTEGER = 'integer';
+    public const INT = 'int';
 
     public const FLOAT = 'float';
 
@@ -57,7 +57,7 @@ interface TypeInterface
         self::BOOLEAN => 'is_bool',
         self::CALLABLE => 'is_callable',
         self::FLOAT => 'is_float',
-        self::INTEGER => 'is_integer',
+        self::INT => 'is_int',
         self::ITERABLE => 'is_iterable',
         self::NULL => 'is_null',
         self::OBJECT => 'is_object',
@@ -78,7 +78,7 @@ interface TypeInterface
         self::BOOLEAN,
         self::CALLABLE,
         self::FLOAT,
-        self::INTEGER,
+        self::INT,
         self::ITERABLE,
         self::NULL,
         self::OBJECT,
@@ -97,7 +97,7 @@ interface TypeInterface
         'bool' => self::BOOLEAN,
         'callable' => self::CALLABLE,
         'float' => self::FLOAT,
-        'int' => self::INTEGER,
+        'int' => self::INT,
         'iterable' => self::ITERABLE,
         'null' => self::NULL,
         'object' => self::OBJECT,
