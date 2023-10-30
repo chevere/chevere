@@ -48,7 +48,7 @@ interface DirectoryInterface
     public function createIfNotExists(int $mode = 0755): void;
 
     /**
-     * Returns a boolean indicating whether the directory exists.
+     * Indicates whether the directory exists.
      */
     public function exists(): bool;
 

@@ -25,7 +25,7 @@ use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertNamedArgument;
 use function Chevere\Parameter\assertUnion;
-use function Chevere\Parameter\boolean;
+use function Chevere\Parameter\bool;
 use function Chevere\Parameter\generic;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\null;
@@ -71,13 +71,13 @@ final class FunctionsTest extends TestCase
         assertArgument($parameter, []);
     }
 
-    public function testBooleanParameter(): void
+    public function testBoolParameter(): void
     {
-        $parameter = boolean();
+        $parameter = bool();
         assertArgument($parameter, true);
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
-        $parameter = boolean(
+        $parameter = bool(
             description: 'name',
             default: true
         );

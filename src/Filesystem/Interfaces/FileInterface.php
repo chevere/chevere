@@ -41,12 +41,12 @@ interface FileInterface
     public function path(): PathInterface;
 
     /**
-     * Returns a boolean indicating whether the file name is a PHP file.
+     * Indicates whether the file name is a PHP file.
      */
     public function isPhp(): bool;
 
     /**
-     * Returns a boolean indicating whether the file exists.
+     * Indicates whether the file exists.
      */
     public function exists(): bool;
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
-use Chevere\Parameter\Interfaces\BooleanParameterInterface;
+use Chevere\Parameter\Interfaces\BoolParameterInterface;
 use Chevere\Parameter\Interfaces\CastParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
@@ -39,9 +39,9 @@ final class CastParameter implements CastParameterInterface
         return $this->argument;
     }
 
-    public function boolean(): BooleanParameterInterface
+    public function bool(): BoolParameterInterface
     {
-        /** @var BooleanParameterInterface */
+        /** @var BoolParameterInterface */
         return $this->argument;
     }
 

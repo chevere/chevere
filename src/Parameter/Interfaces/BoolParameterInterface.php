@@ -16,9 +16,9 @@ namespace Chevere\Parameter\Interfaces;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 
 /**
- * Describes the component in charge of defining a parameter of type boolean.
+ * Describes the component in charge of defining a parameter of type bool.
  */
-interface BooleanParameterInterface extends ParameterInterface
+interface BoolParameterInterface extends ParameterInterface
 {
     /**
      * Return an instance with the specified `$default` value.

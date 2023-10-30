@@ -18,7 +18,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertString;
-use function Chevere\Parameter\booleanString;
+use function Chevere\Parameter\boolString;
 use function Chevere\Parameter\date;
 use function Chevere\Parameter\datetime;
 use function Chevere\Parameter\enum;
@@ -110,16 +110,16 @@ final class FunctionsStringTest extends TestCase
         assertString($parameter, '9999-99-99 999:99:99');
     }
 
-    public function testBooleanString(): void
+    public function testBoolString(): void
     {
-        $string = booleanString();
+        $string = boolString();
         $this->assertSame('', $string->description());
         $this->assertNull($string->default());
         $this->expectException(InvalidArgumentException::class);
-        booleanString(default: '2');
+        boolString(default: '2');
     }
 
-    public static function booleanStringArgumentsProvider(): array
+    public static function boolStringArgumentsProvider(): array
     {
         return [
             ['foo', '1'],
@@ -128,11 +128,11 @@ final class FunctionsStringTest extends TestCase
     }
 
     /**
-     * @dataProvider booleanStringArgumentsProvider
+     * @dataProvider boolStringArgumentsProvider
      */
-    public function testBooleanStringArguments(string $description, string $default): void
+    public function testBoolStringArguments(string $description, string $default): void
     {
-        $string = booleanString($description, $default);
+        $string = boolString($description, $default);
         $this->assertSame($description, $string->description());
         $this->assertSame($default, $string->default());
     }

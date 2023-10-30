@@ -13,25 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Parameter\BooleanParameter;
+use Chevere\Parameter\BoolParameter;
 use PHPUnit\Framework\TestCase;
 
-final class BooleanParameterTest extends TestCase
+final class BoolParameterTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $parameter = new BooleanParameter();
+        $parameter = new BoolParameter();
         $this->assertSame(null, $parameter->default());
         $default = true;
         $parameterWithDefault = $parameter->withDefault($default);
         (new ParameterHelper())->testWithParameterDefault(
-            primitive: 'boolean',
+            primitive: 'bool',
             parameter: $parameter,
             default: $default,
             parameterWithDefault: $parameterWithDefault
         );
         $this->assertSame([
-            'type' => 'boolean',
+            'type' => 'bool',
             'description' => '',
             'default' => $default,
         ], $parameterWithDefault->schema());

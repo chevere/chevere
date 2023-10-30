@@ -18,7 +18,7 @@ namespace Chevere\Type\Interfaces;
  */
 interface TypeInterface
 {
-    public const BOOLEAN = 'boolean';
+    public const BOOL = 'bool';
 
     public const INT = 'int';
 
@@ -54,7 +54,7 @@ interface TypeInterface
      */
     public const TYPE_VALIDATORS = [
         self::ARRAY => 'is_array',
-        self::BOOLEAN => 'is_bool',
+        self::BOOL => 'is_bool',
         self::CALLABLE => 'is_callable',
         self::FLOAT => 'is_float',
         self::INT => 'is_int',
@@ -75,7 +75,7 @@ interface TypeInterface
      */
     public const TYPE_ARGUMENTS = [
         self::ARRAY,
-        self::BOOLEAN,
+        self::BOOL,
         self::CALLABLE,
         self::FLOAT,
         self::INT,
@@ -94,7 +94,7 @@ interface TypeInterface
      */
     public const TYPE_STANDARD = [
         'array' => self::ARRAY,
-        'bool' => self::BOOLEAN,
+        'bool' => self::BOOL,
         'callable' => self::CALLABLE,
         'float' => self::FLOAT,
         'int' => self::INT,
@@ -118,7 +118,7 @@ interface TypeInterface
     public function typeHinting(): string;
 
     /**
-     * Returns a boolean indicating if `$variable` validates against the type.
+     * Indicates if `$variable` validates against the type.
      */
     public function validate(mixed $variable): bool;
 
@@ -128,7 +128,7 @@ interface TypeInterface
     public function validator(): callable;
 
     /**
-     * Returns a boolean indicating if type is scalar.
+     * Indicates if type is scalar.
      */
     public function isScalar(): bool;
 }

@@ -15,7 +15,7 @@ namespace Chevere\Tests\Action\src;
 
 use Chevere\Action\Action;
 
-final class ActionTestBooleanReturn extends Action
+final class ActionTestBoolReturn extends Action
 {
     protected function run(): bool
     {

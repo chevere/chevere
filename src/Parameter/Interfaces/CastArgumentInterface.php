@@ -22,7 +22,7 @@ interface CastArgumentInterface
 
     public function float(): float;
 
-    public function boolean(): bool;
+    public function bool(): bool;
 
     public function string(): string;
 
@@ -40,7 +40,7 @@ interface CastArgumentInterface
 
     public function nullFloat(): ?float;
 
-    public function nullBoolean(): ?bool;
+    public function nullBool(): ?bool;
 
     public function nullString(): ?string;
 

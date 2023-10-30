@@ -17,7 +17,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertInt;
-use function Chevere\Parameter\booleanInt;
+use function Chevere\Parameter\boolInt;
 use function Chevere\Parameter\int;
 
 final class FunctionsIntTest extends TestCase
@@ -57,16 +57,16 @@ final class FunctionsIntTest extends TestCase
         $this->assertSame(0, assertArgument($parameter, 0));
     }
 
-    public function testBooleanInt(): void
+    public function testBoolInt(): void
     {
-        $int = booleanInt();
+        $int = boolInt();
         $this->assertSame('', $int->description());
         $this->assertNull($int->default());
         $this->expectException(InvalidArgumentException::class);
-        booleanInt(default: 2);
+        boolInt(default: 2);
     }
 
-    public static function booleanIntArgumentsProvider(): array
+    public static function boolIntArgumentsProvider(): array
     {
         return [
             ['foo', 1],
@@ -75,11 +75,11 @@ final class FunctionsIntTest extends TestCase
     }
 
     /**
-     * @dataProvider booleanIntArgumentsProvider
+     * @dataProvider boolIntArgumentsProvider
      */
-    public function testBooleanIntArguments(string $description, int $default): void
+    public function testBoolIntArguments(string $description, int $default): void
     {
-        $int = booleanInt($description, $default);
+        $int = boolInt($description, $default);
         $this->assertSame($description, $int->description());
         $this->assertSame($default, $int->default());
     }

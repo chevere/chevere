@@ -20,7 +20,7 @@ interface CastParameterInterface
 {
     public function array(): ArrayParameterInterface;
 
-    public function boolean(): BooleanParameterInterface;
+    public function bool(): BoolParameterInterface;
 
     public function file(): FileParameterInterface;
 

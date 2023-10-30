@@ -54,9 +54,9 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return $this->get();
     }
 
-    public function getBoolean(): bool
+    public function getBool(): bool
     {
-        /** @var boolean */
+        /** @var bool */
         return $this->get();
     }
 

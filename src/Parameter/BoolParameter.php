@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
-use Chevere\Parameter\Interfaces\BooleanParameterInterface;
+use Chevere\Parameter\Interfaces\BoolParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Parameter\Traits\SchemaTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeBoolean;
+use function Chevere\Type\typeBool;
 
-final class BooleanParameter implements BooleanParameterInterface
+final class BoolParameter implements BoolParameterInterface
 {
     use ParameterTrait;
     use SchemaTrait;
 
     private ?bool $default;
 
-    public function withDefault(bool $value): BooleanParameterInterface
+    public function withDefault(bool $value): BoolParameterInterface
     {
         $new = clone $this;
         $new->default = $value;
@@ -42,12 +42,12 @@ final class BooleanParameter implements BooleanParameterInterface
     /**
      * @codeCoverageIgnore
      */
-    public function assertCompatible(BooleanParameterInterface $parameter): void
+    public function assertCompatible(BoolParameterInterface $parameter): void
     {
     }
 
     private function getType(): TypeInterface
     {
-        return typeBoolean();
+        return typeBool();
     }
 }

@@ -42,7 +42,7 @@ final class FunctionsTest extends TestCase
 
     public function testTypeFunctions(): void
     {
-        $types = ['boolean', 'int', 'float', 'string', 'array', 'callable', 'iterable', 'resource', 'null'];
+        $types = ['bool', 'int', 'float', 'string', 'array', 'callable', 'iterable', 'resource', 'null'];
         foreach ($types as $v) {
             $name = 'Chevere\\Type\\type' . ucfirst($v);
             /** @var TypeInterface $fn */

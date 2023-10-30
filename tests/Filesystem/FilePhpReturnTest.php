@@ -139,7 +139,7 @@ final class FilePhpReturnTest extends TestCase
         foreach ([
             TypeInterface::INT => 1,
             TypeInterface::FLOAT => 1.1,
-            TypeInterface::BOOLEAN => true,
+            TypeInterface::BOOL => true,
             TypeInterface::STRING => 'test',
             TypeInterface::ARRAY => [1, 2, 3],
             TypeInterface::ARRAY => [1, 1.1, true, 'test'],

@@ -72,17 +72,6 @@ function int(
     return $parameter;
 }
 
-function booleanInt(
-    string $description = '',
-    ?int $default = null,
-): IntParameterInterface {
-    return int(
-        description: $description,
-        default: $default,
-        accept: [0, 1]
-    );
-}
-
 function assertNumeric(
     IntParameterInterface|FloatParameterInterface $parameter,
     int|float $argument,

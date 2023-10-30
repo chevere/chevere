@@ -57,7 +57,7 @@ interface FilePhpReturnInterface
      */
     public function getArray(): array;
 
-    public function getBoolean(): bool;
+    public function getBool(): bool;
 
     public function getFloat(): float;
 

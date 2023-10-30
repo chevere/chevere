@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\ArrayParameter;
-use Chevere\Parameter\BooleanParameter;
+use Chevere\Parameter\BoolParameter;
 use Chevere\Parameter\FileParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\GenericParameter;
@@ -186,7 +186,7 @@ final class ParametersTest extends TestCase
             [new StringParameter(), 'string'],
             [new IntParameter(), 'int'],
             [new FloatParameter(), 'float'],
-            [new BooleanParameter(), 'boolean'],
+            [new BoolParameter(), 'bool'],
             [new ArrayParameter(), 'array'],
             [new ObjectParameter(), 'object'],
             [new NullParameter(), 'null', 'int'],

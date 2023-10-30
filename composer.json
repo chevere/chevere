@@ -40,7 +40,7 @@
             "src/Iterator/functions.php",
             "src/Message/functions.php",
             "src/Parameter/functions-array.php",
-            "src/Parameter/functions-boolean.php",
+            "src/Parameter/functions-bool.php",
             "src/Parameter/functions-numeric.php",
             "src/Parameter/functions-string.php",
             "src/Parameter/functions.php",

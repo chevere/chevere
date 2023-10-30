@@ -34,7 +34,7 @@ final class CastArgument implements CastArgumentInterface
         return $this->argument;
     }
 
-    public function boolean(): bool
+    public function bool(): bool
     {
         return $this->argument;
     }
@@ -81,7 +81,7 @@ final class CastArgument implements CastArgumentInterface
         return $this->argument ?? null;
     }
 
-    public function nullBoolean(): ?bool
+    public function nullBool(): ?bool
     {
         return $this->argument ?? null;
     }

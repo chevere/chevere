@@ -45,9 +45,9 @@ function returnTypeExceptionMessage(string $expected, mixed $provided): MessageI
         ->withCode('%provided%', getType($provided));
 }
 
-function typeBoolean(): TypeInterface
+function typeBool(): TypeInterface
 {
-    return new Type(Type::BOOLEAN);
+    return new Type(Type::BOOL);
 }
 
 function typeInt(): TypeInterface

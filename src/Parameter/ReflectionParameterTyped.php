@@ -37,7 +37,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
      */
     public const TYPE_TO_PARAMETER = [
         'array' => ArrayParameter::class,
-        'bool' => BooleanParameter::class,
+        'bool' => BoolParameter::class,
         'float' => FloatParameter::class,
         'int' => IntParameter::class,
         'string' => StringParameter::class,

@@ -29,9 +29,9 @@
             " */"
         ]
     },
-    "docblock-boolean": {
-        "description": "Docblock boolean",
-        "prefix": "docblock-boolean",
+    "docblock-bool": {
+        "description": "Docblock bool",
+        "prefix": "docblock-bool",
         "body": [
             "/**",
             " * Indicates whether the instance has ${1:name}.",

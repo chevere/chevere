@@ -28,7 +28,7 @@ use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use function Chevere\Parameter\arrayp;
-use function Chevere\Parameter\boolean;
+use function Chevere\Parameter\bool;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
@@ -313,7 +313,7 @@ final class ArgumentsTest extends TestCase
         $foo = 'foo';
         $var = true;
         $parameters = parameters(
-            foo: boolean(),
+            foo: bool(),
         );
         $arguments = new Arguments(
             $parameters,
@@ -321,7 +321,7 @@ final class ArgumentsTest extends TestCase
                 $foo => $var,
             ]
         );
-        $this->assertSame($var, $arguments->required($foo)->boolean());
+        $this->assertSame($var, $arguments->required($foo)->bool());
         $this->expectException(InvalidArgumentException::class);
         $arguments->optional($foo);
     }
@@ -330,14 +330,14 @@ final class ArgumentsTest extends TestCase
     {
         $foo = 'foo';
         $var = true;
-        $parameters = parameters()->withOptional($foo, boolean());
+        $parameters = parameters()->withOptional($foo, bool());
         $arguments = new Arguments(
             $parameters,
             [
                 $foo => $var,
             ]
         );
-        $this->assertSame($var, $arguments->optional($foo)?->boolean());
+        $this->assertSame($var, $arguments->optional($foo)?->bool());
         $arguments = new Arguments($parameters, []);
         $this->assertNull($arguments->optional($foo));
         $this->expectException(InvalidArgumentException::class);
@@ -366,7 +366,7 @@ final class ArgumentsTest extends TestCase
         $parameter = arrayp(
             string: string(),
             int: int(),
-            bool: boolean()
+            bool: bool()
         );
 
         return [

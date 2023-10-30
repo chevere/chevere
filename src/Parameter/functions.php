@@ -17,7 +17,7 @@ use ArrayAccess;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
-use Chevere\Parameter\Interfaces\BooleanParameterInterface;
+use Chevere\Parameter\Interfaces\BoolParameterInterface;
 use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
@@ -77,8 +77,8 @@ function arguments(
     return new Arguments($parameters, $arguments);
 }
 
-function assertBoolean(
-    BooleanParameterInterface $parameter,
+function assertBool(
+    BoolParameterInterface $parameter,
     bool $argument
 ): bool {
     return $argument;
@@ -163,9 +163,9 @@ function assertArgument(ParameterInterface $parameter, mixed $argument): mixed
         $parameter instanceof FileParameterInterface
         // @phpstan-ignore-next-line
         => assertArray($parameter, $argument),
-        $parameter instanceof BooleanParameterInterface
+        $parameter instanceof BoolParameterInterface
         // @phpstan-ignore-next-line
-        => assertBoolean($parameter, $argument),
+        => assertBool($parameter, $argument),
         $parameter instanceof FloatParameterInterface
         // @phpstan-ignore-next-line
         => assertFloat($parameter, $argument),
