@@ -29,7 +29,6 @@ use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArgument;
-use function Chevere\Type\toStandardType;
 
 /**
  * @method mixed run()
@@ -79,7 +78,7 @@ abstract class Action implements ActionInterface
         ReflectionNamedType $reflection,
         ParameterInterface $response
     ): void {
-        $returnName = toStandardType($reflection->getName());
+        $returnName = $reflection->getName();
         $expectName = $response->type()->typeHinting();
         $return = match ($returnName) {
             'void' => 'null',
