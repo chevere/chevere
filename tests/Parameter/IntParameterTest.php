@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
-use Chevere\Parameter\IntegerParameter;
+use Chevere\Parameter\IntParameter;
 use Chevere\Parameter\Parameters;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use OverflowException;
 use PHPUnit\Framework\TestCase;
 
-final class IntegerParameterTest extends TestCase
+final class IntParameterTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $parameter = new IntegerParameter();
+        $parameter = new IntParameter();
         $this->assertSame(null, $parameter->default());
         $this->assertSame(null, $parameter->minimum());
         $this->assertSame(null, $parameter->maximum());
@@ -51,7 +51,7 @@ final class IntegerParameterTest extends TestCase
     {
         $accept = [3, 2, 1];
         $sorted = [1, 2, 3];
-        $parameter = new IntegerParameter();
+        $parameter = new IntParameter();
         $withAccept = $parameter->withAccept(...$accept);
         $this->assertNotSame($parameter, $withAccept);
         $this->assertSame($sorted, $withAccept->accept());
@@ -71,7 +71,7 @@ final class IntegerParameterTest extends TestCase
         $expect = [
             'test' => 1,
         ];
-        $parameter = (new IntegerParameter())->withAccept(...$accept);
+        $parameter = (new IntParameter())->withAccept(...$accept);
         $parameters = new Parameters(test: $parameter);
         $arguments = new Arguments($parameters, $expect);
         $this->assertSame($expect, $arguments->toArray());
@@ -83,7 +83,7 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithMinimum(): void
     {
-        $parameter = new IntegerParameter();
+        $parameter = new IntParameter();
         $parameterWithMinimum = $parameter->withMinimum(1);
         $this->assertNotSame($parameter, $parameterWithMinimum);
         $this->assertSame(1, $parameterWithMinimum->minimum());
@@ -99,7 +99,7 @@ final class IntegerParameterTest extends TestCase
         $expect = [
             'test' => 1,
         ];
-        $parameter = (new IntegerParameter())->withMinimum(1);
+        $parameter = (new IntParameter())->withMinimum(1);
         $parameters = new Parameters(test: $parameter);
         $arguments = new Arguments($parameters, $expect);
         $this->assertSame($expect, $arguments->toArray());
@@ -111,7 +111,7 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithMaximum(): void
     {
-        $parameter = new IntegerParameter();
+        $parameter = new IntParameter();
         $withMaximum = $parameter->withMaximum(1);
         $this->assertNotSame($parameter, $withMaximum);
         $this->assertSame(1, $withMaximum->maximum());
@@ -127,7 +127,7 @@ final class IntegerParameterTest extends TestCase
         $expect = [
             'test' => 1,
         ];
-        $parameter = (new IntegerParameter())->withMaximum(1);
+        $parameter = (new IntParameter())->withMaximum(1);
         $parameters = new Parameters(test: $parameter);
         $arguments = new Arguments($parameters, $expect);
         $this->assertSame($expect, $arguments->toArray());
@@ -139,7 +139,7 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithMinimumMaximum(): void
     {
-        $parameter = new IntegerParameter();
+        $parameter = new IntParameter();
         $with = $parameter
             ->withMinimum(1)
             ->withMaximum(2);
@@ -149,7 +149,7 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithMaximumMinimum(): void
     {
-        $parameter = new IntegerParameter();
+        $parameter = new IntParameter();
         $with = $parameter
             ->withMinimum(1)
             ->withMaximum(2);
@@ -160,12 +160,12 @@ final class IntegerParameterTest extends TestCase
     public function testAssertCompatibleMinimum(): void
     {
         $value = 1;
-        $parameter = (new IntegerParameter())->withMinimum($value);
-        $compatible = (new IntegerParameter())->withMinimum($value);
+        $parameter = (new IntParameter())->withMinimum($value);
+        $compatible = (new IntParameter())->withMinimum($value);
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
         $provided = $value * 2;
-        $notCompatible = (new IntegerParameter())->withMinimum($provided);
+        $notCompatible = (new IntParameter())->withMinimum($provided);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             <<<STRING
@@ -178,13 +178,13 @@ final class IntegerParameterTest extends TestCase
     public function testAssertCompatibleMaximum(): void
     {
         $value = 1;
-        $compatible = (new IntegerParameter())->withMaximum($value);
-        $parameter = (new IntegerParameter())->withMaximum($value);
-        $compatible = (new IntegerParameter())->withMaximum($value);
+        $compatible = (new IntParameter())->withMaximum($value);
+        $parameter = (new IntParameter())->withMaximum($value);
+        $compatible = (new IntParameter())->withMaximum($value);
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
         $provided = $value * 2;
-        $notCompatible = (new IntegerParameter())->withMaximum($provided);
+        $notCompatible = (new IntParameter())->withMaximum($provided);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             <<<STRING
@@ -196,11 +196,11 @@ final class IntegerParameterTest extends TestCase
 
     public function testAssertCompatibleAccept(): void
     {
-        $parameter = (new IntegerParameter())->withAccept(0, 1);
-        $compatible = (new IntegerParameter())->withAccept(1, 0);
+        $parameter = (new IntParameter())->withAccept(0, 1);
+        $compatible = (new IntParameter())->withAccept(1, 0);
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
-        $notCompatible = (new IntegerParameter())->withAccept(2, 3);
+        $notCompatible = (new IntParameter())->withAccept(2, 3);
         $this->expectException(InvalidArgumentException::class);
         $this->getExpectedExceptionMessage('[' . implode(', ', $parameter->accept()) . ']');
         $parameter->assertCompatible($notCompatible);
@@ -208,8 +208,8 @@ final class IntegerParameterTest extends TestCase
 
     public function testAssertCompatibleAcceptMinimum(): void
     {
-        $parameter = (new IntegerParameter())->withAccept(1, 2, 3);
-        $notCompatible = (new IntegerParameter())->withMinimum(0);
+        $parameter = (new IntParameter())->withAccept(1, 2, 3);
+        $notCompatible = (new IntParameter())->withMinimum(0);
         $this->expectException(InvalidArgumentException::class);
         $this->getExpectedExceptionMessage('value null');
         $parameter->assertCompatible($notCompatible);
@@ -217,7 +217,7 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithDefaultConflictMinimum(): void
     {
-        $parameter = (new IntegerParameter())
+        $parameter = (new IntParameter())
             ->withMinimum(1)
             ->withDefault(1);
         $this->expectException(InvalidArgumentException::class);
@@ -231,7 +231,7 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithDefaultConflictMaximum(): void
     {
-        $parameter = (new IntegerParameter())
+        $parameter = (new IntParameter())
             ->withMaximum(1)
             ->withDefault(1);
         $this->expectException(InvalidArgumentException::class);
@@ -245,7 +245,7 @@ final class IntegerParameterTest extends TestCase
 
     public function testWithDefaultConflictAccept(): void
     {
-        $parameter = (new IntegerParameter())->withAccept(1, 2, 3);
+        $parameter = (new IntParameter())->withAccept(1, 2, 3);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             <<<STRING

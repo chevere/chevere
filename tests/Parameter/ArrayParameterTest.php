@@ -21,7 +21,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArray;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\null;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\union;
@@ -58,7 +58,7 @@ final class ArrayParameterTest extends TestCase
     public function testWithRequired(): void
     {
         $string = string();
-        $integer = integer();
+        $integer = int();
         $parameter = new ArrayParameter();
         $withRequired = $parameter->withRequired(
             one: $string,
@@ -106,7 +106,7 @@ final class ArrayParameterTest extends TestCase
     public function testWithOptional(): void
     {
         $string = string();
-        $union = union(null(), integer());
+        $union = union(null(), int());
         $parameter = new ArrayParameter();
         $with = $parameter->withOptional(
             one: $string,
@@ -153,7 +153,7 @@ final class ArrayParameterTest extends TestCase
     public function testWithOut(): void
     {
         $string = string();
-        $integer = integer();
+        $integer = int();
         $parameter = (new ArrayParameter())->withRequired(
             one: $string,
             two: $integer
@@ -166,7 +166,7 @@ final class ArrayParameterTest extends TestCase
     public function testAssertCompatible(): void
     {
         $string = string();
-        $integer = integer();
+        $integer = int();
         $parameter = (new ArrayParameter())->withRequired(
             one: $string,
         );
@@ -206,7 +206,7 @@ final class ArrayParameterTest extends TestCase
     public function testIsList(): void
     {
         $string = string();
-        $integer = integer();
+        $integer = int();
         $parameter = (new ArrayParameter())->withRequired(
             a: $string,
             b: $integer,

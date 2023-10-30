@@ -56,7 +56,7 @@ function file(
 ): FileParameterInterface {
     return new FileParameter(
         name: $name ?? string(),
-        size: $size ?? integer(),
+        size: $size ?? int(),
         type: $type ?? string(),
         tmp_name: $tmp_name ?? string(),
         description: $description,
@@ -73,7 +73,7 @@ function generic(
     string $description = '',
 ): GenericParameterInterface {
     if ($K === null) {
-        $K = integer();
+        $K = int();
     }
 
     return new GenericParameter($V, $K, $description);

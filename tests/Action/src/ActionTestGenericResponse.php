@@ -16,7 +16,7 @@ namespace Chevere\Tests\Action\src;
 use Chevere\Action\Action;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use function Chevere\Parameter\generic;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\string;
 
 final class ActionTestGenericResponse extends Action
@@ -24,7 +24,7 @@ final class ActionTestGenericResponse extends Action
     public static function acceptResponse(): ParameterInterface
     {
         return generic(
-            V: integer(),
+            V: int(),
             K: string()
         );
     }

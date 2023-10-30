@@ -18,7 +18,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\generic;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\string;
 
 final class GenericParameterTest extends TestCase
@@ -60,9 +60,9 @@ final class GenericParameterTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         $key = string();
-        $value = integer(description: 'compatible');
+        $value = int(description: 'compatible');
         $keyAlt = string(description: 'compatible');
-        $valueAlt = integer();
+        $valueAlt = int();
         $parameter = new GenericParameter($value, $key);
         $compatible = new GenericParameter($valueAlt, $keyAlt, 'compatible');
         $parameter->assertCompatible($compatible);
@@ -71,8 +71,8 @@ final class GenericParameterTest extends TestCase
     public function testAssertCompatibleConflictValue(): void
     {
         $key = string();
-        $value = integer();
-        $valueAlt = integer(minimum: 1);
+        $value = int();
+        $valueAlt = int(minimum: 1);
         $parameter = new GenericParameter($value, $key);
         $notCompatible = new GenericParameter($valueAlt, $key);
         $this->expectException(InvalidArgumentException::class);
@@ -82,7 +82,7 @@ final class GenericParameterTest extends TestCase
     public function testAssertCompatibleConflictKey(): void
     {
         $key = string();
-        $value = integer();
+        $value = int();
         $keyAlt = string('/^[a-z]+&/');
         $parameter = new GenericParameter($value, $key);
         $notCompatible = new GenericParameter($value, $keyAlt);

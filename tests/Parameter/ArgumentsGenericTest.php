@@ -18,7 +18,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\generic;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
 
@@ -77,7 +77,7 @@ final class ArgumentsGenericTest extends TestCase
     {
         $parameters = parameters(
             top: generic(
-                K: integer(),
+                K: int(),
                 V: string()
             )
         );
@@ -92,7 +92,7 @@ final class ArgumentsGenericTest extends TestCase
     {
         $parameters = parameters(
             top: generic(
-                K: integer(),
+                K: int(),
                 V: string('/^one$/')
             )
         );
@@ -109,10 +109,10 @@ final class ArgumentsGenericTest extends TestCase
     {
         $parameters = parameters(
             nested: generic(
-                K: integer(),
+                K: int(),
                 V: generic(
                     K: string(),
-                    V: integer()
+                    V: int()
                 )
             )
         );
@@ -127,7 +127,7 @@ final class ArgumentsGenericTest extends TestCase
     {
         $parameters = parameters(
             nested: generic(
-                K: integer(),
+                K: int(),
                 V: generic(
                     K: string(),
                     V: string()
@@ -158,7 +158,7 @@ final class ArgumentsGenericTest extends TestCase
     public function testGenericArgumentsConflict(array $args): void
     {
         $parameter = generic(
-            V: integer(),
+            V: int(),
             K: string()
         );
         $this->expectException(InvalidArgumentException::class);

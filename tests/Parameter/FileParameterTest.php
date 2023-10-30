@@ -16,7 +16,7 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Parameter\FileParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\string;
 
 final class FileParameterTest extends TestCase
@@ -24,7 +24,7 @@ final class FileParameterTest extends TestCase
     public function testConstruct(): void
     {
         $name = string();
-        $size = integer();
+        $size = int();
         $type = string();
         $tmp_name = string();
         $description = '';
@@ -67,20 +67,20 @@ final class FileParameterTest extends TestCase
             name: string(),
             type: string(),
             tmp_name: string(),
-            size: integer(),
+            size: int(),
         );
         $compatible = new FileParameter(
             string(),
             string(),
             string(),
-            integer(),
+            int(),
         );
         $parameter->assertCompatible($compatible);
         $notCompatible = new FileParameter(
             name: string(),
             type: string(),
             tmp_name: string(),
-            size: integer(accept: [1, 2, 3]),
+            size: int(accept: [1, 2, 3]),
         );
         $this->expectException(InvalidArgumentException::class);
         $parameter->assertCompatible($notCompatible);

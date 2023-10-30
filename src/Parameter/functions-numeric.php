@@ -48,14 +48,14 @@ function float(
 /**
  * @param int[] $accept
  */
-function integer(
+function int(
     string $description = '',
     ?int $default = null,
     ?int $minimum = null,
     ?int $maximum = null,
     array $accept = [],
 ): IntegerParameterInterface {
-    $parameter = new IntegerParameter($description);
+    $parameter = new IntParameter($description);
     if ($accept !== []) {
         $parameter = $parameter->withAccept(...$accept);
     }
@@ -76,7 +76,7 @@ function booleanInteger(
     string $description = '',
     ?int $default = null,
 ): IntegerParameterInterface {
-    return integer(
+    return int(
         description: $description,
         default: $default,
         accept: [0, 1]

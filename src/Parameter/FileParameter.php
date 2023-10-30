@@ -40,7 +40,7 @@ final class FileParameter implements FileParameterInterface
     ) {
         $this->type = $this->type();
         $this->parameters = new Parameters(
-            error: integer(accept: [UPLOAD_ERR_OK]),
+            error: int(accept: [UPLOAD_ERR_OK]),
             name: $name,
             size: $size,
             tmp_name: $tmp_name,

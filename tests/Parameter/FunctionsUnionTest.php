@@ -19,7 +19,7 @@ use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\generic;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\null;
 use function Chevere\Parameter\union;
 
@@ -27,7 +27,7 @@ final class FunctionsUnionTest extends TestCase
 {
     public function testUnionArrayFixed(): void
     {
-        $array = arrayp(a: integer());
+        $array = arrayp(a: int());
         $union = union(arrayp(), $array);
         $argument = [
             'a' => 1,
@@ -42,7 +42,7 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionArrayGeneric(): void
     {
-        $array = arrayp(a: integer());
+        $array = arrayp(a: int());
         $generic = generic($array);
         $union = union(arrayp(), $generic);
         $argument = [
@@ -63,7 +63,7 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionGenericEmptyArray(): void
     {
-        $array = arrayp(a: integer());
+        $array = arrayp(a: int());
         $union = union(arrayp(), $array);
         $generic = generic($union);
         $argument = [
@@ -84,7 +84,7 @@ final class FunctionsUnionTest extends TestCase
 
     public function testUnionGeneric(): void
     {
-        $generic = generic(integer());
+        $generic = generic(int());
         $union = union(arrayp(), $generic);
         assertUnion($union, []);
         assertUnion($union, [1, 2, 3]);

@@ -18,8 +18,8 @@ use Chevere\Parameter\BooleanParameter;
 use Chevere\Parameter\FileParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\GenericParameter;
-use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ParameterInterface;
+use Chevere\Parameter\IntParameter;
 use Chevere\Parameter\NullParameter;
 use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
@@ -30,7 +30,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\string;
 
 final class ParametersTest extends TestCase
@@ -79,7 +79,7 @@ final class ParametersTest extends TestCase
     public function testConstructPositional(): void
     {
         $foo = string();
-        $bar = integer();
+        $bar = int();
         $parameters = new Parameters($foo, $bar);
         $this->assertCount(2, $parameters);
         $this->assertSame($foo, $parameters->get('0'));
@@ -184,7 +184,7 @@ final class ParametersTest extends TestCase
     {
         return [
             [new StringParameter(), 'string'],
-            [new IntegerParameter(), 'integer'],
+            [new IntParameter(), 'integer'],
             [new FloatParameter(), 'float'],
             [new BooleanParameter(), 'boolean'],
             [new ArrayParameter(), 'array'],
@@ -218,7 +218,7 @@ final class ParametersTest extends TestCase
         $name = 'test';
         $parameter = new FileParameter(
             name: new StringParameter(),
-            size: new IntegerParameter(),
+            size: new IntParameter(),
             type: new StringParameter(),
             tmp_name: new StringParameter(),
         );
@@ -234,7 +234,7 @@ final class ParametersTest extends TestCase
     {
         $name = 'test';
         $type1 = new StringParameter();
-        $type2 = new IntegerParameter();
+        $type2 = new IntParameter();
         $parameters = new Parameters($type1, $type2);
         $parameter = new UnionParameter($parameters);
         $parameters = new Parameters(...[
@@ -253,7 +253,7 @@ final class ParametersTest extends TestCase
         $name = 'test';
         $parameter = new GenericParameter(
             value: string(),
-            key: integer(),
+            key: int(),
         );
         $parameters = new Parameters(...[
             $name => $parameter,
@@ -319,7 +319,7 @@ final class ParametersTest extends TestCase
     {
         $parameters = new Parameters(
             foo: string(),
-            bar: integer()
+            bar: int()
         );
         $parametersWith = $parameters->withMakeOptional('foo');
         $this->assertNotSame($parameters, $parametersWith);
@@ -336,7 +336,7 @@ final class ParametersTest extends TestCase
     {
         $parameters = (new Parameters())
             ->withOptional('foo', string())
-            ->withOptional('bar', integer());
+            ->withOptional('bar', int());
         $parametersWith = $parameters->withMakeRequired('bar');
         $this->assertNotSame($parameters, $parametersWith);
         $this->assertCount(2, $parametersWith);

@@ -17,7 +17,7 @@ use Chevere\Parameter\UnionParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use PHPUnit\Framework\TestCase;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
 
@@ -42,7 +42,7 @@ final class UnionParameterTest extends TestCase
             parameters()
         );
         $one = string();
-        $two = integer();
+        $two = int();
         $with = $parameter->withAdded($one, $two);
         $this->assertNotSame($parameter, $with);
         $this->assertCount(2, $with->parameters());
@@ -70,7 +70,7 @@ final class UnionParameterTest extends TestCase
             string(),
         );
         $parametersAlt = parameters(
-            integer(),
+            int(),
         );
         $parameter = new UnionParameter($parameters);
         $compatible = new UnionParameter($parametersAlt);

@@ -27,7 +27,7 @@ use function Chevere\Parameter\assertNamedArgument;
 use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\boolean;
 use function Chevere\Parameter\generic;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\null;
 use function Chevere\Parameter\object;
 use function Chevere\Parameter\optionalFrom;
@@ -99,11 +99,11 @@ final class FunctionsTest extends TestCase
 
     public function testIntegerParameter(): void
     {
-        $parameter = integer();
+        $parameter = int();
         assertArgument($parameter, 1);
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
-        $parameter = integer(
+        $parameter = int(
             default: 10
         );
         $this->assertSame(10, $parameter->default());
@@ -145,7 +145,7 @@ final class FunctionsTest extends TestCase
     {
         $parameter = arrayp(
             one: string(),
-            two: integer(default: 222)
+            two: int(default: 222)
         );
         $array = [
             'one' => 'foo',
@@ -165,10 +165,10 @@ final class FunctionsTest extends TestCase
         $parameter = arrayp(
             wea: arrayp(
                 one: string(),
-                two: integer(default: 222),
+                two: int(default: 222),
                 nest: arrayp(
-                    one: integer(default: 1),
-                    two: integer(default: 2),
+                    one: int(default: 1),
+                    two: int(default: 2),
                 )
             )
         );
@@ -197,7 +197,7 @@ final class FunctionsTest extends TestCase
 
     public function testFunctionAssertArgument(): void
     {
-        assertNamedArgument('test', integer(), 123);
+        assertNamedArgument('test', int(), 123);
         $this->expectException(InvalidArgumentException::class);
         assertNamedArgument('fail', string(), 13.13);
     }
@@ -219,7 +219,7 @@ final class FunctionsTest extends TestCase
     public function testFunctionUnionParameter(): void
     {
         $parameter = union(
-            integer(),
+            int(),
             string(),
         );
         assertUnion($parameter, 'foo');
@@ -265,7 +265,7 @@ final class FunctionsTest extends TestCase
     public function testWithRequiredTake(): void
     {
         $foo = string(default: 'foo');
-        $bar = integer(default: 1);
+        $bar = int(default: 1);
         $parameters = parameters()
             ->withRequired('foo', $foo)
             ->withOptional('bar', $bar);
@@ -289,7 +289,7 @@ final class FunctionsTest extends TestCase
     public function testWithOptionalTake(): void
     {
         $foo = string(default: 'foo');
-        $bar = integer(default: 1);
+        $bar = int(default: 1);
         $parameters = parameters()
             ->withRequired('foo', $foo)
             ->withOptional('bar', $bar);
@@ -313,14 +313,14 @@ final class FunctionsTest extends TestCase
     public function testTakeKeys(): void
     {
         $parameters = parameters(foo: string())
-            ->withOptional('bar', integer());
+            ->withOptional('bar', int());
         $this->assertSame(['foo', 'bar'], takeKeys($parameters));
     }
 
     public function testTakeFrom(): void
     {
         $foo = string(default: 'foo');
-        $bar = integer(default: 1);
+        $bar = int(default: 1);
         $parameters = parameters()
             ->withRequired('foo', $foo)
             ->withOptional('bar', $bar);

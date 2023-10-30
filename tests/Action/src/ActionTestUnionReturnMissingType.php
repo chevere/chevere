@@ -15,7 +15,7 @@ namespace Chevere\Tests\Action\src;
 
 use Chevere\Action\Action;
 use Chevere\Parameter\Interfaces\ParameterInterface;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\union;
 
@@ -25,7 +25,7 @@ final class ActionTestUnionReturnMissingType extends Action
     {
         return union(
             string(),
-            integer(),
+            int(),
         );
     }
 

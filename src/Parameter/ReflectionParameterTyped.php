@@ -39,7 +39,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         'array' => ArrayParameter::class,
         'bool' => BooleanParameter::class,
         'float' => FloatParameter::class,
-        'int' => IntegerParameter::class,
+        'int' => IntParameter::class,
         'string' => StringParameter::class,
         'object' => ObjectParameter::class,
     ];

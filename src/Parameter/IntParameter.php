@@ -19,7 +19,7 @@ use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
 use function Chevere\Type\typeInteger;
 
-final class IntegerParameter implements IntegerParameterInterface
+final class IntParameter implements IntegerParameterInterface
 {
     use ParameterTrait;
     use NumericParameterTrait;

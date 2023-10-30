@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\Arguments;
-use Chevere\Parameter\IntegerParameter;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
+use Chevere\Parameter\IntParameter;
 use Chevere\Parameter\Parameters;
 use Chevere\Regex\Regex;
 use Chevere\Tests\Parameter\_resources\ArrayAccessDynamic;
@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 use stdClass;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\boolean;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
 
@@ -53,7 +53,7 @@ final class ArgumentsTest extends TestCase
             'name' => 'someValue',
         ];
         $parameters = parameters(
-            id: new IntegerParameter(),
+            id: new IntParameter(),
             name: string()
         );
         $arguments = new Arguments($parameters, $args);
@@ -365,7 +365,7 @@ final class ArgumentsTest extends TestCase
         ];
         $parameter = arrayp(
             string: string(),
-            int: integer(),
+            int: int(),
             bool: boolean()
         );
 

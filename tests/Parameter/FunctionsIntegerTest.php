@@ -18,13 +18,13 @@ use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertInteger;
 use function Chevere\Parameter\booleanInteger;
-use function Chevere\Parameter\integer;
+use function Chevere\Parameter\int;
 
 final class FunctionsIntegerTest extends TestCase
 {
     public function testInteger(): void
     {
-        $parameter = integer();
+        $parameter = int();
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
         $this->assertSame(null, $parameter->minimum());
@@ -36,7 +36,7 @@ final class FunctionsIntegerTest extends TestCase
     {
         $description = 'test';
         $default = 5;
-        $parameter = integer(
+        $parameter = int(
             description: $description,
             default: $default,
             minimum: -100,
@@ -46,13 +46,13 @@ final class FunctionsIntegerTest extends TestCase
         $this->assertSame($default, $parameter->default());
         $this->assertSame(-100, $parameter->minimum());
         $this->assertSame(100, $parameter->maximum());
-        $parameter = integer(accept: [0, 1]);
+        $parameter = int(accept: [0, 1]);
         $this->assertSame([0, 1], $parameter->accept());
     }
 
     public function testAssertInteger(): void
     {
-        $parameter = integer();
+        $parameter = int();
         $this->assertSame(0, assertInteger($parameter, 0));
         $this->assertSame(0, assertArgument($parameter, 0));
     }
