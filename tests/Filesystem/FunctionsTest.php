@@ -15,6 +15,7 @@ namespace Chevere\Tests\Filesystem;
 
 use PHPUnit\Framework\TestCase;
 use function Chevere\Filesystem\directoryForPath;
+use function Chevere\Filesystem\resolvePath;
 use function Chevere\Filesystem\tailDirectoryPath;
 
 final class FunctionsTest extends TestCase
@@ -52,5 +53,52 @@ final class FunctionsTest extends TestCase
             $directory = directoryForPath($value);
             $this->assertSame($expected, $directory->path()->__toString());
         }
+    }
+
+    public function dataProviderResolvePath(): array
+    {
+        return [
+            [
+                '', '',
+            ],
+            [
+                '.', '',
+            ],
+            [
+                '..', '',
+            ],
+            [
+                '../path', 'path',
+            ],
+            [
+                'path/..', '',
+            ],
+            [
+                'path/aaa/..', 'path',
+            ],
+            [
+                'path/aaa/bbb/..', 'path/aaa',
+            ],
+            [
+                'path/aaa/../..', '',
+            ],
+            [
+                'path/aaa/../zzz', 'path/zzz',
+            ],
+            [
+                'path/../bbb/zzz', 'bbb/zzz',
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderResolvePath
+     */
+    public function testResolvePath(string $argument, string $expected): void
+    {
+        $this->assertSame(
+            $expected,
+            resolvePath($argument),
+        );
     }
 }
