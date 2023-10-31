@@ -50,7 +50,7 @@ final class FunctionsTest extends TestCase
             foo: string()
         );
         $this->assertCount(1, $parameters);
-        $this->assertTrue($parameters->isRequired('foo'));
+        $this->assertTrue($parameters->requiredKeys()->contains('foo'));
     }
 
     public function testArguments(): void
@@ -279,13 +279,13 @@ final class FunctionsTest extends TestCase
         $this->assertEquals($from, $fromArray);
         $this->assertNotEquals($parameters, $from);
         $this->assertTrue($from->has('foo', 'bar'));
-        $this->assertTrue($from->isRequired('foo', 'bar'));
-        $this->assertFalse($from->isOptional('foo', 'bar'));
+        $this->assertTrue($from->requiredKeys()->contains('foo', 'bar'));
+        $this->assertFalse($from->optionalKeys()->contains('foo', 'bar'));
         $from = requiredFrom($parameters, 'bar');
         $this->assertNotEquals($parameters, $from);
         $this->assertTrue($from->has('bar'));
         $this->assertFalse($from->has('foo'));
-        $this->assertTrue($from->isRequired('bar'));
+        $this->assertTrue($from->requiredKeys()->contains('bar'));
     }
 
     public function testWithOptionalFrom(): void
@@ -303,13 +303,13 @@ final class FunctionsTest extends TestCase
         $this->assertEquals($from, $fromArray);
         $this->assertNotEquals($parameters, $from);
         $this->assertTrue($from->has('foo', 'bar'));
-        $this->assertTrue($from->isOptional('foo', 'bar'));
-        $this->assertFalse($from->isRequired('foo', 'bar'));
+        $this->assertTrue($from->optionalKeys()->contains('foo', 'bar'));
+        $this->assertFalse($from->requiredKeys()->contains('foo', 'bar'));
         $from = optionalFrom($parameters, 'foo');
         $this->assertNotEquals($parameters, $from);
         $this->assertTrue($from->has('foo'));
         $this->assertFalse($from->has('bar'));
-        $this->assertTrue($from->isOptional('foo'));
+        $this->assertTrue($from->optionalKeys()->contains('foo'));
     }
 
     public function testTakeKeys(): void

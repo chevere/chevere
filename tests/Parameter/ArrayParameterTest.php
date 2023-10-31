@@ -241,8 +241,8 @@ final class ArrayParameterTest extends TestCase
             );
         $arrayWith = $array->withMakeOptional('foo');
         $this->assertNotSame($array, $arrayWith);
-        $this->assertTrue($arrayWith->parameters()->isOptional('foo'));
-        $this->assertTrue($arrayWith->parameters()->isRequired('bar'));
+        $this->assertTrue($arrayWith->parameters()->optionalKeys()->contains('foo'));
+        $this->assertTrue($arrayWith->parameters()->requiredKeys()->contains('bar'));
     }
 
     public function testWithMakeRequired(): void
@@ -254,7 +254,7 @@ final class ArrayParameterTest extends TestCase
             );
         $arrayWith = $array->withMakeRequired('bar');
         $this->assertNotSame($array, $arrayWith);
-        $this->assertTrue($arrayWith->parameters()->isOptional('foo'));
-        $this->assertTrue($arrayWith->parameters()->isRequired('bar'));
+        $this->assertTrue($arrayWith->parameters()->optionalKeys()->contains('foo'));
+        $this->assertTrue($arrayWith->parameters()->requiredKeys()->contains('bar'));
     }
 }

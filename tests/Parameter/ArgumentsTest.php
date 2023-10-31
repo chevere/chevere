@@ -38,8 +38,8 @@ final class ArgumentsTest extends TestCase
     public function testInvalidArgument(): void
     {
         $parameters = parameters(test: string());
-        $this->assertTrue($parameters->isRequired('test'));
-        $this->assertFalse($parameters->isOptional('test'));
+        $this->assertTrue($parameters->requiredKeys()->contains('test'));
+        $this->assertFalse($parameters->optionalKeys()->contains('test'));
         $this->expectException(InvalidArgumentException::class);
         new Arguments($parameters, [
             'test' => 123,

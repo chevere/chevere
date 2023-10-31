@@ -36,7 +36,7 @@ final class ArrayStringParameterTest extends TestCase
         $this->assertNotSame($parameter, $parameterWith);
         $this->assertCount(1, $parameterWith->parameters());
         $this->assertSame($foo, $parameterWith->parameters()->get('foo'));
-        $this->assertTrue($parameterWith->parameters()->isRequired('foo'));
+        $this->assertTrue($parameterWith->parameters()->requiredKeys()->contains('foo'));
     }
 
     public function testWithOptional(): void
@@ -49,7 +49,7 @@ final class ArrayStringParameterTest extends TestCase
         $this->assertNotSame($parameter, $parameterWith);
         $this->assertCount(1, $parameterWith->parameters());
         $this->assertSame($foo, $parameterWith->parameters()->get('foo'));
-        $this->assertTrue($parameterWith->parameters()->isOptional('foo'));
+        $this->assertTrue($parameterWith->parameters()->optionalKeys()->contains('foo'));
     }
 
     public function testAssertCompatible(): void

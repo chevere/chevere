@@ -22,7 +22,6 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Throwable\Exceptions\BadMethodCallException;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Chevere\Throwable\Exceptions\OverflowException;
 use function Chevere\Message\message;
 
@@ -78,7 +77,7 @@ final class Parameters implements ParametersInterface
     {
         $new = clone $this;
         foreach ($name as $key) {
-            if (! $new->isRequired($key)) {
+            if (! $new->required->contains($key)) {
                 throw new InvalidArgumentException(
                     message('Parameter %name% is not required')
                         ->withCode('%name%', $key)
@@ -96,7 +95,7 @@ final class Parameters implements ParametersInterface
     {
         $new = clone $this;
         foreach ($name as $key) {
-            if (! $new->isOptional($key)) {
+            if (! $new->optionalKeys()->contains($key)) {
                 throw new InvalidArgumentException(
                     message('Parameter %name% is not optional')
                         ->withCode('%name%', $key)
@@ -151,30 +150,6 @@ final class Parameters implements ParametersInterface
         return $this->minimumOptional;
     }
 
-    public function isRequired(string ...$name): bool
-    {
-        foreach ($name as $item) {
-            $this->assertNoOutOfRange($item);
-            if (! $this->required->contains($item)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public function isOptional(string ...$name): bool
-    {
-        foreach ($name as $item) {
-            $this->assertNoOutOfRange($item);
-            if ($this->required->contains($item)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     public function assertHas(string ...$name): void
     {
         $this->map->assertHas(...$name);
@@ -192,7 +167,7 @@ final class Parameters implements ParametersInterface
 
     public function required(string $key): ParameterCastInterface
     {
-        if ($this->isOptional($key)) {
+        if ($this->optionalKeys()->contains($key)) {
             throw new InvalidArgumentException(
                 message('Parameter %name% is optional')
                     ->withCode('%name%', $key)
@@ -206,7 +181,7 @@ final class Parameters implements ParametersInterface
 
     public function optional(string $key): ParameterCastInterface
     {
-        if (! $this->isOptional($key)) {
+        if (! $this->optionalKeys()->contains($key)) {
             throw new InvalidArgumentException(
                 message('Parameter %name% is required')
                     ->withCode('%name%', $key)
@@ -238,17 +213,7 @@ final class Parameters implements ParametersInterface
         }
     }
 
-    private function assertNoOutOfRange(string $parameter): void
-    {
-        if (! $this->has($parameter)) {
-            throw new OutOfBoundsException(
-                message("Parameter %name% doesn't exists")
-                    ->withCode('%name%', $parameter)
-            );
-        }
-    }
-
-    private function assertNoOverflow(string $name): void
+    private function addProperty(string $property, string $name, ParameterInterface $parameter): void
     {
         if ($this->has($name)) {
             throw new OverflowException(
@@ -256,11 +221,6 @@ final class Parameters implements ParametersInterface
                     ->withCode('%name%', $name)
             );
         }
-    }
-
-    private function addProperty(string $property, string $name, ParameterInterface $parameter): void
-    {
-        $this->assertNoOverflow($name);
         $this->{$property} = $this->{$property}->withPush($name);
         $this->map = $this->map->withPut($name, $parameter);
     }

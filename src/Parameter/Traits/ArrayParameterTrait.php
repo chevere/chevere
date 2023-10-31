@@ -47,7 +47,7 @@ trait ArrayParameterTrait
         $items = [];
         foreach ($this->parameters as $name => $parameter) {
             $items[$name] = [
-                'required' => $this->parameters->isRequired($name),
+                'required' => $this->parameters->requiredKeys()->contains($name),
             ] + $parameter->schema();
         }
 

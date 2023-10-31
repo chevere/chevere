@@ -89,16 +89,6 @@ interface ParametersInterface extends Countable, StringKeysInterface, IteratorAg
      */
     public function has(string ...$name): bool;
 
-    /**
-     * Indicates whether the parameter(s) identified by its name is required.
-     */
-    public function isRequired(string ...$name): bool;
-
-    /**
-     * Indicates whether the parameter(s) identified by its name is optional.
-     */
-    public function isOptional(string ...$name): bool;
-
     public function requiredKeys(): VectorInterface;
 
     public function optionalKeys(): VectorInterface;

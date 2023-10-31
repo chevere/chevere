@@ -25,6 +25,6 @@ final class FunctionsArrayStringTest extends TestCase
         $parameter = arrayp(a: $string);
         $this->assertCount(1, $parameter->parameters());
         $this->assertSame($string, $parameter->parameters()->get('a'));
-        $this->assertTrue($parameter->parameters()->isRequired('a'));
+        $this->assertTrue($parameter->parameters()->requiredKeys()->contains('a'));
     }
 }

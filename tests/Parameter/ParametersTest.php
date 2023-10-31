@@ -67,7 +67,7 @@ final class ParametersTest extends TestCase
         $this->assertCount(1, $parameters->requiredKeys());
         $parameters->assertHas($name);
         $this->assertTrue($parameters->has($name));
-        $this->assertTrue($parameters->isRequired($name));
+        $this->assertTrue($parameters->requiredKeys()->contains($name));
         $this->assertSame($parameter, $parameters->get($name));
         $this->expectException(OverflowException::class);
         $parameters->withRequired(
@@ -121,7 +121,7 @@ final class ParametersTest extends TestCase
         $this->assertCount(1, $parameters->requiredKeys());
         $parameters->assertHas($name);
         $this->assertTrue($parameters->has($name));
-        $this->assertTrue($parameters->isRequired($name));
+        $this->assertTrue($parameters->requiredKeys()->contains($name));
         $this->assertSame($parameter, $parameters->get($name));
         $parametersWith = $parameters->withRequired('test', $parameter);
         $this->assertNotSame($parameters, $parametersWith);
@@ -159,25 +159,11 @@ final class ParametersTest extends TestCase
         $this->assertCount(1, $parametersWith->optionalKeys());
         $this->assertCount(0, $parametersWith->requiredKeys());
         $this->assertTrue($parametersWith->has($name));
-        $this->assertTrue($parametersWith->isOptional($name));
-        $this->assertFalse($parametersWith->isRequired($name));
+        $this->assertTrue($parametersWith->optionalKeys()->contains($name));
+        $this->assertFalse($parametersWith->requiredKeys()->contains($name));
         $this->assertSame($parameter, $parametersWith->get($name));
         $this->expectException(OverflowException::class);
         $parametersWith->withOptional($name, $parameter);
-    }
-
-    public function testIsRequiredOutOfRange(): void
-    {
-        $parameters = new Parameters();
-        $this->expectException(OutOfBoundsException::class);
-        $parameters->isRequired('not-found');
-    }
-
-    public function testIsOptionalOutOfRange(): void
-    {
-        $parameters = new Parameters();
-        $this->expectException(OutOfBoundsException::class);
-        $parameters->isOptional('not-found');
     }
 
     public function dataProviderCast(): array
@@ -326,8 +312,8 @@ final class ParametersTest extends TestCase
         $this->assertCount(2, $parametersWith);
         $this->assertCount(1, $parametersWith->optionalKeys());
         $this->assertCount(1, $parametersWith->requiredKeys());
-        $this->assertTrue($parametersWith->isOptional('foo'));
-        $this->assertTrue($parametersWith->isRequired('bar'));
+        $this->assertTrue($parametersWith->optionalKeys()->contains('foo'));
+        $this->assertTrue($parametersWith->requiredKeys()->contains('bar'));
         $this->expectException(InvalidArgumentException::class);
         $parametersWith->withMakeOptional('foo');
     }
@@ -342,8 +328,8 @@ final class ParametersTest extends TestCase
         $this->assertCount(2, $parametersWith);
         $this->assertCount(1, $parametersWith->optionalKeys());
         $this->assertCount(1, $parametersWith->requiredKeys());
-        $this->assertTrue($parametersWith->isOptional('foo'));
-        $this->assertTrue($parametersWith->isRequired('bar'));
+        $this->assertTrue($parametersWith->optionalKeys()->contains('foo'));
+        $this->assertTrue($parametersWith->requiredKeys()->contains('bar'));
         $this->expectException(InvalidArgumentException::class);
         $parametersWith->withMakeRequired('bar');
     }

@@ -124,7 +124,7 @@ final class Arguments implements ArgumentsInterface
 
     public function required(string $name): CastInterface
     {
-        if ($this->parameters->isOptional($name)) {
+        if ($this->parameters->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
                 message('Argument %name% is optional')
                     ->withCode('%name%', $name)
@@ -136,7 +136,7 @@ final class Arguments implements ArgumentsInterface
 
     public function optional(string $name): ?CastInterface
     {
-        if (! $this->parameters->isOptional($name)) {
+        if (! $this->parameters->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
                 message('Argument %name% is required')
                     ->withCode('%name%', $name)
@@ -257,7 +257,7 @@ final class Arguments implements ArgumentsInterface
 
     private function isSkipOptional(string $name): bool
     {
-        return $this->parameters->isOptional($name)
+        return $this->parameters->optionalKeys()->contains($name)
             && ! $this->has($name);
     }
 
