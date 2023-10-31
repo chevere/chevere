@@ -13,16 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Interfaces;
 
-use Chevere\DataStructure\Interfaces\MappedInterface;
+use Chevere\DataStructure\Interfaces\StringKeysInterface;
 use Chevere\DataStructure\Interfaces\VectorInterface;
+use Countable;
 use Iterator;
+use IteratorAggregate;
 
 /**
  * Describes the component in charge of collecting objects implementing `ParameterInterface`.
  *
- * @extends MappedInterface<ParameterInterface>
+ * @extends IteratorAggregate<string, ParameterInterface>
  */
-interface ParametersInterface extends MappedInterface
+interface ParametersInterface extends Countable, StringKeysInterface, IteratorAggregate
 {
     /**
      * @return Iterator<string, ParameterInterface>

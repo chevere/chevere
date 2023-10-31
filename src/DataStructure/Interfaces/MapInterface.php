@@ -27,19 +27,19 @@ interface MapInterface extends MappedInterface, ToArrayInterface
      * @param TValue ...$value
      * @return self<TValue>
      */
-    public function withPut(string $key, mixed $value): self;
+    public function withPut(string|int $key, mixed $value): self;
 
     /**
      * @return self<TValue>
      */
-    public function without(string ...$key): self;
+    public function without(string|int ...$key): self;
 
-    public function has(string ...$key): bool;
+    public function has(string|int ...$key): bool;
 
-    public function assertHas(string ...$key): void;
+    public function assertHas(string|int ...$key): void;
 
     /**
      * @return TValue
      */
-    public function get(string $key): mixed;
+    public function get(string|int $key): mixed;
 }

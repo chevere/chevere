@@ -91,6 +91,25 @@ final class MapTest extends TestCase
         $this->assertFalse($mapWith->has('a'));
         $this->assertSame(['b'], $mapWith->keys());
         $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key a not found');
         $mapWith->without('a');
+    }
+
+    public function testArrayKeys(): void
+    {
+        $map = (new Map())
+            ->withPut('', 'empty')
+            ->withPut(0, 'zero');
+        $array = [
+            '' => 'empty',
+            0 => 'zero',
+        ];
+        $this->assertSame(array_keys($array), $map->keys());
+        $this->assertSame($array[''], $map->get(''));
+        $this->assertSame($array[0], $map->get(0));
+        $this->assertFalse($map->has('0'));
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Key 0 not found');
+        $map->get('0');
     }
 }

@@ -30,7 +30,7 @@ final class Map implements MapInterface
     private array $values = [];
 
     /**
-     * @var array<string>
+     * @var array<string|int>
      */
     private array $keys = [];
 
@@ -39,13 +39,12 @@ final class Map implements MapInterface
     public function __construct(mixed ...$value)
     {
         foreach ($value as $key => $item) {
-            $key = (string) $key;
             $this->put($key, $item);
         }
     }
 
     /**
-     * @return array<string, TValue>
+     * @return array<string|int, TValue>
      */
     public function toArray(): array
     {
@@ -66,7 +65,7 @@ final class Map implements MapInterface
     public function getIterator(): Iterator
     {
         foreach ($this->keys as $key) {
-            /** @var string $lookup */
+            /** @var string|int $lookup */
             $lookup = $this->lookupKey($key);
             yield $key => $this->values[$lookup];
         }
@@ -76,7 +75,7 @@ final class Map implements MapInterface
      * @param TValue ...$value
      * @return self<TValue>
      */
-    public function withPut(string $key, mixed $value): self
+    public function withPut(string|int $key, mixed $value): self
     {
         $new = clone $this;
         $new->put($key, $value);
@@ -87,7 +86,7 @@ final class Map implements MapInterface
     /**
      * @return self<TValue>
      */
-    public function without(string ...$key): self
+    public function without(string|int ...$key): self
     {
         $new = clone $this;
         $new->out(...$key);
@@ -95,7 +94,7 @@ final class Map implements MapInterface
         return $new;
     }
 
-    public function has(string ...$key): bool
+    public function has(string|int ...$key): bool
     {
         try {
             $this->assertHas(...$key);
@@ -109,7 +108,7 @@ final class Map implements MapInterface
     /**
      * @throws OutOfBoundsException
      */
-    public function assertHas(string ...$key): void
+    public function assertHas(string|int ...$key): void
     {
         $missing = [];
         foreach ($key as $item) {
@@ -130,29 +129,28 @@ final class Map implements MapInterface
     /**
      * @throws OutOfBoundsException
      */
-    public function get(string $key): mixed
+    public function get(string|int $key): mixed
     {
         $lookup = $this->lookupKey($key);
         if ($lookup === null) {
             throw new OutOfBoundsException(
                 message('Key %key% not found')
-                    ->withCode('%key%', $key)
+                    ->withCode('%key%', strval($key))
             );
         }
 
         return $this->values[$lookup];
     }
 
-    private function lookupKey(string $key): ?string
+    private function lookupKey(string|int $key): ?string
     {
         $lookup = array_search($key, $this->keys, true);
 
         return $lookup === false ? null : strval($lookup);
     }
 
-    private function put(string $key, mixed $value): void
+    private function put(string|int $key, mixed $value): void
     {
-        $key = strval($key);
         $lookUp = $this->lookupKey($key);
         if ($lookUp === null) {
             $this->keys[] = $key;
@@ -164,14 +162,14 @@ final class Map implements MapInterface
         $this->values[$lookUp] = $value;
     }
 
-    private function out(string ...$key): void
+    private function out(string|int ...$key): void
     {
         foreach ($key as $item) {
             $lookup = $this->lookupKey($item);
             if ($lookup === null) {
                 throw new OutOfBoundsException(
                     message('Key %key% not found')
-                        ->withCode('%key%', $item)
+                        ->withCode('%key%', strval($item))
                 );
             }
             unset($this->keys[$lookup], $this->values[$lookup]);

@@ -22,13 +22,13 @@ use Traversable;
  * Describes the component in charge of defining a mapped interface.
  *
  * @template-covariant TValue
- * @extends IteratorAggregate<string, TValue>
+ * @extends IteratorAggregate<string|int, TValue>
  */
-interface MappedInterface extends Countable, StringKeysInterface, IteratorAggregate
+interface MappedInterface extends Countable, StringIntKeysInterface, IteratorAggregate
 {
     /**
      * @return Traversable<string, TValue>
-     * @phpstan-return Iterator<string, TValue>
+     * @phpstan-return Iterator<string|int, TValue>
      */
     public function getIterator(): Iterator;
 }

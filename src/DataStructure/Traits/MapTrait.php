@@ -33,6 +33,7 @@ trait MapTrait
 
     public function keys(): array
     {
+        // @phpstan-ignore-next-line
         return $this->map->keys();
     }
 
@@ -43,6 +44,7 @@ trait MapTrait
 
     public function getIterator(): Iterator
     {
+        // @phpstan-ignore-next-line
         return $this->map->getIterator();
     }
 }
