@@ -212,6 +212,15 @@ function methodParameters(string $class, string $method): ParametersInterface
     return $parameters;
 }
 
+function arrayFrom(
+    ParametersAccessInterface|ParametersInterface $parameter,
+    string ...$name
+): ArrayParameterInterface {
+    return arrayp(
+        ...takeFrom($parameter, ...$name)
+    );
+}
+
 /**
  * @return array<string>
  */

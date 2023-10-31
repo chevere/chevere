@@ -20,12 +20,14 @@ use PHPUnit\Framework\TestCase;
 use stdClass;
 use TypeError;
 use function Chevere\Parameter\arguments;
+use function Chevere\Parameter\arrayFrom;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArgument;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertNamedArgument;
 use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\bool;
+use function Chevere\Parameter\float;
 use function Chevere\Parameter\generic;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\null;
@@ -262,7 +264,7 @@ final class FunctionsTest extends TestCase
         ]);
     }
 
-    public function testWithRequiredTake(): void
+    public function testWithRequiredFrom(): void
     {
         $foo = string(default: 'foo');
         $bar = int(default: 1);
@@ -286,7 +288,7 @@ final class FunctionsTest extends TestCase
         $this->assertTrue($from->isRequired('bar'));
     }
 
-    public function testWithOptionalTake(): void
+    public function testWithOptionalFrom(): void
     {
         $foo = string(default: 'foo');
         $bar = int(default: 1);
@@ -361,5 +363,27 @@ final class FunctionsTest extends TestCase
         );
         $this->expectException(OutOfBoundsException::class);
         iterator_to_array(takeFrom($parameters, '404'));
+    }
+
+    public function testArrayFrom(): void
+    {
+        $foo = int();
+        $bar = string();
+        $baz = float();
+        $parameter = arrayp(
+            foo: $foo,
+            bar: $bar,
+            baz: $baz,
+        );
+        $arrayFrom = arrayFrom($parameter, 'foo', 'baz');
+        $this->assertSame(
+            [
+                'foo' => $foo,
+                'baz' => $baz,
+            ],
+            iterator_to_array(
+                $arrayFrom->parameters()
+            )
+        );
     }
 }
