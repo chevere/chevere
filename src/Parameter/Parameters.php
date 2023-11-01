@@ -37,11 +37,17 @@ final class Parameters implements ParametersInterface
      */
     private Map $map;
 
-    private VectorInterface $required;
+    /**
+     * @var Vector<string>
+     */
+    private VectorInterface $requiredKeys;
 
-    private VectorInterface $optional;
+    /**
+     * @var Vector<string>
+     */
+    private VectorInterface $optionalKeys;
 
-    private int $minimumOptional = 0;
+    private int $optionalMinimum = 0;
 
     /**
      * @param ParameterInterface $parameter Required parameters
@@ -49,18 +55,18 @@ final class Parameters implements ParametersInterface
     public function __construct(ParameterInterface ...$parameter)
     {
         $this->map = new Map();
-        $this->required = new Vector();
-        $this->optional = new Vector();
+        $this->requiredKeys = new Vector();
+        $this->optionalKeys = new Vector();
         foreach ($parameter as $name => $item) {
             $name = strval($name);
-            $this->addProperty('required', $name, $item);
+            $this->addProperty('requiredKeys', $name, $item);
         }
     }
 
     public function withRequired(string $name, ParameterInterface $parameter): ParametersInterface
     {
         $new = clone $this;
-        $new->addProperty('required', $name, $parameter);
+        $new->addProperty('requiredKeys', $name, $parameter);
 
         return $new;
     }
@@ -68,7 +74,7 @@ final class Parameters implements ParametersInterface
     public function withOptional(string $name, ParameterInterface $parameter): ParametersInterface
     {
         $new = clone $this;
-        $new->addProperty('optional', $name, $parameter);
+        $new->addProperty('optionalKeys', $name, $parameter);
 
         return $new;
     }
@@ -76,8 +82,11 @@ final class Parameters implements ParametersInterface
     public function withMakeOptional(string ...$name): ParametersInterface
     {
         $new = clone $this;
+        if ($name === []) {
+            $name = $this->requiredKeys->toArray();
+        }
         foreach ($name as $key) {
-            if (! $new->required->contains($key)) {
+            if (! $new->requiredKeys->contains($key)) {
                 throw new InvalidArgumentException(
                     message('Parameter %name% is not required')
                         ->withCode('%name%', $key)
@@ -85,7 +94,7 @@ final class Parameters implements ParametersInterface
             }
             $parameter = $new->get($key);
             $new->remove($key);
-            $new->addProperty('optional', $key, $parameter);
+            $new->addProperty('optionalKeys', $key, $parameter);
         }
 
         return $new;
@@ -94,6 +103,9 @@ final class Parameters implements ParametersInterface
     public function withMakeRequired(string ...$name): ParametersInterface
     {
         $new = clone $this;
+        if ($name === []) {
+            $name = $this->optionalKeys->toArray();
+        }
         foreach ($name as $key) {
             if (! $new->optionalKeys()->contains($key)) {
                 throw new InvalidArgumentException(
@@ -103,7 +115,7 @@ final class Parameters implements ParametersInterface
             }
             $parameter = $new->get($key);
             $new->remove($key);
-            $new->addProperty('required', $key, $parameter);
+            $new->addProperty('requiredKeys', $key, $parameter);
         }
 
         return $new;
@@ -129,7 +141,7 @@ final class Parameters implements ParametersInterface
             default => null,
         };
         $new = clone $this;
-        $new->minimumOptional = $count;
+        $new->optionalMinimum = $count;
         $new->assertMinimumOptional();
 
         return $new;
@@ -137,17 +149,17 @@ final class Parameters implements ParametersInterface
 
     public function requiredKeys(): VectorInterface
     {
-        return $this->required;
+        return $this->requiredKeys;
     }
 
     public function optionalKeys(): VectorInterface
     {
-        return $this->optional;
+        return $this->optionalKeys;
     }
 
     public function optionalMinimum(): int
     {
-        return $this->minimumOptional;
+        return $this->optionalMinimum;
     }
 
     public function assertHas(string ...$name): void
@@ -160,55 +172,55 @@ final class Parameters implements ParametersInterface
         return $this->map->has(...$name);
     }
 
-    public function get(string $key): ParameterInterface
+    public function get(string $name): ParameterInterface
     {
-        return $this->map->get($key);
+        return $this->map->get($name);
     }
 
-    public function required(string $key): ParameterCastInterface
+    public function required(string $name): ParameterCastInterface
     {
-        if ($this->optionalKeys()->contains($key)) {
+        if ($this->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
                 message('Parameter %name% is optional')
-                    ->withCode('%name%', $key)
+                    ->withCode('%name%', $name)
             );
         }
 
         return new ParameterCast(
-            $this->get($key)
+            $this->get($name)
         );
     }
 
-    public function optional(string $key): ParameterCastInterface
+    public function optional(string $name): ParameterCastInterface
     {
-        if (! $this->optionalKeys()->contains($key)) {
+        if (! $this->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
                 message('Parameter %name% is required')
-                    ->withCode('%name%', $key)
+                    ->withCode('%name%', $name)
             );
         }
 
         return new ParameterCast(
-            $this->get($key)
+            $this->get($name)
         );
     }
 
     private function remove(string ...$name): void
     {
         $this->map = $this->map->without(...$name);
-        $requiredDiff = array_diff($this->required->toArray(), $name);
-        $optionalDiff = array_diff($this->optional->toArray(), $name);
-        $this->required = new Vector(...$requiredDiff);
-        $this->optional = new Vector(...$optionalDiff);
+        $requiredDiff = array_diff($this->requiredKeys->toArray(), $name);
+        $optionalDiff = array_diff($this->optionalKeys->toArray(), $name);
+        $this->requiredKeys = new Vector(...$requiredDiff);
+        $this->optionalKeys = new Vector(...$optionalDiff);
         $this->assertMinimumOptional();
     }
 
     private function assertMinimumOptional(): void
     {
-        if ($this->minimumOptional > $this->optionalKeys()->count()) {
+        if ($this->optionalMinimum > $this->optionalKeys()->count()) {
             throw new InvalidArgumentException(
                 message('Count must be less or equal to %optional%')
-                    ->withCode('%optional%', strval($this->minimumOptional))
+                    ->withCode('%optional%', strval($this->optionalMinimum))
             );
         }
     }

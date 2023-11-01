@@ -47,6 +47,8 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
     /**
      * Return an instance with the specified now optional parameter(s).
      *
+     * If no parameter is specified, all parameters are made optional.
+     *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified now optional parameter(s).
      */
@@ -54,6 +56,8 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
 
     /**
      * Return an instance with the specified now required parameter(s).
+     *
+     * If no parameter is specified, all parameters are made required.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified now required parameter(s).

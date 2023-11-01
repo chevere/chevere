@@ -257,4 +257,30 @@ final class ArrayParameterTest extends TestCase
         $this->assertTrue($arrayWith->parameters()->optionalKeys()->contains('foo'));
         $this->assertTrue($arrayWith->parameters()->requiredKeys()->contains('bar'));
     }
+
+    public function testMakeOptionalNoParams(): void
+    {
+        $array = (new ArrayParameter())
+            ->withRequired(
+                foo: string(),
+                bar: string(),
+            );
+        $arrayWith = $array->withMakeOptional();
+        $this->assertNotSame($array, $arrayWith);
+        $this->assertSame([], $arrayWith->parameters()->requiredKeys()->toArray());
+        $this->assertTrue($arrayWith->parameters()->optionalKeys()->contains('foo', 'bar'));
+    }
+
+    public function testWithMakeRequiredNoParams(): void
+    {
+        $array = (new ArrayParameter())
+            ->withOptional(
+                foo: string(),
+                bar: string(),
+            );
+        $arrayWith = $array->withMakeRequired();
+        $this->assertNotSame($array, $arrayWith);
+        $this->assertSame([], $arrayWith->parameters()->optionalKeys()->toArray());
+        $this->assertTrue($arrayWith->parameters()->requiredKeys()->contains('foo', 'bar'));
+    }
 }

@@ -50,6 +50,8 @@ interface ParametersInterface extends Countable, StringKeysInterface, IteratorAg
     /**
      * Return an instance with the specified now optional parameter(s).
      *
+     * If no parameter is specified, all parameters are made optional.
+     *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified now optional parameter(s).
      */
@@ -57,6 +59,8 @@ interface ParametersInterface extends Countable, StringKeysInterface, IteratorAg
 
     /**
      * Return an instance with the specified now required parameter(s).
+     *
+     * If no parameter is specified, all parameters are made required.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified now required parameter(s).
@@ -89,15 +93,21 @@ interface ParametersInterface extends Countable, StringKeysInterface, IteratorAg
      */
     public function has(string ...$name): bool;
 
+    /**
+     * @return VectorInterface<string>
+     */
     public function requiredKeys(): VectorInterface;
 
+    /**
+     * @return VectorInterface<string>
+     */
     public function optionalKeys(): VectorInterface;
 
     public function optionalMinimum(): int;
 
-    public function get(string $key): ParameterInterface;
+    public function get(string $name): ParameterInterface;
 
-    public function required(string $key): ParameterCastInterface;
+    public function required(string $name): ParameterCastInterface;
 
-    public function optional(string $key): ParameterCastInterface;
+    public function optional(string $name): ParameterCastInterface;
 }
