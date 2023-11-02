@@ -61,7 +61,7 @@ function file(
         tmp_name: $tmp_name ?? string(),
     )
         ->withOptional(
-            contents: $contents ?? string(),
+            contents: $contents ?? string('/^.*$/m'),
         );
 }
 
