@@ -123,15 +123,17 @@ trait NumericParameterTrait
     private function assertNumericAccept(
         IntParameterInterface|FloatParameterInterface $parameter
     ): void {
-        $diffA = array_diff($this->accept, $parameter->accept());
-        $diffB = array_diff($parameter->accept(), $this->accept);
-        if ($diffA !== [] || $diffB !== []) {
+        $diff = array_merge(
+            array_diff($this->accept, $parameter->accept()),
+            array_diff($parameter->accept(), $this->accept)
+        );
+        if ($diff !== []) {
             $value = implode(', ', $this->accept());
             $provided = implode(', ', $parameter->accept());
 
             throw new InvalidArgumentException(
-                message('Expected value in %value%, provided %provided%')
-                    ->withCode('%value%', "[{$value}]")
+                message('Expected value in %accept%, provided %provided%')
+                    ->withCode('%accept%', "[{$value}]")
                     ->withCode('%provided%', $provided)
             );
         }

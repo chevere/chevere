@@ -194,15 +194,33 @@ final class IntParameterTest extends TestCase
         $parameter->assertCompatible($notCompatible);
     }
 
-    public function testAssertCompatibleAccept(): void
+    public function testAssertCompatibleAcceptLeft(): void
     {
-        $parameter = (new IntParameter())->withAccept(0, 1);
-        $compatible = (new IntParameter())->withAccept(1, 0);
+        $parameter = (new IntParameter())->withAccept(1, 2, 3);
+        $compatible = (new IntParameter())->withAccept(3, 2, 1);
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
-        $notCompatible = (new IntParameter())->withAccept(2, 3);
+        $notCompatible = new IntParameter();
         $this->expectException(InvalidArgumentException::class);
-        $this->getExpectedExceptionMessage('[' . implode(', ', $parameter->accept()) . ']');
+        $expected = implode(', ', $parameter->accept());
+        $this->getExpectedExceptionMessage(<<<PLAIN
+        Expected value in [{$expected}]
+        PLAIN);
+        $parameter->assertCompatible($notCompatible);
+    }
+
+    public function testAssertCompatibleAcceptRight(): void
+    {
+        $parameter = new IntParameter();
+        $compatible = new IntParameter();
+        $parameter->assertCompatible($compatible);
+        $compatible->assertCompatible($parameter);
+        $notCompatible = (new IntParameter())->withAccept(1, 2, 3);
+        $this->expectException(InvalidArgumentException::class);
+        $expected = implode(', ', $parameter->accept());
+        $this->getExpectedExceptionMessage(<<<PLAIN
+        Expected value in [{$expected}]
+        PLAIN);
         $parameter->assertCompatible($notCompatible);
     }
 
