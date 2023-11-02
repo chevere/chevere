@@ -20,6 +20,7 @@ use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\assertArrayString;
+use function Chevere\Parameter\file;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\string;
 
@@ -114,5 +115,34 @@ final class FunctionsArrayTest extends TestCase
         $new = new ArrayStringParameter();
         $new = $new->withRequired(foo: $string);
         $this->assertEquals($new, $parameter);
+    }
+
+    public function testFile(): void
+    {
+        $file = file();
+        $array = [
+            'error' => UPLOAD_ERR_OK,
+            'name' => 'foo',
+            'size' => 123,
+            'type' => 'text/plain',
+            'tmp_name' => '/tmp/foo',
+        ];
+        $this->assertSame(
+            array_keys($array),
+            $file->parameters()->keys()
+        );
+        $this->assertSame($array, assertArray($file, $array));
+        $arguments = [
+            'error' => int(),
+            'name' => string(),
+            'size' => int(),
+            'type' => string(),
+            'tmp_name' => string(),
+            'contents' => string(),
+        ];
+        $file = file(...$arguments);
+        foreach ($arguments as $key => $argument) {
+            $this->assertSame($argument, $file->parameters()->get($key));
+        }
     }
 }

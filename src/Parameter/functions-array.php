@@ -47,22 +47,27 @@ function arrayString(
 }
 
 function file(
+    ?IntParameterInterface $error = null,
     ?StringParameterInterface $name = null,
     ?StringParameterInterface $type = null,
     ?StringParameterInterface $tmp_name = null,
     ?IntParameterInterface $size = null,
     ?StringParameterInterface $contents = null,
 ): ArrayParameterInterface {
-    return arrayp(
-        error: int(accept: [UPLOAD_ERR_OK]),
+    $array = arrayp(
+        error: $error ?? int(accept: [UPLOAD_ERR_OK]),
         name: $name ?? string(),
         size: $size ?? int(),
         type: $type ?? string(),
         tmp_name: $tmp_name ?? string(),
-    )
-        ->withOptional(
-            contents: $contents ?? string('/^.*$/m'),
+    );
+    if ($contents !== null) {
+        $array = $array->withOptional(
+            contents: $contents,
         );
+    }
+
+    return $array;
 }
 
 /**
@@ -74,9 +79,7 @@ function generic(
     ?ParameterInterface $K = null,
     string $description = '',
 ): GenericParameterInterface {
-    if ($K === null) {
-        $K = int();
-    }
+    $K ??= int();
 
     return new GenericParameter($V, $K, $description);
 }
