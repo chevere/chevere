@@ -18,7 +18,6 @@ use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
-use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
@@ -48,19 +47,22 @@ function arrayString(
 }
 
 function file(
-    string $description = '',
     ?StringParameterInterface $name = null,
     ?StringParameterInterface $type = null,
     ?StringParameterInterface $tmp_name = null,
     ?IntParameterInterface $size = null,
-): FileParameterInterface {
-    return new FileParameter(
+    ?StringParameterInterface $contents = null,
+): ArrayParameterInterface {
+    return arrayp(
+        error: int(accept: [UPLOAD_ERR_OK]),
         name: $name ?? string(),
         size: $size ?? int(),
         type: $type ?? string(),
         tmp_name: $tmp_name ?? string(),
-        description: $description,
-    );
+    )
+        ->withOptional(
+            contents: $contents ?? string(),
+        );
 }
 
 /**
@@ -99,18 +101,6 @@ function assertArrayString(
     array $argument,
 ): array {
     /** @var array<int|string, string> */
-    return assertArray($parameter, $argument);
-}
-
-/**
- * @param array<int|string, mixed> $argument
- * @return array<string, mixed> Asserted file.
- */
-function assertFile(
-    FileParameterInterface $parameter,
-    array $argument,
-): array {
-    /** @var array<string, mixed> */
     return assertArray($parameter, $argument);
 }
 

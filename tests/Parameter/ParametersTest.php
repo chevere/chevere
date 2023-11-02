@@ -15,7 +15,6 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\ArrayParameter;
 use Chevere\Parameter\BoolParameter;
-use Chevere\Parameter\FileParameter;
 use Chevere\Parameter\FloatParameter;
 use Chevere\Parameter\GenericParameter;
 use Chevere\Parameter\Interfaces\ParameterInterface;
@@ -197,23 +196,6 @@ final class ParametersTest extends TestCase
         );
         $this->expectException(\TypeError::class);
         $parameters->required($name)->{$error}();
-    }
-
-    public function testGetFile(): void
-    {
-        $name = 'test';
-        $parameter = new FileParameter(
-            name: new StringParameter(),
-            size: new IntParameter(),
-            type: new StringParameter(),
-            tmp_name: new StringParameter(),
-        );
-        $parameters = new Parameters(...[
-            $name => $parameter,
-        ]);
-        $this->assertSame($parameter, $parameters->required($name)->file());
-        $this->expectException(\TypeError::class);
-        $parameters->required($name)->int();
     }
 
     public function testGetUnion(): void
