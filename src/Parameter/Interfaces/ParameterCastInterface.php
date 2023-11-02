@@ -22,8 +22,6 @@ interface ParameterCastInterface
 
     public function bool(): BoolParameterInterface;
 
-    public function file(): FileParameterInterface;
-
     public function float(): FloatParameterInterface;
 
     public function int(): IntParameterInterface;

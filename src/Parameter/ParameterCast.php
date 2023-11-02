@@ -15,7 +15,6 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\BoolParameterInterface;
-use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntParameterInterface;
@@ -42,12 +41,6 @@ final class ParameterCast implements ParameterCastInterface
     public function bool(): BoolParameterInterface
     {
         /** @var BoolParameterInterface */
-        return $this->argument;
-    }
-
-    public function file(): FileParameterInterface
-    {
-        /** @var FileParameterInterface */
         return $this->argument;
     }
 
