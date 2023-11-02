@@ -34,15 +34,15 @@ function writers(): WritersInterface
  *
  * @throws InvalidArgumentException
  */
-function streamFor(string $stream, string $mode): StreamInterface
+function streamFor(string $uri, string $mode): StreamInterface
 {
     try {
-        return Stream::create(fopen($stream, $mode));
+        return Stream::create(fopen($uri, $mode));
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             previous: $e,
-            message: message('Unable to create stream for %stream%')
-                ->withCode('%stream%', $stream)
+            message: message('Unable to create stream for %uri%')
+                ->withCode('%uri%', $uri)
         );
     }
 }
