@@ -17,9 +17,11 @@ use Chevere\Parameter\UnionParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\parameters;
 use function Chevere\Parameter\string;
+use function Chevere\Parameter\union;
 
 final class UnionParameterTest extends TestCase
 {
@@ -76,5 +78,20 @@ final class UnionParameterTest extends TestCase
         $compatible = new UnionParameter($parametersAlt);
         $this->expectException(InvalidArgumentException::class);
         $parameter->assertCompatible($compatible);
+    }
+
+    public function testUnionArguments(): void
+    {
+        $parameter = union(
+            string(),
+            int()
+        );
+        $array = [
+            0 => 'foo',
+            1 => 1,
+        ];
+        $arguments = arguments($parameter, $array);
+        $this->assertSame($array['0'], $arguments->required('0')->string());
+        $this->assertSame($array['1'], $arguments->required('1')->int());
     }
 }
