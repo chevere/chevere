@@ -243,7 +243,7 @@ function takeFrom(
     }
 }
 
-function requiredFrom(
+function parametersFrom(
     ParametersAccessInterface|ParametersInterface $parameter,
     string ...$name
 ): ParametersInterface {
@@ -252,20 +252,6 @@ function requiredFrom(
     return parameters(
         ...takeFrom($parameters, ...$name)
     );
-}
-
-function optionalFrom(
-    ParametersAccessInterface|ParametersInterface $parameter,
-    string ...$name
-): ParametersInterface {
-    $parameters = getParameters($parameter);
-    $new = new Parameters();
-    $iterator = takeFrom($parameters, ...$name);
-    foreach ($iterator as $key => $parameter) {
-        $new = $new->withOptional($key, $parameter);
-    }
-
-    return $new;
 }
 
 function getParameters(

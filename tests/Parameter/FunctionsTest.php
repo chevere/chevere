@@ -32,9 +32,8 @@ use function Chevere\Parameter\generic;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\null;
 use function Chevere\Parameter\object;
-use function Chevere\Parameter\optionalFrom;
 use function Chevere\Parameter\parameters;
-use function Chevere\Parameter\requiredFrom;
+use function Chevere\Parameter\parametersFrom;
 use function Chevere\Parameter\string;
 use function Chevere\Parameter\takeFrom;
 use function Chevere\Parameter\takeKeys;
@@ -264,52 +263,28 @@ final class FunctionsTest extends TestCase
         ]);
     }
 
-    public function testWithRequiredFrom(): void
+    public function testWithParametersFrom(): void
     {
         $foo = string(default: 'foo');
         $bar = int(default: 1);
         $parameters = parameters()
             ->withRequired('foo', $foo)
             ->withOptional('bar', $bar);
-        $from = requiredFrom($parameters, 'foo', 'bar');
+        $from = parametersFrom($parameters, 'foo', 'bar');
         $array = arrayp()
             ->withRequired(foo: $foo)
             ->withOptional(bar: $bar);
-        $fromArray = requiredFrom($array, 'foo', 'bar');
+        $fromArray = parametersFrom($array, 'foo', 'bar');
         $this->assertEquals($from, $fromArray);
         $this->assertNotEquals($parameters, $from);
         $this->assertTrue($from->has('foo', 'bar'));
         $this->assertTrue($from->requiredKeys()->contains('foo', 'bar'));
         $this->assertFalse($from->optionalKeys()->contains('foo', 'bar'));
-        $from = requiredFrom($parameters, 'bar');
+        $from = parametersFrom($parameters, 'bar');
         $this->assertNotEquals($parameters, $from);
         $this->assertTrue($from->has('bar'));
         $this->assertFalse($from->has('foo'));
         $this->assertTrue($from->requiredKeys()->contains('bar'));
-    }
-
-    public function testWithOptionalFrom(): void
-    {
-        $foo = string(default: 'foo');
-        $bar = int(default: 1);
-        $parameters = parameters()
-            ->withRequired('foo', $foo)
-            ->withOptional('bar', $bar);
-        $from = optionalFrom($parameters, 'foo', 'bar');
-        $array = arrayp()
-            ->withRequired(foo: $foo)
-            ->withOptional(bar: $bar);
-        $fromArray = optionalFrom($array, 'foo', 'bar');
-        $this->assertEquals($from, $fromArray);
-        $this->assertNotEquals($parameters, $from);
-        $this->assertTrue($from->has('foo', 'bar'));
-        $this->assertTrue($from->optionalKeys()->contains('foo', 'bar'));
-        $this->assertFalse($from->requiredKeys()->contains('foo', 'bar'));
-        $from = optionalFrom($parameters, 'foo');
-        $this->assertNotEquals($parameters, $from);
-        $this->assertTrue($from->has('foo'));
-        $this->assertFalse($from->has('bar'));
-        $this->assertTrue($from->optionalKeys()->contains('foo'));
     }
 
     public function testTakeKeys(): void
