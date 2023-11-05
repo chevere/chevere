@@ -72,6 +72,14 @@ interface ArrayParameterInterface extends ArrayTypeParameterInterface
      */
     public function without(string ...$name): self;
 
+    /**
+     * Return an instance with the specified parameter(s) modified.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified parameter(s) modified.
+     */
+    public function withModify(ParameterInterface ...$parameter): self;
+
     public function assertCompatible(self $parameter): void;
 
     /**

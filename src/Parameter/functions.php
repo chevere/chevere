@@ -77,9 +77,11 @@ function parameters(
  * @param array<int|string, mixed>|ArrayAccess<int|string, mixed> $arguments
  */
 function arguments(
-    ParametersInterface $parameters,
+    ParametersInterface|ParametersAccessInterface $parameters,
     array|ArrayAccess $arguments
 ): ArgumentsInterface {
+    $parameters = getParameters($parameters);
+
     return new Arguments($parameters, $arguments);
 }
 

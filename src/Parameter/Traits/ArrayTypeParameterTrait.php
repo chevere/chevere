@@ -57,6 +57,25 @@ trait ArrayTypeParameterTrait
         return $new;
     }
 
+    public function withModify(ParameterInterface ...$parameter): static
+    {
+        $new = clone $this;
+        $keys = array_keys($parameter);
+        $keys = array_map(fn ($key) => strval($key), $keys);
+        $new->parameters->assertHas(...$keys);
+        foreach ($parameter as $name => $item) {
+            $name = strval($name);
+            $method = match (true) {
+                $new->parameters->optionalKeys()->contains($name) => 'withOptional',
+                default => 'withRequired',
+            };
+            $new->parameters = $new->parameters->without($name);
+            $new->parameters = $new->parameters->{$method}($name, $item);
+        }
+
+        return $new;
+    }
+
     private function put(string $method, ParameterInterface ...$parameter): void
     {
         $this->removeConflictKeys(...$parameter);

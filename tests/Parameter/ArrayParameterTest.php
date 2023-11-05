@@ -21,6 +21,7 @@ use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\assertArray;
+use function Chevere\Parameter\float;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\null;
 use function Chevere\Parameter\string;
@@ -282,5 +283,39 @@ final class ArrayParameterTest extends TestCase
         $this->assertNotSame($array, $arrayWith);
         $this->assertSame([], $arrayWith->parameters()->optionalKeys()->toArray());
         $this->assertTrue($arrayWith->parameters()->requiredKeys()->contains('foo', 'bar'));
+    }
+
+    public function testWithModify(): void
+    {
+        $float = float();
+        $int = int();
+        $array = (new ArrayParameter())
+            ->withRequired(
+                foo: string(),
+            )
+            ->withOptional(
+                bar: string(),
+            );
+        $arrayWith = $array->withModify(
+            foo: $float,
+            bar: $int,
+        );
+        $this->assertNotSame($array, $arrayWith);
+        $this->assertSame(
+            $float,
+            $arrayWith->parameters()->get('foo'),
+        );
+        $this->assertSame(
+            $int,
+            $arrayWith->parameters()->get('bar'),
+        );
+        $this->assertSame(['foo'], $arrayWith->parameters()->requiredKeys()->toArray());
+        $this->assertSame(['bar'], $arrayWith->parameters()->optionalKeys()->toArray());
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Missing key(s) 0, 1');
+        $arrayWith->withModify(...[
+            0 => $float,
+            1 => $int,
+        ]);
     }
 }
