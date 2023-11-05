@@ -18,7 +18,6 @@ use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Parameter\Traits\ParametersAccessTrait;
 use Chevere\Throwable\Errors\ArgumentCountError;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -29,7 +28,7 @@ use function Chevere\Message\message;
 
 final class Arguments implements ArgumentsInterface
 {
-    use ParametersAccessTrait;
+    private ParametersInterface $generic;
 
     /**
      * @var array<int|string, mixed>
@@ -60,6 +59,14 @@ final class Arguments implements ArgumentsInterface
             $arguments = $this->getArrayAccessArray($arguments);
         }
         $this->setArguments($arguments);
+        if ($parameters->keys() === ['K', 'V']) {
+            $pairs = [];
+            foreach (array_keys($arguments) as $key) {
+                $key = strval($key);
+                $pairs[$key] = $parameters->get('V');
+            }
+            $this->generic = new Parameters(...$pairs);
+        }
         $this->assertNoArgumentsOverflow();
         $this->handleDefaults();
         $this->assertRequired();
@@ -72,6 +79,11 @@ final class Arguments implements ArgumentsInterface
                 )
             );
         }
+    }
+
+    public function parameters(): ParametersInterface
+    {
+        return $this->generic ?? $this->parameters;
     }
 
     // @phpstan-ignore-next-line
@@ -117,14 +129,14 @@ final class Arguments implements ArgumentsInterface
 
     public function get(string $name): mixed
     {
-        $this->parameters->assertHas($name);
+        $this->parameters()->assertHas($name);
 
         return $this->arguments[$name] ?? null;
     }
 
     public function required(string $name): CastInterface
     {
-        if ($this->parameters->optionalKeys()->contains($name)) {
+        if ($this->parameters()->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
                 message('Argument %name% is optional')
                     ->withCode('%name%', $name)
@@ -136,7 +148,7 @@ final class Arguments implements ArgumentsInterface
 
     public function optional(string $name): ?CastInterface
     {
-        if (! $this->parameters->optionalKeys()->contains($name)) {
+        if (! $this->parameters()->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
                 message('Argument %name% is required')
                     ->withCode('%name%', $name)
@@ -166,7 +178,7 @@ final class Arguments implements ArgumentsInterface
 
     private function handleDefaults(): void
     {
-        foreach ($this->parameters as $name => $parameter) {
+        foreach ($this->parameters() as $name => $parameter) {
             if ($this->has($name)) {
                 continue;
             }
@@ -183,7 +195,7 @@ final class Arguments implements ArgumentsInterface
     {
         $values = array_keys($this->arguments);
         $missing = array_diff(
-            $this->parameters->requiredKeys()->toArray(),
+            $this->parameters()->requiredKeys()->toArray(),
             $values,
         );
         if ($missing !== []) {
@@ -196,7 +208,7 @@ final class Arguments implements ArgumentsInterface
 
     private function assertMinimumOptional(): void
     {
-        $optional = $this->parameters->optionalKeys()->toArray();
+        $optional = $this->parameters()->optionalKeys()->toArray();
         $providedOptionals = array_intersect(
             $optional,
             array_keys($this->arguments)
@@ -216,7 +228,7 @@ final class Arguments implements ArgumentsInterface
      */
     private function assertArgument(string $name, mixed $argument): void
     {
-        $parameter = $this->parameters->get($name);
+        $parameter = $this->parameters()->get($name);
 
         try {
             $this->arguments[$name] = assertArgument($parameter, $argument);
@@ -242,7 +254,7 @@ final class Arguments implements ArgumentsInterface
 
     private function handleParameters(): void
     {
-        foreach ($this->parameters->keys() as $name) {
+        foreach ($this->parameters()->keys() as $name) {
             if ($this->isSkipOptional($name)) {
                 continue;
             }
@@ -257,7 +269,7 @@ final class Arguments implements ArgumentsInterface
 
     private function isSkipOptional(string $name): bool
     {
-        return $this->parameters->optionalKeys()->contains($name)
+        return $this->parameters()->optionalKeys()->contains($name)
             && ! $this->has($name);
     }
 

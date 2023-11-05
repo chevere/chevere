@@ -16,6 +16,7 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Parameter\GenericParameter;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\generic;
 use function Chevere\Parameter\int;
@@ -113,5 +114,33 @@ final class GenericParameterTest extends TestCase
             ],
         ];
         assertGeneric($parameter, $argument);
+    }
+
+    public function testGenericArguments(): void
+    {
+        $parameter = generic(
+            V: string(),
+            K: int()
+        );
+        $array = [
+            0 => 'foo',
+            1 => 'bar',
+            2 => 'baz',
+        ];
+        $arguments = arguments($parameter, $array);
+        $this->assertSame($array['0'], $arguments->required('0')->string());
+        $parameter = generic(
+            V: generic(
+                string()
+            ),
+            K: string()
+        );
+        $array = [
+            '0' => ['foo', 'oof'],
+            '1' => ['bar'],
+            '2' => ['baz', 'bar'],
+        ];
+        $arguments = arguments($parameter, $array);
+        $this->assertSame($array['0'], $arguments->required('0')->array());
     }
 }
