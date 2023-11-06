@@ -19,9 +19,9 @@ use Chevere\Common\Interfaces\ToArrayInterface;
  * Describes the component in charge of providing a Map interface.
  *
  * @template TValue
- * @extends MappedInterface<TValue>
+ * @extends StringIntMappedInterface<TValue>
  */
-interface MapInterface extends MappedInterface, ToArrayInterface
+interface MapInterface extends StringIntMappedInterface, ToArrayInterface
 {
     /**
      * @param TValue ...$value

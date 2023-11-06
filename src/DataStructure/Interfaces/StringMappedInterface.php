@@ -19,16 +19,16 @@ use IteratorAggregate;
 use Traversable;
 
 /**
- * Describes the component in charge of defining a mapped interface.
+ * Describes the component in charge of defining a mapped interface by string keys.
  *
  * @template-covariant TValue
- * @extends IteratorAggregate<string|int, TValue>
+ * @extends IteratorAggregate<string, TValue>
  */
-interface MappedInterface extends Countable, StringIntKeysInterface, IteratorAggregate
+interface StringMappedInterface extends Countable, StringKeysInterface, IteratorAggregate
 {
     /**
      * @return Traversable<string, TValue>
-     * @phpstan-return Iterator<string|int, TValue>
+     * @phpstan-return Iterator<string, TValue>
      */
     public function getIterator(): Iterator;
 }
