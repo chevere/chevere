@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Common;
 
 use Chevere\Common\ClassName;
-use Chevere\Filesystem\File;
 use Chevere\String\Exceptions\EmptyException;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -42,7 +41,7 @@ final class ClassNameTest extends TestCase
 
     public function testConstruct(): void
     {
-        $name = new ClassName(File::class);
-        $this->assertSame(File::class, $name->__toString());
+        $name = new ClassName(ClassName::class);
+        $this->assertSame(ClassName::class, $name->__toString());
     }
 }

@@ -19,7 +19,6 @@ use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\BoolParameterInterface;
 use Chevere\Parameter\Interfaces\CastInterface;
-use Chevere\Parameter\Interfaces\FileParameterInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntParameterInterface;
@@ -167,8 +166,7 @@ function assertArgument(ParameterInterface $parameter, mixed $argument): mixed
 {
     return match (true) {
         $parameter instanceof ArrayParameterInterface,
-        $parameter instanceof ArrayStringParameterInterface,
-        $parameter instanceof FileParameterInterface
+        $parameter instanceof ArrayStringParameterInterface
         // @phpstan-ignore-next-line
         => assertArray($parameter, $argument),
         $parameter instanceof BoolParameterInterface
