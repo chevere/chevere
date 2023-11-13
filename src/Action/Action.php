@@ -28,7 +28,6 @@ use Throwable;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
-use function Chevere\Parameter\assertArgument;
 
 /**
  * @method mixed run()
@@ -58,7 +57,7 @@ abstract class Action implements ActionInterface
         $run = $this->run(...$arguments);
 
         try {
-            assertArgument(static::acceptResponse(), $run);
+            static::acceptResponse()->__invoke($run);
         } catch (Throwable $e) {
             $message = message('%method% → %message%')
                 ->withCode('%method%', static::runMethodFQN())

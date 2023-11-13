@@ -41,6 +41,11 @@ final class UnionParameter implements UnionParameterInterface
         $this->parameters = $parameters;
     }
 
+    public function __invoke(mixed $value): mixed
+    {
+        return assertUnion($this, $value);
+    }
+
     public function withAdded(ParameterInterface ...$parameter): static
     {
         $new = clone $this;

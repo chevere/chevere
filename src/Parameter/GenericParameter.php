@@ -43,6 +43,14 @@ final class GenericParameter implements GenericParameterInterface
         );
     }
 
+    /**
+     * @phpstan-ignore-next-line
+     */
+    public function __invoke(iterable $value): iterable
+    {
+        return assertGeneric($this, $value);
+    }
+
     public function key(): ParameterInterface
     {
         return $this->key;

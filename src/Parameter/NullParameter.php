@@ -26,6 +26,11 @@ final class NullParameter implements NullParameterInterface
     use ParameterDefaultNullTrait;
     use SchemaTrait;
 
+    public function __invoke(null $value): null
+    {
+        return assertNull($this, $value);
+    }
+
     /**
      * @codeCoverageIgnore
      */

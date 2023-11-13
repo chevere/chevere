@@ -95,4 +95,11 @@ final class FloatParameterTest extends TestCase
         );
         $parameter->assertCompatible($notCompatible);
     }
+
+    public function testInvoke(): void
+    {
+        $value = 10.0;
+        $parameter = new FloatParameter();
+        $this->assertSame($value, $parameter($value));
+    }
 }

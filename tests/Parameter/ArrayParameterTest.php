@@ -20,6 +20,7 @@ use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\assertArray;
 use function Chevere\Parameter\float;
 use function Chevere\Parameter\int;
@@ -317,5 +318,18 @@ final class ArrayParameterTest extends TestCase
             0 => $float,
             1 => $int,
         ]);
+    }
+
+    public function testInvoke(): void
+    {
+        $value = [
+            'name' => 'Rodolfo',
+            'id' => 10,
+        ];
+        $parameter = arrayp(
+            name: string(),
+            id: int()
+        );
+        $this->assertSame($value, $parameter($value));
     }
 }

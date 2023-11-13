@@ -83,4 +83,11 @@ final class ObjectParameterTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $parameter->assertCompatible($notCompatible);
     }
+
+    public function testInvoke(): void
+    {
+        $value = $this;
+        $parameter = object(__CLASS__);
+        $this->assertSame($value, $parameter($value));
+    }
 }

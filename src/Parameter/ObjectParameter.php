@@ -32,6 +32,11 @@ final class ObjectParameter implements ObjectParameterInterface
 
     private ?object $default = null;
 
+    public function __invoke(object $value): object
+    {
+        return assertObject($this, $value);
+    }
+
     public function setUp(): void
     {
         $this->className = stdClass::class;

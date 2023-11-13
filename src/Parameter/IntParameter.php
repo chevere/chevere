@@ -35,6 +35,11 @@ final class IntParameter implements IntParameterInterface
      */
     private array $accept = [];
 
+    public function __invoke(int $value): int
+    {
+        return assertInt($this, $value);
+    }
+
     public function withDefault(int $value): IntParameterInterface
     {
         $new = clone $this;

@@ -21,6 +21,7 @@ use function Chevere\Parameter\assertGeneric;
 use function Chevere\Parameter\generic;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\string;
+use function Chevere\Parameter\union;
 
 final class GenericParameterTest extends TestCase
 {
@@ -142,5 +143,12 @@ final class GenericParameterTest extends TestCase
         ];
         $arguments = arguments($parameter, $array);
         $this->assertSame($array['0'], $arguments->required('0')->array());
+    }
+
+    public function testInvoke(): void
+    {
+        $value = [10, '10'];
+        $parameter = generic(union(int(), string()));
+        $this->assertSame($value, $parameter($value));
     }
 }

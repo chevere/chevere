@@ -19,6 +19,7 @@ use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
+use Stringable;
 use function Chevere\Message\message;
 use function Chevere\Type\typeString;
 
@@ -29,6 +30,11 @@ final class StringParameter implements StringParameterInterface
     private RegexInterface $regex;
 
     private ?string $default = null;
+
+    public function __invoke(string|Stringable $value): string
+    {
+        return assertString($this, $value);
+    }
 
     public function setUp(): void
     {

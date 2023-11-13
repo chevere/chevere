@@ -94,4 +94,14 @@ final class UnionParameterTest extends TestCase
         $this->assertSame($array['0'], $arguments->required('0')->string());
         $this->assertSame($array['1'], $arguments->required('1')->int());
     }
+
+    public function testInvoke(): void
+    {
+        $parameter = union(
+            string(),
+            int()
+        );
+        $this->assertSame(10, $parameter(10));
+        $this->assertSame('10', $parameter('10'));
+    }
 }

@@ -23,6 +23,11 @@ interface IntParameterInterface extends ParameterInterface
     public const MAXIMUM = PHP_INT_MAX;
 
     /**
+     * Asserts the given `$value` is valid, returning the value if so.
+     */
+    public function __invoke(int $value): int;
+
+    /**
      * Return an instance with the specified default value.
      *
      * This method MUST retain the state of the current instance, and return

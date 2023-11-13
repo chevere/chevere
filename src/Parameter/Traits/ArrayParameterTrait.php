@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
+use ArrayAccess;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Type\Interfaces\TypeInterface;
+use function Chevere\Parameter\assertArray;
 use function Chevere\Type\typeArray;
 
 trait ArrayParameterTrait
@@ -24,6 +26,13 @@ trait ArrayParameterTrait
     private TypeInterface $type;
 
     private bool $isList = false;
+
+    // @phpstan-ignore-next-line
+    public function __invoke(array|ArrayAccess $array): array|ArrayAccess
+    {
+        // @phpstan-ignore-next-line
+        return assertArray($this, $array);
+    }
 
     /**
      * @return array<mixed, mixed>

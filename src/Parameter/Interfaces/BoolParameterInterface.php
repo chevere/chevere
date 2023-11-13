@@ -19,6 +19,11 @@ namespace Chevere\Parameter\Interfaces;
 interface BoolParameterInterface extends ParameterInterface
 {
     /**
+     * Asserts the given `$value` is valid, returning the value if so.
+     */
+    public function __invoke(bool $value): bool;
+
+    /**
      * Return an instance with the specified `$default` value.
      *
      * This method MUST retain the state of the current instance, and return

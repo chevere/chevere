@@ -18,6 +18,11 @@ namespace Chevere\Parameter\Interfaces;
  */
 interface ObjectParameterInterface extends ParameterInterface
 {
+    /**
+     * Asserts the given `$value` is valid, returning the value if so.
+     */
+    public function __invoke(object $value): object;
+
     public function className(): string;
 
     public function withClassName(string $className): self;

@@ -35,6 +35,11 @@ final class FloatParameter implements FloatParameterInterface
      */
     private array $accept = [];
 
+    public function __invoke(float $value): float
+    {
+        return assertFloat($this, $value);
+    }
+
     public function withDefault(float $value): FloatParameterInterface
     {
         $new = clone $this;

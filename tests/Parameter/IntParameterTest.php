@@ -272,4 +272,11 @@ final class IntParameterTest extends TestCase
         );
         $parameter->withDefault(5);
     }
+
+    public function testInvoke(): void
+    {
+        $value = 10;
+        $parameter = new IntParameter();
+        $this->assertSame($value, $parameter($value));
+    }
 }

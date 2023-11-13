@@ -19,6 +19,11 @@ namespace Chevere\Parameter\Interfaces;
 interface UnionParameterInterface extends ParameterInterface, ParametersAccessInterface
 {
     /**
+     * Asserts the given `$value` is valid, returning the value if so.
+     */
+    public function __invoke(mixed $value): mixed;
+
+    /**
      * Return an instance with added optional parameters.
      *
      * This method MUST retain the state of the current instance, and return

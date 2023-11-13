@@ -16,18 +16,13 @@ namespace Chevere\Parameter;
 use ArrayAccess;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
-use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\BoolParameterInterface;
 use Chevere\Parameter\Interfaces\CastInterface;
-use Chevere\Parameter\Interfaces\FloatParameterInterface;
-use Chevere\Parameter\Interfaces\GenericParameterInterface;
-use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Interfaces\NullParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersAccessInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Throwable\Errors\TypeError;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -91,7 +86,7 @@ function assertBool(
     return $argument;
 }
 
-function assertNull(NullParameterInterface $parameter, mixed $argument): mixed
+function assertNull(NullParameterInterface $parameter, mixed $argument): null
 {
     if ($argument === null) {
         return $argument;
@@ -164,33 +159,7 @@ function assertNamedArgument(
 
 function assertArgument(ParameterInterface $parameter, mixed $argument): mixed
 {
-    return match (true) {
-        $parameter instanceof ArrayParameterInterface,
-        $parameter instanceof ArrayStringParameterInterface
-        // @phpstan-ignore-next-line
-        => assertArray($parameter, $argument),
-        $parameter instanceof BoolParameterInterface
-        // @phpstan-ignore-next-line
-        => assertBool($parameter, $argument),
-        $parameter instanceof FloatParameterInterface
-        // @phpstan-ignore-next-line
-        => assertFloat($parameter, $argument),
-        $parameter instanceof GenericParameterInterface
-        // @phpstan-ignore-next-line
-        => assertGeneric($parameter, $argument),
-        $parameter instanceof IntParameterInterface
-        // @phpstan-ignore-next-line
-        => assertInt($parameter, $argument),
-        $parameter instanceof ObjectParameterInterface
-        // @phpstan-ignore-next-line
-        => assertObject($parameter, $argument),
-        $parameter instanceof StringParameterInterface
-        // @phpstan-ignore-next-line
-        => assertString($parameter, $argument),
-        $parameter instanceof UnionParameterInterface => assertUnion($parameter, $argument),
-        $parameter instanceof NullParameterInterface => assertNull($parameter, $argument),
-        default => null,
-    };
+    return $parameter->__invoke($argument);
 }
 
 function methodParameters(string $class, string $method): ParametersInterface

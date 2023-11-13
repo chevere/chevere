@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Interfaces;
 
 use Chevere\Regex\Interfaces\RegexInterface;
+use Stringable;
 
 /**
  * Describes the component in charge of defining a parameter of type string.
@@ -21,6 +22,11 @@ use Chevere\Regex\Interfaces\RegexInterface;
 interface StringParameterInterface extends ParameterInterface
 {
     public const REGEX_DEFAULT = '/^.*$/';
+
+    /**
+     * Asserts the given `$value` is valid, returning the value if so.
+     */
+    public function __invoke(Stringable|string $value): string;
 
     /**
      * Provides access to the regex instance.

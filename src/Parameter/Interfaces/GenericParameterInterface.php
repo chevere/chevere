@@ -18,6 +18,12 @@ namespace Chevere\Parameter\Interfaces;
  */
 interface GenericParameterInterface extends ArrayTypeParameterInterface
 {
+    /**
+     * Asserts the given `$value` is valid, returning the value if so.
+     * @phpstan-ignore-next-line
+     */
+    public function __invoke(iterable $value): iterable;
+
     public function key(): ParameterInterface;
 
     public function value(): ParameterInterface;

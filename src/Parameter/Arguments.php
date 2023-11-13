@@ -231,7 +231,7 @@ final class Arguments implements ArgumentsInterface
         $parameter = $this->parameters()->get($name);
 
         try {
-            $this->arguments[$name] = assertArgument($parameter, $argument);
+            $this->arguments[$name] = $parameter->__invoke($argument);
         } catch (\TypeError $e) {
             throw new TypeError(
                 $this->getExceptionMessage($name, $e)

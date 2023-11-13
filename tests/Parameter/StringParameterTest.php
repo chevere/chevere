@@ -99,4 +99,11 @@ final class StringParameterTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $parameter->assertCompatible($notCompatible);
     }
+
+    public function testInvoke(): void
+    {
+        $value = '10';
+        $parameter = new StringParameter();
+        $this->assertSame($value, $parameter($value));
+    }
 }

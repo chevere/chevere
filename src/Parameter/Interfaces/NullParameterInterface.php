@@ -18,5 +18,10 @@ namespace Chevere\Parameter\Interfaces;
  */
 interface NullParameterInterface extends ParameterInterface
 {
+    /**
+     * Asserts the given `$value` is valid, returning the value if so.
+     */
+    public function __invoke(null $value): null;
+
     public function assertCompatible(self $parameter): void;
 }
