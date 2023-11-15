@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Iterator;
 
 use Chevere\Iterator\Breadcrumb;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class BreadcrumbTest extends TestCase

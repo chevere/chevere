@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Controller\Exceptions;
 
-use Chevere\Throwable\Exception;
+use Exception;
 
 /**
  * Exception thrown when the controller name doesn't implement the controller interface.

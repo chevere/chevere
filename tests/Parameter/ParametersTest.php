@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use BadMethodCallException;
 use Chevere\Parameter\ArrayParameter;
 use Chevere\Parameter\BoolParameter;
 use Chevere\Parameter\FloatParameter;
@@ -24,10 +25,9 @@ use Chevere\Parameter\ObjectParameter;
 use Chevere\Parameter\Parameters;
 use Chevere\Parameter\StringParameter;
 use Chevere\Parameter\UnionParameter;
-use Chevere\Throwable\Exceptions\BadMethodCallException;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\OverflowException;
+use InvalidArgumentException;
 use OutOfBoundsException;
+use OverflowException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\string;

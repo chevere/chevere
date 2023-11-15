@@ -15,8 +15,8 @@ namespace Chevere\Regex;
 
 use Chevere\Regex\Exceptions\NoMatchException;
 use Chevere\Regex\Interfaces\RegexInterface;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\RuntimeException;
+use InvalidArgumentException;
+use RuntimeException;
 use Safe\Exceptions\PcreException;
 use Throwable;
 use function Chevere\Message\message;
@@ -64,10 +64,7 @@ final class Regex implements RegexInterface
         // @codeCoverageIgnoreStart
         catch (PcreException $e) {
             throw new RuntimeException(
-                message(
-                    'Unable to `%function%`',
-                    function: 'preg_match'
-                )
+                (string) message('Unable to `%s%`', s: 'preg_match')
             );
         }
         // @codeCoverageIgnoreEnd
@@ -79,7 +76,7 @@ final class Regex implements RegexInterface
     {
         if (! $this->match($string)) {
             throw new NoMatchException(
-                message(
+                (string) message(
                     'String `%string%` does not match regex `%pattern%`',
                     pattern: $this->pattern,
                     string: $string,
@@ -97,10 +94,7 @@ final class Regex implements RegexInterface
         // @codeCoverageIgnoreStart
         catch (PcreException $e) {
             throw new RuntimeException(
-                message(
-                    'Unable to `%function%`',
-                    function: 'preg_match_all',
-                )
+                (string) message('Unable to `%s%`', s: 'preg_match_all')
             );
         }
         // @codeCoverageIgnoreEnd
@@ -112,7 +106,7 @@ final class Regex implements RegexInterface
     {
         if (! $this->matchAll($string)) {
             throw new NoMatchException(
-                message(
+                (string) message(
                     'String `%string%` does not match all regex `%pattern%`',
                     pattern: $this->pattern,
                     string: $string,
@@ -129,7 +123,7 @@ final class Regex implements RegexInterface
         } catch (Throwable $e) {
             throw new InvalidArgumentException(
                 previous: $e,
-                message: message(
+                message: (string) message(
                     'Invalid regex string `%regex%` provided [%preg%]',
                     regex: $this->pattern,
                     preg: static::ERRORS[preg_last_error()],

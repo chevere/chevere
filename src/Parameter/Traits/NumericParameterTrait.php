@@ -15,8 +15,8 @@ namespace Chevere\Parameter\Traits;
 
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntParameterInterface;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\OverflowException;
+use InvalidArgumentException;
+use OverflowException;
 use function Chevere\Message\message;
 
 trait NumericParameterTrait
@@ -57,7 +57,7 @@ trait NumericParameterTrait
     {
         if (isset($this->minimum) && $value < $this->minimum) {
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Default value `%value%` cannot be less than minimum value `%minimum%`',
                     value: strval($value),
                     minimum: strval($this->minimum),
@@ -66,7 +66,7 @@ trait NumericParameterTrait
         }
         if (isset($this->maximum) && $value > $this->maximum) {
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Default value `%value%` cannot be greater than maximum value `%maximum%`',
                     value: strval($value),
                     maximum: strval($this->maximum),
@@ -77,7 +77,7 @@ trait NumericParameterTrait
             $list = implode(', ', $this->accept);
 
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Default value `%value%` must be in accept list `%accept%`',
                     value: strval($value),
                     accept: "[{$list}]",
@@ -145,7 +145,7 @@ trait NumericParameterTrait
             $provided = implode(', ', $parameter->accept());
 
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Expected value in `%accept%`, provided `%provided%`',
                     accept: "[{$value}]",
                     provided: $provided,
@@ -162,7 +162,7 @@ trait NumericParameterTrait
             $provided = strval($parameter->minimum() ?? 'null');
 
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Expected minimum value `%value%`, provided `%provided%`',
                     value: $value,
                     provided: $provided,
@@ -179,7 +179,7 @@ trait NumericParameterTrait
             $provided = strval($parameter->maximum() ?? 'null');
 
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Expected maximum value `%value%`, provided `%provided%`',
                     value: $value,
                     provided: $provided

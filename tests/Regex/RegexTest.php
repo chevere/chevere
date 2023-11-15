@@ -15,7 +15,7 @@ namespace Chevere\Tests\Regex;
 
 use Chevere\Regex\Exceptions\NoMatchException;
 use Chevere\Regex\Regex;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class RegexTest extends TestCase

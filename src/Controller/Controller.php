@@ -16,7 +16,7 @@ namespace Chevere\Controller;
 use Chevere\Action\Action;
 use Chevere\Controller\Interfaces\ControllerInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use function Chevere\Action\getParameters;
 use function Chevere\Message\message;
 
@@ -35,7 +35,7 @@ abstract class Controller extends Action implements ControllerInterface
         }
 
         throw new InvalidArgumentException(
-            message(
+            (string) message(
                 'Parameter `%parameters%` must be of type **%type%** for controller **%className%**',
                 parameters: implode(', ', $invalid),
                 type: 'string',

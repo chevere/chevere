@@ -15,9 +15,9 @@ namespace Chevere\Tests\Common;
 
 use Chevere\Common\ClassName;
 use Chevere\String\Exceptions\EmptyException;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 final class ClassNameTest extends TestCase
 {

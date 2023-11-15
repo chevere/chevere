@@ -77,7 +77,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
             (new StringAssert($contents))->notEmpty()->notCtypeSpace();
         } catch (Throwable) {
             throw new FileWithoutContentsException(
-                message(
+                (string) message(
                     "The file at `%path%` doesn't have any contents",
                     path: $this->filePhp->file()->path()->__toString()
                 )
@@ -85,7 +85,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         }
         if (preg_match('#^<\?php[\S\s]*return[\S\s]*;$#', $contents) !== 1) {
             throw new FileInvalidContentsException(
-                message(
+                (string) message(
                     'Unexpected contents in `%path%`',
                     path: $this->filePhp->file()->path()->__toString()
                 )

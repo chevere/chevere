@@ -15,8 +15,8 @@ namespace Chevere\Tests\Action;
 
 use Chevere\Action\ActionName;
 use Chevere\Tests\Action\src\ActionTestAction;
-use Chevere\Throwable\Errors\TypeError;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 final class ActionNameTest extends TestCase
 {

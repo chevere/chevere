@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Type;
 
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
+use InvalidArgumentException;
 
 /**
  * Get variable type.

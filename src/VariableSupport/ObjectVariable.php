@@ -64,7 +64,7 @@ final class ObjectVariable implements ObjectVariableInterface
         $reflection = new ReflectionObject($variable);
         if (! $reflection->isCloneable()) {
             throw new ObjectNotClonableException(
-                message(
+                (string) message(
                     'Object is not clonable at `%at%`',
                     at: $this->breadcrumb->__toString()
                 )

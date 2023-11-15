@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use BadMethodCallException;
 use Chevere\DataStructure\Interfaces\VectorInterface;
 use Chevere\DataStructure\Map;
 use Chevere\DataStructure\Traits\MapTrait;
@@ -20,9 +21,8 @@ use Chevere\DataStructure\Vector;
 use Chevere\Parameter\Interfaces\ParameterCastInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Throwable\Exceptions\BadMethodCallException;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\OverflowException;
+use InvalidArgumentException;
+use OverflowException;
 use function Chevere\Message\message;
 
 final class Parameters implements ParametersInterface
@@ -88,7 +88,7 @@ final class Parameters implements ParametersInterface
         foreach ($name as $key) {
             if (! $new->requiredKeys->contains($key)) {
                 throw new InvalidArgumentException(
-                    message(
+                    (string) message(
                         'Parameter `%name%` is not required',
                         name: $key
                     )
@@ -111,7 +111,7 @@ final class Parameters implements ParametersInterface
         foreach ($name as $key) {
             if (! $new->optionalKeys()->contains($key)) {
                 throw new InvalidArgumentException(
-                    message(
+                    (string) message(
                         'Parameter `%name%` is not optional',
                         name: $key
                     )
@@ -137,10 +137,10 @@ final class Parameters implements ParametersInterface
     {
         match (true) {
             $count < 0 => throw new InvalidArgumentException(
-                message('Count must be greater or equal to 0')
+                (string) message('Count must be greater or equal to 0')
             ),
             $this->optionalKeys()->count() === 0 => throw new BadMethodCallException(
-                message('No optional parameters found')
+                (string) message('No optional parameters found')
             ),
             default => null,
         };
@@ -185,7 +185,7 @@ final class Parameters implements ParametersInterface
     {
         if ($this->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Parameter `%name%` is optional',
                     name: $name
                 )
@@ -201,7 +201,7 @@ final class Parameters implements ParametersInterface
     {
         if (! $this->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Parameter `%name%` is required',
                     name: $name
                 )
@@ -227,7 +227,7 @@ final class Parameters implements ParametersInterface
     {
         if ($this->optionalMinimum > $this->optionalKeys()->count()) {
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Count must be less or equal to `%optional%`',
                     optional: strval($this->optionalMinimum)
                 )
@@ -239,7 +239,7 @@ final class Parameters implements ParametersInterface
     {
         if ($this->has($name)) {
             throw new OverflowException(
-                message(
+                (string) message(
                     'Parameter `%name%` has been already added',
                     name: $name
                 )

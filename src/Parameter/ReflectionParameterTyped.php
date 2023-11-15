@@ -18,13 +18,13 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ReflectionParameterTypedInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Interfaces\RegexInterface;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
 use Throwable;
+use TypeError;
 use function Chevere\Attribute\descriptionAttribute;
 use function Chevere\Attribute\enumAttribute;
 use function Chevere\Attribute\regexAttribute;
@@ -90,7 +90,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         $reflectionType = $this->reflection->getType();
         if ($reflectionType === null) {
             throw new TypeError(
-                message(
+                (string) message(
                     'Missing type declaration for parameter %parameter%',
                     parameter: '$' . $this->reflection->getName()
                 )
@@ -103,7 +103,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         $type = $this->getReflectionType($reflectionType);
 
         throw new InvalidArgumentException(
-            message(
+            (string) message(
                 'Parameter %name% of type %type% is not supported',
                 name: $name,
                 type: $type

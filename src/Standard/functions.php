@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Standard;
 
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 
 function notEmpty(mixed $value): bool
 {

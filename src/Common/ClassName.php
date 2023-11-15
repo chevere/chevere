@@ -15,8 +15,8 @@ namespace Chevere\Common;
 
 use Chevere\Common\Interfaces\ClassNameInterface;
 use Chevere\String\StringAssert;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
+use TypeError;
 use function Chevere\Message\message;
 
 final class ClassName implements ClassNameInterface
@@ -40,7 +40,7 @@ final class ClassName implements ClassNameInterface
         }
 
         throw new TypeError(
-            message(
+            (string) message(
                 'Class `%name%` must implement `%interface%` interface',
                 name: $this->name,
                 interface: $class
@@ -55,9 +55,9 @@ final class ClassName implements ClassNameInterface
         }
 
         throw new InvalidArgumentException(
-            message(
-                "Class %name% doesn't exists",
-                name: $name
+            (string) message(
+                "Class %s% doesn't exists",
+                s: $name
             )
         );
     }

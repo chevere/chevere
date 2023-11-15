@@ -52,7 +52,7 @@ final class Path implements PathInterface
     {
         if (! $this->exists()) {
             throw new PathNotExistsException(
-                message(
+                (string) message(
                     "Path `%path%` doesn't exists",
                     path: $this->absolute
                 )

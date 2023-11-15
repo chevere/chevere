@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Writer;
 
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Writer\Interfaces\WritersInterface;
+use InvalidArgumentException;
 use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 use Throwable;
@@ -41,7 +41,7 @@ function streamFor(string $uri, string $mode): StreamInterface
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             previous: $e,
-            message: message(
+            message: (string) message(
                 'Unable to create stream for `%uri%`',
                 uri: $uri
             )
@@ -59,7 +59,7 @@ function streamTemp(string $content = ''): StreamInterface
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             previous: $e,
-            message: message('Unable to create temp stream')
+            message: (string) message('Unable to create temp stream')
         );
     }
 }

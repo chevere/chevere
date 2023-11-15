@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\String\Exceptions;
 
-use Chevere\Throwable\Exception;
+use Exception;
 
 /**
  * Exception thrown when the string is not ctype space.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Filesystem\Exceptions;
 
-use Chevere\Throwable\Exception;
+use Exception;
 
 /**
  * Exception thrown when a file handle is unable to interact with the file.

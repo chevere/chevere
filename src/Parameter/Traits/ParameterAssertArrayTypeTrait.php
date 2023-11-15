@@ -15,8 +15,8 @@ namespace Chevere\Parameter\Traits;
 
 use Chevere\Parameter\Interfaces\ParametersAccessInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use InvalidArgumentException;
+use OutOfBoundsException;
 use function Chevere\Message\message;
 
 trait ParameterAssertArrayTypeTrait
@@ -29,7 +29,7 @@ trait ParameterAssertArrayTypeTrait
         $providedCount = $parameter->parameters()->count();
         if ($parametersCount === 0 && $providedCount !== 0) {
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Expecting no parameters, `%provided%` provided',
                     provided: strval($providedCount)
                 )
@@ -40,7 +40,7 @@ trait ParameterAssertArrayTypeTrait
                 $tryParameter = $parameter->parameters()->get($name);
             } catch (OutOfBoundsException) {
                 throw new OutOfBoundsException(
-                    message(
+                    (string) message(
                         'Parameter `%name%` not found',
                         name: $name
                     )
@@ -51,7 +51,7 @@ trait ParameterAssertArrayTypeTrait
                 $item->assertCompatible($tryParameter);
             } catch (\TypeError) {
                 throw new InvalidArgumentException(
-                    message(
+                    (string) message(
                         'Parameter `%name%` of type `%type%` is not compatible with type `%provided%`',
                         name: $name,
                         type: $item::class,

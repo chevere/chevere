@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter;
 
+use ArgumentCountError;
 use ArrayAccess;
 use Chevere\Parameter\Interfaces\ArgumentsInterface;
 use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Throwable\Errors\ArgumentCountError;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use InvalidArgumentException;
+use OutOfBoundsException;
 use ReflectionClass;
 use Throwable;
+use TypeError;
 use function Chevere\Message\message;
 
 final class Arguments implements ArgumentsInterface
@@ -73,9 +73,7 @@ final class Arguments implements ArgumentsInterface
         $this->handleParameters();
         if ($this->errors !== []) {
             throw new InvalidArgumentException(
-                message(
-                    implode(', ', $this->errors)
-                )
+                implode(', ', $this->errors)
             );
         }
     }
@@ -137,7 +135,7 @@ final class Arguments implements ArgumentsInterface
     {
         if ($this->parameters()->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Argument `%name%` is optional',
                     name: $name
                 )
@@ -151,7 +149,7 @@ final class Arguments implements ArgumentsInterface
     {
         if (! $this->parameters()->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
-                message(
+                (string) message(
                     'Argument `%name%` is required',
                     name: $name
                 )
@@ -173,7 +171,7 @@ final class Arguments implements ArgumentsInterface
         );
         if ($overflow !== []) {
             throw new ArgumentCountError(
-                message(
+                (string) message(
                     'Invalid argument(s) provided: `%extra%`',
                     extra: implode(', ', $overflow)
                 )
@@ -205,7 +203,7 @@ final class Arguments implements ArgumentsInterface
         );
         if ($missing !== []) {
             throw new ArgumentCountError(
-                message(
+                (string) message(
                     'Missing required argument(s): `%missing%`',
                     missing: implode(', ', $missing)
                 )
@@ -223,7 +221,7 @@ final class Arguments implements ArgumentsInterface
         $countProvided = count($providedOptionals);
         if ($countProvided < $this->parameters()->optionalMinimum()) {
             throw new ArgumentCountError(
-                message(
+                (string) message(
                     'Requires minimum `%minimum%` optional argument(s), `%provided%` provided',
                     minimum: strval($this->parameters()->optionalMinimum()),
                     provided: strval($countProvided)

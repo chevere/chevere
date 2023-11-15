@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action;
 
+use ArgumentCountError;
 use Chevere\Tests\Action\src\ActionTestAction;
 use Chevere\Tests\Action\src\ActionTestArrayAccessReturnType;
 use Chevere\Tests\Action\src\ActionTestController;
@@ -27,13 +28,12 @@ use Chevere\Tests\Action\src\ActionTestPrivateScope;
 use Chevere\Tests\Action\src\ActionTestReturnExtraArguments;
 use Chevere\Tests\Action\src\ActionTestUnionReturnMissingType;
 use Chevere\Tests\Action\src\ActionTestUnionReturnType;
-use Chevere\Throwable\Errors\ArgumentCountError;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\LogicException;
 use Error;
+use InvalidArgumentException;
+use LogicException;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
+use TypeError;
 
 final class ActionTest extends TestCase
 {

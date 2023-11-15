@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Serialize;
 
 use Chevere\Serialize\Interfaces\DeserializeInterface;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use Throwable;
 
 final class Deserialize implements DeserializeInterface

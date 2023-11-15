@@ -15,8 +15,8 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Controller\ControllerName;
 use Chevere\Tests\Controller\_resources\ControllerNameTestController;
-use Chevere\Throwable\Errors\TypeError;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 final class ControllerNameTest extends TestCase
 {

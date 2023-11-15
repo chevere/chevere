@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Parameter;
 
 use Chevere\Parameter\UnionParameter;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
 use Chevere\Type\Interfaces\TypeInterface;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\int;

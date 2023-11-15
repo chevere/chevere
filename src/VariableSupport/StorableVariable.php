@@ -79,7 +79,7 @@ final class StorableVariable implements StorableVariableInterface
             )
             : message('Argument is of type resource.');
 
-        throw new UnableToStoreException($message);
+        throw new UnableToStoreException((string) $message);
     }
 
     private function breadcrumbObject(object $variable, string $callable): void

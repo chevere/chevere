@@ -21,7 +21,7 @@ use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use Throwable;
 use function Chevere\Message\message;
 
@@ -113,7 +113,7 @@ function assertNotEmpty(ParameterInterface $expected, mixed $value): void
         && count($expected->parameters()->requiredKeys()) > 0
     ) {
         throw new InvalidArgumentException(
-            message('Argument value provided is empty')
+            (string) message('Argument value provided is empty')
         );
     }
 }

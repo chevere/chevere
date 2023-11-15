@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Serialize;
 
 use Chevere\Serialize\Serialize;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\LogicException;
+use InvalidArgumentException;
+use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class SerializeTest extends TestCase

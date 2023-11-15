@@ -16,7 +16,7 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\IntParameter;
 use Chevere\Parameter\Parameters;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use OverflowException;
 use PHPUnit\Framework\TestCase;
 

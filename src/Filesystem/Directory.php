@@ -59,7 +59,7 @@ final class Directory implements DirectoryInterface
     {
         if (! $this->exists()) {
             throw new DirectoryNotExistsException(
-                message(
+                (string) message(
                     "Directory %path% doesn't exists",
                     path: $this->path->__toString()
                 )
@@ -72,7 +72,7 @@ final class Directory implements DirectoryInterface
     {
         if ($this->exists()) {
             throw new DirectoryExistsException(
-                message(
+                (string) message(
                     'Directory `%path%` already exists',
                     path: $this->path->__toString()
                 )
@@ -140,7 +140,7 @@ final class Directory implements DirectoryInterface
     {
         if ($this->path->isFile()) {
             throw new PathIsFileException(
-                message(
+                (string) message(
                     'Path `%path%` is a file',
                     path: $this->path->__toString()
                 )
@@ -153,7 +153,7 @@ final class Directory implements DirectoryInterface
         $absolute = $this->path->__toString();
         if ($absolute[-1] !== '/') {
             throw new PathTailException(
-                message(
+                (string) message(
                     'Instance of `%className%` must provide an absolute path ending with `%tailChar%` path `%provided%` provided',
                     className: $this->path::class,
                     tailChar: '/',
@@ -167,7 +167,7 @@ final class Directory implements DirectoryInterface
     {
         if (! $this->path->isDirectory()) {
             throw new PathIsNotDirectoryException(
-                message(
+                (string) message(
                     'Path `%path%` is not a directory',
                     path: $this->path->__toString()
                 )

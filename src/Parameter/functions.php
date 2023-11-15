@@ -24,11 +24,11 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersAccessInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use Iterator;
 use ReflectionMethod;
 use Throwable;
+use TypeError;
 use function Chevere\Message\message;
 
 function cast(mixed $argument): CastInterface
@@ -93,7 +93,7 @@ function assertNull(NullParameterInterface $parameter, mixed $argument): null
     }
 
     throw new TypeError(
-        message('Argument value provided is not of type null')
+        (string) message('Argument value provided is not of type null')
     );
 }
 
@@ -106,7 +106,7 @@ function assertObject(
     }
 
     throw new InvalidArgumentException(
-        message(
+        (string) message(
             'Argument value provided is not of type `%type%`',
             type: $parameter->className()
         )
@@ -129,7 +129,7 @@ function assertUnion(
     }
 
     throw new InvalidArgumentException(
-        message(
+        (string) message(
             "Argument provided doesn't match the union type `%type%`",
             type: implode('|', $types)
         )
@@ -154,7 +154,7 @@ function assertNamedArgument(
         return arguments($parameters, $arguments);
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
-            message(
+            (string) message(
                 'Argument [%name%]: %message%',
                 name: $name,
                 message: $e->getMessage(),

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use ArgumentCountError;
 use Chevere\Parameter\ArrayStringParameter;
-use Chevere\Throwable\Errors\ArgumentCountError;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\arrayString;

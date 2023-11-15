@@ -46,7 +46,7 @@ final class StringAssert implements StringAssertInterface
         }
 
         throw new NotEmptyException(
-            message(
+            (string) message(
                 'String `%string%` is not **%algo%**',
                 string: $this->string,
                 algo: 'empty',
@@ -58,7 +58,7 @@ final class StringAssert implements StringAssertInterface
     {
         if ((new StringValidate($this->string))->isEmpty()) {
             throw new EmptyException(
-                message(
+                (string) message(
                     'String **%algo%** provided',
                     algo: 'empty',
                 )
@@ -75,7 +75,7 @@ final class StringAssert implements StringAssertInterface
         }
 
         throw new NotCtypeSpaceException(
-            message(
+            (string) message(
                 'String `%string%` is not **%algo%**',
                 string: $this->string,
                 algo: 'ctype space',
@@ -87,7 +87,7 @@ final class StringAssert implements StringAssertInterface
     {
         if ((new StringValidate($this->string))->isCtypeSpace()) {
             throw new CtypeSpaceException(
-                message('String ctype space provided')
+                (string) message('String ctype space provided')
             );
         }
 
@@ -101,7 +101,7 @@ final class StringAssert implements StringAssertInterface
         }
 
         throw new NotCtypeDigitException(
-            message(
+            (string) message(
                 'String `%string%` is not **%algo%**',
                 string: $this->string,
                 algo: 'ctype digit',
@@ -113,7 +113,7 @@ final class StringAssert implements StringAssertInterface
     {
         if ((new StringValidate($this->string))->isCtypeDigit()) {
             throw new CtypeDigitException(
-                message(
+                (string) message(
                     'String **%algo%** provided',
                     algo: 'ctype digit'
                 )
@@ -130,7 +130,7 @@ final class StringAssert implements StringAssertInterface
         }
 
         throw new NotStartsWithCtypeDigitException(
-            message(
+            (string) message(
                 'String `%string%` does not starts with a **%algo%** character',
                 string: $this->string,
                 algo: 'ctype digit',
@@ -142,7 +142,7 @@ final class StringAssert implements StringAssertInterface
     {
         if ((new StringValidate($this->string))->isStartingWithCtypeDigit()) {
             throw new StartsWithCtypeDigitException(
-                message(
+                (string) message(
                     'String `%string%` starts with a **%algo%** character',
                     string: $this->string,
                     algo: 'ctype digit',
@@ -160,7 +160,7 @@ final class StringAssert implements StringAssertInterface
         }
 
         throw new NotStartsWithException(
-            message(
+            (string) message(
                 'String `%string%` does not starts with `%needle%`',
                 string: $this->string,
                 needle: $needle,
@@ -172,7 +172,7 @@ final class StringAssert implements StringAssertInterface
     {
         if ((new StringValidate($this->string))->isStartingWith($needle)) {
             throw new StartsWithException(
-                message(
+                (string) message(
                     'String `%string%` starts with `%needle%`',
                     string: $this->string,
                     needle: $needle,
@@ -190,7 +190,7 @@ final class StringAssert implements StringAssertInterface
         }
 
         throw new NotEndsWithException(
-            message(
+            (string) message(
                 'String `%string%` does not ends with `%needle%`',
                 string: $this->string,
                 needle: $needle,
@@ -202,7 +202,7 @@ final class StringAssert implements StringAssertInterface
     {
         if ((new StringValidate($this->string))->isEndingWith($needle)) {
             throw new EndsWithException(
-                message(
+                (string) message(
                     'String `%string%` ends with `%needle%`',
                     string: $this->string,
                     needle: $needle,
@@ -220,7 +220,7 @@ final class StringAssert implements StringAssertInterface
         }
 
         throw new NotSameException(
-            message(
+            (string) message(
                 'Provided string `%provided%` is not the same as `%string%`',
                 provided: $string,
                 string: $this->string,
@@ -232,7 +232,7 @@ final class StringAssert implements StringAssertInterface
     {
         if ((new StringValidate($this->string))->isSame($string)) {
             throw new SameException(
-                message(
+                (string) message(
                     'Provided string `%provided%` is the same as `%string%`',
                     provided: $string,
                     string: $this->string,
@@ -250,7 +250,7 @@ final class StringAssert implements StringAssertInterface
         }
 
         throw new NotContainsException(
-            message(
+            (string) message(
                 'String `%string%` not contains `%provided%`',
                 provided: $string,
                 string: $this->string,
@@ -262,7 +262,7 @@ final class StringAssert implements StringAssertInterface
     {
         if ((new StringValidate($this->string))->contains($string)) {
             throw new ContainsException(
-                message(
+                (string) message(
                     'String `%string%` contains `%provided%`',
                     provided: $string,
                     string: $this->string,

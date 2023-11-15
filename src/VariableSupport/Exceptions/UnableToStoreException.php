@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\VariableSupport\Exceptions;
 
-use Chevere\Throwable\Exceptions\LogicException;
+use LogicException;
 
 /**
  * Exception thrown when a variable can't be stored.

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
+use ArgumentCountError;
 use Chevere\Parameter\Arguments;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\IntParameter;
@@ -21,12 +22,11 @@ use Chevere\Regex\Regex;
 use Chevere\Tests\Parameter\_resources\ArrayAccessDynamic;
 use Chevere\Tests\Parameter\_resources\ArrayAccessMixed;
 use Chevere\Tests\Parameter\_resources\ArrayAccessScoped;
-use Chevere\Throwable\Errors\ArgumentCountError;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use InvalidArgumentException;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use TypeError;
 use function Chevere\Parameter\arrayp;
 use function Chevere\Parameter\bool;
 use function Chevere\Parameter\int;

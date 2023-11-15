@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\DataStructure;
 
 use Chevere\DataStructure\Interfaces\VectorInterface;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
 use Iterator;
+use OutOfBoundsException;
 use function Chevere\Message\message;
 
 final class Vector implements VectorInterface
@@ -134,7 +134,7 @@ final class Vector implements VectorInterface
         }
 
         throw new OutOfBoundsException(
-            message(
+            (string) message(
                 'Missing key(s) `%keys%`',
                 keys: implode(', ', $missing)
             )
@@ -148,7 +148,7 @@ final class Vector implements VectorInterface
     {
         if (! $this->lookupKey($key)) {
             throw new OutOfBoundsException(
-                message(
+                (string) message(
                     'Key `%key%` not found',
                     key: strval($key)
                 )

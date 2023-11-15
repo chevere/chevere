@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Filesystem\Exceptions;
 
-use Chevere\Throwable\Exception;
+use Exception;
 
 /**
  * Exception thrown when a file doesn't exists.

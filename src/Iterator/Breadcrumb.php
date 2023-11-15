@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Iterator;
 
 use Chevere\Iterator\Interfaces\BreadcrumbInterface;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use OutOfBoundsException;
 use function Chevere\Message\message;
 
 final class Breadcrumb implements BreadcrumbInterface
@@ -71,7 +71,7 @@ final class Breadcrumb implements BreadcrumbInterface
     {
         if (! array_key_exists($pos, $this->items)) {
             throw new OutOfBoundsException(
-                message(
+                (string) message(
                     'Pos `%pos%` not found',
                     pos: (string) $pos
                 )

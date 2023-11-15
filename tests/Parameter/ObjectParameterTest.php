@@ -15,10 +15,10 @@ namespace Chevere\Tests\Parameter;
 
 use Chevere\Filesystem\File;
 use Chevere\Parameter\ObjectParameter;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
+use TypeError;
 use function Chevere\Filesystem\fileForPath;
 use function Chevere\Parameter\object;
 

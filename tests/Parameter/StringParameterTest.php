@@ -16,7 +16,7 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\StringParameter;
 use Chevere\Regex\Regex;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Parameter\string;
 

@@ -60,7 +60,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if ($this->drive === '' && ! str_starts_with($this->path, '/')) {
             throw new PathNotAbsoluteException(
-                message(
+                (string) message(
                     'Path `%path%` must start with `%char%`',
                     path: $this->path,
                     char: '/'
@@ -73,7 +73,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if (strpos($this->path, '../') !== false) {
             throw new PathDoubleDotsDashException(
-                message(
+                (string) message(
                     'Must omit `%chars%` for path `%path%`',
                     chars: '../',
                     path: $this->path
@@ -86,7 +86,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if (strpos($this->path, './') !== false) {
             throw new PathDotSlashException(
-                message(
+                (string) message(
                     'Must omit %chars% for path %path%',
                     chars: './',
                     path: $this->path
@@ -99,7 +99,7 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if (strpos($this->path, '//') !== false) {
             throw new PathExtraSlashesException(
-                message(
+                (string) message(
                     'Path `%path%` contains extra-slashes',
                     path: $this->path
                 )

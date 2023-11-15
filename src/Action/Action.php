@@ -19,11 +19,11 @@ use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
-use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exceptions\LogicException;
+use LogicException;
 use ReflectionMethod;
 use ReflectionNamedType;
 use Throwable;
+use TypeError;
 use function Chevere\Message\message;
 use function Chevere\Parameter\arguments;
 use function Chevere\Parameter\arrayp;
@@ -95,7 +95,7 @@ abstract class Action implements ActionInterface
         }
         if (! in_array($return, $expect, true)) {
             throw new TypeError(
-                message(
+                (string) message(
                     'Method `%method%` must declare `%type%` return type',
                     method: static::runMethodFQN(),
                     type: implode('|', $expect),
@@ -108,7 +108,7 @@ abstract class Action implements ActionInterface
     {
         if (! method_exists(static::class, static::RUN_METHOD)) {
             throw new LogicException(
-                message(
+                (string) message(
                     'Action `%action%` does not define %invoke% method',
                     action: static::class,
                     invoke: static::RUN_METHOD,
@@ -123,7 +123,7 @@ abstract class Action implements ActionInterface
             }
 
             throw new TypeError(
-                message(
+                (string) message(
                     'Method `%method%` must declare `%type%` return type',
                     method: static::runMethodFQN(),
                     type: $response->type()->typeHinting(),

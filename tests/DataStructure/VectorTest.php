@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\DataStructure;
 
 use Chevere\DataStructure\Vector;
-use Chevere\Throwable\Exceptions\OutOfBoundsException;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

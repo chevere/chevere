@@ -15,7 +15,7 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntParameterInterface;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use function Chevere\Message\message;
 
 /**
@@ -83,7 +83,7 @@ function assertNumeric(
         }
 
         throw new InvalidArgumentException(
-            message(
+            (string) message(
                 'Argument value provided `%provided%` is not an accepted value `%value%`',
                 provided: strval($argument),
                 value: implode(',', $accept)
@@ -93,7 +93,7 @@ function assertNumeric(
     $minimum = $parameter->minimum();
     if ($minimum !== null && $argument < $minimum) {
         throw new InvalidArgumentException(
-            message(
+            (string) message(
                 'Argument value provided `%provided%` is less than `%minimum%`',
                 provided: strval($argument),
                 minimum: strval($minimum)
@@ -103,7 +103,7 @@ function assertNumeric(
     $maximum = $parameter->maximum();
     if ($maximum !== null && $argument > $maximum) {
         throw new InvalidArgumentException(
-            message(
+            (string) message(
                 'Argument value provided `%provided%` is greater than `%maximum%`',
                 provided: strval($argument),
                 maximum: strval($maximum)

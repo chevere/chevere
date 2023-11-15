@@ -15,7 +15,7 @@ namespace Chevere\Tests\Serialize;
 
 use Chevere\Serialize\Deserialize;
 use Chevere\Tests\Serialize\_resources\TestUnserializeException;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

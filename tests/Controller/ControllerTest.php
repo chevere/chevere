@@ -15,7 +15,7 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Tests\Controller\_resources\ControllerTestController;
 use Chevere\Tests\Controller\_resources\ControllerTestInvalidController;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerTest extends TestCase

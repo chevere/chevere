@@ -15,7 +15,7 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Regex\Regex;
-use Chevere\Throwable\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use Stringable;
 use function Chevere\Message\message;
 
@@ -50,7 +50,7 @@ function enum(string ...$string): StringParameterInterface
 {
     if ($string === []) {
         throw new InvalidArgumentException(
-            message('At least one string must be provided')
+            (string) message('At least one string must be provided')
         );
     }
     $cases = implode('|', $string);
@@ -106,7 +106,7 @@ function assertString(
     }
 
     throw new InvalidArgumentException(
-        message(
+        (string) message(
             "Argument value provided `%provided%` doesn't match the regex `%regex%`",
             provided: $argument,
             regex: strval($regex),
