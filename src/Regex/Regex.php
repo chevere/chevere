@@ -64,8 +64,10 @@ final class Regex implements RegexInterface
         // @codeCoverageIgnoreStart
         catch (PcreException $e) {
             throw new RuntimeException(
-                message('Unable to %function%')
-                    ->withCode('%function%', 'preg_match'),
+                message(
+                    'Unable to `%function%`',
+                    function: 'preg_match'
+                )
             );
         }
         // @codeCoverageIgnoreEnd
@@ -77,10 +79,12 @@ final class Regex implements RegexInterface
     {
         if (! $this->match($string)) {
             throw new NoMatchException(
-                message('String %string% does not match regex %pattern%')
-                    ->withCode('%pattern%', $this->pattern)
-                    ->withCode('%string% ', $string),
-                100,
+                message(
+                    'String `%string%` does not match regex `%pattern%`',
+                    pattern: $this->pattern,
+                    string: $string,
+                ),
+                100
             );
         }
     }
@@ -93,8 +97,10 @@ final class Regex implements RegexInterface
         // @codeCoverageIgnoreStart
         catch (PcreException $e) {
             throw new RuntimeException(
-                message('Unable to %function%')
-                    ->withCode('%function%', 'preg_match_all'),
+                message(
+                    'Unable to `%function%`',
+                    function: 'preg_match_all',
+                )
             );
         }
         // @codeCoverageIgnoreEnd
@@ -106,9 +112,11 @@ final class Regex implements RegexInterface
     {
         if (! $this->matchAll($string)) {
             throw new NoMatchException(
-                message('String %string% does not match all regex %pattern%')
-                    ->withCode('%pattern%', $this->pattern)
-                    ->withCode('%string% ', $string),
+                message(
+                    'String `%string%` does not match all regex `%pattern%`',
+                    pattern: $this->pattern,
+                    string: $string,
+                ),
                 110
             );
         }
@@ -121,9 +129,11 @@ final class Regex implements RegexInterface
         } catch (Throwable $e) {
             throw new InvalidArgumentException(
                 previous: $e,
-                message: message('Invalid regex string %regex% provided [%preg%]')
-                    ->withCode('%regex%', $this->pattern)
-                    ->withTranslate('%preg%', static::ERRORS[preg_last_error()]),
+                message: message(
+                    'Invalid regex string `%regex%` provided [%preg%]',
+                    regex: $this->pattern,
+                    preg: static::ERRORS[preg_last_error()],
+                )
             );
         }
     }

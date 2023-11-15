@@ -60,8 +60,10 @@ final class ObjectParameter implements ObjectParameterInterface
     {
         if (! $this->type->validate($value)) {
             throw new TypeError(
-                message('Default value must be of type %type%')
-                    ->withCode('%type%', $this->className)
+                message(
+                    'Default value must be of type `%type%`',
+                    type: $this->className
+                )
             );
         }
         $new = clone $this;
@@ -94,8 +96,10 @@ final class ObjectParameter implements ObjectParameterInterface
         }
 
         throw new InvalidArgumentException(
-            message('Parameter must be of type %type%')
-                ->withCode('%type%', $this->className)
+            message(
+                'Parameter must be of type `%type%`',
+                type: $this->className
+            )
         );
     }
 

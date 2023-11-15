@@ -60,9 +60,11 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if ($this->drive === '' && ! str_starts_with($this->path, '/')) {
             throw new PathNotAbsoluteException(
-                message('Path %path% must start with %char%')
-                    ->withCode('%path%', $this->path)
-                    ->withCode('%char%', '/')
+                message(
+                    'Path `%path%` must start with `%char%`',
+                    path: $this->path,
+                    char: '/'
+                )
             );
         }
     }
@@ -71,9 +73,11 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if (strpos($this->path, '../') !== false) {
             throw new PathDoubleDotsDashException(
-                message('Must omit %chars% for path %path%')
-                    ->withCode('%chars%', '../')
-                    ->withCode('%path%', $this->path)
+                message(
+                    'Must omit `%chars%` for path `%path%`',
+                    chars: '../',
+                    path: $this->path
+                )
             );
         }
     }
@@ -82,9 +86,11 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if (strpos($this->path, './') !== false) {
             throw new PathDotSlashException(
-                message('Must omit %chars% for path %path%')
-                    ->withCode('%chars%', './')
-                    ->withCode('%path%', $this->path)
+                message(
+                    'Must omit %chars% for path %path%',
+                    chars: './',
+                    path: $this->path
+                )
             );
         }
     }
@@ -93,8 +99,10 @@ final class AssertPathFormat implements AssertPathFormatInterface
     {
         if (strpos($this->path, '//') !== false) {
             throw new PathExtraSlashesException(
-                message('Path %path% contains extra-slashes')
-                    ->withCode('%path%', $this->path)
+                message(
+                    'Path `%path%` contains extra-slashes',
+                    path: $this->path
+                )
             );
         }
     }

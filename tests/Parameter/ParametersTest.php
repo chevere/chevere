@@ -91,7 +91,7 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters(foo: $parameter);
         $this->assertSame($parameter, $parameters->required('foo')->string());
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Parameter foo is required');
+        $this->expectExceptionMessage('Parameter `foo` is required');
         $parameters->optional('foo');
     }
 
@@ -102,7 +102,7 @@ final class ParametersTest extends TestCase
             ->withOptional('foo', $parameter);
         $this->assertSame($parameter, $parameters->optional('foo')->string());
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Parameter foo is optional');
+        $this->expectExceptionMessage('Parameter `foo` is optional');
         $parameters->required('foo');
     }
 

@@ -59,8 +59,10 @@ final class Directory implements DirectoryInterface
     {
         if (! $this->exists()) {
             throw new DirectoryNotExistsException(
-                message("Directory %path% doesn't exists")
-                    ->withCode('%path%', $this->path->__toString())
+                message(
+                    "Directory %path% doesn't exists",
+                    path: $this->path->__toString()
+                )
             );
         }
     }
@@ -70,8 +72,10 @@ final class Directory implements DirectoryInterface
     {
         if ($this->exists()) {
             throw new DirectoryExistsException(
-                message('Directory %path% already exists')
-                    ->withCode('%path%', $this->path->__toString())
+                message(
+                    'Directory `%path%` already exists',
+                    path: $this->path->__toString()
+                )
             );
         }
         $this->assertCreate($mode);
@@ -136,8 +140,10 @@ final class Directory implements DirectoryInterface
     {
         if ($this->path->isFile()) {
             throw new PathIsFileException(
-                message('Path %path% is a file')
-                    ->withCode('%path%', $this->path->__toString())
+                message(
+                    'Path `%path%` is a file',
+                    path: $this->path->__toString()
+                )
             );
         }
     }
@@ -147,10 +153,12 @@ final class Directory implements DirectoryInterface
         $absolute = $this->path->__toString();
         if ($absolute[-1] !== '/') {
             throw new PathTailException(
-                message('Instance of %className% must provide an absolute path ending with %tailChar% path %provided% provided')
-                    ->withCode('%className%', $this->path::class)
-                    ->withCode('%tailChar%', '/')
-                    ->withCode('%provided%', $absolute)
+                message(
+                    'Instance of `%className%` must provide an absolute path ending with `%tailChar%` path `%provided%` provided',
+                    className: $this->path::class,
+                    tailChar: '/',
+                    provided: $absolute
+                )
             );
         }
     }
@@ -159,8 +167,10 @@ final class Directory implements DirectoryInterface
     {
         if (! $this->path->isDirectory()) {
             throw new PathIsNotDirectoryException(
-                message('Path %path% is not a directory')
-                    ->withCode('%path%', $this->path->__toString())
+                message(
+                    'Path `%path%` is not a directory',
+                    path: $this->path->__toString()
+                )
             );
         }
     }

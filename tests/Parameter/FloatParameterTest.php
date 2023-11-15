@@ -90,7 +90,7 @@ final class FloatParameterTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             <<<STRING
-            Expected value in [{$value}], provided {$provided}
+            Expected value in `[{$value}]`, provided `{$provided}`
             STRING
         );
         $parameter->assertCompatible($notCompatible);

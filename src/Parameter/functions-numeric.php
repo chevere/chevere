@@ -83,25 +83,31 @@ function assertNumeric(
         }
 
         throw new InvalidArgumentException(
-            message('Argument value provided %provided% is not an accepted value %value%')
-                ->withCode('%provided%', strval($argument))
-                ->withCode('%value%', implode(',', $accept))
+            message(
+                'Argument value provided `%provided%` is not an accepted value `%value%`',
+                provided: strval($argument),
+                value: implode(',', $accept)
+            )
         );
     }
     $minimum = $parameter->minimum();
     if ($minimum !== null && $argument < $minimum) {
         throw new InvalidArgumentException(
-            message('Argument value provided %provided% is less than %minimum%')
-                ->withCode('%provided%', strval($argument))
-                ->withCode('%minimum%', strval($minimum))
+            message(
+                'Argument value provided `%provided%` is less than `%minimum%`',
+                provided: strval($argument),
+                minimum: strval($minimum)
+            )
         );
     }
     $maximum = $parameter->maximum();
     if ($maximum !== null && $argument > $maximum) {
         throw new InvalidArgumentException(
-            message('Argument value provided %provided% is greater than %maximum%')
-                ->withCode('%provided%', strval($argument))
-                ->withCode('%maximum%', strval($maximum))
+            message(
+                'Argument value provided `%provided%` is greater than `%maximum%`',
+                provided: strval($argument),
+                maximum: strval($maximum)
+            )
         );
     }
 

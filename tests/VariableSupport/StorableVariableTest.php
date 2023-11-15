@@ -75,7 +75,7 @@ final class StorableVariableTest extends TestCase
         $exportable->array = [$notExportable];
         $atBreadcrumb =
             <<<STRING
-            Argument contains a resource at [object: stdClass][property: \$array][(iterable)][key: 0][object: {$notExportableClassName}][property: array \$files][(iterable)][key: 0]
+            Argument contains a resource at `[object: stdClass][property: \$array][(iterable)][key: 0][object: {$notExportableClassName}][property: array \$files][(iterable)][key: 0]`
             STRING;
         $storable = new StorableVariable($exportable);
         $this->expectException(UnableToStoreException::class);
@@ -91,7 +91,7 @@ final class StorableVariableTest extends TestCase
         $array = [1, 2, 3, $object];
         $atBreadcrumb =
             <<<STRING
-            Argument contains a resource at [(iterable)][key: 3][object: stdClass][property: \$resource]
+            Argument contains a resource at `[(iterable)][key: 3][object: stdClass][property: \$resource]`
             STRING;
         $storable = new StorableVariable($array);
         $this->expectException(UnableToStoreException::class);

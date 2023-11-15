@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Message;
 
 use Chevere\Message\Interfaces\MessageInterface;
+use Stringable;
 
-function message(string $template): MessageInterface
-{
-    return new Message($template);
+function message(
+    string $template,
+    float|int|string|Stringable ...$translate
+): MessageInterface {
+    return new Message($template, ...$translate);
 }

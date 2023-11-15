@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
-use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\FloatParameterInterface;
 use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Throwable\Exceptions\InvalidArgumentException;
@@ -24,22 +23,30 @@ trait NumericParameterTrait
 {
     private array $accept = [];
 
-    private function errorAcceptOverflow(string $property): MessageInterface
+    private function errorAcceptOverflow(string $property): string
     {
-        return message('Cannot set %property% value when accept range is set')
-            ->withTranslate('%property%', $property);
+        return strtr(
+            'Cannot set %property% value when accept range is set',
+            [
+                '%property%' => $property,
+            ]
+        );
     }
 
     private function errorInvalidArgument(
         string $target,
         string $conflict
-    ): MessageInterface {
-        return message('Cannot set %target% value greater or equal than %conflict% value')
-            ->withTranslate('%target%', $target)
-            ->withTranslate('%conflict%', $conflict);
+    ): string {
+        return strtr(
+            'Cannot set %target% value greater or equal than %conflict% value',
+            [
+                '%target%' => $target,
+                '%conflict%' => $conflict,
+            ]
+        );
     }
 
-    private function assertAcceptEmpty(MessageInterface $message): void
+    private function assertAcceptEmpty(string $message): void
     {
         if ($this->accept !== []) {
             throw new OverflowException($message);
@@ -50,25 +57,31 @@ trait NumericParameterTrait
     {
         if (isset($this->minimum) && $value < $this->minimum) {
             throw new InvalidArgumentException(
-                message('Default value %value% cannot be less than minimum value %minimum%')
-                    ->withCode('%value%', strval($value))
-                    ->withCode('%minimum%', strval($this->minimum))
+                message(
+                    'Default value `%value%` cannot be less than minimum value `%minimum%`',
+                    value: strval($value),
+                    minimum: strval($this->minimum),
+                )
             );
         }
         if (isset($this->maximum) && $value > $this->maximum) {
             throw new InvalidArgumentException(
-                message('Default value %value% cannot be greater than maximum value %maximum%')
-                    ->withCode('%value%', strval($value))
-                    ->withCode('%maximum%', strval($this->maximum))
+                message(
+                    'Default value `%value%` cannot be greater than maximum value `%maximum%`',
+                    value: strval($value),
+                    maximum: strval($this->maximum),
+                )
             );
         }
         if ($this->accept !== [] && ! in_array($value, $this->accept, true)) {
             $list = implode(', ', $this->accept);
 
             throw new InvalidArgumentException(
-                message('Default value %value% must be in accept list %accept%')
-                    ->withCode('%value%', strval($value))
-                    ->withCode('%accept%', "[{$list}]")
+                message(
+                    'Default value `%value%` must be in accept list `%accept%`',
+                    value: strval($value),
+                    accept: "[{$list}]",
+                )
             );
         }
         // @phpstan-ignore-next-line
@@ -132,9 +145,11 @@ trait NumericParameterTrait
             $provided = implode(', ', $parameter->accept());
 
             throw new InvalidArgumentException(
-                message('Expected value in %accept%, provided %provided%')
-                    ->withCode('%accept%', "[{$value}]")
-                    ->withCode('%provided%', $provided)
+                message(
+                    'Expected value in `%accept%`, provided `%provided%`',
+                    accept: "[{$value}]",
+                    provided: $provided,
+                )
             );
         }
     }
@@ -147,9 +162,11 @@ trait NumericParameterTrait
             $provided = strval($parameter->minimum() ?? 'null');
 
             throw new InvalidArgumentException(
-                message('Expected minimum value %value%, provided %provided%')
-                    ->withCode('%value%', $value)
-                    ->withCode('%provided%', $provided)
+                message(
+                    'Expected minimum value `%value%`, provided `%provided%`',
+                    value: $value,
+                    provided: $provided,
+                )
             );
         }
     }
@@ -162,9 +179,11 @@ trait NumericParameterTrait
             $provided = strval($parameter->maximum() ?? 'null');
 
             throw new InvalidArgumentException(
-                message('Expected maximum value %value%, provided %provided%')
-                    ->withCode('%value%', $value)
-                    ->withCode('%provided%', $provided)
+                message(
+                    'Expected maximum value `%value%`, provided `%provided%`',
+                    value: $value,
+                    provided: $provided
+                )
             );
         }
     }

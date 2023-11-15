@@ -59,12 +59,13 @@ final class Filename implements FilenameInterface
             throw new InvalidArgumentException(previous: $e, code: 100);
         }
         if (strlen($this->filename) > self::MAX_LENGTH_BYTES) {
-            throw new LengthException(
-                message: message('String %string% provided exceed the limit of %bytes% bytes')
-                    ->withCode('%string%', $this->filename)
-                    ->withCode('%bytes%', (string) self::MAX_LENGTH_BYTES),
-                code: 110
-            );
+            $message = message(
+                'String `%string%` provided exceed the limit of `%bytes%` bytes',
+                string: $this->filename,
+                bytes: (string) self::MAX_LENGTH_BYTES,
+            )->__toString();
+
+            throw new LengthException($message, 110);
         }
     }
 }

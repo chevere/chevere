@@ -90,8 +90,10 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         $reflectionType = $this->reflection->getType();
         if ($reflectionType === null) {
             throw new TypeError(
-                message('Missing type declaration for parameter %parameter%')
-                    ->withTranslate('%parameter%', '$' . $this->reflection->getName())
+                message(
+                    'Missing type declaration for parameter %parameter%',
+                    parameter: '$' . $this->reflection->getName()
+                )
             );
         }
         if ($reflectionType instanceof ReflectionNamedType) {
@@ -101,9 +103,11 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         $type = $this->getReflectionType($reflectionType);
 
         throw new InvalidArgumentException(
-            message('Parameter %name% of type %type% is not supported')
-                ->withTranslate('%name%', $name)
-                ->withTranslate('%type%', $type)
+            message(
+                'Parameter %name% of type %type% is not supported',
+                name: $name,
+                type: $type
+            )
         );
     }
 

@@ -18,17 +18,19 @@ use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
-use Chevere\Message\Interfaces\MessageInterface;
-use function Chevere\Message\message;
 
 /**
  * @codeCoverageIgnore
  */
-function getFilesystemInstanceMessage(string $instance, string $path): MessageInterface
+function getFilesystemInstanceMessage(string $instance, string $path): string
 {
-    return message('Unable to create a %instance% for %path%')
-        ->withCode('%instance%', $instance)
-        ->withCode('%path%', $path);
+    return strtr(
+        'Unable to create a `%instance%` for `%path%`',
+        [
+            '%instance%' => $instance,
+            '%path%' => $path,
+        ]
+    );
 }
 
 function tailDirectoryPath(string $path): string

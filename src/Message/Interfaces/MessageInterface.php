@@ -20,18 +20,6 @@ use Stringable;
  */
 interface MessageInterface extends Stringable
 {
-    public const CLI_TABLE = [
-        'message_emphasis' => 'italic',
-        'message_strong' => 'bold',
-        'message_underline' => 'underline',
-        'message_code' => 'reverse',
-    ];
-
-    public const HTML_TABLE = [
-        'emphasis' => 'em',
-        'underline' => 'u',
-    ];
-
     /**
      *  Returns a text message representation.
      */
@@ -45,7 +33,7 @@ interface MessageInterface extends Stringable
     /**
      * Provides access to the message translation table.
      *
-     * @return array<string, string[]>
+     * @return array<string, string>
      */
     public function trTable(): array;
 
@@ -58,44 +46,4 @@ interface MessageInterface extends Stringable
      * Returns a HTML message representation.
      */
     public function toHtml(): string;
-
-    /**
-     * Return an instance with the specified string translation.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified string translation.
-     */
-    public function withTranslate(string $search, string $replace): self;
-
-    /**
-     * Return an instance with the specified `$search` replaced with `$replace` emphasis tag.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$search` replaced with `$replace` emphasis tag.
-     */
-    public function withEmphasis(string $search, string $replace): self;
-
-    /**
-     * Return an instance with the specified `$search` replaced with `$replace` as strong tag.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$search` replaced with `$replace` as strong tag.
-     */
-    public function withStrong(string $search, string $replace): self;
-
-    /**
-     * Return an instance with the specified underline.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified underline.
-     */
-    public function withUnderline(string $search, string $replace): self;
-
-    /**
-     * Return an instance with the specified `$search` replaced with `$replace` as code tag.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$search` replaced with `$replace` as code tag.
-     */
-    public function withCode(string $search, string $replace): self;
 }

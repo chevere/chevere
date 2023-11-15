@@ -98,11 +98,12 @@ final class ActionTest extends TestCase
     public function testUnionResponseError(): void
     {
         $action = new ActionTestUnionReturnMissingType();
+        $class = $action::class;
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage(
-            'Method '
-            . ActionTestUnionReturnMissingType::class
-            . '::run must declare string|int return type'
+            <<<PLAIN
+            Method `{$class}::run` must declare `string|int` return type
+            PLAIN
         );
         $action->getResponse();
     }
@@ -131,11 +132,12 @@ final class ActionTest extends TestCase
     public function testNoReturnTypeError(): void
     {
         $action = new ActionTestNoReturnTypeError();
+        $class = $action::class;
         $this->expectException(TypeError::class);
         $this->expectExceptionMessage(
-            'Method '
-            . ActionTestNoReturnTypeError::class
-            . '::run must declare array return type'
+            <<<PLAIN
+            Method `{$class}::run` must declare `array` return type
+            PLAIN
         );
         $action->getResponse();
     }

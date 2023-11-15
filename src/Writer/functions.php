@@ -41,8 +41,10 @@ function streamFor(string $uri, string $mode): StreamInterface
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
             previous: $e,
-            message: message('Unable to create stream for %uri%')
-                ->withCode('%uri%', $uri)
+            message: message(
+                'Unable to create stream for `%uri%`',
+                uri: $uri
+            )
         );
     }
 }

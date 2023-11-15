@@ -40,9 +40,11 @@ final class ClassName implements ClassNameInterface
         }
 
         throw new TypeError(
-            message('Class %name% must implement %interface% interface')
-                ->withCode('%name%', $this->name)
-                ->withCode('%interface%', $class)
+            message(
+                'Class `%name%` must implement `%interface%` interface',
+                name: $this->name,
+                interface: $class
+            )
         );
     }
 
@@ -53,8 +55,10 @@ final class ClassName implements ClassNameInterface
         }
 
         throw new InvalidArgumentException(
-            message("Class %name% doesn't exists")
-                ->withCode('%name%', $name)
+            message(
+                "Class %name% doesn't exists",
+                name: $name
+            )
         );
     }
 }

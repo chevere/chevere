@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use ArrayAccess;
-use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Parameter\Interfaces\ArrayParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayStringParameterInterface;
 use Chevere\Parameter\Interfaces\ArrayTypeParameterInterface;
@@ -147,7 +146,7 @@ function assertGeneric(
     return $argument;
 }
 
-function getThrowableArrayErrorMessage(string $message): MessageInterface
+function getThrowableArrayErrorMessage(string $message): string
 {
     $strstr = strstr($message, ':', false);
     if (! is_string($strstr)) {
@@ -156,5 +155,5 @@ function getThrowableArrayErrorMessage(string $message): MessageInterface
         $strstr = substr($strstr, 2);
     }
 
-    return message($strstr);
+    return $strstr;
 }

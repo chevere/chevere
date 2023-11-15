@@ -52,8 +52,10 @@ final class Path implements PathInterface
     {
         if (! $this->exists()) {
             throw new PathNotExistsException(
-                message("Path %path% doesn't exists")
-                    ->withCode('%path%', $this->absolute)
+                message(
+                    "Path `%path%` doesn't exists",
+                    path: $this->absolute
+                )
             );
         }
     }
@@ -83,9 +85,11 @@ final class Path implements PathInterface
         $this->assertExists();
         if (! chmod($this->absolute, $mode)) {
             throw new PathUnableToChmodException(
-                message('Unable to chmod %mode% %path%')
-                    ->withStrong('%mode%', (string) $mode)
-                    ->withCode('%path%', $this->absolute)
+                message(
+                    'Unable to chmod **%mode%** `%path%`',
+                    mode: (string) $mode,
+                    path: $this->absolute
+                )
             );
         }
     }

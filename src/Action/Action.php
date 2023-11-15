@@ -20,7 +20,6 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Throwable\Errors\TypeError;
-use Chevere\Throwable\Exception;
 use Chevere\Throwable\Exceptions\LogicException;
 use ReflectionMethod;
 use ReflectionNamedType;
@@ -59,13 +58,12 @@ abstract class Action implements ActionInterface
         try {
             static::acceptResponse()->__invoke($run);
         } catch (Throwable $e) {
-            $message = message('%method% → %message%')
-                ->withCode('%method%', static::runMethodFQN())
-                ->withCode('%exception%', $e::class)
-                ->withTranslate('%message%', $e->getMessage());
-            if (! ($e instanceof Exception)) {
-                $message = $message->__toString();
-            }
+            $message = message(
+                '`%method%` → %message%',
+                method: static::runMethodFQN(),
+                message: $e->getMessage(),
+                exception: $e::class,
+            )->__toString();
 
             throw new ($e::class)($message);
         }
@@ -97,9 +95,11 @@ abstract class Action implements ActionInterface
         }
         if (! in_array($return, $expect, true)) {
             throw new TypeError(
-                message('Method %method% must declare %type% return type')
-                    ->withCode('%method%', static::runMethodFQN())
-                    ->withCode('%type%', implode('|', $expect))
+                message(
+                    'Method `%method%` must declare `%type%` return type',
+                    method: static::runMethodFQN(),
+                    type: implode('|', $expect),
+                )
             );
         }
     }
@@ -108,9 +108,11 @@ abstract class Action implements ActionInterface
     {
         if (! method_exists(static::class, static::RUN_METHOD)) {
             throw new LogicException(
-                message('Action %action% does not define %invoke% method')
-                    ->withTranslate('%invoke%', static::RUN_METHOD)
-                    ->withCode('%action%', static::class)
+                message(
+                    'Action `%action%` does not define %invoke% method',
+                    action: static::class,
+                    invoke: static::RUN_METHOD,
+                )
             );
         }
         $response = static::acceptResponse();
@@ -121,9 +123,11 @@ abstract class Action implements ActionInterface
             }
 
             throw new TypeError(
-                message('Method %method% must declare %type% return type')
-                    ->withCode('%method%', static::runMethodFQN())
-                    ->withCode('%type%', $response->type()->typeHinting())
+                message(
+                    'Method `%method%` must declare `%type%` return type',
+                    method: static::runMethodFQN(),
+                    type: $response->type()->typeHinting(),
+                )
             );
         }
         /** @var ReflectionNamedType $returnType */

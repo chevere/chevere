@@ -185,7 +185,7 @@ final class ArrayParameterTest extends TestCase
         $failType = $int::class;
         $this->expectExceptionMessage(
             <<<STRING
-            Parameter one of type {$expectedType} is not compatible with type {$failType}
+            Parameter `one` of type `{$expectedType}` is not compatible with type `{$failType}`
             STRING
         );
         $this->expectException(InvalidArgumentException::class);
@@ -313,7 +313,7 @@ final class ArrayParameterTest extends TestCase
         $this->assertSame(['foo'], $arrayWith->parameters()->requiredKeys()->toArray());
         $this->assertSame(['bar'], $arrayWith->parameters()->optionalKeys()->toArray());
         $this->expectException(OutOfBoundsException::class);
-        $this->expectExceptionMessage('Missing key(s) 0, 1');
+        $this->expectExceptionMessage('Missing key(s) `0, 1`');
         $arrayWith->withModify(...[
             0 => $float,
             1 => $int,

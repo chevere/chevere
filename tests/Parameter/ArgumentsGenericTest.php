@@ -98,7 +98,7 @@ final class ArgumentsGenericTest extends TestCase
         );
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Argument value provided');
-        $this->expectExceptionMessage("doesn't match the regex /^one$/");
+        $this->expectExceptionMessage("doesn't match the regex `/^one$/`");
         new Arguments($parameters, $args);
     }
 

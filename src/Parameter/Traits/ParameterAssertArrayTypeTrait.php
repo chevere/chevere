@@ -29,8 +29,10 @@ trait ParameterAssertArrayTypeTrait
         $providedCount = $parameter->parameters()->count();
         if ($parametersCount === 0 && $providedCount !== 0) {
             throw new InvalidArgumentException(
-                message('Expecting no parameters, %provided% provided')
-                    ->withCode('%provided%', strval($providedCount))
+                message(
+                    'Expecting no parameters, `%provided%` provided',
+                    provided: strval($providedCount)
+                )
             );
         }
         foreach ($this->parameters as $name => $item) {
@@ -38,8 +40,10 @@ trait ParameterAssertArrayTypeTrait
                 $tryParameter = $parameter->parameters()->get($name);
             } catch (OutOfBoundsException) {
                 throw new OutOfBoundsException(
-                    message('Parameter %name% not found')
-                        ->withCode('%name%', $name)
+                    message(
+                        'Parameter `%name%` not found',
+                        name: $name
+                    )
                 );
             }
 
@@ -47,10 +51,12 @@ trait ParameterAssertArrayTypeTrait
                 $item->assertCompatible($tryParameter);
             } catch (\TypeError) {
                 throw new InvalidArgumentException(
-                    message('Parameter %name% of type %type% is not compatible with type %provided%')
-                        ->withCode('%name%', $name)
-                        ->withCode('%type%', $item::class)
-                        ->withCode('%provided%', $tryParameter::class)
+                    message(
+                        'Parameter `%name%` of type `%type%` is not compatible with type `%provided%`',
+                        name: $name,
+                        type: $item::class,
+                        provided: $tryParameter::class,
+                    )
                 );
             }
         }

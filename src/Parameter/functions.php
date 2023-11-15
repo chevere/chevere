@@ -106,8 +106,10 @@ function assertObject(
     }
 
     throw new InvalidArgumentException(
-        message('Argument value provided is not of type %type%')
-            ->withCode('%type%', $parameter->className())
+        message(
+            'Argument value provided is not of type `%type%`',
+            type: $parameter->className()
+        )
     );
 }
 
@@ -127,8 +129,10 @@ function assertUnion(
     }
 
     throw new InvalidArgumentException(
-        message("Argument provided doesn't match the union type %type%")
-            ->withCode('%type%', implode('|', $types))
+        message(
+            "Argument provided doesn't match the union type `%type%`",
+            type: implode('|', $types)
+        )
     );
 }
 
@@ -150,9 +154,11 @@ function assertNamedArgument(
         return arguments($parameters, $arguments);
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
-            message('Argument [%name%]: %message%')
-                ->withTranslate('%name%', $name)
-                ->withTranslate('%message%', $e->getMessage())
+            message(
+                'Argument [%name%]: %message%',
+                name: $name,
+                message: $e->getMessage(),
+            )
         );
     }
 }

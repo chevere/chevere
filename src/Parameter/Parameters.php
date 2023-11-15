@@ -88,8 +88,10 @@ final class Parameters implements ParametersInterface
         foreach ($name as $key) {
             if (! $new->requiredKeys->contains($key)) {
                 throw new InvalidArgumentException(
-                    message('Parameter %name% is not required')
-                        ->withCode('%name%', $key)
+                    message(
+                        'Parameter `%name%` is not required',
+                        name: $key
+                    )
                 );
             }
             $parameter = $new->get($key);
@@ -109,8 +111,10 @@ final class Parameters implements ParametersInterface
         foreach ($name as $key) {
             if (! $new->optionalKeys()->contains($key)) {
                 throw new InvalidArgumentException(
-                    message('Parameter %name% is not optional')
-                        ->withCode('%name%', $key)
+                    message(
+                        'Parameter `%name%` is not optional',
+                        name: $key
+                    )
                 );
             }
             $parameter = $new->get($key);
@@ -181,8 +185,10 @@ final class Parameters implements ParametersInterface
     {
         if ($this->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
-                message('Parameter %name% is optional')
-                    ->withCode('%name%', $name)
+                message(
+                    'Parameter `%name%` is optional',
+                    name: $name
+                )
             );
         }
 
@@ -195,8 +201,10 @@ final class Parameters implements ParametersInterface
     {
         if (! $this->optionalKeys()->contains($name)) {
             throw new InvalidArgumentException(
-                message('Parameter %name% is required')
-                    ->withCode('%name%', $name)
+                message(
+                    'Parameter `%name%` is required',
+                    name: $name
+                )
             );
         }
 
@@ -219,8 +227,10 @@ final class Parameters implements ParametersInterface
     {
         if ($this->optionalMinimum > $this->optionalKeys()->count()) {
             throw new InvalidArgumentException(
-                message('Count must be less or equal to %optional%')
-                    ->withCode('%optional%', strval($this->optionalMinimum))
+                message(
+                    'Count must be less or equal to `%optional%`',
+                    optional: strval($this->optionalMinimum)
+                )
             );
         }
     }
@@ -229,8 +239,10 @@ final class Parameters implements ParametersInterface
     {
         if ($this->has($name)) {
             throw new OverflowException(
-                message('Parameter %name% has been already added')
-                    ->withCode('%name%', $name)
+                message(
+                    'Parameter `%name%` has been already added',
+                    name: $name
+                )
             );
         }
         $this->{$property} = $this->{$property}->withPush($name);

@@ -121,8 +121,10 @@ final class Map implements MapInterface
         }
 
         throw new OutOfBoundsException(
-            message('Missing key(s) %keys%')
-                ->withCode('%keys%', implode(', ', $missing))
+            message(
+                'Missing key(s) `%keys%`',
+                keys: implode(', ', $missing)
+            )
         );
     }
 
@@ -134,8 +136,10 @@ final class Map implements MapInterface
         $lookup = $this->lookupKey($key);
         if ($lookup === null) {
             throw new OutOfBoundsException(
-                message('Key %key% not found')
-                    ->withCode('%key%', strval($key))
+                message(
+                    'Key `%key%` not found',
+                    key: strval($key)
+                )
             );
         }
 
@@ -168,8 +172,10 @@ final class Map implements MapInterface
             $lookup = $this->lookupKey($item);
             if ($lookup === null) {
                 throw new OutOfBoundsException(
-                    message('Key %key% not found')
-                        ->withCode('%key%', strval($item))
+                    message(
+                        'Key `%key%` not found',
+                        key: strval($item)
+                    )
                 );
             }
             unset($this->keys[$lookup], $this->values[$lookup]);

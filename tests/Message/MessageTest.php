@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Message;
 
-use Chevere\Message\Interfaces\MessageInterface;
 use Chevere\Message\Message;
-use Colors\Color;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Message\message;
 
@@ -37,49 +35,17 @@ final class MessageTest extends TestCase
         $search = '%translate%';
         $replace = '1';
         $var = 'string ' . $search;
-        $message = (new Message($var))->withTranslate($search, $replace);
+        $message = new Message($var, translate: $replace);
         $varTr = strtr($var, [
             $search => $replace,
         ]);
         $this->assertSame($var, $message->template());
         $this->assertSame([
-            '%translate%' => ['', $replace],
+            '%translate%' => $replace,
         ], $message->trTable());
         $this->assertSame($varTr, $message->__toString());
         $this->assertSame($varTr, $message->toConsole());
         $this->assertSame($varTr, $message->toHtml());
-    }
-
-    public function testWithDeclaredTags(): void
-    {
-        $var = 'Plain %emphasis% %bold% %underline% %code%';
-        $tags = [
-            'emphasis' => ['%emphasis%', 'Emphasis,Italic'],
-            'strong' => ['%bold%', 'Strong,Bold'],
-            'underline' => ['%underline%', 'Underline'],
-            'code' => ['%code%', 'Throw new ThisIsTheThing 100'],
-        ];
-        $message = new Message($var);
-        $tr = [];
-        foreach ($tags as $tag => $value) {
-            $method = 'with' . ucfirst($tag);
-            $withReplaces = $withReplaces ?? $message;
-            $withReplaces = $withReplaces->{$method}(...$value);
-            $this->assertNotSame($message, $withReplaces);
-            $tag = MessageInterface::HTML_TABLE[$tag] ?? $tag;
-            $tr[$value[0]] = "<{$tag}>" . $value[1] . "</{$tag}>";
-        }
-        $html = strtr($var, $tr);
-        $plain = strip_tags($html);
-        $this->assertSame($var, $withReplaces->template());
-        $this->assertSame($html, $withReplaces->toHtml());
-        $this->assertSame($plain, $withReplaces->__toString());
-        $consoleMessage = $withReplaces->toConsole();
-        $consolePlain = preg_replace('/' . preg_quote(Color::ESC) . '\d+m/', '', $consoleMessage);
-        $this->assertSame($plain, $consolePlain);
-        if ((new Color())->isSupported()) {
-            $this->assertNotSame($plain, $consoleMessage);
-        }
     }
 
     public function testFunction(): void

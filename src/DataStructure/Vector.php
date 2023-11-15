@@ -134,8 +134,10 @@ final class Vector implements VectorInterface
         }
 
         throw new OutOfBoundsException(
-            message('Missing key(s) %keys%')
-                ->withCode('%keys%', implode(', ', $missing))
+            message(
+                'Missing key(s) `%keys%`',
+                keys: implode(', ', $missing)
+            )
         );
     }
 
@@ -146,8 +148,10 @@ final class Vector implements VectorInterface
     {
         if (! $this->lookupKey($key)) {
             throw new OutOfBoundsException(
-                message('Key %key% not found')
-                    ->withCode('%key%', strval($key))
+                message(
+                    'Key `%key%` not found',
+                    key: strval($key)
+                )
             );
         }
 

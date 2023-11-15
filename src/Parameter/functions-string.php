@@ -106,8 +106,10 @@ function assertString(
     }
 
     throw new InvalidArgumentException(
-        message("Argument value provided %provided% doesn't match the regex %regex%")
-            ->withCode('%provided%', $argument)
-            ->withCode('%regex%', strval($regex))
+        message(
+            "Argument value provided `%provided%` doesn't match the regex `%regex%`",
+            provided: $argument,
+            regex: strval($regex),
+        )
     );
 }

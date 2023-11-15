@@ -60,8 +60,10 @@ final class File implements FileInterface
     {
         if (! $this->exists()) {
             throw new FileNotExistsException(
-                message("File %path% doesn't exists")
-                    ->withCode('%path%', $this->path->__toString())
+                message(
+                    "File `%path%` doesn't exists",
+                    path: $this->path->__toString()
+                )
             );
         }
     }
@@ -76,8 +78,10 @@ final class File implements FileInterface
         // @codeCoverageIgnoreStart
         // @infection-ignore-all
         throw new RuntimeException(
-            message: message('Unable to get checksum for file %path%')
-                ->withCode('%path%', $this->path->__toString())
+            message: message(
+                'Unable to get checksum for file `%path%`',
+                path: $this->path->__toString()
+            )
         );
         // @codeCoverageIgnoreEnd
     }
@@ -104,8 +108,10 @@ final class File implements FileInterface
         // @infection-ignore-all
         catch (Throwable $e) {
             throw new FileUnableToGetException(
-                message('Unable to read the contents of the file at %path%')
-                    ->withCode('%path%', $this->path->__toString())
+                message(
+                    'Unable to read the contents of the file at `%path%`',
+                    path: $this->path->__toString()
+                )
             );
         }
         // @codeCoverageIgnoreEnd
@@ -129,8 +135,10 @@ final class File implements FileInterface
     {
         if ($this->path->exists()) {
             throw new PathExistsException(
-                message('Unable to create file %path% (file already exists)')
-                    ->withCode('%path%', $this->path->__toString())
+                message(
+                    'Unable to create file `%path%` (file already exists)',
+                    path: $this->path->__toString()
+                )
             );
         }
         $this->createPath();
@@ -163,10 +171,12 @@ final class File implements FileInterface
         }
         // @codeCoverageIgnoreStart
         // @infection-ignore-all
-        catch (Throwable $e) {
+        catch (Throwable) {
             throw new FileUnableToPutException(
-                message('Unable to write content to file %filepath%')
-                    ->withCode('%filepath%', $this->path->__toString())
+                message(
+                    'Unable to write content to file `%filepath%`',
+                    filepath: $this->path->__toString()
+                )
             );
         }
         // @codeCoverageIgnoreEnd
@@ -185,8 +195,10 @@ final class File implements FileInterface
     {
         if ($this->path->isDirectory()) {
             throw new PathIsDirectoryException(
-                message('Path %path% is a directory')
-                    ->withCode('%path%', $this->path->__toString())
+                message(
+                    'Path `%path%` is a directory',
+                    path: $this->path->__toString()
+                )
             );
         }
     }

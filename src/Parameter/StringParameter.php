@@ -53,9 +53,11 @@ final class StringParameter implements StringParameterInterface
     {
         if ($this->regex->match($value) === []) {
             throw new InvalidArgumentException(
-                message('Default value `%value%` must match the parameter regex %regexString%')
-                    ->withCode('%value%', $value)
-                    ->withCode('%regexString%', $this->regex->__toString())
+                message(
+                    'Default value `%value%` must match the parameter regex `%regexString%`',
+                    value: $value,
+                    regexString: $this->regex->__toString(),
+                )
             );
         }
         $new = clone $this;
@@ -91,9 +93,11 @@ final class StringParameter implements StringParameterInterface
         }
 
         throw new InvalidArgumentException(
-            message('Expected regex %expected%, provided %provided%')
-                ->withCode('%expected%', $this->regex->__toString())
-                ->withCode('%provided%', $parameter->regex()->__toString())
+            message(
+                'Expected regex `%expected%`, provided `%provided%`',
+                expected: $this->regex->__toString(),
+                provided: $parameter->regex()->__toString()
+            )
         );
     }
 

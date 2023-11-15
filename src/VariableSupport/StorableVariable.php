@@ -73,8 +73,10 @@ final class StorableVariable implements StorableVariableInterface
             return;
         }
         $message = $this->breadcrumb->count() > 0
-            ? message('Argument contains a resource at %at%')
-                ->withCode('%at%', $this->breadcrumb->__toString())
+            ? message(
+                'Argument contains a resource at `%at%`',
+                at: $this->breadcrumb->__toString()
+            )
             : message('Argument is of type resource.');
 
         throw new UnableToStoreException($message);
