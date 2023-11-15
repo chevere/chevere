@@ -86,7 +86,7 @@ function assertBool(
     return $argument;
 }
 
-function assertNull(NullParameterInterface $parameter, mixed $argument): null
+function assertNull(NullParameterInterface $parameter, mixed $argument): mixed
 {
     if ($argument === null) {
         return $argument;
