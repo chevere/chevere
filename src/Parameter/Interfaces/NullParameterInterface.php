@@ -21,7 +21,7 @@ interface NullParameterInterface extends ParameterInterface
     /**
      * Asserts the given `$value` is valid, returning the value if so.
      */
-    public function __invoke(null $value): mixed;
+    public function __invoke(mixed $value): mixed;
 
     public function assertCompatible(self $parameter): void;
 }
