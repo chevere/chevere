@@ -222,7 +222,7 @@ final class Arguments implements ArgumentsInterface
         if ($countProvided < $this->parameters()->optionalMinimum()) {
             throw new ArgumentCountError(
                 (string) message(
-                    'Requires minimum `%minimum%` optional argument(s), `%provided%` provided',
+                    'Requires minimum **%minimum%** optional argument(s), **%provided%** provided',
                     minimum: strval($this->parameters()->optionalMinimum()),
                     provided: strval($countProvided)
                 )
