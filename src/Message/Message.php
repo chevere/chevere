@@ -32,7 +32,10 @@ final class Message implements MessageInterface
     ) {
         $array = [];
         foreach ($translate as $key => $value) {
-            $array["%{$key}%"] = strval($value);
+            $value = (string) $value;
+            $array["%{$key}%"] = $value;
+            $array["{{{$key}}}"] = $value;
+            $array["{{ {$key} }}"] = $value;
         }
         $this->trTable = $array;
     }

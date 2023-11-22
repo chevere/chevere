@@ -36,13 +36,21 @@ final class MessageTest extends TestCase
         $replace = '1';
         $var = 'string ' . $search;
         $message = new Message($var, translate: $replace);
-        $varTr = strtr($var, [
-            $search => $replace,
-        ]);
+        $varTr = strtr(
+            $var,
+            [
+                $search => $replace,
+            ]
+        );
         $this->assertSame($var, $message->template());
-        $this->assertSame([
-            '%translate%' => $replace,
-        ], $message->trTable());
+        $this->assertSame(
+            [
+                '%translate%' => $replace,
+                '{{translate}}' => $replace,
+                '{{ translate }}' => $replace,
+            ],
+            $message->trTable()
+        );
         $this->assertSame($varTr, $message->__toString());
         $this->assertSame($varTr, $message->toConsole());
         $this->assertSame($varTr, $message->toHtml());
