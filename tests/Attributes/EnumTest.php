@@ -41,7 +41,7 @@ final class EnumTest extends TestCase
         $attribute = new Enum(...$args);
         $this->assertSame(
             $attribute->regex()->noDelimitersNoAnchors(),
-            implode('|', $args)
+            '\b(' . implode('|', $args) . ')\b'
         );
     }
 }
