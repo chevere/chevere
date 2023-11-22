@@ -16,7 +16,6 @@ namespace Chevere\VariableSupport;
 use DeepCopy\DeepCopy;
 use DeepCopy\Exception\CloneException;
 use LogicException;
-use function Chevere\Message\message;
 
 /**
  * Deep copies the given value. Same as `DeepCopy\deep_copy`
