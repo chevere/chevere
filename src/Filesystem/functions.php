@@ -18,6 +18,7 @@ use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
+use RecursiveDirectoryIterator;
 
 /**
  * @codeCoverageIgnore
@@ -99,4 +100,15 @@ function resolvePath(string $path): string
     }
 
     return implode(DIRECTORY_SEPARATOR, $out);
+}
+
+/**
+ * @codeCoverageIgnore
+ */
+function recursiveDirectoryIteratorFor(DirectoryInterface $directory, int $flags): RecursiveDirectoryIterator
+{
+    return new RecursiveDirectoryIterator(
+        $directory->path()->__toString(),
+        $flags
+    );
 }

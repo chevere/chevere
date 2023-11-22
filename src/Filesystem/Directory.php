@@ -26,7 +26,6 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 use Throwable;
-use function Chevere\Iterator\recursiveDirectoryIteratorFor;
 use function Chevere\Message\message;
 use function Safe\mkdir;
 use function Safe\rmdir;
