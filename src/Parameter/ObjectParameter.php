@@ -17,11 +17,11 @@ use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Parameter\Traits\SchemaTrait;
 use Chevere\Type\Interfaces\TypeInterface;
+use Chevere\Type\Type;
 use InvalidArgumentException;
 use stdClass;
 use TypeError;
 use function Chevere\Message\message;
-use function Chevere\Type\typeObject;
 
 final class ObjectParameter implements ObjectParameterInterface
 {
@@ -51,7 +51,7 @@ final class ObjectParameter implements ObjectParameterInterface
     {
         $new = clone $this;
         $new->className = $className;
-        $new->type = typeObject($className);
+        $new->type = new Type($className);
 
         return $new;
     }
@@ -105,6 +105,6 @@ final class ObjectParameter implements ObjectParameterInterface
 
     private function getType(): TypeInterface
     {
-        return typeObject($this->className);
+        return new Type($this->className);
     }
 }

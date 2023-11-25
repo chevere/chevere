@@ -25,7 +25,7 @@ final class Type implements TypeInterface
 
     private string $primitive = '';
 
-    private string $typeHinting;
+    private string $typeHinting = '';
 
     /**
      * @param string $type A debug type

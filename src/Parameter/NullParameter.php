@@ -18,7 +18,7 @@ use Chevere\Parameter\Traits\ParameterDefaultNullTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Parameter\Traits\SchemaTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeNull;
+use Chevere\Type\Type;
 
 final class NullParameter implements NullParameterInterface
 {
@@ -40,6 +40,6 @@ final class NullParameter implements NullParameterInterface
 
     private function getType(): TypeInterface
     {
-        return typeNull();
+        return new Type(Type::NULL);
     }
 }

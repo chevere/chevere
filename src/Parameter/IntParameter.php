@@ -17,7 +17,7 @@ use Chevere\Parameter\Interfaces\IntParameterInterface;
 use Chevere\Parameter\Traits\NumericParameterTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeInt;
+use Chevere\Type\Type;
 
 final class IntParameter implements IntParameterInterface
 {
@@ -111,6 +111,6 @@ final class IntParameter implements IntParameterInterface
 
     private function getType(): TypeInterface
     {
-        return typeInt();
+        return new Type(Type::INT);
     }
 }

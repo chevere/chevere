@@ -18,7 +18,7 @@ use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeGeneric;
+use Chevere\Type\Type;
 
 final class GenericParameter implements GenericParameterInterface
 {
@@ -74,6 +74,6 @@ final class GenericParameter implements GenericParameterInterface
 
     private function getType(): TypeInterface
     {
-        return typeGeneric();
+        return new Type(Type::GENERIC);
     }
 }

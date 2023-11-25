@@ -18,10 +18,10 @@ use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
 use Chevere\Type\Interfaces\TypeInterface;
+use Chevere\Type\Type;
 use InvalidArgumentException;
 use Stringable;
 use function Chevere\Message\message;
-use function Chevere\Type\typeString;
 
 final class StringParameter implements StringParameterInterface
 {
@@ -103,6 +103,6 @@ final class StringParameter implements StringParameterInterface
 
     private function getType(): TypeInterface
     {
-        return typeString();
+        return new Type(Type::STRING);
     }
 }

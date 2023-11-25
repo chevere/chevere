@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Type;
 
-use Chevere\Type\Interfaces\TypeInterface;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Type\getType;
-use function Chevere\Type\returnTypeExceptionMessage;
-use function Chevere\Type\typeUnion;
 
 final class FunctionsTest extends TestCase
 {
@@ -31,30 +28,5 @@ final class FunctionsTest extends TestCase
         foreach ($table as $type => $variable) {
             $this->assertSame($type, getType($variable));
         }
-    }
-
-    public function testReturnTypeExceptionMessage(): void
-    {
-        $expected = 'string';
-        $message = returnTypeExceptionMessage($expected, $expected);
-        $this->assertSame("Expecting return type `{$expected}`, type `{$expected}` provided", $message);
-    }
-
-    public function testTypeFunctions(): void
-    {
-        $types = ['bool', 'int', 'float', 'string', 'array', 'callable', 'iterable', 'resource', 'null'];
-        foreach ($types as $v) {
-            $name = 'Chevere\\Type\\type' . ucfirst($v);
-            /** @var TypeInterface $fn */
-            $object = $name();
-            $this->assertSame($v, $object->typeHinting());
-        }
-    }
-
-    public function testUnionFunction(): void
-    {
-        $type = typeUnion();
-        $this->assertFalse($type->validate('test'));
-        $this->assertTrue($type->validate(['a', 'b', 'c']));
     }
 }

@@ -20,7 +20,7 @@ use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParameterAssertArrayTypeTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeUnion;
+use Chevere\Type\Type;
 
 final class UnionParameter implements UnionParameterInterface
 {
@@ -70,6 +70,6 @@ final class UnionParameter implements UnionParameterInterface
 
     private function getType(): TypeInterface
     {
-        return typeUnion();
+        return new Type(Type::UNION);
     }
 }

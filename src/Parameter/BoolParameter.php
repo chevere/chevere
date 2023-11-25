@@ -17,7 +17,7 @@ use Chevere\Parameter\Interfaces\BoolParameterInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Parameter\Traits\SchemaTrait;
 use Chevere\Type\Interfaces\TypeInterface;
-use function Chevere\Type\typeBool;
+use Chevere\Type\Type;
 
 final class BoolParameter implements BoolParameterInterface
 {
@@ -53,6 +53,6 @@ final class BoolParameter implements BoolParameterInterface
 
     private function getType(): TypeInterface
     {
-        return typeBool();
+        return new Type(Type::BOOL);
     }
 }

@@ -16,8 +16,8 @@ namespace Chevere\Parameter\Traits;
 use ArrayAccess;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Type\Interfaces\TypeInterface;
+use Chevere\Type\Type;
 use function Chevere\Parameter\assertArray;
-use function Chevere\Type\typeArray;
 
 trait ArrayParameterTrait
 {
@@ -95,6 +95,6 @@ trait ArrayParameterTrait
 
     private function getType(): TypeInterface
     {
-        return typeArray();
+        return new Type(Type::ARRAY);
     }
 }
