@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\ReflectionParameterTyped;
@@ -22,6 +21,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;
 use ReflectionParameter;
+use stdClass;
 
 final class ReflectionParameterTypedTest extends TestCase
 {
@@ -33,7 +33,7 @@ final class ReflectionParameterTypedTest extends TestCase
         $reflected = $reflection->parameter();
         $this->assertInstanceOf(ObjectParameterInterface::class, $reflected);
         $this->assertSame(null, $reflected->default());
-        $this->assertSame(FileInterface::class, $reflected->className());
+        $this->assertSame(stdClass::class, $reflected->className());
     }
 
     public function testParameterDefault(): void

@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VariableSupport\_resources;
 
-use Chevere\Filesystem\Interfaces\FileInterface;
-use function Chevere\Filesystem\fileForPath;
+use Psr\Http\Message\StreamInterface;
+use function Chevere\Writer\streamTemp;
 
 final class ClassWithResource
 {
     private array $array;
 
-    private FileInterface $file;
+    private StreamInterface $file;
 
     public function __construct($resource)
     {
         $this->array = [$resource];
-        $this->file = fileForPath(__FILE__);
+        $this->file = streamTemp();
     }
 }

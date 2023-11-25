@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter;
 
-use Chevere\Filesystem\File;
 use Chevere\Parameter\ObjectParameter;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use TypeError;
-use function Chevere\Filesystem\fileForPath;
 use function Chevere\Parameter\object;
 
 final class ObjectParameterTest extends TestCase
@@ -59,18 +57,18 @@ final class ObjectParameterTest extends TestCase
 
     public function testWithDefault(): void
     {
-        $parameter = (new ObjectParameter())->withClassName(File::class);
-        $withDefault = $parameter->withDefault(fileForPath(__FILE__));
+        $parameter = (new ObjectParameter())->withClassName(stdClass::class);
+        $withDefault = $parameter->withDefault(new stdClass());
         $this->assertNotSame($parameter, $withDefault);
-        $this->assertSame(File::class, $withDefault->className());
+        $this->assertSame(stdClass::class, $withDefault->className());
         $this->assertSame([
             'type' => 'className',
-            'className' => File::class,
+            'className' => stdClass::class,
             'description' => '',
-            'default' => File::class,
+            'default' => stdClass::class,
         ], $withDefault->schema());
         $this->expectException(TypeError::class);
-        $parameter->withDefault(new stdClass());
+        $parameter->withDefault(new self());
     }
 
     public function testAssertCompatible(): void

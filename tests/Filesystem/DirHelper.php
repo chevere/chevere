@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\src;
+namespace Chevere\Tests\Filesystem;
 
 use Chevere\Filesystem\Directory;
 use Chevere\Filesystem\Interfaces\DirectoryInterface;

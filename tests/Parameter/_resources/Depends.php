@@ -15,12 +15,11 @@ namespace Chevere\Tests\Parameter\_resources;
 
 use Chevere\Attributes\Description;
 use Chevere\Attributes\Regex;
-use Chevere\Filesystem\Interfaces\DirectoryInterface;
-use Chevere\Filesystem\Interfaces\FileInterface;
+use stdClass;
 
 final class Depends
 {
-    public function useObject(FileInterface $file)
+    public function useObject(stdClass $file)
     {
     }
 
@@ -35,7 +34,7 @@ final class Depends
     {
     }
 
-    public function useIntersection(FileInterface&DirectoryInterface $intersection)
+    public function useIntersection(stdClass&Depends $intersection)
     {
     }
 }
