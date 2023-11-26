@@ -11,15 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Type;
+namespace Chevere\Parameter;
 
-use Chevere\Type\Interfaces\TypeInterface;
+use Chevere\Parameter\Interfaces\TypeInterface;
 use InvalidArgumentException;
 use function Chevere\Message\message;
 
 final class Type implements TypeInterface
 {
-    public const CLASS_TYPES = [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME];
+    public const CLASS_TYPES = [
+        self::PRIMITIVE_CLASS_NAME,
+        self::PRIMITIVE_INTERFACE_NAME,
+    ];
 
     private string $validator;
 
@@ -37,7 +40,7 @@ final class Type implements TypeInterface
         $this->assertHasPrimitive();
         $this->validator = self::TYPE_VALIDATORS[$this->primitive];
         $this->typeHinting = $this->primitive;
-        if (in_array($this->primitive, [self::PRIMITIVE_CLASS_NAME, self::PRIMITIVE_INTERFACE_NAME], true)) {
+        if (in_array($this->primitive, self::CLASS_TYPES, true)) {
             $this->typeHinting = $this->type;
         }
     }

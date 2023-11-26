@@ -11,14 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Type;
+namespace Chevere\Tests\Parameter;
 
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
+use Chevere\Parameter\Interfaces\TypeInterface;
+use Chevere\Parameter\Type;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
-use function Chevere\Filesystem\directoryForPath;
 
 final class TypeTest extends TestCase
 {
@@ -72,6 +71,6 @@ final class TypeTest extends TestCase
         $this->assertSame(Type::PRIMITIVE_INTERFACE_NAME, $type->primitive());
         $this->assertSame(TypeInterface::class, $type->typeHinting());
         $this->assertTrue($type->validate(new Type(Type::STRING)));
-        $this->assertFalse($type->validate(directoryForPath(__DIR__)));
+        $this->assertFalse($type->validate(new self()));
     }
 }

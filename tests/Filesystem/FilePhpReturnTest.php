@@ -22,8 +22,6 @@ use Chevere\Filesystem\FilePhpReturn;
 use Chevere\Filesystem\Interfaces\DirectoryInterface;
 use Chevere\Filesystem\Interfaces\FileInterface;
 use Chevere\Filesystem\Interfaces\FilePhpReturnInterface;
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
 use Chevere\VariableSupport\StorableVariable;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Filesystem\directoryForPath;
@@ -137,13 +135,11 @@ final class FilePhpReturnTest extends TestCase
     public function testPut(): void
     {
         foreach ([
-            TypeInterface::INT => 1,
-            TypeInterface::FLOAT => 1.1,
-            TypeInterface::BOOL => true,
-            TypeInterface::STRING => 'test',
-            TypeInterface::ARRAY => [1, 2, 3],
-            TypeInterface::ARRAY => [1, 1.1, true, 'test'],
-            TypeInterface::ARRAY => [[1, 1.1, true, 'test']],
+            'int' => 1,
+            'float' => 1.1,
+            'bool' => true,
+            'string' => 'test',
+            'array' => [[1, 1.1, true, 'test']],
         ] as $type => $value) {
             $storable = new StorableVariable($value);
             $this->filePhpReturn->put($storable);
@@ -152,8 +148,8 @@ final class FilePhpReturnTest extends TestCase
         }
         $object = $this->testDirectory->path()->getChild('test');
         $types = [
-            Type::OBJECT => $object,
-            Type::ARRAY => ['test', [1, false, $object], 1.1, null],
+            'object' => $object,
+            'array' => ['test', [1, false, $object], 1.1, null],
         ];
         foreach ($types as $type => $value) {
             $storable = new StorableVariable($value);

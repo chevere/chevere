@@ -15,12 +15,11 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
+use Chevere\Parameter\Interfaces\TypeInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParameterAssertArrayTypeTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
 
 final class UnionParameter implements UnionParameterInterface
 {

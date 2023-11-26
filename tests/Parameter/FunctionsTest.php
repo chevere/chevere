@@ -29,6 +29,7 @@ use function Chevere\Parameter\assertUnion;
 use function Chevere\Parameter\bool;
 use function Chevere\Parameter\float;
 use function Chevere\Parameter\generic;
+use function Chevere\Parameter\getType;
 use function Chevere\Parameter\int;
 use function Chevere\Parameter\null;
 use function Chevere\Parameter\object;
@@ -360,5 +361,17 @@ final class FunctionsTest extends TestCase
                 $arrayFrom->parameters()
             )
         );
+    }
+
+    public function testVariableType(): void
+    {
+        $table = [
+            'object' => $this,
+            'float' => 10.10,
+            'null' => null,
+        ];
+        foreach ($table as $type => $variable) {
+            $this->assertSame($type, getType($variable));
+        }
     }
 }

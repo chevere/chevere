@@ -22,7 +22,7 @@ use function Chevere\Parameter\string;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::TARGET_CLASS_CONSTANT)]
 class StringAttr implements ParameterAttributeInterface
 {
-    public readonly StringParameterInterface $parameter;
+    private StringParameterInterface $parameter;
 
     public function __construct(
         string $regex = '',

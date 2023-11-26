@@ -42,7 +42,6 @@
             "src/Parameter/functions.php",
             "src/Standard/functions.php",
             "src/String/functions.php",
-            "src/Type/functions.php",
             "src/VariableSupport/functions.php",
             "src/Writer/functions.php"
         ],

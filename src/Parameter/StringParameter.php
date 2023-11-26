@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\StringParameterInterface;
+use Chevere\Parameter\Interfaces\TypeInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Regex\Interfaces\RegexInterface;
 use Chevere\Regex\Regex;
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
 use InvalidArgumentException;
 use Stringable;
 use function Chevere\Message\message;

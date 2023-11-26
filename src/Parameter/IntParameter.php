@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\IntParameterInterface;
+use Chevere\Parameter\Interfaces\TypeInterface;
 use Chevere\Parameter\Traits\NumericParameterTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
 
 final class IntParameter implements IntParameterInterface
 {

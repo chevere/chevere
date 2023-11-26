@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Type\Interfaces;
+namespace Chevere\Parameter\Interfaces;
 
 /**
  * Describes the component in charge of dynamic type validation.

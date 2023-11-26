@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Parameter\Traits;
 
-use Chevere\Type\Interfaces\TypeInterface;
+use Chevere\Parameter\Interfaces\TypeInterface;
 
 trait ParameterTrait
 {

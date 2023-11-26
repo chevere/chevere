@@ -15,8 +15,8 @@ namespace Chevere\Parameter\Traits;
 
 use ArrayAccess;
 use Chevere\Parameter\Interfaces\ParametersInterface;
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
+use Chevere\Parameter\Interfaces\TypeInterface;
+use Chevere\Parameter\Type;
 use function Chevere\Parameter\assertArray;
 
 trait ArrayParameterTrait

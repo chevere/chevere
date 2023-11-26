@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\BoolParameterInterface;
+use Chevere\Parameter\Interfaces\TypeInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Parameter\Traits\SchemaTrait;
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
 
 final class BoolParameter implements BoolParameterInterface
 {

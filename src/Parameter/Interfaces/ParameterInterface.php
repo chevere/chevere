@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Parameter\Interfaces;
 
 use Chevere\Common\Interfaces\DescribedInterface;
-use Chevere\Type\Interfaces\TypeInterface;
 
 /**
  * Describes the component in charge of defining a parameter.

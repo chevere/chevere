@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
+use Chevere\Parameter\Interfaces\TypeInterface;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Parameter\Traits\SchemaTrait;
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
 use InvalidArgumentException;
 use stdClass;
 use TypeError;

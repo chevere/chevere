@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\NullParameterInterface;
+use Chevere\Parameter\Interfaces\TypeInterface;
 use Chevere\Parameter\Traits\ParameterDefaultNullTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
 use Chevere\Parameter\Traits\SchemaTrait;
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
 
 final class NullParameter implements NullParameterInterface
 {

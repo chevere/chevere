@@ -15,10 +15,9 @@ namespace Chevere\Parameter;
 
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
+use Chevere\Parameter\Interfaces\TypeInterface;
 use Chevere\Parameter\Traits\ArrayParameterTrait;
 use Chevere\Parameter\Traits\ParameterTrait;
-use Chevere\Type\Interfaces\TypeInterface;
-use Chevere\Type\Type;
 
 final class GenericParameter implements GenericParameterInterface
 {

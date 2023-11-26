@@ -236,3 +236,16 @@ function getParameters(
         ? $parameter->parameters()
         : $parameter;
 }
+
+function getType(mixed $variable): string
+{
+    $type = \gettype($variable);
+
+    return match ($type) {
+        'integer' => 'int',
+        'boolean' => 'bool',
+        'double' => 'float',
+        'NULL' => 'null',
+        default => $type,
+    };
+}
