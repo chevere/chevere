@@ -239,7 +239,7 @@ final class Arguments implements ArgumentsInterface
 
         try {
             $this->arguments[$name] = $parameter->__invoke($argument);
-        } catch (\TypeError $e) {
+        } catch (TypeError $e) {
             throw new TypeError(
                 $this->getExceptionMessage($name, $e)
             );

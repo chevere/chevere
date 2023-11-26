@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Action\src;
 
-use Chevere\Attributes\Description;
-use Chevere\Attributes\Regex;
 use Chevere\Controller\Controller;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use function Chevere\Parameter\string;
@@ -26,11 +24,8 @@ final class ActionTestController extends Controller
         return string();
     }
 
-    protected function run(
-        #[Description('The username.')]
-        #[Regex('/^[a-zA-Z]+$/')]
-        string $name
-    ): string {
+    protected function run(string $name): string
+    {
         return $name;
     }
 }
