@@ -19,6 +19,67 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/chevere/chevere/badge)](https://www.codefactor.io/repository/github/chevere/chevere)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/b956754f8ff04aaa9ca24a6e4cc21661)](https://app.codacy.com/gh/chevere/chevere/dashboard)
 
+## Build from source
+
+* Install vendor dependencies using [Composer](https://getcomposer.org):
+
+```sh
+composer install
+```
+
+## Scripts
+
+* Run all tests:
+
+```sh
+composer all
+```
+
+* Run some tests:
+
+```sh
+composer phpstan
+composer test
+composer test-coverage
+composer infection
+```
+
+* Update code style
+
+```sh
+composer cs-update
+```
+
+* Fix code-style
+
+```sh
+composer cs-fix
+```
+
+* Run with options:
+
+```sh
+composer <command> -- <options>
+```
+
+## Local GitHub workflow
+
+* Requires [act](https://github.com/nektos/act)
+
+Run the following command to execute the GitHub Workflow on local.
+
+### ARM64 (Apple M1*)
+
+```sh
+act -P ubuntu-latest=shivammathur/node:latest-arm64v8 --container-architecture linux/arm64
+```
+
+### AMD64
+
+```sh
+act -P ubuntu-latest=shivammathur/node:latest --container-architecture linux/amd64
+```
+
 ## Documentation
 
 Documentation available at [chevere.org](https://chevere.org/).
