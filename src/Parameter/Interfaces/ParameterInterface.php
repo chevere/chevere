@@ -19,6 +19,7 @@ use Chevere\Common\Interfaces\DescribedInterface;
  * Describes the component in charge of defining a parameter.
  * @method void assertCompatible(self $parameter) Asserts parameter compatibility against the provided `$parameter`.
  * @method mixed __invoke($value) Asserts the given `$value` is valid, returning the value if so.
+ * @method mixed withDefault(mixed $default) Return an instance with the specified `$default` value.
  */
 interface ParameterInterface extends DescribedInterface
 {

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter\src;
 
-use Chevere\Attributes\Regex;
+use Chevere\Parameter\Attribute\StringAttr;
 use stdClass;
 
 final class Depends
@@ -23,7 +23,7 @@ final class Depends
     }
 
     public function useString(
-        #[Regex('/^[a-z]$/')]
+        #[StringAttr('/^[a-z]+$/', description: 'A string')]
         string $string = 'default'
     ) {
     }

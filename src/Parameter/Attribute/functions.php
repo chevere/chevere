@@ -17,6 +17,7 @@ use Chevere\Parameter\Interfaces\ParameterAttributeInterface;
 use LogicException;
 use ReflectionFunction;
 use ReflectionMethod;
+use ReflectionParameter;
 use TypeError;
 
 /**
@@ -33,16 +34,23 @@ function parameter(string $parameter, array $caller): ParameterAttributeInterfac
     $parameters = $reflection->getParameters();
     foreach ($parameters as $parameterReflection) {
         if ($parameterReflection->getName() === $parameter) {
-            $attributes = $parameterReflection->getAttributes();
-            foreach ($attributes as $attribute) {
-                $attribute = $attribute->newInstance();
+            return reflectedParameter($parameterReflection);
+        }
+    }
 
-                try {
-                    // @phpstan-ignore-next-line
-                    return $attribute;
-                } catch (TypeError) { // @phpstan-ignore-line
-                }
-            }
+    throw new LogicException('No parameter attribute found');
+}
+
+function reflectedParameter(ReflectionParameter $reflection): ParameterAttributeInterface
+{
+    $attributes = $reflection->getAttributes();
+    foreach ($attributes as $attribute) {
+        $attribute = $attribute->newInstance();
+
+        try {
+            // @phpstan-ignore-next-line
+            return $attribute;
+        } catch (TypeError) { // @phpstan-ignore-line
         }
     }
 

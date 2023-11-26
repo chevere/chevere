@@ -43,8 +43,9 @@ final class ReflectionParameterTypedTest extends TestCase
         /** @var StringParameterInterface $reflected */
         $reflected = $reflection->parameter();
         $this->assertInstanceOf(StringParameterInterface::class, $reflected);
-        $this->assertSame('/^[a-z]$/', $reflected->regex()->__toString());
+        $this->assertSame('/^[a-z]+$/', $reflected->regex()->__toString());
         $this->assertSame('default', $reflected->default());
+        $this->assertSame('A string', $reflected->description());
     }
 
     public function testUnion(): void

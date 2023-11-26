@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Attribute;
 
 use Chevere\Attributes\Description;
-use Chevere\Attributes\Regex;
 use ReflectionClass;
 use ReflectionClassConstant;
 use ReflectionFunction;
@@ -51,12 +50,4 @@ function descriptionAttribute(
 ): Description {
     // @phpstan-ignore-next-line
     return getAttribute($reflection, Description::class);
-}
-
-// @phpstan-ignore-next-line
-function regexAttribute(
-    ReflectionClass|ReflectionFunction|ReflectionMethod|ReflectionProperty|ReflectionParameter|ReflectionClassConstant $reflection,
-): Regex {
-    // @phpstan-ignore-next-line
-    return getAttribute($reflection, Regex::class);
 }

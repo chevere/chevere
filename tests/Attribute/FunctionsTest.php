@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Attribute;
 
 use Chevere\Attributes\Description;
-use Chevere\Attributes\Regex;
 use Chevere\Tests\Attribute\src\ClassUsesDescription;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -80,6 +79,5 @@ final class FunctionsTest extends TestCase
     public function testHasAttribute($reflection): void
     {
         $this->assertTrue(hasAttribute($reflection, Description::class));
-        $this->assertFalse(hasAttribute($reflection, Regex::class));
     }
 }
