@@ -21,6 +21,7 @@
         "thecodingmachine/safe": "^2.4"
     },
     "require-dev": {
+        "chevere/var-dump": "^0.10.x-dev",
         "phpstan/phpstan": "^1.9",
         "phpunit/phpunit": "^9.5",
         "symplify/easy-coding-standard": "^11.4"
@@ -33,6 +34,7 @@
             "src/DataStructure/functions.php",
             "src/Filesystem/functions.php",
             "src/Message/functions.php",
+            "src/Parameter/Attribute/functions.php",
             "src/Parameter/functions-array.php",
             "src/Parameter/functions-bool.php",
             "src/Parameter/functions-numeric.php",

@@ -11,14 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Parameter\_resources;
+namespace Chevere\Parameter\Interfaces;
 
-final class ArrayAccessScoped extends ArrayAccess
+/**
+ * Describes the component in charge of hinting a Parameter attribute.
+ */
+interface ParameterAttributeInterface
 {
-    public function __construct(
-        public string $string,
-        protected int $int,
-        private bool $bool,
-    ) {
-    }
+    public function parameter(): ParameterInterface;
 }

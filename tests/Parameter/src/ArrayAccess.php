@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Parameter\_resources;
+namespace Chevere\Tests\Parameter\src;
 
 abstract class ArrayAccess implements \ArrayAccess
 {

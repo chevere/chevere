@@ -16,7 +16,7 @@ namespace Chevere\Tests\Parameter;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
 use Chevere\Parameter\Interfaces\StringParameterInterface;
 use Chevere\Parameter\ReflectionParameterTyped;
-use Chevere\Tests\Parameter\_resources\Depends;
+use Chevere\Tests\Parameter\src\Depends;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ReflectionMethod;

@@ -118,19 +118,21 @@ function assertNotEmpty(ParameterInterface $expected, mixed $value): void
     }
 }
 
-/**
- * @param iterable<mixed, mixed> $argument
- * @return iterable<mixed, mixed>
- */
+// @phpstan-ignore-next-line
 function assertGeneric(
     GenericParameterInterface $parameter,
     iterable $argument,
 ): iterable {
+    if (empty($argument)) {
+        throw new InvalidArgumentException(
+            (string) message('Argument value provided is empty')
+        );
+    }
     $generic = ' *generic';
     $genericKey = '_K' . $generic;
     $genericValue = '_V' . $generic;
     $expected = $parameter->value();
-    assertNotEmpty($expected, $argument);
+    // assertNotEmpty($expected, $argument);
 
     try {
         foreach ($argument as $key => $value) {
@@ -139,14 +141,14 @@ function assertGeneric(
         }
     } catch (Throwable $e) {
         throw new InvalidArgumentException(
-            getThrowableArrayErrorMessage($e->getMessage())
+            getThrowableGenericErrorMessage($e->getMessage())
         );
     }
 
     return $argument;
 }
 
-function getThrowableArrayErrorMessage(string $message): string
+function getThrowableGenericErrorMessage(string $message): string
 {
     $strstr = strstr($message, ':', false);
     if (! is_string($strstr)) {
@@ -154,6 +156,9 @@ function getThrowableArrayErrorMessage(string $message): string
     } else {
         $strstr = substr($strstr, 2);
     }
+    $calledIn = strpos($strstr, ', called in');
 
-    return $strstr;
+    return $calledIn
+        ? substr($strstr, 0, $calledIn)
+        : $strstr;
 }

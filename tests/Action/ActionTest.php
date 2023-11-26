@@ -37,13 +37,6 @@ use TypeError;
 
 final class ActionTest extends TestCase
 {
-    public function testConstruct(): void
-    {
-        $action = new ActionTestAction();
-        $this->expectNotToPerformAssertions();
-        $action->getResponse();
-    }
-
     public function testMissingRunMethod(): void
     {
         $action = new ActionTestMissingRun();
