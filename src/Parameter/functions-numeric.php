@@ -24,19 +24,19 @@ use function Chevere\Message\message;
 function float(
     string $description = '',
     ?float $default = null,
-    ?float $minimum = null,
-    ?float $maximum = null,
+    ?float $min = null,
+    ?float $max = null,
     array $accept = [],
 ): FloatParameterInterface {
     $parameter = new FloatParameter($description);
     if ($default !== null) {
         $parameter = $parameter->withDefault($default);
     }
-    if ($minimum !== null) {
-        $parameter = $parameter->withMinimum($minimum);
+    if ($min !== null) {
+        $parameter = $parameter->withMin($min);
     }
-    if ($maximum !== null) {
-        $parameter = $parameter->withMaximum($maximum);
+    if ($max !== null) {
+        $parameter = $parameter->withMax($max);
     }
     if ($accept !== []) {
         $parameter = $parameter->withAccept(...$accept);
@@ -51,8 +51,8 @@ function float(
 function int(
     string $description = '',
     ?int $default = null,
-    ?int $minimum = null,
-    ?int $maximum = null,
+    ?int $min = null,
+    ?int $max = null,
     array $accept = [],
 ): IntParameterInterface {
     $parameter = new IntParameter($description);
@@ -62,11 +62,11 @@ function int(
     if ($default !== null) {
         $parameter = $parameter->withDefault($default);
     }
-    if ($minimum !== null) {
-        $parameter = $parameter->withMinimum($minimum);
+    if ($min !== null) {
+        $parameter = $parameter->withMin($min);
     }
-    if ($maximum !== null) {
-        $parameter = $parameter->withMaximum($maximum);
+    if ($max !== null) {
+        $parameter = $parameter->withMax($max);
     }
 
     return $parameter;
@@ -90,23 +90,23 @@ function assertNumeric(
             )
         );
     }
-    $minimum = $parameter->minimum();
-    if ($minimum !== null && $argument < $minimum) {
+    $min = $parameter->min();
+    if ($min !== null && $argument < $min) {
         throw new InvalidArgumentException(
             (string) message(
-                'Argument value provided `%provided%` is less than `%minimum%`',
+                'Argument value provided `%provided%` is less than `%min%`',
                 provided: strval($argument),
-                minimum: strval($minimum)
+                min: strval($min)
             )
         );
     }
-    $maximum = $parameter->maximum();
-    if ($maximum !== null && $argument > $maximum) {
+    $max = $parameter->max();
+    if ($max !== null && $argument > $max) {
         throw new InvalidArgumentException(
             (string) message(
-                'Argument value provided `%provided%` is greater than `%maximum%`',
+                'Argument value provided `%provided%` is greater than `%max%`',
                 provided: strval($argument),
-                maximum: strval($maximum)
+                max: strval($max)
             )
         );
     }

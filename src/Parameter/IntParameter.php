@@ -25,9 +25,9 @@ final class IntParameter implements IntParameterInterface
 
     private ?int $default = null;
 
-    private ?int $minimum = null;
+    private ?int $min = null;
 
-    private ?int $maximum = null;
+    private ?int $max = null;
 
     /**
      * @var int[]
@@ -47,18 +47,18 @@ final class IntParameter implements IntParameterInterface
         return $new;
     }
 
-    public function withMinimum(int $value): IntParameterInterface
+    public function withMin(int $value): IntParameterInterface
     {
         $new = clone $this;
-        $new->setMinimum($value, self::MAXIMUM);
+        $new->setMin($value, self::MAX);
 
         return $new;
     }
 
-    public function withMaximum(int $value): IntParameterInterface
+    public function withMax(int $value): IntParameterInterface
     {
         $new = clone $this;
-        $new->setMaximum($value, self::MINIMUM);
+        $new->setMax($value, self::MIN);
 
         return $new;
     }
@@ -76,14 +76,14 @@ final class IntParameter implements IntParameterInterface
         return $this->default;
     }
 
-    public function minimum(): ?int
+    public function min(): ?int
     {
-        return $this->minimum;
+        return $this->min;
     }
 
-    public function maximum(): ?int
+    public function max(): ?int
     {
-        return $this->maximum;
+        return $this->max;
     }
 
     public function accept(): array
@@ -97,8 +97,8 @@ final class IntParameter implements IntParameterInterface
             'type' => $this->type()->primitive(),
             'description' => $this->description(),
             'default' => $this->default(),
-            'minimum' => $this->minimum(),
-            'maximum' => $this->maximum(),
+            'minimum' => $this->min(),
+            'maximum' => $this->max(),
             'accept' => $this->accept(),
         ];
     }

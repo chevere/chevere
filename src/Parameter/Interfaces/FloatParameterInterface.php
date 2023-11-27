@@ -18,9 +18,9 @@ namespace Chevere\Parameter\Interfaces;
  */
 interface FloatParameterInterface extends ParameterInterface
 {
-    public const MINIMUM = -PHP_FLOAT_MIN;
+    public const MIN = -PHP_FLOAT_MIN;
 
-    public const MAXIMUM = PHP_FLOAT_MAX;
+    public const MAX = PHP_FLOAT_MAX;
 
     /**
      * Asserts the given `$value` is valid, returning the value if so.
@@ -41,7 +41,7 @@ interface FloatParameterInterface extends ParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified minimum value.
      */
-    public function withMinimum(float $value): self;
+    public function withMin(float $value): self;
 
     /**
      * Return an instance with the specified maximum value.
@@ -49,7 +49,7 @@ interface FloatParameterInterface extends ParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified maximum value.
      */
-    public function withMaximum(float $value): self;
+    public function withMax(float $value): self;
 
     /**
      * Return an instance with the specified accepted value(s).
@@ -69,12 +69,12 @@ interface FloatParameterInterface extends ParameterInterface
     /**
      * Provides access to the minimum value.
      */
-    public function minimum(): ?float;
+    public function min(): ?float;
 
     /**
      * Provides access to the maximum value.
      */
-    public function maximum(): ?float;
+    public function max(): ?float;
 
     /**
      * Provides access to the accepted value(s).

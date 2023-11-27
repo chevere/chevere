@@ -74,7 +74,7 @@ final class GenericParameterTest extends TestCase
     {
         $key = string();
         $value = int();
-        $valueAlt = int(minimum: 1);
+        $valueAlt = int(min: 1);
         $parameter = new GenericParameter($value, $key);
         $notCompatible = new GenericParameter($valueAlt, $key);
         $this->expectException(InvalidArgumentException::class);

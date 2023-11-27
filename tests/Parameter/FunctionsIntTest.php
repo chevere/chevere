@@ -27,8 +27,8 @@ final class FunctionsIntTest extends TestCase
         $parameter = int();
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
-        $this->assertSame(null, $parameter->minimum());
-        $this->assertSame(null, $parameter->maximum());
+        $this->assertSame(null, $parameter->min());
+        $this->assertSame(null, $parameter->max());
         $this->assertSame([], $parameter->accept());
     }
 
@@ -39,13 +39,13 @@ final class FunctionsIntTest extends TestCase
         $parameter = int(
             description: $description,
             default: $default,
-            minimum: -100,
-            maximum: 100,
+            min: -100,
+            max: 100,
         );
         $this->assertSame($description, $parameter->description());
         $this->assertSame($default, $parameter->default());
-        $this->assertSame(-100, $parameter->minimum());
-        $this->assertSame(100, $parameter->maximum());
+        $this->assertSame(-100, $parameter->min());
+        $this->assertSame(100, $parameter->max());
         $parameter = int(accept: [0, 1]);
         $this->assertSame([0, 1], $parameter->accept());
     }

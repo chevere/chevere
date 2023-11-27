@@ -29,14 +29,14 @@ class IntAttr implements ParameterAttributeInterface
      */
     public function __construct(
         string $description = '',
-        ?int $minimum = null,
-        ?int $maximum = null,
+        ?int $min = null,
+        ?int $max = null,
         array $accept = [],
     ) {
         $this->parameter = int(
             description: $description,
-            minimum: $minimum,
-            maximum: $maximum,
+            min: $min,
+            max: $max,
             accept: $accept,
         );
     }

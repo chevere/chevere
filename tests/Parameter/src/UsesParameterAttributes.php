@@ -27,10 +27,10 @@ final class UsesParameterAttributes
     public function __construct(
         #[StringAttr('/^[A-Za-z]+$/')]
         string $name = '',
-        #[IntAttr(minimum: 1, maximum: 100)]
+        #[IntAttr(min: 1, max: 100)]
         int $age = 12,
         #[ArrayAttr(
-            id: new IntAttr(minimum: 1),
+            id: new IntAttr(min: 1),
         )]
         array $array = [],
         #[GenericAttr(

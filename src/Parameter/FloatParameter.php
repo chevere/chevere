@@ -25,9 +25,9 @@ final class FloatParameter implements FloatParameterInterface
 
     private ?float $default = null;
 
-    private ?float $minimum = null;
+    private ?float $min = null;
 
-    private ?float $maximum = null;
+    private ?float $max = null;
 
     /**
      * @var float[]
@@ -47,18 +47,18 @@ final class FloatParameter implements FloatParameterInterface
         return $new;
     }
 
-    public function withMinimum(float $value): FloatParameterInterface
+    public function withMin(float $value): FloatParameterInterface
     {
         $new = clone $this;
-        $new->setMinimum($value, self::MAXIMUM);
+        $new->setMin($value, self::MAX);
 
         return $new;
     }
 
-    public function withMaximum(float $value): FloatParameterInterface
+    public function withMax(float $value): FloatParameterInterface
     {
         $new = clone $this;
-        $new->setMaximum($value, self::MINIMUM);
+        $new->setMax($value, self::MIN);
 
         return $new;
     }
@@ -76,14 +76,14 @@ final class FloatParameter implements FloatParameterInterface
         return $this->default;
     }
 
-    public function minimum(): ?float
+    public function min(): ?float
     {
-        return $this->minimum;
+        return $this->min;
     }
 
-    public function maximum(): ?float
+    public function max(): ?float
     {
-        return $this->maximum;
+        return $this->max;
     }
 
     public function accept(): array
@@ -97,8 +97,8 @@ final class FloatParameter implements FloatParameterInterface
             'type' => $this->type->primitive(),
             'description' => $this->description(),
             'default' => $this->default(),
-            'minimum' => $this->minimum(),
-            'maximum' => $this->maximum(),
+            'minimum' => $this->min(),
+            'maximum' => $this->max(),
             'accept' => $this->accept(),
         ];
     }

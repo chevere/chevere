@@ -58,7 +58,7 @@ final class ArgumentsIterableTest extends TestCase
     {
         $parameters = parameters(
             test: arrayp(
-                one: int(maximum: 1),
+                one: int(max: 1),
                 two: int(),
             )
         );

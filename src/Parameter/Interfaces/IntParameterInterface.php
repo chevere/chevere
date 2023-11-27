@@ -18,9 +18,9 @@ namespace Chevere\Parameter\Interfaces;
  */
 interface IntParameterInterface extends ParameterInterface
 {
-    public const MINIMUM = PHP_INT_MIN;
+    public const MIN = PHP_INT_MIN;
 
-    public const MAXIMUM = PHP_INT_MAX;
+    public const MAX = PHP_INT_MAX;
 
     /**
      * Asserts the given `$value` is valid, returning the value if so.
@@ -41,7 +41,7 @@ interface IntParameterInterface extends ParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified minimum value.
      */
-    public function withMinimum(int $value): self;
+    public function withMin(int $value): self;
 
     /**
      * Return an instance with the specified maximum value.
@@ -49,7 +49,7 @@ interface IntParameterInterface extends ParameterInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified maximum value.
      */
-    public function withMaximum(int $value): self;
+    public function withMax(int $value): self;
 
     /**
      * Return an instance with the specified accepted value(s).
@@ -69,12 +69,12 @@ interface IntParameterInterface extends ParameterInterface
     /**
      * Provides access to the minimum value.
      */
-    public function minimum(): ?int;
+    public function min(): ?int;
 
     /**
      * Provides access to the maximum value.
      */
-    public function maximum(): ?int;
+    public function max(): ?int;
 
     /**
      * Provides access to the accepted value(s).

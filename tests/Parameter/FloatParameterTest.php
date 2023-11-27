@@ -25,8 +25,8 @@ final class FloatParameterTest extends TestCase
         $parameter = new FloatParameter();
         $this->assertEquals($parameter, float());
         $this->assertSame(null, $parameter->default());
-        $this->assertSame(null, $parameter->minimum());
-        $this->assertSame(null, $parameter->maximum());
+        $this->assertSame(null, $parameter->min());
+        $this->assertSame(null, $parameter->max());
         $default = 12.34;
         $parameterWithDefault = $parameter->withDefault($default);
         (new ParameterHelper())->testWithParameterDefault(
@@ -58,18 +58,18 @@ final class FloatParameterTest extends TestCase
     {
         $parameter = new FloatParameter();
         $value = 1.0;
-        $parameterWith = $parameter->withMinimum($value);
+        $parameterWith = $parameter->withMin($value);
         $this->assertNotSame($parameter, $parameterWith);
-        $this->assertSame($value, $parameterWith->minimum());
+        $this->assertSame($value, $parameterWith->min());
     }
 
     public function testWithMaximum(): void
     {
         $parameter = new FloatParameter();
         $value = 1.0;
-        $parameterWith = $parameter->withMaximum($value);
+        $parameterWith = $parameter->withMax($value);
         $this->assertNotSame($parameter, $parameterWith);
-        $this->assertSame($value, $parameterWith->maximum());
+        $this->assertSame($value, $parameterWith->max());
     }
 
     public function testAssertCompatible(): void

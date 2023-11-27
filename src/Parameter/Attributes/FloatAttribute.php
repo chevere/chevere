@@ -29,14 +29,14 @@ class FloatAttribute implements ParameterAttributeInterface
      */
     public function __construct(
         string $description = '',
-        ?float $minimum = null,
-        ?float $maximum = null,
+        ?float $min = null,
+        ?float $max = null,
         array $accept = [],
     ) {
         $this->parameter = float(
             description: $description,
-            minimum: $minimum,
-            maximum: $maximum,
+            min: $min,
+            max: $max,
             accept: $accept,
         );
     }

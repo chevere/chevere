@@ -26,8 +26,8 @@ final class IntParameterTest extends TestCase
     {
         $parameter = new IntParameter();
         $this->assertSame(null, $parameter->default());
-        $this->assertSame(null, $parameter->minimum());
-        $this->assertSame(null, $parameter->maximum());
+        $this->assertSame(null, $parameter->min());
+        $this->assertSame(null, $parameter->max());
         $this->assertSame([], $parameter->accept());
         $default = 1234;
         $parameterWithDefault = $parameter->withDefault($default);
@@ -84,14 +84,14 @@ final class IntParameterTest extends TestCase
     public function testWithMinimum(): void
     {
         $parameter = new IntParameter();
-        $parameterWithMinimum = $parameter->withMinimum(1);
+        $parameterWithMinimum = $parameter->withMin(1);
         $this->assertNotSame($parameter, $parameterWithMinimum);
-        $this->assertSame(1, $parameterWithMinimum->minimum());
+        $this->assertSame(1, $parameterWithMinimum->min());
         $parameterWithValue = $parameter->withAccept(3, 2, 1);
-        $this->assertSame(null, $parameterWithValue->maximum());
-        $this->assertSame(null, $parameterWithValue->minimum());
+        $this->assertSame(null, $parameterWithValue->max());
+        $this->assertSame(null, $parameterWithValue->min());
         $this->expectException(OverflowException::class);
-        $parameterWithValue->withMinimum(0);
+        $parameterWithValue->withMin(0);
     }
 
     public function testWithMinimumOnArguments(): void
@@ -99,7 +99,7 @@ final class IntParameterTest extends TestCase
         $expect = [
             'test' => 1,
         ];
-        $parameter = (new IntParameter())->withMinimum(1);
+        $parameter = (new IntParameter())->withMin(1);
         $parameters = new Parameters(test: $parameter);
         $arguments = new Arguments($parameters, $expect);
         $this->assertSame($expect, $arguments->toArray());
@@ -112,14 +112,14 @@ final class IntParameterTest extends TestCase
     public function testWithMaximum(): void
     {
         $parameter = new IntParameter();
-        $withMaximum = $parameter->withMaximum(1);
+        $withMaximum = $parameter->withMax(1);
         $this->assertNotSame($parameter, $withMaximum);
-        $this->assertSame(1, $withMaximum->maximum());
+        $this->assertSame(1, $withMaximum->max());
         $withValue = $parameter->withAccept(1, 2, 3);
-        $this->assertSame(null, $withValue->maximum());
-        $this->assertSame(null, $withValue->minimum());
+        $this->assertSame(null, $withValue->max());
+        $this->assertSame(null, $withValue->min());
         $this->expectException(OverflowException::class);
-        $withValue->withMaximum(0);
+        $withValue->withMax(0);
     }
 
     public function testWithMaximumOnArguments(): void
@@ -127,7 +127,7 @@ final class IntParameterTest extends TestCase
         $expect = [
             'test' => 1,
         ];
-        $parameter = (new IntParameter())->withMaximum(1);
+        $parameter = (new IntParameter())->withMax(1);
         $parameters = new Parameters(test: $parameter);
         $arguments = new Arguments($parameters, $expect);
         $this->assertSame($expect, $arguments->toArray());
@@ -141,31 +141,31 @@ final class IntParameterTest extends TestCase
     {
         $parameter = new IntParameter();
         $with = $parameter
-            ->withMinimum(1)
-            ->withMaximum(2);
+            ->withMin(1)
+            ->withMax(2);
         $this->expectException(InvalidArgumentException::class);
-        $with->withMinimum(2);
+        $with->withMin(2);
     }
 
     public function testWithMaximumMinimum(): void
     {
         $parameter = new IntParameter();
         $with = $parameter
-            ->withMinimum(1)
-            ->withMaximum(2);
+            ->withMin(1)
+            ->withMax(2);
         $this->expectException(InvalidArgumentException::class);
-        $with->withMaximum(1);
+        $with->withMax(1);
     }
 
     public function testAssertCompatibleMinimum(): void
     {
         $value = 1;
-        $parameter = (new IntParameter())->withMinimum($value);
-        $compatible = (new IntParameter())->withMinimum($value);
+        $parameter = (new IntParameter())->withMin($value);
+        $compatible = (new IntParameter())->withMin($value);
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
         $provided = $value * 2;
-        $notCompatible = (new IntParameter())->withMinimum($provided);
+        $notCompatible = (new IntParameter())->withMin($provided);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             <<<STRING
@@ -178,13 +178,13 @@ final class IntParameterTest extends TestCase
     public function testAssertCompatibleMaximum(): void
     {
         $value = 1;
-        $compatible = (new IntParameter())->withMaximum($value);
-        $parameter = (new IntParameter())->withMaximum($value);
-        $compatible = (new IntParameter())->withMaximum($value);
+        $compatible = (new IntParameter())->withMax($value);
+        $parameter = (new IntParameter())->withMax($value);
+        $compatible = (new IntParameter())->withMax($value);
         $parameter->assertCompatible($compatible);
         $compatible->assertCompatible($parameter);
         $provided = $value * 2;
-        $notCompatible = (new IntParameter())->withMaximum($provided);
+        $notCompatible = (new IntParameter())->withMax($provided);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             <<<STRING
@@ -227,7 +227,7 @@ final class IntParameterTest extends TestCase
     public function testAssertCompatibleAcceptMinimum(): void
     {
         $parameter = (new IntParameter())->withAccept(1, 2, 3);
-        $notCompatible = (new IntParameter())->withMinimum(0);
+        $notCompatible = (new IntParameter())->withMin(0);
         $this->expectException(InvalidArgumentException::class);
         $this->getExpectedExceptionMessage('value null');
         $parameter->assertCompatible($notCompatible);
@@ -236,7 +236,7 @@ final class IntParameterTest extends TestCase
     public function testWithDefaultConflictMinimum(): void
     {
         $parameter = (new IntParameter())
-            ->withMinimum(1)
+            ->withMin(1)
             ->withDefault(1);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -250,7 +250,7 @@ final class IntParameterTest extends TestCase
     public function testWithDefaultConflictMaximum(): void
     {
         $parameter = (new IntParameter())
-            ->withMaximum(1)
+            ->withMax(1)
             ->withDefault(1);
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(

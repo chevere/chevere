@@ -25,8 +25,8 @@ final class FunctionsFloatTest extends TestCase
         $parameter = float();
         $this->assertSame('', $parameter->description());
         $this->assertSame(null, $parameter->default());
-        $this->assertSame(null, $parameter->minimum());
-        $this->assertSame(null, $parameter->maximum());
+        $this->assertSame(null, $parameter->min());
+        $this->assertSame(null, $parameter->max());
         $this->assertSame([], $parameter->accept());
     }
 
@@ -37,13 +37,13 @@ final class FunctionsFloatTest extends TestCase
         $parameter = float(
             description: $description,
             default: $default,
-            minimum: -100,
-            maximum: 100,
+            min: -100,
+            max: 100,
         );
         $this->assertSame($description, $parameter->description());
         $this->assertSame($default, $parameter->default());
-        $this->assertSame(-100.0, $parameter->minimum());
-        $this->assertSame(100.0, $parameter->maximum());
+        $this->assertSame(-100.0, $parameter->min());
+        $this->assertSame(100.0, $parameter->max());
         $parameter = float(accept: [0, 1]);
         $this->assertSame([0.0, 1.0], $parameter->accept());
     }
