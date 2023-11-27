@@ -20,13 +20,17 @@ use Chevere\Parameter\Interfaces\BoolParameterInterface;
 use Chevere\Parameter\Interfaces\CastInterface;
 use Chevere\Parameter\Interfaces\NullParameterInterface;
 use Chevere\Parameter\Interfaces\ObjectParameterInterface;
+use Chevere\Parameter\Interfaces\ParameterAttributeInterface;
 use Chevere\Parameter\Interfaces\ParameterInterface;
 use Chevere\Parameter\Interfaces\ParametersAccessInterface;
 use Chevere\Parameter\Interfaces\ParametersInterface;
 use Chevere\Parameter\Interfaces\UnionParameterInterface;
 use InvalidArgumentException;
 use Iterator;
+use LogicException;
+use ReflectionFunction;
 use ReflectionMethod;
+use ReflectionParameter;
 use Throwable;
 use TypeError;
 use function Chevere\Message\message;
@@ -248,4 +252,41 @@ function getType(mixed $variable): string
         'NULL' => 'null',
         default => $type,
     };
+}
+
+/**
+ * Retrieves a Parameter attribute instance from a function or method parameter.
+ * @param array<string, string> $caller The result of debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]
+ */
+function parameterAttr(string $parameter, array $caller): ParameterAttributeInterface
+{
+    $class = $caller['class'] ?? null;
+    $method = $caller['function'];
+    $reflection = $class
+        ? new ReflectionMethod($class, $method)
+        : new ReflectionFunction($method);
+    $parameters = $reflection->getParameters();
+    foreach ($parameters as $parameterReflection) {
+        if ($parameterReflection->getName() === $parameter) {
+            return reflectedParameterAttribute($parameterReflection);
+        }
+    }
+
+    throw new LogicException('No parameter attribute found');
+}
+
+function reflectedParameterAttribute(ReflectionParameter $reflection): ParameterAttributeInterface
+{
+    $attributes = $reflection->getAttributes();
+    foreach ($attributes as $attribute) {
+        $attribute = $attribute->newInstance();
+
+        try {
+            // @phpstan-ignore-next-line
+            return $attribute;
+        } catch (TypeError) { // @phpstan-ignore-line
+        }
+    }
+
+    throw new LogicException('No parameter attribute found');
 }

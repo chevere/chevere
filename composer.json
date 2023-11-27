@@ -34,7 +34,7 @@
             "src/DataStructure/functions.php",
             "src/Filesystem/functions.php",
             "src/Message/functions.php",
-            "src/Parameter/Attribute/functions.php",
+            "src/Parameter/Attributes/functions.php",
             "src/Parameter/functions-array.php",
             "src/Parameter/functions-bool.php",
             "src/Parameter/functions-numeric.php",

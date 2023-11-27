@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter\src;
 
-use Chevere\Parameter\Attribute\ArrayAttr;
-use Chevere\Parameter\Attribute\GenericAttr;
-use Chevere\Parameter\Attribute\IntAttr;
-use Chevere\Parameter\Attribute\StringAttr;
-use function Chevere\Parameter\Attribute\arrayAttr;
-use function Chevere\Parameter\Attribute\genericAttr;
-use function Chevere\Parameter\Attribute\intAttr;
-use function Chevere\Parameter\Attribute\stringAttr;
+use Chevere\Parameter\Attributes\ArrayAttr;
+use Chevere\Parameter\Attributes\GenericAttr;
+use Chevere\Parameter\Attributes\IntAttr;
+use Chevere\Parameter\Attributes\StringAttr;
+use function Chevere\Parameter\Attributes\arrayAttr;
+use function Chevere\Parameter\Attributes\genericAttr;
+use function Chevere\Parameter\Attributes\intAttr;
+use function Chevere\Parameter\Attributes\stringAttr;
 
 final class UsesParameterAttributes
 {

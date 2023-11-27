@@ -23,7 +23,6 @@ use ReflectionUnionType;
 use Throwable;
 use TypeError;
 use function Chevere\Message\message;
-use function Chevere\Parameter\Attribute\reflectedParameter;
 
 final class ReflectionParameterTyped implements ReflectionParameterTypedInterface
 {
@@ -52,7 +51,7 @@ final class ReflectionParameterTyped implements ReflectionParameterTypedInterfac
         $this->parameter = new $type();
 
         try {
-            $attribute = reflectedParameter($reflection);
+            $attribute = reflectedParameterAttribute($reflection);
             $this->parameter = $attribute->parameter();
         } catch (Throwable) {
         }

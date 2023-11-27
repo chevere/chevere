@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Parameter\Attribute;
+namespace Chevere\Parameter\Attributes;
 
 use ArrayAccess;
 use Attribute;
@@ -23,20 +23,21 @@ use function Chevere\Parameter\arrayp;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::TARGET_CLASS_CONSTANT)]
 class ArrayAttr implements ParameterAttributeInterface
 {
-    private ArrayParameterInterface $parameter;
+    public readonly ArrayParameterInterface $parameter;
 
     public function __construct(
         ParameterAttributeInterface ...$parameterAttribute,
     ) {
-        $this->parameter = arrayp();
+        $parameter = arrayp();
         foreach ($parameterAttribute as $name => $attribute) {
-            $this->parameter = $this->parameter
+            $parameter = $parameter
                 ->withRequired(
                     ...[
                         $name => $attribute->parameter(),
                     ]
                 );
         }
+        $this->parameter = $parameter;
     }
 
     // @phpstan-ignore-next-line

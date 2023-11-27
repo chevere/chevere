@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Parameter\Attribute;
+namespace Chevere\Parameter\Attributes;
 
 use Attribute;
 use Chevere\Parameter\Interfaces\GenericParameterInterface;
@@ -22,7 +22,7 @@ use function Chevere\Parameter\generic;
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::TARGET_CLASS_CONSTANT)]
 class GenericAttr implements ParameterAttributeInterface
 {
-    private GenericParameterInterface $parameter;
+    public readonly GenericParameterInterface $parameter;
 
     public function __construct(
         ParameterAttributeInterface $V,

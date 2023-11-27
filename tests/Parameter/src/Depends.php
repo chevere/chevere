@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Parameter\src;
 
-use Chevere\Parameter\Attribute\StringAttr;
+use Chevere\Parameter\Attributes\StringAttr;
 use stdClass;
 
 final class Depends
